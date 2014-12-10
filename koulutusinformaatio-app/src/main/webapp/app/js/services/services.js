@@ -333,7 +333,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
 /**
  * Transformer for parent LO data
  */
-service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', function(KiSorter, $filter, $rootScope, _) {
+service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'UtilityService', function(KiSorter, $filter, $rootScope, _, UtilityService) {
     return {
         transform: function(result) {
 
@@ -380,10 +380,7 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', functi
                     for (var asIndex in loi.applicationSystems) {
                         if (loi.applicationSystems.hasOwnProperty(asIndex)) {
                             var as = loi.applicationSystems[asIndex];
-                            if (as.applicationOptions && as.applicationOptions.length > 0) {
-                                var firstAo = as.applicationOptions[0];
-                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
-                            }
+                            as.isLisahaku = UtilityService.isLisahaku(as);
                         }
                     }
                 }
@@ -487,7 +484,7 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', functi
 /**
  * Transformer for child LO data
  */
-service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', function(KiSorter, $rootScope, $filter, LanguageService, _) {
+service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', 'UtilityService', function(KiSorter, $rootScope, $filter, LanguageService, _, UtilityService) {
 
 	return {
 		transform: function(result) {
@@ -585,10 +582,7 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
 					var as = result.applicationSystems[asIndex];
-					if (as.applicationOptions && as.applicationOptions.length > 0) {
-						var firstAo = as.applicationOptions[0];
-						as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
-					}
+                    as.isLisahaku = UtilityService.isLisahaku(as);
 				}
 			}
 		}
@@ -598,7 +592,7 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 /**
  * Transformer for child LO data
  */
-service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', function(KiSorter, $rootScope, $filter, LanguageService, _) {
+service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', 'UtilityService', function(KiSorter, $rootScope, $filter, LanguageService, _, UtilityService) {
 
 	return {
 		transform: function(result, loId) {
@@ -679,10 +673,7 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
 					var as = result.applicationSystems[asIndex];
-					if (as.applicationOptions && as.applicationOptions.length > 0) {
-						var firstAo = as.applicationOptions[0];
-						as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
-					}
+                    as.isLisahaku = UtilityService.isLisahaku(as);
 				}
 			}
 			
@@ -827,10 +818,7 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '_', 
                     for (var asIndex in loi.applicationSystems) {
                         if (loi.applicationSystems.hasOwnProperty(asIndex)) {
                             var as = loi.applicationSystems[asIndex];
-                            if (as.applicationOptions && as.applicationOptions.length > 0) {
-                                var firstAo = as.applicationOptions[0];
-                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
-                            }
+                            as.isLisahaku = UtilityService.isLisahaku(as);
                         }
                     }
                 }

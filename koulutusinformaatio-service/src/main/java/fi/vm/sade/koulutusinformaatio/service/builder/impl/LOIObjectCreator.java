@@ -85,6 +85,12 @@ public class LOIObjectCreator extends ObjectCreator {
         basicLOI.setFormOfTeaching(koodistoService.searchNamesMultiple(komoto.getOpetusmuodotUris()));
         basicLOI.setTeachingLanguages(koodistoService.searchMultiple(komoto.getOpetuskieletUris()));
         basicLOI.setStartDate(komoto.getKoulutuksenAlkamisDate());
+        if (komoto.getKoulutuksenAlkamisvuosi() != null) {
+            basicLOI.setStartYear(komoto.getKoulutuksenAlkamisvuosi());
+        }
+        if (komoto.getKoulutuksenAlkamiskausi() != null) {    
+            basicLOI.setStartSeason(koodistoService.searchFirstName(komoto.getKoulutuksenAlkamiskausi()));
+        }
         basicLOI.setFormOfEducation(koodistoService.searchNamesMultiple(komoto.getKoulutuslajiUris()));
         basicLOI.setInternationalization(getI18nText(komoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
         basicLOI.setCooperation(getI18nText(komoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));

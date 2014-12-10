@@ -20,6 +20,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
@@ -47,6 +48,8 @@ public final class UpperSecondaryLOIToDTO {
         dto.setTeachingLanguages(CodeToName.convertAll(loi.getTeachingLanguages(), uiLang));
         dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(loi.getFormOfEducation(), uiLang));
         dto.setStartDate(loi.getStartDate());
+        dto.setStartYear(loi.getStartYear());
+        dto.setStartSeason(ConverterUtil.getTextByLanguageUseFallbackLang(loi.getStartSeason(), uiLang));
         dto.setInternationalization(ConverterUtil.getTextByLanguage(loi.getInternationalization(), lang));
         dto.setCooperation(ConverterUtil.getTextByLanguage(loi.getCooperation(), lang));
         dto.setContent(ConverterUtil.getTextByLanguage(loi.getContent(), lang));

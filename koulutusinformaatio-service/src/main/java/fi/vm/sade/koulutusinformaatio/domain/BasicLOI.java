@@ -42,6 +42,8 @@ public class BasicLOI extends LOI {
     private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
     private List<Code> formOfStudyFacet = new ArrayList<Code>();
     private Code koulutuslaji;
+    private int startYear;
+    private I18nText startSeason;
    
     public I18nText getName() {
         return name;
@@ -185,5 +187,21 @@ public class BasicLOI extends LOI {
 
     public void setKoulutuslaji(Code koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
+    }
+
+    public int getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
+
+    public I18nText getStartSeason() {
+        return startSeason;
+    }
+
+    public void setStartSeason(I18nText startSeason) {
+        this.startSeason = startSeason;
     }
 }

@@ -166,9 +166,6 @@ public class LOSObjectCreator extends ObjectCreator {
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
         childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT));
 
-        for (ChildLOI curChild : childLOS.getLois()) {
-            //curChild.get
-        }
 
         return childLOS;
     }
@@ -817,7 +814,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (Code curQual : quals) {
                 qualifications.add(curQual.getName());
             }
-        } else {
+        } else if (koulutus.getTutkintonimike() != null && koulutus.getTutkintonimike().getMeta() != null) {
             qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
         }
         return qualifications;

@@ -34,6 +34,8 @@ public class ChildLearningOpportunityInstanceDTO {
     private List<ContactPersonDTO> contactPersons = new ArrayList<ContactPersonDTO>();
     private String plannedDuration;
     private String plannedDurationUnit;
+    private int startYear;
+    private String startSeason;
 
     public String getId() {
         return id;
@@ -194,5 +196,21 @@ public class ChildLearningOpportunityInstanceDTO {
 
     public void setTargetGroup(String targetGroup) {
         this.targetGroup = targetGroup;
+    }
+
+    public int getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
+
+    public String getStartSeason() {
+        return startSeason;
+    }
+
+    public void setStartSeason(String startSeason) {
+        this.startSeason = startSeason;
     }
 }

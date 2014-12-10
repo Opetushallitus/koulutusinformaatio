@@ -5,7 +5,8 @@
             <ul class="list-unstyled">
                 <li>
                     <span data-ki-i18n="education-starts" data-show-colon="true"></span>
-                    <strong>{{selectedLOI.startDate}}</strong>
+                    <strong data-ng-show="selectedLOI.startDate">{{selectedLOI.startDate}}</strong>
+                    <strong data-ng-hide="selectedLOI.startDate">{{selectedLOI.startSeason}} {{selectedLOI.startYear}}</strong>
                 </li>
                 <li>
                     <span data-ki-i18n="language-of-instruction" data-show-colon="true"></span>
