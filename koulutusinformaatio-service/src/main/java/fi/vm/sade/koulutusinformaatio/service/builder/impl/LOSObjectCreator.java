@@ -166,9 +166,6 @@ public class LOSObjectCreator extends ObjectCreator {
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
         childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT));
 
-        for (ChildLOI curChild : childLOS.getLois()) {
-            //curChild.get
-        }
 
         return childLOS;
     }
@@ -698,7 +695,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
         los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
-        los.setEducationType(getEducationType(koulutus.getKoulutusaste().getUri()));
+        los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
@@ -817,7 +814,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (Code curQual : quals) {
                 qualifications.add(curQual.getName());
             }
-        } else {
+        } else if (koulutus.getTutkintonimike() != null && koulutus.getTutkintonimike().getMeta() != null) {
             qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
         }
         return qualifications;
@@ -1083,7 +1080,13 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setId(koulutus.getOid());
         los.setKomoOid(koulutus.getKomoOid());
         los.setValmistavaKoulutus(koulutus.getValmistavaKoulutus() != null);
-
+        if (koulutus.getToteutustyyppi().name().equals(ToteutustyyppiEnum.AMMATTITUTKINTO.name())) {
+            los.setEducationType(SolrConstants.ED_TYPE_AMM_TUTK);
+        } else if (koulutus.getToteutustyyppi().name().equals(ToteutustyyppiEnum.ERIKOISAMMATTITUTKINTO.name())) {
+            los.setEducationType(SolrConstants.ED_TYPE_AMM_ER);
+        } else {
+            los.setEducationType(SolrConstants.ED_TYPE_AMMATILLINEN);
+        }
 
         //Set<Code> availableLanguagaes = Sets.newHashSet();
         Map<String,Code> availableLanguagesMap = new HashMap<String,Code>();
@@ -1175,7 +1178,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
         los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
-        //los.setEducationType(getEducationType(koulutus.getKoulutusaste().getUri()));
+
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setQualifications(getQualificationsForAikuAmm(koulutus));//Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));

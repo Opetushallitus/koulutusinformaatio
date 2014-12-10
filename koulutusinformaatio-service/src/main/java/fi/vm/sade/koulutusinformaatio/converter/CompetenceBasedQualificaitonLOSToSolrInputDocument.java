@@ -130,7 +130,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         Date earliest = null;
 
         for (AdultVocationalLOS curChild : los.getChildren()) {
-            if (earliest == null || earliest.after(curChild.getStartDate())) {
+            if (earliest == null || curChild.getStartDate() == null || earliest.after(curChild.getStartDate())) {
                 earliest = curChild.getStartDate();
             }    
         }

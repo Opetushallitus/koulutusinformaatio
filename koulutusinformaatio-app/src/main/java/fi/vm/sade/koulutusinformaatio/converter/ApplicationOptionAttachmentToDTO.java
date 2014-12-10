@@ -80,7 +80,7 @@ public final class ApplicationOptionAttachmentToDTO {
     }
     
     public static List<ApplicationOptionAttachmentDTO> convertAllHigherEducation(final List<ApplicationOptionAttachment> aoas, final String lang) {
-        if (aoas == null) {
+        if (aoas == null || aoas.isEmpty()) {
             return null;
         }
         else {
