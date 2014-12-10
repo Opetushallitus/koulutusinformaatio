@@ -45,6 +45,8 @@ public class UpperSecondaryLearningOpportunityInstanceDTO {
     private String plannedDurationUnit;
     private List<LanguageSelectionDTO> languageSelection;
     private List<CodeDTO> availableTranslationLanguages;
+    private int startYear;
+    private String startSeason;
 
     public String getId() {
         return id;
@@ -180,5 +182,21 @@ public class UpperSecondaryLearningOpportunityInstanceDTO {
 
     public void setAvailableTranslationLanguages(List<CodeDTO> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
+    public int getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
+
+    public String getStartSeason() {
+        return startSeason;
+    }
+
+    public void setStartSeason(String startSeason) {
+        this.startSeason = startSeason;
     }
 }

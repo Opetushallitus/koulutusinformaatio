@@ -440,6 +440,7 @@ public final class SolrUtil {
         public static final String ALIAS_ACTION = "/admin/collections?action=CREATEALIAS&name=";
         public static final String COLLECTIONS = "&collections=";
         public static final String GET = "GET";
+        public static final String AUTUMN = "Syksy";
         
         //value constants
         //public static final String ED_TYPE_TUTKINTOON = "et01";

@@ -27,6 +27,8 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,7 +47,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             if (loi == null) {
                 loi = curLoi;
             }
-            if (curLoi.getStartDate().after(loi.getStartDate())) {
+            if (isLater(curLoi, loi)) {
                 loi = curLoi;
             }
         }
@@ -56,6 +58,61 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         }
 
         return docs;
+    }
+
+
+    /*
+     * Checking if curLoi has a later start date than existingLoi. 
+     * This is done to ensure that only the latest loi gets indexed into solr.
+     */
+    private boolean isLater(UpperSecondaryLOI curLoi, UpperSecondaryLOI existingLoi) {
+        
+        if (curLoi.getStartDate() != null && existingLoi.getStartDate() != null) {
+            if (curLoi.getStartDate().after(existingLoi.getStartDate())) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (curLoi.getStartDate() != null) {
+            String existingLoiSeason = existingLoi.getStartSeason() != null 
+                    && existingLoi.getStartSeason().getTranslations() != null 
+                    ? existingLoi.getStartSeason().getTranslations().get("fi") : null;
+            return isDateLaterThanYearAndSeason(curLoi.getStartDate(), existingLoi.getStartYear(), existingLoiSeason);
+        } else if (existingLoi.getStartDate() != null) {
+            String curLoiSeason = curLoi.getStartSeason() != null 
+                    && curLoi.getStartSeason().getTranslations() != null 
+                    ? curLoi.getStartSeason().getTranslations().get("fi") : null;
+            return !isDateLaterThanYearAndSeason(existingLoi.getStartDate(), curLoi.getStartYear(), curLoiSeason);
+        } else {
+            if (curLoi.getStartYear() != existingLoi.getStartYear()) {
+                return curLoi.getStartYear() > existingLoi.getStartYear();
+            } else {
+                String existingLoiSeason = existingLoi.getStartSeason() != null 
+                        && existingLoi.getStartSeason().getTranslations() != null 
+                        ? existingLoi.getStartSeason().getTranslations().get("fi") : null;
+                return !SolrConstants.AUTUMN.equalsIgnoreCase(existingLoiSeason);
+            }
+        }
+    }
+    
+    /*
+     * Checking if a date can be considered to be later than a given year and season.
+     * This is needed because some lois don't have explicit start date but only
+     *  a year and season are given.
+     */
+    private boolean isDateLaterThanYearAndSeason(Date date, int year, String season) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int curLoiMonth = cal.get(Calendar.MONTH);
+        int curLoiYear = cal.get(Calendar.YEAR);
+        if (curLoiYear != year) {
+            return curLoiYear > year;
+        } else if (SolrConstants.AUTUMN.equalsIgnoreCase(season)
+                && curLoiMonth < 7) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 

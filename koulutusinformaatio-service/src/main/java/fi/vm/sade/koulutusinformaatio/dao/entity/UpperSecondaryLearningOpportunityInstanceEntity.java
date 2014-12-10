@@ -70,8 +70,28 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
     private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
     @Embedded
     private CodeEntity koulutuslaji;
-
+    
+    private int startYear;
+    @Embedded
+    private I18nTextEntity startSeason;
+    
     public UpperSecondaryLearningOpportunityInstanceEntity() {
+    }
+    
+    public int getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
+
+    public I18nTextEntity getStartSeason() {
+        return startSeason;
+    }
+
+    public void setStartSeason(I18nTextEntity startSeason) {
+        this.startSeason = startSeason;
     }
 
     public String getId() {

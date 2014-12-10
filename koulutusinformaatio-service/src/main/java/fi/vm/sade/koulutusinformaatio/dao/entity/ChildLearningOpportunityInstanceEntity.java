@@ -60,6 +60,25 @@ public class ChildLearningOpportunityInstanceEntity {
     @Embedded
     private I18nTextEntity targetGroup;
     
+    private int startYear;
+    @Embedded
+    private I18nTextEntity startSeason;
+    
+    public int getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
+
+    public I18nTextEntity getStartSeason() {
+        return startSeason;
+    }
+
+    public void setStartSeason(I18nTextEntity startSeason) {
+        this.startSeason = startSeason;
+    }
     
 
     public String getId() {
@@ -253,4 +272,6 @@ public class ChildLearningOpportunityInstanceEntity {
     public void setTargetGroup(I18nTextEntity targetGroup) {
         this.targetGroup = targetGroup;
     }
+
+
 }
