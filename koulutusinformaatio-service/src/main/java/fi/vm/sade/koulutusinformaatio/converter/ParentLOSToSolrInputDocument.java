@@ -182,7 +182,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 if (childLOI.getStartDate() != null) {
-                    if (earliest == null || childLOI.getStartDate() == null || earliest.after(childLOI.getStartDate())) {
+                    if (earliest == null || earliest.after(childLOI.getStartDate())) {
                         earliest = childLOI.getStartDate();
                     }
                 } 
