@@ -749,8 +749,10 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '_', 
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
 
-                    var startDate = new Date(loi.startDate);
-                    loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                    if (loi.startDate) {
+                    	var startDate = new Date(loi.startDate);
+                    	loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                    }
                     loi.teachingLanguage = _.first(loi.teachingLanguages);
                     loi.formsOfTeaching = loi.formOfTeaching;
                     loi.formOfTeaching = _.first(loi.formOfTeaching);
