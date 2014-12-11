@@ -62,28 +62,41 @@ public final class ExamToDTO {
     }
     
     public static List<ExamDTO> convertAllHigherEducation(final List<Exam> exams, final String lang) {
-        if (exams == null) {
+        if (exams == null || exams.isEmpty()) {
             return null;
         }
         else {
             
-            List<ExamDTO> convertedExams = new ArrayList<ExamDTO>();
-            String keyLang = lang.toLowerCase();
+            List<ExamDTO> convertedExams = convertHigherEdExamsByLang(lang, exams);
             
-            for (Exam curExam : exams) {
-                ExamDTO exam = null;
-                if (curExam != null 
-                        && curExam.getType() != null 
-                        && curExam.getType().getTranslations().containsKey(keyLang)) {
-                    exam = convert(curExam, lang);
-                }
-                if (exam != null) {
-                    convertedExams.add(exam);
-                }
+            if (convertedExams == null || convertedExams.isEmpty()) {
+                convertedExams = convertHigherEdExamsByLang(ConverterUtil.FALLBACK_LANG, exams);
+            }
+            if (convertedExams == null || convertedExams.isEmpty()) {
+                convertedExams = convertHigherEdExamsByLang(exams.get(0).getType().getTranslations().keySet().iterator().next(), exams);
             }
             
-            return !convertedExams.isEmpty() ? convertedExams : null;
+            return convertedExams != null && !convertedExams.isEmpty() ? convertedExams : null;
 
         }
+    }
+    
+    private static List<ExamDTO> convertHigherEdExamsByLang(String lang, final List<Exam> exams) {
+        List<ExamDTO> convertedExams = new ArrayList<ExamDTO>();
+        String keyLang = lang.toLowerCase();
+        
+        for (Exam curExam : exams) {
+            ExamDTO exam = null;
+            if (curExam != null 
+                    && curExam.getType() != null 
+                    && curExam.getType().getTranslations().containsKey(keyLang)) {
+                exam = convert(curExam, lang);
+            }
+            if (exam != null) {
+                convertedExams.add(exam);
+            }
+        }
+        
+        return !convertedExams.isEmpty() ? convertedExams : null;
     }
 }
