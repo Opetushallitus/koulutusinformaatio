@@ -37,6 +37,8 @@ public class ApplicationOptionAttachmentEntity {
     private Address address;
     
     private String emailAddr;
+    
+    private boolean usedInApplicationForm = true;
 
     public Date getDueDate() {
         return dueDate;
@@ -76,5 +78,13 @@ public class ApplicationOptionAttachmentEntity {
 
     public void setEmailAddr(String emailAddr) {
         this.emailAddr = emailAddr;
+    }
+
+    public boolean isUsedInApplicationForm() {
+        return usedInApplicationForm;
+    }
+
+    public void setUsedInApplicationForm(boolean usedInApplicationForm) {
+        this.usedInApplicationForm = usedInApplicationForm;
     }
 }

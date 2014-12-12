@@ -387,8 +387,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
         List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
         if (hakukohde.getHakukohteenLiitteet() != null && !hakukohde.getHakukohteenLiitteet().isEmpty()) {
             for (HakukohdeLiiteV1RDTO liite : hakukohde.getHakukohteenLiitteet()) {
+                
                 ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
                 attach.setDueDate(liite.getToimitettavaMennessa());
+                attach.setUsedInApplicationForm(liite.isKaytetaanHakulomakkeella());
                 //attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
                 attach.setType(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()));
                 attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
