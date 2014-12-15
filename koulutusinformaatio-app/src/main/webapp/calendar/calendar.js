@@ -104,7 +104,11 @@ var ApplicationSystemCalendar = (function() {
 
             _.each(monthobj, function(item) {
                 list.append( createCalendarItem(item) );
-                month = new Date( ki.Utils.getAsStartDate(item) ).getMonth();
+
+                // if item start date is in the past use current time (month)
+                var now = new Date();
+                var itemStartDate = ki.Utils.getAsStartDate(item) < now ? now : ki.Utils.getAsStartDate(item);
+                month = new Date( itemStartDate ).getMonth();
             });
 
             panel.append( createPanel(ki.i18n.t('month-' + month), list, 'month_' + index) );
