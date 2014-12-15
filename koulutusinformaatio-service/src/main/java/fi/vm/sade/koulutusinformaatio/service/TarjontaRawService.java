@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystemParameters;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
@@ -102,5 +103,6 @@ public interface TarjontaRawService {
             String komoOid);
 
     public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
+
     
 }

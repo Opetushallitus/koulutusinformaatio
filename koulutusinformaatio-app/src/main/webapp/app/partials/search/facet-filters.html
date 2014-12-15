@@ -35,6 +35,14 @@
                         <span data-ki-i18n="{{loResult.upcomingLaterFacet.season}}"></span> {{loResult.upcomingLaterFacet.year}}<a title="{{locales.removeFacetLater}}" href="javascript:void(0)" class="remove" data-ng-click="removeUpcomingLater()"></a>
                     </span>
                 </li>
+                <li data-ng-repeat="fv in loResult.applicationSystemFacet.facetValues">
+                        <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                            <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                        </span>
+                        <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                            <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                        </span>
+                </li>
             </ul>
         </div>
     </div>

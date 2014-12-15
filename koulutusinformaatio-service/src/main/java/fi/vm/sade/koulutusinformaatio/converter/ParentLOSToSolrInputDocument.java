@@ -157,9 +157,14 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                 
                 for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
                     if (ao.getApplicationSystem() != null) {
-                        doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                        doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                        doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+                        ApplicationSystem curAs = ao.getApplicationSystem();
+                        doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
+                        doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
+                        doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
+                        
+                        if (curAs.isShownAsFacet()) {
+                            doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
+                        }
                     }
                     if (ao.getName() != null) {
                         aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
@@ -286,9 +291,14 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {
             if (ao.getApplicationSystem() != null) {
-                doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+                ApplicationSystem curAs = ao.getApplicationSystem();
+                doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
+                doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
+                doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
+            
+                if (curAs.isShownAsFacet()) {
+                    doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
+                }
             }
         }
 

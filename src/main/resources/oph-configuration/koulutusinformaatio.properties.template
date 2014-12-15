@@ -117,6 +117,7 @@ tarjonta.data.url=https\://${host.virkailija}/tarjonta-service/rest/
 tarjonta.api.rest.url=https\://${host.virkailija}/tarjonta-service/rest/
 tarjonta.haku.resource.url=https\://${host.virkailija}/tarjonta-service/rest/haku
 tarjonta.hakukohde.resource.url=https\://${host.virkailija}/tarjonta-service/rest/hakukohde
+ohjausparametrit.api.rest.url=https\://${host.virkailija}/ohjausparametrit-service/api/v1/rest/parametri/
 user.home.conf=${user.home}/oph-configuration
 user.oid.prefix=1.2.246.562.24
 user.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/userService

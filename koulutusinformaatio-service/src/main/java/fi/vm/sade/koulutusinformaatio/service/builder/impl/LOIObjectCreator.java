@@ -29,6 +29,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
@@ -54,12 +55,12 @@ public class LOIObjectCreator extends ObjectCreator {
     ApplicationOptionCreator applicationOptionCreator;
 
     public LOIObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
-                            OrganisaatioRawService organisaatioRawService) {
+                            OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.tarjontaRawService = tarjontaRawService;
         this.organisaatioRawService = organisaatioRawService;
-        this.applicationOptionCreator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService);
+        this.applicationOptionCreator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
     }
 
     private <T extends LOI> T createLOI(Class<T> type, KomotoDTO komoto) throws  TarjontaParseException, KoodistoException {

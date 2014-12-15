@@ -29,6 +29,7 @@ public class CalendarApplicationSystem {
     private I18nText name;
     private List<ApplicationPeriod> applicationPeriods = new ArrayList<ApplicationPeriod>();
     private String targetGroupCode;
+    private boolean shownInCalendar;
     
     public String getId() {
         return id;
@@ -53,6 +54,13 @@ public class CalendarApplicationSystem {
     }
     public void setTargetGroupCode(String targetGroupCode) {
         this.targetGroupCode = targetGroupCode;
+    }
+    public void setShownInCalendar(boolean shownInCalendar) {
+        this.shownInCalendar = shownInCalendar;
+        
+    }
+    public boolean isShownInCalendar() {
+        return shownInCalendar;
     }
 
 }
