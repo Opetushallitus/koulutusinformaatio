@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -117,9 +118,14 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             applicationOptions.addAll(curChild.getApplicationOptions());
             for (ApplicationOption ao : curChild.getApplicationOptions()) {
                 if (ao.getApplicationSystem() != null) {
-                    doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                    doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                    doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+                    ApplicationSystem curAs = ao.getApplicationSystem();
+                    doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
+                    doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
+                    doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
+                    
+                    if (curAs.isShownAsFacet()) {
+                        doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
+                    }
                 }
             }
         }
@@ -213,9 +219,14 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             
             for (ApplicationOption ao : curChild.getApplicationOptions()) {
                 if (ao.getApplicationSystem() != null) {
-                    doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                    doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                    doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+                    ApplicationSystem curAs = ao.getApplicationSystem();
+                    doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
+                    doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
+                    doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
+                    
+                    if (curAs.isShownAsFacet()) {
+                        doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
+                    }
                 }
                 if (ao.getName() != null) {
                     aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));

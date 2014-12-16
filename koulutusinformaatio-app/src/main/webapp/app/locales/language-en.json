@@ -262,6 +262,7 @@
     "teachingLangCode_ffm": "Language of instruction",
     "articleContentType_ffm": "Material type",
     "oltype_ffm": "Type of educational institution",
+    "asFacet_ffm": "Application system",
     "location-rajaus": "Place",
     "facet-remove": "Remove",
     "facet-focus-filter": "Specify search criteria",

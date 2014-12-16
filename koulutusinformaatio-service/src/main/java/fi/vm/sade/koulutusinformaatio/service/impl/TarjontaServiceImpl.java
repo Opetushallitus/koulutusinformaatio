@@ -67,19 +67,21 @@ public class TarjontaServiceImpl implements TarjontaService {
     private LearningOpportunityDirector loDirector;
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
+    private ParameterService parameterService;
 
     //private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";
 
     @Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
             ProviderService providerService, LearningOpportunityDirector loDirector,
-            TarjontaRawService tarjontaRawService, OrganisaatioRawService organisaatioRawService) {
+            TarjontaRawService tarjontaRawService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.loDirector = loDirector;
         this.tarjontaRawService = tarjontaRawService;
         this.conversionService = conversionService;
         this.organisaatioRawService = organisaatioRawService;
+        this.parameterService = parameterService;
     }
 
     public TarjontaServiceImpl() {
@@ -108,17 +110,17 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (educationType.equals(TarjontaConstants.VOCATIONAL_EDUCATION_TYPE) &&
                 komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_PARENT)) {
             return new VocationalLearningOpportunityBuilder(
-                    tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService);
+                    tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService, parameterService);
         }
         else if (educationType.equals(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE) &&
                 komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new UpperSecondaryLearningOpportunityBuilder(
-                    tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService);
+                    tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService, parameterService);
         }
         else if (educationType.equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE) &&
                 komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService,
-                    komo, organisaatioRawService);
+                    komo, organisaatioRawService, parameterService);
         } 
         else if ((educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
                 || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
@@ -127,7 +129,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 || educationType.endsWith(TarjontaConstants.KANSANOPISTO_TYPE))
                 && komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService,
-                    komo, organisaatioRawService);
+                    komo, organisaatioRawService, parameterService);
         }
         else {
             throw new TarjontaParseException(String.format("Unknown education degree %s and module type %s incompatible",
@@ -176,7 +178,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     public List<HigherEducationLOS> findHigherEducations() throws KoodistoException, ResourceNotFoundException {
 
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
 
         //List of all properly published higher education learning objects, regardles of position in hierarchy
@@ -363,7 +365,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             this.providerService.clearCache();
         }
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
         KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
@@ -394,7 +396,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
         KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
@@ -550,7 +552,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() throws KoodistoException {
 
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
 
         List<AdultUpperSecondaryLOS> koulutukset = new ArrayList<AdultUpperSecondaryLOS>();
@@ -604,7 +606,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             throws KoodistoException {
 
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
 
         List<CompetenceBasedQualificationParentLOS> koulutukset = new ArrayList<CompetenceBasedQualificationParentLOS>();
@@ -657,7 +659,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             ResourceNotFoundException {
 
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
 
         ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(oid);
@@ -692,7 +694,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             ResourceNotFoundException {
 
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
 
 
@@ -708,7 +710,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException {
         
         if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         
         List<CalendarApplicationSystem> results = new ArrayList<CalendarApplicationSystem>();
@@ -725,11 +727,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                 
                 ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(curOid);
                 HakuV1RDTO curHaku = curHakuResult.getResult();
-                if (isValidCalendarHaku(curHaku)) { //curHaku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) )
-                    CalendarApplicationSystem curAs = this.creator.createApplicationSystemForCalendar(curHaku);
-                    results.add(curAs);
-                    LOG.debug("Applicatoin system created");
-                }
+                
+                    
+                results.add(this.creator.createApplicationSystemForCalendar(curHaku, isValidCalendarHaku(curHaku)));
+                LOG.debug("Applicatoin system created");
                 
             }
         }
@@ -750,13 +751,13 @@ public class TarjontaServiceImpl implements TarjontaService {
             String hakuOid) throws KoodistoException {
         
         if (this.creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         
         ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(hakuOid);
         HakuV1RDTO curHaku = curHakuResult.getResult();
-        if (curHaku != null && isValidCalendarHaku(curHaku)) {
-            return this.creator.createApplicationSystemForCalendar(curHaku);
+        if (curHaku != null) {
+            return this.creator.createApplicationSystemForCalendar(curHaku, isValidCalendarHaku(curHaku));
         }
         return null;
     }

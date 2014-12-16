@@ -731,6 +731,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
         searchResultList.setTeachingLangFacet(getTeachingLangFacet(response, lang, facetFilters));
         searchResultList.setAppStatusFacet(getHaunTila(response, upcomingLimit, upcomingLaterLimit));
+        searchResultList.setApplicationSystemFacet(getAppSystemFacet(response, lang, facetFilters));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response, lang));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, facetFilters, lang));
@@ -740,6 +741,34 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setFormOfStudyFacet(getFormOfStudyFacet(response, lang, facetFilters));
 
 
+    }
+
+    private Facet getAppSystemFacet(QueryResponse response, String lang, List<String> facetFilters) {
+        FacetField asF = response.getFacetField(LearningOpportunity.AS_FACET);
+        Facet asFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        boolean isFilterSet = false;
+        for (String curFilter : facetFilters) {
+            if (curFilter.contains(LearningOpportunity.AS_FACET)) {
+                isFilterSet = true;
+            }
+        }
+        
+        if (asF != null) {
+            for (Count curC : asF.getValues()) {
+
+                long count = isFilterSet ? 0 : curC.getCount();
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.AS_FACET,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        count,
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        asFacet.setFacetValues(values);
+        return asFacet;
     }
 
     private FacetValue getRecommendationFilter(String recommendationFilter, String fieldId) {

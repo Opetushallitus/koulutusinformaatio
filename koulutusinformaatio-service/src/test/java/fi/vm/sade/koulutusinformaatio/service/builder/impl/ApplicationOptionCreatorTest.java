@@ -18,11 +18,13 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
@@ -30,6 +32,7 @@ import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,6 +53,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     TarjontaRawService tarjontaRawService;
     OrganisaatioRawService organisaatioRawService;
     ApplicationOptionCreator creator;
+    ParameterService parameterService;
 
     HakukohdeDTO hakukohde;
     KomotoDTO komoto;
@@ -58,6 +62,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     public void init() throws KoodistoException {
         tarjontaRawService = mock(TarjontaRawService.class);
         organisaatioRawService = mock(OrganisaatioRawService.class);
+        parameterService = mock(ParameterService.class);
         hakukohde = new HakukohdeDTO();
         komoto = new KomotoDTO();
 
@@ -118,7 +123,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         prerequisite.setValue("prerequisite");
         prerequisite.setName(TestUtil.createI18nText("peruskoulu"));
         when(tarjontaRawService.getKomotosByHakukohde(eq(hakukohde.getOid()))).thenReturn(new ArrayList<OidRDTO>());
-        creator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService);
+        creator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
 
         ApplicationOption ao = creator.createVocationalApplicationOption(hakukohde, null, komoto, prerequisite, educationCodeUri, "et3");
         assertNotNull(ao);

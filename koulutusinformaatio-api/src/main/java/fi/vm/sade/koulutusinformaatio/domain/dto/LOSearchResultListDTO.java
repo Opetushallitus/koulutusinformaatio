@@ -42,6 +42,7 @@ public class LOSearchResultListDTO {
     private FacetDTO fotFacet;
     private FacetDTO timeOfTeachingFacet;
     private FacetDTO formOfStudyFacet;
+    private FacetDTO applicationSystemFacet;
     private FacetValueDTO lopRecommendationFilter;
     private long loCount;
     private long articleCount;
@@ -211,5 +212,13 @@ public class LOSearchResultListDTO {
 
     public void setProviderTypeFacet(FacetDTO providerTypeFacet) {
         this.providerTypeFacet = providerTypeFacet;
+    }
+
+    public FacetDTO getApplicationSystemFacet() {
+        return applicationSystemFacet;
+    }
+
+    public void setApplicationSystemFacet(FacetDTO applicationSystemFacet) {
+        this.applicationSystemFacet = applicationSystemFacet;
     }
 }
