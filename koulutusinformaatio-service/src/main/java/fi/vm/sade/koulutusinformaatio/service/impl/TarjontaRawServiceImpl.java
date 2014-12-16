@@ -16,12 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystemParameters;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
@@ -36,7 +38,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -74,8 +75,8 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     
     @Value("${scheduling.data.incremental.period:300000}")
     private String changePeriod;
+
     
-    private String higherEdUrl;
 
     @Autowired
     public TarjontaRawServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl,
@@ -383,4 +384,5 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 });
                 
     }
+
 }

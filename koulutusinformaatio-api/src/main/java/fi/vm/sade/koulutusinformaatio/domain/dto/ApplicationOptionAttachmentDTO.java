@@ -28,6 +28,7 @@ public class ApplicationOptionAttachmentDTO {
     private String descreption;
     private AddressDTO address;
     private String emailAddr;
+    private boolean usedInApplicationForm;
 
     public Date getDueDate() {
         return dueDate;
@@ -67,5 +68,13 @@ public class ApplicationOptionAttachmentDTO {
 
     public void setEmailAddr(String emailAddr) {
         this.emailAddr = emailAddr;
+    }
+
+    public boolean isUsedInApplicationForm() {
+        return usedInApplicationForm;
+    }
+
+    public void setUsedInApplicationForm(boolean usedInApplicationForm) {
+        this.usedInApplicationForm = usedInApplicationForm;
     }
 }

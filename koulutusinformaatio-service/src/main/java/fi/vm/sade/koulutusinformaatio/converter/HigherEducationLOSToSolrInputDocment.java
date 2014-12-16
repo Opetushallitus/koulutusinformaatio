@@ -121,10 +121,16 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             Map<String,String> names = null;
             for (ApplicationOption ao : los.getApplicationOptions()) {
                 if (ao.getApplicationSystem() != null) {
-                    names = ao.getApplicationSystem().getName().getTranslations();
+                    ApplicationSystem as = ao.getApplicationSystem();
+                    names = as.getName().getTranslations();
                     doc.addField(LearningOpportunity.AS_NAME_FI, SolrUtil.resolveTextWithFallback("fi",  names));
                     doc.addField(LearningOpportunity.AS_NAME_SV, SolrUtil.resolveTextWithFallback("sv",  names));
                     doc.addField(LearningOpportunity.AS_NAME_EN, SolrUtil.resolveTextWithFallback("en",  names));
+                    
+                    if (as.isShownAsFacet()) {
+                        doc.addField(LearningOpportunity.AS_FACET, as.getId());
+                    }
+                    
                 }
                 if (ao.getName() != null) {
                     aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
@@ -132,6 +138,8 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                     aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
 
                 }
+                
+                
             }
 
             doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);

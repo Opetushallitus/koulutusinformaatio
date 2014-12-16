@@ -37,6 +37,9 @@ public class ApplicationSystemEntity {
     private String applicationFormLink;
     private String hakutapaUri;
     private String hakutyyppiUri;
+    private boolean shownAsFacet;
+    @Embedded
+    private DateRangeEntity facetRange;
 
     public ApplicationSystemEntity() {}
 
@@ -94,5 +97,21 @@ public class ApplicationSystemEntity {
 
     public void setHakutyyppiUri(String hakutyyppiUri) {
         this.hakutyyppiUri = hakutyyppiUri;
+    }
+
+    public boolean isShownAsFacet() {
+        return shownAsFacet;
+    }
+
+    public void setShownAsFacet(boolean shownAsFacet) {
+        this.shownAsFacet = shownAsFacet;
+    }
+
+    public DateRangeEntity getFacetRange() {
+        return facetRange;
+    }
+
+    public void setFacetRange(DateRangeEntity facetRange) {
+        this.facetRange = facetRange;
     }
 }

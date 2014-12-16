@@ -44,6 +44,7 @@ public class LOSearchResultList {
     private long articleCount;
     private long orgCount;
     private Facet providerTypeFacet;
+    private Facet applicationSystemFacet;
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -205,5 +206,13 @@ public class LOSearchResultList {
 
     public Facet getProviderTypeFacet() {
         return providerTypeFacet;
+    }
+
+    public Facet getApplicationSystemFacet() {
+        return applicationSystemFacet;
+    }
+
+    public void setApplicationSystemFacet(Facet applicationSystemFacet) {
+        this.applicationSystemFacet = applicationSystemFacet;
     }
 }

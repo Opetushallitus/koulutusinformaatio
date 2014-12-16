@@ -262,6 +262,7 @@
     "teachingLangCode_ffm": "Opetuskieli",
     "articleContentType_ffm": "Aineistotyyppi",
     "oltype_ffm": "Oppilaitostyyppi",
+    "asFacet_ffm": "Haku",
     "location-rajaus": "Paikka",
     "facet-remove": "Poista",
     "facet-focus-filter": "Tarkenna rajaustasi",

@@ -44,6 +44,12 @@ public class ApplicationSystemQuery extends SolrQuery {
         this.addSort(LearningOpportunity.NAME_SORT, ORDER.asc);
     }
     
+    public ApplicationSystemQuery(String targetGroup) {
+        this();
+        
+        this.addFilterQuery(String.format("%s:%s", SolrUtil.LearningOpportunity.AS_TARGET_GROUP_CODE, targetGroup));
+    }
+    
     private String getDateLimitStr() {
         Calendar limit = Calendar.getInstance();
         

@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.*;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +92,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             TarjontaService tarjontaService,
             IndexerService indexerService,
             OrganisaatioRawService organisaatioRawService,
+            ParameterService parameterService,
             @Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasSolrServer,
             @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
             @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer) {
@@ -108,7 +110,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         this.locationHttpSolrServer = locationAliasSolrServer;
 
         this.losCreator = new LOSObjectCreator(this.koodistoService, this.tarjontaRawService, this.providerService,
-                this.organisaatioRawService);
+                this.organisaatioRawService, parameterService);
         this.parentLosBuilder = new SingleParentLOSBuilder(losCreator, tarjontaRawService);
         this.specialLosBuilder = new SingleSpecialLOSBuilder(losCreator, tarjontaRawService);
         this.upperSecLosBuilder = new SingleUpperSecondaryLOSBuilder(losCreator, tarjontaRawService);
@@ -128,6 +130,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                                                                 this.tarjontaService,
                                                                 this.dataQueryService, 
                                                                 this.koodistoService, 
+                                                                parameterService,
                                                                 this.aoIndexer, 
                                                                 this.losIndexer, 
                                                                 this.indexerService,

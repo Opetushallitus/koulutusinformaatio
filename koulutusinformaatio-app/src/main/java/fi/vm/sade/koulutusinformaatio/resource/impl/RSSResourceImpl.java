@@ -8,6 +8,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import fi.vm.sade.koulutusinformaatio.converter.CalendarApplicationSystemToRSS;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.dto.rss.RSSChannelDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.rss.RSSChannelItemDTO;
@@ -34,27 +35,60 @@ public class RSSResourceImpl implements RSSResource {
     @Override
     public RSSFeedDTO getApplicationSystemCalendarAsRss(String lang) {
         try {
-            List<CalendarApplicationSystem> apps = this.searchService.findApplicationSystemsForCalendar();
-            List<RSSChannelItemDTO> items = CalendarApplicationSystemToRSS.convertAll(apps, lang, messageSource);
-            
-            RSSFeedDTO feed = new RSSFeedDTO();
-            feed.setVersion(RSS_VERSION);
-            
-            RSSChannelDTO channel = new RSSChannelDTO();
-            channel.setItems(items);
-            channel.setTitle(messageSource.getMessage("rss.as.calendar.title", new Object[]{}, new Locale(lang)));
-            channel.setLink(messageSource.getMessage("rss.as.calendar.link", new Object[]{}, new Locale(lang)));
-            channel.setDescription(messageSource.getMessage("rss.as.calendar.description", new Object[]{}, new Locale(lang)));
-            channel.setLanguage(lang);
-            
-            feed.setChannel(channel);
-            
-            return feed;
-            
+            List<CalendarApplicationSystem> cas = this.searchService.findApplicationSystemsForCalendar();
+            return createFeed(cas, lang);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
 
+    }
+
+    @Override
+    public RSSFeedDTO getApplicationSystemCalendarForHigherEducationAsRss(String lang) {
+        try {
+            List<CalendarApplicationSystem> cas = this.searchService.findApplicationSystemsForCalendar(SolrUtil.SolrConstants.AS_TARGET_GROUP_CODE_HIGHERED);
+            return createFeed(cas, lang);
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public RSSFeedDTO getApplicationSystemCalendarForVocationalEducationAsRss(String lang) {
+        try {
+            List<CalendarApplicationSystem> cas = this.searchService.findApplicationSystemsForCalendar(SolrUtil.SolrConstants.AS_TARGET_GROUP_CODE_VOCATIONAL);
+            return createFeed(cas, lang);
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public RSSFeedDTO getApplicationSystemCalendarForPreparatoryEducationAsRss(String lang) {
+        try {
+            List<CalendarApplicationSystem> cas = this.searchService.findApplicationSystemsForCalendar(SolrUtil.SolrConstants.AS_TARGET_GROUP_CODE_PREPARATORY);
+            return createFeed(cas, lang);
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+    
+    private RSSFeedDTO createFeed(List<CalendarApplicationSystem> cas, String lang) {
+        List<RSSChannelItemDTO> items = CalendarApplicationSystemToRSS.convertAll(cas, lang, messageSource);
+        
+        RSSFeedDTO feed = new RSSFeedDTO();
+        feed.setVersion(RSS_VERSION);
+        
+        RSSChannelDTO channel = new RSSChannelDTO();
+        channel.setItems(items);
+        channel.setTitle(messageSource.getMessage("rss.as.calendar.title", new Object[]{}, new Locale(lang)));
+        channel.setLink(messageSource.getMessage("rss.as.calendar.link", new Object[]{}, new Locale(lang)));
+        channel.setDescription(messageSource.getMessage("rss.as.calendar.description", new Object[]{}, new Locale(lang)));
+        channel.setLanguage(lang);
+        
+        feed.setChannel(channel);
+        
+        return feed;
     }
 
 }
