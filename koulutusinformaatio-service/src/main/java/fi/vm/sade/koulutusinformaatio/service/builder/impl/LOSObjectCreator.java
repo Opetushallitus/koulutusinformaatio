@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
@@ -75,13 +76,13 @@ public class LOSObjectCreator extends ObjectCreator {
     private TarjontaRawService tarjontaRawService;
 
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
-            ProviderService providerService, OrganisaatioRawService organisaatioRawService) {
+            ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.organisaatioRawService = organisaatioRawService;
         this.tarjontaRawService = tarjontaRawService;
-        this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService, organisaatioRawService);
+        this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
 
     }
 
@@ -1314,8 +1315,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
     }
 
-    public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO hakuDTO) throws KoodistoException {
-        return this.loiCreator.applicationOptionCreator.getApplicationSystemCreator().createApplicationSystemForCalendar(hakuDTO);
+    public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO hakuDTO, boolean shownInCalendar) throws KoodistoException {
+        return this.loiCreator.applicationOptionCreator.getApplicationSystemCreator().createApplicationSystemForCalendar(hakuDTO, shownInCalendar);
     }
 
 }

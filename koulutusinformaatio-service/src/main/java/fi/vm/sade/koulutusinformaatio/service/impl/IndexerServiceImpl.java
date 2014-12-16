@@ -625,9 +625,11 @@ public class IndexerServiceImpl implements IndexerService {
         SolrInputDocument asDoc = new SolrInputDocument();
         
         asDoc.addField(SolrUtil.LearningOpportunity.ID, as.getId());
-        asDoc.addField(SolrUtil.LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_APPLICATION_SYSTEM);
-        
-        
+        if (as.isShownInCalendar()) {
+            asDoc.addField(SolrUtil.LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_APPLICATION_SYSTEM);
+        } else {
+            asDoc.addField(SolrUtil.LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_FACET);
+        }        
         
         String nameFi = resolveTextByLangWithFallback("fi", as.getName().getTranslations());
         if (nameFi != null && !nameFi.isEmpty()) {
@@ -644,6 +646,8 @@ public class IndexerServiceImpl implements IndexerService {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_EN, nameEn);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN, nameEn);
         }
+        
+        asDoc.addField(SolrUtil.LearningOpportunity.AS_TARGET_GROUP_CODE, as.getTargetGroupCode());
         
         int parentApplicationDateRangeIndex = 0;
         
@@ -680,7 +684,9 @@ public class IndexerServiceImpl implements IndexerService {
             
         }
         
-        
+        asDoc.addField(LearningOpportunity.FI_FNAME, SolrUtil.resolveTextWithFallback("fi", as.getName().getTranslations()));
+        asDoc.addField(LearningOpportunity.SV_FNAME, SolrUtil.resolveTextWithFallback("sv", as.getName().getTranslations()));
+        asDoc.addField(LearningOpportunity.EN_FNAME, SolrUtil.resolveTextWithFallback("en", as.getName().getTranslations()));
         
         loUpdateSolr.add(asDoc);
         

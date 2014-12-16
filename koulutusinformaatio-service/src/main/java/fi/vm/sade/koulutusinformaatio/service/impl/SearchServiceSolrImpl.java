@@ -49,7 +49,6 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -64,7 +63,6 @@ import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.ProviderResult;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -730,6 +728,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
         searchResultList.setTeachingLangFacet(getTeachingLangFacet(response, lang, facetFilters));
         searchResultList.setAppStatusFacet(getHaunTila(response, upcomingLimit, upcomingLaterLimit));
+        searchResultList.setApplicationSystemFacet(getAppSystemFacet(response, lang, facetFilters));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response, lang));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, facetFilters, lang));
@@ -739,6 +738,34 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setFormOfStudyFacet(getFormOfStudyFacet(response, lang, facetFilters));
 
 
+    }
+
+    private Facet getAppSystemFacet(QueryResponse response, String lang, List<String> facetFilters) {
+        FacetField asF = response.getFacetField(LearningOpportunity.AS_FACET);
+        Facet asFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        boolean isFilterSet = false;
+        for (String curFilter : facetFilters) {
+            if (curFilter.contains(LearningOpportunity.AS_FACET)) {
+                isFilterSet = true;
+            }
+        }
+        
+        if (asF != null) {
+            for (Count curC : asF.getValues()) {
+
+                long count = isFilterSet ? 0 : curC.getCount();
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.AS_FACET,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        count,
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        asFacet.setFacetValues(values);
+        return asFacet;
     }
 
     private FacetValue getRecommendationFilter(String recommendationFilter, String fieldId) {
@@ -1317,18 +1344,31 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return types;
     }
+    
+    @Override
+    public List<CalendarApplicationSystem> findApplicationSystemsForCalendar(String targetGroupCode) 
+        throws SearchException {
+        
+        SolrQuery asQuery = new ApplicationSystemQuery(targetGroupCode);
+        return queryCalendarApplicationSystems(asQuery);
+    }
 
     @Override
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar()
             throws SearchException {
 
-
         SolrQuery asQuery = new ApplicationSystemQuery();
+        return queryCalendarApplicationSystems(asQuery);
+        
+    }
+    
+    private List<CalendarApplicationSystem> queryCalendarApplicationSystems(SolrQuery query)
+        throws SearchException {
         QueryResponse response = null;
 
         List<CalendarApplicationSystem> results = new ArrayList<CalendarApplicationSystem>();
         try {
-            response = loHttpSolrServer.query(asQuery);
+            response = loHttpSolrServer.query(query);
 
 
             for (SolrDocument result : response.getResults()) {

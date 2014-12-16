@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
@@ -87,6 +88,7 @@ public class TransactionManagerImpl implements TransactionManager {
     
     private KoodistoService koodistoService;
     private ProviderService providerService;
+    private ParameterService parameterService;
 
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
     private String loHttpAliasName;
@@ -136,7 +138,8 @@ public class TransactionManagerImpl implements TransactionManager {
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             KoodistoService koodistoService,
-            ProviderService providerService) {
+            ProviderService providerService,
+            ParameterService parameterService) {
 
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
@@ -171,6 +174,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.koodistoService = koodistoService;
         this.providerService = providerService;
+        this.parameterService = parameterService;
         this.dataStatusTransactionDAO = dataStatusTransactionDAO;
     }
 
@@ -179,6 +183,7 @@ public class TransactionManagerImpl implements TransactionManager {
         dropUpdateData(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         this.koodistoService.clearCache();
         this.providerService.clearCache();
+        this.parameterService.clearCache();
     }
 
     @Override
@@ -187,6 +192,7 @@ public class TransactionManagerImpl implements TransactionManager {
         
         this.koodistoService.clearCache();
         this.providerService.clearCache();
+        this.parameterService.clearCache();
         
     }
 
@@ -217,6 +223,7 @@ public class TransactionManagerImpl implements TransactionManager {
             
             this.koodistoService.clearCache();
             this.providerService.clearCache();
+            this.parameterService.clearCache();
             
         } catch (Exception ex) {
             throw new KICommitException(ex);

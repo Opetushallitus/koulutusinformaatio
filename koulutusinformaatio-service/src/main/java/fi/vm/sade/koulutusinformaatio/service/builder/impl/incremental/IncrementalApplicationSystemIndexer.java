@@ -51,6 +51,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
@@ -77,6 +78,7 @@ public class IncrementalApplicationSystemIndexer {
     private TarjontaRawService tarjontaRawService;
     private EducationIncrementalDataQueryService dataQueryService;
     private KoodistoService koodistoService;
+    private ParameterService parameterService;
     
     private IncrementalApplicationOptionIndexer aoIndexer;
     private IncrementalLOSIndexer losIndexer; 
@@ -93,6 +95,7 @@ public class IncrementalApplicationSystemIndexer {
                                                 TarjontaService tarjontaService,
                                                 EducationIncrementalDataQueryService dataQueryService, 
                                                 KoodistoService koodistoService,
+                                                ParameterService parameterService,
                                                 IncrementalApplicationOptionIndexer aoIndexer,
                                                 IncrementalLOSIndexer losIndexer,
                                                 IndexerService indexerService,
@@ -102,6 +105,7 @@ public class IncrementalApplicationSystemIndexer {
         this.tarjontaRawService = tarjontaRawService;
         this.dataQueryService = dataQueryService;
         this.koodistoService = koodistoService;
+        this.parameterService = parameterService;
         this.aoIndexer = aoIndexer;
         this.losIndexer = losIndexer;
         this.tarjontaService = tarjontaService;
@@ -143,7 +147,7 @@ public class IncrementalApplicationSystemIndexer {
             
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
-                ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
+                ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService, parameterService);
                 ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
                 
                 for (String curLosId : lossesInAS) {
@@ -189,7 +193,7 @@ public class IncrementalApplicationSystemIndexer {
             
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
-                ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
+                ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService, parameterService);
                 ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
                 
                 for (String curLosId : lossesInAS) {
@@ -265,7 +269,7 @@ public class IncrementalApplicationSystemIndexer {
 
         if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
-            ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
+            ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService, parameterService);
             ApplicationSystem as = asCreator.createApplicationSystem(asDto);
             
             for (String curLosId : lossesInAS) {

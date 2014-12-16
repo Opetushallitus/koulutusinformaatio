@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;

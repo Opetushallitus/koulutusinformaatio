@@ -271,6 +271,7 @@ public final class SolrUtil {
         public static final String EN_FNAME = "en_fname"; //english name of a facet value
         public static final String TEACHING_LANGUAGE = "teachingLangCode_ffm"; //The teaching language used in the learning opportunity
         public static final String EDUCATION_TYPE = "educationType_ffm"; //The education type of the learning opportunity
+        public static final String AS_FACET = "asFacet_ffm"; //The education type of the learning opportunity
         public static final String TOPIC = "topic_ffm"; //The topic of the learning opportunity
         public static final String THEME = "theme_ffm"; //The theme of the learning opportunity
         public static final String FORM_OF_TEACHING = "formOfTeaching_ffm"; //The education type of the learning opportunity
@@ -392,9 +393,13 @@ public final class SolrUtil {
         public static final String TEXT_BOOST_EN_WHOLE = "textBoost_en_whole^10.0";
         public static final String AS_NAMES = "asNames";
         public static final String LOP_NAMES = "lopNames";
+        
         public static final String NAME_AUTO_FI = "name_auto_fi";
         public static final String NAME_AUTO_SV = "name_auto_sv";
         public static final String NAME_AUTO_EN = "name_auto_en";
+        
+        // Application system fields
+        public static final String AS_TARGET_GROUP_CODE = "targetGroupCode_ffm";
     }
 
     public static class LocationFields {
@@ -495,6 +500,11 @@ public final class SolrUtil {
 
         public static final String PROVIDER_TYPE_UNKNOWN = "99";
         public static final Object ED_TYPE_AMMATILLINEN_NAYTTO = "ammatillinenperustutkintonayttona";
+        
+        public static final String AS_TARGET_GROUP_CODE_VOCATIONAL = "11";
+        public static final String AS_TARGET_GROUP_CODE_HIGHERED = "12";
+        public static final String AS_TARGET_GROUP_CODE_PREPARATORY = "17";
+        
     }
     
     public static void indexLopName(SolrInputDocument doc, Provider provider, String teachLang) {

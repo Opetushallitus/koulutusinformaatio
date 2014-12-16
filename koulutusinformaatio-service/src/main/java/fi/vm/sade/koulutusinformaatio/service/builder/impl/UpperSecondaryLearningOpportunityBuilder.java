@@ -28,6 +28,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
@@ -58,14 +59,15 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
     public UpperSecondaryLearningOpportunityBuilder(TarjontaRawService tarjontaRawService,
                                                     ProviderService providerService,
                                                     KoodistoService koodistoService, KomoDTO komo,
-                                                    OrganisaatioRawService organisaatioRawService) {
+                                                    OrganisaatioRawService organisaatioRawService,
+                                                    ParameterService parameterService) {
         this.tarjontaRawService = tarjontaRawService;
         this.providerService = providerService;
         this.komo = komo;
         komotosByProviderId = ArrayListMultimap.create();
         this.loses = Lists.newArrayList();
         this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService,
-                organisaatioRawService);
+                organisaatioRawService, parameterService);
     }
 
     @Override

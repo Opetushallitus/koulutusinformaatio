@@ -39,7 +39,7 @@ public final class ConverterUtil {
     private ConverterUtil() {
     }
 
-    private static String FALLBACK_LANG = "fi";
+    public static String FALLBACK_LANG = "fi";
 
     public static String getTextByLanguage(final I18nText text, String lang) {
         lang = lang.toLowerCase();

@@ -28,6 +28,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
@@ -60,12 +61,13 @@ public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunit
     public RehabilitatingLearningOpportunityBuilder(TarjontaRawService tarjontaRawService,
                                                     ProviderService providerService,
                                                     KoodistoService koodistoService, KomoDTO komo,
-                                                    OrganisaatioRawService organisaatioRawService) {
+                                                    OrganisaatioRawService organisaatioRawService, 
+                                                    ParameterService parameterService) {
         this.tarjontaRawService = tarjontaRawService;
         this.komo = komo;
         this.komotosByProviderId = ArrayListMultimap.create();
         this.loses = Lists.newArrayList();
-        this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+        this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
     }
 
     @Override

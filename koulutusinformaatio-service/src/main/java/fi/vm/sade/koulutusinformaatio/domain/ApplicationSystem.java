@@ -32,6 +32,8 @@ public class ApplicationSystem {
     private String applicationFormLink;
     private String hakutapaUri;
     private String hakutyyppiUri;
+    private boolean shownAsFacet;
+    private DateRange facetRange;
 
     public String getId() {
         return id;
@@ -112,5 +114,21 @@ public class ApplicationSystem {
 
     public String getHakutyyppiUri() {
         return hakutyyppiUri;
+    }
+
+    public boolean isShownAsFacet() {
+        return shownAsFacet;
+    }
+
+    public void setShownAsFacet(boolean shownAsFacet) {
+        this.shownAsFacet = shownAsFacet;
+    }
+
+    public DateRange getFacetRange() {
+        return facetRange;
+    }
+
+    public void setFacetRange(DateRange facetRange) {
+        this.facetRange = facetRange;
     }
 }

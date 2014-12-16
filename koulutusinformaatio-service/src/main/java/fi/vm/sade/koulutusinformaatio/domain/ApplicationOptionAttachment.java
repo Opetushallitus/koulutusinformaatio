@@ -28,6 +28,7 @@ public class ApplicationOptionAttachment {
     private I18nText descreption;
     private Address address;
     private String emailAddr;
+    private boolean usedInApplicationForm = true;
 
     public Date getDueDate() {
         return dueDate;
@@ -67,5 +68,13 @@ public class ApplicationOptionAttachment {
 
     public String getEmailAddr() {
         return emailAddr;
+    }
+    
+    public void setUsedInApplicationForm(boolean used) {
+        this.usedInApplicationForm = used;
+    }
+
+    public boolean isUsedInApplicationForm() {
+        return usedInApplicationForm;
     }
 }

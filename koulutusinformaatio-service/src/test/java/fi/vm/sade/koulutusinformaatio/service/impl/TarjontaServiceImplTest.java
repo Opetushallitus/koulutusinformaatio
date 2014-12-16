@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
@@ -95,7 +96,7 @@ public class TarjontaServiceImplTest {
         when(tarjontaRawService.getKomo(eq(KOMO_ID_INVALID))).thenReturn(invalidKomo);
         
         service = new TarjontaServiceImpl(conversionService, koodistoService,
-                providerService, loDirector, tarjontaRawService, organisaatioRawService);
+                providerService, loDirector, tarjontaRawService, organisaatioRawService, mock(ParameterService.class));
         
         mockHigherEdRawRes();
         this.mockCalendarApplicationSystems();
@@ -182,7 +183,8 @@ public class TarjontaServiceImplTest {
         calendarAs.setId(CALENDAR_APPLICATION_SYSTEM_OID);
         
         try {
-            when(this.creator.createApplicationSystemForCalendar(curHaku)).thenReturn(calendarAs);
+            when(this.creator.createApplicationSystemForCalendar(curHaku, true)).thenReturn(calendarAs);
+            when(this.creator.createApplicationSystemForCalendar(curHaku, false)).thenReturn(calendarAs);
         } catch (KoodistoException ex) {
             ex.printStackTrace();
         }
