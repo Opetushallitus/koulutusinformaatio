@@ -40,6 +40,7 @@ public class ApplicationSystemEntity {
     private boolean shownAsFacet;
     @Embedded
     private DateRangeEntity facetRange;
+    private boolean useSystemApplicationForm;
 
     public ApplicationSystemEntity() {}
 
@@ -113,5 +114,13 @@ public class ApplicationSystemEntity {
 
     public void setFacetRange(DateRangeEntity facetRange) {
         this.facetRange = facetRange;
+    }
+
+    public boolean isUseSystemApplicationForm() {
+        return useSystemApplicationForm;
+    }
+
+    public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
+        this.useSystemApplicationForm = useSystemApplicationForm;
     }
 }

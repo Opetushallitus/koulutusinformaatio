@@ -62,6 +62,7 @@ public class BasketApplicationOptionDTO {
     private String asName;
     private boolean kotitalous;
     private String hakuaikaId;
+    private boolean useSystemApplicationForm;
 
 
     public String getId() {
@@ -332,5 +333,13 @@ public class BasketApplicationOptionDTO {
 
     public void setHakuaikaId(String hakuaikaId) {
         this.hakuaikaId = hakuaikaId;
+    }
+
+    public boolean isUseSystemApplicationForm() {
+        return useSystemApplicationForm;
+    }
+
+    public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
+        this.useSystemApplicationForm = useSystemApplicationForm;
     }
 }

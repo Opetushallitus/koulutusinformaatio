@@ -67,6 +67,10 @@ public class ApplicationSystemCreator extends ObjectCreator {
             } else {
                 as.setShownAsFacet(false);
             }
+            
+            // TODO: read value from tarjonta when v1 API is taken into use 
+            as.setUseSystemApplicationForm( hakuDTO.getHakulomakeUrl() == null );
+            
             return as;
         } else {
             return null;
@@ -108,6 +112,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
         } else {
             as.setShownAsFacet(false);
         }
+        as.setUseSystemApplicationForm(haku.isJarjestelmanHakulomake());
         
         return as;
     }

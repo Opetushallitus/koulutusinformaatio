@@ -38,14 +38,16 @@
             
             <div class="row margin-vertical-default">
                 <div class="col-md-16">
-                    <button 
-                        data-ng-if="!as.applicationFormLink"
+                    <!-- käytä järjestelmän hakulomaketta -->
+                    <button
+                        data-ng-if="as.useSystemApplicationForm"
                         class="btn btn-primary pull-right margin-left-default"
                         data-ng-disabled="isApplicationSystemDisabled(as)"
                         type="submit"
                         data-ki-i18n="application-basket-fill-form">
                     </button>
 
+                    <!-- linkki ulkoiseen hakulomakkeeseen -->
                     <div data-ng-if="as.applicationFormLink" class="pull-right margin-left-default">
                         <a data-ng-if="!isApplicationSystemDisabled(as)" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank" class="last text-muted">
                             <i class="icon-link-ext-alt"></i>

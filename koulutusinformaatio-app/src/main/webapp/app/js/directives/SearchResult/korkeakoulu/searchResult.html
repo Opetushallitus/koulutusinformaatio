@@ -4,7 +4,7 @@
             <h2 title="{{locales.openEducation}}">
                 <a href="{{lo.linkHref}}">{{lo.name}}</a><!--<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a>-->
             </h2>
-            <span class="italic">{{lo.educationDegree}}</span><br />
+            <span data-ng-show="lo.educationDegreeCode != 'koulutusasteoph2002_90'" class="italic">{{lo.educationDegree}}</span><br />
              <!-- pohjakoulutustieto väliaikaisesti poistettu kk-koulutuksilta
             <span data-ng-show="lo.educationDegreeCode == 'koulutusasteoph2002_72'">
                	<span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>

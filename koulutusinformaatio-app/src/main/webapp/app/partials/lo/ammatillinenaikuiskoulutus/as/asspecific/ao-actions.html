@@ -1,14 +1,16 @@
 <div class="row">
-    <div class="col-xs-16">
-        <div class="pull-left margin-right-small margin-vertical-small">
+    <div class="col-xs-16 margin-vertical-small">
+        <div class="pull-left margin-right-small">
+            <!-- käytä järjestelmän hakulomaketta -->
             <button 
-                data-ng-if="!as.applicationFormLink" 
+                data-ng-if="as.useSystemApplicationForm" 
                 type="submit" 
                 data-ng-disabled="!ao.canBeApplied" 
                 class="btn btn-default"
                 data-ki-i18n="apply-button-label">
             </button>
 
+            <!-- linkki ulkoiseen hakulomakkeesees -->
             <div data-ng-if="as.applicationFormLink">
                 <a data-ng-if="ao.canBeApplied" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
                 <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
