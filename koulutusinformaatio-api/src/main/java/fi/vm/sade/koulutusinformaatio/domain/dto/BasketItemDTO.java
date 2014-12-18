@@ -36,6 +36,7 @@ public class BasketItemDTO {
     private List<BasketApplicationOptionDTO> applicationOptions = new ArrayList<BasketApplicationOptionDTO>();
     private boolean asOngoing;
     private Date nextApplicationPeriodStarts;
+    private boolean useSystemApplicationForm;
 
     public String getApplicationSystemId() {
         return applicationSystemId;
@@ -99,5 +100,13 @@ public class BasketItemDTO {
 
     public void setApplicationFormLink(String applicationFormLink) {
         this.applicationFormLink = applicationFormLink;
+    }
+
+    public boolean isUseSystemApplicationForm() {
+        return useSystemApplicationForm;
+    }
+
+    public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
+        this.useSystemApplicationForm = useSystemApplicationForm;
     }
 }

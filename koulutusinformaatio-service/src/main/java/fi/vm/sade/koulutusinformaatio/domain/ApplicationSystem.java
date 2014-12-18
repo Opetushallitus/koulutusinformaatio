@@ -34,6 +34,7 @@ public class ApplicationSystem {
     private String hakutyyppiUri;
     private boolean shownAsFacet;
     private DateRange facetRange;
+    private boolean useSystemApplicationForm;
 
     public String getId() {
         return id;
@@ -130,5 +131,13 @@ public class ApplicationSystem {
 
     public void setFacetRange(DateRange facetRange) {
         this.facetRange = facetRange;
+    }
+
+    public boolean isUseSystemApplicationForm() {
+        return useSystemApplicationForm;
+    }
+
+    public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
+        this.useSystemApplicationForm = useSystemApplicationForm;
     }
 }

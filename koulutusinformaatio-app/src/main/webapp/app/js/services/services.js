@@ -241,11 +241,10 @@ service('GeneralLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageS
             if (options.lang) {
                 queryParams.lang = options.lang
             }
-
+            
             $http.get(serviceUrl + options.id, {
                 params: queryParams
             }).
-            
             success(function(result) {
                 transformer.transform(result, options.id);
                 var loResult = {

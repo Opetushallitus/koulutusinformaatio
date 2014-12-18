@@ -114,6 +114,9 @@ public final class ApplicationOptionToBasketItemDTO {
                     // set application form link from application system to application option
                     aoDTO.setApplicationFormLink(as.getApplicationFormLink());
                     
+                    // set flag telling if system application form is used
+                    aoDTO.setUseSystemApplicationForm( as.isUseSystemApplicationForm() );
+                    
                     // set application system id and name for application option (used for routing to correct application form)
                     aoDTO.setAsId(as.getId());
                     aoDTO.setAsName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), lang));
@@ -134,6 +137,7 @@ public final class ApplicationOptionToBasketItemDTO {
                     } else if (as != null) {
                         BasketItemDTO basketItem = new BasketItemDTO();
                         basketItem.setApplicationFormLink( as.getApplicationFormLink() );
+                        basketItem.setUseSystemApplicationForm( as.isUseSystemApplicationForm() );
                         basketItem.setMaxApplicationOptions(as.getMaxApplications());
                         basketItem.setApplicationSystemId(as.getId());
                         basketItem.getApplicationOptions().add(aoDTO);

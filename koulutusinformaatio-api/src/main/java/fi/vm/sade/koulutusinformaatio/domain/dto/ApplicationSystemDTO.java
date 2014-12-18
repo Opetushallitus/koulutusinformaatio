@@ -38,6 +38,7 @@ public class ApplicationSystemDTO {
     private String applicationFormLink;
     private String hakutapa;
     private String hakutyyppi;
+    private boolean useSystemApplicationForm;
 
     public String getId() {
         return id;
@@ -117,5 +118,13 @@ public class ApplicationSystemDTO {
 
     public void setHakutyyppi(String hakutyyppi) {
         this.hakutyyppi = hakutyyppi;
+    }
+
+    public boolean isUseSystemApplicationForm() {
+        return useSystemApplicationForm;
+    }
+
+    public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
+        this.useSystemApplicationForm = useSystemApplicationForm;
     }
 }
