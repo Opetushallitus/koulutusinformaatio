@@ -24,8 +24,15 @@
       border-bottom-right-radius: 3px;
       font-family: 'PT Sans Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 12px; }
-  .application-system-calendar-container .panel-toggler:hover {
-    text-decoration: underline; }
+  .application-system-calendar-container .panel-toggler {
+    display: block;
+    color: #333; }
+    .application-system-calendar-container .panel-toggler:hover {
+      text-decoration: underline; }
+    .application-system-calendar-container .panel-toggler h4 {
+      background: transparent url("../img/close.png") no-repeat right 0; }
+    .application-system-calendar-container .panel-toggler.collapsed h4 {
+      background: transparent url("../img/open.png") no-repeat right 0; }
   .application-system-calendar-container .row {
     margin-bottom: 10px; }
     .application-system-calendar-container .row:last-child {
