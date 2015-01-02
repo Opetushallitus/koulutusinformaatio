@@ -17,15 +17,22 @@
 package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.LocationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
 @Path("/location")
+@Api(value = "/location", description="Kuvaus")
 public interface LocationResource {
 
     public static final String TERM = "term";
@@ -37,17 +44,20 @@ public interface LocationResource {
     public List<LocationDTO> getLocations(@QueryParam("code") List<String> code, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
 
     @GET
-    @Path("search/{" + TERM + "}")
+    @Path("/search/{" + TERM + "}")
+    @ApiOperation(httpMethod = "GET", value = "/search/{" + TERM + "} <a href=https://github.com/Opetushallitus/koulutusinformaatio/blob/devel/koulutusinformaatio-api/src/main/java/fi/vm/sade/koulutusinformaatio/resource/LocationResource.java search>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click to see it on GitHub</a>", response = LocationDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<LocationDTO> searchLocations(@PathParam(TERM) final String term, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
     
     @GET
-    @Path("districts")
+    @Path("/districts")
+    @ApiOperation(httpMethod = "GET", value = "/districts", response = LocationDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<LocationDTO> getDistricts(@DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
     
     @GET
-    @Path("child-locations")
+    @Path("/child-locations")
+    @ApiOperation(httpMethod = "GET", value = "/child-locations", response = LocationDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<LocationDTO> getChildLocations(@QueryParam("districts") List<String> districts, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
     

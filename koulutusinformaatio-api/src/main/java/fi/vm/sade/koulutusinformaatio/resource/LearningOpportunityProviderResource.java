@@ -16,12 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 import java.util.List;
 
@@ -31,6 +36,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @Path("/lop")
+@Api(value = "/lop", description="Kuvaus")
 public interface LearningOpportunityProviderResource {
 
     public static final String BASE_EDUCATION = "baseEducation";
@@ -60,6 +66,7 @@ public interface LearningOpportunityProviderResource {
      */
     @GET
     @Path("search/{" + TERM + "}")
+    @ApiOperation(httpMethod = "GET", value = "search/{" + TERM + "}", response = ProviderSearchResultDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<ProviderSearchResultDTO> searchProviders(@PathParam(TERM) final String term,
                                                  @QueryParam(ASID) final String asId,
@@ -71,12 +78,14 @@ public interface LearningOpportunityProviderResource {
                                                  @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
 
     @GET
-    @Path("{lopId}/picture")
+    @Path("/{lopId}/picture")
+    @ApiOperation(httpMethod = "GET", value = "/{lopId}/picture", response = PictureDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public PictureDTO getProviderPicture(@PathParam("lopId") final String lopId);
     
     @GET
-    @Path("{lopId}/thumbnail")
+    @Path("/{lopId}/thumbnail")
+    @ApiOperation(httpMethod = "GET", value = "/{lopId}/thumbnail", response = PictureDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public PictureDTO getProviderThumbnail(@PathParam("lopId") final String lopId);
     
@@ -89,7 +98,8 @@ public interface LearningOpportunityProviderResource {
      * @return The organization with the given id.
      */
     @GET
-    @Path("{lopId}")
+    @Path("/{lopId}")
+    @ApiOperation(httpMethod = "GET", value = "/{lopId}  <a href=https://github.com/Opetushallitus/koulutusinformaatio/blob/devel/koulutusinformaatio-api/src/main/java/fi/vm/sade/koulutusinformaatio/resource/LearningOpportunityProviderResource.java search>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click to see it on GitHub</a>", response = LearningOpportunityProviderDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public LearningOpportunityProviderDTO getProvider(@PathParam("lopId") final String lopId,
                                   @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);

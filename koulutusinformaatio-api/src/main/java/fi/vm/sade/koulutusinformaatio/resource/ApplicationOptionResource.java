@@ -18,19 +18,26 @@ package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
 @Path("/ao")
+@Api(value = "/ao", description="Kuvaus")
 public interface ApplicationOptionResource {
 
     @GET
     @Path("/search/{asId}/{lopId}")
+    @ApiOperation(httpMethod = "GET", value = "/search/{asId}/{lopId} <a href=https://github.com/Opetushallitus/koulutusinformaatio/blob/devel/koulutusinformaatio-api/src/main/java/fi/vm/sade/koulutusinformaatio/resource/ApplicationOptionResource.java search>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click to see it on GitHub</a>", response = ApplicationOptionSearchResultDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(
             @PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
@@ -42,6 +49,7 @@ public interface ApplicationOptionResource {
 
     @GET
     @Path("/{aoId}")
+    @ApiOperation(httpMethod = "GET", value = "/{aoId}", response = ApplicationOptionDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public ApplicationOptionDTO getApplicationOption(@PathParam("aoId") final String aoId, @DefaultValue("fi") @QueryParam("lang") String lang,
                                                      @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
