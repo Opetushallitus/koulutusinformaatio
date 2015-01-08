@@ -68,7 +68,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>(/app/.*)|(/swagger/.*)|(/api-docs/.*)|(/m/.*)|(/(buildversion|robots)\.txt)|(/sitemap-learningopportunity.xml)|(/calendar/.*)</param-value>
+            <param-value>(/app/.*)|(/m/.*)|(/(buildversion|robots)\.txt)|(/sitemap-learningopportunity.xml)|(/calendar/.*)</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.freemarker.templateBasePath</param-name>
@@ -79,41 +79,6 @@
             <param-value>fi.vm.sade.koulutusinformaatio.filter.SearchEngineFilter</param-value>
         </init-param>
     </filter>
-
-	<!-- swagger servlet reader -->
-	<servlet>
-		<servlet-name>DefaultServletReaderConfig</servlet-name>
-		<servlet-class>com.wordnik.swagger.servlet.config.DefaultServletReaderConfig</servlet-class>
-		<init-param>
-			<param-name>swagger.resource.package</param-name>
-			<param-value>fi.vm.sade.koulutusinformaatio.resource</param-value>
-		</init-param>
-		<init-param>
-			<param-name>swagger.api.basepath</param-name>
-			<param-value>https://localhost:8080/koulutusinformaatio-app</param-value>
-		</init-param>
-		<init-param>
-			<param-name>api.version</param-name>
-			<param-value>1.0.0</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-
-	<!-- swagger api declaration -->
-	<servlet>
-		<servlet-name>ApiDeclarationServlet</servlet-name>
-		<servlet-class>com.wordnik.swagger.servlet.listing.ApiDeclarationServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ApiDeclarationServlet</servlet-name>
-		<url-pattern>/api-docs/*</url-pattern>
-	</servlet-mapping>
-
-	<!-- swagger UI declaration -->
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/swagger/*</url-pattern>
-	</servlet-mapping>
 
     <filter>
         <filter-name>searchEngineFilter</filter-name>

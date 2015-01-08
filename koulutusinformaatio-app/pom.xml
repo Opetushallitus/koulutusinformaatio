@@ -183,13 +183,6 @@
             </exclusions>
         </dependency>
 
-	<dependency>
-		<groupId>com.wordnik</groupId>
-		<artifactId>swagger-servlet_2.10</artifactId>
-		<!--artifactId>swagger-jersey-jaxrs_2.10</artifactId-->
-		<version>${swagger.version}</version>
-	</dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

@@ -23,13 +23,10 @@ import javax.ws.rs.core.MediaType;
 
 import java.util.List;
 
-import com.wordnik.swagger.annotations.*;
-
 /**
  * @author Mikko Majapuro
  */
 @Path("/lo")
-@Api(value = "/lo", description="Kuvaus")
 public interface LearningOpportunityResource {
 
     /**
@@ -41,8 +38,7 @@ public interface LearningOpportunityResource {
      * @return list of search results
      */
     @GET
-    @Path("/search")
-	@ApiOperation(httpMethod = "GET", value = "/search <a href=https://github.com/Opetushallitus/koulutusinformaatio/blob/devel/koulutusinformaatio-api/src/main/java/fi/vm/sade/koulutusinformaatio/resource/LearningOpportunityResource.java search>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click to see it on GitHub</a>", response = LOSearchResultListDTO.class)
+    @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
     public LOSearchResultListDTO searchLearningOpportunities(@QueryParam("text") String text,
                                                              @QueryParam("prerequisite") String prerequisite,
@@ -77,8 +73,7 @@ public interface LearningOpportunityResource {
      * @return parent learning opportunity dto object
      */
     @GET
-    @Path("/parent/{parentId}")
-    @ApiOperation(httpMethod = "GET", value = "/parent/{parentId}", response = ParentLearningOpportunitySpecificationDTO.class)
+    @Path("parent/{parentId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId,
                                                                                   @QueryParam("lang") String lang,
@@ -95,8 +90,7 @@ public interface LearningOpportunityResource {
      * @return child learning opportunity dto object
      */
     @GET
-    @Path("/child/{cloId}")
-    @ApiOperation(httpMethod = "GET", value = "/child/{cloId}", response = ChildLearningOpportunitySpecificationDTO.class)
+    @Path("child/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(@PathParam("cloId") String cloId,
                                                                                 @QueryParam("lang") String lang,
@@ -111,7 +105,6 @@ public interface LearningOpportunityResource {
      */
     @GET
     @Path("upsec/{id}")
-    @ApiOperation(httpMethod = "GET", value = "/upsec/{id}", response = UpperSecondaryLearningOpportunitySpecificationDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                                   @QueryParam("lang") String lang,
@@ -127,7 +120,6 @@ public interface LearningOpportunityResource {
      */
     @GET
     @Path("special/{id}")
-    @ApiOperation(httpMethod = "GET", value = "/special/{id}", response = SpecialLearningOpportunitySpecificationDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
@@ -143,7 +135,6 @@ public interface LearningOpportunityResource {
      */
     @GET
     @Path("highered/{id}")
-    @ApiOperation(httpMethod = "GET", value = "/highered/{id}", response = HigherEducationLOSDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public HigherEducationLOSDTO getHigherEducationLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
@@ -159,7 +150,6 @@ public interface LearningOpportunityResource {
      */
     @GET
     @Path("adultupsec/{id}")
-    @ApiOperation(httpMethod = "GET", value = "/adultupsec/{id}", response = AdultUpperSecondaryLOSDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
@@ -176,7 +166,6 @@ public interface LearningOpportunityResource {
      */
     @GET
     @Path("adultvocational/{id}")
-    @ApiOperation(httpMethod = "GET", value = "/adultvocational/{id}", response = AdultVocationalParentLOSDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
@@ -193,7 +182,6 @@ public interface LearningOpportunityResource {
      */
     @GET
     @Path("autocomplete")
-    @ApiOperation(httpMethod = "GET", value = "/autocomplete", response = SuggestedTermsResultDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public SuggestedTermsResultDTO getSuggestedTerms(@QueryParam("term") String term,
                                                      @QueryParam("lang") String lang);
@@ -207,7 +195,6 @@ public interface LearningOpportunityResource {
      */
     @GET
     @Path("preview/{oid}")
-    @ApiOperation(httpMethod = "GET", value = "/preview/{oid}", response = LOSDTO.class)
     @Produces(MediaType.APPLICATION_JSON)
     public LOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
                                                      @QueryParam("lang") String lang,
@@ -216,7 +203,6 @@ public interface LearningOpportunityResource {
     
     @GET
     @Path("/picture/{id}")
-    @ApiOperation(httpMethod = "GET", value = "/picture/{id}", response = PictureDTO.class)
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public PictureDTO getPicture(@PathParam("id") final String id);
 }

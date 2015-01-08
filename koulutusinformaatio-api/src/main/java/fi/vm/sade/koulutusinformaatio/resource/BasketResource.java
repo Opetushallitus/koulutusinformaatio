@@ -17,26 +17,19 @@
 package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.CalendarApplicationSystemDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
 @Path("/basket")
-@Api(value = "/basket", description="Kuvaus")
 public interface BasketResource {
 
     @GET
-    @Path("/items")
-    @ApiOperation(httpMethod = "GET", value = "/items <a href=https://github.com/Opetushallitus/koulutusinformaatio/blob/devel/koulutusinformaatio-api/src/main/java/fi/vm/sade/koulutusinformaatio/resource/BasketResource.java search>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Click to see it on GitHub</a>", response = BasketItemDTO.class)
+    @Path("items")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     List<BasketItemDTO> getBasketItems(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 }
