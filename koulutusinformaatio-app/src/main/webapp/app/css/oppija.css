@@ -370,6 +370,11 @@
   .panel-danger > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #fef3d3; }
 
+.required {
+  color: red;
+  margin-left: 0.25em;
+}
+
 .column-container {
   overflow: auto;
 }
