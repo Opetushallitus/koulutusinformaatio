@@ -15,21 +15,32 @@
             <button class="btn btn-info pull-right margin-top-default hide-in-print" onclick="window.print();"><i class="icon-print"> </i><span data-ki-i18n="print"></span></button>
         </div>
     </div>
-    <div class="hide-in-print" data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
-        <div class="alert-heading">
-            <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
+    <div class="hide-in-print column-container">
+        <div class="column-50-procent" data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
+            <div class="alert-heading">
+                <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
+            </div>
+            <p data-ki-i18n="appbasket:alert-paragraph-1"></p>
+            <ul>
+                <li data-ki-i18n="appbasket:alert-bullet-1"></li>
+                <li data-ki-i18n="appbasket:alert-bullet-2"></li>
+                <li data-ki-i18n="appbasket:alert-bullet-3"></li>
+                <li data-ki-i18n="appbasket:alert-bullet-4"></li>
+            </ul>
+            <p>
+                <a data-ng-if="!isStudyInfo" data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
+                <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
+            </p>
         </div>
-        <p data-ki-i18n="appbasket:alert-paragraph-1"></p>
-        <ul>
-            <li data-ki-i18n="appbasket:alert-bullet-1"></li>
-            <li data-ki-i18n="appbasket:alert-bullet-2"></li>
-            <li data-ki-i18n="appbasket:alert-bullet-3"></li>
-            <li data-ki-i18n="appbasket:alert-bullet-4"></li>
-        </ul>   
-        <p>
-            <a data-ng-if="!isStudyInfo" data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
-            <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
-        </p>
+        <form class="column-50-procent">
+            <h3>Lähetä muistilista sähköpostitse</h3>
+            <table class="table table-responsive table-condensed table-no-lines">
+                <tr><th>Lähettäjä:</th><td><input type="text" size="50"/></td></tr>
+                <tr><th>Otsikko:</th><td><input type="text" size="50"/></td></tr>
+                <tr><th>Vastaanottaja(t):</th><td><input type="text" size="50"/></td></tr>
+                <tr><td></td><td><button type="submit" class="btn btn-info" disabled="true">Lähetä</button></td></tr>
+            </table>
+        </form>
     </div>
     <p class="hide-in-print" data-ki-i18n="application-basket-description"></p>
     <div data-ng-switch="basketIsEmpty">
