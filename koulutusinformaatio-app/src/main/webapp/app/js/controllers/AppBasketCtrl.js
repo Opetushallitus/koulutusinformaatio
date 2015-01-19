@@ -52,6 +52,10 @@ controller('AppBasketCtrl',
             $scope.basketIsEmpty = value;
         });
 
+        $scope.showAlert = function() {
+            return !$scope.hideAlert() && !$scope.isAuthenticated;
+        };
+
         $scope.closeAlert = function() {
             AlertService.setAlert('appbasket');
         };
