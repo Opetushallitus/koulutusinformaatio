@@ -10,6 +10,7 @@ controller('AppBasketCtrl',
     [
         '$scope',
         '$rootScope',
+        '$routeParams',
         'ApplicationBasketService',
         'SearchService',
         'FilterService',
@@ -18,7 +19,7 @@ controller('AppBasketCtrl',
         'AuthService',
         'Config', 
         'LanguageService',
-    function($scope, $rootScope, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config, LanguageService) {
+    function($scope, $rootScope, $routeParams, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config, LanguageService) {
         $rootScope.title = TranslationService.getTranslation('title-application-basket') + ' - ' + TranslationService.getTranslation('sitename');
         $rootScope.description = $rootScope.title;
         $scope.hakuAppUrl = Config.get('hakulomakeUrl');
@@ -26,6 +27,7 @@ controller('AppBasketCtrl',
 
         $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
 
+        $scope.emailSendingEnabled = $routeParams.emailSendingEnabled == true
         $scope.email = {
             "title": "Muistilista opintopolusta",
             "from": "",

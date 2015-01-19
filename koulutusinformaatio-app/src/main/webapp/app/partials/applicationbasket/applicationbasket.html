@@ -16,23 +16,25 @@
         </div>
     </div>
     <div class="hide-in-print column-container">
-        <div class="column-50-procent" data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
-            <div class="alert-heading">
-                <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
+        <div data-ng-class="{'column-50-procent': emailSendingEnabled}">
+            <div data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
+                <div class="alert-heading">
+                    <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
+                </div>
+                <p data-ki-i18n="appbasket:alert-paragraph-1"></p>
+                <ul>
+                    <li data-ki-i18n="appbasket:alert-bullet-1"></li>
+                    <li data-ki-i18n="appbasket:alert-bullet-2"></li>
+                    <li data-ki-i18n="appbasket:alert-bullet-3"></li>
+                    <li data-ki-i18n="appbasket:alert-bullet-4"></li>
+                </ul>
+                <p>
+                    <a data-ng-if="!isStudyInfo" data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
+                    <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
+                </p>
             </div>
-            <p data-ki-i18n="appbasket:alert-paragraph-1"></p>
-            <ul>
-                <li data-ki-i18n="appbasket:alert-bullet-1"></li>
-                <li data-ki-i18n="appbasket:alert-bullet-2"></li>
-                <li data-ki-i18n="appbasket:alert-bullet-3"></li>
-                <li data-ki-i18n="appbasket:alert-bullet-4"></li>
-            </ul>
-            <p>
-                <a data-ng-if="!isStudyInfo" data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
-                <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
-            </p>
         </div>
-        <form novalidate name="muistilistaEmailForm" class="column-50-procent" data-ng-submit="sendMuistilista()">
+        <form novalidate data-ng-if="emailSendingEnabled" name="muistilistaEmailForm" class="column-50-procent" data-ng-submit="sendMuistilista()">
             <h3>Lähetä muistilista sähköpostitse</h3>
             <table class="table table-responsive table-condensed table-no-lines">
                 <tr><th>Lähettäjä:</th><td><input type="text" size="50" name="emailFrom" data-ng-model="email.from"/></td></tr>
