@@ -32,13 +32,13 @@
                 <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
             </p>
         </div>
-        <form class="column-50-procent">
+        <form novalidate name="muistilistaEmailForm" class="column-50-procent" data-ng-submit="sendMuistilista()">
             <h3>Lähetä muistilista sähköpostitse</h3>
             <table class="table table-responsive table-condensed table-no-lines">
-                <tr><th>Lähettäjä:</th><td><input type="text" size="50"/></td></tr>
-                <tr><th>Otsikko:<b class="required">*</b></th><td><input type="text" size="50" value="Muistilista opintopolusta"/></td></tr>
-                <tr><th>Vastaanottaja(t):<b class="required">*</b></th><td><input type="text" size="50"/></td></tr>
-                <tr><td></td><td><button type="submit" class="btn btn-info" disabled="true">Lähetä</button></td></tr>
+                <tr><th>Lähettäjä:</th><td><input data-ng-trim="true" type="text" size="50" name="emailFrom" data-ng-model="email.from"/></td></tr>
+                <tr><th>Otsikko:<span class="required">*</span></th><td><input data-ng-trim="true" type="text" size="50" name="emailTitle" data-ng-model="email.title" required/><span class="error" ng-show="muistilistaEmailForm.emailTitle.$error.required">Pakollinen tieto</span></td></tr>
+                <tr><th>Vastaanottaja(t):<span class="required">*</span></th><td><input data-ng-trim="true" type="text" size="50" name="emailTo" data-ng-model="email.to" required/><span class="error" ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$error.required">Pakollinen tieto</span></td></tr>
+                <tr><td></td><td><button type="submit" data-ng-disabled="muistilistaEmailForm.$invalid" class="btn btn-info">Lähetä</button></td></tr>
             </table>
         </form>
     </div>

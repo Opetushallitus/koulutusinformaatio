@@ -26,6 +26,12 @@ controller('AppBasketCtrl',
 
         $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
 
+        $scope.email = {
+            "title": "Muistilista opintopolusta",
+            "from": "",
+            "to": ""
+        }
+
         // load app basket content only if it contains items
         if (!ApplicationBasketService.isEmpty()) {
             ApplicationBasketService.query().then(function(result) {
@@ -35,7 +41,6 @@ controller('AppBasketCtrl',
 
         $scope.title = TranslationService.getTranslation('title-application-basket');
         $scope.isAuthenticated = AuthService.isAuthenticated();
-
 
         $scope.$watch(function() { return ApplicationBasketService.getItemCount(); }, function(value) {
             $scope.itemCount = value;
@@ -56,5 +61,9 @@ controller('AppBasketCtrl',
         $scope.images = {
             logo: 'img/opintopolku_large-' + $scope.lang + '.png'
         };
-        
+
+        $scope.sendMuistilista = function() {
+            alert($scope.email.title)
+        }
+
 }]);
