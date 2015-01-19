@@ -63,7 +63,7 @@ controller('AppBasketCtrl',
         };
 
         $scope.sendMuistilista = function() {
-            alert($scope.email.title)
+            alert($scope.email.to)
         }
 
 }]);
