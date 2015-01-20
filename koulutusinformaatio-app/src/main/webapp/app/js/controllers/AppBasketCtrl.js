@@ -30,7 +30,7 @@ controller('AppBasketCtrl',
 
         $scope.emailSendingEnabled = $routeParams.emailSendingEnabled == true
         $scope.email = {
-            "title": "Muistilista opintopolusta",
+            "subject": "Muistilista opintopolusta",
             "from": "",
             "to": ""
         }
@@ -76,7 +76,7 @@ controller('AppBasketCtrl',
 
         $scope.sendMuistilista = function() {
             $scope.emailStatus.sending = true
-            ApplicationBasketService.sendByEmail($scope.email.title, $scope.email.to, $scope.email.from).then(function(result) {
+            ApplicationBasketService.sendByEmail($scope.email.subject, $scope.email.to, $scope.email.from).then(function(result) {
                 $scope.emailStatus.ok = true;
                 $scope.emailStatus.error = false;
                 $scope.email.to = "";

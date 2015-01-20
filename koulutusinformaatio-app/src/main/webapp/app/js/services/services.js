@@ -1286,12 +1286,12 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             return deferred.promise;
         },
 
-        sendByEmail: function(title, to, from) {
+        sendByEmail: function(subject, to, from) {
             $rootScope.isLoading = true;
             var deferred = $q.defer();
             var emailData = {
                 kieli: LanguageService.getLanguage(),
-                otsikko: title.trim(),
+                otsikko: subject.trim(),
                 vastaannottaja: to
             };
             if(from != null && from.trim().length > 0) {
