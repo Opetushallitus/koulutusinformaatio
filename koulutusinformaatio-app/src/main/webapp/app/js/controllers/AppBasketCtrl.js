@@ -11,6 +11,7 @@ controller('AppBasketCtrl',
         '$scope',
         '$rootScope',
         '$routeParams',
+        "$timeout",
         'ApplicationBasketService',
         'SearchService',
         'FilterService',
@@ -19,7 +20,7 @@ controller('AppBasketCtrl',
         'AuthService',
         'Config', 
         'LanguageService',
-    function($scope, $rootScope, $routeParams, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config, LanguageService) {
+    function($scope, $rootScope, $routeParams, $timeout, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config, LanguageService) {
         $rootScope.title = TranslationService.getTranslation('title-application-basket') + ' - ' + TranslationService.getTranslation('sitename');
         $rootScope.description = $rootScope.title;
         $scope.hakuAppUrl = Config.get('hakulomakeUrl');
@@ -32,6 +33,11 @@ controller('AppBasketCtrl',
             "title": "Muistilista opintopolusta",
             "from": "",
             "to": ""
+        }
+        $scope.emailStatus = {
+            "sending": false,
+            "error": false,
+            "ok": false
         }
 
         // load app basket content only if it contains items
@@ -69,7 +75,24 @@ controller('AppBasketCtrl',
         };
 
         $scope.sendMuistilista = function() {
-            alert($scope.email.to)
+            $scope.emailStatus.sending = true
+            ApplicationBasketService.sendByEmail($scope.email).then(function(result) {
+                $scope.emailStatus.ok = true;
+                $scope.emailStatus.error = false;
+                $scope.email.to = "";
+                $timeout( function() {
+                    $scope.emailStatus.sending = false
+                    $scope.emailStatus.ok = false;
+                }, 5000);
+            },
+            function(error) {
+                $scope.emailStatus.ok = false;
+                $scope.emailStatus.error = true;
+                $timeout( function() {
+                    $scope.emailStatus.sending = false
+                    $scope.emailStatus.error = false;
+                }, 5000);
+            });
         }
 
 }]);

@@ -370,10 +370,13 @@
   .panel-danger > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #fef3d3; }
 
-.required,
-.error {
+.required {
   color: red;
   margin-left: 0.25em;
+}
+
+.error {
+  color: red;
 }
 
 .column-container {

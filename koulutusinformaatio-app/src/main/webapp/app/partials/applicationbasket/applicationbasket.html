@@ -43,7 +43,9 @@
                     <span class="error" data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$error.multipleEmails">Virheellinen arvo. Anna sähköpostiosoitteet "," tai ";" merkeillä eroteltuina</span>
                     <span data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$valid">{{email.to.length}} kpl</span>
                 </td></tr>
-                <tr><td></td><td><button type="submit" data-ng-disabled="muistilistaEmailForm.$invalid" class="btn btn-info">Lähetä</button></td></tr>
+                <tr><td></td><td><button type="submit" data-ng-disabled="muistilistaEmailForm.$invalid || emailStatus.sending" class="btn btn-info">Lähetä</button>
+                    <span data-ng-show="emailStatus.ok">Viesti lähetetty</span><span class="error" data-ng-show="emailStatus.error">Lähetettäessä tapahtui odottomaton virhe, yritä hetken päästä uudelleen</span>
+                </td></tr>
             </table>
         </form>
     </div>

@@ -1284,6 +1284,23 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             });
 
             return deferred.promise;
+        },
+
+        sendByEmail: function(email) {
+            $rootScope.isLoading = true;
+            var deferred = $q.defer();
+
+            $http.post('/omatsivut/muistilista', email).
+                success(function(result) {
+                    $rootScope.isLoading = false;
+                    deferred.resolve(result);
+                }).
+                error(function(result) {
+                    $rootScope.isLoading = false;
+                    deferred.reject(result);
+                });
+
+            return deferred.promise;
         }
     }
 }]).
