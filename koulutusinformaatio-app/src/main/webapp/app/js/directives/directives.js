@@ -65,8 +65,8 @@ directive('kiMultipleEmails', function () {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl ) {
             var emailRegex = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+";
-            var separators = "[,;]";
-            var emailsRegex = new RegExp("^(" + emailRegex + "[\\s]*" + separators + "{1}[\\s]*)*(" + emailRegex + ")$");
+            var separators = "[,;\\s]+";
+            var emailsRegex = new RegExp("^(" + emailRegex + separators + ")*(" + emailRegex + ")$");
             ctrl.$parsers.unshift(function(viewValue) {
                 if (emailsRegex.test(viewValue)) {
                     ctrl.$setValidity('multipleEmails', true);
