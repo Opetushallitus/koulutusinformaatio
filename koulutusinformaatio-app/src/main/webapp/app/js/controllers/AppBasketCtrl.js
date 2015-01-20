@@ -28,17 +28,19 @@ controller('AppBasketCtrl',
 
         $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
 
-        $scope.emailSendingEnabled = $routeParams.emailSendingEnabled == true
+        $scope.$watch(function() { return ApplicationBasketService.isEmpty(); }, function(value) {
+            $scope.emailSendingEnabled = ApplicationBasketService.isEmpty() == false && $routeParams.emailSendingEnabled == true;
+        });
         $scope.email = {
             "subject": "Muistilista opintopolusta",
             "from": "",
             "to": ""
-        }
+        };
         $scope.emailStatus = {
             "sending": false,
             "error": false,
             "ok": false
-        }
+        };
 
         // load app basket content only if it contains items
         if (!ApplicationBasketService.isEmpty()) {
