@@ -36,7 +36,7 @@
         </div>
         <form data-ng-if="emailSendingEnabled" data-ng-class="{'column-50-procent': showAlert()}" novalidate name="muistilistaEmailForm" data-ng-submit="sendMuistilista()">
             <h3>Lähetä muistilista sähköpostitse</h3>
-            <table class="table table-responsive table-condensed table-no-lines">
+            <table class="table table-responsive table-condensed table-no-lines table-th-left-column">
                 <tr><th>Lähettäjä:</th><td><input type="text" size="50" name="emailFrom" data-ng-model="email.from"/></td></tr>
                 <tr><th>Otsikko:<span class="required">*</span></th><td><input type="text" size="50" name="emailTitle" data-ng-model="email.title" required/><span class="error" data-ng-show="muistilistaEmailForm.emailTitle.$error.required">Pakollinen tieto</span></td></tr>
                 <tr><th>Vastaanottaja(t):<span class="required">*</span></th><td><input type="text" data-ki-multiple-emails size="50" name="emailTo" data-ng-model="email.to" required/>
