@@ -1286,11 +1286,20 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             return deferred.promise;
         },
 
-        sendByEmail: function(email) {
+        sendByEmail: function(title, to, from) {
             $rootScope.isLoading = true;
             var deferred = $q.defer();
-
-            $http.post('/omatsivut/muistilista', email).
+            var emailData = {
+                kieli: LanguageService.getLanguage(),
+                otsikko: title.trim(),
+                vastaannottaja: to
+            };
+            if(from != null && from.trim().length > 0) {
+                emailData.lahettaja = from.trim();
+            }
+            var aoIds = this.getItems();
+            emailData.koids = aoIds == null ? [] : aoIds;
+            $http.post('/omatsivut/muistilista', emailData).
                 success(function(result) {
                     $rootScope.isLoading = false;
                     deferred.resolve(result);
