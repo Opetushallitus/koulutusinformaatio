@@ -33,15 +33,13 @@ controller('AppBasketCtrl',
         });
         $scope.email = {
             "subject": "",
-            "to": [""]
+            "to": []
         };
         $scope.emailStatus = {
             "sending": false,
             "error": false,
             "ok": false
         };
-
-        $scope.emailToCountText = TranslationService.getTranslation('appbasket:email-to-count', {"count": $scope.email.to.length});
 
         // load app basket content only if it contains items
         if (!ApplicationBasketService.isEmpty()) {

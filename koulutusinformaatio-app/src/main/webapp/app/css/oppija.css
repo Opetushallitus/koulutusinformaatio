@@ -371,12 +371,20 @@
     border-bottom-color: #fef3d3; }
 
 .required {
-  color: red;
-  margin-left: 0.25em;
+  color: #c9302c;
+}
+
+.info {
+  white-space: nowrap;
 }
 
 .error {
-  color: red;
+  color: #c9302c;
+  white-space: nowrap;
+}
+
+.send-ok {
+  color: #7fa308;
 }
 
 .column-container {
@@ -1663,6 +1671,12 @@ select:hover,
 .panel-gray {
   background-color: #fafafa;
   border-color: #dddddd; }
+
+.panel-bordered {
+  border: 1px solid #c2e6f4;
+  padding: 5px 20px 0 20px;
+  margin-bottom: 15px;
+}
 
 .panel.panel-filter {
   border-bottom: 1px solid #dddddd;

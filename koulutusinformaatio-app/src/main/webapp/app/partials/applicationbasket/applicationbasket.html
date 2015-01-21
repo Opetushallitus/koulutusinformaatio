@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="hide-in-print column-container">
-        <div data-ng-class="{'column-50-procent': emailSendingEnabled}">
+        <div>
             <div data-ng-if="showAlert()" data-alert type="warning" data-close="closeAlert()">
                 <div class="alert-heading">
                     <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
@@ -34,22 +34,24 @@
                 </p>
             </div>
         </div>
-        <form data-ng-if="emailSendingEnabled" data-ng-class="{'column-50-procent': showAlert()}" novalidate name="muistilistaEmailForm" data-ng-submit="sendMuistilista()">
-            <h3 data-ki-i18n="appbasket:email-title"></h3>
-            <table class="table table-responsive table-condensed table-no-lines table-th-left-column">
-                <tr><th><label data-ki-i18n="appbasket:email-subject-label" data-show-colon="true"></label></th>
-                    <td><input type="text" size="50" name="emailSubject" data-ng-model="email.subject"/></td>
-                </tr>
-                <tr><th><label data-ki-i18n="appbasket:email-to-label" data-show-colon="true"></label><span class="required">*</span></th><td><input type="text" data-ki-multiple-emails size="50" name="emailTo" data-ng-model="email.to" required/>
-                    <span data-ki-i18n="appbasket:email-to-validation-error" class="error" data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$error.multipleEmails"></span>
-                    <span data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$valid">{{emailToCountText}}</span>
-                </td></tr>
-                <tr><td></td><td><button data-ki-i18n="appbasket:email-submit" type="submit" data-ng-disabled="muistilistaEmailForm.$invalid || emailStatus.sending" class="btn btn-info"></button>
-                    <span data-ki-i18n="appbasket:email-status-sent" data-ng-show="emailStatus.ok"></span>
-                    <span data-ki-i18n="appbasket:email-status-error" class="error" data-ng-show="emailStatus.error"></span>
-                </td></tr>
-            </table>
-        </form>
+        <div class="panel-bordered" data-ng-if="emailSendingEnabled">
+            <form novalidate name="muistilistaEmailForm" data-ng-submit="sendMuistilista()">
+                <h3 data-ki-i18n="appbasket:email-title"></h3>
+                <table class="table table-condensed table-no-lines table-th-left-column">
+                    <tr><th><label data-ki-i18n="appbasket:email-subject-label"></label></th>
+                        <td><input type="text" size="40" name="emailSubject" data-ng-model="email.subject"/></td>
+                    </tr>
+                    <tr><th><label data-ki-i18n="appbasket:email-to-label"></label><span class="required">*</span></th><td><input type="text" data-ki-multiple-emails size="40" name="emailTo" data-ng-model="email.to" required/>
+                        <span data-ki-i18n="appbasket:email-to-info" class="info" data-ng-show="!muistilistaEmailForm.emailTo.$error.multipleEmails"></span>
+                        <span data-ki-i18n="appbasket:email-to-validation-error" class="error" data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$error.multipleEmails"></span>
+                    </td></tr>
+                    <tr><td></td><td><button data-ki-i18n="appbasket:email-submit" type="submit" data-ng-disabled="muistilistaEmailForm.$invalid || emailStatus.sending" class="btn btn-info"></button>
+                        <span data-ki-i18n="appbasket:email-status-sent" class="send-ok" data-ng-show="emailStatus.ok"></span>
+                        <span data-ki-i18n="appbasket:email-status-error" class="error" data-ng-show="emailStatus.error"></span>
+                    </td></tr>
+                </table>
+            </form>
+        </div>
     </div>
     <p class="hide-in-print" data-ki-i18n="application-basket-description"></p>
     <div data-ng-switch="basketIsEmpty">
