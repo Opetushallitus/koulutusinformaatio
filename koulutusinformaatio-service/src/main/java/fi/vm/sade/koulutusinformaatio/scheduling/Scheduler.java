@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.scheduling;
 
-import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.SEOService;
-import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +25,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 
 /**
  * @author Mikko Majapuro
@@ -40,7 +39,6 @@ public class Scheduler {
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private SEOService seoService;
-    private TextVersionService textVersionService;
     private boolean enabled;
     private boolean seoEnabled;
     private boolean textVersionEnabled;
@@ -51,7 +49,6 @@ public class Scheduler {
     public Scheduler(final UpdateService updateService, 
             final IncrementalUpdateService incrementalUpdateService,
             final SEOService seoService, 
-            final TextVersionService textVersionService,
             @Value("${scheduling.enabled}") boolean enabled,
             @Value("${scheduling.seo.enabled}") boolean seoEnabled, 
             @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled,
@@ -59,7 +56,6 @@ public class Scheduler {
             @Value("${scheduling.data.articles.enabled}") boolean articlesEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
-        this.textVersionService = textVersionService;
         this.enabled = enabled;
         this.seoEnabled = seoEnabled;
         this.textVersionEnabled = textVersionEnabled;
@@ -92,20 +88,6 @@ public class Scheduler {
                 }
             } catch (Exception e) {
                 LOG.error("SEO execution failed: {}", e.getStackTrace().toString());
-            }
-        }
-    }
-    
-    @Scheduled(cron = "${scheduling.textversion.cron}")
-    public void runTextVersionUpdate() {
-        if (textVersionEnabled) {
-            LOG.info("Starting scheduled text version update {}", new Date());
-            try {
-                if (!textVersionService.isRunning()) {
-                    textVersionService.update();
-                }
-            } catch (Exception e) {
-                LOG.error("Text version generation execution failed: {}", e.getStackTrace().toString());
             }
         }
     }
