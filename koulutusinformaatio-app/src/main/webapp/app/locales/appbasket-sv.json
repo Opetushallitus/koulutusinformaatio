@@ -8,5 +8,15 @@
     "alert-link": "Logga in",
     "alert-paragraph-2": "här eller via länken högst upp på sidan.",
 
+    "email-title": "Lähetä minneslista sähköpostitse",
+    "email-subject-label": "Nimi",
+    "email-subject-value": "Muistilista Opintopolusta",
+    "email-to-label": "Vastaanottaja(t)",
+    "email-to-validation-error": "Virheellinen arvo. Anna sähköpostiosoitteet \" \", \",\" tai \";\" merkeillä eroteltuina",
+    "email-to-count": "__count__ kpl",
+    "email-submit": "Lähetä",
+    "email-status-sent": "Viesti lähetetty",
+    "email-status-error": "Lähetettäessä tapahtui odottomaton virhe, yritä hetken päästä uudelleen",
+
     "no-prerequisite-requirement": "Inget krav på grundutbildning"
 }

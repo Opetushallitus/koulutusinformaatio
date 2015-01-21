@@ -56,6 +56,8 @@ var ApplicationSystemCalendar = (function() {
                             var clone = _.clone(item);
                             clone.applicationPeriods = [period];
                             clone.nextApplicationPeriodStarts = period.dateRange.startDate;
+                            // Set clone as not asOngoing if it's dates do not match
+                            clone.asOngoing = (period.dateRange.startDate < new Date() && period.dateRange.endDate > new Date());
                             data.push(clone);
                         });
                         remove.push(item);
@@ -121,11 +123,11 @@ var ApplicationSystemCalendar = (function() {
     createPanel = function(title, content, id) {
         var panel = 
             '<div class="panel panel-default">' + 
-                '<div class="panel-heading panel-toggler" data-toggle="collapse" data-parent="#accordion" href="#' + id + '">' + 
+                '<a class="panel-heading panel-toggler collapsed" data-toggle="collapse" data-parent="#accordion" href="#' + id + '">' + 
                     '<h4 class="panel-title">' + 
                         title +
                     '</h4>' +
-                '</div>' +
+                '</a>' +
                 '<div id="' + id + '" class="panel-collapse collapse">' +
                     '<div class="panel-body">' +
                     '</div>' +

@@ -44,8 +44,21 @@
     }
 
     .panel-toggler {
+        display: block;
+        color: #333;
+
         &:hover {
             text-decoration: underline;
+        }
+
+        h4 {  
+            background: transparent url("../img/close.png") no-repeat right 0;
+        }
+
+        &.collapsed {
+            h4 {
+                background: transparent url("../img/open.png") no-repeat right 0;
+            }
         }
     }
 

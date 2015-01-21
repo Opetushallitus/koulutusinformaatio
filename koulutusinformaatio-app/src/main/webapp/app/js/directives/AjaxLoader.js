@@ -12,7 +12,7 @@ directive('kiAjaxLoader', function () {
         restrict: 'A',
         template: 
             '<div class="ajax-loader text-center">' +
-                '<img src="img/ajax-loader-big.gif" />' +
+                '<img src="img/ajax-loader-big.gif" alt="Loading content"/>' +
             '</div>',
         scope: {
             active: '='
