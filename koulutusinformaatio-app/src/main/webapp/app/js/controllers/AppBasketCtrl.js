@@ -32,15 +32,17 @@ controller('AppBasketCtrl',
             $scope.emailSendingEnabled = ApplicationBasketService.isEmpty() == false && $routeParams.emailSendingEnabled == true;
         });
         $scope.email = {
-            "subject": "Muistilista opintopolusta",
+            "subject": TranslationService.getTranslation('appbasket:email-subject-value'),
             "from": "",
-            "to": ""
+            "to": [""]
         };
         $scope.emailStatus = {
             "sending": false,
             "error": false,
             "ok": false
         };
+
+        $scope.emailToCountText = TranslationService.getTranslation('appbasket:email-to-count', {"count": $scope.email.to.length});
 
         // load app basket content only if it contains items
         if (!ApplicationBasketService.isEmpty()) {
