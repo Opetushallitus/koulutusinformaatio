@@ -1286,7 +1286,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             return deferred.promise;
         },
 
-        sendByEmail: function(subject, to, from) {
+        sendByEmail: function(subject, to) {
             $rootScope.isLoading = true;
             var deferred = $q.defer();
             var emailData = {
@@ -1294,9 +1294,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 otsikko: subject.trim(),
                 vastaannottaja: to
             };
-            if(from != null && from.trim().length > 0) {
-                emailData.lahettaja = from.trim();
-            }
             var aoIds = this.getItems();
             emailData.koids = aoIds == null ? [] : aoIds;
             $http.post('/omatsivut/muistilista', emailData).

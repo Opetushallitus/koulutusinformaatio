@@ -9,10 +9,8 @@
     "alert-paragraph-2": "här eller via länken högst upp på sidan.",
 
     "email-title": "Lähetä minneslista sähköpostitse",
-    "email-from-label": "Lähettäjän nimi",
-    "email-subject-label": "Otsikko",
+    "email-subject-label": "Nimi",
     "email-subject-value": "Muistilista Opintopolusta",
-    "email-subject-validation-required": "Pakollinen tieto",
     "email-to-label": "Vastaanottaja(t)",
     "email-to-validation-error": "Virheellinen arvo. Anna sähköpostiosoitteet \" \", \",\" tai \";\" merkeillä eroteltuina",
     "email-to-count": "__count__ kpl",

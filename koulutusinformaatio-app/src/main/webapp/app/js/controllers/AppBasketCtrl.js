@@ -32,8 +32,7 @@ controller('AppBasketCtrl',
             $scope.emailSendingEnabled = ApplicationBasketService.isEmpty() == false && $routeParams.emailSendingEnabled == true;
         });
         $scope.email = {
-            "subject": TranslationService.getTranslation('appbasket:email-subject-value'),
-            "from": "",
+            "subject": "",
             "to": [""]
         };
         $scope.emailStatus = {
@@ -80,7 +79,8 @@ controller('AppBasketCtrl',
 
         $scope.sendMuistilista = function() {
             $scope.emailStatus.sending = true
-            ApplicationBasketService.sendByEmail($scope.email.subject, $scope.email.to, $scope.email.from).then(function(result) {
+            var subject = TranslationService.getTranslation('appbasket:email-subject-value') + ($scope.email.subject.length > 0 ? ": " + $scope.email.subject : "");
+            ApplicationBasketService.sendByEmail(subject, $scope.email.to).then(function(result) {
                 $scope.emailStatus.ok = true;
                 $scope.emailStatus.error = false;
                 $scope.email.to = "";
