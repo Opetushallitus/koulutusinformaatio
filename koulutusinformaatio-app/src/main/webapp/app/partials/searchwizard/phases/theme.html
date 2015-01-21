@@ -2,7 +2,7 @@
 <div>
     <ul class="list-unstyled spacious">
         <li data-ng-repeat="option in phase.options">
-            <input type="radio" data-ng-model="phaseSelection.option" data-ng-value="option" id="{{currentPhase}}-{{$index}}" name="theme" required/>
+            <input type="radio" data-ng-model="phaseSelection.option" data-ng-value="option" data-ng-disabled="option.count === 0" id="{{currentPhase}}-{{$index}}" name="theme" required/>
             <label for="{{currentPhase}}-{{$index}}">{{option.label}} ({{option.count}})</label>
         </li>
     </ul>

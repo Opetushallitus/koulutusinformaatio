@@ -15,21 +15,41 @@
             <button class="btn btn-info pull-right margin-top-default hide-in-print" onclick="window.print();"><i class="icon-print"> </i><span data-ki-i18n="print"></span></button>
         </div>
     </div>
-    <div class="hide-in-print" data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
-        <div class="alert-heading">
-            <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
+    <div class="hide-in-print column-container">
+        <div data-ng-class="{'column-50-procent': emailSendingEnabled}">
+            <div data-ng-if="showAlert()" data-alert type="warning" data-close="closeAlert()">
+                <div class="alert-heading">
+                    <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
+                </div>
+                <p data-ki-i18n="appbasket:alert-paragraph-1"></p>
+                <ul>
+                    <li data-ki-i18n="appbasket:alert-bullet-1"></li>
+                    <li data-ki-i18n="appbasket:alert-bullet-2"></li>
+                    <li data-ki-i18n="appbasket:alert-bullet-3"></li>
+                    <li data-ki-i18n="appbasket:alert-bullet-4"></li>
+                </ul>
+                <p>
+                    <a data-ng-if="!isStudyInfo" data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
+                    <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
+                </p>
+            </div>
         </div>
-        <p data-ki-i18n="appbasket:alert-paragraph-1"></p>
-        <ul>
-            <li data-ki-i18n="appbasket:alert-bullet-1"></li>
-            <li data-ki-i18n="appbasket:alert-bullet-2"></li>
-            <li data-ki-i18n="appbasket:alert-bullet-3"></li>
-            <li data-ki-i18n="appbasket:alert-bullet-4"></li>
-        </ul>   
-        <p>
-            <a data-ng-if="!isStudyInfo" data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
-            <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
-        </p>
+        <form data-ng-if="emailSendingEnabled" data-ng-class="{'column-50-procent': showAlert()}" novalidate name="muistilistaEmailForm" data-ng-submit="sendMuistilista()">
+            <h3 data-ki-i18n="appbasket:email-title"></h3>
+            <table class="table table-responsive table-condensed table-no-lines table-th-left-column">
+                <tr><th><label data-ki-i18n="appbasket:email-subject-label" data-show-colon="true"></label></th>
+                    <td><input type="text" size="50" name="emailSubject" data-ng-model="email.subject"/></td>
+                </tr>
+                <tr><th><label data-ki-i18n="appbasket:email-to-label" data-show-colon="true"></label><span class="required">*</span></th><td><input type="text" data-ki-multiple-emails size="50" name="emailTo" data-ng-model="email.to" required/>
+                    <span data-ki-i18n="appbasket:email-to-validation-error" class="error" data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$error.multipleEmails"></span>
+                    <span data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$valid">{{emailToCountText}}</span>
+                </td></tr>
+                <tr><td></td><td><button data-ki-i18n="appbasket:email-submit" type="submit" data-ng-disabled="muistilistaEmailForm.$invalid || emailStatus.sending" class="btn btn-info"></button>
+                    <span data-ki-i18n="appbasket:email-status-sent" data-ng-show="emailStatus.ok"></span>
+                    <span data-ki-i18n="appbasket:email-status-error" class="error" data-ng-show="emailStatus.error"></span>
+                </td></tr>
+            </table>
+        </form>
     </div>
     <p class="hide-in-print" data-ki-i18n="application-basket-description"></p>
     <div data-ng-switch="basketIsEmpty">

@@ -1284,6 +1284,29 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             });
 
             return deferred.promise;
+        },
+
+        sendByEmail: function(subject, to) {
+            $rootScope.isLoading = true;
+            var deferred = $q.defer();
+            var emailData = {
+                kieli: LanguageService.getLanguage(),
+                otsikko: subject.trim(),
+                vastaannottaja: to
+            };
+            var aoIds = this.getItems();
+            emailData.koids = aoIds == null ? [] : aoIds;
+            $http.post('/omatsivut/muistilista', emailData).
+                success(function(result) {
+                    $rootScope.isLoading = false;
+                    deferred.resolve(result);
+                }).
+                error(function(result) {
+                    $rootScope.isLoading = false;
+                    deferred.reject(result);
+                });
+
+            return deferred.promise;
         }
     }
 }]).
