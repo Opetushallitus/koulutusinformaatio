@@ -1292,7 +1292,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             var emailData = {
                 kieli: LanguageService.getLanguage(),
                 otsikko: subject.trim(),
-                vastaannottaja: to
+                vastaanottaja: to
             };
             var aoIds = this.getItems();
             emailData.koids = aoIds == null ? [] : aoIds;
