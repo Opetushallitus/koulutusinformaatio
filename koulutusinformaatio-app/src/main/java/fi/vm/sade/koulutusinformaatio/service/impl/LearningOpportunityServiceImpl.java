@@ -78,35 +78,35 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     @Override
     public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
         ChildLOS childLOS = educationDataQueryService.getChildLearningOpportunity(cloId);
-        String lang = resolveDefaultLanguage(childLOS.getLois().get(0));
+        String lang = resolveDefaultLanguage(childLOS.getLois().get(0), LANG_FI);
         return ChildLOSToDTO.convert(childLOS, lang, lang, lang);
     }
 
     @Override
     public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String uiLang) throws ResourceNotFoundException {
         ChildLOS childLOS = educationDataQueryService.getChildLearningOpportunity(cloId);
-        String lang = resolveDefaultLanguage(childLOS.getLois().get(0));
+        String lang = resolveDefaultLanguage(childLOS.getLois().get(0), uiLang);
         return ChildLOSToDTO.convert(childLOS, lang, uiLang, lang);
     }
 
     @Override
     public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang, String uiLang) throws ResourceNotFoundException {
         ChildLOS childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
-        String defaultLang = resolveDefaultLanguage(childLO.getLois().get(0));
+        String defaultLang = resolveDefaultLanguage(childLO.getLois().get(0), lang);
         return ChildLOSToDTO.convert(childLO, lang, uiLang, defaultLang);
     }
 
     @Override
     public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
         UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
-        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0));
+        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0), LANG_FI);
         return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, lang, lang);
     }
 
     @Override
     public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException {
         UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
-        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0));
+        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0), uiLang);
         return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, uiLang, lang);
     }
 
@@ -114,21 +114,21 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) 
             throws ResourceNotFoundException {
         UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
-        String defaultLang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0));
+        String defaultLang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0), lang);
         return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, uiLang, defaultLang);
     }
 
     @Override
     public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
         SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
-        String lang = resolveDefaultLanguage(los.getLois().get(0));
+        String lang = resolveDefaultLanguage(los.getLois().get(0), LANG_FI);
         return SpecialLOSToDTO.convert(los, lang, lang, lang);
     }
 
     @Override
     public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException {
         SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
-        String lang = resolveDefaultLanguage(los.getLois().get(0));
+        String lang = resolveDefaultLanguage(los.getLois().get(0), uiLang);
         return SpecialLOSToDTO.convert(los, lang, uiLang, lang);
     }
 
@@ -138,7 +138,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             String uiLang) 
                     throws ResourceNotFoundException {
         SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
-        String defaultLang = resolveDefaultLanguage(los.getLois().get(0));
+        String defaultLang = resolveDefaultLanguage(los.getLois().get(0), lang);
         return SpecialLOSToDTO.convert(los, lang, uiLang, defaultLang);
     }
 
@@ -157,17 +157,17 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         List<ApplicationOptionSearchResultDTO> res = new ArrayList<ApplicationOptionSearchResultDTO>();
         for (ApplicationOption curAo : applicationOptions) {
             if (!ongoing) {
-                res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo), uiLang));
+                res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo, uiLang), uiLang));
             } else if (ongoing 
                     && curAo.getApplicationStartDate() != null 
                     && curAo.getApplicationEndDate() != null) {
                 if (ConverterUtil.isOngoing(new DateRange(curAo.getApplicationStartDate(),
                         curAo.getApplicationEndDate()))) {
-                    res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo), uiLang));
+                    res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo, uiLang), uiLang));
                 }
             } else if (ongoing) {
                 if (ConverterUtil.isOngoing(curAo.getApplicationSystem().getApplicationDates())) {
-                    res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo), uiLang));
+                    res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo, uiLang), uiLang));
                 }    
             }
         }
@@ -177,7 +177,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     @Override
     public ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException {
         ApplicationOption ao = educationDataQueryService.getApplicationOption(aoId);
-        String defaultLang = resolveDefaultLanguage(ao);
+        String defaultLang = resolveDefaultLanguage(ao, lang);
         return ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang);
     }
 
@@ -187,7 +187,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionDTO>() {
             @Override
             public ApplicationOptionDTO apply(ApplicationOption applicationOption) {
-                String defaultLang = resolveDefaultLanguage(applicationOption);
+                String defaultLang = resolveDefaultLanguage(applicationOption, lang);
                 return ApplicationOptionToDTO.convert(applicationOption, lang, uiLang, defaultLang);
             }
         });
@@ -224,10 +224,15 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         }
     }
 
-    private String resolveDefaultLanguage(final ChildLOI childLOI) {
+    private String resolveDefaultLanguage(final ChildLOI childLOI, String lang) {
         if (childLOI.getTeachingLanguages() == null || childLOI.getTeachingLanguages().isEmpty()) {
             return LANG_FI;
         } else {
+            for (Code code : childLOI.getTeachingLanguages()) {
+                if (code.getValue().equalsIgnoreCase(lang)) {
+                    return lang;
+                }
+            }
             for (Code code : childLOI.getTeachingLanguages()) {
                 if (code.getValue().equalsIgnoreCase(LANG_FI)) {
                     return LANG_FI;
@@ -237,10 +242,15 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         }
     }
 
-    private String resolveDefaultLanguage(final UpperSecondaryLOI loi) {
+    private String resolveDefaultLanguage(final UpperSecondaryLOI loi, String lang) {
         if (loi.getTeachingLanguages() == null || loi.getTeachingLanguages().isEmpty()) {
             return LANG_FI;
         } else {
+            for (Code code : loi.getTeachingLanguages()) {
+                if (code.getValue().equalsIgnoreCase(lang)) {
+                    return lang;
+                }
+            }
             for (Code code : loi.getTeachingLanguages()) {
                 if (code.getValue().equalsIgnoreCase(LANG_FI)) {
                     return LANG_FI;
@@ -250,12 +260,17 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         }
     }
 
-    private String resolveDefaultLanguage(final ApplicationOption ao) {
+    private String resolveDefaultLanguage(final ApplicationOption ao, String lang) {
         if (ao.getTeachingLanguages() == null || ao.getTeachingLanguages().isEmpty()) {
             return LANG_FI;
         } else {
-            for (String lang : ao.getTeachingLanguages()) {
-                if (lang.equalsIgnoreCase(LANG_FI)) {
+            for (String l : ao.getTeachingLanguages()) {
+                if (l.equalsIgnoreCase(lang)) {
+                    return lang;
+                }
+            }
+            for (String l : ao.getTeachingLanguages()) {
+                if (l.equalsIgnoreCase(LANG_FI)) {
                     return LANG_FI;
                 }
             }
