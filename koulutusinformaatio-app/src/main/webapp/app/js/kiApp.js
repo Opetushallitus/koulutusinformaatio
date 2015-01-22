@@ -17,7 +17,8 @@ var kiApp = angular.module('kiApp',
         'ngRoute',
         'ngSanitize',
         'ngTouch',
-        'ngAnimate'
+        'ngAnimate',
+        'vcRecaptcha'
     ])
 
 // initialize piwik analytics tool

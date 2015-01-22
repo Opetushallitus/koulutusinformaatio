@@ -20,7 +20,8 @@ controller('AppBasketCtrl',
         'AuthService',
         'Config', 
         'LanguageService',
-    function($scope, $rootScope, $routeParams, $timeout, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config, LanguageService) {
+        'vcRecaptchaService',
+    function($scope, $rootScope, $routeParams, $timeout, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config, LanguageService, recaptcha) {
         $rootScope.title = TranslationService.getTranslation('title-application-basket') + ' - ' + TranslationService.getTranslation('sitename');
         $rootScope.description = $rootScope.title;
         $scope.hakuAppUrl = Config.get('hakulomakeUrl');
@@ -33,7 +34,8 @@ controller('AppBasketCtrl',
         });
         $scope.email = {
             "subject": "",
-            "to": []
+            "to": [],
+            "captcha": ""
         };
         $scope.emailStatus = {
             "sending": false,
@@ -78,7 +80,7 @@ controller('AppBasketCtrl',
         $scope.sendMuistilista = function() {
             $scope.emailStatus.sending = true
             var subject = TranslationService.getTranslation('appbasket:email-subject-value') + ($scope.email.subject.length > 0 ? ": " + $scope.email.subject : "");
-            ApplicationBasketService.sendByEmail(subject, $scope.email.to, grecaptcha.getResponse()).then(function(result) {
+            ApplicationBasketService.sendByEmail(subject, $scope.email.to, $scope.email.captcha).then(function(result) {
                 $scope.emailStatus.ok = true;
                 $scope.emailStatus.error = false;
                 $scope.email.to = "";
