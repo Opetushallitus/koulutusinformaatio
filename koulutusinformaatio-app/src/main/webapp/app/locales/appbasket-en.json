@@ -8,15 +8,15 @@
     "alert-link": "",
     "alert-paragraph-2": "2. Applicants <strong>with NO access</strong> to Finnish internet banking codes, Finnish electronic ID-card or mobile certificate – it is not possible for you to use the login/registration feature, but you can submit your application directly on this page. You can access the application form from each programme and this page. Fill in the application step by step and send it without closing your browser.",
 
-    "email-title": "Lähetä shortlist sähköpostitse",
-    "email-subject-label": "Nimi",
-    "email-subject-value": "Muistilista Opintopolusta",
-    "email-to-label": "Sähköpostiosoite",
-    "email-to-info": "Voit antaa useamman osoitteen pilkulla eroteltuna",
-    "email-to-validation-error": "Tarkista sähköpostiosoite",
-    "email-submit": "Lähetä",
-    "email-status-sent": "Muistilista lähetetty",
-    "email-status-error": "Lähetettäessä tapahtui virhe, yritä hetken päästä uudelleen",
+    "email-title": "Skicka minneslistan per e-post",
+    "email-subject-label": "Namn",
+    "email-subject-value": "Minneslistan från Studieinfo",
+    "email-to-label": "E-post",
+    "email-to-info": "Du kan ange flera adresser åtskilda med komma",
+    "email-to-validation-error": "Kontrollera e-postadressen",
+    "email-submit": "Skicka",
+    "email-status-sent": "Minneslistan har skickats",
+    "email-status-error": "Ett fel inträffade under skickandet, försök igen senare",
 
     "no-prerequisite-requirement": "No basic educational requirements"
 }
