@@ -1286,13 +1286,14 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             return deferred.promise;
         },
 
-        sendByEmail: function(subject, to) {
+        sendByEmail: function(subject, to, captcha) {
             $rootScope.isLoading = true;
             var deferred = $q.defer();
             var emailData = {
                 kieli: LanguageService.getLanguage(),
                 otsikko: subject.trim(),
-                vastaanottaja: to
+                vastaanottaja: to,
+                captcha: captcha
             };
             var aoIds = this.getItems();
             emailData.koids = aoIds == null ? [] : aoIds;

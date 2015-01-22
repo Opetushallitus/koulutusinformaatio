@@ -78,7 +78,7 @@ controller('AppBasketCtrl',
         $scope.sendMuistilista = function() {
             $scope.emailStatus.sending = true
             var subject = TranslationService.getTranslation('appbasket:email-subject-value') + ($scope.email.subject.length > 0 ? ": " + $scope.email.subject : "");
-            ApplicationBasketService.sendByEmail(subject, $scope.email.to).then(function(result) {
+            ApplicationBasketService.sendByEmail(subject, $scope.email.to, grecaptcha.getResponse()).then(function(result) {
                 $scope.emailStatus.ok = true;
                 $scope.emailStatus.error = false;
                 $scope.email.to = "";
