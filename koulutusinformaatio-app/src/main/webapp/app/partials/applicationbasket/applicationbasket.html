@@ -43,11 +43,11 @@
                     </tr>
                     <tr><th><label data-ki-i18n="appbasket:email-to-label"></label><span class="required">*</span></th><td><input type="text" data-ki-multiple-emails size="40" name="emailTo" data-ng-model="email.to" required/>
                         <span data-ki-i18n="appbasket:email-to-info" class="info" data-ng-show="!muistilistaEmailForm.emailTo.$error.multipleEmails"></span>
-                        <span data-ki-i18n="appbasket:email-to-validation-error" class="error" data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$error.multipleEmails"></span>
+                        <span data-ki-i18n="appbasket:email-to-validation-error" class="error delayed-show" data-ng-show="muistilistaEmailForm.emailTo.$dirty && muistilistaEmailForm.emailTo.$error.multipleEmails"></span>
                     </td></tr>
                     <tr><td></td><td><button data-ki-i18n="appbasket:email-submit" type="submit" data-ng-disabled="muistilistaEmailForm.$invalid || emailStatus.sending" class="btn btn-info"></button>
-                        <span data-ki-i18n="appbasket:email-status-sent" class="send-ok" data-ng-show="emailStatus.ok"></span>
-                        <span data-ki-i18n="appbasket:email-status-error" class="error" data-ng-show="emailStatus.error"></span>
+                        <span data-ki-i18n="appbasket:email-status-sent" class="send-ok transition-show-hide" data-ng-show="emailStatus.ok"></span>
+                        <span data-ki-i18n="appbasket:email-status-error" class="error transition-show-hide" data-ng-show="emailStatus.error"></span>
                     </td></tr>
                 </table>
             </form>
