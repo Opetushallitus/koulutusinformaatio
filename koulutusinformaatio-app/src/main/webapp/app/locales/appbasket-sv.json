@@ -8,15 +8,15 @@
     "alert-link": "Logga in",
     "alert-paragraph-2": "här eller via länken högst upp på sidan.",
 
-    "email-title": "Lähetä minneslista sähköpostitse",
-    "email-subject-label": "Nimi",
-    "email-subject-value": "Muistilista Opintopolusta",
-    "email-to-label": "Sähköpostiosoite",
-    "email-to-info": "Voit antaa useamman osoitteen pilkulla eroteltuna",
-    "email-to-validation-error": "Tarkista sähköpostiosoite",
-    "email-submit": "Lähetä",
-    "email-status-sent": "Muistilista lähetetty",
-    "email-status-error": "Lähetettäessä tapahtui virhe, yritä hetken päästä uudelleen",
+    "email-title": "Skicka minneslistan per e-post",
+    "email-subject-label": "Namn",
+    "email-subject-value": "Minneslistan från Studieinfo",
+    "email-to-label": "E-post",
+    "email-to-info": "Du kan ange flera adresser åtskilda med komma",
+    "email-to-validation-error": "Kontrollera e-postadressen",
+    "email-submit": "Skicka",
+    "email-status-sent": "Minneslistan har skickats",
+    "email-status-error": "Ett fel inträffade under skickandet, försök igen senare",
 
     "no-prerequisite-requirement": "Inget krav på grundutbildning"
 }
