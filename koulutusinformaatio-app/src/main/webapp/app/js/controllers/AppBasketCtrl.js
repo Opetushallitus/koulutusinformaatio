@@ -60,18 +60,6 @@ controller('AppBasketCtrl',
         $scope.$watch(function() { return ApplicationBasketService.isEmpty(); }, function(value) {
             $scope.basketIsEmpty = value;
         });
-
-        $scope.showAlert = function() {
-            return !$scope.hideAlert() && !$scope.isAuthenticated;
-        };
-
-        $scope.closeAlert = function() {
-            AlertService.setAlert('appbasket');
-        };
-
-        $scope.hideAlert = function() {
-            return AlertService.getAlert('appbasket');
-        };
         $scope.lang = LanguageService.getLanguage();
         $scope.images = {
             logo: 'img/opintopolku_large-' + $scope.lang + '.png'

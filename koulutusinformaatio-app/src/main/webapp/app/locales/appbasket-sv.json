@@ -1,13 +1,4 @@
 {
-    "alert-title": "Tjänster för inloggade användare",
-    "alert-paragraph-1": "Genom att identifiera dig med antingen nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort kan du ta i användning Min Studieinfo -tjänsten. I första skedet kan en identifierad användare bearbeta sin ansökningsblankett under ansökningstiden:",
-    "alert-bullet-1": "ändra prioritetsordningen för sina ansökningsönskemål",
-    "alert-bullet-2": "lägga till och ta bort ansökningsönskemål",
-    "alert-bullet-3": "få uppgifter om antagningsresultaten",
-    "alert-bullet-4": "ta emot studieplatsen",
-    "alert-link": "Logga in",
-    "alert-paragraph-2": "här eller via länken högst upp på sidan.",
-
     "email-title": "Skicka minneslistan per e-post",
     "email-subject-label": "Namn",
     "email-subject-value": "Minneslistan från Studieinfo",

@@ -1,13 +1,4 @@
 {
-    "alert-title": "Kirjautuneen käyttäjän palvelut",
-    "alert-paragraph-1": "Tunnistautumalla verkkopankkitunnuksin, mobiilivarmenteella tai sähköisellä henkilökortilla saat käyttöösi Oma Opintopolku –palvelun. Ensi vaiheessa tunnistautunut käyttäjä voi muokata hakulomakettaan hakuaikana:",
-    "alert-bullet-1": "vaihtaa hakutoiveiden järjestystä yhteishauissa",
-    "alert-bullet-2": "lisätä ja poistaa hakutoiveita",
-    "alert-bullet-3": "saada tietoa valintojen tuloksista",
-    "alert-bullet-4": "ottaa opiskelupaikan vastaan",
-    "alert-link": "Kirjaudu sisään",
-    "alert-paragraph-2": "tästä tai sivun yläreunan linkistä.",
-
     "email-title": "Lähetä muistilista sähköpostitse",
     "email-subject-label": "Nimi",
     "email-subject-value": "Muistilista Opintopolusta",

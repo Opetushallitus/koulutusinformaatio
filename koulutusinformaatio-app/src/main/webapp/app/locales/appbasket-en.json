@@ -1,13 +1,4 @@
 {
-    "alert-title": "Services for registered users",
-    "alert-paragraph-1": "1. <strong>Applicants with access to Finnish internet banking codes, Finnish electronic ID-card or mobile certificate </strong>– you can use the registration function on this site and you can use these extra services:",
-    "alert-bullet-1": "edit your application form during the application period: change the order of preference of study programme choices",
-    "alert-bullet-2": "add and remove study programme choices",
-    "alert-bullet-3": "get information about results of the selection process and the possibility to",
-    "alert-bullet-4": "accept a study place electronically",
-    "alert-link": "",
-    "alert-paragraph-2": "2. Applicants <strong>with NO access</strong> to Finnish internet banking codes, Finnish electronic ID-card or mobile certificate – it is not possible for you to use the login/registration feature, but you can submit your application directly on this page. You can access the application form from each programme and this page. Fill in the application step by step and send it without closing your browser.",
-
     "email-title": "Send the shortlist by e-mail",
     "email-subject-label": "Name",
     "email-subject-value": "The shortlist from Studyinfo",
