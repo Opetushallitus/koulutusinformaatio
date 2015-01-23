@@ -31,6 +31,8 @@ module.exports = function(config) {
             appPath + 'app/lib/angular/1.2.13/angular-route.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-sanitize.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-touch.min.js',
+            appPath + 'app/lib/angular/1.2.13/angular-animate.min.js',
+            appPath + 'app/lib/angular-recaptcha/2.1.1/angular-recaptcha.min.js',
             appPath + 'app/lib/underscore/*.js',
             appPath + 'app/lib/angular-bootstrap/*.js',
             //appPath + 'app/lib/angulartics/*.js',
@@ -48,7 +50,6 @@ module.exports = function(config) {
             appPath + 'app/partials/**/*.html',
             appPath + 'app/js/directives/AppBasket/**/*.html',
             appPath + 'app/js/directives/SearchResult/**/*.html',
-
             testPath + 'test/lib/angular/angular-mocks.js',
             testPath + 'test/unit/**/*.js',
         ],
