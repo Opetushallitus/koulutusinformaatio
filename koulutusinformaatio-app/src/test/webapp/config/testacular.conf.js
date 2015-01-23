@@ -10,6 +10,7 @@ module.exports = function(config) {
             'karma-sinon',
             'karma-ng-html2js-preprocessor',
             'karma-chrome-launcher',
+            'karma-phantomjs-launcher',
             'karma-junit-reporter',
             'karma-coverage'
         ],
@@ -53,7 +54,7 @@ module.exports = function(config) {
             testPath + 'test/lib/angular/angular-mocks.js',
             testPath + 'test/unit/**/*.js',
         ],
-        browsers: ['Chrome'],
+        browsers: ['Chrome', 'PhantomJS'],
         logLevel: config.LOG_DEBUG,
         autoWatch: true,
         singleRun: false,
