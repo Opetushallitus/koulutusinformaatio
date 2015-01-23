@@ -32,7 +32,7 @@
                              data-ng-model="email.captcha"
                              data-key="'6Le52AATAAAAAITOklTExuzxFCx99y1k4Okuv9pF'"
                         ></div>
-                        <button data-ki-i18n="appbasket:email-submit" type="submit" data-ng-disabled="muistilistaEmailForm.$invalid || emailStatus.sending" class="btn btn-info"></button>
+                        <button data-ki-i18n="appbasket:email-submit" type="submit" data-ng-disabled="muistilistaEmailForm.$invalid || emailStatus.sending || captchaNotSet()" class="btn btn-info"></button>
                         <span data-ki-i18n="appbasket:email-status-sent" class="send-ok transition-show-hide" data-ng-show="emailStatus.ok"></span>
                         <span data-ki-i18n="appbasket:email-status-error" class="error transition-show-hide" data-ng-show="emailStatus.error"></span>
                     </td></tr>

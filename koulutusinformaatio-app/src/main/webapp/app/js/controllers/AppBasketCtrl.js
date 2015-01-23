@@ -42,6 +42,9 @@ controller('AppBasketCtrl',
             "error": false,
             "ok": false
         };
+        $scope.captchaNotSet = function() {
+            return !$scope.email.captcha || $scope.email.captcha.length == 0;
+        }
 
         // load app basket content only if it contains items
         if (!ApplicationBasketService.isEmpty()) {
@@ -66,25 +69,26 @@ controller('AppBasketCtrl',
         };
 
         $scope.sendMuistilista = function() {
-            $scope.emailStatus.sending = true
+            $scope.emailStatus.sending = true;
             var subject = TranslationService.getTranslation('appbasket:email-subject-value') + ($scope.email.subject.length > 0 ? ": " + $scope.email.subject : "");
             ApplicationBasketService.sendByEmail(subject, $scope.email.to, $scope.email.captcha).then(function(result) {
                 $scope.emailStatus.ok = true;
                 $scope.emailStatus.error = false;
                 $scope.email.to = "";
-                $timeout( function() {
-                    $scope.emailStatus.sending = false
-                    $scope.emailStatus.ok = false;
-                }, 5000);
+                $timeout(reinitEmailStatus, 5000);
             },
             function(error) {
                 $scope.emailStatus.ok = false;
                 $scope.emailStatus.error = true;
-                $timeout( function() {
-                    $scope.emailStatus.sending = false
-                    $scope.emailStatus.error = false;
-                }, 5000);
+                $timeout(reinitEmailStatus, 5000);
             });
+        };
+
+        function reinitEmailStatus() {
+            $scope.emailStatus.sending = false;
+            $scope.emailStatus.error = false;
+            $scope.email.captcha = "";
+            recaptcha.reload();
         }
 
 }]);
