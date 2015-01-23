@@ -57,7 +57,7 @@ public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
 
         HttpURLConnection conn = null;
         try {
-            URL orgUrl = new URL(String.format("%s/%s", this.organisaatioResourceUrl, oid));
+            URL orgUrl = new URL(String.format("%s/%s?includeImage=true", this.organisaatioResourceUrl, oid));
             conn = (HttpURLConnection) (orgUrl.openConnection());
             conn.setRequestMethod(SolrUtil.SolrConstants.GET);
             conn.connect();
@@ -81,7 +81,7 @@ public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
         Client clientWithJacksonSerializer = Client.create(cc);
         //komoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komo");
         
-        WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/%s/children", this.organisaatioResourceUrl, parentOid));
+        WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/%s/children?includeImage=true", this.organisaatioResourceUrl, parentOid));
         return orgRes.accept(JSON_UTF8)
                 .get(new GenericType<List<OrganisaatioRDTO>>() {
                 });

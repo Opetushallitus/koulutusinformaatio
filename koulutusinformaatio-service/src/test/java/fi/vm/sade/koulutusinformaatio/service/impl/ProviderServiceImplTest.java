@@ -78,13 +78,13 @@ public class ProviderServiceImplTest {
 
     @Before
     public void setup() throws IOException, KoodistoException, ResourceNotFoundException {
-        stubFor(get(urlEqualTo("/" + CHILD_ORGANISAATIO_OID))
+        stubFor(get(urlEqualTo("/" + CHILD_ORGANISAATIO_OID + "?includeImage=true"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(CHILD_ORGANISAATIO_JSON))
         );
-        stubFor(get(urlEqualTo("/" + PARENT_ORGANISAATIO_OID))
+        stubFor(get(urlEqualTo("/" + PARENT_ORGANISAATIO_OID + "?includeImage=true"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
