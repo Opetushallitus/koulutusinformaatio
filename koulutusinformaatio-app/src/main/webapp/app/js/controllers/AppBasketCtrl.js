@@ -30,7 +30,7 @@ controller('AppBasketCtrl',
         $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
 
         $scope.$watch(function() { return ApplicationBasketService.isEmpty(); }, function(value) {
-            $scope.emailSendingEnabled = ApplicationBasketService.isEmpty() == false && $routeParams.emailSendingEnabled == true;
+            $scope.emailSendingEnabled = ApplicationBasketService.isEmpty() == false;
         });
         $scope.email = {
             "subject": "",
