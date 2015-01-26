@@ -133,7 +133,7 @@ var kiApp = angular.module('kiApp',
     AIKUISLUKIO: 'aikuislukio'
 })
 
-// initialize i18n library
+// initialize i18n and recaptcha libraries
 .run(['$location', '$rootScope', 'LanguageService', 'HostResolver', function($location, $rootScope, LanguageService, HostResolver) {
     var defaultName = 'i18next';
     var currentHost = $location.host();
@@ -156,6 +156,12 @@ var kiApp = angular.module('kiApp',
 
     // set global flag when ui language is English
     $rootScope.isStudyInfo = LanguageService.getLanguage() === 'en';
+
+    var recaptchaElem = document.createElement("script");
+    recaptchaElem.src =  "https://www.google.com/recaptcha/api.js?onload=vcRecapthaApiLoaded&render=explicit&hl=" + LanguageService.getLanguage();
+    recaptchaElem.defer = true;
+    recaptchaElem.async = true;
+    document.getElementsByTagName("head")[0].appendChild(recaptchaElem);
 }])
 
 // create config object
