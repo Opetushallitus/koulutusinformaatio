@@ -54,7 +54,7 @@ module.exports = function(config) {
             testPath + 'test/lib/angular/angular-mocks.js',
             testPath + 'test/unit/**/*.js',
         ],
-        browsers: ['Chrome', 'PhantomJS'],
+        browsers: ['Chrome'],
         logLevel: config.LOG_DEBUG,
         autoWatch: true,
         singleRun: false,

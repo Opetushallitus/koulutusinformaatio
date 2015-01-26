@@ -16,11 +16,11 @@ Go to
 
 `koulutusinformaatio-app/src/test/webapp/scripts`
 
-Start karma and run all tests on chrome and PhantomJS with
+Start karma server and run all tests automatically after changes on chrome:
 
 `test.sh`
 
-or run all tests against PhantomJS and stop with
+or run all tests once against PhantomJS (like CI):
 
 `test.sh --single-run --browsers PhantomJS`
 
