@@ -10,6 +10,20 @@ Then you can run the application:
 
 And go to http://localhost:8080/koulutusinformaatio-app/
 
+### Karma js tests
+
+Go to
+
+`koulutusinformaatio-app/src/test/webapp/scripts`
+
+Start karma and run all tests on chrome and PhantomJS with
+
+`test.sh`
+
+or run all tests against PhantomJS and stop with
+
+`test.sh --single-run --browsers PhantomJS`
+
 ### Installing Solr
 
 The easiest way to run the application is to point it to use external Solr and Mongo. However, if you want to run Solr locally, you need to do the following.
