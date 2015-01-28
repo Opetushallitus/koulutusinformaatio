@@ -150,16 +150,6 @@ directive('kiAbsoluteLink', function() {
     };
  }]).
 
- /**
- *  Creates and controls prerequisite selection
- */
- directive('kiPrerequisiteSelectionRibbon', [function() {
-    return {
-        restrict: 'E,A',
-        templateUrl: 'templates/prerequisiteRibbon.html'
-    };
- }]).
-
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
  */
