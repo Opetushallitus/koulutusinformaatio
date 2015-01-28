@@ -147,18 +147,12 @@
             changeLOISelection(loi);
         }
         
-        
-
         if ($scope.lo.containsPseudoChildLOS) {
-            console.log(loi.applicationSystems[0].applicationOptions[0].childRefs[0].id);
- 
-//            $filter('filter')($scope.lo.lois[0].applicationSystems[0].applicationOptions[0]);
             ChildLOService.query({
-                id : loi.applicationSystems[0].applicationOptions[0].childRefs[0].id,
+                id : $scope.selectedAs.children[0].losId,
                 lang : $scope.lo.translationLanguage
             }).then(function(loChildResult) {
-                console.log(loChildResult);
-                $scope.pseudoChild = loChildResult;
+                $scope.pseudoChild = loChildResult.lo.lois[0];
             });
         }
     };
