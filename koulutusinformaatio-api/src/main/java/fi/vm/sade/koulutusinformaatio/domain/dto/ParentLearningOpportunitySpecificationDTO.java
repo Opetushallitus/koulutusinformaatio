@@ -40,6 +40,7 @@ public class ParentLearningOpportunitySpecificationDTO {
     private List<ParentLearningOpportunityInstanceDTO> lois = new ArrayList<ParentLearningOpportunityInstanceDTO>();
     private String creditValue;
     private String creditUnit;
+    private boolean containsPseudChildLOS = false;
 
     private String translationLanguage;
     
@@ -172,5 +173,13 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
         this.additionalProviders = additionalProviders;
+    }
+    
+    public void setContainsPseudChildLOS(boolean containsPseudChildLOS) {
+        this.containsPseudChildLOS = containsPseudChildLOS;
+    }
+    
+    public boolean isContainsPseudChildLOS() {
+        return containsPseudChildLOS;
     }
 }

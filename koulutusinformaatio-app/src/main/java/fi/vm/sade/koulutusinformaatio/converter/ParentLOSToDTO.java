@@ -60,6 +60,8 @@ public final class ParentLOSToDTO {
             parent.setTopics(CodeToDTO.convertAll(parentLOS.getTopics(), uiLang));
         }
         
+        parent.setContainsPseudChildLOS(true);
+        
         return parent;
     }
 }
