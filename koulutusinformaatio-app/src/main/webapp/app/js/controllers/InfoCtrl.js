@@ -1,7 +1,7 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityPictureService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, VirkailijaLanguageService, _) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityPictureService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, ChildLOService, LanguageService, VirkailijaLanguageService, _) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
@@ -126,6 +126,11 @@
     	}
     }
 
+    var getPrerequisite = function () {
+        // use hash if present
+        return $location.hash() ? $location.hash() : $location.search().prerequisite
+    }
+    
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
         setMetaDescription($scope.parent, $scope.lo);
@@ -133,15 +138,28 @@
 
         setRecommendationFields();
         
-        // use hash if present
-        var hash = $location.hash() ? $location.hash() : $location.search().prerequisite;
-        var loi = getLOIByPrerequisite(hash);
+        var loi = getLOIByPrerequisite(getPrerequisite());
         
         if (loi) {
             changeLOISelection(loi);
         } else {
             loi = getFirstLOI();
             changeLOISelection(loi);
+        }
+        
+        
+
+        if ($scope.lo.containsPseudoChildLOS) {
+            console.log(loi.applicationSystems[0].applicationOptions[0].childRefs[0].id);
+ 
+//            $filter('filter')($scope.lo.lois[0].applicationSystems[0].applicationOptions[0]);
+            ChildLOService.query({
+                id : loi.applicationSystems[0].applicationOptions[0].childRefs[0].id,
+                lang : $scope.lo.translationLanguage
+            }).then(function(loChildResult) {
+                console.log(loChildResult);
+                $scope.pseudoChild = loChildResult;
+            });
         }
     };
 
