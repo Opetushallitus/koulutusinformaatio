@@ -16,6 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.List;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
@@ -60,8 +66,18 @@ public final class ParentLOSToDTO {
             parent.setTopics(CodeToDTO.convertAll(parentLOS.getTopics(), uiLang));
         }
         
-        parent.setContainsPseudoChildLOS(true);
+        parent.setContainsPseudoChildLOS(containsPseudoChild(parentLOS.getChildren()));
         
         return parent;
+    }
+
+    private static boolean containsPseudoChild(List<ChildLOS> children) {
+        return Iterables.tryFind(children, new Predicate<ChildLOS>() {
+
+            @Override
+            public boolean apply(ChildLOS input) {
+                return input.isPseudo();
+            }
+        }).isPresent();
     }
 }
