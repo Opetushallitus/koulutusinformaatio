@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
@@ -28,6 +30,7 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
     private String losId;
     private String name;
     private String qualification;
+    private List<String> qualifications;
     private CodeDTO prerequisite;
 
     public String getId() {
@@ -76,5 +79,13 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
             return 0;
         }
         return this.name.compareTo(childLOIRefDTO.name);
+    }
+
+    public List<String> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<String> qualifications) {
+        this.qualifications = qualifications;
     }
 }

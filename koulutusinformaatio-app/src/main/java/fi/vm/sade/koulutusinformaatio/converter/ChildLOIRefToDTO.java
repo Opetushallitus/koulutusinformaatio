@@ -53,6 +53,7 @@ public final class ChildLOIRefToDTO {
         child.setLosId(ref.getLosId());
         child.setPrerequisite(CodeToDTO.convert(ref.getPrerequisite(), lang));
         child.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getQualification(), lang));
+        child.setQualifications(ConverterUtil.getTextsByLanguage(ref.getQualifications(), lang));
         if (!Strings.isNullOrEmpty(ref.getNameByTeachingLang())) {
             child.setName(ref.getNameByTeachingLang());
         } else {

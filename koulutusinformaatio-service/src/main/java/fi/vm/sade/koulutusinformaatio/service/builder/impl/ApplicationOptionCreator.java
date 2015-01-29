@@ -38,10 +38,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
@@ -215,10 +212,19 @@ public class ApplicationOptionCreator extends ObjectCreator {
             cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), komoto.getTarjoajaOid()));
             cRef.setName(koodistoService.searchFirstShortName(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
             cRef.setQualification(koodistoService.searchFirstName(komoByKomotoOID.getTutkintonimikeUri()));
+            cRef.setQualifications(getQualificationsFromKomotoDTO(k));
             cRef.setPrerequisite(prerequisite);
             ao.getChildLOIRefs().add(cRef);
         }
         return ao;
+    }
+
+    private List<I18nText> getQualificationsFromKomotoDTO(KomotoDTO komotoDTO) throws KoodistoException {
+        List<I18nText> qualifications = new ArrayList<I18nText>();
+        for (String tutkintonimikeUri : komotoDTO.getTutkintonimikeUris()) {
+            qualifications.add(koodistoService.searchFirstName(tutkintonimikeUri));
+        }
+        return qualifications;
     }
 
     private boolean isAthleteEducation(final String aoIdentifier) {
