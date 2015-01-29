@@ -26,6 +26,7 @@ import java.util.List;
 public class ChildLOS extends InstantiatedLOS<ChildLOI> {
 
     private I18nText qualification;     // tutkintonimike
+    private List<I18nText> qualifications;     // tutkintonimikkeet
     private ParentLOSRef parent;
     private List<ChildLOI> lois;
     private boolean isPseudo;
@@ -60,5 +61,13 @@ public class ChildLOS extends InstantiatedLOS<ChildLOI> {
 
     public void setPseudo(boolean isPseudo) {
         this.isPseudo = isPseudo;
+    }
+
+    public List<I18nText> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<I18nText> qualifications) {
+        this.qualifications = qualifications;
     }
 }

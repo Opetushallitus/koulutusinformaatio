@@ -42,6 +42,8 @@ public class ChildLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity qualification;
     @Embedded
+    private List<I18nTextEntity> qualifications;
+    @Embedded
     private ParentLOSRefEntity parent;
     @Embedded
     private List<ChildLearningOpportunityInstanceEntity> lois;
@@ -120,5 +122,13 @@ public class ChildLearningOpportunitySpecificationEntity {
 
     public void setPseudo(boolean isPseudo) {
         this.isPseudo = isPseudo;
+    }
+
+    public List<I18nTextEntity> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<I18nTextEntity> qualifications) {
+        this.qualifications = qualifications;
     }
 }
