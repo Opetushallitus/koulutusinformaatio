@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class ChildLOIRef {
     private I18nText name;
     private String nameByTeachingLang;
     private I18nText qualification;
+    private List<I18nText> qualifications;
     private Code prerequisite;
 
     public String getId() {
@@ -85,5 +87,13 @@ public class ChildLOIRef {
 
     public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<I18nText> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<I18nText> qualifications) {
+        this.qualifications = qualifications;
     }
 }

@@ -25,12 +25,12 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -51,6 +51,12 @@ public class ChildLOIRefToDTOTest {
         Map<String, String> nameTranslations = Maps.newHashMap();
         nameTranslations.put("fi", "ref name");
         ref.setName(new I18nText(nameTranslations));
+
+        List<I18nText> qualifications = new ArrayList<I18nText>();
+        I18nText qualification = new I18nText();
+        qualification.put("fi", "Kalanviljelijä");
+        qualifications.add(qualification);
+        ref.setQualifications(qualifications);
     }
 
     @Test
@@ -62,6 +68,7 @@ public class ChildLOIRefToDTOTest {
         assertNotNull(dto.getPrerequisite());
         assertEquals("qualificationFi", dto.getQualification());
         assertEquals("name by teaching lang", dto.getName());
+        assertTrue(dto.getQualifications().contains("Kalanviljelijä"));
     }
 
     @Test

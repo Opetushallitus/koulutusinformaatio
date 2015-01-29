@@ -35,6 +35,8 @@ public class ChildLOIRefEntity {
     @Embedded
     private I18nTextEntity qualification;
     @Embedded
+    private List<I18nTextEntity> qualifications;
+    @Embedded
     private CodeEntity prerequisite;
 
     public ChildLOIRefEntity() {}
@@ -93,5 +95,13 @@ public class ChildLOIRefEntity {
 
     public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<I18nTextEntity> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<I18nTextEntity> qualifications) {
+        this.qualifications = qualifications;
     }
 }
