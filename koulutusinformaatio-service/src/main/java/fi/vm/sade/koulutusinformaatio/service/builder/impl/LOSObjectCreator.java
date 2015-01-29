@@ -159,14 +159,17 @@ public class LOSObjectCreator extends ObjectCreator {
         childLOS.setType(TarjontaConstants.TYPE_CHILD);
         childLOS.setId(childLOSId);
         Code name = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
-        childLOS.setName(name.getName());
-        childLOS.setShortTitle(name.getShortTitle());
+        if(name != null) {
+            childLOS.setName(name.getName());
+            childLOS.setShortTitle(name.getShortTitle());
+        }
         childLOS.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
         childLOS.setGoals(getI18nText(childKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
+        childLOS.setPseudo(childKomo.isPseudo());
+
         // strip version out of education code uri
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
         childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT));
-
 
         return childLOS;
     }

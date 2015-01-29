@@ -28,6 +28,7 @@ public class ChildLOS extends InstantiatedLOS<ChildLOI> {
     private I18nText qualification;     // tutkintonimike
     private ParentLOSRef parent;
     private List<ChildLOI> lois;
+    private boolean isPseudo;
 
     public I18nText getQualification() {
         return qualification;
@@ -51,5 +52,13 @@ public class ChildLOS extends InstantiatedLOS<ChildLOI> {
 
     public void setLois(List<ChildLOI> lois) {
         this.lois = lois;
+    }
+
+    public boolean isPseudo() {
+        return isPseudo;
+    }
+
+    public void setPseudo(boolean isPseudo) {
+        this.isPseudo = isPseudo;
     }
 }

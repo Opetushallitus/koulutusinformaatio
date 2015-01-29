@@ -46,6 +46,8 @@ public class ChildLearningOpportunitySpecificationEntity {
     @Embedded
     private List<ChildLearningOpportunityInstanceEntity> lois;
 
+    private boolean isPseudo;
+
     public ChildLearningOpportunitySpecificationEntity() {}
 
     public String getId() {
@@ -110,5 +112,13 @@ public class ChildLearningOpportunitySpecificationEntity {
 
     public void setLois(List<ChildLearningOpportunityInstanceEntity> lois) {
         this.lois = lois;
+    }
+
+    public boolean isPseudo() {
+        return isPseudo;
+    }
+
+    public void setPseudo(boolean isPseudo) {
+        this.isPseudo = isPseudo;
     }
 }

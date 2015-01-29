@@ -59,10 +59,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
     private EducationObjectCreator educationObjectCreator;
     private ApplicationSystemCreator applicationSystemCreator;
 
-    protected ApplicationOptionCreator(KoodistoService koodistoService, 
-                                        TarjontaRawService tarjontaRawService,
-                                        OrganisaatioRawService organisaatioRawService,
-                                        ParameterService parameterService) {
+    protected ApplicationOptionCreator(KoodistoService koodistoService,
+                                       TarjontaRawService tarjontaRawService,
+                                       OrganisaatioRawService organisaatioRawService,
+                                       ParameterService parameterService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.tarjontaRawService = tarjontaRawService;
@@ -70,7 +70,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         this.educationObjectCreator = new EducationObjectCreator(koodistoService, organisaatioRawService);
         this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService, parameterService);
     }
-    
+
     public ApplicationSystemCreator getApplicationSystemCreator() {
         return applicationSystemCreator;
     }
@@ -85,7 +85,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setName(koodistoService.searchFirstName(hakukohdeDTO.getHakukohdeNimiUri()));
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
         } catch (Exception ex) {
-            LOG.warn("Problem with application option name generation: " + ao.getId() + " name: " + hakukohdeDTO.getHakukohdeNimiUri() );
+            LOG.warn("Problem with application option name generation: " + ao.getId() + " name: " + hakukohdeDTO.getHakukohdeNimiUri());
         }
         if (ao.getName() == null) {
             ao.setName(createI18Name(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -121,10 +121,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohdeDTO.getHakuaikaAlkuPvm());
             ao.setApplicationEndDate(hakukohdeDTO.getHakuaikaLoppuPvm());
-        } else if (hakuDTO != null 
-                    && hakuDTO.getHakuaikas() != null 
-                    && !hakuDTO.getHakuaikas().isEmpty()) {
-            HakuaikaRDTO aoHakuaika =  hakuDTO.getHakuaikas().get(0);
+        } else if (hakuDTO != null
+                && hakuDTO.getHakuaikas() != null
+                && !hakuDTO.getHakuaikas().isEmpty()) {
+            HakuaikaRDTO aoHakuaika = hakuDTO.getHakuaikas().get(0);
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
             I18nText names = new I18nText();
@@ -140,7 +140,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
     private I18nText createI18Name(String hakukohdeNimiUri) {
         I18nText name = new I18nText();
-        Map<String,String> transls = new HashMap<String,String>();
+        Map<String, String> transls = new HashMap<String, String>();
         transls.put("fi", hakukohdeNimiUri);
         transls.put("sv", hakukohdeNimiUri);
         transls.put("en", hakukohdeNimiUri);
@@ -152,7 +152,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                                                                       Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
         LOG.debug(String.format("Resolving application options from komoto %s", komoto.getOid()));
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
-        for (String hakukohdeOID: hakukohdeOIDs) {
+        for (String hakukohdeOID : hakukohdeOIDs) {
             HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(hakukohdeOID);
             HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(hakukohdeOID);
 
@@ -169,7 +169,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
             applicationOptions.add(
                     createVocationalApplicationOption(hakukohdeDTO, hakuDTO, komoto, prerequisite, educationCodeUri, educationType));
-            
+
         }
 
         return applicationOptions;
@@ -186,15 +186,22 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (OidRDTO s : komotosByHakukohdeOID) {
             KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
 
-            if (not(
-                    and(
-                            CreatorUtil.komoPublished,
-                            CreatorUtil.komoHasKoulutusohjelmaKoodi,
-                            CreatorUtil.komoHasTutkintonimike
-                            )
-                    ).apply(komoByKomotoOID)) {
-                LOG.debug(String.format("Skipping invalid child komo %s", komoByKomotoOID.getOid()));
-                continue;
+            if (!komoByKomotoOID.isPseudo()) {
+                if (not(
+                        and(
+                                CreatorUtil.komoPublished,
+                                CreatorUtil.komoHasKoulutusohjelmaKoodi,
+                                CreatorUtil.komoHasTutkintonimike
+                        )
+                ).apply(komoByKomotoOID)) {
+                    LOG.debug(String.format("Skipping invalid child komo %s", komoByKomotoOID.getOid()));
+                    continue;
+                }
+            } else {
+                if (not(CreatorUtil.komoPublished).apply(komoByKomotoOID)) {
+                    LOG.debug(String.format("Skipping invalid child komo %s", komoByKomotoOID.getOid()));
+                    continue;
+                }
             }
 
             KomotoDTO k = tarjontaRawService.getKomoto(s.getOid());
@@ -235,10 +242,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
     }
 
     public List<ApplicationOption> createUpperSecondaryApplicationOptions(List<String> hakukohdeOIDs, KomotoDTO komoto,
-                                                                      Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
+                                                                          Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
         LOG.debug(String.format("Resolving application options from komoto %s", komoto.getOid()));
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
-        for (String hakukohdeOID: hakukohdeOIDs) {
+        for (String hakukohdeOID : hakukohdeOIDs) {
             HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(hakukohdeOID);
             HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(hakukohdeOID);
 
@@ -260,7 +267,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
     }
 
     public ApplicationOption createUpperSecondaryApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
-                                                      KomotoDTO komoto, Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
+                                                                   KomotoDTO komoto, Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
         ApplicationOption ao = createApplicationOption(hakukohdeDTO, hakuDTO, komoto, prerequisite, educationCodeUri, educationType);
         //ao.setEducationTypeUri(SolrConstants.ED_TYPE_LUKIO_SHORT);
         ao.setExams(educationObjectCreator.createUpperSecondaryExams(hakukohdeDTO.getValintakoes()));
@@ -310,16 +317,16 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
-    public ApplicationOption createV1EducationApplicationOption(StandaloneLOS los, 
-                                                                    HakukohdeV1RDTO hakukohde, 
-                                                                    HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
+    public ApplicationOption createV1EducationApplicationOption(StandaloneLOS los,
+                                                                HakukohdeV1RDTO hakukohde,
+                                                                HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
 
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
         if (hakukohde.getHakukohteenNimet() != null) {
             ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet()));
         } else if (hakukohde.getHakukohteenNimiUri() != null) {
-            
+
             List<I18nText> hakKohdeNames = this.koodistoService.searchNames(hakukohde.getHakukohteenNimiUri());
             if (hakKohdeNames != null && !hakKohdeNames.isEmpty()) {
                 ao.setName(hakKohdeNames.get(0));
@@ -340,25 +347,25 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setKaksoistutkinto(false);
         ao.setVocational(false);
         ao.setEducationCodeUri(los.getEducationCode().getUri());
-        
+
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
         los.getPrerequisites().addAll(koodistoService.searchMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
-       
-        ApplicationSystem as = applicationSystemCreator.createHigherEdApplicationSystem(haku); 
-                
+
+        ApplicationSystem as = applicationSystemCreator.createHigherEdApplicationSystem(haku);
+
         HakuaikaV1RDTO aoHakuaika = null;
-        
+
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
                 DateRange range = new DateRange();
                 range.setStartDate(ha.getAlkuPvm());
                 range.setEndDate(ha.getLoppuPvm());
                 as.getApplicationDates().add(range);
-                
+
                 if (ha.getHakuaikaId().equals(hakukohde.getHakuaikaId())) {
                     aoHakuaika = ha;
                 }
-                
+
             }
         }
         ao.setApplicationSystem(as);
@@ -367,11 +374,11 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
 
         ao.setTeachingLanguages(extractCodeVales(los.getTeachingLanguages()));
-        
+
         ao.setSpecificApplicationDates(hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohde.getHakuaikaAlkuPvm());
-            ao.setApplicationEndDate(hakukohde.getHakuaikaLoppuPvm());   
+            ao.setApplicationEndDate(hakukohde.getHakuaikaLoppuPvm());
         } else if (aoHakuaika != null) {
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
@@ -382,7 +389,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setApplicationPeriodName(super.getI18nText(haku.getHakuaikas().get(0).getNimet()));
             ao.setInternalASDateRef(haku.getHakuaikas().get(0).getHakuaikaId());
         }
-        
+
         if (aoHakuaika != null && aoHakuaika.getNimet() != null && !aoHakuaika.getNimet().isEmpty()) {
             ao.setApplicationPeriodName(super.getI18nText(aoHakuaika.getNimet()));
         }
@@ -392,7 +399,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
         if (hakukohde.getHakukohteenLiitteet() != null && !hakukohde.getHakukohteenLiitteet().isEmpty()) {
             for (HakukohdeLiiteV1RDTO liite : hakukohde.getHakukohteenLiitteet()) {
-                
+
                 ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
                 attach.setDueDate(liite.getToimitettavaMennessa());
                 attach.setUsedInApplicationForm(liite.isKaytetaanHakulomakkeella());
@@ -416,8 +423,6 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         return vals;
     }
-
-
 
 
 }
