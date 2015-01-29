@@ -30,6 +30,7 @@ public class BasicLOI extends LOI {
     private List<Code> teachingLanguages;
     private List<I18nText> formOfEducation;
     private Date startDate;
+    private List<Date> startDates;
     private I18nText internationalization;
     private I18nText cooperation;
     private I18nText content;
@@ -93,6 +94,13 @@ public class BasicLOI extends LOI {
         this.startDate = startDate;
     }
 
+    public List<Date> getStartDates() {
+        return startDates;
+    }
+
+    public void setStartDates(List<Date> startDates) {
+        this.startDates = startDates;
+    }
     public I18nText getInternationalization() {
         return internationalization;
     }

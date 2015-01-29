@@ -719,7 +719,7 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 /**
  * Transformer for child LO data
  */
-service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '_', function(UtilityService, KiSorter, $rootScope, _) {
+service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '$filter', '_', function(UtilityService, KiSorter, $rootScope, $filter, _) {
 
     return {
         transform: function(result) {
@@ -751,6 +751,10 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '_', 
                     if (loi.startDate) {
                     	var startDate = new Date(loi.startDate);
                     	loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                    }
+                    for (var dateIndex in loi.startDates) {
+                        var date = $filter('date')(loi.startDates[dateIndex], 'd.M.yyyy');
+                        loi.startDates[dateIndex] = date;
                     }
                     loi.teachingLanguage = _.first(loi.teachingLanguages);
                     loi.formsOfTeaching = loi.formOfTeaching;

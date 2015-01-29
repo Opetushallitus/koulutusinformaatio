@@ -23,6 +23,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private List<CodeEntity> teachingLanguages;
     private Date startDate;
     @Embedded
+    private List<Date> startDates;
+    @Embedded
     private List<I18nTextEntity> formOfEducation;
     @Embedded
     private Map<String, String> webLinks;
@@ -119,6 +121,14 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+    
+    public List<Date> getStartDates() {
+        return startDates;
+    }
+
+    public void setStartDates(List<Date> startDates) {
+        this.startDates = startDates;
     }
 
     public List<I18nTextEntity> getFormOfEducation() {

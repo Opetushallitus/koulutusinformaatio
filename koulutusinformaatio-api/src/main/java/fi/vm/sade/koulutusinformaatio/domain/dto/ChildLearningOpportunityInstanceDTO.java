@@ -18,6 +18,7 @@ public class ChildLearningOpportunityInstanceDTO {
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
     private List<ChildLOIRefDTO> related = new ArrayList<ChildLOIRefDTO>();
     private Date startDate;
+    private List<Date> startDates;
     private List<String> formOfEducation = new ArrayList<String>();
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
@@ -67,6 +68,14 @@ public class ChildLearningOpportunityInstanceDTO {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public List<Date> getStartDates() {
+        return startDates;
+    }
+
+    public void setStartDates(List<Date> startDates) {
+        this.startDates = startDates;
     }
 
     public List<String> getFormOfEducation() {

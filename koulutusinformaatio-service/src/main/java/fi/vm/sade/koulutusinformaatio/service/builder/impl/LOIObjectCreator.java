@@ -86,6 +86,7 @@ public class LOIObjectCreator extends ObjectCreator {
         basicLOI.setFormOfTeaching(koodistoService.searchNamesMultiple(komoto.getOpetusmuodotUris()));
         basicLOI.setTeachingLanguages(koodistoService.searchMultiple(komoto.getOpetuskieletUris()));
         basicLOI.setStartDate(komoto.getKoulutuksenAlkamisDate());
+        basicLOI.setStartDates(komoto.getKoulutuksenAlkamisDates());
         if (komoto.getKoulutuksenAlkamisvuosi() != null) {
             basicLOI.setStartYear(komoto.getKoulutuksenAlkamisvuosi());
         }

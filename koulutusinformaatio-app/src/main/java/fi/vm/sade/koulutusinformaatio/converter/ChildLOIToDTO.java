@@ -25,6 +25,7 @@ public final class ChildLOIToDTO {
             dto.setId(childLOI.getId());
             dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(childLOI.getAvailableTranslationLanguages(), uiLang));
             dto.setStartDate(childLOI.getStartDate());
+            dto.setStartDates(childLOI.getStartDates());
             dto.setStartYear(childLOI.getStartYear());
             dto.setStartSeason(ConverterUtil.getTextByLanguageUseFallbackLang(childLOI.getStartSeason(), uiLang));
             dto.setTeachingLanguages(CodeToName.convertAll(childLOI.getTeachingLanguages(), uiLang));

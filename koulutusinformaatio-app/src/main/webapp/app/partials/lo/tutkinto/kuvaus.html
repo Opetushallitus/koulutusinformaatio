@@ -16,12 +16,22 @@
             <ul class="list-unstyled">
                 <li>
                     <span data-ki-i18n="education-starts" data-show-colon="true"></span>
-                    <strong data-ng-show="pseudoChild.startDate">{{pseudoChild.startDate}}</strong>
-                    <strong data-ng-hide="pseudoChild.startDate">{{pseudoChild.startSeason}} {{pseudoChild.startYear}}</strong>
+                    <span data-ng-show="pseudoChild.startDates">
+                        <strong>{{pseudoChild.startDates.join(', ')}}</strong>
+                    </span>
+                    <strong data-ng-hide="pseudoChild.startDates">{{pseudoChild.startSeason}} {{pseudoChild.startYear}}</strong>
                 </li>
                 <li>
                     <span data-ki-i18n="language-of-instruction" data-show-colon="true"></span>
                     <strong>{{pseudoChild.teachingLanguage}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="time-of-education" data-show-colon="true"></span>
+                    <strong>{{pseudoChild.timeOfTeaching}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="style-of-education" data-show-colon="true"></span>
+                    <strong>{{pseudoChild.styleOfTeaching}}</strong>
                 </li>
                 <li>
                     <span data-ki-i18n="form-of-education" data-show-colon="true"></span>
@@ -34,6 +44,10 @@
                 <li>
                     <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
                     <strong>{{pseudoChild.plannedDuration}} {{pseudoChild.plannedDurationUnit}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="prerequisite-education" data-show-colon="true"></span>
+                    <strong>{{pseudoChild.prerequisite.name}}</strong>
                 </li>
             </ul>
         </div>
