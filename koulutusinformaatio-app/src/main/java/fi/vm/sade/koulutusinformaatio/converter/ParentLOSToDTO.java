@@ -72,6 +72,10 @@ public final class ParentLOSToDTO {
     }
 
     private static boolean containsPseudoChild(List<ChildLOS> children) {
+        if(children == null) {
+            return false;
+        }
+
         return Iterables.tryFind(children, new Predicate<ChildLOS>() {
 
             @Override
