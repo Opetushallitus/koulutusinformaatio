@@ -32,6 +32,8 @@ public class UpperSecondaryLearningOpportunityInstanceDTO {
     private String name;
     private CodeDTO prerequisite;
     private List<String> formOfTeaching;
+    private List<String> timeOfTeaching;
+    private List<String> placeOfTeaching;
     private List<String> teachingLanguages;
     private List<String> formOfEducation;
     private Date startDate;
@@ -78,6 +80,22 @@ public class UpperSecondaryLearningOpportunityInstanceDTO {
 
     public void setFormOfTeaching(List<String> formOfTeaching) {
         this.formOfTeaching = formOfTeaching;
+    }
+
+    public List<String> getTimeOfTeaching() {
+        return timeOfTeaching;
+    }
+
+    public void setTimeOfTeaching(List<String> timeOfTeaching) {
+        this.timeOfTeaching = timeOfTeaching;
+    }
+
+    public List<String> getPlaceOfTeaching() {
+        return placeOfTeaching;
+    }
+
+    public void setPlaceOfTeaching(List<String> placeOfTeaching) {
+        this.placeOfTeaching = placeOfTeaching;
     }
 
     public List<String> getTeachingLanguages() {

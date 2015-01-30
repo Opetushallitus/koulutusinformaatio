@@ -31,6 +31,8 @@ public final class ChildLOIToDTO {
             dto.setTeachingLanguages(CodeToName.convertAll(childLOI.getTeachingLanguages(), uiLang));
             dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), defaultLang));
             dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), uiLang));
+            dto.setTimeOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getTimeOfTeaching(), uiLang));
+            dto.setPlaceOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getPlaceOfTeaching(), uiLang));
             dto.setWebLinks(childLOI.getWebLinks());
             dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), uiLang));
             dto.setPrerequisite(CodeToDTO.convert(childLOI.getPrerequisite(), uiLang));

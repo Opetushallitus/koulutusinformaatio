@@ -84,6 +84,8 @@ public class LOIObjectCreator extends ObjectCreator {
         Map<String,Code> availableLanguagesMap = new HashMap<String,Code>();
         List<Code> rawTranslCodes = new ArrayList<Code>();
         basicLOI.setFormOfTeaching(koodistoService.searchNamesMultiple(komoto.getOpetusmuodotUris()));
+        basicLOI.setTimeOfTeaching(koodistoService.searchNamesMultiple(komoto.getOpetusaikakk()));
+        basicLOI.setPlaceOfTeaching(koodistoService.searchNamesMultiple(komoto.getOpetuspaikkakk()));
         basicLOI.setTeachingLanguages(koodistoService.searchMultiple(komoto.getOpetuskieletUris()));
         basicLOI.setStartDate(komoto.getKoulutuksenAlkamisDate());
         basicLOI.setStartDates(komoto.getKoulutuksenAlkamisDates());

@@ -22,6 +22,8 @@ public class ChildLearningOpportunityInstanceDTO {
     private List<String> formOfEducation = new ArrayList<String>();
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
+    private List<String> placeOfTeaching = new ArrayList<String>();
+    private List<String> timeOfTeaching = new ArrayList<String>();
     private CodeDTO prerequisite;
     private List<CodeDTO> availableTranslationLanguages;
     private List<String> teachingLanguages = new ArrayList<String>();
@@ -101,7 +103,22 @@ public class ChildLearningOpportunityInstanceDTO {
     public void setFormOfTeaching(List<String> formOfTeaching) {
         this.formOfTeaching = formOfTeaching;
     }
+    public List<String> getTimeOfTeaching() {
+        return timeOfTeaching;
+    }
 
+    public void setTimeOfTeaching(List<String> timeOfTeaching) {
+        this.timeOfTeaching = timeOfTeaching;
+    }
+
+    public List<String> getPlaceOfTeaching() {
+        return placeOfTeaching;
+    }
+
+    public void setPlaceOfTeaching(List<String> placeOfTeaching) {
+        this.placeOfTeaching = placeOfTeaching;
+    }
+    
     public CodeDTO getPrerequisite() {
         return prerequisite;
     }

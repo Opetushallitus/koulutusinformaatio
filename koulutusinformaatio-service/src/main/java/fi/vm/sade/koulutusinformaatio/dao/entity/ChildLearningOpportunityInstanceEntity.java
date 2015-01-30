@@ -27,6 +27,10 @@ public class ChildLearningOpportunityInstanceEntity {
     @Embedded
     private List<I18nTextEntity> formOfEducation;
     @Embedded
+    private List<I18nTextEntity> timeOfEducation;
+    @Embedded
+    private List<I18nTextEntity> placeOfEducation;
+    @Embedded
     private Map<String, String> webLinks;
     @Embedded
     private List<I18nTextEntity> formOfTeaching;
@@ -137,6 +141,22 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setFormOfEducation(List<I18nTextEntity> formOfEducation) {
         this.formOfEducation = formOfEducation;
+    }
+    
+    public List<I18nTextEntity> getTimeOfEducation() {
+        return timeOfEducation;
+    }
+
+    public void setTimeOfEducation(List<I18nTextEntity> timeOfEducation) {
+        this.timeOfEducation = timeOfEducation;
+    }
+    
+    public List<I18nTextEntity> getPlaceOfEducation() {
+        return placeOfEducation;
+    }
+
+    public void setPlaceOfEducation(List<I18nTextEntity> placeOfEducation) {
+        this.placeOfEducation = placeOfEducation;
     }
 
     public Map<String, String> getWebLinks() {

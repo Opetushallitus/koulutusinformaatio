@@ -27,6 +27,8 @@ public class BasicLOI extends LOI {
     private I18nText name;
     private I18nText shortName;
     private List<I18nText> formOfTeaching;
+    private List<I18nText> timeOfTeaching;
+    private List<I18nText> placeOfTeaching;
     private List<Code> teachingLanguages;
     private List<I18nText> formOfEducation;
     private Date startDate;
@@ -68,6 +70,22 @@ public class BasicLOI extends LOI {
 
     public void setFormOfTeaching(List<I18nText> formOfTeaching) {
         this.formOfTeaching = formOfTeaching;
+    }
+
+    public List<I18nText> getTimeOfTeaching() {
+        return timeOfTeaching;
+    }
+
+    public void setTimeOfTeaching(List<I18nText> timeOfTeaching) {
+        this.timeOfTeaching = timeOfTeaching;
+    }
+
+    public List<I18nText> getPlaceOfTeaching() {
+        return placeOfTeaching;
+    }
+
+    public void setPlaceOfTeaching(List<I18nText> placeOfTeaching) {
+        this.placeOfTeaching = placeOfTeaching;
     }
 
     public List<Code> getTeachingLanguages() {
