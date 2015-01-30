@@ -73,6 +73,7 @@
     "chargeable": "Tuition fee",
     "chargeable-false": "No",
     "chargeable-true": "Yes",
+    "prerequisite-education": "Prior education",
 
     "average-limit": "Minimum grade point average",
     "lowest-acceptable-average": "Minimum grade point average required for admittance",

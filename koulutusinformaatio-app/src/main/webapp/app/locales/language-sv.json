@@ -73,6 +73,7 @@
     "chargeable": "Avgiftsbelagd",
     "chargeable-false": "Nej",
     "chargeable-true": "Ja",
+    "prerequisite-education": "Grundutbildning",
 
     "average-limit": "Medeltalsgräns",
     "lowest-acceptable-average": "lägsta godkända medeltal",

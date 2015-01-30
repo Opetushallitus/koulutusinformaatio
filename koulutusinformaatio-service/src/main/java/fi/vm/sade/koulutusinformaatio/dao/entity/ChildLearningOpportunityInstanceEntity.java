@@ -143,19 +143,19 @@ public class ChildLearningOpportunityInstanceEntity {
         this.formOfEducation = formOfEducation;
     }
     
-    public List<I18nTextEntity> getTimeOfEducation() {
+    public List<I18nTextEntity> getTimeOfTeaching() {
         return timeOfEducation;
     }
 
-    public void setTimeOfEducation(List<I18nTextEntity> timeOfEducation) {
+    public void setTimeOfTeaching(List<I18nTextEntity> timeOfEducation) {
         this.timeOfEducation = timeOfEducation;
     }
     
-    public List<I18nTextEntity> getPlaceOfEducation() {
+    public List<I18nTextEntity> getPlaceOfTeaching() {
         return placeOfEducation;
     }
 
-    public void setPlaceOfEducation(List<I18nTextEntity> placeOfEducation) {
+    public void setPlaceOfTeaching(List<I18nTextEntity> placeOfEducation) {
         this.placeOfEducation = placeOfEducation;
     }
 

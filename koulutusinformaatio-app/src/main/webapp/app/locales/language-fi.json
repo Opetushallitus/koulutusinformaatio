@@ -73,6 +73,7 @@
     "chargeable": "Maksullinen",
     "chargeable-false": "Ei",
     "chargeable-true": "Kyllä",
+    "prerequisite-education": "Pohjakoulutus",
 
     "average-limit": "Keskiarvoraja",
     "lowest-acceptable-average": "alin hyväksyttävä keskiarvo",
