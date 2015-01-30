@@ -25,7 +25,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ParentLearningOpportunitySpecificationDTO {
+public class ParentLearningOpportunitySpecificationDTO implements Articled {
 
     private String id;
     private String name;
@@ -46,6 +46,9 @@ public class ParentLearningOpportunitySpecificationDTO {
     
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
+    
+    private List<ArticleResultDTO> edCodeSuggestions;
+    private List<ArticleResultDTO> edTypeSuggestions;
 
     public String getId() {
         return id;
@@ -181,5 +184,21 @@ public class ParentLearningOpportunitySpecificationDTO {
     
     public boolean isContainsPseudoChildLOS() {
         return containsPseudoChildLOS;
+    }
+    
+    public void setEdCodeSuggestions(List<ArticleResultDTO> edCodeSuggestions) {
+        this.edCodeSuggestions = edCodeSuggestions;
+    }
+    
+    public List<ArticleResultDTO> getEdCodeSuggestions() {
+        return edCodeSuggestions;
+    }
+    
+    public void setEdTypeSuggestions(List<ArticleResultDTO> edTypeSuggestions) {
+        this.edTypeSuggestions = edTypeSuggestions;
+    }
+    
+    public List<ArticleResultDTO> getEdTypeSuggestions() {
+        return edTypeSuggestions;
     }
 }

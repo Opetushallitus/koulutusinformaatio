@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO {
+public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO implements Articled {
     
   //Varmistetut
     private String id;

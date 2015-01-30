@@ -32,6 +32,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.Articled;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
@@ -105,11 +106,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         try {
             if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
                 return learningOpportunityService.getParentLearningOpportunity(parentId);
-            }
-            else if (Strings.isNullOrEmpty(lang)) {
+            } else if (Strings.isNullOrEmpty(lang)) {
                 return learningOpportunityService.getParentLearningOpportunity(parentId, uiLang.toLowerCase());
-            }
-            else {
+            } else {
                 return learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase(), uiLang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
@@ -197,18 +196,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             else {
                 dto = learningOpportunityService.getHigherEducationLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
-
-            List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, dto.getKoulutuskoodi()), uiLang);
-            List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, dto.getEducationType()), uiLang);
-
-            if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
-            } else {
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
-
-            }
+            
+            setArticles(uiLang, dto, dto.getKoulutuskoodi(), dto.getEducationType());
 
             return dto;
         } catch (ResourceNotFoundException e) {
@@ -223,19 +212,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             String lang, String uiLang, String loType) {
         try {
             if ("korkeakoulu".equals(loType)) {
-            HigherEducationLOSDTO dto = learningOpportunityService.previewHigherEdLearningOpportunity(oid, lang, uiLang);
-
-            List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, dto.getKoulutuskoodi()), uiLang);
-            List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, dto.getEducationType()), uiLang);
-            if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
-            } else {
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
-
-                }
-
+                HigherEducationLOSDTO dto = learningOpportunityService.previewHigherEdLearningOpportunity(oid, lang, uiLang);
+                setArticles(uiLang, dto, dto.getKoulutuskoodi(), dto.getEducationType());
                 return dto; 
             } else if ("aikuislukio".equals(loType)) {
                 return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
@@ -243,18 +221,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 AdultVocationalParentLOSDTO dto = learningOpportunityService.previewAdultVocationalLearningOpportunity(oid, lang, uiLang);
                 String koulutuskoodi = dto.getChildren().get(0).getKoulutuskoodi();
                 String edType = dto.getChildren().get(0).getEducationType();
-                List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, koulutuskoodi), uiLang);
-                List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, edType), uiLang);
-                if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
-                    dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
-                    dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
-                } else {
-                    dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
-                    dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
-
-                }
-
-                    return dto; 
+                setArticles(uiLang, dto, koulutuskoodi, edType);
+                return dto; 
             }
             throw new ResourceNotFoundException("No preview implemented for loType: " + loType);
         } catch (ResourceNotFoundException e) {
@@ -295,16 +263,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             
             String koulutuskoodi = dto.getKoulutuskoodi();
             String edType = dto.getEducationType();
-            List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, koulutuskoodi), uiLang);
-            List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, edType), uiLang);
-            if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
-            } else {
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
-
-            }
+            
+            setArticles(uiLang, dto, koulutuskoodi, edType);
 
             return dto;
         } catch (ResourceNotFoundException e) {
@@ -340,22 +300,25 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             
             String koulutuskoodi = dto.getChildren().get(0).getKoulutuskoodi();
             String edType = dto.getChildren().get(0).getEducationType();
-            List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, koulutuskoodi), uiLang);
-            List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, edType), uiLang);
-            if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
-            } else {
-                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
-                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
-
-            }
+            setArticles(uiLang, dto, koulutuskoodi, edType);
 
             return dto;
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         } catch (SearchException se) {
             throw KIExceptionHandler.resolveException(se);
+        }
+    }
+    
+    private void setArticles(String uiLang, Articled dto, String koulutuskoodi, String edType) throws SearchException {
+        List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, koulutuskoodi), uiLang);
+        List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, edType), uiLang);
+        if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
+            dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
+            dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
+        } else {
+            dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
+            dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
         }
     }
 }

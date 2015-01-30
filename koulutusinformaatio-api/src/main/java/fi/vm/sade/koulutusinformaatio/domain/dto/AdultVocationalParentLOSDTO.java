@@ -26,7 +26,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  *
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class AdultVocationalParentLOSDTO extends LOSDTO {
+public class AdultVocationalParentLOSDTO extends LOSDTO implements Articled {
     
     private String id;
     private String name;
