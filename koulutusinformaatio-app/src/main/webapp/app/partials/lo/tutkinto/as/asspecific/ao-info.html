@@ -11,7 +11,7 @@
     </li>
 </ul>
 <ul class="inside">
-    <li data-ng-repeat="child in ao.childRefs">
-        <a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{prerequisite.value}}">{{child.name}}</a>
+    <li data-ng-repeat="child in ao.childRefs | filter:{name: '!!'}">
+        <a data-ng-if="child.name && child.qualification" href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{prerequisite.value}}">{{child.name}}</a>
     </li>
 </ul>
