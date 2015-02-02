@@ -23,6 +23,9 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Provides utility methods that turn
  * {@link fi.vm.sade.koulutusinformaatio.domain.exception.KIException} objects thrown
@@ -32,8 +35,11 @@ import javax.ws.rs.core.Response;
  * @author Hannu Lyytikainen
  */
 public class KIExceptionHandler {
-
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(KIExceptionHandler.class);
+    
     public static HTTPException resolveException(Exception e) {
+        LOGGER.error(e.getMessage(), e);
         HTTPException webException = null;
         if (e instanceof KIException) {
             if(e instanceof SearchException) {
@@ -49,7 +55,7 @@ public class KIExceptionHandler {
         else {
             webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Internal error occurred");
         }
-
+        
         return webException;
     }
 
