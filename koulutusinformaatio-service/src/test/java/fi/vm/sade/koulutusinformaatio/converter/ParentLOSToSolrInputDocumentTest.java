@@ -59,6 +59,8 @@ public class ParentLOSToSolrInputDocumentTest {
 		lang.setUri("fi_uri");
 		los.setTeachingLanguages(Arrays.asList(lang));
 		
+		los.setEducationDomain(TestUtil.createI18nText("parent domain fi", "parent domain sv", "parent name end"));
+		
 		provider = new Provider();
 		provider.setId("provId");
 		provider.setName(TestUtil.createI18nText("prov fi", "prov sv", "prov en"));
