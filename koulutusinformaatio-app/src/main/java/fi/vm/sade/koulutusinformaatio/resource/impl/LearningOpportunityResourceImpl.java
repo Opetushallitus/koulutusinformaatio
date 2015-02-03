@@ -88,13 +88,14 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                                                             String order, 
                                                             String lopFilter, 
                                                             String educationCodeFilter,
+                                                            String educationDomainFilter,
                                                             List<String> excludes, 
                                                             SearchType searchType) {
         try {
             sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(text, prerequisite,
                     cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
-                    lopFilter, educationCodeFilter, excludes, searchType);
+                    lopFilter, educationCodeFilter, educationDomainFilter, excludes, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
@@ -104,14 +105,20 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) {
         try {
+            ParentLearningOpportunitySpecificationDTO dto = null;
             if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                return learningOpportunityService.getParentLearningOpportunity(parentId);
+                dto = learningOpportunityService.getParentLearningOpportunity(parentId);
+                uiLang = dto.getTranslationLanguage();
             } else if (Strings.isNullOrEmpty(lang)) {
-                return learningOpportunityService.getParentLearningOpportunity(parentId, uiLang.toLowerCase());
+                dto = learningOpportunityService.getParentLearningOpportunity(parentId, uiLang.toLowerCase());
             } else {
-                return learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase(), uiLang.toLowerCase());
+                dto = learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase(), uiLang.toLowerCase());
             }
+            setArticles(uiLang, dto, dto.getEducationDomain(), dto.getStydyDomain());
+            return dto;
         } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
     }

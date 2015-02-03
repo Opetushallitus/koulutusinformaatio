@@ -56,6 +56,7 @@ public interface LearningOpportunityResource {
                                                              @DefaultValue(value = "asc") @QueryParam("order") String order,
                                                              @QueryParam("lopFilter") String lopFilter,
                                                              @QueryParam("educationCodeFilter") String educationCodeFilter,
+                                                             @QueryParam("educationDomainFilter") String educationDomainFilter,
                                                              @QueryParam("excludes") List<String> excludes,
                                                              @QueryParam("searchType") SearchType searchType);
 

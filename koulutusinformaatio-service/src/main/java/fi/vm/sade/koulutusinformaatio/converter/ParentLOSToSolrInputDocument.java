@@ -99,13 +99,22 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         if (teachLang.equals("fi")) {
             doc.addField(LearningOpportunity.NAME_FI, SolrUtil.resolveTextWithFallback("fi", parent.getName().getTranslations()));
+            doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi",  parent.getName().getTranslations()));
+            doc.setField(LearningOpportunity.EDUCATION_DOMAIN, SolrUtil.resolveTextWithFallback("fi", parent.getEducationDomain().getTranslations()));
         } else if (teachLang.equals("sv")) {
             doc.addField(LearningOpportunity.NAME_SV, SolrUtil.resolveTextWithFallback("sv", parent.getName().getTranslations()));
+            doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv",  parent.getName().getTranslations()));
+            doc.setField(LearningOpportunity.EDUCATION_DOMAIN, SolrUtil.resolveTextWithFallback("sv", parent.getEducationDomain().getTranslations()));
         } else if (teachLang.equals("en")) {
             doc.addField(LearningOpportunity.NAME_EN, SolrUtil.resolveTextWithFallback("en", parent.getName().getTranslations()));
+            doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en",  parent.getName().getTranslations()));
+            doc.setField(LearningOpportunity.EDUCATION_DOMAIN, SolrUtil.resolveTextWithFallback("en", parent.getEducationDomain().getTranslations()));
         } else {
             doc.addField(LearningOpportunity.NAME_FI, parentName);
+            doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, parentName);
+            doc.setField(LearningOpportunity.EDUCATION_DOMAIN, SolrUtil.resolveTranslationInTeachingLangUseFallback(parent.getTeachingLanguages(), parent.getEducationDomain().getTranslations()));
         }
+        
 
         SolrUtil.indexLopName(doc, provider, teachLang);
 
@@ -194,7 +203,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             }
         }
         doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
-
+        
         indexFacetFields(parent, doc, prereqVal, teachLang);
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {

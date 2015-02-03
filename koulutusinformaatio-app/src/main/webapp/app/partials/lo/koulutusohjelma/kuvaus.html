@@ -48,4 +48,7 @@
     <div data-ki-collapse-text-block data-title="access-to-further-studies" data-content="lo.accessToFurtherStudies" data-closed="false"></div>
     <div data-ki-contact-person-info data-content="selectedLOI.contactPersons"></div>
 </section>
-<div class="col-md-5" data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
+<div class="col-md-5">
+	<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
+	<div data-ng-include data-src="partialUrl + 'recommendations.html'"></div>
+</div>

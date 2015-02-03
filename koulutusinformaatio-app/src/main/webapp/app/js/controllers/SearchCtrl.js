@@ -88,6 +88,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             sortCriteria: $scope.sortCriteria,
             lopFilter: $scope.lopFilter,
             educationCodeFilter: $scope.educationCodeFilter,
+            educationDomainFilter: $scope.educationDomainFilter,
             excludes: $scope.excludes,
             organisationFacetFilters: $scope.organisationFacetFilters,
             articleFacetFilters: $scope.articleFacetFilters
@@ -381,6 +382,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
                 $scope.currentPage = FilterService.getPage();
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
+                $scope.educationDomainFilter = FilterService.getEducationDomainFilter();
                 $scope.excludes = FilterService.getExcludes();
                 $scope.articleFacetFilters = FilterService.getArticleFacetFilters();
                 $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
@@ -443,6 +445,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			lang: LanguageService.getLanguage(),
     			lopFilter: FilterService.getLopFilter(),
     		    educationCodeFilter: FilterService.getEducationCodeFilter(),
+    		    educationDomainFilter: FilterService.getEducationDomainFilter(),
     		    excludes : FilterService.getExcludes(),
                 articleFacetFilters : FilterService.getArticleFacetFilters(),
                 organisationFacetFilters: FilterService.getOrganisationFacetFilters(),
@@ -518,7 +521,8 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			page: kiAppConstants.searchResultsStartPage,
     			facetFilters: facetFiltersArr.join(),
                 lopFilter: $scope.lopFilter,
-                educationCodeFilter: $scope.educationCodeFilter
+                educationCodeFilter: $scope.educationCodeFilter,
+                educationDomainFilter: $scope.educationDomainFilter
     		});
 
     		$scope.refreshView();
