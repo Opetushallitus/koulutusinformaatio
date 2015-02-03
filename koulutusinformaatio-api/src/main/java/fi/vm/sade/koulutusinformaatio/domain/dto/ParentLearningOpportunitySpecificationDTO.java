@@ -201,4 +201,16 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
     public List<ArticleResultDTO> getEdTypeSuggestions() {
         return edTypeSuggestions;
     }
+
+    @Override
+    public String toString() {
+        return "ParentLearningOpportunitySpecificationDTO [id=" + id + ", name=" + name + ", provider=" + provider + ", additionalProviders="
+                + additionalProviders + ", educationDegree=" + educationDegree + ", structure=" + structure + ", accessToFurtherStudies="
+                + accessToFurtherStudies + ", goals=" + goals + ", educationDomain=" + educationDomain + ", stydyDomain=" + stydyDomain + ", lois=" + lois
+                + ", creditValue=" + creditValue + ", creditUnit=" + creditUnit + ", containsPseudoChildLOS=" + containsPseudoChildLOS
+                + ", translationLanguage=" + translationLanguage + ", topics=" + topics + ", themes=" + themes + ", edCodeSuggestions=" + edCodeSuggestions
+                + ", edTypeSuggestions=" + edTypeSuggestions + "]";
+    }
+    
+    
 }

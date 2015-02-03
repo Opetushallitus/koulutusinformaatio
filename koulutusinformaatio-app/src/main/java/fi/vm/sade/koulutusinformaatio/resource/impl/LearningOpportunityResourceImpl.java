@@ -18,8 +18,11 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,11 +30,13 @@ import com.google.common.base.Strings;
 
 import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.Articled;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
@@ -60,6 +65,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     private ModelMapper modelMapper;
     private LearningOpportunityService learningOpportunityService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LearningOpportunityResourceImpl.class);
     private static final String LANG_FI = "fi";
 
     @Autowired
@@ -114,13 +120,34 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             } else {
                 dto = learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase(), uiLang.toLowerCase());
             }
-            setArticles(uiLang, dto, dto.getEducationDomain(), dto.getStydyDomain());
+            String educationType = getEducationTypeForParent(dto);
+            if (!StringUtils.isBlank(educationType)) {
+                setArticles(uiLang, dto, dto.getName(), educationType);
+            }
             return dto;
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
+    }
+
+    private String getEducationTypeForParent(ParentLearningOpportunitySpecificationDTO dto) {
+        String type = null;
+        try {
+            ApplicationOptionDTO option = dto.getLois().get(0).getApplicationSystems().get(0).getApplicationOptions().get(0);
+            if (!option.isKotitalous() && !option.isKaksoistutkinto() && option.isVocational()) {
+                type = SolrConstants.ED_TYPE_AMMATILLINEN;
+            } else if (option.isKaksoistutkinto()) {
+                type = SolrConstants.ED_TYPE_KAKSOIS;
+            } else if (option.isKotitalous()) {
+                type = SolrConstants.ED_TYPE_KOTITALOUS;
+            }
+            type = SolrConstants.ED_TYPE_MUU;
+        } catch (ArrayIndexOutOfBoundsException aoe) {
+            LOGGER.warn(dto.getClass().getSimpleName() + " did not have any " + ApplicationOptionDTO.class.getSimpleName() + " nested within. Contents were: " + dto.toString());
+        }
+        return type;
     }
 
     @Override
