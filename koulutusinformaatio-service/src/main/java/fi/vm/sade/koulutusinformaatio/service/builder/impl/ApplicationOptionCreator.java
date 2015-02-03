@@ -132,6 +132,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohdeDTO.getLiitteidenToimitusosoite()));
         ao.setAttachments(educationObjectCreator.createApplicationOptionAttachments(hakukohdeDTO.getLiitteet()));
         ao.setAdditionalInfo(getI18nText(hakukohdeDTO.getLisatiedot()));
+        ao.setSoraDescription(getI18nText(hakukohdeDTO.getSorakuvaus()));
         return ao;
     }
 
