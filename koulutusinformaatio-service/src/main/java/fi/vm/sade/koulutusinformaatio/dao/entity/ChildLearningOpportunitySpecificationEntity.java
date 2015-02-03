@@ -38,6 +38,8 @@ public class ChildLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity degreeTitle;
     @Embedded
+    private List<I18nTextEntity> degreeTitles;
+    @Embedded
     private I18nTextEntity goals;
     @Embedded
     private I18nTextEntity qualification;
@@ -131,4 +133,12 @@ public class ChildLearningOpportunitySpecificationEntity {
     public void setQualifications(List<I18nTextEntity> qualifications) {
         this.qualifications = qualifications;
     }
+
+	public List<I18nTextEntity> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

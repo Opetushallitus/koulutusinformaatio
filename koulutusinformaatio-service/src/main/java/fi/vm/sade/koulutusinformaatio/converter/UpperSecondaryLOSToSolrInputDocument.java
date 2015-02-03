@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -241,6 +242,33 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             }
         }
         
+    	Map<String, String> transls = null;
+        if (loi.getDegreeTitle() != null && (transls = loi.getDegreeTitle().getTranslations()) != null) {
+            if (teachingLang.equals("sv")) {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+            } else if (teachingLang.equals("en")) {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", transls));
+            } else {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+            }
+//            LOG.warn("degreeTitle added to solr document: "+ resolvedText);
+        }
+
+        if (loi.getDegreeTitles() != null) {
+            for (I18nText i18n : loi.getDegreeTitles()) {
+            	if ((transls = i18n.getTranslations()) != null) {
+    	            if (teachingLang.equals("sv")) {
+    	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+    	            } else if (teachingLang.equals("en")) {
+    	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", transls));
+    	            } else {
+    	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+    	            }
+//    	            LOG.warn("degreeTitles added to solr document: "+ resolvedText);
+				}
+            }
+        }
+
         String aoNameFi = "";
         String aoNameSv = "";
         String aoNameEn = "";

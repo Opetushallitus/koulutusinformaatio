@@ -77,6 +77,7 @@ public class SpecialLOSToSolrInputDocumentTest {
 		
 		
 		childLoi.setPrerequisite(prerequisite);
+		childLoi.setDegreeTitle(TestUtil.createI18nText("Tutkintonimike1"));
 		
 		lang = new Code();
 		lang.setName(TestUtil.createI18nText("Suomi", "Finska", "Finnish"));
@@ -147,6 +148,7 @@ public class SpecialLOSToSolrInputDocumentTest {
 		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
 		assertEquals(los.getCreditValue() + " " + los.getCreditUnit().getTranslations().get("fi"), doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
+		assertEquals(los.getLois().get(0).getDegreeTitle().getTranslations().get("fi"), doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValue().toString());
         //assertEquals(SolrConstants.ED_TYPE_AMM_ER, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
 	}
 	

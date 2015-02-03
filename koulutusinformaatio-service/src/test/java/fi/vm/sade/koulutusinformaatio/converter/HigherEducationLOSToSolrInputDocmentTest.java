@@ -53,6 +53,7 @@ public class HigherEducationLOSToSolrInputDocmentTest {
         //assertEquals(SolrConstants.ED_TYPE_AMKS, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
         assertEquals(los.getEducationDegreeLang().getTranslations().get("fi"), doc.get(LearningOpportunity.EDUCATION_DEGREE_FI).getValue().toString());
         assertEquals(los.getEducationDegree(), doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).getValue().toString());
+        assertEquals(los.getDegreeTitle().getTranslations().get("fi"), doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValue().toString());
 		
 	}
 	
@@ -112,6 +113,7 @@ public class HigherEducationLOSToSolrInputDocmentTest {
         los.setQualifications(quals);
         los.setGoals(TestUtil.createI18nText("Goals fi", "Goals sv", "Goals en"));
         los.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
+        los.setDegreeTitle(TestUtil.createI18nText("tutkintonimike1"));
         
         ApplicationSystem as = new ApplicationSystem();
         as.setName(TestUtil.createI18nText("Haku fi", "Haku sv", "Haku en"));

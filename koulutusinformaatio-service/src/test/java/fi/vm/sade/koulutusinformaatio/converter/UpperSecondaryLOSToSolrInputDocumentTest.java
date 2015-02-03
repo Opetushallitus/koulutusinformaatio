@@ -71,6 +71,7 @@ public class UpperSecondaryLOSToSolrInputDocumentTest {
 		upsecLoi.setId("upsecLoiId");
 		upsecLoi.setStartDate(new Date());
 		upsecLoi.setKaksoistutkinto(false);
+		upsecLoi.setDegreeTitle(TestUtil.createI18nText("Tutkintonimike1"));
 		
 		prerequisite = new Code();
 		prerequisite.setName(TestUtil.createI18nText("Peruskoulu", "Peruskoulu sv", "Peruskoulu en"));
@@ -146,6 +147,7 @@ public class UpperSecondaryLOSToSolrInputDocumentTest {
 		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
 		assertEquals(los.getCreditValue() + " " + los.getCreditUnit().getTranslations().get("fi"), doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
+		assertEquals(los.getLois().get(0).getDegreeTitle().getTranslations().get("fi"), doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValue().toString());
         //assertEquals(SolrConstants.ED_TYPE_LUKIO, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
 	}
 	

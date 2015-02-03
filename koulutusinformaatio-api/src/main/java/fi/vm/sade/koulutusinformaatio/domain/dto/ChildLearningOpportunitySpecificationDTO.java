@@ -30,6 +30,7 @@ public class ChildLearningOpportunitySpecificationDTO {
     private String name;
     private String qualification;
     private String degreeTitle;
+    private List<String> degreeTitles;
     private ParentLOSRefDTO parent;
     private String goals;
     private List<ChildLearningOpportunityInstanceDTO> lois;
@@ -99,4 +100,12 @@ public class ChildLearningOpportunitySpecificationDTO {
     public void setTranslationLanguage(String translationLanguage) {
         this.translationLanguage = translationLanguage;
     }
+
+	public List<String> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<String> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

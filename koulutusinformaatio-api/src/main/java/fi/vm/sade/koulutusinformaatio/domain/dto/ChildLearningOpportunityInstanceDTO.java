@@ -39,6 +39,8 @@ public class ChildLearningOpportunityInstanceDTO {
     private String plannedDurationUnit;
     private int startYear;
     private String startSeason;
+    private String degreeTitle;
+    private List<String> degreeTitles;
 
     public String getId() {
         return id;
@@ -239,4 +241,20 @@ public class ChildLearningOpportunityInstanceDTO {
     public void setStartSeason(String startSeason) {
         this.startSeason = startSeason;
     }
+
+	public String getDegreeTitle() {
+		return degreeTitle;
+	}
+
+	public void setDegreeTitle(String degreeTitle) {
+		this.degreeTitle = degreeTitle;
+	}
+
+	public List<String> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<String> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

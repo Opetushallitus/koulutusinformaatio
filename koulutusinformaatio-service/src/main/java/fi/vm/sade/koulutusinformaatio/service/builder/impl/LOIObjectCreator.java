@@ -156,6 +156,21 @@ public class LOIObjectCreator extends ObjectCreator {
             basicLOI.setKoulutuslaji(koulutuslajis.get(0));
         }
         
+        // uudet kentät: tutkintonimikeUri ja tutkintonimikeUris
+        if (komoto.getTutkintonimikeUri() != null) {
+            I18nText degreeTitle = koodistoService.searchFirstName(komoto.getTutkintonimikeUri());
+            if (degreeTitle != null) {
+                basicLOI.setDegreeTitle(degreeTitle);
+    		}
+		}
+        if (komoto.getTutkintonimikeUris() != null) {
+        	if (komoto.getTutkintonimikeUris().size() > 0) {
+                List<I18nText> degreeTitles = koodistoService.searchNamesMultiple(komoto.getTutkintonimikeUris());
+                if (degreeTitles != null && degreeTitles.size() > 0) {
+                    basicLOI.setDegreeTitles(degreeTitles);
+        		}
+			}
+		}
         
         LOG.debug("Set: " + basicLOI.getFotFacet().size() + " form of teaching facet values.");
         

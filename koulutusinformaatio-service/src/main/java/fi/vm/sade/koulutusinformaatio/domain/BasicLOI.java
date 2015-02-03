@@ -31,6 +31,9 @@ public class BasicLOI extends LOI {
     private List<I18nText> placeOfTeaching;
     private List<Code> teachingLanguages;
     private List<I18nText> formOfEducation;
+    // uusi kenttä
+    private I18nText degreeTitle;
+    private List<I18nText> degreeTitles;
     private Date startDate;
     private List<Date> startDates;
     private I18nText internationalization;
@@ -230,4 +233,20 @@ public class BasicLOI extends LOI {
     public void setStartSeason(I18nText startSeason) {
         this.startSeason = startSeason;
     }
+
+	public I18nText getDegreeTitle() {
+		return degreeTitle;
+	}
+
+	public void setDegreeTitle(I18nText degreeTitle) {
+		this.degreeTitle = degreeTitle;
+	}
+
+	public List<I18nText> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<I18nText> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

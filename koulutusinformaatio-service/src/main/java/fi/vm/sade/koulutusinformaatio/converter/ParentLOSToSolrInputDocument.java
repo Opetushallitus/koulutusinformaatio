@@ -255,6 +255,32 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                 }
             }
         }
+        
+        if (childLOI.getDegreeTitle() != null) {
+        	I18nText i18n = childLOI.getDegreeTitle();
+            if (teachLang.equals("sv")) {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
+            } else if (teachLang.equals("en")) {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
+            } else {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
+            }
+//            LOG.warn("degreeTitle added to solr document: "+ resolvedText);
+        }
+
+        if (childLOI.getDegreeTitles() != null) {
+            for (I18nText i18n : childLOI.getDegreeTitles()) {
+	            if (teachLang.equals("sv")) {
+	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
+	            } else if (teachLang.equals("en")) {
+	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
+	            } else {
+	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
+	            }
+//	            LOG.warn("degreeTitles added to solr document: "+ resolvedText);
+            }
+        }
+
         if (childLOS.getQualification() != null) {
 
             if (teachLang.equals("sv")) {

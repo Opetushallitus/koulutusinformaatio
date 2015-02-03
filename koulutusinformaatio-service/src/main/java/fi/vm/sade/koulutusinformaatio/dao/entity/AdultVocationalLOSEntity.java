@@ -71,6 +71,8 @@ public class AdultVocationalLOSEntity {
 
     @Embedded
     private I18nTextEntity degreeTitle;
+    @Embedded
+    private List<I18nTextEntity> degreeTitles;
     private Date startDate;
     private String plannedDuration;
 
@@ -484,6 +486,12 @@ public class AdultVocationalLOSEntity {
             List<ContactPersonEntity> preparatoryContactPersons) {
         this.preparatoryContactPersons = preparatoryContactPersons;
     }
+	public List<I18nTextEntity> getDegreeTitles() {
+		return degreeTitles;
+	}
+	public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 
 
 }

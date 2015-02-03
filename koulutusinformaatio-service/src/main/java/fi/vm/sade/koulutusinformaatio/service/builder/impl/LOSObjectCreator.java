@@ -519,7 +519,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
         los.setEducationType(getEducationType(koulutus.getKoulutusaste().getUri()));
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkinto().getMeta())); // muutos: oli koulutus.getKoulutusohjelma()
+        los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes())); // uusi
         los.setQualifications(getQualifications(koulutus));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
@@ -703,7 +704,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())); // muutos: oli koulutus.getKoulutusohjelma()
+//        los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes())); // ei löydy KoulutusLukioV1RDTO:lle
         los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
@@ -1182,7 +1184,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
 
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())); // muutos: oli koulutus.getKoulutusohjelma()
+//      los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes())); // ei löydy NayttotutkintoV1RDTO:lle
         los.setQualifications(getQualificationsForAikuAmm(koulutus));//Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
 
 

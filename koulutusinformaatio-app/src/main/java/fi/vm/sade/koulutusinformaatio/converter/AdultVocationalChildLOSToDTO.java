@@ -53,6 +53,7 @@ public final class AdultVocationalChildLOSToDTO {
         dto.setEducationDegree(los.getEducationDegree());
         dto.setEducationDegreeName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDegreeLang(), uiLang));
         dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), uiLang));
+        dto.setDegreeTitles(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getDegreeTitles(), uiLang));
         dto.setQualifications(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getQualifications(), uiLang));
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), descriptionLang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), descriptionLang));

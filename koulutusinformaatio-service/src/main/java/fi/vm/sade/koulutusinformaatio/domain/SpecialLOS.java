@@ -32,6 +32,8 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
     private I18nText educationDomain;
     private ParentLOSRef parent;
     private String educationTypeUri;
+    private I18nText degreeTitle;				// tutkintonimike
+    private List<I18nText> degreeTitles;		// tutkintonimikkeet
     
     private List<String> aoIds = new ArrayList<String>();
 
@@ -93,4 +95,20 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
     public I18nText getSubName() {
         return subName;
     }
+
+	public I18nText getDegreeTitle() {
+		return degreeTitle;
+	}
+
+	public void setDegreeTitle(I18nText degreeTitle) {
+		this.degreeTitle = degreeTitle;
+	}
+
+	public List<I18nText> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<I18nText> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

@@ -31,6 +31,7 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
     private String name;
     private String educationDegree;
     private String degreeTitle;
+    private List<String> degreeTitles;
     private String qualification;
     private String goals;
     private List<UpperSecondaryLearningOpportunityInstanceDTO> lois;
@@ -172,4 +173,12 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
     public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
         this.additionalProviders = additionalProviders;
     }
+
+	public List<String> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<String> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

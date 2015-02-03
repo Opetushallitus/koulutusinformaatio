@@ -32,6 +32,7 @@ public class SpecialLearningOpportunitySpecificationDTO {
     private String subName;
     private String educationDegree;
     private String degreeTitle;
+    private List<String> degreeTitles;
     private String qualification;
     private String goals;
     private List<ChildLearningOpportunityInstanceDTO> lois;
@@ -218,4 +219,12 @@ public class SpecialLearningOpportunitySpecificationDTO {
     public void setSubName(String subName) {
         this.subName = subName;
     }
+
+	public List<String> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<String> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

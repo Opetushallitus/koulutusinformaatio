@@ -25,6 +25,8 @@ public class UpperSecondaryLOS extends BasicLOS<UpperSecondaryLOI> {
 
     private List<UpperSecondaryLOI> lois;
     private I18nText qualification;
+    private I18nText degreeTitle;				// tutkintonimike
+    private List<I18nText> degreeTitles;		// tutkintonimikkeet
 
     public List<UpperSecondaryLOI> getLois() {
         return lois;
@@ -41,4 +43,20 @@ public class UpperSecondaryLOS extends BasicLOS<UpperSecondaryLOI> {
     public void setQualification(I18nText qualification) {
         this.qualification = qualification;
     }
+
+	public I18nText getDegreeTitle() {
+		return degreeTitle;
+	}
+
+	public void setDegreeTitle(I18nText degreeTitle) {
+		this.degreeTitle = degreeTitle;
+	}
+
+	public List<I18nText> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<I18nText> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

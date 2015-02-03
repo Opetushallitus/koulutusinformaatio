@@ -33,6 +33,8 @@ public final class ChildLOIToDTO {
             dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), uiLang));
             dto.setTimeOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getTimeOfTeaching(), uiLang));
             dto.setPlaceOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getPlaceOfTeaching(), uiLang));
+            dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(childLOI.getDegreeTitle(), uiLang));
+            dto.setDegreeTitles(ConverterUtil.getTextsByLanguageUseFallbackLang(childLOI.getDegreeTitles(), uiLang));
             dto.setWebLinks(childLOI.getWebLinks());
             dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), uiLang));
             dto.setPrerequisite(CodeToDTO.convert(childLOI.getPrerequisite(), uiLang));

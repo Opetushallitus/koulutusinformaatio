@@ -30,6 +30,8 @@ public class ChildLOS extends InstantiatedLOS<ChildLOI> {
     private ParentLOSRef parent;
     private List<ChildLOI> lois;
     private boolean isPseudo;
+    private I18nText degreeTitle;				// tutkintonimike
+    private List<I18nText> degreeTitles;		// tutkintonimikkeet
 
     public I18nText getQualification() {
         return qualification;
@@ -70,4 +72,20 @@ public class ChildLOS extends InstantiatedLOS<ChildLOI> {
     public void setQualifications(List<I18nText> qualifications) {
         this.qualifications = qualifications;
     }
+
+	public I18nText getDegreeTitle() {
+		return degreeTitle;
+	}
+
+	public void setDegreeTitle(I18nText degreeTitle) {
+		this.degreeTitle = degreeTitle;
+	}
+
+	public List<I18nText> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<I18nText> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

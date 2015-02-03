@@ -18,12 +18,14 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,7 @@ public class ParentLOSToSolrInputDocumentTest {
 	private Code lang;
 	private Provider provider;
 	private ApplicationOption ao;
+	private List<I18nText> tutkintonimikkeet;
 	
 	@Before
 	public void setUp() {
@@ -133,6 +136,11 @@ public class ParentLOSToSolrInputDocumentTest {
 		childLoi.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
 		childLoi.setApplicationOptions(Arrays.asList(ao));
 		childLoi.setKaksoistutkinto(false);
+		childLoi.setDegreeTitle(TestUtil.createI18nText("tutkintonimike1"));
+		tutkintonimikkeet = new ArrayList<I18nText>();
+		tutkintonimikkeet.add(TestUtil.createI18nText("tutkintonimike1"));
+		tutkintonimikkeet.add(TestUtil.createI18nText("tutkintonimike2"));
+		childLoi.setDegreeTitles(tutkintonimikkeet);
 		List<ChildLOI> loiList = new ArrayList<ChildLOI>();
 		loiList.add(childLoi);
 		childLos.setLois(loiList);
@@ -151,6 +159,9 @@ public class ParentLOSToSolrInputDocumentTest {
 		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
 		assertEquals("80 ov fi", doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
+        assertEquals(tutkintonimikkeet.size()+1, doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValues().size());
+        Collection<Object> nimikkeet = doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValues();
+        assertTrue(nimikkeet.contains(tutkintonimikkeet.get(0).get("fi")));
         //assertEquals(SolrConstants.ED_TYPE_AMMATILLINEN, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
 		
 	}

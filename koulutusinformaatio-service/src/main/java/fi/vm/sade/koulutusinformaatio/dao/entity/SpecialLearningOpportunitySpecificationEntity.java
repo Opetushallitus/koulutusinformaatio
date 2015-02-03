@@ -39,6 +39,8 @@ public class SpecialLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity degreeTitle;
     @Embedded
+    private List<I18nTextEntity> degreeTitles;
+    @Embedded
     private I18nTextEntity qualification;
     @Embedded
     private I18nTextEntity goals;
@@ -252,4 +254,12 @@ public class SpecialLearningOpportunitySpecificationEntity {
     public void setSubName(I18nTextEntity subName) {
         this.subName = subName;
     }
+
+	public List<I18nTextEntity> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

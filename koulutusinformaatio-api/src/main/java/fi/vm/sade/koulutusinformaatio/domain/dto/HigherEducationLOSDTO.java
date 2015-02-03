@@ -78,6 +78,7 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO implements Articled 
     private String educationDegreeName;
     private List<String> teachingTimes;
     private List<String> teachingPlaces;
+    private List<String> degreeTitles;
     private String startSeason;
     private int startYear;
     private String status;
@@ -520,4 +521,12 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO implements Articled 
     public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
         this.additionalProviders = additionalProviders;
     }
+
+	public List<String> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<String> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 }

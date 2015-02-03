@@ -47,6 +47,7 @@ public class StandaloneLOS extends LOS {
     private List<I18nText> teachingTimes;
     private List<I18nText> teachingPlaces;
     private List<I18nText> qualifications;
+    private List<I18nText> degreeTitles;
     private I18nText startSeason;
     private int startYear;
 
@@ -425,5 +426,13 @@ public class StandaloneLOS extends LOS {
     public void setAdditionalProviders(List<Provider> additionalProviders) {
         this.additionalProviders = additionalProviders;
     }
+
+	public List<I18nText> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<I18nText> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 
 }

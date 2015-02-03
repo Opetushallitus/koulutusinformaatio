@@ -51,6 +51,7 @@ public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO implements Artic
     private List<String> teachingTimes;
     private List<String> teachingPlaces;
     private List<String> qualifications;
+    private List<String> degreeTitles;
     private String startSeason;
     private int startYear;
     
@@ -431,6 +432,14 @@ public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO implements Artic
     public List<ArticleResultDTO> getEdTypeSuggestions() {
         return edTypeSuggestions;
     }
+
+	public List<String> getDegreeTitles() {
+		return degreeTitles;
+	}
+
+	public void setDegreeTitles(List<String> degreeTitles) {
+		this.degreeTitles = degreeTitles;
+	}
 
 
 }

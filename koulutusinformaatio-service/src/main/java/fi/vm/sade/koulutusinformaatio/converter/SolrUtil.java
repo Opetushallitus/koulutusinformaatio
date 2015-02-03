@@ -342,6 +342,9 @@ public final class SolrUtil {
         public static final String PREREQUISITE_DISPLAY_FI = "prerequisite_fi_ss";
         public static final String PREREQUISITE_DISPLAY_SV = "prerequisite_sv_ss";
         public static final String PREREQUISITE_DISPLAY = "prerequisite_ss";
+        public static final String DEGREE_TITLE_FI = "degreeTitles_fi";
+        public static final String DEGREE_TITLE_SV = "degreeTitles_sv";
+        public static final String DEGREE_TITLE_EN = "degreeTitles_en";
         
         public static final String EDUCATION_CODE_DISPLAY_FI = "educationCode_fi_ssort";
         public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";

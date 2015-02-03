@@ -30,6 +30,7 @@ import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -198,6 +199,33 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
                 doc.addField(LearningOpportunity.CONTENT_EN,  SolrUtil.resolveTextWithFallback("en",  childLOI.getKoulutuslaji().getName().getTranslations()));
             } else {
                 doc.addField(LearningOpportunity.CONTENT_FI,  SolrUtil.resolveTextWithFallback("fi", childLOI.getKoulutuslaji().getName().getTranslations()));
+            }
+        }
+
+    	Map<String, String> transls = null;
+        if (childLOI.getDegreeTitle() != null && (transls = childLOI.getDegreeTitle().getTranslations()) != null) {
+            if (teachingLang.equals("sv")) {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+            } else if (teachingLang.equals("en")) {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", transls));
+            } else {
+                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+            }
+//            LOG.warn("degreeTitle added to solr document: "+ resolvedText);
+        }
+
+        if (childLOI.getDegreeTitles() != null) {
+            for (I18nText i18n : childLOI.getDegreeTitles()) {
+            	if ((transls = i18n.getTranslations()) != null) {
+    	            if (teachingLang.equals("sv")) {
+    	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+    	            } else if (teachingLang.equals("en")) {
+    	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", transls));
+    	            } else {
+    	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+    	            }
+//    	            LOG.warn("degreeTitles added to solr document: "+ resolvedText);
+				}
             }
         }
 
