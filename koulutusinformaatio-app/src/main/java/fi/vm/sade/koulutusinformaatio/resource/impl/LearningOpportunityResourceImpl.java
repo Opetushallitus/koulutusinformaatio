@@ -144,7 +144,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 type = SolrConstants.ED_TYPE_KOTITALOUS;
             }
             type = SolrConstants.ED_TYPE_MUU;
-        } catch (ArrayIndexOutOfBoundsException aoe) {
+        } catch (IndexOutOfBoundsException aoe) {
             LOGGER.warn(dto.getClass().getSimpleName() + " did not have any " + ApplicationOptionDTO.class.getSimpleName() + " nested within. Contents were: " + dto.toString());
         }
         return type;
