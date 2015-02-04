@@ -29,6 +29,7 @@ public class ChildLearningOpportunitySpecificationDTO {
     private String id;
     private String name;
     private String qualification;
+    private List<String> qualifications;
     private String degreeTitle;
     private List<String> degreeTitles;
     private ParentLOSRefDTO parent;
@@ -108,4 +109,13 @@ public class ChildLearningOpportunitySpecificationDTO {
 	public void setDegreeTitles(List<String> degreeTitles) {
 		this.degreeTitles = degreeTitles;
 	}
+
+    public List<String> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<String> qualifications) {
+        this.qualifications = qualifications;
+    }
+
 }
