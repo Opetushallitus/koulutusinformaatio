@@ -3,6 +3,8 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Reference;
 
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,6 +71,10 @@ public class ChildLearningOpportunityInstanceEntity {
     private int startYear;
     @Embedded
     private I18nTextEntity startSeason;
+    @Embedded
+    private String creditValue;
+    @Embedded
+    private I18nText creditUnit;
     
     public int getStartYear() {
         return startYear;
@@ -303,5 +309,21 @@ public class ChildLearningOpportunityInstanceEntity {
         this.targetGroup = targetGroup;
     }
 
+    public String getCreditValue() {
+        return creditValue;
+    }
 
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
+    }
+
+    
 }

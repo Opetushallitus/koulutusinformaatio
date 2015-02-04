@@ -20,7 +20,9 @@ public class ChildLOI extends BasicLOI {
     private I18nText workingLifePlacement;
     private I18nText selectingDegreeProgram;
     private I18nText targetGroup;
-
+    private String creditValue;
+    private I18nText creditUnit;
+    
     public String getLosId() {
         return losId;
     }
@@ -93,4 +95,21 @@ public class ChildLOI extends BasicLOI {
     public I18nText getTargetGroup() {
         return targetGroup;
     }
+    
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText i18nText) {
+        this.creditUnit = i18nText;
+    }
 }
+

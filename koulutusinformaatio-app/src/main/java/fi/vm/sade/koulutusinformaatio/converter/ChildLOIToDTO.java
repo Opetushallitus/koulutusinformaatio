@@ -46,6 +46,8 @@ public final class ChildLOIToDTO {
             dto.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(childLOI.getSelectingDegreeProgram(), lang));
             dto.setPlannedDuration(childLOI.getPlannedDuration());
             dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(childLOI.getPlannedDurationUnit(), uiLang));
+            dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(childLOI.getCreditUnit(), lang));
+            dto.setCreditValue(childLOI.getCreditValue());
 
             // as based approach for UI
             SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();

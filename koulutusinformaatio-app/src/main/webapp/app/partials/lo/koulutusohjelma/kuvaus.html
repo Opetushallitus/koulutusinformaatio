@@ -17,7 +17,8 @@
                 </li>
                 <li>
                     <span data-ki-i18n="duration" data-show-colon="true"></span>
-                    <strong>{{parent.creditValue}} {{parent.creditUnit}}</strong>
+                    <strong data-ng-if="selectedLOI.creditValue">{{selectedLOI.creditValue}} {{selectedLOI.creditUnit}}</strong>
+                    <strong data-ng-if="!selectedLOI.creditValue">{{parent.creditValue}} {{parent.creditUnit}}</strong>
                 </li>
                 <li>
                     <span data-ki-i18n="planned-duration" data-show-colon="true"></span>

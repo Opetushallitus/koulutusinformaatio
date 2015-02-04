@@ -202,6 +202,8 @@ public class LOIObjectCreator extends ObjectCreator {
         ChildLOI childLOI = createBasicLOI(ChildLOI.class, childKomoto);
         childLOI.setName(losName);
         childLOI.setLosId(losId);
+        childLOI.setCreditValue(koodistoService.searchFirstCodeValue(childKomoto.getOpintojenLaajuusarvoUri()));
+        childLOI.setCreditUnit(koodistoService.searchFirstShortName(childKomoto.getLaajuusYksikkoUri()));
         childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
         childLOI.setWebLinks(childKomoto.getWebLinkkis());
         childLOI.setProfessionalTitles(koodistoService.searchNamesMultiple(childKomoto.getAmmattinimikeUris()));
