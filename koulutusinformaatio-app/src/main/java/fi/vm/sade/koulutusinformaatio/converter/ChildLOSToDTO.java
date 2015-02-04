@@ -32,6 +32,7 @@ public final class ChildLOSToDTO {
             ChildLearningOpportunitySpecificationDTO child = new ChildLearningOpportunitySpecificationDTO();
             child.setId(childLOS.getId());
             child.setName(ConverterUtil.getTextByLanguage(childLOS.getName(), defaultLang));
+            child.setQualification(ConverterUtil.getTextByLanguage(childLOS.getQualification(), uiLang));
             child.setQualifications(ConverterUtil.getTextsByLanguage(childLOS.getQualifications(), uiLang));
             child.setLois(ChildLOIToDTO.convert(childLOS.getLois(), lang, uiLang, defaultLang));
             child.setParent(ParentLOSRefToDTO.convert(childLOS.getParent(), defaultLang));
