@@ -29,6 +29,7 @@ controller('AppBasketCtrl',
 
         $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
 
+
         $scope.$watch(function() { return ApplicationBasketService.isEmpty(); }, function(value) {
             $scope.emailSendingEnabled = ApplicationBasketService.isEmpty() == false;
         });
@@ -73,12 +74,10 @@ controller('AppBasketCtrl',
             var subject = TranslationService.getTranslation('appbasket:email-subject-value') + ($scope.email.subject.length > 0 ? ": " + $scope.email.subject : "");
             ApplicationBasketService.sendByEmail(subject, $scope.email.to, $scope.email.captcha).then(function(result) {
                 $scope.emailStatus.ok = true;
-                $scope.emailStatus.error = false;
                 $scope.email.to = "";
                 $timeout(reinitEmailStatus, 5000);
             },
             function(error) {
-                $scope.emailStatus.ok = false;
                 $scope.emailStatus.error = true;
                 $timeout(reinitEmailStatus, 5000);
             });
@@ -86,6 +85,7 @@ controller('AppBasketCtrl',
 
         function reinitEmailStatus() {
             $scope.emailStatus.sending = false;
+            $scope.emailStatus.ok = false;
             $scope.emailStatus.error = false;
             $scope.email.captcha = "";
             recaptcha.reload();
