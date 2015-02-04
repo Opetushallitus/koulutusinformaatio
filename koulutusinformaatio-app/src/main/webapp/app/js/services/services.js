@@ -347,8 +347,8 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                     loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
                 }
             } 
-
-
+            
+            result.teachLang = [];
             // set teaching languge as the first language in array
             for (var index in result.lois) {
                 if (result.lois.hasOwnProperty(index)) {
@@ -361,6 +361,13 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                                     var ao = as.applicationOptions[aoIndex];
 
                                     if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                                    	for (var tlIndex in ao.teachingLanguages) {
+                                    		var tl = ao.teachingLanguages[tlIndex];
+                                    		if (tl && result.teachLang.indexOf(tl) < 0) {
+												result.teachLang.push(tl);
+											}
+                                    	}
+                                    	
                                         ao.teachLang = ao.teachingLanguages[0];
 
                                         $rootScope.teachingLang = ao.teachLang.toLowerCase();
@@ -371,7 +378,7 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                     }
                 }
             }
-
+            
             // check if application system is of type Lisähaku
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
