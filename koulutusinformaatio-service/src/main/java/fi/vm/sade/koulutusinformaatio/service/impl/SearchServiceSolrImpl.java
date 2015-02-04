@@ -310,6 +310,10 @@ public class SearchServiceSolrImpl implements SearchService {
             if (educationCodeFilter != null) {
                 searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationCodeFilter, "educationCodeFilter"));
             }
+            
+            if (educationDomainFilter != null) {
+                searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationDomainFilter, "educationDomainFilter"));
+            }
 
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {

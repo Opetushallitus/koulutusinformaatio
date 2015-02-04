@@ -21,6 +21,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,13 +86,14 @@ public class ArticleServiceImpl implements ArticleService {
     private List<Article> fetchEnglishArticles(
             ObjectMapper mapper) throws Exception {
         
-        
         List<Article> articles = new ArrayList<Article>();
         articles.addAll(getEnglishArticlesByExtension(mapper, ""));
         articles.addAll(getEnglishArticlesByExtension(mapper, "/story"));
+        for (Article article : articles) {
+            article.setLanguageCode("en");
+        }
         return articles;
     }
-
 
     private List<Article> getEnglishArticlesByExtension(
             ObjectMapper mapper, String extension) throws Exception {
@@ -133,6 +135,7 @@ public class ArticleServiceImpl implements ArticleService {
             conn.connect();
 
             ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
+
             return articles;
         } catch (Exception ex) {
             LOGGER.debug("No articles for url: " + url);
@@ -151,6 +154,9 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = new ArrayList<Article>();
         articles.addAll(getArticlesByExtension(mapper, lang, ""));
         articles.addAll(getArticlesByExtension(mapper, lang, "/story"));
+        for (Article article : articles) {
+            article.setLanguageCode(lang);
+        }
         return articles;
     }
     

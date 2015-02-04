@@ -35,7 +35,7 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
         doc.addField(LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_ARTICLE);
         doc.addField(LearningOpportunity.ID, article.getId());
         
-        String lang = extractLanguage(article);
+        String lang = article.getLanguageCode();
         doc.addField(LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase());
         doc.addField(LearningOpportunity.ARTICLE_URL, article.getUrl());
         
@@ -106,19 +106,5 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
         
     }
 
-    private String extractLanguage(Article article) {
-       String [] urlSplits = article.getUrl().split("\\/");
-       if (urlSplits != null && urlSplits.length >= 5 && isLangKey(article.getUrl().split("\\/")[4])) {
-        return article.getUrl().split("\\/")[4];
-       } else {
-           return "en";
-       }
-    }
-
-    private boolean isLangKey(String testStr) {
-        return "en".equalsIgnoreCase(testStr) || "sv".equalsIgnoreCase(testStr) || "fi".equalsIgnoreCase(testStr);
-    }
-
-    
     
 }

@@ -32,6 +32,7 @@ public class Article {
     private String excerpt;
     private String id;
     private List<ArticleTag> tags;
+    private String languageCode;
     
     private List<ArticleCode> taxonomy_oph_koulutus;
     private List<ArticleCode> taxonomy_oph_koulutustyyppi;
@@ -107,6 +108,14 @@ public class Article {
     }
     public void setTags(List<ArticleTag> tags) {
         this.tags = tags;
+    }
+    
+    public String getLanguageCode() {
+        return languageCode;
+    }
+    
+    public void setLanguageCode(String languageCode) {
+        this.languageCode = languageCode;
     }
 
 }
