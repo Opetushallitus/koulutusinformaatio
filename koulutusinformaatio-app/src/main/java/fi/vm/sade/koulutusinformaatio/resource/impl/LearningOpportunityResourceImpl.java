@@ -121,8 +121,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 dto = learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase(), uiLang.toLowerCase());
             }
             String educationType = getEducationTypeForParent(dto);
-            if (!StringUtils.isBlank(educationType)) {
-                setArticles(uiLang, dto, dto.getName(), educationType);
+            String educationCode = getEducationCodeForParent(dto);
+            if (!StringUtils.isBlank(educationType) && !StringUtils.isBlank(educationCode)) {
+                setArticles(uiLang, dto, educationCode, educationType);
             }
             return dto;
         } catch (ResourceNotFoundException e) {
@@ -130,6 +131,15 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
+    }
+    
+    private String getEducationCodeForParent(ParentLearningOpportunitySpecificationDTO dto) {
+        try {
+            return dto.getLois().get(0).getApplicationSystems().get(0).getApplicationOptions().get(0).getEducationCodeUri();
+        } catch (IndexOutOfBoundsException aoe) {
+            LOGGER.warn(dto.getClass().getSimpleName() + " did not have any " + ApplicationOptionDTO.class.getSimpleName() + " nested within. Contents were: " + dto.toString());
+        }
+        return null;
     }
 
     private String getEducationTypeForParent(ParentLearningOpportunitySpecificationDTO dto) {
