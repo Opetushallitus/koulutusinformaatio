@@ -142,8 +142,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 type = SolrConstants.ED_TYPE_KAKSOIS;
             } else if (option.isKotitalous()) {
                 type = SolrConstants.ED_TYPE_KOTITALOUS;
+            } else {
+                type = SolrConstants.ED_TYPE_MUU;
             }
-            type = SolrConstants.ED_TYPE_MUU;
         } catch (IndexOutOfBoundsException aoe) {
             LOGGER.warn(dto.getClass().getSimpleName() + " did not have any " + ApplicationOptionDTO.class.getSimpleName() + " nested within. Contents were: " + dto.toString());
         }
