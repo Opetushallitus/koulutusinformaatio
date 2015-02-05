@@ -53,7 +53,7 @@ public class AdultVocationalLOSEntity {
     private I18nTextEntity infoAboutCharge;
     @Embedded
     private I18nTextEntity careerOpportunities;
-    
+
     
     @Embedded
     private List<ContactPersonEntity> contactPersons = new ArrayList<ContactPersonEntity>();
@@ -73,6 +73,8 @@ public class AdultVocationalLOSEntity {
     private I18nTextEntity degreeTitle;
     @Embedded
     private List<I18nTextEntity> degreeTitles;
+    @Embedded
+    private List<I18nTextEntity> professionalTitles;
     private Date startDate;
     private String plannedDuration;
 
@@ -492,6 +494,12 @@ public class AdultVocationalLOSEntity {
 	public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
 		this.degreeTitles = degreeTitles;
 	}
+    public List<I18nTextEntity> getProfessionalTitles() {
+        return professionalTitles;
+    }
+    public void setProfessionalTitles(List<I18nTextEntity> professionalTitles) {
+        this.professionalTitles = professionalTitles;
+    }
 
 
 }
