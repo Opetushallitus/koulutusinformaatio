@@ -127,7 +127,12 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
             List<OidRDTO> childKomotoOids = tarjontaRawService.getKomotosByKomo(childKomoId, Integer.MAX_VALUE, 0);
             for (OidRDTO childKomotoOid : childKomotoOids) {
                 KomotoDTO childKomoto = tarjontaRawService.getKomoto(childKomotoOid.getOid());
-
+                try {
+                    validateChildKomoto(childKomoto);
+                } catch (TarjontaParseException e) {
+                    LOG.debug("Invalid child komo " + childKomoto.getOid() + ": " + e.getMessage());
+                    continue;
+                }
                 if (isSpecialEdKomoto(childKomoto)) {
                     // ER
                     String id = String.format("%s_er", resolveLOSId(childKomoId, childKomoto.getTarjoajaOid()));
