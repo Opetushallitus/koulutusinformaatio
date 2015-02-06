@@ -3,7 +3,7 @@
         <form method="get" data-ng-submit="search()" novalidate class="form-horizontal" role="form">
             <div class="from-group">
                 <label for="search-field" class="col-xs-16 col-sm-4 control-label margin-vertical-small h3" data-ki-i18n="search-field-label"></label>
-                <div class="col-xs-16 col-sm-8 margin-vertical-small">
+                <div class="col-xs-12 col-sm-14 margin-vertical-small">
                     <input type="text"
                         class="form-control input-lg  ki-search-intro-step1" 
                         id="search-field" 
@@ -16,12 +16,12 @@
                         data-typeahead-on-select="search()"
                         autocomplete="off" />
                 </div>
-                <div class="col-xs-16 col-sm-4 margin-vertical-small">
+                <div class="col-xs-4 col-sm-2 margin-vertical-small">
                     <button type="submit" class="btn btn-lg btn-primary">
-                        <span class="h3">
-                            <i class="icon-search"></i>
-                            <span data-ki-i18n="search-button"></span>
-                        </span>
+                            <span class="h3">
+                                <i class="icon-search"></i>
+                                <span class="hidden-xs" data-ki-i18n="search-button"></span>
+                            </span>
                     </button>
                 </div>
             </div>
