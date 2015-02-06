@@ -322,8 +322,12 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setName(name.getName());
         los.setShortTitle(name.getShortTitle());
         if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
-            Code subName = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
-            los.setSubName(subName.getName());
+            if(childKomo.getKoulutusOhjelmaKoodiUri().isEmpty()){
+                LOG.warn("ChildKomo " + childKomo.getOid() + " contained empty koulutusOhjelmaKoodiUri. Subname not added.");
+            } else {
+                Code subName = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+                los.setSubName(subName.getName());
+            }
         }
         los.setCreditValue(parentKomo.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
