@@ -1214,10 +1214,10 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             // save type if defined
             if (itemType) {
-                CookieService.set(typekey, itemType, cookieConfig, false);
+                CookieService.set(typekey, itemType, cookieConfig);
             }
 
-            CookieService.set(key, JSON.stringify(current), cookieConfig, false);
+            CookieService.set(key, JSON.stringify(current), cookieConfig);
         },
 
         removeItem: function(aoId) {
@@ -1228,15 +1228,15 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 var index = value.indexOf(aoId);
                 value.splice(index, 1);
 
-                CookieService.set(key, JSON.stringify(value), cookieConfig, false);
+                CookieService.set(key, JSON.stringify(value), cookieConfig);
             } else {
                 this.empty();
             }
         },
 
         empty: function() {
-            CookieService.set(key, null, cookieConfig, false);
-            CookieService.set(typekey, null, cookieConfig, false);
+            CookieService.set(key, null, cookieConfig);
+            CookieService.set(typekey, null, cookieConfig);
         },
 
         getItems: function() {

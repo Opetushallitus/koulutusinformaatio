@@ -9,20 +9,12 @@ service('CookieService', ['$location', 'HostResolver', function($location, HostR
 	return {
 		get: function(name, usePrefix) {
 			var defaultConfig = {useLocalStorage: false};
-			usePrefix = (usePrefix === undefined) ? true : usePrefix;
-
-			var prefix = HostResolver.getCookiePrefixByDomain( $location.host() );
-			name = usePrefix ? prefix + name : name;
 			return $.cookie(name, defaultConfig);
 		},
 
-		set: function(name, value, config, usePrefix) {
+		set: function(name, value, config) {
 			var defaultConfig = {useLocalStorage: false, path: '/'};
-			usePrefix = (usePrefix === undefined) ? true : usePrefix;
-
 			config = config || defaultConfig;
-			var prefix = HostResolver.getCookiePrefixByDomain( $location.host() );
-			name = usePrefix ? prefix + name : name;
 			$.cookie(name, value, config);
 		}
 	};
