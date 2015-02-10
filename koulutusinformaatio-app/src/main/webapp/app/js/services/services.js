@@ -1198,7 +1198,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     return {
         addItem: function(aoId, itemType) {
 
-            var current = CookieService.get(key, false);
+            var current = CookieService.get(key);
 
             if (current) {
                 current = JSON.parse(current);
@@ -1222,7 +1222,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         removeItem: function(aoId) {
             if (this.getItemCount() > 1) {
-                var value = CookieService.get(key, false);
+                var value = CookieService.get(key);
                 value = JSON.parse(value);
 
                 var index = value.indexOf(aoId);
@@ -1240,11 +1240,11 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
         },
 
         getItems: function() {
-            return JSON.parse( CookieService.get(key, false) );
+            return JSON.parse( CookieService.get(key) );
         },
 
         getItemCount: function() {
-            return CookieService.get(key, false) ? JSON.parse( CookieService.get(key, false) ).length : 0;
+            return CookieService.get(key) ? JSON.parse( CookieService.get(key, false) ).length : 0;
         },
 
         isEmpty: function() {
@@ -1253,7 +1253,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         getType: function() {
             if (!this.isEmpty()) {
-                return CookieService.get(typekey, false);
+                return CookieService.get(typekey);
             }
         },
 

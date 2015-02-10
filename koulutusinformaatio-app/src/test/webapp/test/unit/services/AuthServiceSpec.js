@@ -11,7 +11,7 @@ describe('AuthService', function() {
         });
 
         // delete cookie
-        cookie.set(cookieName, null, {}, false);
+        cookie.set(cookieName, null, {});
     });
 
     it('should return false for unset auth cookie', function() {
@@ -20,7 +20,7 @@ describe('AuthService', function() {
     });
 
     it('should return true for set auth cookie', function() {
-        cookie.set(cookieName, 'authCookieSet', {}, false);
+        cookie.set(cookieName, 'authCookieSet', {});
         var result = utility.isAuthenticated();
         expect(result).toBeTruthy();
     });

@@ -9,7 +9,7 @@ service('AuthService', ['CookieService', function(CookieService) {
     var cookieName = 'auth';
     return {
         isAuthenticated: function() {
-            return CookieService.get(cookieName, false) ? true : false;
+            return CookieService.get(cookieName) ? true : false;
         }
     };
 }]);

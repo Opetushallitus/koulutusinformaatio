@@ -7,7 +7,7 @@ angular.module('kiApp.CookieService', ['ngResource']).
  */
 service('CookieService', ['$location', 'HostResolver', function($location, HostResolver) {
 	return {
-		get: function(name, usePrefix) {
+		get: function(name) {
 			var defaultConfig = {useLocalStorage: false};
 			return $.cookie(name, defaultConfig);
 		},
