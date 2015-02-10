@@ -60,6 +60,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		los.setTeachingLanguages(Arrays.asList(lang));
 		
 		los.setEducationDomain(TestUtil.createI18nText("parent domain fi", "parent domain sv", "parent name end"));
+		los.setStydyDomain(TestUtil.createI18nText("study domain fi", "study domain sv", "study domain en"));
 		
 		provider = new Provider();
 		provider.setId("provId");
@@ -164,6 +165,7 @@ public class ParentLOSToSolrInputDocumentTest {
         assertEquals(tutkintonimikkeet.size()+1, doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValues().size());
         Collection<Object> nimikkeet = doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValues();
         assertTrue(nimikkeet.contains(tutkintonimikkeet.get(0).get("fi")));
+        assertEquals(1, doc.get(LearningOpportunity.STUDY_DOMAIN).getValues().size());
         //assertEquals(SolrConstants.ED_TYPE_AMMATILLINEN, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
 		
 	}

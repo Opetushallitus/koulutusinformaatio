@@ -353,6 +353,7 @@ public final class SolrUtil {
         public static final String EDUCATION_TYPE_DISPLAY = "educationCode_en_ss";
         
         public static final String EDUCATION_DOMAIN = "education_domain_ssort";
+        public static final String STUDY_DOMAIN = "study_domain_ssort";
         
         public static final String ARTICLE_URL = "article_url_ss";
         public static final String ARTICLE_PICTURE = "article_picture_ss";

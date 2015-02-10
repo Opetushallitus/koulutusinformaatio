@@ -95,13 +95,14 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                                                             String lopFilter, 
                                                             String educationCodeFilter,
                                                             String educationDomainFilter,
+                                                            String studyDomainFilter,
                                                             List<String> excludes, 
                                                             SearchType searchType) {
         try {
             sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(text, prerequisite,
                     cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
-                    lopFilter, educationCodeFilter, educationDomainFilter, excludes, searchType);
+                    lopFilter, educationCodeFilter, educationDomainFilter, studyDomainFilter, excludes, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);

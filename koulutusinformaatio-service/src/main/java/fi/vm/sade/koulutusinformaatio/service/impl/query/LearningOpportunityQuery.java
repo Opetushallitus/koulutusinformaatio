@@ -9,6 +9,7 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.service.impl.SearchServiceSolrImpl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class LearningOpportunityQuery extends SolrQuery {
             List<String> cities, List<String> facetFilters, String lang, 
             boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
-            String lopFilter, String educationCodeFilter, String educationDomainFilter, List<String> excludes, 
+            String lopFilter, String educationCodeFilter, String educationDomainFilter, String studyDomainFilter, List<String> excludes, 
             String upcomingDate, String upcomingLaterDate) {
         super(term);
         LOG.debug(String.format("Query term: (%s)", term));
@@ -61,9 +62,8 @@ public class LearningOpportunityQuery extends SolrQuery {
             addEducationCodeRecommendationFilter(educationCodeFilter, lang);
         }
         
-        if (educationDomainFilter != null) {
-            addEducationDomainFilter(educationDomainFilter);
-        }
+        addFilter(LearningOpportunity.EDUCATION_DOMAIN, educationDomainFilter);
+        addFilter(LearningOpportunity.STUDY_DOMAIN, studyDomainFilter);
         
         if (excludes != null) {
             for (String curExclude : excludes) {
@@ -98,7 +98,7 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
     }
-    
+
     private void setApplicationStatusFilters(boolean ongoing, boolean upcoming, boolean upcomingLater, String upcomingLimit, String upcomingLaterLimit) {
         StringBuilder ongoingFQ = new StringBuilder();
         for (int i = 0; i < SolrUtil.AS_COUNT; i++) {
@@ -191,7 +191,9 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
     }
     
-    private void addEducationDomainFilter(String educationDomainFilter) {
-        this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_DOMAIN, educationDomainFilter));
+    private void addFilter(String field, String filter) {
+        if (!StringUtils.isBlank(filter)) {
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, field, filter));
+        }
     }
 }

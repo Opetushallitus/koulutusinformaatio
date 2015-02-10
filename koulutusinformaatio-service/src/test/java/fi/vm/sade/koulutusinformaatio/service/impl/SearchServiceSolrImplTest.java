@@ -49,9 +49,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -189,13 +193,13 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), Lists.newArrayList("contentType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, null, SearchType.LO);
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), Lists.newArrayList("contentType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, null, null, SearchType.LO);
         assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), Lists.newArrayList("olType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, null, SearchType.LO);
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), Lists.newArrayList("olType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, null, null, SearchType.LO);
         assertEquals(0, results.getResults().size());
     }
     
