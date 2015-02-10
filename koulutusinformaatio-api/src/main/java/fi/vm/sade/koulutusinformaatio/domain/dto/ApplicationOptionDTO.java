@@ -41,6 +41,7 @@ public class ApplicationOptionDTO {
     private boolean sora;
     private String educationDegree;
     private List<String> teachingLanguages;
+    private List<String> teachingLanguageNames;
     private String selectionCriteria;
     private String soraDescription;
     private CodeDTO prerequisite;
@@ -415,4 +416,13 @@ public class ApplicationOptionDTO {
     public void setStartingQuotaDescription(String startingQuotaDescription) {
         this.startingQuotaDescription = startingQuotaDescription;
     }
+
+    public List<String> getTeachingLanguageNames() {
+        return teachingLanguageNames;
+    }
+
+    public void setTeachingLanguageNames(List<String> teachingLanguageNames) {
+        this.teachingLanguageNames = teachingLanguageNames;
+    }
+
 }

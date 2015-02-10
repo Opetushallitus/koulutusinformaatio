@@ -361,8 +361,8 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                                     var ao = as.applicationOptions[aoIndex];
 
                                     if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                                    	for (var tlIndex in ao.teachingLanguages) {
-                                    		var tl = ao.teachingLanguages[tlIndex];
+                                    	for (var tlIndex in ao.teachingLanguageNames) {
+                                    		var tl = ao.teachingLanguageNames[tlIndex];
                                     		if (tl && result.teachLang.indexOf(tl) < 0) {
 												result.teachLang.push(tl);
 											}
@@ -371,6 +371,7 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                                         ao.teachLang = ao.teachingLanguages[0];
 
                                         $rootScope.teachingLang = ao.teachLang.toLowerCase();
+                                        $rootScope.teachingLanguageNames = result.teachLang;
                                     }
                                 }
                             }

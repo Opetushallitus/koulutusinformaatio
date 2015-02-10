@@ -57,6 +57,8 @@ public class ApplicationOptionEntity {
     private boolean sora;
     private List<String> teachingLanguages;
     @Embedded
+    private List<I18nTextEntity> teachingLanguageNames;
+    @Embedded
     private ParentLOSRefEntity parent;
     @Embedded
     private I18nTextEntity selectionCriteria;
@@ -423,5 +425,13 @@ public class ApplicationOptionEntity {
 
     public void setStartingQuotaDescription(I18nTextEntity startingQuotaDescription) {
         this.startingQuotaDescription = startingQuotaDescription;
+    }
+
+    public List<I18nTextEntity> getTeachingLanguageNames() {
+        return teachingLanguageNames;
+    }
+
+    public void setTeachingLanguageNames(List<I18nTextEntity> teachingLanguageNames) {
+        this.teachingLanguageNames = teachingLanguageNames;
     }
 }

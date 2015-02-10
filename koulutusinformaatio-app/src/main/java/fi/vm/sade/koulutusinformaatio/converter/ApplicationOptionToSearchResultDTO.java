@@ -45,6 +45,7 @@ public final class ApplicationOptionToSearchResultDTO {
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setSora(applicationOption.isSora());
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
+            dto.setTeachingLanguageNames(ConverterUtil.getTextsByLanguage(applicationOption.getTeachingLanguageNames(),lang));
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setVocational(applicationOption.isVocational());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
