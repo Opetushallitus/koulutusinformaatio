@@ -1417,6 +1417,7 @@ service('FilterService', [
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
                 educationDomainFilter: filters.educationDomainFilter,
+                studyDomainFilter: filters.studyDomainFilter,
                 excludes: filters.excludes,
                 facetFilters: filters.facetFilters,
                 articleFacetFilters : filters.articleFacetFilters,
@@ -1534,6 +1535,7 @@ service('FilterService', [
             params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params += filters.educationDomainFilter ? '&educationDomainFilter=' + filters.educationDomainFilter : '';
+            params += filters.studyDomainFilter ? '&studyDomainFilter=' + filters.studyDomainFilter : '';
             params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
             params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
             params += (filters.organisationFacetFilters && filters.organisationFacetFilters.length > 0) ? '&organisationFacetFilters=' + filters.organisationFacetFilters.join(',') : '';
@@ -1576,6 +1578,10 @@ service('FilterService', [
         
         getEducationDomainFilter: function() {
             return filters.educationDomainFilter;
+        },
+        
+        getStudyDomainFilter: function() {
+            return filters.studyDomainFilter;
         },
         
         getExcludes: function() {
