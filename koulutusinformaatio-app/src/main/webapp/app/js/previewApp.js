@@ -104,10 +104,6 @@ var kiApp = angular.module('previewApp',
         VirkailijaLanguageService.setLanguage(LanguageService.getLanguage());
 		$location.search('').replace();
 	}
-
-    var currentHost = $location.host();
-    var defaultName = 'i18next';
-    var i18nCookieName = HostResolver.getCookiePrefixByDomain(currentHost) + defaultName;
 	
     // initialize i18next library
     i18n.init({
@@ -118,7 +114,7 @@ var kiApp = angular.module('previewApp',
             namespaces: ['language', 'tooltip', 'plain'],
             defaultNs: 'language'
         },
-        cookieName: i18nCookieName,
+        cookieName: 'i18next',
         getAsync : false,
         sendMissing : false,
         fallbackLng : 'fi',

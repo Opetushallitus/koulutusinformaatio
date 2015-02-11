@@ -361,8 +361,8 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                                     var ao = as.applicationOptions[aoIndex];
 
                                     if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                                    	for (var tlIndex in ao.teachingLanguages) {
-                                    		var tl = ao.teachingLanguages[tlIndex];
+                                    	for (var tlIndex in ao.teachingLanguageNames) {
+                                    		var tl = ao.teachingLanguageNames[tlIndex];
                                     		if (tl && result.teachLang.indexOf(tl) < 0) {
 												result.teachLang.push(tl);
 											}
@@ -371,6 +371,7 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                                         ao.teachLang = ao.teachingLanguages[0];
 
                                         $rootScope.teachingLang = ao.teachLang.toLowerCase();
+                                        $rootScope.teachingLanguageNames = result.teachLang;
                                     }
                                 }
                             }
@@ -1198,7 +1199,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     return {
         addItem: function(aoId, itemType) {
 
-            var current = CookieService.get(key, false);
+            var current = CookieService.get(key);
 
             if (current) {
                 current = JSON.parse(current);
@@ -1214,37 +1215,37 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             // save type if defined
             if (itemType) {
-                CookieService.set(typekey, itemType, cookieConfig, false);
+                CookieService.set(typekey, itemType, cookieConfig);
             }
 
-            CookieService.set(key, JSON.stringify(current), cookieConfig, false);
+            CookieService.set(key, JSON.stringify(current), cookieConfig);
         },
 
         removeItem: function(aoId) {
             if (this.getItemCount() > 1) {
-                var value = CookieService.get(key, false);
+                var value = CookieService.get(key);
                 value = JSON.parse(value);
 
                 var index = value.indexOf(aoId);
                 value.splice(index, 1);
 
-                CookieService.set(key, JSON.stringify(value), cookieConfig, false);
+                CookieService.set(key, JSON.stringify(value), cookieConfig);
             } else {
                 this.empty();
             }
         },
 
         empty: function() {
-            CookieService.set(key, null, cookieConfig, false);
-            CookieService.set(typekey, null, cookieConfig, false);
+            CookieService.set(key, null, cookieConfig);
+            CookieService.set(typekey, null, cookieConfig);
         },
 
         getItems: function() {
-            return JSON.parse( CookieService.get(key, false) );
+            return JSON.parse( CookieService.get(key) );
         },
 
         getItemCount: function() {
-            return CookieService.get(key, false) ? JSON.parse( CookieService.get(key, false) ).length : 0;
+            return CookieService.get(key) ? JSON.parse( CookieService.get(key, false) ).length : 0;
         },
 
         isEmpty: function() {
@@ -1253,7 +1254,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         getType: function() {
             if (!this.isEmpty()) {
-                return CookieService.get(typekey, false);
+                return CookieService.get(typekey);
             }
         },
 

@@ -34,6 +34,7 @@ public class ApplicationOptionSearchResultDTO {
     private List<String> childLONames = new ArrayList<String>();
     private boolean sora = false;
     private List<String> teachingLanguages;
+    private List<String> teachingLanguageNames;
     private boolean athleteEducation;
     private boolean kaksoistutkinto;
     private boolean vocational;
@@ -143,5 +144,13 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setAttachments(List<ApplicationOptionAttachmentDTO> attachments) {
         this.attachments = attachments;
+    }
+
+    public List<String> getTeachingLanguageNames() {
+        return teachingLanguageNames;
+    }
+
+    public void setTeachingLanguageNames(List<String> teachingLanguageNames) {
+        this.teachingLanguageNames = teachingLanguageNames;
     }
 }

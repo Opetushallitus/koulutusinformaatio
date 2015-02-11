@@ -11,8 +11,8 @@ describe('CookieService', function() {
         });
 
         // delete cookie
-        utility.set(cookieName, null, {}, false);
-        utility.set(cookieName, null, {}, true);
+        utility.set(cookieName, null, {});
+        utility.set(cookieName, null, {});
     });
 
     it('should return correct cookie value', function() {
@@ -21,22 +21,9 @@ describe('CookieService', function() {
         expect(result).toEqual(cookieValue);
     });
 
-    it('should return null value for non-prefixed cookie', function() {
-        utility.set(cookieName, cookieValue, {});
-        var result = utility.get(cookieName, false);
-        expect(result).toBeNull();
-    });
-
-    it('should return null value for prefixed cookie', function() {
-        utility.set(cookieName, cookieValue, {}, false);
+    it('should return null value for non-set cookie', function() {
         var result = utility.get(cookieName);
         expect(result).toBeNull();
-    });
-
-    it('should return correct value for prefixed cookie', function() {
-        utility.set(cookieName, cookieValue, {}, true);
-        var result = utility.get(cookieName, true);
-        expect(result).toEqual(cookieValue);
     });
 
 });

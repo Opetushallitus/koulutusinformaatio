@@ -113,6 +113,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setSora(true);
         }
         ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(komoto.getOpetuskieletUris()));
+        ao.setTeachingLanguageNames(koodistoService.searchNamesMultiple(komoto.getOpetuskieletUris()));
         ao.setPrerequisite(prerequisite);
         ao.setSpecificApplicationDates(hakukohdeDTO.isKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {

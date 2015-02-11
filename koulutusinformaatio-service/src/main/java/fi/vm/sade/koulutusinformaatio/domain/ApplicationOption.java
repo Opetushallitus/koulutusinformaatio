@@ -50,6 +50,8 @@ public class ApplicationOption {
     private boolean sora;
     // opetuskielikoodit : [FI, SV]
     private List<String> teachingLanguages;
+    // opetuskielikoodien nimet
+    private List<I18nText> teachingLanguageNames;
     // tutkinnon viite
     private ParentLOSRef parent;
     // valintaperustekuvaus
@@ -451,5 +453,13 @@ public class ApplicationOption {
 
     public I18nText getStartingQuotaDescription() {
         return startingQuotaDescription;
+    }
+
+    public List<I18nText> getTeachingLanguageNames() {
+        return teachingLanguageNames;
+    }
+
+    public void setTeachingLanguageNames(List<I18nText> teachingLanguageNames) {
+        this.teachingLanguageNames = teachingLanguageNames;
     }
 }

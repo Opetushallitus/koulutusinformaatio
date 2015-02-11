@@ -7,22 +7,14 @@ angular.module('kiApp.CookieService', ['ngResource']).
  */
 service('CookieService', ['$location', 'HostResolver', function($location, HostResolver) {
 	return {
-		get: function(name, usePrefix) {
+		get: function(name) {
 			var defaultConfig = {useLocalStorage: false};
-			usePrefix = (usePrefix === undefined) ? true : usePrefix;
-
-			var prefix = HostResolver.getCookiePrefixByDomain( $location.host() );
-			name = usePrefix ? prefix + name : name;
 			return $.cookie(name, defaultConfig);
 		},
 
-		set: function(name, value, config, usePrefix) {
+		set: function(name, value, config) {
 			var defaultConfig = {useLocalStorage: false, path: '/'};
-			usePrefix = (usePrefix === undefined) ? true : usePrefix;
-
 			config = config || defaultConfig;
-			var prefix = HostResolver.getCookiePrefixByDomain( $location.host() );
-			name = usePrefix ? prefix + name : name;
 			$.cookie(name, value, config);
 		}
 	};

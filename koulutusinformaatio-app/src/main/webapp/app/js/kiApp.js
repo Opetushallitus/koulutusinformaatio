@@ -135,10 +135,6 @@ var kiApp = angular.module('kiApp',
 
 // initialize i18n and recaptcha libraries
 .run(['$location', '$rootScope', 'LanguageService', 'HostResolver', function($location, $rootScope, LanguageService, HostResolver) {
-    var defaultName = 'i18next';
-    var currentHost = $location.host();
-    var i18nCookieName = HostResolver.getCookiePrefixByDomain(currentHost) + defaultName;
-
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
@@ -147,7 +143,7 @@ var kiApp = angular.module('kiApp',
             namespaces: ['language', 'tooltip', 'plain', 'searchwizard', 'appbasket', 'searchbysubject'],
             defaultNs: 'language'
         },
-        cookieName: i18nCookieName,
+        cookieName: 'i18next',
         getAsync : false,
         sendMissing : false,
         fallbackLng : 'fi',

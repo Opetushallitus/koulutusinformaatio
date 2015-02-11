@@ -362,7 +362,9 @@ public class LOIObjectCreator extends ObjectCreator {
              return filtered;
          } else if (filtered.isEmpty()) {
              // filtered is empty, add head
-             filtered.add(head(unfiltered));
+             if(isCurrentOrFuture(head(unfiltered))){
+                 filtered.add(head(unfiltered));
+             }
              return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
          } else {
              ApplicationOption unfilteredHead = head(unfiltered);
