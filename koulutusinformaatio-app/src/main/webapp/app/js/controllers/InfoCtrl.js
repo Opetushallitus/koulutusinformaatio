@@ -116,11 +116,11 @@
     
     var setRecommendationFields = function() {
     	if ($scope.uiLang == 'fi') {
-    		$scope.lopExclField = '-lopName_fi_ssort';
+    		$scope.lopExclField = '-lopName_fi_str_display';
     	} else if ($scope.uiLang == 'sv') {
-    		$scope.lopExclField = '-lopName_sv_ssort';
+    		$scope.lopExclField = '-lopName_sv_str_display';
     	} else if ($scope.uiLang == 'en') {
-    		$scope.lopExclField = '-lopName_en_ssort';
+    		$scope.lopExclField = '-lopName_en_str_display';
     	} else {
     		$scope.lopExclField = '-lopName';
     	}

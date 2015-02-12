@@ -519,6 +519,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			facetFilters: facetFiltersArr.join(),
                 lopFilter: $scope.lopFilter,
                 educationCodeFilter: $scope.educationCodeFilter,
+                excludes: $scope.excludes
     		});
 
     		$scope.refreshView();
