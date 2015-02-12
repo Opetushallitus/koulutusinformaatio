@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=PT+Sans+Narrow:700|PT+Serif:400italic);
 /*  Bootstrap 3.1.1 default variables for Oppija */
 @font-face {
-  font-family: 'fontello';
+  font-family: 'fontello_ki';
   src: url("../font/fontello.eot?57030330");
   src: url("../font/fontello.eot?57030330#iefix") format("embedded-opentype"), url("../font/fontello.woff?57030330") format("woff"), url("../font/fontello.ttf?57030330") format("truetype"), url("../font/fontello.svg?57030330#fontello") format("svg");
   font-weight: normal;
@@ -17,8 +17,8 @@
   }
 }
 */
-[class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "fontello";
+[class^="kicon-"]:before, [class*=" kicon-"]:before {
+  font-family: "fontello_ki";
   font-style: normal;
   font-weight: normal;
   speak: none;
@@ -41,71 +41,71 @@
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */ }
 
-.icon-link-ext-alt:before {
+.kicon-link-ext-alt:before {
   content: '\e800'; }
 
 /* 'î €' */
-.icon-link-ext:before {
+.kicon-link-ext:before {
   content: '\e801'; }
 
 /* 'î �' */
-.icon-check:before {
+.kicon-check:before {
   content: '\e802'; }
 
 /* 'î ‚' */
-.icon-angle-double-right:before {
+.kicon-angle-double-right:before {
   content: '\e803'; }
 
 /* 'î ƒ' */
-.icon-search:before {
+.kicon-search:before {
   content: '\e804'; }
 
 /* 'î „' */
-.icon-home:before {
+.kicon-home:before {
   content: '\e805'; }
 
 /* 'î …' */
-.icon-angle-right:before {
+.kicon-angle-right:before {
   content: '\e806'; }
 
 /* 'î †' */
-.icon-left:before {
+.kicon-left:before {
   content: '\e807'; }
 
 /* '' */
-.icon-help-circled:before {
+.kicon-help-circled:before {
   content: '\e808'; }
 
 /* '' */
-.icon-facebook:before {
+.kicon-facebook:before {
   content: '\e809'; }
 
 /* '' */
-.icon-gplus:before {
+.kicon-gplus:before {
   content: '\e80a'; }
 
 /* '' */
-.icon-twitter:before {
+.kicon-twitter:before {
   content: '\e80b'; }
 
 /* '' */
-.icon-linkedin:before {
+.kicon-linkedin:before {
   content: '\e80c'; }
 
 /* '' */
-.icon-instagramm:before {
+.kicon-instagramm:before {
   content: '\e80d'; }
 
 /* '' */
-.icon-tumblr:before {
+.kicon-tumblr:before {
   content: '\e80e'; }
 
 /* '' */
-.icon-pinterest-circled:before {
+.kicon-pinterest-circled:before {
   content: '\e80f'; }
 
 /* '' */
-.icon-print:before {
+.kicon-print:before {
   content: '\e810'; }
 
 /* '' */

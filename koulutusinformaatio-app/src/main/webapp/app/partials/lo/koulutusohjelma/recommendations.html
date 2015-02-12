@@ -6,17 +6,17 @@
 		<!-- PREVIEW EXCLUDE -->
 		<ul class="list-unstyled" data-ng-if="!parent.preview">
 			<li>
-				<i class="icon-angle-double-right"></i>
+				<i class="kicon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&lopFilter={{parent.provider.name | encodeURIComponent}}&excludes=-id:{{parent.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					<span data-ki-i18n="tarjoajan"></span> {{parent.provider.name}}</a>
 			</li>
 			<li>
-				<i class="icon-angle-double-right"></i>
+				<i class="kicon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&prerequisite={{prerequisite.value}}&educationCodeFilter={{parent.educationCode}}&excludes={{lopExclField}}:{{parent.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
 				<span data-ki-i18n="muualla"></span> </a>
 			</li>
 			<li>
-				<i class="icon-angle-double-right"></i>
+				<i class="kicon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&prerequisite={{prerequisite.value}}&studyDomainFilter={{parent.stydyDomain}}&excludes={{lopExclField}}:{{parent.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					{{parent.stydyDomain}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
 			</li>
@@ -48,11 +48,11 @@
 			<!-- PREVIEW EXCLUDE -->
 			<ul class="list-unstyled" data-ng-if="!parent.preview">
 				<li data-ng-repeat="article in parent.edCodeSuggestions">
-					<i class="icon-angle-double-right"></i>
+					<i class="kicon-angle-double-right"></i>
 					<a data-ng-href="{{article.url}}" data-ng-bind-html="article.title | unsafe"></a>
 				</li>
 				<li data-ng-repeat="article in parent.edTypeSuggestions">
-					<i class="icon-angle-double-right"></i>
+					<i class="kicon-angle-double-right"></i>
 					<a data-ng-href="{{article.url}}" data-ng-bind-html="article.title | unsafe"></a>
 				</li>
 			</ul>

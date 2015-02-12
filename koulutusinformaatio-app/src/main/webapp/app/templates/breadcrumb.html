@@ -2,7 +2,7 @@
 	<li data-ng-repeat="crumb in breadcrumbItems" data-ng-class="{active: $last, home: $first}">
 		<a data-ng-if="$first" href="{{crumb.linkHref}}" title="{{crumb.tooltip}}">
 			<span class="sr-only">{{crumb.tooltip}}</span>
-			<i class="icon-home"></i>
+			<i class="kicon-home"></i>
 		</a>
 		<span data-ng-if="$last" title="{{crumb.name}}">
 			{{crumb.name}}
