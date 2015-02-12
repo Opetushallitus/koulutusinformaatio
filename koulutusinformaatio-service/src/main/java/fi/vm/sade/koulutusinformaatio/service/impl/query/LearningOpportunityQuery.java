@@ -1,26 +1,16 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
+import java.util.List;
+
+import org.apache.solr.client.solrj.SolrQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.service.impl.SearchServiceSolrImpl;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.common.params.DisMaxParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,8 +26,7 @@ public class LearningOpportunityQuery extends SolrQuery {
             List<String> cities, List<String> facetFilters, String lang, 
             boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
-            String lopFilter, String educationCodeFilter, String educationDomainFilter, String studyDomainFilter, List<String> excludes, 
-            String upcomingDate, String upcomingLaterDate) {
+            String lopFilter, String educationCodeFilter, List<String> excludes, String upcomingDate, String upcomingLaterDate) {
         super(term);
         LOG.debug(String.format("Query term: (%s)", term));
         
@@ -61,9 +50,6 @@ public class LearningOpportunityQuery extends SolrQuery {
         if (educationCodeFilter != null) {
             addEducationCodeRecommendationFilter(educationCodeFilter, lang);
         }
-        
-        addFilter(LearningOpportunity.EDUCATION_DOMAIN, educationDomainFilter);
-        addFilter(LearningOpportunity.STUDY_DOMAIN, studyDomainFilter);
         
         if (excludes != null) {
             for (String curExclude : excludes) {
@@ -191,9 +177,4 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
     }
     
-    private void addFilter(String field, String filter) {
-        if (!StringUtils.isBlank(filter)) {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, field, filter));
-        }
-    }
 }

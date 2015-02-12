@@ -88,8 +88,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             sortCriteria: $scope.sortCriteria,
             lopFilter: $scope.lopFilter,
             educationCodeFilter: $scope.educationCodeFilter,
-            educationDomainFilter: $scope.educationDomainFilter,
-            studyDomainFilter: $scope.studyDomainFilter,
             excludes: $scope.excludes,
             organisationFacetFilters: $scope.organisationFacetFilters,
             articleFacetFilters: $scope.articleFacetFilters
@@ -383,8 +381,6 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
                 $scope.currentPage = FilterService.getPage();
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
-                $scope.educationDomainFilter = FilterService.getEducationDomainFilter();
-                $scope.studyDomainFilter = FilterService.getStudyDomainFilter();
                 $scope.excludes = FilterService.getExcludes();
                 $scope.articleFacetFilters = FilterService.getArticleFacetFilters();
                 $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
@@ -447,8 +443,6 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			lang: LanguageService.getLanguage(),
     			lopFilter: FilterService.getLopFilter(),
     		    educationCodeFilter: FilterService.getEducationCodeFilter(),
-    		    educationDomainFilter: FilterService.getEducationDomainFilter(),
-    		    studyDomainFilter: FilterService.getStudyDomainFilter(),
     		    excludes : FilterService.getExcludes(),
                 articleFacetFilters : FilterService.getArticleFacetFilters(),
                 organisationFacetFilters: FilterService.getOrganisationFacetFilters(),
@@ -525,8 +519,6 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			facetFilters: facetFiltersArr.join(),
                 lopFilter: $scope.lopFilter,
                 educationCodeFilter: $scope.educationCodeFilter,
-                educationDomainFilter: $scope.educationDomainFilter,
-                studyDomainFilter: $scope.studyDomainFilter
     		});
 
     		$scope.refreshView();

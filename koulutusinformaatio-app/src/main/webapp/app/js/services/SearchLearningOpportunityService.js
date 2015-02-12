@@ -118,8 +118,6 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + $filter('encodeURIComponent')(params.lopFilter)) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
-            qParams += (params.educationDomainFilter != undefined) ? ('&educationDomainFilter=' + params.educationDomainFilter) : '';
-            qParams += (params.studyDomainFilter != undefined) ? ('&studyDomainFilter=' + params.studyDomainFilter) : '';
             qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
             qParams += (params.queryString != undefined) ? ('&text=' + $filter('encodeURIComponent')(params.queryString)) : '&text= ';
             

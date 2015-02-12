@@ -36,8 +36,7 @@ public interface SearchService {
                                                    String lang, boolean ongoing, boolean upcoming, 
                                                    boolean upcomingLater,
                                                    int start, int rows, String sort, String order, 
-                                                   String lopFilter, String educationCodeFilter, String educationDomainFilter, String studyDomainFilter,
-                                                   List<String> excludes, SearchType searchType) throws SearchException;
+                                                   String lopFilter, String educationCodeFilter, List<String> excludes, SearchType searchType) throws SearchException;
 
     List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId, String lang) throws SearchException;
 

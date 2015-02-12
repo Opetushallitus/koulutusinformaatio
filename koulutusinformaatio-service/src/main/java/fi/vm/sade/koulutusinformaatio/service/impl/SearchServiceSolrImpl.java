@@ -229,8 +229,7 @@ public class SearchServiceSolrImpl implements SearchService {
             List<String> providerFilters,
             String lang, boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
-            String lopFilter, String educationCodeFilter, String educationDomainFilter, String studyDomainFilter,
-            List<String> excludes, SearchType searchType) throws SearchException {
+            String lopFilter, String educationCodeFilter, List<String> excludes, SearchType searchType) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         String fixed = SolrUtil.fixString(trimmed);
@@ -246,8 +245,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         lang, ongoing, upcoming, 
                         upcomingLater, 
                         start, rows, sort, order,
-                        lopFilter, educationCodeFilter, educationDomainFilter, studyDomainFilter, excludes,
-                        upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
                 query = new ArticleQuery(fixed, lang,  
                         start, rows, sort, order,
@@ -311,23 +309,16 @@ public class SearchServiceSolrImpl implements SearchService {
                 searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationCodeFilter, "educationCodeFilter"));
             }
             
-            if (educationDomainFilter != null) {
-                searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationDomainFilter, "educationDomainFilter"));
-            }
-
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater,
-                        lopFilter, educationCodeFilter, educationDomainFilter, studyDomainFilter, excludes, SearchType.ARTICLE, searchResultList, 
-                        upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList, upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.ARTICLE.equals(searchType)) {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater, 
-                        lopFilter, educationCodeFilter, educationDomainFilter, studyDomainFilter, excludes, SearchType.LO, searchResultList,
-                        upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList, upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.PROVIDER.equals(searchType)) {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater, 
-                        lopFilter, educationCodeFilter, educationDomainFilter, studyDomainFilter, excludes, SearchType.PROVIDER, searchResultList,
-                        upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, SearchType.PROVIDER, searchResultList, upcomingLimit, upcomingLaterLimit);
             }
 
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount() + searchResultList.getOrgCount());
@@ -397,8 +388,7 @@ public class SearchServiceSolrImpl implements SearchService {
             String sort, String order, List<String> cities,
             List<String> facetFilters, List<String> articleFilters, List<String> providerFilters,
             boolean ongoing, boolean upcoming, boolean upcomingLater,
-            String lopFilter, String educationCodeFilter, String educationDomainFilter, String studyDomainFilter, List<String> excludes,
-            SearchType searchType, LOSearchResultList searchResultList,
+            String lopFilter, String educationCodeFilter, List<String> excludes, SearchType searchType, LOSearchResultList searchResultList,
             String upcomingLimit, String upcomingLaterLimit) throws SearchException {
 
         SolrQuery query = null;
@@ -408,8 +398,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     cities, facetFilters, 
                     lang, ongoing, upcoming, upcomingLater, 
                     start, 0, sort, order,
-                    lopFilter, educationCodeFilter, educationDomainFilter, studyDomainFilter, excludes,
-                    upcomingLimit, upcomingLaterLimit);
+                    lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit);
             try {
                 QueryResponse response = loHttpSolrServer.query(query);
                 setResultCount(searchResultList, response, SearchType.LO);
@@ -435,8 +424,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         cities, facetFilters, 
                         lang, ongoing, upcoming, upcomingLater, 
                         start, 0, sort, order,
-                        lopFilter, educationCodeFilter, educationDomainFilter, studyDomainFilter, excludes,
-                        upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
                 query = new ArticleQuery(term, lang,  
                         start, 0, sort, order,
