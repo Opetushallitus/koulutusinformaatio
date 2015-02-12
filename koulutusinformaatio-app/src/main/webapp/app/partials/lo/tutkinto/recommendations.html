@@ -12,13 +12,14 @@
 			</li>
 			<li>
 				<i class="kicon-angle-double-right"></i>
-				<a data-ng-href="#!/haku/*?page=1&prerequisite={{prerequisite.value}}&educationCodeFilter={{lo.name}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=prerequisites:{{prerequisite.value}}&educationCodeFilter={{lo.name}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
 				<span data-ki-i18n="muualla"></span> </a>
 			</li>
 			<li>
+			<li data-ng-repeat="topic in lo.topics">
 				<i class="kicon-angle-double-right"></i>
-				<a data-ng-href="#!/haku/*?page=1&prerequisite={{prerequisite.value}}&studyDomainFilter={{lo.stydyDomain}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
-					{{lo.stydyDomain}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=prerequisites:{{prerequisite.value}}&facetFilters=topic_ffm:{{topic.uri}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+					{{topic.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
 			</li>
 		</ul>
 		<!-- END PREVIEW EXCLUDE -->
@@ -31,8 +32,8 @@
 			<li>
 				{{lo.name}} <span data-ki-i18n="muualla"></span>
 			</li>
-			<li>
-				{{lo.stydyDomain}} <span data-ki-i18n="mukainen-koulutus-muualla"></span>
+			<li data-ng-repeat="theme in lo.themes">
+				{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span>
 			</li>
 		</ul>
 		<!-- END PREVIEW -->
