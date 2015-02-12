@@ -118,7 +118,7 @@
   .breadcrumb > li {
     display: inline-block; }
     .breadcrumb > li + li:before {
-      font-family: "fontello";
+      font-family: "fontello_ki";
       content: "\e806\00a0";
       padding: 0 5px 0 10px;
       color: #feba00; }
@@ -2215,7 +2215,7 @@ select {
 .tarjonta-content.collapse, .tarjonta-content.collapsing {
   margin-left: 30px; }
 .tarjonta-content a:before {
-  font-family: "fontello";
+  font-family: "fontello_ki";
   content: '\e800';
   margin-right: .2em;
   display: inline-block; }
