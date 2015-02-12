@@ -3,7 +3,7 @@
 <div data-ng-repeat="loItem in extendedLO.lo.lois">
     <div data-ng-repeat="applicationSystem in loItem.applicationSystems">
         <ul class="inside">
-            <li data-ng-repeat="childRef in applicationSystem.children "><a href="#!/koulutusohjelma/{{childRef.losId}}">{{childRef.name}}</a></li>
+            <li data-ng-repeat="childRef in applicationSystem.children "><a href="#!/koulutusohjelma/{{childRef.losId}}?prerequisite={{childRef.prerequisite.value}}">{{childRef.name}}</a></li>
         </ul>
     </div>
 </div>
