@@ -58,7 +58,9 @@ var ApplicationSystemCalendar = (function() {
                             clone.nextApplicationPeriodStarts = period.dateRange.startDate;
                             // Set clone as not asOngoing if it's dates do not match
                             clone.asOngoing = (period.dateRange.startDate < new Date() && period.dateRange.endDate > new Date());
-                            data.push(clone);
+                            if(period.dateRange.endDate > new Date()){ // show only upcoming
+                                data.push(clone);
+                            }
                         });
                         remove.push(item);
                     }
