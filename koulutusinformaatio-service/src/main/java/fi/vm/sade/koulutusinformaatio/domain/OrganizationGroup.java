@@ -4,6 +4,7 @@ import java.util.List;
 
 public class OrganizationGroup {
     private String oid;
+    private Integer prioriteetti;
     private List<String> usageGroups;
     private List<String> groupTypes;
 
@@ -13,6 +14,14 @@ public class OrganizationGroup {
 
     public void setOid(String oid) {
         this.oid = oid;
+    }
+
+    public Integer getPrioriteetti() {
+        return prioriteetti;
+    }
+
+    public void setPrioriteetti(Integer prioriteetti) {
+        this.prioriteetti = prioriteetti;
     }
 
     public List<String> getUsageGroups() {
