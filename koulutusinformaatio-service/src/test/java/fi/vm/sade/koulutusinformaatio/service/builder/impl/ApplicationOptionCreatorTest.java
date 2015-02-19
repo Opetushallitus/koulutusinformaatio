@@ -19,10 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -30,6 +27,8 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
@@ -37,13 +36,11 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.RyhmaliitosV1RDTO;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
@@ -73,7 +70,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         organisaatioRawService = mock(OrganisaatioRawService.class);
         parameterService = mock(ParameterService.class);
         komoto = new KomotoDTO();
-
 
         I18nText name  = TestUtil.createI18nText("hakukohdeName");
         when(koodistoService.searchFirstName(eq(hakukohdeNameUri))).thenReturn(name);
@@ -177,6 +173,25 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         hakukohde.setSoraKuvausKoodiUri("soraUri");
         hakukohde.setHakukelpoisuusvaatimusUris(Arrays.asList("prerequisiteUri1","prerequisiteUri2"));
 
+        RyhmaliitosV1RDTO groupWithPrio = new RyhmaliitosV1RDTO();
+        groupWithPrio.setRyhmaOid("group_with_prio");
+        groupWithPrio.setPrioriteetti(1);
+        OrganisaatioRDTO groupWithPrioOrg = new OrganisaatioRDTO();
+        groupWithPrioOrg.setOid(groupWithPrio.getRyhmaOid());
+        groupWithPrioOrg.setTyypit(Arrays.asList(OrganisaatioTyyppi.RYHMA.value()));
+
+        RyhmaliitosV1RDTO groupWithNoPrio = new RyhmaliitosV1RDTO();
+        groupWithNoPrio.setRyhmaOid("group_with_no_prio");
+        OrganisaatioRDTO groupWithNoPrioOrg = new OrganisaatioRDTO();
+        groupWithNoPrioOrg.setOid(groupWithNoPrio.getRyhmaOid());
+        groupWithNoPrioOrg.setTyypit(Arrays.asList(OrganisaatioTyyppi.RYHMA.value()));
+
+        hakukohde.setOrganisaatioRyhmaOids(new String[]{groupWithPrio.getRyhmaOid(), groupWithNoPrio.getRyhmaOid()});
+        hakukohde.setRyhmaliitokset(new ArrayList<RyhmaliitosV1RDTO>(Arrays.asList(groupWithPrio, groupWithNoPrio)));
+
+        when(organisaatioRawService.getOrganisaatio(eq(groupWithPrio.getRyhmaOid()))).thenReturn(groupWithPrioOrg);
+        when(organisaatioRawService.getOrganisaatio(eq(groupWithNoPrio.getRyhmaOid()))).thenReturn(groupWithNoPrioOrg);
+
         Map<String, String> additionalInfo = Maps.newHashMap();
         additionalInfo.put(getFiUri(), "additionalInfo");
         hakukohde.setKaytetaanHakukohdekohtaistaHakuaikaa(false);
@@ -217,6 +232,17 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         assertFalse(ao.isSpecificApplicationDates());
         assertEquals("additionalInfo", ao.getAdditionalInfo().getTranslations().get("fi"));
         assertFalse(ao.isVocational());
+
+        List<OrganizationGroup> groups = ao.getOrganizationGroups();
+        assertEquals(2, groups.size());
+        for (OrganizationGroup group: groups) {
+            if(group.getOid().equals(groupWithPrio.getRyhmaOid())) {
+                assertEquals(1, group.getPrioriteetti().intValue());
+            }
+            else {
+                assertNull(group.getPrioriteetti());
+            }
+        }
 
     }
 

@@ -230,8 +230,7 @@ public class EducationObjectCreator extends ObjectCreator {
             return new ArrayList<OrganizationGroup>();
         }
         List<OrganizationGroup> groups = new ArrayList<OrganizationGroup>(organisaatioRyhmaOids.length);
-        for (int i = 0; i < organisaatioRyhmaOids.length; i++) {
-            String oid = organisaatioRyhmaOids[i];
+        for (String oid: organisaatioRyhmaOids) {
             OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
             boolean isGroup = false;
             for (String tyyppi : organisaatioRDTO.getTyypit()) {
