@@ -16,6 +16,7 @@ public class OrganizationGroupToDTO {
         dto.setOid(organizationGroup.getOid());
         dto.setUsageGroups(organizationGroup.getUsageGroups());
         dto.setGroupTypes(organizationGroup.getGroupTypes());
+        dto.setPrioriteetti(organizationGroup.getPrioriteetti());
         return dto;
     }
 

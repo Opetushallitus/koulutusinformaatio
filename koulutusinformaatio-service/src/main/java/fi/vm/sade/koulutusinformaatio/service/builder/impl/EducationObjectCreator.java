@@ -26,6 +26,7 @@ import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.RyhmaliitosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 
 import java.util.ArrayList;
@@ -224,13 +225,12 @@ public class EducationObjectCreator extends ObjectCreator {
         return null;
     }
 
-    public List<OrganizationGroup> createOrganizationGroups(String... organisaatioRyhmaOids) throws ResourceNotFoundException {
+    public List<OrganizationGroup> createOrganizationGroups(List<RyhmaliitosV1RDTO> ryhmaliitokset, String... organisaatioRyhmaOids) throws ResourceNotFoundException {
         if (organisaatioRyhmaOids == null) {
             return new ArrayList<OrganizationGroup>();
         }
         List<OrganizationGroup> groups = new ArrayList<OrganizationGroup>(organisaatioRyhmaOids.length);
-        for (int i = 0; i < organisaatioRyhmaOids.length; i++) {
-            String oid = organisaatioRyhmaOids[i];
+        for (String oid: organisaatioRyhmaOids) {
             OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
             boolean isGroup = false;
             for (String tyyppi : organisaatioRDTO.getTyypit()) {
@@ -247,6 +247,12 @@ public class EducationObjectCreator extends ObjectCreator {
             group.setOid(oid);
             group.setGroupTypes(organisaatioRDTO.getRyhmatyypit());
             group.setUsageGroups(organisaatioRDTO.getKayttoryhmat());
+            for(RyhmaliitosV1RDTO ryhmaliitos: ryhmaliitokset) {
+                if(oid.equals(ryhmaliitos.getRyhmaOid())) {
+                    group.setPrioriteetti(ryhmaliitos.getPrioriteetti());
+                }
+            }
+
             groups.add(group);
         }
         return groups;
