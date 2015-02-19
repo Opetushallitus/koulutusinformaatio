@@ -216,7 +216,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
             cRef.setQualification(koodistoService.searchFirstName(komoByKomotoOID.getTutkintonimikeUri()));
             cRef.setQualifications(getQualificationsFromKomotoDTO(k));
             cRef.setPrerequisite(prerequisite);
-            ao.getChildLOIRefs().add(cRef);
+            if(cRef.getName() != null){ //FIXME: TUTKE2 koulutuksilla ei ole osaamisalaa pitäisikö listassa näyttää silti jotain?
+                ao.getChildLOIRefs().add(cRef);
+            }
         }
         return ao;
     }
