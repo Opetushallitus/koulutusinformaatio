@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -29,14 +30,18 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -55,28 +60,27 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     ApplicationOptionCreator creator;
     ParameterService parameterService;
 
-    HakukohdeDTO hakukohde;
     KomotoDTO komoto;
+    Code prerequisite;
+
+    private static final String hakukohdeOid = "1.2.3.4";
+    private static final String hakukohdeNameUri = "hakukohdeNameUri";
+    private static final String educationCodeUri = "educationCodeUri";
 
     @Before
     public void init() throws KoodistoException {
         tarjontaRawService = mock(TarjontaRawService.class);
         organisaatioRawService = mock(OrganisaatioRawService.class);
         parameterService = mock(ParameterService.class);
-        hakukohde = new HakukohdeDTO();
         komoto = new KomotoDTO();
 
-        hakukohde.setOid("1.2.3.4");
-        String hakukohdeNameUri = "hakukohdeNameUri";
+
         I18nText name  = TestUtil.createI18nText("hakukohdeName");
         when(koodistoService.searchFirstName(eq(hakukohdeNameUri))).thenReturn(name);
-        hakukohde.setHakukohdeNimiUri(hakukohdeNameUri);
+        when(koodistoService.searchNames(eq(hakukohdeNameUri))).thenReturn(Arrays.asList(name));
+
         String aoIdentifierAthlete = "aoIdentifier";
         when(koodistoService.searchFirstCodeValue(eq(hakukohdeNameUri))).thenReturn(aoIdentifierAthlete);
-
-        // athlete
-        String athelteEducationUri = "atheleteUri";
-        String applicationOptionsUri = "applicationOptionsUri";
         Code aoIdentifierCode = new Code();
         aoIdentifierCode.setValue(aoIdentifierAthlete);
         when(koodistoService.searchSuperCodes(
@@ -84,15 +88,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
                 eq(TarjontaConstants.APPLICATION_OPTIONS_KOODISTO_URI)))
                 .thenReturn(Lists.newArrayList(aoIdentifierCode));
 
-        hakukohde.setAloituspaikatLkm(10);
-        hakukohde.setAlinValintaPistemaara(5);
-        hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
-        hakukohde.setLiitteidenToimitusPvm(new Date());
-        hakukohde.setEdellisenVuodenHakijatLkm(10);
-        Map<String, String> selectionCriteria = Maps.newHashMap();
-        selectionCriteria.put(getFiUri(), "selectionCriteria");
-        hakukohde.setValintaperustekuvaus(selectionCriteria);
-        hakukohde.setKaksoisTutkinto(false);
 
         Code baseEducation1 = new Code();
         baseEducation1.setValue("1");
@@ -104,30 +99,41 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
                 eq(TarjontaConstants.BASE_EDUCATION_KOODISTO_URI)))
                 .thenReturn(Lists.newArrayList(baseEducation1, baseEducation2));
 
-        hakukohde.setSoraKuvausKoodiUri("soraUri");
-
         komoto.setOpetuskieletUris(Lists.newArrayList("fiUri"));
         when(koodistoService.searchCodeValuesMultiple(komoto.getOpetuskieletUris())).thenReturn(Lists.newArrayList("fi"));
+
+        prerequisite = new Code();
+        prerequisite.setValue("prerequisite");
+        prerequisite.setName(TestUtil.createI18nText("peruskoulu"));
+        when(tarjontaRawService.getKomotosByHakukohde(eq(hakukohdeOid))).thenReturn(new ArrayList<OidRDTO>());
+        creator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
+
+    }
+
+    @Test
+    public void testCreateVocationalApplicationOption() throws KoodistoException {
+        HakukohdeDTO hakukohde = new HakukohdeDTO();
+        hakukohde.setOid(hakukohdeOid);
+        hakukohde.setHakukohdeNimiUri(hakukohdeNameUri);
+        hakukohde.setAloituspaikatLkm(10);
+        hakukohde.setAlinValintaPistemaara(5);
+        hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
+        hakukohde.setLiitteidenToimitusPvm(new Date());
+        hakukohde.setEdellisenVuodenHakijatLkm(10);
+        Map<String, String> selectionCriteria = Maps.newHashMap();
+        selectionCriteria.put(getFiUri(), "selectionCriteria");
+        hakukohde.setValintaperustekuvaus(selectionCriteria);
+        hakukohde.setKaksoisTutkinto(false);
+        hakukohde.setSoraKuvausKoodiUri("soraUri");
 
         Map<String, String> additionalInfo = Maps.newHashMap();
         additionalInfo.put(getFiUri(), "additionalInfo");
         hakukohde.setKaytetaanHakukohdekohtaistaHakuaikaa(false);
         hakukohde.setLisatiedot(additionalInfo);
 
-    }
-
-    @Test
-    public void testCreateVocationalApplicationOption() throws KoodistoException {
-        String educationCodeUri = "educationCodeUri";
-        Code prerequisite = new Code();
-        prerequisite.setValue("prerequisite");
-        prerequisite.setName(TestUtil.createI18nText("peruskoulu"));
-        when(tarjontaRawService.getKomotosByHakukohde(eq(hakukohde.getOid()))).thenReturn(new ArrayList<OidRDTO>());
-        creator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
-
         ApplicationOption ao = creator.createVocationalApplicationOption(hakukohde, null, komoto, prerequisite, educationCodeUri, "et3");
         assertNotNull(ao);
-        assertEquals("1.2.3.4", ao.getId());
+        assertEquals(hakukohdeOid, ao.getId());
         assertEquals("hakukohdeName", ao.getName().getTranslations().get("fi"));
         assertEquals("aoIdentifier", ao.getAoIdentifier());
         assertTrue(ao.isAthleteEducation());
@@ -151,6 +157,66 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         assertFalse(ao.isSpecificApplicationDates());
         assertEquals("additionalInfo", ao.getAdditionalInfo().getTranslations().get("fi"));
         assertTrue(ao.isVocational());
+
+    }
+
+    @Test
+    public void testCreateV1EducationApplicationOption() throws Exception {
+        HakukohdeV1RDTO hakukohde = new HakukohdeV1RDTO();
+        hakukohde.setOid(hakukohdeOid);
+        hakukohde.setHakukohteenNimiUri(hakukohdeNameUri);
+        hakukohde.setAloituspaikatLkm(10);
+        hakukohde.setAlinValintaPistemaara(5);
+        hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
+        hakukohde.setLiitteidenToimitusPvm(new Date());
+        hakukohde.setEdellisenVuodenHakijatLkm(10);
+        Map<String, String> selectionCriteria = Maps.newHashMap();
+        selectionCriteria.put(getFiUri(), "selectionCriteria");
+        hakukohde.setValintaperusteKuvaukset(selectionCriteria);
+        hakukohde.setKaksoisTutkinto(false);
+        hakukohde.setSoraKuvausKoodiUri("soraUri");
+        hakukohde.setHakukelpoisuusvaatimusUris(Arrays.asList("prerequisiteUri1","prerequisiteUri2"));
+
+        Map<String, String> additionalInfo = Maps.newHashMap();
+        additionalInfo.put(getFiUri(), "additionalInfo");
+        hakukohde.setKaytetaanHakukohdekohtaistaHakuaikaa(false);
+        hakukohde.setLisatiedot(additionalInfo);
+
+        StandaloneLOS los = new StandaloneLOS();
+        Code educationCode = new Code();
+        educationCode.setUri(educationCodeUri);
+        los.setEducationCode(educationCode);
+        Code fi = new Code();
+        fi.setValue("fi");
+        los.setTeachingLanguages(Arrays.asList(fi));
+
+        HakuV1RDTO haku = new HakuV1RDTO();
+        haku.setOid("4.3.2.1");
+        haku.setHakutapaUri("dummyhaku");
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+        assertNotNull(ao);
+        assertEquals(hakukohdeOid, ao.getId());
+        assertEquals("hakukohdeName", ao.getName().getTranslations().get("fi"));
+        assertFalse(ao.isAthleteEducation());
+        assertEquals(new Integer(10), ao.getStartingQuota());
+        assertEquals(new Integer(5), ao.getLowestAcceptedScore());
+        assertEquals(new Double(4), ao.getLowestAcceptedAverage());
+        assertEquals(hakukohde.getLiitteidenToimitusPvm(), ao.getAttachmentDeliveryDeadline());
+        assertEquals(new Integer(10), ao.getLastYearApplicantCount());
+        assertEquals("selectionCriteria", ao.getSelectionCriteria().getTranslations().get("fi"));
+        assertFalse(ao.isKaksoistutkinto());
+        assertEquals(educationCodeUri, ao.getEducationCodeUri());
+        assertNotNull(ao.getRequiredBaseEducations());
+        assertEquals(2, ao.getRequiredBaseEducations().size());
+        assertEquals("prerequisiteUri1", ao.getRequiredBaseEducations().get(0));
+        assertEquals("prerequisiteUri2", ao.getRequiredBaseEducations().get(1));
+        assertNotNull(ao.getTeachingLanguages());
+        assertEquals(1, ao.getTeachingLanguages().size());
+        assertEquals("fi", ao.getTeachingLanguages().get(0));
+        assertFalse(ao.isSpecificApplicationDates());
+        assertEquals("additionalInfo", ao.getAdditionalInfo().getTranslations().get("fi"));
+        assertFalse(ao.isVocational());
 
     }
 
