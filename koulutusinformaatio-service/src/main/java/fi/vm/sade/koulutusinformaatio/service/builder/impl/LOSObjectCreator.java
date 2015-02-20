@@ -142,7 +142,7 @@ public class LOSObjectCreator extends ObjectCreator {
         ChildLOS childLOS = createInstantiatedLOS(ChildLOS.class, childKomo);
         childLOS.setType(TarjontaConstants.TYPE_CHILD);
         childLOS.setId(childLOSId);
-        Code name = getNameFromKomotoDTOs(childKomo.getKoulutusOhjelmaKoodiUri(), childKomotos);
+        Code name = getNameFromKomotoDTOs(childKomo.getKoulutusOhjelmaKoodiUri(), childKomo.getKoulutusKoodiUri(), childKomotos);
         if (name != null) {
             childLOS.setName(name.getName());
             childLOS.setShortTitle(name.getShortTitle());
@@ -161,15 +161,19 @@ public class LOSObjectCreator extends ObjectCreator {
 
     // If childkomo contains mixed komotos with koulutusohjelmauri and osaamisalauri, the childkomo has only koulutusohjelmauri.
     // Therefore we must check if any of the childkomotos have a osaamisalauri that can be used as name
-    private Code getNameFromKomotoDTOs(String komoKoulutusOhjelmakoodiUri, List<KomotoDTO> childKomotos) throws KoodistoException {
+    private Code getNameFromKomotoDTOs(String komoKoulutusOhjelmakoodiUri, String komoKoulutusKoodiUri, List<KomotoDTO> childKomotos) throws KoodistoException {
         Code name = null;
         for (KomotoDTO koulutus : childKomotos) {
             if (koulutus.getKoulutusohjelmaUri() != null && koulutus.getKoulutusohjelmaUri().contains("osaamisala")) {
-                name = koodistoService.searchFirst(koulutus.getKoulutusohjelmaUri());
-                return name;
+                if (name == null)
+                    name = koodistoService.searchFirst(koulutus.getKoulutusohjelmaUri());
             }
         }
-        return koodistoService.searchFirst(komoKoulutusOhjelmakoodiUri);
+        if (name == null)
+            name = koodistoService.searchFirst(komoKoulutusOhjelmakoodiUri);
+        if (name == null)
+            name = koodistoService.searchFirst(komoKoulutusKoodiUri);
+        return name;
     }
 
     private List<I18nText> getQualificationsFromKomotoDTOs(List<KomotoDTO> komotoDTOs) throws KoodistoException {

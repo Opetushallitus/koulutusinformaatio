@@ -212,13 +212,14 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ChildLOIRef cRef = new ChildLOIRef();
             cRef.setId(s.getOid());
             cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), komoto.getTarjoajaOid()));
-            cRef.setName(koodistoService.searchFirstShortName(k.getKoulutusohjelmaUri()));
-            if(cRef.getName() == null){
-                cRef.setName(koodistoService.searchFirstShortName(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
+            I18nText name = koodistoService.searchFirstShortName(k.getKoulutusohjelmaUri());
+            if(name == null){
+                name = koodistoService.searchFirstShortName(komoByKomotoOID.getKoulutusOhjelmaKoodiUri());
             }
-            if(cRef.getName() == null){
-                cRef.setName(koodistoService.searchFirstShortName(k.getKoulutusKoodiUri()));
+            if(name == null){
+                name = koodistoService.searchFirstShortName(k.getKoulutusKoodiUri());
             }
+            cRef.setName(name);
             cRef.setQualification(koodistoService.searchFirstName(komoByKomotoOID.getTutkintonimikeUri()));
             cRef.setQualifications(getQualificationsFromKomotoDTO(k));
             cRef.setPrerequisite(prerequisite);
