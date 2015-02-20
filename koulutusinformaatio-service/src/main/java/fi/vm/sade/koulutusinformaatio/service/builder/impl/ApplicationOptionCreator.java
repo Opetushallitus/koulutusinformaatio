@@ -216,6 +216,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
             if(cRef.getName() == null){
                 cRef.setName(koodistoService.searchFirstShortName(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
             }
+            if(cRef.getName() == null){
+                cRef.setName(koodistoService.searchFirstShortName(k.getKoulutusKoodiUri()));
+            }
             cRef.setQualification(koodistoService.searchFirstName(komoByKomotoOID.getTutkintonimikeUri()));
             cRef.setQualifications(getQualificationsFromKomotoDTO(k));
             cRef.setPrerequisite(prerequisite);
