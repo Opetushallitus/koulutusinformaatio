@@ -213,12 +213,13 @@ public class ApplicationOptionCreator extends ObjectCreator {
             cRef.setId(s.getOid());
             cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), komoto.getTarjoajaOid()));
             cRef.setName(koodistoService.searchFirstShortName(k.getKoulutusohjelmaUri()));
+            if(cRef.getName() == null){
+                cRef.setName(koodistoService.searchFirstShortName(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
+            }
             cRef.setQualification(koodistoService.searchFirstName(komoByKomotoOID.getTutkintonimikeUri()));
             cRef.setQualifications(getQualificationsFromKomotoDTO(k));
             cRef.setPrerequisite(prerequisite);
-            if(cRef.getName() != null){ //FIXME: TUTKE2 koulutuksilla ei ole osaamisalaa pitäisikö listassa näyttää silti jotain?
-                ao.getChildLOIRefs().add(cRef);
-            }
+            ao.getChildLOIRefs().add(cRef);
         }
         return ao;
     }
