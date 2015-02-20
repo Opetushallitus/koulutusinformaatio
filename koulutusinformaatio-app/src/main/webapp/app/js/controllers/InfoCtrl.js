@@ -152,7 +152,8 @@
                 id : $scope.selectedAs.children[0].losId,
                 lang : $scope.lo.translationLanguage
             }).then(function(loChildResult) {
-                $scope.pseudoChild = loChildResult.lo.lois[0];
+                $scope.lois = loChildResult.lo.lois;
+                $scope.pseudoChild = getLOIByPrerequisite(getPrerequisite());
             });
         }
     };
