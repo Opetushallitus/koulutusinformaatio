@@ -63,6 +63,7 @@ public class BasketApplicationOptionDTO {
     private boolean kotitalous;
     private String hakuaikaId;
     private boolean useSystemApplicationForm;
+    private boolean isPseudo;
 
 
     public String getId() {
@@ -341,5 +342,13 @@ public class BasketApplicationOptionDTO {
 
     public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
         this.useSystemApplicationForm = useSystemApplicationForm;
+    }
+
+    public boolean isPseudo() {
+        return isPseudo;
+    }
+
+    public void setPseudo(boolean isPseudo) {
+        this.isPseudo = isPseudo;
     }
 }

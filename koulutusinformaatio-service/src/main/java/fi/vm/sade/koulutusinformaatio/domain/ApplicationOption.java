@@ -85,6 +85,8 @@ public class ApplicationOption {
     private String educationTypeUri;
     private List<OrganizationGroup> organizationGroups;
     private I18nText startingQuotaDescription;
+    // Tällä AOlla ei ole osaamisalaa
+    private boolean isPseudo;
 
 
     public String getId() {
@@ -461,5 +463,13 @@ public class ApplicationOption {
 
     public void setTeachingLanguageNames(List<I18nText> teachingLanguageNames) {
         this.teachingLanguageNames = teachingLanguageNames;
+    }
+
+    public boolean isPseudo() {
+        return isPseudo;
+    }
+
+    public void setPseudo(boolean isPseudo) {
+        this.isPseudo = isPseudo;
     }
 }

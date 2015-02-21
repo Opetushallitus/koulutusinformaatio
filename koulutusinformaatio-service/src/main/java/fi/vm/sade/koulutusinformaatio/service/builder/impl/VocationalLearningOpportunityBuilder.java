@@ -101,7 +101,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         }
 
         for (String key : parentKomotosByProviderId.keySet()) {
-            parentLOSs.add(losObjectCreator.createParentLOS(parentKomo, key, parentKomotosByProviderId.get(key)));
+                parentLOSs.add(losObjectCreator.createParentLOS(parentKomo, key, parentKomotosByProviderId.get(key)));
         }
         return this;
     }
@@ -193,6 +193,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                         ao.setEducationDegree(parentLOS.getEducationDegree());
                         parentLOS.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                         ao.setType(parentLOS.getType());
+                        ao.setPseudo(childLOS.isPseudo());
                     }
 
                     // save application options to be added to parent loi

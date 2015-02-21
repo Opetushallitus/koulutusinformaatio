@@ -13,8 +13,8 @@
 <td>
     <h4>{{item.name}}</h4>
     <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
-    <ul class="inside">
-        <li data-ng-repeat="child in item.children | filter:{name: '!!'}"><a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{item.prerequisite.value}}">{{child.name}}</a></li>
+    <ul data-ng-if="!item.pseudo" class="inside">
+        <li data-ng-repeat="child in item.children"><a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{item.prerequisite.value}}">{{child.name}}</a></li>
     </ul>
 </td>
 

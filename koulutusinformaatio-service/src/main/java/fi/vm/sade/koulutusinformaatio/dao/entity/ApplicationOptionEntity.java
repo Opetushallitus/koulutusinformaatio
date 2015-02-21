@@ -96,6 +96,7 @@ public class ApplicationOptionEntity {
     private String educationTypeUri;
     @Embedded
     private List<OrganizationGroupEntity> organizationGroups;
+    private boolean isPseudo;
 
 
     public ApplicationOptionEntity() {
@@ -433,5 +434,13 @@ public class ApplicationOptionEntity {
 
     public void setTeachingLanguageNames(List<I18nTextEntity> teachingLanguageNames) {
         this.teachingLanguageNames = teachingLanguageNames;
+    }
+
+    public boolean isPseudo() {
+        return isPseudo;
+    }
+
+    public void setPseudo(boolean isPseudo) {
+        this.isPseudo = isPseudo;
     }
 }
