@@ -21,6 +21,7 @@ import java.util.List;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
@@ -50,29 +51,37 @@ public final class ParentLOSToDTO {
         parent.setEducationDomain(ConverterUtil.getTextByLanguage(parentLOS.getEducationDomain(), uiLang));
         parent.setStydyDomain(ConverterUtil.getTextByLanguage(parentLOS.getStydyDomain(), uiLang));
         parent.setTranslationLanguage(lang);
-        parent.setCreditValue(parentLOS.getCreditValue());
-        parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLOS.getCreditUnit(), uiLang));
+
+        try {
+            ChildLOI latestLoi = parentLOS.getLatestLoi();
+            parent.setCreditValue(latestLoi.getCreditValue());
+            parent.setCreditUnit(ConverterUtil.getTextByLanguage(latestLoi.getCreditUnit(), uiLang));
+        } catch (Exception e) {
+            parent.setCreditValue(parentLOS.getCreditValue());
+            parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLOS.getCreditUnit(), uiLang));
+        }
 
         if (parentLOS.getLois() != null) {
             for (ParentLOI loi : parentLOS.getLois()) {
                 parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang, defaultLang));
             }
         }
-        
+
+
         if (parentLOS.getThemes() != null) {
             parent.setThemes(CodeToDTO.convertCodesDistinct(parentLOS.getThemes(), uiLang));
         }
         if (parentLOS.getTopics() != null) {
             parent.setTopics(CodeToDTO.convertAll(parentLOS.getTopics(), uiLang));
         }
-        
+
         parent.setContainsPseudoChildLOS(containsPseudoChild(parentLOS.getChildren()));
-        
+
         return parent;
     }
 
     private static boolean containsPseudoChild(List<ChildLOS> children) {
-        if(children == null) {
+        if (children == null) {
             return false;
         }
 

@@ -87,14 +87,17 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                 parent.getName().getTranslations());
         doc.setField(LearningOpportunity.NAME, parentName);
 
-        if (!parent.getChildren().isEmpty() && !parent.getChildren().get(0).getLois().isEmpty()
-                && parent.getChildren().get(0).getLois().get(0).getCreditUnit() != null) {
-            String cv = parent.getChildren().get(0).getLois().get(0).getCreditValue();
-            Map<String, String> cu = parent.getChildren().get(0).getLois().get(0).getCreditUnit().getTranslations();
+        
+        try {
+            ChildLOI latest = parent.getLatestLoi();
+            String cv = latest.getCreditValue();
+            Map<String, String> cu = latest.getCreditUnit().getTranslations();
             doc.addField(LearningOpportunity.CREDITS,
                     String.format("%s %s", cv, SolrUtil.resolveTranslationInTeachingLangUseFallback(parent.getTeachingLanguages(), cu)));
-        } else if (parent.getCreditValue() != null) {
-            doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(),
+        } catch (Exception e) {
+            doc.addField(
+                    LearningOpportunity.CREDITS,
+                    String.format("%s %s", parent.getCreditValue(),
                             SolrUtil.resolveTranslationInTeachingLangUseFallback(parent.getTeachingLanguages(), parent.getCreditUnit().getTranslations())));
         }
 

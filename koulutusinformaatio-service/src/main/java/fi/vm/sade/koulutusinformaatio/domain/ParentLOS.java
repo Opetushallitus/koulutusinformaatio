@@ -16,7 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parent level learning opportunity specification.
@@ -25,6 +30,8 @@ import java.util.List;
  */
 public class ParentLOS extends BasicLOS<ParentLOI> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ParentLOS.class);
+    
     private List<ParentLOI> lois;
     private List<ChildLOS> children;
 
@@ -82,6 +89,36 @@ public class ParentLOS extends BasicLOS<ParentLOI> {
     public void setKotitalousopetus(boolean kotitalousopetus) {
         this.kotitalousopetus = kotitalousopetus;
     }
- 
+
+    public ChildLOI getLatestLoi() {
+        ChildLOI latest = null;
+        try {
+            Date latestDate = null;
+            for (ChildLOS c : getChildren()) {
+                List<ChildLOI> lois = c.getLois();
+                for (ChildLOI loi : lois) {
+                    if (latestDate == null || getComparisonDate(loi).after(latestDate)) {
+                        latestDate = getComparisonDate(loi);
+                        latest = loi;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.debug("Calculating the latest child loi date failed. ", e);
+        }
+        return latest;
+    }
+
+    private static Date getComparisonDate(ChildLOI loi) {
+        if (loi.getStartDate() != null) {
+            return loi.getStartDate();
+        }
+        int month = 0;
+        if (loi.getStartSeason().getTranslations().get("fi").equals("Syksy")) {
+            month = 7;
+        }
+        GregorianCalendar cal = new GregorianCalendar(loi.getStartYear(), month, 0);
+        return cal.getTime();
+    } 
 
 }
