@@ -12,6 +12,14 @@
                     <strong>{{selectedLOI.teachingLanguage}}</strong>
                 </li>
                 <li>
+                    <span data-ki-i18n="time-of-teaching" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.timeOfTeaching.join(', ')}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="place-of-teaching" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.placeOfTeaching.join(', ')}}</strong>
+                </li>
+                <li>
                     <span data-ki-i18n="form-of-education" data-show-colon="true"></span>
                     <strong>{{selectedLOI.formOfTeaching}}</strong>
                 </li>
@@ -23,6 +31,10 @@
                 <li>
                     <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
                     <strong>{{selectedLOI.plannedDuration}} {{selectedLOI.plannedDurationUnit}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="prerequisite-education" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.prerequisite.name}}</strong>
                 </li>
             </ul>
         </div>
