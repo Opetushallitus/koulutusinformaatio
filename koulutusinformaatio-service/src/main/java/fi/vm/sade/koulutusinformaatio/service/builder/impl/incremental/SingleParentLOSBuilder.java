@@ -233,10 +233,10 @@ public class SingleParentLOSBuilder {
         if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
             throw new TarjontaParseException("Child komo " + komo.getOid() + NOT_IN_STATE + TarjontaTila.JULKAISTU.toString());
         }
-        if (komo.getKoulutusOhjelmaKoodiUri() == null) {
+        if (komo.getKoulutusOhjelmaKoodiUri() == null && !komo.isPseudo()) {
             throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
         }
-        if (komo.getTutkintonimikeUri() == null) {
+        if (komo.getTutkintonimikeUri() == null && !komo.isPseudo()) {
             throw new TarjontaParseException("Child KomoDTO tutkinto nimike uri is null");
         }
     }
