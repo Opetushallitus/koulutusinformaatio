@@ -123,14 +123,22 @@ var ApplicationSystemCalendar = (function() {
     },
 
     createPanel = function(title, content, id) {
+        var isCurrentMonth = title === ki.i18n.t('month-' + new Date().getMonth());
+        var cssClasses = {a: '', div: ''};
+        if (!isCurrentMonth) {
+            cssClasses.a = ' collapsed';
+        }
+        else {
+            cssClasses.div = ' in';
+        }
         var panel = 
             '<div class="panel panel-default">' + 
-                '<a class="panel-heading panel-toggler collapsed" data-toggle="collapse" data-parent="#accordion" href="#' + id + '">' + 
+                '<a class="panel-heading panel-toggler' + cssClasses.a + '" data-toggle="collapse" data-parent="#accordion" href="#' + id + '">' +
                     '<h4 class="panel-title">' + 
                         title +
                     '</h4>' +
                 '</a>' +
-                '<div id="' + id + '" class="panel-collapse collapse">' +
+                '<div id="' + id + '" class="panel-collapse collapse ' + cssClasses.div + '">' +
                     '<div class="panel-body">' +
                     '</div>' +
             '</div>';
