@@ -51,8 +51,8 @@ public class HigherEducationLOSToDTO {
         dto.setResearchFocus(ConverterUtil.getTextByLanguage(los.getResearchFocus(), descriptionLang));
 
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), uiLang, uiLang));
-        dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi", uiLang));
-        dto.setAdditionalProviders(ProviderToDTO.convertAll(los.getAdditionalProviders(), uiLang, "fi", uiLang));
+        dto.setProvider(ProviderToDTO.convert(los.getProvider(), descriptionLang, "fi", uiLang));
+        dto.setAdditionalProviders(ProviderToDTO.convertAll(los.getAdditionalProviders(), descriptionLang, "fi", uiLang));
         
         dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang));
         dto.setCreditValue(los.getCreditValue());
