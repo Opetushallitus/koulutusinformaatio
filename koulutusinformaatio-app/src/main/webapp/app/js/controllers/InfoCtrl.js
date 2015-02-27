@@ -13,8 +13,7 @@
     // set tab titles based on lo and education type
     $scope.$watch('lo.educationTypeUri', function(value) {
         var getValintaperusteetTitle = function() {
-            if ($scope.loType == 'erityisopetus' ||
-                $scope.loType == 'valmentava' ||
+            if ($scope.loType == 'valmentava' ||
                 $scope.loType == 'ammatillinenaikuiskoulutus' ||
                 $scope.loType == 'aikuislukio' ||
                 $scope.loType == 'valmistava' && value == 'VapaanSivistystyonKoulutus') {

@@ -1,0 +1,76 @@
+<div class="panel panel-ki-default">
+    <div class="panel-heading">
+        <h3 class="panel-title emphasis" data-ki-i18n="katso-myos"></h3>
+    </div>
+	<div class="panel-body">
+		<!-- PREVIEW EXCLUDE -->
+		<ul class="list-unstyled" data-ng-if="!lo.preview">
+			<li>
+				<i class="kicon-angle-double-right"></i>
+				<a data-ng-href="#!/haku/*?page=1&lopFilter={{lo.provider.name | encodeURIComponent}}&excludes=-id:{{lo.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
+					<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}}</a>
+			</li>
+			<li>
+				<i class="kicon-angle-double-right"></i>
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=prerequisites:{{prerequisite.value}}&educationCodeFilter={{lo.name}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+				<span data-ki-i18n="muualla"></span> </a>
+			</li>
+			<li>
+			<li data-ng-repeat="topic in lo.topics">
+				<i class="kicon-angle-double-right"></i>
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=prerequisites:{{prerequisite.value}}&facetFilters=topic_ffm:{{topic.uri}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+					{{topic.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
+			</li>
+		</ul>
+		<!-- END PREVIEW EXCLUDE -->
+
+		<!-- PREVIEW -->
+		<ul data-ng-if="lo.preview" class="inside">
+			<li>
+				<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}} <span data-ki-i18n="muita-koulutuksia"></span>
+			</li>
+			<li>
+				{{lo.name}} <span data-ki-i18n="muualla"></span>
+			</li>
+			<li data-ng-repeat="theme in lo.themes">
+				{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span>
+			</li>
+		</ul>
+		<!-- END PREVIEW -->
+	</div>
+</div>
+
+<div data-ng-show="(lo.edCodeSuggestions && lo.edCodeSuggestions.length > 0) || (lo.edTypeSuggestions && lo.edTypeSuggestions.length > 0)">
+	<div class="panel panel-ki-default">
+    	<div class="panel-heading">
+        	<h3 class="panel-title emphasis" data-ki-i18n="lue-lisaa"></h3>
+        </div>
+		<div class="panel-body">
+			<!-- PREVIEW EXCLUDE -->
+			<ul class="list-unstyled" data-ng-if="!lo.preview">
+				<li data-ng-repeat="article in lo.edCodeSuggestions">
+					<i class="kicon-angle-double-right"></i>
+					<a data-ng-href="{{article.url}}">
+						{{article.title | unsafe}}</a>
+				</li>
+				<li data-ng-repeat="article in lo.edTypeSuggestions">
+					<i class="kicon-angle-double-right"></i>
+					<a data-ng-href="{{article.url}}">
+						{{article.title | unsafe}} </a>
+				</li>
+			</ul>
+			<!-- END PREVIEW EXCLUDE -->
+
+			<!-- PREVIEW -->
+			<ul data-ng-if="lo.preview" class="inside">
+				<li data-ng-repeat="article in lo.edCodeSuggestions">
+						{{article.title | unsafe}}
+				</li>
+				<li data-ng-repeat="article in lo.edTypeSuggestions">
+						{{article.title | unsafe}}
+				</li>
+			</ul>
+			<!-- END PREVIEW -->
+		</div>
+	</div>
+</div>

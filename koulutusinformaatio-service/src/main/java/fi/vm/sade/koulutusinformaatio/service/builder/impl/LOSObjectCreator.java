@@ -332,22 +332,19 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         los.setId(specialLOSId);
-        Code name = los.getType().equals(TarjontaConstants.TYPE_SPECIAL)
-                ? koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())
-                : koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+
+        Code name = getNameFromKomotoDTOs(childKomo.getKoulutusOhjelmaKoodiUri(), childKomo.getKoulutusKoodiUri(), childKomotos);
 
         los.setName(name.getName());
         los.setShortTitle(name.getShortTitle());
         if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
-            if(childKomo.getKoulutusOhjelmaKoodiUri().isEmpty()){
-                LOG.warn("ChildKomo " + childKomo.getOid() + " contained empty koulutusOhjelmaKoodiUri. Subname not added.");
+            if(childKomo.getKoulutusOhjelmaKoodiUri() == null || childKomo.getKoulutusOhjelmaKoodiUri().isEmpty()){
+                LOG.debug("ChildKomo " + childKomo.getOid() + " contained empty koulutusOhjelmaKoodiUri. Subname not added.");
             } else {
                 Code subName = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
                 los.setSubName(subName.getName());
             }
         }
-        los.setCreditValue(parentKomo.getLaajuusArvo());
-        los.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
         los.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
         los.setEducationDomain(koodistoService.searchFirstShortName(parentKomo.getKoulutusAlaUri()));
         los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
@@ -377,6 +374,9 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
         los.setAoIds(aoIds);
+        ChildLOI latesChild = los.getLatestLoi();
+        los.setCreditValue(latesChild.getCreditValue());
+        los.setCreditUnit(latesChild.getCreditUnit());
         return los;
     }
 

@@ -1144,6 +1144,9 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 case 'valmistava':
                     loRef += ao.parent.id;
                     break;
+                case 'erityisopetus':
+                    loRef += ao.parent.id;
+                    break;
                 case 'aikuislukio':
                     loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;

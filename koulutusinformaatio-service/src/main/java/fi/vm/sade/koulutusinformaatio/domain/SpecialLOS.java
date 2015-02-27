@@ -17,7 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Special education learning opportunity specification.
@@ -26,15 +31,17 @@ import java.util.List;
  */
 public class SpecialLOS extends BasicLOS<ChildLOI> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SpecialLOS.class);
+
     private List<ChildLOI> lois;
 
     private I18nText qualification;
     private I18nText educationDomain;
     private ParentLOSRef parent;
     private String educationTypeUri;
-    private I18nText degreeTitle;				// tutkintonimike
-    private List<I18nText> degreeTitles;		// tutkintonimikkeet
-    
+    private I18nText degreeTitle; // tutkintonimike
+    private List<I18nText> degreeTitles; // tutkintonimikkeet
+
     private List<String> aoIds = new ArrayList<String>();
 
     private I18nText subName;
@@ -89,26 +96,55 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
 
     public void setSubName(I18nText name) {
         this.subName = name;
-        
+
     }
 
     public I18nText getSubName() {
         return subName;
     }
 
-	public I18nText getDegreeTitle() {
-		return degreeTitle;
-	}
+    public I18nText getDegreeTitle() {
+        return degreeTitle;
+    }
 
-	public void setDegreeTitle(I18nText degreeTitle) {
-		this.degreeTitle = degreeTitle;
-	}
+    public void setDegreeTitle(I18nText degreeTitle) {
+        this.degreeTitle = degreeTitle;
+    }
 
-	public List<I18nText> getDegreeTitles() {
-		return degreeTitles;
-	}
+    public List<I18nText> getDegreeTitles() {
+        return degreeTitles;
+    }
 
-	public void setDegreeTitles(List<I18nText> degreeTitles) {
-		this.degreeTitles = degreeTitles;
-	}
+    public void setDegreeTitles(List<I18nText> degreeTitles) {
+        this.degreeTitles = degreeTitles;
+    }
+
+    public ChildLOI getLatestLoi() {
+        ChildLOI latest = null;
+        try {
+            Date latestDate = null;
+            for (ChildLOI loi : getLois()) {
+                if (latestDate == null || getComparisonDate(loi).after(latestDate)) {
+                    latestDate = getComparisonDate(loi);
+                    latest = loi;
+                }
+            }
+        } catch (Exception e) {
+            LOG.debug("Calculating the latest child loi date failed.");
+        }
+        return latest;
+    }
+
+    private static Date getComparisonDate(ChildLOI loi) {
+        if (loi.getStartDate() != null) {
+            return loi.getStartDate();
+        }
+        int month = 0;
+        if (loi.getStartSeason().getTranslations().get("fi").equals("Syksy")) {
+            month = 7;
+        }
+        GregorianCalendar cal = new GregorianCalendar(loi.getStartYear(), month, 0);
+        return cal.getTime();
+    }
+
 }

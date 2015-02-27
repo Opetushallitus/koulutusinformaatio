@@ -12,16 +12,29 @@
                     <strong>{{selectedLOI.teachingLanguage}}</strong>
                 </li>
                 <li>
+                    <span data-ki-i18n="time-of-teaching" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.timeOfTeaching.join(', ')}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="place-of-teaching" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.placeOfTeaching.join(', ')}}</strong>
+                </li>
+                <li>
                     <span data-ki-i18n="form-of-education" data-show-colon="true"></span>
                     <strong>{{selectedLOI.formOfTeaching}}</strong>
                 </li>
                 <li>
                     <span data-ki-i18n="duration" data-show-colon="true"></span>
-                    <strong>{{lo.creditValue}} {{lo.creditUnit}}</strong>
+                    <strong data-ng-if="selectedLOI.creditValue">{{selectedLOI.creditValue}} {{selectedLOI.creditUnit}}</strong>
+                    <strong data-ng-if="!selectedLOI.creditValue">{{parent.creditValue}} {{parent.creditUnit}}</strong>
                 </li>
                 <li>
                     <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
                     <strong>{{selectedLOI.plannedDuration}} {{selectedLOI.plannedDurationUnit}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="prerequisite-education" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.prerequisite.name}}</strong>
                 </li>
             </ul>
         </div>
@@ -34,6 +47,9 @@
         <div data-ki-study-plan></div>
     </div>
     <div data-ki-collapse-text-block data-title="structure-of-studies" data-content="lo.structure" data-closed="false"></div>
+    <div data-ki-collapse-block data-title="qualifications" data-content="selectedLOI.applicationSystems[0].children[0].qualifications" data-closed="false">
+        <div data-ki-diploma></div>
+    </div>
     <div data-ki-collapse-text-block data-title="working-life-placement" data-content="selectedLOI.workingLifePlacement" data-closed="false"></div>
     <div data-ki-collapse-block data-title="profession-title" data-content="selectedLOI.professionalTitles" data-closed="false">
         <div data-ki-professional-titles></div>
@@ -43,4 +59,7 @@
     <div data-ki-collapse-text-block data-title="access-to-further-studies" data-content="lo.accessToFurtherStudies" data-closed="false"></div>
     <div data-ki-contact-person-info data-content="selectedLOI.contactPersons"></div>
 </section>
-<div class="col-md-5" data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
+<div class="col-md-5">
+    <div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
+    <div data-ng-include data-src="partialUrl + 'recommendations.html'"></div>
+</div>

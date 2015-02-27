@@ -1,0 +1,26 @@
+<td>
+    <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
+    <div><a href="#!/erityisopetus/{{item.parent.id}}">{{item.parent.name}}</a></div>
+    <div><em data-ng-if="!item.kotitalous" data-ki-i18n="{{item.educationTypeUri}}"></em></div>
+    <div>
+        <span data-ng-if="!item.kotitalous">{{item.qualification}}</span>
+        <div>
+            <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span> <span>{{item.prerequisite.description}}</span>
+        </div>
+    </div>
+</td>
+
+<td>
+    <h4>{{item.name}}</h4>
+    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
+</td>
+
+<td>
+    <div data-ng-include src="'js/directives/AppBasket/common/attachmentsAndExams.html'"></div>
+</td>
+
+<td class="last text-right hide-in-print">
+    <div data-ng-include src="'js/directives/AppBasket/common/aoActions.html'"></div>
+</td>
+
+
