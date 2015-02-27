@@ -375,8 +375,13 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.setAoIds(aoIds);
         ChildLOI latesChild = los.getLatestLoi();
-        los.setCreditValue(latesChild.getCreditValue());
-        los.setCreditUnit(latesChild.getCreditUnit());
+        if(latesChild != null){
+            los.setCreditValue(latesChild.getCreditValue());
+            los.setCreditUnit(latesChild.getCreditUnit());
+        } else {
+            los.setCreditValue(parentKomo.getLaajuusArvo());
+            los.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
+        }
         return los;
     }
 
