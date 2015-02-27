@@ -517,7 +517,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         }
         
         //return translation;
-        LOG.debug("\nSetting display name: " + nameDisplayField + ": " + String.format("%s, %s", translation, creditTranslation));
+        LOG.debug("Setting display name: " + nameDisplayField + ": " + String.format("%s, %s", translation, creditTranslation));
         doc.setField(nameDisplayField, String.format("%s, %s %s", translation, creditValue, creditTranslation));
         
     }

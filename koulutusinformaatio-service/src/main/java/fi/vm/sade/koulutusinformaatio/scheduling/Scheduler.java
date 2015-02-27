@@ -102,7 +102,7 @@ public class Scheduler {
                     LOG.debug("indexing is not running, starting incremental indexing.");
                     this.incrementalUpdateService.updateChangedEducationData();
                 } else {
-                    LOG.debug("\n\nindexing is running, not starting incremental indexing.\n\n");
+                    LOG.debug("indexing is running, not starting incremental indexing.");
                 }
             } catch (Exception e) {
                 LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());
@@ -120,7 +120,7 @@ public class Scheduler {
                     LOG.debug("indexing is not running, starting article indexing.");
                     this.updateService.updateArticles();
                 } else {
-                    LOG.debug("\n\nindexing is running, not starting article indexing.\n\n");
+                    LOG.debug("indexing is running, not starting article indexing.");
                 }
             } catch (Exception e) {
                 LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());

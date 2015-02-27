@@ -73,7 +73,7 @@ public class ProviderServiceImpl implements ProviderService {
         Provider cachedProvider = providerMap.get(oid);
         if (cachedProvider != null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("\nReturning provider from cache\n");
+                LOG.debug("Returning provider from cache");
             }
             return cachedProvider; 
         }
