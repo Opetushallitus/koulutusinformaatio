@@ -198,14 +198,22 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
 
 
     @Test
-    public void testCreateUpperSecondaryExamsInvalid() throws KoodistoException {
-        ValintakoeRDTO descriptionNull = new ValintakoeRDTO();
+    public void testCreateUpperSecondaryExamsOnlyDescriptionSet() throws KoodistoException {
         ValintakoeRDTO eventsNull = new ValintakoeRDTO();
         eventsNull.setKuvaus(new HashMap<String, String>());
         ValintakoeRDTO eventEmpty = new ValintakoeRDTO();
         eventEmpty.setKuvaus(new HashMap<String, String>());
         eventEmpty.setValintakoeAjankohtas(new ArrayList<ValintakoeAjankohtaRDTO>());
-        List<ValintakoeRDTO> examDTOs = Lists.newArrayList(descriptionNull, eventsNull, eventEmpty);
+        List<ValintakoeRDTO> examDTOs = Lists.newArrayList(eventEmpty, eventsNull);
+        List<Exam> exams = creator.createUpperSecondaryExams(examDTOs);
+        assertNotNull(exams);
+        assertEquals(2, exams.size());
+    }
+
+    @Test
+    public void testCreateUpperSecondaryExamsInvalid() throws KoodistoException {
+        ValintakoeRDTO descriptionNull = new ValintakoeRDTO();
+        List<ValintakoeRDTO> examDTOs = Lists.newArrayList(descriptionNull);
         List<Exam> exams = creator.createUpperSecondaryExams(examDTOs);
         assertNotNull(exams);
         assertEquals(0, exams.size());
