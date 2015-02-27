@@ -104,7 +104,7 @@ public class ParentLOS extends BasicLOS<ParentLOI> {
                 }
             }
         } catch (Exception e) {
-            LOG.debug("Calculating the latest child loi date failed. ", e);
+            LOG.debug("Calculating the latest child loi date failed.");
         }
         return latest;
     }
