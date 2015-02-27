@@ -79,21 +79,21 @@ public class EducationObjectCreator extends ObjectCreator {
         if (valintakoes != null) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeRDTO valintakoe : valintakoes) {
-                if (valintakoe.getKuvaus() != null
-                        && valintakoe.getValintakoeAjankohtas() != null
-                        && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                if (valintakoe.getKuvaus() != null) {
                     Exam exam = new Exam();
                     exam.setDescription(getI18nText(valintakoe.getKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
-                    for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
-                        ExamEvent examEvent = new ExamEvent();
-                        examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
-                        examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
-                        examEvent.setStart(valintakoeAjankohta.getAlkaa());
-                        examEvent.setEnd(valintakoeAjankohta.getLoppuu());
-                        examEvent.setTimeIncluded(valintakoeAjankohta.isKellonaikaKaytossa());
-                        examEvents.add(examEvent);
+                    if(valintakoe.getValintakoeAjankohtas() != null){
+                        for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                            ExamEvent examEvent = new ExamEvent();
+                            examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
+                            examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                            examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                            examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                            examEvent.setTimeIncluded(valintakoeAjankohta.isKellonaikaKaytossa());
+                            examEvents.add(examEvent);
+                        }
                     }
                     exam.setExamEvents(examEvents);
                     exam.setScoreLimit(resolvePointLimit(valintakoe, "Paasykoe"));
