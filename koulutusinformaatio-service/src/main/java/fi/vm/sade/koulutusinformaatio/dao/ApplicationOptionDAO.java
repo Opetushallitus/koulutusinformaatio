@@ -40,7 +40,7 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
             boolean vocational, boolean nonVocational) {
         Query<ApplicationOptionEntity> query = createSecondaryQuery();
         query.field("applicationSystem.id").equal(asId);
-        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
+        query.field("provider").equal(new Key<LearningOpportunityProviderEntity>(LearningOpportunityProviderEntity.class, lopId));
         if (!Strings.isNullOrEmpty(baseEducation)) {
             query.field("requiredBaseEducations").contains(baseEducation);
         }
