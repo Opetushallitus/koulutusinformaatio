@@ -103,7 +103,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public ParentLOS createParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException, TarjontaParseException {
-        LOG.debug(Joiner.on(" ").join("Creating provider specific parent LOS from komo: ", parentKomo.getOid()));
+        LOG.debug("Creating provider specific parent (" + providerId + ") LOS from komo: " + parentKomo.getOid());
 
         ParentLOS parentLOS = createBasicLOS(ParentLOS.class, parentKomo, providerId);
         parentLOS.setType(TarjontaConstants.TYPE_PARENT);
