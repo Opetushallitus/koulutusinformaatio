@@ -37,6 +37,7 @@ import java.util.Map;
  */
 public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List<SolrInputDocument>> {
 
+    private static final String PK_YO = "PK/YO";
     private static final Logger LOG = LoggerFactory.getLogger(SpecialLOSToSolrInputDocument.class);
 
     @Override
@@ -61,8 +62,11 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.addField(SolrUtil.LearningOpportunity.LOP_ID, provider.getId());
         
         if (specialLOS.getEducationTypeUri() != null 
-                && specialLOS.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE)) {
+                && specialLOS.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE) && !childLOI.getPrerequisite().getValue().equals(PK_YO)) {
             doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, childLOI.getPrerequisite().getValue());
+        } else if (childLOI.getPrerequisite().getValue().equals(PK_YO)){
+            doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, SolrConstants.PK);
+            doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, SolrConstants.YO);
         } else {
             doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, SolrConstants.PK);
         }

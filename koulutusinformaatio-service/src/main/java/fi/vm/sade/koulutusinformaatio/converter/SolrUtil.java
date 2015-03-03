@@ -498,6 +498,7 @@ public final class SolrUtil {
         public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
         public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
         public static final String PK = "pk";
+        public static final String YO = "yo";
         public static final String DISTRICT_UNKNOWN = "99";
         public static final String MUNICIPALITY_UNKNOWN = "99";
 
