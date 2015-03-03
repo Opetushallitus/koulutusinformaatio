@@ -19,12 +19,15 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -138,20 +141,38 @@ public class SpecialLOSToSolrInputDocumentTest {
 		converter = new SpecialLOSToSolrInputDocument();
 	}
 	
-	@Test
-	public void testConvertSpecial() {
-		List<SolrInputDocument> docs = converter.convert(los);
-		assertEquals(7, docs.size());
-		SolrInputDocument doc = docs.get(0);
-		assertEquals(los.getLois().get(0).getId(), doc.get(LearningOpportunity.ID).getValue().toString());
-		assertEquals(los.getId(), doc.get(LearningOpportunity.LOS_ID).getValue().toString());
-		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
-		assertEquals(los.getCreditValue() + " " + los.getCreditUnit().getTranslations().get("fi"), doc.get(LearningOpportunity.CREDITS).getValue().toString());
+    @Test
+    public void testConvertSpecial() {
+        List<SolrInputDocument> docs = converter.convert(los);
+        assertEquals(7, docs.size());
+        SolrInputDocument doc = docs.get(0);
+        assertEquals(los.getLois().get(0).getId(), doc.get(LearningOpportunity.ID).getValue().toString());
+        assertEquals(los.getId(), doc.get(LearningOpportunity.LOS_ID).getValue().toString());
+        assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
+        assertEquals(los.getCreditValue() + " " + los.getCreditUnit().getTranslations().get("fi"), doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
-		assertEquals(los.getLois().get(0).getDegreeTitle().getTranslations().get("fi"), doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValue().toString());
+        assertEquals(los.getLois().get(0).getDegreeTitle().getTranslations().get("fi"), doc.get(LearningOpportunity.DEGREE_TITLE_FI).getValue().toString());
         //assertEquals(SolrConstants.ED_TYPE_AMM_ER, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
-	}
-	
+    }
+
+    
+    @Test
+    public void testConvertSpecialPkYo() {
+        prerequisite = new Code();
+        prerequisite.setName(TestUtil.createI18nText("Peruskoulu", "Peruskoulu sv", "Peruskoulu en"));
+        prerequisite.setValue("PK/YO");
+        prerequisite.setUri("pk_yo_uri");
+        los.getLois().get(0).setPrerequisite(prerequisite);
+        List<SolrInputDocument> docs = converter.convert(los);
+        assertEquals(7, docs.size());
+        SolrInputDocument doc = docs.get(0);
+        SolrInputField prerequisites = doc.getField(LearningOpportunity.PREREQUISITES);
+        Collection<Object> values = prerequisites.getValues();
+        assertEquals(2, values.size());
+        assertEquals(true, values.contains("pk"));
+        assertEquals(true, values.contains("yo"));
+    }
+
 	@Test
 	public void testConvertRehab() {
 		los.setType(TarjontaConstants.TYPE_REHAB);
