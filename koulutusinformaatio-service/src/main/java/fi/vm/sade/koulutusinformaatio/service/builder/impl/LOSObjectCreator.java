@@ -16,15 +16,52 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import com.google.common.base.Joiner;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.BasicLOS;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.InstantiatedLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
@@ -32,17 +69,19 @@ import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -55,7 +94,6 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private KoodistoService koodistoService;
     private ProviderService providerService;
-    private OrganisaatioRawService organisaatioRawService;
     private LOIObjectCreator loiCreator;
     private TarjontaRawService tarjontaRawService;
 
@@ -64,7 +102,6 @@ public class LOSObjectCreator extends ObjectCreator {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.providerService = providerService;
-        this.organisaatioRawService = organisaatioRawService;
         this.tarjontaRawService = tarjontaRawService;
         this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
 
@@ -333,15 +370,17 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setId(specialLOSId);
 
-        Code name = getNameFromKomotoDTOs(childKomo.getKoulutusOhjelmaKoodiUri(), childKomo.getKoulutusKoodiUri(), childKomotos);
-
+        Code name = los.getType().equals(TarjontaConstants.TYPE_SPECIAL)
+                ? koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())
+                : koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+        
         los.setName(name.getName());
         los.setShortTitle(name.getShortTitle());
         if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
             if(childKomo.getKoulutusOhjelmaKoodiUri() == null || childKomo.getKoulutusOhjelmaKoodiUri().isEmpty()){
                 LOG.debug("ChildKomo " + childKomo.getOid() + " contained empty koulutusOhjelmaKoodiUri. Subname not added.");
             } else {
-                Code subName = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+                Code subName = getNameFromKomotoDTOs(childKomo.getKoulutusOhjelmaKoodiUri(), childKomo.getKoulutusKoodiUri(), childKomotos);
                 los.setSubName(subName.getName());
             }
         }
