@@ -9,12 +9,12 @@ directive('facetTree', function($compile) {
             var update = function() {
                 template = '<ul data-ng-if="isNotLeaf(' + attrs.treeModel + ')" class="list-unstyled">' +
                     '<li data-ng-repeat="node in ' + attrs.treeModel + '">' + 
-                        '<span data-ng-if="!isSelected(node) && (node.count > 0)" class="facet-item">' +
+                        '<span data-ng-if="!(isSelected(node) || nodeIsSelected(node.childValues)) && (node.count > 0)" class="facet-item">' +
                             '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">+ {{node.valueName}} ({{node.count}})</a>' +
                         '</span>' +
-                        '<span data-ng-show="isSelected(node)" class="facet-item selected">' +
+                        '<span data-ng-show="isSelected(node) || nodeIsSelected(node.childValues)" class="facet-item selected">' +
                             '<span data-facet-title="node">{{node.valueName}}</span>' +
-                            '<a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(node)"></a>' +
+                            '<a data-ng-if="!nodeIsSelected(node.childValues)" title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(node)"></a>' +
                         '</span>' +
                         '<ul data-ng-if="node.childValues" data-facet-tree data-tree-model="node.childValues"></ul>' +
                     '</li>' +
@@ -58,6 +58,8 @@ directive('facetTree', function($compile) {
                 return result;
             }
 
+            $scope.nodeIsSelected = nodeIsSelected;
+            
             $scope.isNotLeaf = function(nodes) {
                 return isRoot(nodes) || hasChildren(nodes) || nodeIsSelected(nodes);
 
