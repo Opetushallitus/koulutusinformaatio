@@ -10,7 +10,7 @@ directive('facetTree', function($compile) {
                 template = '<ul data-ng-if="isNotLeaf(' + attrs.treeModel + ')" class="list-unstyled">' +
                     '<li data-ng-repeat="node in ' + attrs.treeModel + '">' + 
                         '<span data-ng-if="!isSelected(node) && (node.count > 0)" class="facet-item">' +
-                            '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">{{node.valueName}} ({{node.count}})</a>' +
+                            '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">+ {{node.valueName}} ({{node.count}})</a>' +
                         '</span>' +
                         '<span data-ng-show="isSelected(node)" class="facet-item selected">' +
                             '<span data-facet-title="node">{{node.valueName}}</span>' +
