@@ -40,7 +40,7 @@
         <morphia.version>0.105</morphia.version>
         <oph.organisaatio.version>13.0-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>7.0-SNAPSHOT</oph.koodisto.version>
-        <oph.tarjonta.version>2015-05-SNAPSHOT</oph.tarjonta.version>
+        <oph.tarjonta.version>2015-10-SNAPSHOT</oph.tarjonta.version>
     </properties>
 
     <repositories>
