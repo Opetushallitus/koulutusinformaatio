@@ -39,7 +39,7 @@
         <jackson.version>1.9.12</jackson.version>
         <morphia.version>0.105</morphia.version>
         <oph.organisaatio.version>13.0-SNAPSHOT</oph.organisaatio.version>
-        <oph.koodisto.version>13.3-SNAPSHOT</oph.koodisto.version>
+        <oph.koodisto.version>10.1-SNAPSHOT</oph.koodisto.version>
         <oph.tarjonta.version>2015-10-SNAPSHOT</oph.tarjonta.version>
     </properties>
 
