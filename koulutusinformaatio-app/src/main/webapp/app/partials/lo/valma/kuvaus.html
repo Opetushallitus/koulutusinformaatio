@@ -1,0 +1,80 @@
+<section class="col-md-11">
+	<div class="panel panel-gray">
+		<div class="panel-body">
+			<ul class="list-unstyled">
+				<li><span data-ki-i18n="education-starts"
+					data-show-colon="true"></span> <strong data-ng-show="lo.startDate">{{lo.startDate}}</strong>
+					<strong data-ng-hide="lo.startDate">{{lo.startSeason}}
+						{{lo.startYear}}</strong></li>
+				<li><span data-ki-i18n="language-of-instruction"
+					data-show-colon="true"></span> <span
+					data-ng-repeat="tl in lo.teachingLanguages"> <strong>{{tl}}</strong><span
+						data-ng-show="!$last">,</span>
+				</span></li>
+				<li><span data-ki-i18n="duration" data-show-colon="true"></span>
+					<strong>{{lo.creditValue}} {{lo.creditUnit}}</strong></li>
+				<li><span data-ki-i18n="planned-duration"
+					data-show-colon="true"></span> <strong>{{lo.plannedDuration}}
+						{{lo.plannedDurationUnit}}</strong></li>
+				<li><span data-ki-i18n="time-of-teaching"
+					data-show-colon="true"></span> <span
+					data-ng-repeat="tot in lo.teachingTimes"> <strong>{{tot}}</strong><span
+						data-ng-show="!$last">,</span>
+				</span></li>
+				<li><span data-ki-i18n="place-of-teaching"
+					data-show-colon="true"></span> <span
+					data-ng-repeat="top in lo.teachingPlaces"> <strong>{{top}}</strong><span
+						data-ng-show="!$last">,</span>
+				</span></li>
+				<li><span data-ki-i18n="form-of-education-higher"
+					data-show-colon="true"></span> <span
+					data-ng-repeat="fot in lo.formOfTeaching"> <strong>{{fot}}</strong><span
+						data-ng-show="!$last">,</span>
+				</span></li>
+			</ul>
+		</div>
+	</div>
+	<div data-ki-language-ribbon
+		data-languages="lo.availableTranslationLanguages"
+		data-change-language="changeDescriptionLanguage" class="ribbon"></div>
+	<div data-ki-collapse-text-block data-title="goals-of-education"
+		data-content="lo.goals" data-closed="false"></div>
+	<div data-ki-collapse-text-block data-title="content-of-studies"
+		data-content="lo.content" data-closed="false"></div>
+	<div data-ki-collapse-text-block data-title="target-group"
+		data-content="lo.targetGroup" data-closed="false"></div>
+	<div data-ki-collapse-block data-title="structure-of-studies"
+		data-content="[lo.structure, structureImage]" data-closed="false">
+		<div data-ki-structure-of-studies></div>
+	</div>
+
+	<div data-ki-collapse-block data-title="language-selection"
+		data-content="lo.languageSelection" data-closed="false">
+		<div data-ki-language-selection></div>
+	</div>
+
+	<div data-ki-collapse-text-block data-title="subjects-and-courses"
+		data-content="lo.subjectsAndCourses" data-closed="false"></div>
+
+	<div data-ki-collapse-block data-title="diploma"
+		data-content="lo.diplomas" data-closed="false">
+		<div data-ki-diploma></div>
+	</div>
+
+	<div data-ki-collapse-text-block data-title="internationalization"
+		data-content="lo.internationalization" data-closed="false"></div>
+	<div data-ki-collapse-text-block data-title="cooperation"
+		data-content="lo.cooperation" data-closed="false"></div>
+	<div data-ki-collapse-text-block data-title="access-to-further-studies"
+		data-content="lo.accessToFurtherStudies" data-closed="false"></div>
+	<div data-ki-contact-person-info data-content="lo.contactPersons"
+		data-closed="false">
+	</div>
+</section>
+<div class="col-md-5">
+	<div data-ng-class="applyFormClass" data-ng-include
+		data-src="partialCommonUrl + 'as/higherEducationAs.html'"
+		data-ng-controller="ApplicationCtrl"></div>
+	<div data-ng-include data-src="partialUrl + 'recommendations.html'"></div>
+</div>
+<div class="clear"></div>

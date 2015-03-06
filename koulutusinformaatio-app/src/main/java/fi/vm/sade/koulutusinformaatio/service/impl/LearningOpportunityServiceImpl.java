@@ -382,6 +382,31 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
+    public ValmaLOSDTO getValmaLearningOpportunity(
+            String id) throws ResourceNotFoundException {
+        ValmaLOS los = educationDataQueryService.getValmaLearningOpportunity(id);
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
+                ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
+        return ValmaLOSToDTO.convert(los, lang, lang);
+    }
+    
+    @Override
+    public ValmaLOSDTO getValmaLearningOpportunity(
+            String id, String uiLang) throws ResourceNotFoundException {
+        ValmaLOS los = educationDataQueryService.getValmaLearningOpportunity(id);
+        return ValmaLOSToDTO.convert(los, uiLang, uiLang);
+    }
+
+    @Override
+    public ValmaLOSDTO getValmaLearningOpportunity(
+            String id, String lang, String uiLang)
+                    throws ResourceNotFoundException {
+        ValmaLOS los = educationDataQueryService.getValmaLearningOpportunity(id);
+        return ValmaLOSToDTO.convert(los, lang, uiLang);
+    }
+
+    
+    @Override
     public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
             String id) throws ResourceNotFoundException {
         CompetenceBasedQualificationParentLOS los = educationDataQueryService.getAdultVocationalLearningOpportunity(id);

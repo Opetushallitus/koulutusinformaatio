@@ -16,12 +16,25 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ValmaLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-
-import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -44,19 +57,20 @@ public interface LearningOpportunityService {
 
     UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
-    UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, 
-                                                                                           String lang, 
-                                                                                           String uiLang) throws ResourceNotFoundException;
-    
+    UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang)
+            throws ResourceNotFoundException;
+
     SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id) throws ResourceNotFoundException;
 
     SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
     SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
-    
+
     /**
      * Gets a higher education learning opportunity.
-     * @param id oid of the learning opportunity
+     * 
+     * @param id
+     *            oid of the learning opportunity
      * @return higher education learning opportunity
      * @throws ResourceNotFoundException
      */
@@ -64,8 +78,11 @@ public interface LearningOpportunityService {
 
     /**
      * Gets a higher education learning opportunity.
-     * @param id oid of the learning opportunity
-     * @param uiLang the language of the user interface
+     * 
+     * @param id
+     *            oid of the learning opportunity
+     * @param uiLang
+     *            the language of the user interface
      * @return higher education learning opportunity
      * @throws ResourceNotFoundException
      */
@@ -73,21 +90,20 @@ public interface LearningOpportunityService {
 
     /**
      * Gets a higher education learning opportunity.
-     * @param id oid of the learning opportunity
-     * @param lang the preferred language for displaying the content
-     * @param uiLang the language of the user interface
+     * 
+     * @param id
+     *            oid of the learning opportunity
+     * @param lang
+     *            the preferred language for displaying the content
+     * @param uiLang
+     *            the language of the user interface
      * @return higher education learning opportunity
      * @throws ResourceNotFoundException
      */
     HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, 
-                                                                    String lopId, 
-                                                                    String baseEducation, 
-                                                                    boolean vocational, 
-                                                                    boolean nonVocational,
-                                                                    boolean ongoing,
-                                                                    String uiLang);
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational,
+            boolean ongoing, String uiLang);
 
     ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;
 
@@ -103,45 +119,43 @@ public interface LearningOpportunityService {
 
     /**
      * 
-     * Fetches (from tarjonta) and returns a higher education learning opportunity for preview. 
+     * Fetches (from tarjonta) and returns a higher education learning opportunity for preview.
      * 
-     * @param id the oid of the learning opportunity
-     * @param lang the lang
-     * @param uiLang the language of the user interface.
+     * @param id
+     *            the oid of the learning opportunity
+     * @param lang
+     *            the lang
+     * @param uiLang
+     *            the language of the user interface.
      * @return the requested higher education learning opportunity
      * @throws ResourceNotFoundException
      */
-	HigherEducationLOSDTO previewHigherEdLearningOpportunity(String id,
-			String lang, String uiLang) throws ResourceNotFoundException;
+    HigherEducationLOSDTO previewHigherEdLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
     DataStatus getLastSuccesfulDataStatus();
 
     AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException;
 
-    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
-            String id, String uiLang) throws ResourceNotFoundException;
+    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
-    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
-            String id, String lang, String uiLang)
-            throws ResourceNotFoundException;
-    
-    
+    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
+
+    ValmaLOSDTO getValmaLearningOpportunity(String id) throws ResourceNotFoundException;
+
+    ValmaLOSDTO getValmaLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
+
+    ValmaLOSDTO getValmaLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
+
     AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(String id) throws ResourceNotFoundException;
 
-    AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
-            String id, String uiLang) throws ResourceNotFoundException;
+    AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
-    AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
-            String id, String lang, String uiLang)
-            throws ResourceNotFoundException;
-    
+    AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
-    AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(
-            String oid, String lang, String uiLang) throws ResourceNotFoundException;
+    AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
 
-    AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(String oid,
-            String lang, String uiLang) throws ResourceNotFoundException;
-    
+    AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
+
     LearningOpportunityProviderDTO getProvider(String lopId, String lang) throws ResourceNotFoundException;
 
     PictureDTO getThumbnail(String lopId) throws ResourceNotFoundException;

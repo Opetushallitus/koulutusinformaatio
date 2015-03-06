@@ -151,6 +151,15 @@
         </constructor-arg>
     </bean>
     
+    <bean id="valmaLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.ValmaLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
+    </bean>
+    
     <bean id="adultVocationalLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO">
         <constructor-arg>
             <ref bean="primaryDatastore"/>

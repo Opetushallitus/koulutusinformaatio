@@ -44,6 +44,7 @@ public class TarjontaConstants {
     public static final String TYPE_KK = "KORKEAKOULU";
     public static final String TYPE_ADULT_UPSEC = "AIKUISLUKIO";
     public static final String TYPE_ADULT_VOCATIONAL = "AMMATILLINENAIKUISKOULUTUS";
+    public static final String TYPE_VALMA = "VALMA"; 
 
     public static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
     public static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
@@ -90,5 +91,5 @@ public class TarjontaConstants {
     public static final String ORG_TYPE_OPPISOPIMUSTOIMIPISTE = "Oppisopimustoimipiste";
     public static final String ORG_TYPE_TOIMIPISTE = "Toimipiste";
     public static final String ORG_TYPE_OPPILAITOS = "Oppilaitos";
-    public static final String KOODISTO_OPPILAITOSTYYPPIFASETTI = "oppilaitostyyppifasetti"; 
+    public static final String KOODISTO_OPPILAITOSTYYPPIFASETTI = "oppilaitostyyppifasetti";
 }

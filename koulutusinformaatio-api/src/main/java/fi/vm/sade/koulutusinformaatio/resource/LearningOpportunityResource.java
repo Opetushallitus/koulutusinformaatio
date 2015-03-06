@@ -111,6 +111,21 @@ public interface LearningOpportunityResource {
                                                                                                   @QueryParam("uiLang") String uiLang);
 
     /**
+     * Fetches an valma learning opportunity
+     *
+     * @param id learning opportunity identifier
+     * @param lang language
+     * @param uiLang user interface language
+     * @return upper secondary learning opportunity
+     */
+    @GET
+    @Path("valma/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ValmaLOSDTO getValmaLearningOpportunity(@PathParam("id") String id,
+                                                                                                  @QueryParam("lang") String lang,
+                                                                                                  @QueryParam("uiLang") String uiLang);
+
+    /**
      * Fetches a special learning opportunity specification.
      *
      * @param id los id

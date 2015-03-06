@@ -64,7 +64,7 @@ var kiApp = angular.module('kiApp',
         controller: InfoCtrl,
         reloadOnSearch: false,
         resolve: {
-            loResource: function($route, $location, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService) {
+            loResource: function($route, $location, UpperSecondaryLOService, ValmaLOService, ChildLOService, ParentLOService, SpecialLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService) {
                 switch($route.current.params.loType) {
                     case 'lukio':
                         return UpperSecondaryLOService;
@@ -76,8 +76,10 @@ var kiApp = angular.module('kiApp',
                         return SpecialLOService;
                     case 'valmentava':
                         return SpecialLOService;
+                    case 'valma':
+                        return ValmaLOService;
                     case 'korkeakoulu':
-                    	return HigherEducationLOService;
+                        return HigherEducationLOService;
                     case 'valmistava':
                         return SpecialLOService;
                     case 'aikuislukio':
@@ -129,6 +131,7 @@ var kiApp = angular.module('kiApp',
     ERITYISOPETUS: 'erityisopetus',
     VALMENTAVA: 'valmentava',
     VALMISTAVA: 'valmistava',
+    VALMA: 'valma',
     AMMATILLINENAIKUISKOULUTUS: 'ammatillinenaikuiskoulutus',
     AIKUISLUKIO: 'aikuislukio'
 })

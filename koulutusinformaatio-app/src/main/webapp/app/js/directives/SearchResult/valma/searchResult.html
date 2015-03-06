@@ -1,0 +1,38 @@
+<div class="container-equal-height container-xs-height">
+    <div class="row row-xs-height">
+        <div class="col-xs-10 col-xs-height">
+            <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.lopNames[0]}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
+            <div data-ng-repeat="lopName in lo.lopNames">
+            	<span>{{lopName}}</span><br/>
+            </div>
+            <span>{{lo.homeplace}}</span>
+        </div>
+
+        <div class="col-xs-6 col-xs-height text-right" data-ng-include="'js/directives/SearchResult/searchResultCollapserCol.html'"></div>
+    </div>
+</div>
+
+<div data-extended-searchresult-data="valma" data-toggle-collapse class="search-result-extended-container">
+
+    <div class="row margin-vertical-default">
+        <div class="col-xs-16 col-md-2">
+            <div data-sr-theme-icons></div>
+        </div>
+        <div class="col-xs-16 col-md-8">
+            <h4 data-ki-i18n="basic-information"></h4>
+            <div data-sr-basic-information data-template-type="valma"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-16">
+            <div data-sr-hakukohteet data-template-type="valma">
+                <div data-sr-extended-options></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+

@@ -650,6 +650,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 //                    continue;
 //                }
                 //TODO poista kommentit kun on oikeaa julkaistua dataa!
+
                 ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> koulutusRes = this.tarjontaRawService.getValmaLearningOpportunity(curKoulutus.getOid());
                 KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO koulutusDTO = koulutusRes.getResult();
                 if (koulutusDTO == null) {
@@ -662,7 +663,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     updateAOLosReferences(los, aoToEducationsMap);
 
                 } catch (TarjontaParseException ex) {
-                    LOG.warn("Problem with valma eductaion: " + koulutusDTO.getOid() + ", " + ex.getMessage());
+                    LOG.warn("Problem with valma education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
                     continue;
                 } catch (KoodistoException ex) {
                     LOG.error("Problem with valma education: " + koulutusDTO.getOid(), ex);

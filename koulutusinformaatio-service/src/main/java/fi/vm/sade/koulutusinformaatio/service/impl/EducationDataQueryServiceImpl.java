@@ -51,6 +51,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
+    private ValmaLOSDAO valmaLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
@@ -63,6 +64,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             HigherEducationLOSDAO higherEducationLOSDAO, 
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
+            ValmaLOSDAO valmaLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -75,6 +77,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
+        this.valmaLOSDAO = valmaLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
@@ -196,6 +199,16 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             return modelMapper.map(entity, AdultUpperSecondaryLOS.class);
         } else {
             throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
+        }
+    }
+    
+    @Override
+    public ValmaLOS getValmaLearningOpportunity(String oid) throws ResourceNotFoundException {
+        ValmaLOSEntity entity = this.valmaLOSDAO.get(oid);
+        if (entity != null) {
+            return modelMapper.map(entity, ValmaLOS.class);
+        } else {
+            throw new ResourceNotFoundException(String.format("Valma learning opportunity specification not found: %s", oid));
         }
     }
     

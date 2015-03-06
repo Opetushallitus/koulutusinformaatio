@@ -206,6 +206,17 @@ service('HigherEducationLOService', ['GeneralLOService', 'HigherEducationTransfo
 }]).
 
 /**
+ * Resource for requesting valma LO data
+ */
+service('ValmaLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
+    return {
+        query: function(options) {
+            return GeneralLOService.query(options, '../lo/valma/', HigherEducationTransformer);
+        }
+    }
+}]).
+
+/**
  * Resource for requesting adult upper secondary LO data
  */
 service('AdultUpperSecondaryLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {

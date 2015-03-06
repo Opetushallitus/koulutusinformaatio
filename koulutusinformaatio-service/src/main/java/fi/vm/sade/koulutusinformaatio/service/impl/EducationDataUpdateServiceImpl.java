@@ -49,6 +49,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO;
+    private ValmaLOSDAO valmaLOSTransactionDAO;
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
 
     @Autowired
@@ -61,6 +62,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
+            ValmaLOSDAO valmaLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
@@ -73,6 +75,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
         this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
+        this.valmaLOSTransactionDAO = valmaLOSTransactionDAO;
         this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
@@ -93,6 +96,9 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         } 
         else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
             saveAdultUpperSecondaryLOS((AdultUpperSecondaryLOS)learningOpportunitySpecification);
+        } 
+        else if (learningOpportunitySpecification instanceof ValmaLOS) {
+            saveValmaLOS((ValmaLOS)learningOpportunitySpecification);
         } 
         else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
             saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS)learningOpportunitySpecification);
@@ -133,6 +139,27 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     save(ao);
                 }
             this.adultUpperSecondaryLOSTransactionDAO.save(entity);
+        }
+        
+    }
+
+    private void saveValmaLOS(
+            ValmaLOS learningOpportunitySpecification) {
+        
+        if (learningOpportunitySpecification != null) {
+            ValmaLOSEntity entity =
+                    modelMapper.map(learningOpportunitySpecification, ValmaLOSEntity.class);
+
+            save(entity.getProvider());
+            
+            for (LearningOpportunityProviderEntity addProv : entity.getAdditionalProviders()) {
+                save(addProv);
+            }
+
+                for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
+                    save(ao);
+                }
+            this.valmaLOSTransactionDAO.save(entity);
         }
         
     }

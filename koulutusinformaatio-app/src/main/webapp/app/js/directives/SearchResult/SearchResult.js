@@ -92,11 +92,12 @@ directive('extendedSearchresultData',
         'ParentLOService',
         'SpecialLOService',
         'UpperSecondaryLOService',
+        'ValmaLOService',
         'HigherEducationLOService',
         'AdultUpperSecondaryLOService',
         'AdultVocationalLOService',
         'LOTypes',
-        function ($q, ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService, LOTypes) {
+        function ($q, ParentLOService, SpecialLOService, UpperSecondaryLOService, ValmaLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService, LOTypes) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
@@ -113,6 +114,8 @@ directive('extendedSearchresultData',
                     LOService = SpecialLOService;
                 } else if(iAttrs.extendedSearchresultData === LOTypes.LUKIO) {
                     LOService = UpperSecondaryLOService;
+                } else if(iAttrs.extendedSearchresultData === LOTypes.VALMA) {
+                    LOService = ValmaLOService;
                 } else if(iAttrs.extendedSearchresultData === LOTypes.KORKEAKOULU) {
                     LOService = HigherEducationLOService;
                 } else if (iAttrs.extendedSearchresultData === LOTypes.AIKUISLUKIO) {

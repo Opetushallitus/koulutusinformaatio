@@ -52,6 +52,7 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     private LearningOpportunityProviderDAO providerDAO;
     private HigherEducationLOSDAO higherEdDAO;
     private AdultUpperSecondaryLOSDAO adultUpsecDAO;
+    private ValmaLOSDAO valmaDAO;
     private AdultVocationalLOSDAO adultVocDAO;
 
     @Before
@@ -68,11 +69,12 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         providerDAO = mockProviderDAO();
         higherEdDAO = mockHigherEdDAO();
         adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
+        valmaDAO = mock(ValmaLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, providerDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, valmaDAO, providerDAO);
     }
     
     /**

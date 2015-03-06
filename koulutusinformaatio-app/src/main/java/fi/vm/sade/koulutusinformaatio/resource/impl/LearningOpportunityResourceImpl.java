@@ -48,6 +48,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ValmaLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
@@ -189,6 +190,25 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             }
             else {
                 return learningOpportunityService.getUpperSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+    
+
+    @Override
+    public ValmaLOSDTO getValmaLearningOpportunity(
+            String id, String lang, String uiLang) {
+        try {
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
+                return learningOpportunityService.getValmaLearningOpportunity(id);
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getValmaLearningOpportunity(id, uiLang.toLowerCase());
+            }
+            else {
+                return learningOpportunityService.getValmaLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
