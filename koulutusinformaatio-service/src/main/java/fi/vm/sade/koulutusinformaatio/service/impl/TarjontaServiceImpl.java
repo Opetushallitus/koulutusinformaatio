@@ -645,11 +645,10 @@ public class TarjontaServiceImpl implements TarjontaService {
 
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
                 LOG.debug("cur Valma koulutus result: " + curKoulutus.getOid());
-//                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-//                    LOG.debug("koulutus not published, discarding");
-//                    continue;
-//                }
-                //TODO poista kommentit kun on oikeaa julkaistua dataa!
+                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    LOG.debug("koulutus not published, discarding");
+                    continue;
+                }
 
                 ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> koulutusRes = this.tarjontaRawService.getValmaLearningOpportunity(curKoulutus.getOid());
                 KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO koulutusDTO = koulutusRes.getResult();
