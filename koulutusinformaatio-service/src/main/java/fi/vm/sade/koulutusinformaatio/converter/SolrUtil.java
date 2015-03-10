@@ -485,9 +485,10 @@ public final class SolrUtil {
         public static final String ED_TYPE_KOTITALOUS = "et02.015";
         public static final String ED_TYPE_AMM_OPETTAJA = "et02.11";
         public static final String ED_TYPE_KOTITALOUS_DISPLAY = "kotitalous";
-        
-        public static final String ED_TYPE_VALMA = "TÄHÄN JOTAIN HIENOA"; //TODO todo
-        public static final String ED_TYPE_VALMA_ER = "TÄHÄN JOTAIN HIENOA ER"; //TODO todo
+        public static final String ED_TYPE_ERITYIS_JA_VALMENTAVA = "et02.12";
+        public static final String ED_TYPE_VALMA = "et02.01.06";
+        public static final String ED_TYPE_VALMA_ER = "et02.12.02";
+        public static final String ED_TYPE_TELMA = "et02.12.01";
 
         public static final String ED_CODE_AMM_OPETTAJA = "koulutus_000001";
         public static final String ED_CODE_AMM_ER_OPETTAJA = "koulutus_000002";
