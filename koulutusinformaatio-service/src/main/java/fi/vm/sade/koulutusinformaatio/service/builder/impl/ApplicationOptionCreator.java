@@ -363,16 +363,13 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setVocational(false);
         ao.setEducationCodeUri(los.getEducationCode().getUri());
         
-
-        List<String> baseEducations = Lists.transform(los.getPrerequisites(), new Function<Code, String>() {
-            @Override
-            public String apply(Code code) {
-                return code.getUri();
-            }
-        });
+        List<String> baseEducations = new ArrayList<String>();
+        for (Code code : los.getPrerequisites()) {
+            baseEducations.add(code.getUri());
+        }
         baseEducations.addAll(hakukohde.getHakukelpoisuusvaatimusUris());
         ao.setRequiredBaseEducations(baseEducations);
-        
+
         los.getPrerequisites().addAll(koodistoService.searchMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
 
         ApplicationSystem as = applicationSystemCreator.createHigherEdApplicationSystem(haku);
