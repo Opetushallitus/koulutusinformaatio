@@ -418,11 +418,14 @@ public class KoodistoServiceImpl implements KoodistoService {
         List<KoodiMetadataType> metadata = koodiType.getMetadata();
         Map<String, String> translations = new HashMap<String, String>();
         for (KoodiMetadataType koodiMetadataType : metadata) {
-            translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
+            if (koodiMetadataType.getLyhytNimi() == null) {
+                translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
+            } else {
+                translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
+            }
         }
         return new I18nText(translations);
     }
-
 
     private List<Code> convertAllToCode(final List<KoodiType> codes) {
         return Lists.transform(codes, new Function<KoodiType, Code>() {
