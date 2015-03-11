@@ -59,7 +59,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     @Override
     public List<ProviderSearchResultDTO> searchProviders(String term, String asId, List<String> baseEducations, boolean vocational,
-                                                      boolean nonVocational, int start, int rows, final String lang) {
+                                                      boolean nonVocational, int start, int rows, final String lang, final String type) {
         List<Provider> learningOpportunityProviders = null;
         try {
             String key = null;
@@ -70,7 +70,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             }
             key = key.replace("*", "");
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducations, vocational,
-                    nonVocational, start, rows, lang, false, null);
+                    nonVocational, start, rows, lang, false, type);
             List<ProviderSearchResultDTO> result = Lists.newArrayList(
                                                     Lists.transform(learningOpportunityProviders, 
                                                                     new Function<Provider, ProviderSearchResultDTO>() {

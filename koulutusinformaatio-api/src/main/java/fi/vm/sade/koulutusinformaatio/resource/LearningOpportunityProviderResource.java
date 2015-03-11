@@ -68,7 +68,8 @@ public interface LearningOpportunityProviderResource {
                                                  @DefaultValue(value = "true") @QueryParam(NON_VOCATIONAL) final boolean nonVocational,
                                                  @DefaultValue(value = "0") @QueryParam("start") int start,
                                                  @DefaultValue(value = "50") @QueryParam("rows") int rows,
-                                                 @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+                                                 @DefaultValue(LANG_FI) @QueryParam(LANG) String lang,
+                                                 @QueryParam("type") String type);
 
     @GET
     @Path("{lopId}/picture")
