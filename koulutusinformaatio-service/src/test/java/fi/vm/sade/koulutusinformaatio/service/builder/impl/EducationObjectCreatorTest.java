@@ -207,7 +207,7 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         List<ValintakoeRDTO> examDTOs = Lists.newArrayList(eventEmpty, eventsNull);
         List<Exam> exams = creator.createUpperSecondaryExams(examDTOs);
         assertNotNull(exams);
-        assertEquals(2, exams.size());
+        assertEquals(0, exams.size());
     }
 
     @Test

@@ -79,7 +79,7 @@ public class EducationObjectCreator extends ObjectCreator {
         if (valintakoes != null) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeRDTO valintakoe : valintakoes) {
-                if (valintakoe.getKuvaus() != null) {
+                if (valintakoe.getKuvaus() != null && !valintakoe.getKuvaus().isEmpty()) {
                     Exam exam = new Exam();
                     exam.setDescription(getI18nText(valintakoe.getKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
