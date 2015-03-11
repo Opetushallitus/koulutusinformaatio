@@ -1143,6 +1143,9 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             var loRef = ao.type + '/';
 
             switch(ao.type) {
+                case 'valma':
+                    loRef += ao.parent.id;
+                    break;
                 case 'korkeakoulu':
                     loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;

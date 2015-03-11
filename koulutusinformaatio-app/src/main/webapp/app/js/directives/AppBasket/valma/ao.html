@@ -1,8 +1,7 @@
 <td>
     <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
-    <em data-ki-i18n="{{item.educationTypeUri}}"></em>
+    <i>{{item.name}}</i>
     <div class="inside">
-        <span>{{item.qualification}}</span>
         <div>
             <span data-ki-i18n="appbasket:no-prerequisite-requirement"></span>
         </div>
@@ -10,12 +9,6 @@
 </td>
 
 <td>
-    <ul class="inside">
-        <li data-ng-repeat="losref in item.losRefs">
-            <a href="#!/aikuislukio/{{losref.id}}">{{losref.name}}</a>
-        </li>
-    </ul>
-    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
 </td>
 
 <td>

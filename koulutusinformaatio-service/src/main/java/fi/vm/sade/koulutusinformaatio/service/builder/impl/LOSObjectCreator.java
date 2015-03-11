@@ -768,7 +768,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
 
-    private ParentLOSRef createParentLosRef(HigherEducationLOS los) {
+    private <S extends StandaloneLOS> ParentLOSRef createParentLosRef(S los) {
         ParentLOSRef educationRef = new ParentLOSRef();
         educationRef.setId(los.getId());
         educationRef.setName(los.getName());
@@ -1162,6 +1162,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption ao : los.getApplicationOptions()) {
                 ao.setProvider(los.getProvider());
+                ao.setParent(createParentLosRef(los));
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                 ao.setType(aoType);
