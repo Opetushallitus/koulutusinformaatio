@@ -105,7 +105,7 @@ public class LearningOpportunityProviderResourceImplTest {
     
     @Test
     public void testSearchProviders() {
-        List<ProviderSearchResultDTO> results = providerResource.searchProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi");
+        List<ProviderSearchResultDTO> results = providerResource.searchProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi", null);
         assertEquals(results.size(), 2);
         assertTrue(results.get(0).getId().contains("prov"));
     }
