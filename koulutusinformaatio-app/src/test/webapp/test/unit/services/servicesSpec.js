@@ -258,7 +258,7 @@ describe('UtilityService', function() {
             var data = [
                 {
                     id: 'a',
-                    name: 'a',
+                    name: 'Varsinainen yhteishaku päättyy yli kahden viikon päästä, johon ei voi hakea',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -271,7 +271,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'b',
-                    name: 'b',
+                    name: 'Varsinainen yhteishaku päättyy päivän päässä',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -283,7 +283,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'c',
-                    name: 'c',
+                    name: 'Varsinainen yhteishaku päättyy kahden päivän päässä',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -295,7 +295,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'd',
-                    name: 'd',
+                    name: 'Lisäyhteishaku päättyy päivän päässä',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.lisa,
                     applicationOptions: [
@@ -307,7 +307,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'e',
-                    name: 'e',
+                    name: 'Varsinainen yhteishaku päättyy kolmen päivän päässä',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -319,7 +319,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'f',
-                    name: 'f',
+                    name: 'Varsinainen erillishaku päättyy päivän päässä',
                     hakutapa: hakutapa.erillishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -331,7 +331,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'g',
-                    name: 'g',
+                    name: 'Varsinainen erillishaku alkanut 20 päivää sitten, johon ei voi hakea',
                     hakutapa: hakutapa.erillishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -343,7 +343,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'h',
-                    name: 'h',
+                    name: 'Lisäyhteishaku alkanut 30 päivää sitten, johon ei voi hakea',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.lisa,
                     applicationOptions: [
@@ -355,7 +355,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'i',
-                    name: 'i',
+                    name: 'Varsinainen yhteishaku, jossa hakukausi alkaa 20 päivän päästä',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -368,7 +368,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'j',
-                    name: 'j',
+                    name: 'Varsinainen yhteishaku, jossa hakukausi alkaa 10 päivän päästä',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -381,7 +381,7 @@ describe('UtilityService', function() {
                 },
                 {
                     id: 'k',
-                    name: 'k',
+                    name: 'Varsinainen erillishaku, jossa haku on päättynyt 10 päivä sitten',
                     hakutapa: hakutapa.erillishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -394,17 +394,18 @@ describe('UtilityService', function() {
             ];
 
             utility.sortApplicationSystems(data);
-            expect(data[0].id).toEqual('b');
-            expect(data[1].id).toEqual('c');
-            expect(data[2].id).toEqual('e');
-            expect(data[3].id).toEqual('d');
-            expect(data[4].id).toEqual('f');
-            expect(data[5].id).toEqual('j');
-            expect(data[6].id).toEqual('a');
-            expect(data[7].id).toEqual('i');
-            expect(data[8].id).toEqual('h');
-            expect(data[9].id).toEqual('g');
-            expect(data[10].id).toEqual('k');
+            jasmine.log(data);
+            expect(data[0].id).toEqual('b');  // Varsinainen yhteishaku päättyy päivän päässä
+            expect(data[1].id).toEqual('c');  // Varsinainen yhteishaku päättyy kahden päivän päässä
+            expect(data[2].id).toEqual('e');  // Varsinainen yhteishaku päättyy kolmen päivän päässä
+            expect(data[3].id).toEqual('j');  // Varsinainen yhteishaku, jossa hakukausi alkaa 10 päivän päästä
+            expect(data[4].id).toEqual('d');  // Lisäyhteishaku päättyy päivän päässä
+            expect(data[5].id).toEqual('f');  // Varsinainen erillishaku päättyy päivän päässä
+            expect(data[6].id).toEqual('a');  // Varsinainen yhteishaku päättyy yli kahden viikon päästä, johon ei voi hakea
+            expect(data[7].id).toEqual('i');  // Varsinainen yhteishaku, jossa hakukausi alkaa 20 päivän päästä
+            expect(data[8].id).toEqual('h');  // Lisäyhteishaku alkanut 30 päivää sitten, johon ei voi hakea
+            expect(data[9].id).toEqual('g');  // Varsinainen erillishaku alkanut 20 päivää sitten, johon ei voi hakea
+            expect(data[10].id).toEqual('k'); // Varsinainen erillishaku, jossa haku on päättynyt 10 päivä sitten
         });
 
         it('should sort application options correctly', function() {

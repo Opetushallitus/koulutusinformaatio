@@ -1753,9 +1753,9 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
 
                 var dateAfterTwoWeeks = new Date(+new Date + (1000 * 60 * 60 * 24 * 14));
                 if(isVarsinainenYhteishaku(a) || isVarsinainenYhteishaku(b)){
-                    if (isVarsinainenYhteishaku(a) && !isVarsinainenYhteishaku(b) && dateAfterTwoWeeks - getEarliestStartDate(a) < 0){
+                    if (isVarsinainenYhteishaku(a) && !isVarsinainenYhteishaku(b) && getEarliestStartDate(a) < dateAfterTwoWeeks){
                         return -1;
-                    } else if (!isVarsinainenYhteishaku(a) && isVarsinainenYhteishaku(b) && dateAfterTwoWeeks - getEarliestStartDate(b) < 0){
+                    } else if (!isVarsinainenYhteishaku(a) && isVarsinainenYhteishaku(b) && getEarliestStartDate(b) < dateAfterTwoWeeks){
                         return 1;
                     }
                 }
