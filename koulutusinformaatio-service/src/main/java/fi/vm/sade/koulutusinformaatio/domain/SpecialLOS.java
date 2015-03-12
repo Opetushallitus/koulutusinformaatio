@@ -36,6 +36,7 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
     private List<ChildLOI> lois;
 
     private I18nText qualification;
+    private List<I18nText> qualifications;
     private I18nText educationDomain;
     private ParentLOSRef parent;
     private String educationTypeUri;
@@ -145,6 +146,14 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
         }
         GregorianCalendar cal = new GregorianCalendar(loi.getStartYear(), month, 0);
         return cal.getTime();
+    }
+
+    public List<I18nText> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<I18nText> qualifications) {
+        this.qualifications = qualifications;
     }
 
 }

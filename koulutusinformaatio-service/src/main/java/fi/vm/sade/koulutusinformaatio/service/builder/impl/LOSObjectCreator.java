@@ -390,6 +390,7 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
         los.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
+        los.setQualifications(getQualificationsFromKomotoDTOs(childKomotos));
         los.setEducationDomain(koodistoService.searchFirstShortName(parentKomo.getKoulutusAlaUri()));
         los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
                 koodistoService.searchFirstName(parentKomo.getKoulutusKoodiUri())));

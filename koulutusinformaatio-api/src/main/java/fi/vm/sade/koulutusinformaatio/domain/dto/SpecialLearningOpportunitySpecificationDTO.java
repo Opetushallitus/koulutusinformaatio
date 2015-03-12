@@ -34,6 +34,7 @@ public class SpecialLearningOpportunitySpecificationDTO {
     private String degreeTitle;
     private List<String> degreeTitles;
     private String qualification;
+    private List<String>qualifications;
     private String goals;
     private List<ChildLearningOpportunityInstanceDTO> lois;
     private LearningOpportunityProviderDTO provider;
@@ -227,4 +228,12 @@ public class SpecialLearningOpportunitySpecificationDTO {
 	public void setDegreeTitles(List<String> degreeTitles) {
 		this.degreeTitles = degreeTitles;
 	}
+
+    public List<String> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<String> qualifications) {
+        this.qualifications = qualifications;
+    }
 }
