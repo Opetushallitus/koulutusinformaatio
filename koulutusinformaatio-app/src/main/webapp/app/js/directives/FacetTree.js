@@ -84,7 +84,8 @@ directive('facetTreeLeaves', function() {
                 '<li><strong data-ki-i18n="facet-focus-filter"></strong></li>' +
                 '<li data-ng-repeat="node in leaves" class="facet-tree-leaf">' +
                     '<span title="{{node.valueName}}" data-ng-if="node.count > 0" class="facet-item">' +
-                        '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">{{node.valueName}} ({{node.count}})</a>' +
+                        '<a ng-if="node.containsChildren" href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">+ {{node.valueName}} ({{node.count}})</a>' +
+                        '<a ng-if="!node.containsChildren" href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">{{node.valueName}} ({{node.count}})</a>' +
                     '</span>' +
                 '</li>' +
             '</ul>'

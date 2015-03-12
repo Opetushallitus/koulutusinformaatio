@@ -997,8 +997,11 @@ service('SearchResultFacetTransformer', ['UtilityService', '$filter', function(U
     			loResult.topicFacetValues = topicFacetValues;
         	} else {
         		angular.forEach(loResult.topicFacet.facetValues, function(value, index) {
-            		value.childValues = [];
-            	});
+                    if(value.childValues && value.childValues.length > 0){
+                        value.containsChildren = true;
+                    }
+                    value.childValues = [];
+                });
         		
         		loResult.topicFacetValues = loResult.topicFacet.facetValues;
         	}
@@ -1009,6 +1012,9 @@ service('SearchResultFacetTransformer', ['UtilityService', '$filter', function(U
         		if (selectedEdTypeFacetVal != undefined) {
         			
         			angular.forEach(selectedEdTypeFacetVal.childValues, function(value, index) {
+        			    if(value.childValues && value.childValues.length > 0){
+        			        value.containsChildren = true;
+        			    }
         				value.childValues = [];
         			});
         			
@@ -1027,15 +1033,21 @@ service('SearchResultFacetTransformer', ['UtilityService', '$filter', function(U
         			loResult.edTypeFacetValues = edTypeFacetValues;
         		} else {
         			angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
-                		value.childValues = [];
-                	});
+                        if(value.childValues && value.childValues.length > 0){
+                            value.containsChildren = true;
+                        }
+                        value.childValues = [];
+                    });
             		
             		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
         		}
         	} else {
         		angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
-            		value.childValues = [];
-            	});
+                    if(value.childValues && value.childValues.length > 0){
+                        value.containsChildren = true;
+                    }
+                    value.childValues = [];
+                });
         		
         		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
         	}

@@ -201,7 +201,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	var isSelected = false;
     	for (var i = 0; i < $scope.facetSelections.length; i++) {
     		if (($scope.facetSelections[i].facetField == facetValue.facetField)
-    				&& ($scope.facetSelections[i].valueId == facetValue.valueId)) {
+    				&& ($scope.facetSelections[i].valueId.indexOf(facetValue.valueId) > -1)) { // 'et02.01.01' includes 'et02.01'
     			isSelected = true;
     		}
     	}
