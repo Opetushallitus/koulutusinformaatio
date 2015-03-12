@@ -1740,16 +1740,26 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
 
                 /*
                 Hakujen järjestys:
-                1. Käynnissä oleva haku aina ennen ei-käynnissä olevaa hakua
+                1. Jos yhteishakuun on alle kaksi viikkoa näytetään ensin yhteishaku
+                2. Käynnissä oleva haku aina ennen ei-käynnissä olevaa hakua
                     •   jos käynnissä sekä varsinainen yhteishaku että päättyneen yhteishaun lisähaku, näytetään varsinaisen yhteishaun hakukohde ensin
-                2. Tulossa oleva haku ennen mennyttä hakua
-                3. Varsinainen yhteishaku ennen muun tyyppisiä hakuja
-                4. Yhteishaun lisähaku ennen muun tyyppisiä hakuja
-                5. Aikajärjestys:
+                3. Tulossa oleva haku ennen mennyttä hakua
+                4. Varsinainen yhteishaku ennen muun tyyppisiä hakuja
+                5. Yhteishaun lisähaku ennen muun tyyppisiä hakuja
+                6. Aikajärjestys:
                     •   tulevissa hauissa alkamispäivän mukaan laskevassa järjestyksessä
                     •   menneissä hauissa alkamispäivän mukaan nousevassa järjestyksessä
                 */
 
+                var dateAfterTwoWeeks = new Date(+new Date + (1000 * 60 * 60 * 24 * 14));
+                if(isVarsinainenYhteishaku(a) || isVarsinainenYhteishaku(b)){
+                    if (isVarsinainenYhteishaku(a) && !isVarsinainenYhteishaku(b) && dateAfterTwoWeeks - getEarliestStartDate(a) < 0){
+                        return -1;
+                    } else if (!isVarsinainenYhteishaku(a) && isVarsinainenYhteishaku(b) && dateAfterTwoWeeks - getEarliestStartDate(b) < 0){
+                        return 1;
+                    }
+                }
+                
                 if (isHakuKaynnissa(a) && isHakuKaynnissa(b)) {
                     if (isVarsinainenYhteishaku(a) != isVarsinainenYhteishaku(b)) {
                         return isVarsinainenYhteishaku(a) ? -1 : 1
