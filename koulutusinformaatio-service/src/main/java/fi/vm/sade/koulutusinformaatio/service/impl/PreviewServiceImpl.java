@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -96,9 +97,20 @@ public class PreviewServiceImpl implements PreviewService {
             e.printStackTrace();
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
         }
-        
-        
-        
+    }
+    
+    @Override
+    public ValmaLOS previewValmaLearningOpportunity(String oid) throws ResourceNotFoundException {
+        try {
+            ValmaLOS los = this.tarjontaService.createValmaLOS(oid, false);
+            return los;
+        } catch (KoodistoException e) {
+            e.printStackTrace();
+            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+        } catch (TarjontaParseException e) {
+            e.printStackTrace();
+            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+        }
     }
 
 }

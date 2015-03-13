@@ -45,11 +45,13 @@ var kiApp = angular.module('previewApp',
                     case 'valmentava':
                         return HigherEducationPreviewLOService;
                     case 'korkeakoulu':
-                    	return HigherEducationPreviewLOService;
+                        return HigherEducationPreviewLOService;
                     case 'aikuislukio':
-                    	return HigherEducationPreviewLOService;
+                        return HigherEducationPreviewLOService;
                     case 'ammatillinenaikuiskoulutus':
-                    	return HigherEducationPreviewLOService;
+                        return HigherEducationPreviewLOService;
+                    case 'valma':
+                        return HigherEducationPreviewLOService;
                 }
             },
             partialUrl: function($rootScope, $route) {
@@ -89,6 +91,7 @@ var kiApp = angular.module('previewApp',
     VALMENTAVA: 'valmentava',
     VALMISTAVA: 'valmistava',
     AMMATILLINENAIKUISKOULUTUS: 'ammatillinenaikuiskoulutus',
+    VALMA: 'valma',
     AIKUISLUKIO: 'aikuislukio'
 })
 

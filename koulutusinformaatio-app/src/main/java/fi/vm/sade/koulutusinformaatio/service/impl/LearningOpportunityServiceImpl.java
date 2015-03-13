@@ -338,6 +338,20 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
     
     @Override
+    public ValmaLOSDTO previewValmaLearningOpportunity(
+            String oid, String lang, String uiLang)
+            throws ResourceNotFoundException {
+        ValmaLOS los = this.previewService.previewValmaLearningOpportunity(oid);
+        ValmaLOSDTO dto = null;
+        if (lang != null && !lang.isEmpty()) {
+            dto = ValmaLOSToDTO.convert(los, lang, uiLang);
+        } else {
+            dto = ValmaLOSToDTO.convert(los, uiLang, uiLang); 
+        }
+        return dto;
+    }
+    
+    @Override
     public AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(
             String oid, String lang, String uiLang)
             throws ResourceNotFoundException {

@@ -780,6 +780,17 @@ public class TarjontaServiceImpl implements TarjontaService {
                 return this.creator.createCBQPLOS(dto.getKomoOid(), Arrays.asList(oid), checkStatus);
                 
     }
+    
+    @Override
+    public ValmaLOS createValmaLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
+        }
+
+        ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> res = this.tarjontaRawService.getValmaLearningOpportunity(oid);
+        KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO dto = res.getResult();
+        return this.creator.createValmaLOS(dto, checkStatus);
+    }
 
     @Override
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException {

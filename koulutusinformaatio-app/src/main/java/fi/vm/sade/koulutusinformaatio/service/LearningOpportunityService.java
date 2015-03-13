@@ -156,6 +156,8 @@ public interface LearningOpportunityService {
 
     AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
 
+    ValmaLOSDTO previewValmaLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
+
     LearningOpportunityProviderDTO getProvider(String lopId, String lang) throws ResourceNotFoundException;
 
     PictureDTO getThumbnail(String lopId) throws ResourceNotFoundException;

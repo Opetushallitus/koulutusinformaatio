@@ -98,6 +98,8 @@ public interface TarjontaService {
 
     public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
     
+    public ValmaLOS createValmaLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException;
+
     public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo);
 
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException;
