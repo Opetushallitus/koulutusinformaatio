@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
@@ -49,6 +50,8 @@ import javax.imageio.ImageIO;
  */
 public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, Provider> {
     
+    private static final String SOSIAALINENMEDIA_CODES_NAME = "sosiaalinenmedia";
+
     private static final Logger LOG = LoggerFactory.getLogger(OrganisaatioRDTOToProvider.class);
 
     private static final String STREET_ADDRESS = "osoite";
@@ -69,16 +72,21 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String METADATA_VAPAA_AJAN_PALVELUT = "VAPAA_AIKA";
     
 
-    private static final String METADATA_SOCIAL_FACEBOOK = "FACEBOOK";
-    private static final String METADATA_SOCIAL_LINKEDIN = "LINKED_IN";
-    private static final String METADATA_SOCIAL_TWITTER = "TWITTER";
-    private static final String METADATA_SOCIAL_GOOGLEPLUS = "GOOGLE_PLUS";
-    private static final String METADATA_SOCIAL_OTHER = "MUU";
-    private static final String[] SOCIAL_LINKS = {METADATA_SOCIAL_FACEBOOK, 
-                                                   METADATA_SOCIAL_LINKEDIN, 
-                                                   METADATA_SOCIAL_TWITTER, 
-                                                   METADATA_SOCIAL_GOOGLEPLUS, 
-                                                   METADATA_SOCIAL_OTHER};
+    private static final String METADATA_SOCIAL_FACEBOOK = "sosiaalinenmedia_1";
+    private static final String METADATA_SOCIAL_LINKEDIN = "sosiaalinenmedia_3";
+    private static final String METADATA_SOCIAL_TWITTER = "sosiaalinenmedia_4";
+    private static final String METADATA_SOCIAL_GOOGLEPLUS = "sosiaalinenmedia_2";
+    private static final String METADATA_SOCIAL_OTHER = "sosiaalinenmedia_5";
+    private static final String METADATA_SOCIAL_INSTAGRAM = "sosiaalinenmedia_6";
+    private static final String METADATA_SOCIAL_YOUTUBE = "sosiaalinenmedia_7";
+
+    private static final String KI_SOCIAL_FACEBOOK = "facebook";
+    private static final String KI_SOCIAL_LINKEDIN = "linked_in";
+    private static final String KI_SOCIAL_TWITTER = "twitter";
+    private static final String KI_SOCIAL_GOOGLEPLUS = "google_plus";
+    private static final String KI_SOCIAL_OTHER = "muu";
+    
+    private static final HashMap<String, String> SOCIAL_LINKS = new HashMap<String, String>();
 
     private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";
@@ -104,6 +112,14 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
 
     public OrganisaatioRDTOToProvider(KoodistoService koodistoService) {
         this.koodistoService = koodistoService;
+        // Koska KI käyttää kovakoodattuna some kenttiä esimerkiksi CSS säännöissä, niitä ei voi tuoda suoraan koodistosta.
+        SOCIAL_LINKS.put(METADATA_SOCIAL_FACEBOOK, KI_SOCIAL_FACEBOOK);
+        SOCIAL_LINKS.put(METADATA_SOCIAL_LINKEDIN, KI_SOCIAL_LINKEDIN);
+        SOCIAL_LINKS.put(METADATA_SOCIAL_TWITTER, KI_SOCIAL_TWITTER);
+        SOCIAL_LINKS.put(METADATA_SOCIAL_GOOGLEPLUS, KI_SOCIAL_GOOGLEPLUS);
+        SOCIAL_LINKS.put(METADATA_SOCIAL_OTHER, KI_SOCIAL_OTHER);
+        SOCIAL_LINKS.put(METADATA_SOCIAL_INSTAGRAM, KI_SOCIAL_OTHER);
+        SOCIAL_LINKS.put(METADATA_SOCIAL_YOUTUBE, KI_SOCIAL_OTHER);
     }
 
     @Override
@@ -134,7 +150,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setInsurances(getDataValue(o.getMetadata(), METADATA_TIETOA_VAKUUTUKSISTA));
             p.setLeisureServices(getDataValue(o.getMetadata(), METADATA_VAPAA_AJAN_PALVELUT));
             LOG.debug("Got descriptions: " + o.getOid());
-            p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
+            p.setSocial(getSocialLinks(o.getMetadata()));
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
             p.setPlaceOfBusinessCode(o.getToimipistekoodi());
@@ -309,32 +325,26 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         return null;
     }
 
-    private List<Social> getSocialLinks(final OrganisaatioMetaDataRDTO metadata, String... keys) {
+    private List<Social> getSocialLinks(final OrganisaatioMetaDataRDTO metadata) {
         List<Social> social = Lists.newArrayList();
-        for (String key : keys) {
-            Social socialItem = getSocial(metadata, key);
-            if (socialItem != null) {
-                social.add(getSocial(metadata, key));
-            }
-        }
-
-        return social;
-    }
-
-    private Social getSocial(final OrganisaatioMetaDataRDTO metadata, String key) {
-        if (metadata != null) {
-            Map<String, Map<String, String>> data = metadata.getData();
-            if (data != null && data.containsKey(key)) {
-                Map<String, String> valueMap = data.get(key);
-                if (valueMap != null) {
-                    List<String> value = Lists.newArrayList(valueMap.values());
-                    if (value != null && value.size() > 0) {
-                        return new Social(key.toLowerCase(), value.get(0));
-                    }
+        for (Entry<String, Map<String, String>> entry : metadata.getData().entrySet()) {
+            if(entry.getKey().startsWith(SOSIAALINENMEDIA_CODES_NAME)){
+                Social socialItem = getSocial(entry.getKey(), entry.getValue());
+                if (socialItem != null) {
+                    social.add(socialItem);
                 }
             }
         }
+        return social;
+    }
 
+    private Social getSocial(String key, Map<String, String> map) {
+        if (map != null) {
+            List<String> value = Lists.newArrayList(map.values());
+            if (value != null && value.size() > 0) {
+                return new Social(SOCIAL_LINKS.get(key.split("#")[0]), value.get(0));
+            }
+        }
         return null;
     }
 
