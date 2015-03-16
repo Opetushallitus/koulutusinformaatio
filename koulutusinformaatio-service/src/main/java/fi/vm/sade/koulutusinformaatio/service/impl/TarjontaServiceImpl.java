@@ -41,6 +41,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDT
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
+import fi.vm.sade.tarjonta.service.types.TarjontaTyyppi;
+import fi.vm.sade.tarjonta.shared.types.TarjontaOidType;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 import org.slf4j.Logger;
@@ -789,7 +791,11 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> res = this.tarjontaRawService.getValmaLearningOpportunity(oid);
         KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO dto = res.getResult();
-        return this.creator.createValmaLOS(dto, checkStatus);
+        if (dto.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER)) {
+            return this.creator.createValmaLOSEr(dto, checkStatus);
+        } else {
+            return this.creator.createValmaLOS(dto, checkStatus);
+        }
     }
 
     @Override
