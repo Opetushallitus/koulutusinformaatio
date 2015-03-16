@@ -567,7 +567,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_VALMA);
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMA_ER)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
-                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_PK_JALK);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_ERITYIS_JA_VALMENTAVA);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_VALMA_ER);
             }
         }
