@@ -329,7 +329,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         List<Social> social = Lists.newArrayList();
         if (metadata != null && metadata.getData() != null) {
             for (Entry<String, Map<String, String>> entry : metadata.getData().entrySet()) {
-                if (entry.getKey().startsWith(SOSIAALINENMEDIA_CODES_NAME)) {
+                if (entry.getKey() != null && entry.getKey().startsWith(SOSIAALINENMEDIA_CODES_NAME)) {
                     Social socialItem = getSocial(entry.getKey(), entry.getValue());
                     if (socialItem != null) {
                         social.add(socialItem);
