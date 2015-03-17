@@ -254,14 +254,18 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setId(specialLOSId);
         String teachingLang = koodistoService.searchFirstCodeValue(childKomoto.getOpetuskieletUris().get(0)).toLowerCase();
-        if ((!los.getType().equals(TarjontaConstants.TYPE_PREP)
-                && !los.getType().equals(TarjontaConstants.TYPE_SPECIAL))
-                || (TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri())
-                && childKomoto.getKoulutusohjelmanNimi() != null)) {
-            Map<String, String> nameTranslations = Maps.newHashMap();
-            nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
-            los.setName(new I18nText(nameTranslations));
-            los.setShortTitle(new I18nText(nameTranslations));
+        if ((!los.getType().equals(TarjontaConstants.TYPE_PREP) && !los.getType().equals(TarjontaConstants.TYPE_SPECIAL))
+                || (TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri()) && childKomoto.getKoulutusohjelmanNimi() != null)) {
+            if (childKomoto.getKoulutusohjelmanNimi() != null) {
+                Map<String, String> nameTranslations = Maps.newHashMap();
+                nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
+                los.setName(new I18nText(nameTranslations));
+                los.setShortTitle(new I18nText(nameTranslations));
+            } else {
+                Code name = koodistoService.searchFirst(childKomoto.getKoulutusKoodiUri());
+                los.setName(name.getName());
+                los.setShortTitle(name.getShortTitle());
+            }
         } else if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
             Code name = koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri());
             los.setName(name.getName());
