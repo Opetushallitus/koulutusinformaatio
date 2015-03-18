@@ -16,12 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ContactPersonDTO;
-
-import java.util.List;
 
 /**
  * @author Mikko Majapuro

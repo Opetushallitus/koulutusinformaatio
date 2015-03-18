@@ -1,14 +1,14 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Reference;
-
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Reference;
+
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 /**
  * @author Hannu Lyytikainen

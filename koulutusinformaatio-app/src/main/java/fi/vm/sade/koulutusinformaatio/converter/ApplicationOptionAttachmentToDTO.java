@@ -16,16 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
-import fi.vm.sade.koulutusinformaatio.domain.Exam;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ExamDTO;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen

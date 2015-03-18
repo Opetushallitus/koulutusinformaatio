@@ -16,14 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
+import java.util.List;
+
+import org.apache.solr.client.solrj.SolrQuery;
+
 import com.google.common.base.Joiner;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-
-import org.apache.solr.client.solrj.SolrQuery;
-
-import java.util.List;
 
 /**
  * @author Mikko Majapuro

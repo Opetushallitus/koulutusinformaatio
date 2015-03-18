@@ -16,10 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.configuration;
 
-import fi.vm.sade.koodisto.util.CachingKoodistoClient;
-import fi.vm.sade.koodisto.util.KoodistoClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 
 /**
  * @author Mikko Majapuro

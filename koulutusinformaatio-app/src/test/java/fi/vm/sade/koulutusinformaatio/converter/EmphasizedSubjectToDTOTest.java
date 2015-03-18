@@ -16,16 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.EmphasizedSubject;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.dto.EmphasizedSubjectDTO;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.koulutusinformaatio.domain.EmphasizedSubject;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.dto.EmphasizedSubjectDTO;
 
 /**
  * @author Hannu Lyytikainen

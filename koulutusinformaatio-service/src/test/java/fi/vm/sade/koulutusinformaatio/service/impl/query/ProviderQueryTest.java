@@ -1,13 +1,13 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import java.util.Arrays;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 
 /**
  * @author Hannu Lyytikainen

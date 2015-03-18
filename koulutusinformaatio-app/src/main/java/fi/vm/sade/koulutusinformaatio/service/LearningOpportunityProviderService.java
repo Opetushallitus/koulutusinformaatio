@@ -16,13 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen

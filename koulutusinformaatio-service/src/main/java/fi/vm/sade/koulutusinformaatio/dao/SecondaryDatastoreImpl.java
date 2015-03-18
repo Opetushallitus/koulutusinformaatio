@@ -16,11 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import com.mongodb.Mongo;
-import com.mongodb.ReadPreference;
 import org.mongodb.morphia.DatastoreImpl;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.Mapper;
+
+import com.mongodb.Mongo;
+import com.mongodb.ReadPreference;
 
 /**
  * Datastore implementation that reads from secondary node.

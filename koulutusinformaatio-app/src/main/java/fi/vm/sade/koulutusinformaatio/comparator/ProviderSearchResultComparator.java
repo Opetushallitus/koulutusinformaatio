@@ -16,9 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.comparator;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
-
 import java.util.Comparator;
+
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 
 /**
  * @author Mikko Majapuro

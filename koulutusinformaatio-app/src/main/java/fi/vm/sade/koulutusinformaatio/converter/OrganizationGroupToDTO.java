@@ -1,10 +1,10 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
-import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
+import fi.vm.sade.koulutusinformaatio.domain.dto.OrganizationGroupDTO;
 
 public class OrganizationGroupToDTO {
 

@@ -16,10 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import com.mongodb.Mongo;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
+
+import com.mongodb.Mongo;
+
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 
 /**
  * @author Mikko Majapuro

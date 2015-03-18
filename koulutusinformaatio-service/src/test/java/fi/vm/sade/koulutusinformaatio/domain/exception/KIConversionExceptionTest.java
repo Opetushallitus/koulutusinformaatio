@@ -16,9 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.exception;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  * @author Hannu Lyytikainen

@@ -16,11 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
 
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 
 /**
  * @author Hannu Lyytikainen

@@ -17,9 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 
-import org.mongodb.morphia.annotations.Embedded;
-
 import java.util.Map;
+
+import org.mongodb.morphia.annotations.Embedded;
 
 /**
  * @author Mikko Majapuro

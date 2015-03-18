@@ -16,15 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import com.google.common.base.Strings;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.Query;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.base.Strings;
+
+import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 
 /**
  * @author Mikko Majapuro

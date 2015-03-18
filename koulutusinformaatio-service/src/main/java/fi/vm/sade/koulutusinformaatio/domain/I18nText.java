@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.Map;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
-import java.util.Map;
 
 /**
  * @author Mikko Majapuro

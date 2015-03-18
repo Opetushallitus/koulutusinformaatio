@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 /**
  * @author Mikko Majapuro

@@ -16,8 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import org.mongodb.morphia.Datastore;
+
+import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 
 /**
  * @author Mikko Majapuro

@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.util.Date;
 
 /**
  * Receives update notifications and handles the education data update process.

@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import javax.validation.constraints.NotNull;
-
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;

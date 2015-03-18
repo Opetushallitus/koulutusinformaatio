@@ -16,15 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.exception;
 
+import static org.junit.Assert.assertEquals;
+
+import javax.ws.rs.core.Response;
+
+import org.junit.Test;
+
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import org.junit.Test;
-
-import javax.ws.rs.core.Response;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Hannu Lyytikainen

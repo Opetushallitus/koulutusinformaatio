@@ -16,11 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.Collections;
+
 import com.google.common.base.Strings;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
-
-import java.util.Collections;
 
 /**
  * @author Mikko Majapuro

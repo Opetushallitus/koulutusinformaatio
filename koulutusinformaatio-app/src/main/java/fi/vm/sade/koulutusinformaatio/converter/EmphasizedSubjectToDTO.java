@@ -1,11 +1,12 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.EmphasizedSubject;
 import fi.vm.sade.koulutusinformaatio.domain.dto.EmphasizedSubjectDTO;
-
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen

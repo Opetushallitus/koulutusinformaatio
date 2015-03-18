@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Hannu Lyytikainen

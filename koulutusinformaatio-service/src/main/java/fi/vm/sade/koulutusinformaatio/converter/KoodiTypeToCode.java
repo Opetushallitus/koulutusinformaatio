@@ -16,15 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.core.convert.converter.Converter;
+
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import org.springframework.core.convert.converter.Converter;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen

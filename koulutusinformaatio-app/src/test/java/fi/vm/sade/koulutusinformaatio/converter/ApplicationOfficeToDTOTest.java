@@ -16,6 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Test;
+
 import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.Address;
@@ -23,15 +32,6 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
-
-import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * @author Hannu Lyytikainen

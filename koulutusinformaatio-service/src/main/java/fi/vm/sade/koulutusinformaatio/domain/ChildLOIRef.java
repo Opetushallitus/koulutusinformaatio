@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

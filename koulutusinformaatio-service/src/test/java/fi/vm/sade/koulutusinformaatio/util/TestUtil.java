@@ -16,16 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.util;
 
+import java.util.List;
+import java.util.Map;
+
+import org.mockito.ArgumentMatcher;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import org.mockito.ArgumentMatcher;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen

@@ -16,6 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fi.vm.sade.koulutusinformaatio.converter.CodeToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToSearchResult;
@@ -27,10 +32,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityProviderService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen

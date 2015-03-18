@@ -16,13 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import org.springframework.stereotype.Component;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @author Mikko Majapuro

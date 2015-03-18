@@ -16,24 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
-
-import org.imgscalr.Scalr;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,6 +26,30 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+
+import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.converter.Converter;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.Social;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 /**
  * @author Hannu Lyytikainen

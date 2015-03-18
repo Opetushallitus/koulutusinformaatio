@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.util;
 
-import com.google.common.collect.Maps;
-
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import com.google.common.collect.Maps;
 
 /**
  * @author Hannu Lyytikainen

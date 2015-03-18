@@ -16,12 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.stereotype.Service;
+
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 
 /**
  * @author Hannu Lyytikainen

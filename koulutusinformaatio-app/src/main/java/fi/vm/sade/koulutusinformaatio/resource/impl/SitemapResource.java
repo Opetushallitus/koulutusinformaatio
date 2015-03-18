@@ -16,19 +16,22 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import com.google.common.collect.Maps;
-import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.koulutusinformaatio.service.SEOService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Maps;
+import com.sun.jersey.api.view.Viewable;
+
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
 
 /**
  * @author Hannu Lyytikainen

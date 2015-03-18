@@ -16,9 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import org.mongodb.morphia.annotations.Embedded;
-
 import java.util.Date;
+
+import org.mongodb.morphia.annotations.Embedded;
 
 /**
  * @author Hannu Lyytikainen

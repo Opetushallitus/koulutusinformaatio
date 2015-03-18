@@ -16,12 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction;
 
+import java.io.IOException;
+
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
-
-import java.io.IOException;
 
 /**
  * @author Mikko Majapuro

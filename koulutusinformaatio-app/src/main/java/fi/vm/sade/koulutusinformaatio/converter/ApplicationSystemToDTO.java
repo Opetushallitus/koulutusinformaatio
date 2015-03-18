@@ -21,7 +21,6 @@ import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.CalendarApplicationSystemDTO;
 
 /**
  * @author Mikko Majapuro

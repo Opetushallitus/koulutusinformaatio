@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
-import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 /**
  * @author Hannu Lyytikainen

@@ -16,11 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import java.util.Date;
+
 import org.mongodb.morphia.annotations.Embedded;
 
-import java.util.Date;
+import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 /**
  * @author Hannu Lyytikainen

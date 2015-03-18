@@ -16,6 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
+import java.util.List;
+
+import javax.ws.rs.WebApplicationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Joiner;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -26,13 +33,6 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.WebApplicationException;
-
-import java.util.List;
 
 /**
  * Builds learning opportunity instances.

@@ -16,18 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.Map;
+
+import org.junit.Test;
+
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.domain.AdditionalProof;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.ScoreLimit;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdditionalProofDTO;
-import org.junit.Test;
-
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * @author Hannu Lyytikainen

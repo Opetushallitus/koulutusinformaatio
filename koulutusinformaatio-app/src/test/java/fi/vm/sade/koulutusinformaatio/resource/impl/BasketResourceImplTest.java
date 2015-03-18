@@ -16,16 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;

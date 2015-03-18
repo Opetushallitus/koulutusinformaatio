@@ -16,6 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import java.util.List;
+
+import javax.ws.rs.WebApplicationException;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
@@ -36,10 +40,6 @@ import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
-
-import javax.ws.rs.WebApplicationException;
-
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen

@@ -1,10 +1,11 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.Social;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SocialDTO;
-
-import java.util.List;
 
 public final class SocialToDTO {
 

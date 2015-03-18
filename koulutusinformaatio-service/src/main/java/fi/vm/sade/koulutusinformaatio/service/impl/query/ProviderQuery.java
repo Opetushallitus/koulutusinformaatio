@@ -18,15 +18,15 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import java.util.List;
 
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.util.ClientUtils;
+import org.apache.solr.common.params.DisMaxParams;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.util.ClientUtils;
-import org.apache.solr.common.params.DisMaxParams;
 
 /**
  * Solr query for querying learning opportunity providers.

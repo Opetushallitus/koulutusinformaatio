@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.GroupParams;
+
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 
 /**
  * @author Hannu Lyytikainen

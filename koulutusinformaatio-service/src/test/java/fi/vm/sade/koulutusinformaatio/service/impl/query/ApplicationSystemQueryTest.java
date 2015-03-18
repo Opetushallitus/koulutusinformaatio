@@ -1,9 +1,11 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import static org.junit.Assert.*;
 
 public class ApplicationSystemQueryTest {
     

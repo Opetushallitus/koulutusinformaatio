@@ -16,15 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.modelmapper;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
-import static org.junit.Assert.assertEquals;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 
 /**
  * @author Hannu Lyytikainen

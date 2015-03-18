@@ -18,10 +18,10 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import java.util.List;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
+
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 
 /**
  * @author Mikko Majapuro

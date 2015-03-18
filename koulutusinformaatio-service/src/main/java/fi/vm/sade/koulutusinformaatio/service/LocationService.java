@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-
-import java.util.List;
 
 /**
  * @author Mikko Majapuro

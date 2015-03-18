@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import java.net.UnknownHostException;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.ReadPreference;
-
-import java.net.UnknownHostException;
 
 /**
  * @author Hannu Lyytikainen

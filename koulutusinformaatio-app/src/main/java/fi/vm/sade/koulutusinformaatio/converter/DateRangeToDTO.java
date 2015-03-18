@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 
 /**
  * @author Mikko Majapuro

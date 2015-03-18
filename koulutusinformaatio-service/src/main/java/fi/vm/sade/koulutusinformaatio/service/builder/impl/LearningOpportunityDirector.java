@@ -16,16 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
-
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen

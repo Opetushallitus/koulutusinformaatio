@@ -16,8 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.springframework.core.convert.converter.Converter;
+
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 /**
  * @author Hannu Lyytikainen

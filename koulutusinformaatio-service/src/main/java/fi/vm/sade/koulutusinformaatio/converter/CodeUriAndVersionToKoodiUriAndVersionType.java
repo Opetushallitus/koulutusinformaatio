@@ -16,9 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import org.springframework.core.convert.converter.Converter;
+
 import fi.vm.sade.koodisto.service.types.common.KoodiUriAndVersioType;
 import fi.vm.sade.koulutusinformaatio.domain.CodeUriAndVersion;
-import org.springframework.core.convert.converter.Converter;
 
 /**
  * @author Hannu Lyytikainen

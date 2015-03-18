@@ -16,12 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import com.google.common.collect.Sets;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import org.mongodb.morphia.annotations.Embedded;
-
 import java.util.List;
 import java.util.Set;
+
+import org.mongodb.morphia.annotations.Embedded;
+
+import com.google.common.collect.Sets;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 
 /**
  * @author Mikko Majapuro
