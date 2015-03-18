@@ -118,10 +118,11 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                         SelectionBuilder.buildEducationTypeSelection('et01.02', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),      // Kaksoistutkinto
                         SelectionBuilder.buildEducationTypeSelection('et02.01.02', opt, SearchWizardConstants.educationKind.NUORTEN),                                           // Ammattistartti
                         SelectionBuilder.buildEducationTypeSelection('et02.01.01', opt, SearchWizardConstants.educationKind.NUORTEN),                                           // 10. luokka
+                        SelectionBuilder.buildEducationTypeSelection('et02.01.06', opt, undefined),                                                                             // Valma
                         SelectionBuilder.buildEducationTypeSelection('et02.015', opt, undefined, SearchWizardConstants.prerequisites.PK),                                       // Kotitalousopetus
                         SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.PK),                                        // Kansanopistojen pitkät linjat
                         SelectionBuilder.buildEducationTypeSelection('et01.03.02', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),   // Ammatillinen erityisopetus
-                        SelectionBuilder.buildEducationTypeSelection('et02.02', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK)       // Valmentava ja kuntouttava opetus ja ohjaus
+                        SelectionBuilder.buildEducationTypeSelection('et02.12.02', opt, undefined)                                                                              // Valma ER
                     ];
                 } else if (opt === SearchWizardConstants.phaseOneOpts.YO) {
                     return [

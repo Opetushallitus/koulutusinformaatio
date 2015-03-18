@@ -684,7 +684,12 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }
                 try {
                     LOG.debug("Indexing valma education: " + koulutusDTO.getOid());
-                    ValmaLOS los = creator.createValmaLOS(koulutusDTO, true);
+                    ValmaLOS los = null;
+                    if (koulutusDTO.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER)) {
+                        los = creator.createValmaLOSEr(koulutusDTO, true);
+                    } else {
+                        los = creator.createValmaLOS(koulutusDTO, true);
+                    }
                     valmas.add(los);
                     updateAOLosReferences(los, aoToEducationsMap);
 
