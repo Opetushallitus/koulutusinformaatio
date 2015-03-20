@@ -37,13 +37,16 @@
     "pk-et010301-n": "Yrkesutbildning",
     "pk-et0101": "Gymnasieutbildning",
     "pk-et0102-n": "Flera examina samtidigt (dubbelexamen)",
+    "pk-et020106": "Handledande utbildning för grundläggande yrkesutbildning",
     "pk-et020102-n": "Yrkesstarten",
     "pk-et020101-n": "Tionde klassen",
     "pk-et02015": "Undervisning i huslig ekonomi (Hushållsskolan)",
     "pk-et0205": "Folkhögskolornas allmänbildande linjer",
     "pk-et010302-n": "Specialyrkesundervisning",
     "pk-et0202-n": "Undervisning och handledning i tränings- och rehabiliteringssyfte",
-
+    "pk-et021201": "Utbildning som förbereder för arbete och ett självständigt liv",
+    "pk-et021202": "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
+    
     "yo-et010301-n": "Yrkesutbildning",
     "yo-et010401": "Yrkeshögskoleexamen",
     "yo-et0105": "Universitet, lägre examen (kandidat mm.)",

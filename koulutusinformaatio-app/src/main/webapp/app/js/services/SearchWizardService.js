@@ -122,6 +122,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                         SelectionBuilder.buildEducationTypeSelection('et02.015', opt, undefined, SearchWizardConstants.prerequisites.PK),                                       // Kotitalousopetus
                         SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.PK),                                        // Kansanopistojen pitkät linjat
                         SelectionBuilder.buildEducationTypeSelection('et01.03.02', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),   // Ammatillinen erityisopetus
+                        SelectionBuilder.buildEducationTypeSelection('et02.12.01', opt, undefined),                                                                             // Telma
                         SelectionBuilder.buildEducationTypeSelection('et02.12.02', opt, undefined)                                                                              // Valma ER
                     ];
                 } else if (opt === SearchWizardConstants.phaseOneOpts.YO) {
