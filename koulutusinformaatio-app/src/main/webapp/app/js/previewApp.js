@@ -50,7 +50,7 @@ var kiApp = angular.module('previewApp',
                         return HigherEducationPreviewLOService;
                     case 'ammatillinenaikuiskoulutus':
                         return HigherEducationPreviewLOService;
-                    case 'valma':
+                    case 'koulutus':
                         return HigherEducationPreviewLOService;
                 }
             },
@@ -91,7 +91,7 @@ var kiApp = angular.module('previewApp',
     VALMENTAVA: 'valmentava',
     VALMISTAVA: 'valmistava',
     AMMATILLINENAIKUISKOULUTUS: 'ammatillinenaikuiskoulutus',
-    VALMA: 'valma',
+    KOULUTUS: 'koulutus',
     AIKUISLUKIO: 'aikuislukio'
 })
 

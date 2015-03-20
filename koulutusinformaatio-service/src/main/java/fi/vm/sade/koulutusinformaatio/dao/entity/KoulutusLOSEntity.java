@@ -15,11 +15,9 @@ import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
  * @author Markus
  *
  */
-@Entity("valmaLOS")
-public class ValmaLOSEntity {
-    
+@Entity("koulutusLOS")
+public class KoulutusLOSEntity {
 
-    //Varmistetut
     @Id
     private String id;
     @Embedded

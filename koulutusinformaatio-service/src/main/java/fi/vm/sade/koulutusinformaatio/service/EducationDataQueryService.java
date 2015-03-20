@@ -29,8 +29,9 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
+import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -125,7 +126,7 @@ public interface EducationDataQueryService {
     AdultUpperSecondaryLOS getAdultUpperSecondaryLearningOpportunity(final String oid)
             throws ResourceNotFoundException;
 
-    ValmaLOS getValmaLearningOpportunity(final String oid)
+    StandaloneLOS getKoulutusLearningOpportunity(final String oid)
             throws ResourceNotFoundException;
 
     CompetenceBasedQualificationParentLOS getAdultVocationalLearningOpportunity(String oid)

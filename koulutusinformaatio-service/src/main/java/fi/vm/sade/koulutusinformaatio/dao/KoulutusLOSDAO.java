@@ -2,11 +2,11 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import org.mongodb.morphia.Datastore;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ValmaLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 
-public class ValmaLOSDAO extends LearningOpportunitySpecificationDAO<ValmaLOSEntity, String>{
+public class KoulutusLOSDAO extends LearningOpportunitySpecificationDAO<KoulutusLOSEntity, String>{
 
-    public ValmaLOSDAO(
+    public KoulutusLOSDAO(
             Datastore primaryDatastore, Datastore secondaryDatastore) {
         super(primaryDatastore, secondaryDatastore);
         ensureIndexes();

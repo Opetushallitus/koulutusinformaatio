@@ -565,7 +565,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         } else if (los.getType().equals(TarjontaConstants.TYPE_ADULT_VOCATIONAL)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
-        } else if (los.getType().equals(TarjontaConstants.TYPE_VALMA)) {
+        } else if (los.getType().equals(TarjontaConstants.TYPE_KOULUTUS)) {
             if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMA)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_PK_JALK);
@@ -574,6 +574,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_ERITYIS_JA_VALMENTAVA);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_VALMA_ER);
+            } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_TELMA)) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_ERITYIS_JA_VALMENTAVA);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TELMA);
             }
         }
 

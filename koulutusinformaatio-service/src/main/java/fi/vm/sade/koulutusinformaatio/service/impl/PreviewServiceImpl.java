@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -98,9 +98,9 @@ public class PreviewServiceImpl implements PreviewService {
     }
     
     @Override
-    public ValmaLOS previewValmaLearningOpportunity(String oid) throws ResourceNotFoundException {
+    public StandaloneLOS previewValmaLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
-            ValmaLOS los = this.tarjontaService.createValmaLOS(oid, false);
+            StandaloneLOS los = this.tarjontaService.createValmaLOS(oid, false);
             return los;
         } catch (KoodistoException e) {
             e.printStackTrace();

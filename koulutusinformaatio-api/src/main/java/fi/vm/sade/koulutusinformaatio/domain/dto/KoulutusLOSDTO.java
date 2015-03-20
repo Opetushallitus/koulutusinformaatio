@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import java.util.ArrayList;
@@ -6,11 +21,8 @@ import java.util.List;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ValmaLOSDTO extends StandaloneLOSDTO implements Articled {
-    
-  //Varmistetut
+public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String id;
     private String content;
     private String goals;
@@ -32,21 +44,14 @@ public class ValmaLOSDTO extends StandaloneLOSDTO implements Articled {
     private String creditValue;
     private String creditUnit;
     private String degree;
-    
-    
     private String educationCode;
     private List<String> teachingLanguages;
-
     private LearningOpportunityProviderDTO provider;
     private List<LearningOpportunityProviderDTO> additionalProviders = new ArrayList<LearningOpportunityProviderDTO>();
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
-
-    
     private List<CodeDTO> prerequisites;
     private String translationLanguage;
     private List<CodeDTO> availableTranslationLanguages;
-    
-    //private List<Code> prerequisites;
     private List<String> formOfTeaching;
     private List<String> teachingTimes;
     private List<String> teachingPlaces;
@@ -54,22 +59,18 @@ public class ValmaLOSDTO extends StandaloneLOSDTO implements Articled {
     private List<String> degreeTitles;
     private String startSeason;
     private int startYear;
-    
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
-
-    //Status of the lo. For preview
-    private String status;
-    //private List<Code> availableTranslationLanguages;
-    
     private String educationType;
-    
     private String targetGroup;
     private String subjectsAndCourses;
     private List<LanguageSelectionDTO> languageSelection;
     private List<String> diplomas = new ArrayList<String>();
     private List<ArticleResultDTO> edCodeSuggestions;
     private List<ArticleResultDTO> edTypeSuggestions;
+
+    // Status of the lo. For preview
+    private String status;
 
     public String getId() {
         return id;
@@ -283,8 +284,7 @@ public class ValmaLOSDTO extends StandaloneLOSDTO implements Articled {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(
-            List<CodeDTO> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<CodeDTO> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
@@ -426,20 +426,18 @@ public class ValmaLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setEdTypeSuggestions(List<ArticleResultDTO> edTypeSuggestions) {
         this.edTypeSuggestions = edTypeSuggestions;
-        
+
     }
 
     public List<ArticleResultDTO> getEdTypeSuggestions() {
         return edTypeSuggestions;
     }
 
-	public List<String> getDegreeTitles() {
-		return degreeTitles;
-	}
+    public List<String> getDegreeTitles() {
+        return degreeTitles;
+    }
 
-	public void setDegreeTitles(List<String> degreeTitles) {
-		this.degreeTitles = degreeTitles;
-	}
-
-
+    public void setDegreeTitles(List<String> degreeTitles) {
+        this.degreeTitles = degreeTitles;
+    }
 }

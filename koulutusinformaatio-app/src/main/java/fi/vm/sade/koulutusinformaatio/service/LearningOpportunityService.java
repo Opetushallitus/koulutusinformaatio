@@ -31,8 +31,8 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResult
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ValmaLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -140,11 +140,11 @@ public interface LearningOpportunityService {
 
     AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
-    ValmaLOSDTO getValmaLearningOpportunity(String id) throws ResourceNotFoundException;
+    StandaloneLOSDTO getKoulutusLearningOpportunity(String id) throws ResourceNotFoundException;
 
-    ValmaLOSDTO getValmaLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
+    StandaloneLOSDTO getKoulutusLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
-    ValmaLOSDTO getValmaLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
+    StandaloneLOSDTO getKoulutusLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
     AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(String id) throws ResourceNotFoundException;
 
@@ -156,7 +156,7 @@ public interface LearningOpportunityService {
 
     AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
 
-    ValmaLOSDTO previewValmaLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
+    StandaloneLOSDTO previewValmaLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
 
     LearningOpportunityProviderDTO getProvider(String lopId, String lang) throws ResourceNotFoundException;
 

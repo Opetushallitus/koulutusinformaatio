@@ -39,8 +39,8 @@ import fi.vm.sade.koulutusinformaatio.converter.ParentLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.PictureToThumbnail;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.SpecialLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.StandaloneLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.UpperSecondaryLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ValmaLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
@@ -54,23 +54,24 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ValmaLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -380,15 +381,15 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
     
     @Override
-    public ValmaLOSDTO previewValmaLearningOpportunity(
+    public StandaloneLOSDTO previewValmaLearningOpportunity(
             String oid, String lang, String uiLang)
             throws ResourceNotFoundException {
-        ValmaLOS los = this.previewService.previewValmaLearningOpportunity(oid);
-        ValmaLOSDTO dto = null;
+        StandaloneLOS los = this.previewService.previewValmaLearningOpportunity(oid);
+        StandaloneLOSDTO dto = null;
         if (lang != null && !lang.isEmpty()) {
-            dto = ValmaLOSToDTO.convert(los, lang, uiLang);
+            dto = StandaloneLOSToDTO.convert(los, lang, uiLang);
         } else {
-            dto = ValmaLOSToDTO.convert(los, uiLang, uiLang); 
+            dto = StandaloneLOSToDTO.convert(los, uiLang, uiLang); 
         }
         return dto;
     }
@@ -438,27 +439,27 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ValmaLOSDTO getValmaLearningOpportunity(
+    public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id) throws ResourceNotFoundException {
-        ValmaLOS los = educationDataQueryService.getValmaLearningOpportunity(id);
+        StandaloneLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
         String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
                 ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
-        return ValmaLOSToDTO.convert(los, lang, lang);
+        return StandaloneLOSToDTO.convert(los, lang, lang);
     }
     
     @Override
-    public ValmaLOSDTO getValmaLearningOpportunity(
+    public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id, String uiLang) throws ResourceNotFoundException {
-        ValmaLOS los = educationDataQueryService.getValmaLearningOpportunity(id);
-        return ValmaLOSToDTO.convert(los, uiLang, uiLang);
+        StandaloneLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
+        return StandaloneLOSToDTO.convert(los, uiLang, uiLang);
     }
 
     @Override
-    public ValmaLOSDTO getValmaLearningOpportunity(
+    public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id, String lang, String uiLang)
                     throws ResourceNotFoundException {
-        ValmaLOS los = educationDataQueryService.getValmaLearningOpportunity(id);
-        return ValmaLOSToDTO.convert(los, lang, uiLang);
+        StandaloneLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
+        return StandaloneLOSToDTO.convert(los, lang, uiLang);
     }
 
     

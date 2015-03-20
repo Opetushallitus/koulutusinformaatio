@@ -5,23 +5,21 @@ import com.google.common.collect.SetMultimap;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ValmaLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 
-public class ValmaLOSToDTO {
-    
-    public ValmaLOSToDTO() {
-        
+public class StandaloneLOSToDTO {
+
+    public StandaloneLOSToDTO() {
+
     }
 
-    public static ValmaLOSDTO convert(
-            final ValmaLOS los, final String lang, final String uiLang) {
-        ValmaLOSDTO dto =
-                new ValmaLOSDTO();
-        
+    public static KoulutusLOSDTO convert(final StandaloneLOS los, final String lang, final String uiLang) {
+        KoulutusLOSDTO dto = new KoulutusLOSDTO();
+
         dto.setId(los.getId());
-        
+
         String descriptionLang = HigherEducationLOSToDTO.getDescriptionLang(lang, los.getAvailableTranslationLanguages());
         descriptionLang = (descriptionLang) == null ? lang : descriptionLang;
         dto.setTranslationLanguage(descriptionLang);
@@ -34,28 +32,28 @@ public class ValmaLOSToDTO {
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), descriptionLang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), descriptionLang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), descriptionLang));
-        
+
         dto.setTargetGroup(ConverterUtil.getTextByLanguage(los.getTargetGroup(), descriptionLang));
         // dto.setSubjectsAndCourses(ConverterUtil.getTextByLanguage(los.getSubjectsAndCourses(), descriptionLang));
         // dto.setDiplomas(ConverterUtil.getTextsByLanguage(los.getDiplomas(), lang));
-        // dto.setLanguageSelection(LanguageSelectionToDTO.convertAll(los.getLanguageSelection(), lang));        
-        
+        // dto.setLanguageSelection(LanguageSelectionToDTO.convertAll(los.getLanguageSelection(), lang));
+
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi", uiLang));
         dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang));
         dto.setCreditValue(los.getCreditValue());
 
         dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));
 
-        //DO MORE
+        // DO MORE
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getFormOfTeaching(), uiLang));
-        //dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), descriptionLang));
+        // dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), descriptionLang));
         dto.setTeachingTimes(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingTimes(), uiLang));
         dto.setTeachingPlaces(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingPlaces(), uiLang));
         dto.setTeachingLanguages(CodeToName.convertAll(los.getTeachingLanguages(), uiLang));
-        //TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
+        // TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
         if (los.getStartDate() != null) {
-            dto.setStartDate(los.getStartDate());  
+            dto.setStartDate(los.getStartDate());
         } else {
             dto.setStartYear(los.getStartYear());
             dto.setStartSeason(ConverterUtil.getTextByLanguageUseFallbackLang(los.getStartSeason(), uiLang));
@@ -86,7 +84,7 @@ public class ValmaLOSToDTO {
                 dto.getApplicationSystems().add(asDTO);
             }
         }
-        
+
         dto.setStatus(los.getStatus());
         if (los.getEducationCode() != null) {
             dto.setEducationCode(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationCode().getName(), uiLang));
@@ -99,10 +97,7 @@ public class ValmaLOSToDTO {
             dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
         }
         dto.setEducationType(los.getEducationType());
-        
-        
-        
-        
+
         return dto;
     }
 

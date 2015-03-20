@@ -25,7 +25,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecification
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ValmaLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
@@ -62,7 +62,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     private HigherEducationLOSDAO higherEdDAO;
     private AdultUpperSecondaryLOSDAO adultUpsecDAO;
     private AdultVocationalLOSDAO adultVocDAO;
-    private ValmaLOSDAO valmaDAO;
+    private KoulutusLOSDAO koulutusDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
@@ -82,11 +82,11 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         dataStatusDAO = mockDataStatudDAO();
         higherEdDAO = mockHigherEdDAO();
         adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
-        valmaDAO = mock(ValmaLOSDAO.class);
+        koulutusDAO = mock(KoulutusLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataUpdateServiceImpl(modelMapper, parentLearningOpportunitySpecificationDAO, applicationOptionDAO,
                 learningOpportunityProviderDAO, childLearningOpportunityDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, valmaDAO, adultVocDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, koulutusDAO, adultVocDAO);
     }
 
     @Test

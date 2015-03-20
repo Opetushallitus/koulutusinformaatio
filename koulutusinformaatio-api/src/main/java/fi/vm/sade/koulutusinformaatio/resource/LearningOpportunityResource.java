@@ -36,9 +36,9 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecif
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ValmaLOSDTO;
 
 /**
  * @author Mikko Majapuro
@@ -128,7 +128,7 @@ public interface LearningOpportunityResource {
                                                                                                   @QueryParam("uiLang") String uiLang);
 
     /**
-     * Fetches an valma learning opportunity
+     * Fetches an generic v1 learning opportunity (standalone)
      *
      * @param id learning opportunity identifier
      * @param lang language
@@ -136,9 +136,9 @@ public interface LearningOpportunityResource {
      * @return upper secondary learning opportunity
      */
     @GET
-    @Path("valma/{id}")
+    @Path("koulutus/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ValmaLOSDTO getValmaLearningOpportunity(@PathParam("id") String id,
+    public StandaloneLOSDTO getKoulutusLearningOpportunity(@PathParam("id") String id,
                                                                                                   @QueryParam("lang") String lang,
                                                                                                   @QueryParam("uiLang") String uiLang);
 

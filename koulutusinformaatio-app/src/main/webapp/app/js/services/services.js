@@ -206,12 +206,12 @@ service('HigherEducationLOService', ['GeneralLOService', 'HigherEducationTransfo
 }]).
 
 /**
- * Resource for requesting valma LO data
+ * Resource for requesting generic v1 koulutus LO data
  */
-service('ValmaLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
+service('KoulutusLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/valma/', HigherEducationTransformer);
+            return GeneralLOService.query(options, '../lo/koulutus/', HigherEducationTransformer);
         }
     }
 }]).
@@ -1155,7 +1155,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             var loRef = ao.type + '/';
 
             switch(ao.type) {
-                case 'valma':
+                case 'koulutus':
                     loRef += ao.parent.id;
                     break;
                 case 'korkeakoulu':

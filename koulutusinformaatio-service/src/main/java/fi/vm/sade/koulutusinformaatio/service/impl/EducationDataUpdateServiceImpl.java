@@ -37,7 +37,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecification
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ValmaLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
@@ -51,7 +51,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ValmaLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
@@ -62,8 +62,8 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
@@ -84,7 +84,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO;
-    private ValmaLOSDAO valmaLOSTransactionDAO;
+    private KoulutusLOSDAO koulutusLOSTransactionDAO;
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
 
     @Autowired
@@ -97,7 +97,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
-            ValmaLOSDAO valmaLOSTransactionDAO,
+            KoulutusLOSDAO koulutusLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
@@ -110,7 +110,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
         this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
-        this.valmaLOSTransactionDAO = valmaLOSTransactionDAO;
+        this.koulutusLOSTransactionDAO = koulutusLOSTransactionDAO;
         this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
@@ -132,8 +132,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
             saveAdultUpperSecondaryLOS((AdultUpperSecondaryLOS)learningOpportunitySpecification);
         } 
-        else if (learningOpportunitySpecification instanceof ValmaLOS) {
-            saveValmaLOS((ValmaLOS)learningOpportunitySpecification);
+        else if (learningOpportunitySpecification instanceof StandaloneLOS) {
+            saveKoulutusLOS((StandaloneLOS)learningOpportunitySpecification);
         } 
         else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
             saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS)learningOpportunitySpecification);
@@ -178,12 +178,12 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         
     }
 
-    private void saveValmaLOS(
-            ValmaLOS learningOpportunitySpecification) {
+    private void saveKoulutusLOS(
+            StandaloneLOS learningOpportunitySpecification) {
         
         if (learningOpportunitySpecification != null) {
-            ValmaLOSEntity entity =
-                    modelMapper.map(learningOpportunitySpecification, ValmaLOSEntity.class);
+            KoulutusLOSEntity entity =
+                    modelMapper.map(learningOpportunitySpecification, KoulutusLOSEntity.class);
 
             save(entity.getProvider());
             
@@ -194,7 +194,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                 for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
                     save(ao);
                 }
-            this.valmaLOSTransactionDAO.save(entity);
+            this.koulutusLOSTransactionDAO.save(entity);
         }
         
     }

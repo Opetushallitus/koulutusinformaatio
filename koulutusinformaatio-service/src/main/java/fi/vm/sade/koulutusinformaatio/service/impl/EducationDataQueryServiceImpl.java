@@ -38,7 +38,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecification
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ValmaLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
@@ -50,7 +50,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecif
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ValmaLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
@@ -62,8 +62,8 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -85,7 +85,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
-    private ValmaLOSDAO valmaLOSDAO;
+    private KoulutusLOSDAO koulutusLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
@@ -98,7 +98,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             HigherEducationLOSDAO higherEducationLOSDAO, 
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
-            ValmaLOSDAO valmaLOSDAO,
+            KoulutusLOSDAO koulutusLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -111,7 +111,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
-        this.valmaLOSDAO = valmaLOSDAO;
+        this.koulutusLOSDAO = koulutusLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
@@ -237,12 +237,12 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
     
     @Override
-    public ValmaLOS getValmaLearningOpportunity(String oid) throws ResourceNotFoundException {
-        ValmaLOSEntity entity = this.valmaLOSDAO.get(oid);
+    public StandaloneLOS getKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
+        KoulutusLOSEntity entity = this.koulutusLOSDAO.get(oid);
         if (entity != null) {
-            return modelMapper.map(entity, ValmaLOS.class);
+            return modelMapper.map(entity, StandaloneLOS.class);
         } else {
-            throw new ResourceNotFoundException(String.format("Valma learning opportunity specification not found: %s", oid));
+            throw new ResourceNotFoundException(String.format("Koulutus learning opportunity specification not found: %s", oid));
         }
     }
     

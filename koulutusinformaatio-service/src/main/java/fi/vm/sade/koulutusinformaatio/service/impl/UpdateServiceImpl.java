@@ -41,7 +41,6 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -171,14 +170,22 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
 
-            List<ValmaLOS> valmas = this.tarjontaService.findValmaEducations();
+            List<StandaloneLOS> valmas = this.tarjontaService.findValmaEducations();
             LOG.debug("Indexed " + valmas.size() + " valma educations");
-            for (ValmaLOS curLOS : valmas) {
+            for (StandaloneLOS curLOS : valmas) {
                 LOG.debug("Saving valma los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
 
+            List<StandaloneLOS> telmas = this.tarjontaService.findTelmaEducations();
+            LOG.debug("Indexed " + telmas.size() + " telma educations");
+            for (StandaloneLOS curLOS : telmas) {
+                LOG.debug("Saving telma los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
             LOG.debug("Starting provider indexing");
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);

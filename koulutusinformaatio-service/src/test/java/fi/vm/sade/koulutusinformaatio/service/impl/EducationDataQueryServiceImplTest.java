@@ -41,7 +41,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecification
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ValmaLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -71,7 +71,7 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     private LearningOpportunityProviderDAO providerDAO;
     private HigherEducationLOSDAO higherEdDAO;
     private AdultUpperSecondaryLOSDAO adultUpsecDAO;
-    private ValmaLOSDAO valmaDAO;
+    private KoulutusLOSDAO koulutusDAO;
     private AdultVocationalLOSDAO adultVocDAO;
 
     @Before
@@ -88,12 +88,12 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         providerDAO = mockProviderDAO();
         higherEdDAO = mockHigherEdDAO();
         adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
-        valmaDAO = mock(ValmaLOSDAO.class);
+        koulutusDAO = mock(KoulutusLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, valmaDAO, providerDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, koulutusDAO, providerDAO);
     }
     
     /**

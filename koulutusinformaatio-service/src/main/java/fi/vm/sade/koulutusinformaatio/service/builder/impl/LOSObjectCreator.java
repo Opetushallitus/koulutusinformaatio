@@ -54,7 +54,6 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ValmaLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -1016,26 +1015,38 @@ public class LOSObjectCreator extends ObjectCreator {
                 && dto.getKoulutuslaji().getUri().startsWith("koulutuslaji_a");
     }
 
-    public ValmaLOS createValmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    public StandaloneLOS createValmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         LOG.debug("Creating Valma los: " + koulutusDTO.getOid());
-        ValmaLOS los = new ValmaLOS();
-        los.setType(TarjontaConstants.TYPE_VALMA);
+        StandaloneLOS los = new StandaloneLOS();
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(SolrConstants.ED_TYPE_VALMA);
         addLOSFields(koulutusDTO, los);
-        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_VALMA);
+        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
         los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
         
         return los;
     }
 
-    public ValmaLOS createValmaLOSEr(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        LOG.debug("Creating Valma los: " + koulutusDTO.getOid());
-        ValmaLOS los = new ValmaLOS();
-        los.setType(TarjontaConstants.TYPE_VALMA);
+    public StandaloneLOS createValmaLOSEr(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+        LOG.debug("Creating Valma Er los: " + koulutusDTO.getOid());
+        StandaloneLOS los = new StandaloneLOS();
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(SolrConstants.ED_TYPE_VALMA_ER);
         addLOSFields(koulutusDTO, los);
-        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_VALMA);
+        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
         los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
+        return los;
+    }
+    
+    public StandaloneLOS createTelmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+        LOG.debug("Creating Telma los: " + koulutusDTO.getOid());
+        StandaloneLOS los = new StandaloneLOS();
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
+        los.setEducationType(SolrConstants.ED_TYPE_TELMA);
+        addLOSFields(koulutusDTO, los);
+        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
+        los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
+        
         return los;
     }
 
