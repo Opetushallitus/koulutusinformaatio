@@ -50,6 +50,8 @@ public class KoulutusLOSEntity {
     private I18nTextEntity degreeTitle;
     @Embedded
     private List<I18nTextEntity> degreeTitles;
+    @Embedded
+    private List<I18nTextEntity> startDates;
     private Date startDate;
     private String plannedDuration;
 

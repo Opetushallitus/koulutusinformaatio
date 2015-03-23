@@ -38,6 +38,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String educationDegreeName;
     private String degreeTitle;
     private Date startDate;
+    private List<Date> startDates;
     private String plannedDuration;
     private String plannedDurationUnit;
     private String pduCodeUri;
@@ -439,5 +440,13 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setDegreeTitles(List<String> degreeTitles) {
         this.degreeTitles = degreeTitles;
+    }
+
+    public List<Date> getStartDates() {
+        return startDates;
+    }
+
+    public void setStartDates(List<Date> startDates) {
+        this.startDates = startDates;
     }
 }

@@ -1196,7 +1196,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.getPrerequisites().addAll(koodistoService.search(koulutus.getPohjakoulutusvaatimus().getUri()));
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
-
+        los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
     }
     
     public AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {

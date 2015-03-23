@@ -58,6 +58,7 @@ public class StandaloneLOSToDTO {
             dto.setStartYear(los.getStartYear());
             dto.setStartSeason(ConverterUtil.getTextByLanguageUseFallbackLang(los.getStartSeason(), uiLang));
         }
+        dto.setStartDates(los.getStartDates());
         dto.setInternationalization(ConverterUtil.getTextByLanguage(los.getInternationalization(), descriptionLang));
         dto.setCooperation(ConverterUtil.getTextByLanguage(los.getCooperation(), descriptionLang));
         dto.setContent(ConverterUtil.getTextByLanguage(los.getContent(), descriptionLang));

@@ -3,6 +3,7 @@ package fi.vm.sade.koulutusinformaatio.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class StandaloneLOS extends LOS {
     
@@ -22,6 +23,7 @@ public class StandaloneLOS extends LOS {
     private I18nText educationDegreeLang;
     private I18nText degreeTitle;
     private Date startDate;
+    private List<Date> startDates;
     private String plannedDuration;
     private I18nText plannedDurationUnit;
     private String pduCodeUri;
@@ -434,5 +436,13 @@ public class StandaloneLOS extends LOS {
 	public void setDegreeTitles(List<I18nText> degreeTitles) {
 		this.degreeTitles = degreeTitles;
 	}
+
+    public List<Date> getStartDates() {
+        return startDates;
+    }
+
+    public void setStartDates(List<Date> startDates) {
+        this.startDates = startDates;
+    }
 
 }
