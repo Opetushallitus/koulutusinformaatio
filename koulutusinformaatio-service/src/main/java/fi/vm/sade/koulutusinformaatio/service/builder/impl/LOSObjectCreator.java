@@ -1022,8 +1022,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationType(SolrConstants.ED_TYPE_VALMA);
         addLOSFields(koulutusDTO, los);
         addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
-        los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
-        
+        addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
         return los;
     }
 
@@ -1034,10 +1033,10 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationType(SolrConstants.ED_TYPE_VALMA_ER);
         addLOSFields(koulutusDTO, los);
         addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
-        los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
+        addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
         return los;
     }
-    
+
     public StandaloneLOS createTelmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         LOG.debug("Creating Telma los: " + koulutusDTO.getOid());
         StandaloneLOS los = new StandaloneLOS();
@@ -1045,11 +1044,20 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationType(SolrConstants.ED_TYPE_TELMA);
         addLOSFields(koulutusDTO, los);
         addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
-        los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
-        
+        addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
         return los;
     }
 
+    private void addDatabaseValuesForNamesAndCreditValue(ValmistavaKoulutusV1RDTO koulutusDTO, StandaloneLOS los) {
+        if (koulutusDTO.getKoulutusohjelmanNimiKannassa() != null) {
+            los.setName(new I18nText(koulutusDTO.getKoulutusohjelmanNimiKannassa()));
+            los.setShortTitle(new I18nText(koulutusDTO.getKoulutusohjelmanNimiKannassa()));
+        }
+        if (koulutusDTO.getOpintojenLaajuusarvoKannassa() != null) {
+            los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
+        }
+    }
+    
     private <S extends KoulutusV1RDTO, T extends LOS> void addLOSFields(S koulutus, T los) throws KoodistoException {
         los.setId(koulutus.getOid());
         if (koulutus instanceof KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO) { // Valma
