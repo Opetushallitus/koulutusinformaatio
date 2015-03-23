@@ -30,20 +30,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -100,7 +95,7 @@ public class UpdateServiceImpl implements UpdateService {
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
 
         try {
-
+/*
             LOG.info("Starting full education data update");
             running = true;
             runningSince = System.currentTimeMillis();
@@ -169,7 +164,6 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-
             List<StandaloneLOS> valmas = this.tarjontaService.findValmaEducations();
             LOG.debug("Indexed " + valmas.size() + " valma educations");
             for (StandaloneLOS curLOS : valmas) {
@@ -178,6 +172,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
 
+ */
             List<StandaloneLOS> telmas = this.tarjontaService.findTelmaEducations();
             LOG.debug("Indexed " + telmas.size() + " telma educations");
             for (StandaloneLOS curLOS : telmas) {
@@ -188,7 +183,7 @@ public class UpdateServiceImpl implements UpdateService {
             
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
             LOG.debug("Starting provider indexing");
-            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
+//            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.debug("Providers indexed");
 
 
@@ -199,7 +194,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
             indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
             LOG.debug("Base educations indexded.");
-
+/*
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
@@ -218,7 +213,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.debug("Articles indexed to solr");
-
+*/
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

@@ -51,7 +51,7 @@ public class KoulutusLOSEntity {
     @Embedded
     private List<I18nTextEntity> degreeTitles;
     @Embedded
-    private List<I18nTextEntity> startDates;
+    private List<Date> startDates;
     private Date startDate;
     private String plannedDuration;
 
@@ -432,5 +432,11 @@ public class KoulutusLOSEntity {
 	public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
 		this.degreeTitles = degreeTitles;
 	}
+    public List<Date> getStartDates() {
+        return startDates;
+    }
+    public void setStartDates(List<Date> startDates) {
+        this.startDates = startDates;
+    }
 
 }
