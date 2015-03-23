@@ -43,6 +43,6 @@ public interface PreviewService {
 
     CompetenceBasedQualificationParentLOS previewAdultVocationaParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
 
-    StandaloneLOS previewValmaLearningOpportunity(String oid) throws ResourceNotFoundException;
+    StandaloneLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException;
 
 }

@@ -74,6 +74,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RD
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusValmentavaJaKuntouttavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
@@ -708,8 +710,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
 
-                ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> koulutusRes = this.tarjontaRawService.getValmaLearningOpportunity(curKoulutus.getOid());
-                KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO koulutusDTO = koulutusRes.getResult();
+                ResultV1RDTO<KoulutusValmentavaJaKuntouttavaV1RDTO> koulutusRes = this.tarjontaRawService.getTelmaLearningOpportunity(curKoulutus.getOid());
+                KoulutusValmentavaJaKuntouttavaV1RDTO koulutusDTO = koulutusRes.getResult();
                 if (koulutusDTO == null) {
                     continue;
                 }
@@ -840,13 +842,14 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
     
     @Override
-    public StandaloneLOS createValmaLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+    public StandaloneLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
-
-        ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> res = this.tarjontaRawService.getValmaLearningOpportunity(oid);
-        KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO dto = res.getResult();
+        KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO dto = this.tarjontaRawService.getValmaLearningOpportunity(oid).getResult();
+        if (dto.getToteutustyyppi().equals(ToteutustyyppiEnum.VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS)) { // TELMA
+            return this.creator.createTelmaLOS(this.tarjontaRawService.getTelmaLearningOpportunity(oid).getResult(), checkStatus);
+        }
         if (dto.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER)) {
             return this.creator.createValmaLOSEr(dto, checkStatus);
         } else {

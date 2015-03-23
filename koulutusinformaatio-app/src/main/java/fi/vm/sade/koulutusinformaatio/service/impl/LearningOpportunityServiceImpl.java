@@ -381,10 +381,10 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
     
     @Override
-    public StandaloneLOSDTO previewValmaLearningOpportunity(
+    public StandaloneLOSDTO previewKoulutusLearningOpportunity(
             String oid, String lang, String uiLang)
             throws ResourceNotFoundException {
-        StandaloneLOS los = this.previewService.previewValmaLearningOpportunity(oid);
+        StandaloneLOS los = this.previewService.previewKoulutusLearningOpportunity(oid);
         StandaloneLOSDTO dto = null;
         if (lang != null && !lang.isEmpty()) {
             dto = StandaloneLOSToDTO.convert(los, lang, uiLang);

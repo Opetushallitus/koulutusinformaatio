@@ -36,6 +36,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusValmentavaJaKuntouttavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
 /**
@@ -110,5 +111,6 @@ public interface TarjontaRawService {
 
     public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
 
-    
+    ResultV1RDTO<KoulutusValmentavaJaKuntouttavaV1RDTO> getTelmaLearningOpportunity(String oid);
+
 }

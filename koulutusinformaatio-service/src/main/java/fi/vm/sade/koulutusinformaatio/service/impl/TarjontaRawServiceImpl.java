@@ -53,8 +53,11 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusValmentavaJaKuntouttavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
 /**
@@ -395,6 +398,14 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .path(oid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO>>() {
+                });
+    }
+    @Override
+    public ResultV1RDTO<KoulutusValmentavaJaKuntouttavaV1RDTO> getTelmaLearningOpportunity(String oid) {
+        return higherEducationResource
+                .path(oid)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<KoulutusValmentavaJaKuntouttavaV1RDTO>>() {
                 });
     }
 }

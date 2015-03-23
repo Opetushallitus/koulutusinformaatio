@@ -98,9 +98,9 @@ public class PreviewServiceImpl implements PreviewService {
     }
     
     @Override
-    public StandaloneLOS previewValmaLearningOpportunity(String oid) throws ResourceNotFoundException {
+    public StandaloneLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
-            StandaloneLOS los = this.tarjontaService.createValmaLOS(oid, false);
+            StandaloneLOS los = this.tarjontaService.createKoulutusLOS(oid, false);
             return los;
         } catch (KoodistoException e) {
             e.printStackTrace();

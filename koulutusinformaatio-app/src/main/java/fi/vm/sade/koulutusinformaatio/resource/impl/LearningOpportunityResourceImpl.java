@@ -282,7 +282,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             } else if ("aikuislukio".equals(loType)) {
                 return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
             } else if ("koulutus".equals(loType)) {
-                return learningOpportunityService.previewValmaLearningOpportunity(oid, lang, uiLang);
+                return learningOpportunityService.previewKoulutusLearningOpportunity(oid, lang, uiLang);
             } else if ("ammatillinenaikuiskoulutus".equals(loType)) {
                 AdultVocationalParentLOSDTO dto = learningOpportunityService.previewAdultVocationalLearningOpportunity(oid, lang, uiLang);
                 String koulutuskoodi = dto.getChildren().get(0).getKoulutuskoodi();
