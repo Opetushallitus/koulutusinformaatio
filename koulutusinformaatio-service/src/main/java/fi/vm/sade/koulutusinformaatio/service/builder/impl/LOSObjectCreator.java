@@ -1061,7 +1061,8 @@ public class LOSObjectCreator extends ObjectCreator {
     
     private <S extends KoulutusV1RDTO, T extends LOS> void addLOSFields(S koulutus, T los) throws KoodistoException {
         los.setId(koulutus.getOid());
-        if (koulutus instanceof KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO) { // Valma
+        if (koulutus instanceof KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO || 
+                koulutus instanceof ValmistavaKoulutusV1RDTO) { // Valma tai Telma
             los.setName(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
             los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
         } else {
