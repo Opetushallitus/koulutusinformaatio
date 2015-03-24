@@ -1018,31 +1018,29 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public StandaloneLOS createValmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         LOG.debug("Creating Valma los: " + koulutusDTO.getOid());
-        StandaloneLOS los = new StandaloneLOS();
-        los.setType(TarjontaConstants.TYPE_KOULUTUS);
-        los.setEducationType(SolrConstants.ED_TYPE_VALMA);
-        addLOSFields(koulutusDTO, los);
-        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
-        addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
-        return los;
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_VALMA);
     }
 
-    public StandaloneLOS createValmaLOSEr(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    public StandaloneLOS createValmaErLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         LOG.debug("Creating Valma Er los: " + koulutusDTO.getOid());
-        StandaloneLOS los = new StandaloneLOS();
-        los.setType(TarjontaConstants.TYPE_KOULUTUS);
-        los.setEducationType(SolrConstants.ED_TYPE_VALMA_ER);
-        addLOSFields(koulutusDTO, los);
-        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
-        addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
-        return los;
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_VALMA_ER);
     }
 
-    public StandaloneLOS createTelmaLOS(KoulutusValmentavaJaKuntouttavaV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    public StandaloneLOS createTelmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         LOG.debug("Creating Telma los: " + koulutusDTO.getOid());
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_TELMA);
+    }
+
+    public StandaloneLOS createKymppiluokkaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+        LOG.debug("Creating Kymppiluokka los: " + koulutusDTO.getOid());
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_PK_JALK);
+    }
+
+    private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edTypeValma) throws KoodistoException,
+            TarjontaParseException {
         StandaloneLOS los = new StandaloneLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
-        los.setEducationType(SolrConstants.ED_TYPE_TELMA);
+        los.setEducationType(edTypeValma);
         addLOSFields(koulutusDTO, los);
         addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
         addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
@@ -1058,7 +1056,7 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setCreditValue(koulutusDTO.getOpintojenLaajuusarvoKannassa());
         }
     }
-    
+
     private <S extends KoulutusV1RDTO, T extends LOS> void addLOSFields(S koulutus, T los) throws KoodistoException {
         los.setId(koulutus.getOid());
         if (koulutus instanceof KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO || 

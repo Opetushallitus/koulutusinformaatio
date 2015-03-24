@@ -90,9 +90,7 @@ public interface TarjontaService {
     
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 
-    public List<StandaloneLOS> findValmaEducations() throws KoodistoException;
-
-    public List<StandaloneLOS> findTelmaEducations() throws KoodistoException;
+    List<StandaloneLOS> findValmistavaKoulutusEducations() throws KoodistoException;
 
     public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
@@ -109,4 +107,5 @@ public interface TarjontaService {
     public List<String> getHigherEdOids();
 
     List<Code> getEdBaseEducationCodes() throws KoodistoException;
+
 }

@@ -33,11 +33,10 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusValmentavaJaKuntouttavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 
 /**
  * Can be used to access tarjonta APIs. Returns raw tarjonta DTO objects as they are
@@ -77,7 +76,7 @@ public interface TarjontaRawService {
     
     public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(String oid);
 
-    public ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> getValmaLearningOpportunity(String oid);
+    public ResultV1RDTO<ValmistavaKoulutusV1RDTO> getValmistavaKoulutusLearningOpportunity(String oid);
 
     public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByEducationOid(String oid);
     
@@ -110,7 +109,5 @@ public interface TarjontaRawService {
             String komoOid);
 
     public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
-
-    ResultV1RDTO<KoulutusValmentavaJaKuntouttavaV1RDTO> getTelmaLearningOpportunity(String oid);
 
 }

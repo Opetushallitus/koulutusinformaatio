@@ -78,6 +78,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusValmentavaJaKuntouttavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
@@ -631,112 +632,81 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<StandaloneLOS> findValmaEducations() throws KoodistoException {
+    public List<StandaloneLOS> findValmistavaKoulutusEducations() throws KoodistoException {
 
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         
-        List<StandaloneLOS> valmas = new ArrayList<StandaloneLOS>();
+        List<StandaloneLOS> losList = new ArrayList<StandaloneLOS>();
         
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA.name(), ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER.name());
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
+                ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA.name(),
+                ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER.name(),
+                ToteutustyyppiEnum.VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS.name(),
+                ToteutustyyppiEnum.PERUSOPETUKSEN_LISAOPETUS.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
 
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
         
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            LOG.debug("Cur Valma tarjoaja result: " + curRes.getOid());
+            LOG.debug("Cur Valmistava tarjoaja result: " + curRes.getOid());
 
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                LOG.debug("cur Valma koulutus result: " + curKoulutus.getOid());
+                LOG.debug("cur Valmistava koulutus result: " + curKoulutus.getOid());
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     LOG.debug("koulutus not published, discarding");
                     continue;
                 }
 
-                ResultV1RDTO<KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO> koulutusRes = this.tarjontaRawService.getValmaLearningOpportunity(curKoulutus.getOid());
-                KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO koulutusDTO = koulutusRes.getResult();
+                ResultV1RDTO<ValmistavaKoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(curKoulutus.getOid());
+                ValmistavaKoulutusV1RDTO koulutusDTO = koulutusRes.getResult();
                 if (koulutusDTO == null) {
                     continue;
                 }
                 try {
-                    LOG.debug("Indexing valma education: " + koulutusDTO.getOid());
+                    LOG.debug("Indexing Valmistava education: " + koulutusDTO.getOid());
                     StandaloneLOS los = null;
+                    switch (koulutusDTO.getToteutustyyppi()) {
+                    case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
+                        los = creator.createValmaErLOS(koulutusDTO, true);
+                        break;
+                    case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
+                        los = creator.createValmaLOS(koulutusDTO, true);
+                        break;
+                    case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
+                        los = creator.createTelmaLOS(koulutusDTO, true);
+                        break;
+                    case PERUSOPETUKSEN_LISAOPETUS:
+                        los = creator.createKymppiluokkaLOS(koulutusDTO, true);
+                        break;
+                    default:
+                        break;
+                    }
                     if (koulutusDTO.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER)) {
-                        los = creator.createValmaLOSEr(koulutusDTO, true);
+                        los = creator.createValmaErLOS(koulutusDTO, true);
                     } else {
                         los = creator.createValmaLOS(koulutusDTO, true);
                     }
-                    valmas.add(los);
+                    losList.add(los);
                     updateAOLosReferences(los, aoToEducationsMap);
 
                 } catch (TarjontaParseException ex) {
-                    LOG.warn("Problem with valma education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
+                    LOG.warn("Problem with Valmistava education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
                     continue;
                 } catch (KoodistoException ex) {
-                    LOG.error("Problem with valma education: " + koulutusDTO.getOid(), ex);
+                    LOG.error("Problem with Valmistava education: " + koulutusDTO.getOid(), ex);
                     continue;
                 } catch (Exception exc) {
-                    LOG.error("Problem indexing valma education los: " + koulutusDTO.getOid(), exc);
+                    LOG.error("Problem indexing Valmistava education los: " + koulutusDTO.getOid(), exc);
                     throw new KoodistoException(exc);
                 }
             }
         }
 
-        return valmas;
+        return losList;
     }
     
-    @Override
-    public List<StandaloneLOS> findTelmaEducations() throws KoodistoException {
-
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-        
-        List<StandaloneLOS> telmas = new ArrayList<StandaloneLOS>();
-        
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS.name());
-        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-
-        Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
-        
-        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            LOG.debug("Cur telma tarjoaja result: " + curRes.getOid());
-
-            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                LOG.debug("cur telma koulutus result: " + curKoulutus.getOid());
-                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-                    LOG.debug("koulutus not published, discarding");
-                    continue;
-                }
-
-                ResultV1RDTO<KoulutusValmentavaJaKuntouttavaV1RDTO> koulutusRes = this.tarjontaRawService.getTelmaLearningOpportunity(curKoulutus.getOid());
-                KoulutusValmentavaJaKuntouttavaV1RDTO koulutusDTO = koulutusRes.getResult();
-                if (koulutusDTO == null) {
-                    continue;
-                }
-                try {
-                    LOG.debug("Indexing telma education: " + koulutusDTO.getOid());
-                    StandaloneLOS los = creator.createTelmaLOS(koulutusDTO, true);
-                    telmas.add(los);
-                    updateAOLosReferences(los, aoToEducationsMap);
-
-                } catch (TarjontaParseException ex) {
-                    LOG.warn("Problem with telma education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
-                    continue;
-                } catch (KoodistoException ex) {
-                    LOG.error("Problem with telma education: " + koulutusDTO.getOid(), ex);
-                    continue;
-                } catch (Exception exc) {
-                    LOG.error("Problem indexing telma education los: " + koulutusDTO.getOid(), exc);
-                    throw new KoodistoException(exc);
-                }
-            }
-        }
-
-        return telmas;
-    }
-
     @Override
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException {
 
@@ -846,12 +816,12 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
-        KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO dto = this.tarjontaRawService.getValmaLearningOpportunity(oid).getResult();
+        ValmistavaKoulutusV1RDTO dto = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(oid).getResult();
         if (dto.getToteutustyyppi().equals(ToteutustyyppiEnum.VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS)) { // TELMA
-            return this.creator.createTelmaLOS(this.tarjontaRawService.getTelmaLearningOpportunity(oid).getResult(), checkStatus);
+            return this.creator.createTelmaLOS(dto, checkStatus);
         }
         if (dto.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER)) {
-            return this.creator.createValmaLOSEr(dto, checkStatus);
+            return this.creator.createValmaErLOS(dto, checkStatus);
         } else {
             return this.creator.createValmaLOS(dto, checkStatus);
         }
