@@ -95,7 +95,7 @@ public class UpdateServiceImpl implements UpdateService {
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
 
         try {
-/*
+
             LOG.info("Starting full education data update");
             running = true;
             runningSince = System.currentTimeMillis();
@@ -164,26 +164,18 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-            List<StandaloneLOS> valmas = this.tarjontaService.findValmaEducations();
-            LOG.debug("Indexed " + valmas.size() + " valma educations");
-            for (StandaloneLOS curLOS : valmas) {
-                LOG.debug("Saving valma los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
+
+            List<StandaloneLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
+            LOG.debug("Indexed " + valmistavaList.size() + " valmistava educations");
+            for (StandaloneLOS curLOS : valmistavaList) {
+                LOG.debug("Saving valmistava los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
 
- */
-            List<StandaloneLOS> telmas = this.tarjontaService.findTelmaEducations();
-            LOG.debug("Indexed " + telmas.size() + " telma educations");
-            for (StandaloneLOS curLOS : telmas) {
-                LOG.debug("Saving telma los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
-                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(curLOS);
-            }
-            
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
             LOG.debug("Starting provider indexing");
-//            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
+            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.debug("Providers indexed");
 
 
@@ -194,7 +186,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
             indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
             LOG.debug("Base educations indexded.");
-/*
+
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
@@ -213,7 +205,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.debug("Articles indexed to solr");
-*/
+
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

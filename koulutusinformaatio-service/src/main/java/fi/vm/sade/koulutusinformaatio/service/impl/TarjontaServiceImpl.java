@@ -675,6 +675,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                         los = creator.createValmaLOS(koulutusDTO, true);
                         break;
                     case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
+                        if(koulutusDTO.getKoulutuskoodi().getVersio() == 1){
+                            los = creator.createValmentavaLOS(koulutusDTO, true);
+                            break;
+                        }
                         los = creator.createTelmaLOS(koulutusDTO, true);
                         break;
                     case PERUSOPETUKSEN_LISAOPETUS:
@@ -683,13 +687,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                     default:
                         break;
                     }
-                    if (koulutusDTO.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER)) {
-                        los = creator.createValmaErLOS(koulutusDTO, true);
-                    } else {
-                        los = creator.createValmaLOS(koulutusDTO, true);
+                    if(los != null){
+                        losList.add(los);
+                        updateAOLosReferences(los, aoToEducationsMap);
                     }
-                    losList.add(los);
-                    updateAOLosReferences(los, aoToEducationsMap);
 
                 } catch (TarjontaParseException ex) {
                     LOG.warn("Problem with Valmistava education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
