@@ -71,11 +71,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusValmentavaJaKuntouttavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
@@ -818,13 +815,17 @@ public class TarjontaServiceImpl implements TarjontaService {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         ValmistavaKoulutusV1RDTO dto = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(oid).getResult();
-        if (dto.getToteutustyyppi().equals(ToteutustyyppiEnum.VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS)) { // TELMA
+        switch (dto.getToteutustyyppi()) {
+        case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
             return this.creator.createTelmaLOS(dto, checkStatus);
-        }
-        if (dto.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER)) {
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
             return this.creator.createValmaErLOS(dto, checkStatus);
-        } else {
-            return this.creator.createValmaLOS(dto, checkStatus);
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
+            return this.creator.createValmentavaLOS(dto, checkStatus);
+        case PERUSOPETUKSEN_LISAOPETUS:
+            return this.creator.createKymppiluokkaLOS(dto, checkStatus);
+        default:
+            return null; // TODO: throw exception
         }
     }
 

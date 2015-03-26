@@ -1081,6 +1081,9 @@ public class LOSObjectCreator extends ObjectCreator {
         addLOSFields(koulutusDTO, los);
         addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
         addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
+        if (!checkStatus) {
+            los.setStatus(koulutusDTO.getTila().toString());
+        }
         return los;
     }
 
@@ -1216,8 +1219,10 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
 
+        boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
+        
         // If we are not fetching for preview, an exception is thrown if no valid application options exist
-        if (checkStatus && !fetchHakukohdeData(los, checkStatus)) {
+        if (checkStatus && !existsValidHakukohde) {
             throw new TarjontaParseException("No valid application options for education: " + los.getId());
         }
         if (los.getApplicationOptions() != null) {
