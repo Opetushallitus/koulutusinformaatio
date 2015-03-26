@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +43,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -78,7 +81,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RD
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusValmentavaJaKuntouttavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
@@ -820,7 +822,8 @@ public class LOSObjectCreator extends ObjectCreator {
                     ao.setStatus(hakukohdeDTO.getTila());
                     ao.getApplicationSystem().setStatus(hakuDTO.getTila());
                 }
-                aos.add(ao);
+                if (isCurrentOrFuture(ao))
+                    aos.add(ao);
 
             } catch (Exception ex) {
                 LOG.debug("Problem fetching ao: " + ex.getMessage());
@@ -831,6 +834,35 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setApplicationOptions(aos);
 
         return !aos.isEmpty();
+    }
+
+    private boolean isCurrentOrFuture(ApplicationOption ao) {
+        return isCurrent(ao) || isFuture(ao);
+    }
+
+    private boolean isCurrent(ApplicationOption ao) {
+        Date now = new Date();
+        for (DateRange dr : ao.getApplicationDates()) {
+            Date endDate = dr.getEndDate();
+            Calendar endCal = Calendar.getInstance();
+            endCal.setTime(endDate);
+            endCal.add(Calendar.MONTH, 10);
+            endDate = endCal.getTime();
+            if (dr.getStartDate().before(now) && endDate.after(now)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isFuture(ApplicationOption ao) {
+        Date now = new Date();
+        for (DateRange dr : ao.getApplicationDates()) {
+            if (dr.getStartDate().before(now)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public HigherEducationLOS createHigherEducationLOSReference(
