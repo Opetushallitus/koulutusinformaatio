@@ -56,6 +56,9 @@
     "at-et010401": "Ammattikorkeakoulututkinto",
     "at-et0105": "Yliopisto, alempi tutkinto (kandidaatti ym.)",
 
+    "mm-et020103-n": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
+    "mm-et020106": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
+    "mm-et021202": "Ammatilliseen koulutukseen valmentava koulutus erityisopetuksena (VALMA er)",
     "mm-et020104-n": "Maahanmuuttajien lukioon valmistava",
     "mm-et020103-n": "Ammatilliseen koulutukseen valmistava",
 
@@ -81,7 +84,7 @@
     "pk_aiku-et010301-a": "Ammatillinen perustutkinto aikuiskoulutuksena  - usein vaaditaan myös työkokemusta tai muuten hankittua osaamista",
     "pk_aiku-et010303-a": "Ammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 3 vuotta työkokemusta tai muuten hankittua osaamista",
     "pk_aiku-et010304-a": "Erikoisammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 5 vuotta työkokemusta tai muuten hankittua osaamista",
-    "pk_aiku-et020102-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
+    "pk_aiku-et020106-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
     "pk_aiku-et0202-a": "Valmentava ja kuntouttava opetus ja ohjaus aikuisille",
 
     "lukio_aiku-et010301-n": "Ammatillinen perustutkinto nuorten koulutuksena",
@@ -89,7 +92,9 @@
     "lukio_aiku-et010303-a": "Ammattitutkinto aikuiskoulutuksena - usein vaaditaan myös työkokemusta tai muuten hankittua osaamista",
     "lukio_aiku-et010304-a": "Erikoisammattitutkinto aikuiskoulutuksena - usein vaaditaan myös työkokemusta tai muuten hankittua osaamista",
 
-    "mm_aiku-et020103-n": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
+    "mm_aiku-et020103-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
+    "mm_aiku-et020106-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
+    "mm_aiku-et021202-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille erityisopetuksena (VALMA er)",
     "mm_aiku-et020104-a": "LUVA - maahanmuuttajille ja vieraskielisille järjestettävä lukiokoulutukseen valmistava koulutus aikuisille",
 
     "show-results": "Näytä opiskelupaikat"

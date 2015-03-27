@@ -56,6 +56,9 @@
     "at-et010401": "Yrkeshögskoleexamen",
     "at-et0105": "Universitetsexamen",
 
+    "mm-et020103-n": "Handledande utbildning för grundläggande yrkesutbildning",
+    "mm-et020106": "Handledande utbildning för grundläggande yrkesutbildning",
+    "mm-et021202": "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
     "mm-et020104-n": "Utbildning som förbereder invandrare för gymnasium",
     "mm-et020103-n": "Förberedande för yrkesutbildning",
 
@@ -81,7 +84,7 @@
     "pk_aiku-et010301-a": "Yrkesinriktad grundexamen som vuxenutbildning - ofta krävs dessutom arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "pk_aiku-et010303-a": "Yrkesexamen som vuxenutbildning - ofta krävs dessutom 3 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "pk_aiku-et010304-a": "Specialyrkesexamen som vuxenutbildning - ofta krävs dessutom 5 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
-    "pk_aiku-et020102-a": "Handledande utbildning för grundläggande yrkesutbildning för vuxna",
+    "pk_aiku-et020106-a": "Handledande utbildning för grundläggande yrkesutbildning för vuxna",
     "pk_aiku-et0202-a": "Förberedande och rehabiliterande undervisning och handledning för vuxna",
 
     "lukio_aiku-et010301-n": "Yrkesinriktad grundexamen i utbildning för unga",
@@ -89,7 +92,9 @@
     "lukio_aiku-et010303-a": "Yrkesexamen som vuxenutbildning - ofta krävs dessutom 3 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "lukio_aiku-et010304-a": "Specialyrkesexamen som vuxenutbildning - ofta krävs dessutom 5 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
 
-    "mm_aiku-et020103-n": "Handledande utbildning för grundläggande yrkesutbildning för vuxna",
+    "mm_aiku-et020103-a": "Handledande utbildning för grundläggande yrkesutbildning för vuxna",
+    "mm_aiku-et020106-a": "Handledande utbildning för grundläggande yrkesutbildning för vuxna",
+    "mm_aiku-et021202-a": "Handledande utbildning för grundläggande yrkesutbildning för vuxna som specialundervisning",
     "mm_aiku-et020104-a": "Utbildning för vuxna som förbereder invandrare och andra med främmande språk för gymnasieutbildning",
 
     "show-results": "Visa studieplatser"
