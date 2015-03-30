@@ -1076,11 +1076,16 @@ public class LOSObjectCreator extends ObjectCreator {
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_PK_JALK);
     }
 
-    private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edTypeValma) throws KoodistoException,
+    public StandaloneLOS createMMLukioonValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+        LOG.debug("Creating MM lukioon valmistava los: " + koulutusDTO.getOid());
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_IMM_UPSEC);
+    }
+
+    private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException,
             TarjontaParseException {
         StandaloneLOS los = new StandaloneLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
-        los.setEducationType(edTypeValma);
+        los.setEducationType(edType);
         addLOSFields(koulutusDTO, los);
         addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
         addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
@@ -1102,8 +1107,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private <S extends KoulutusV1RDTO, T extends LOS> void addLOSFields(S koulutus, T los) throws KoodistoException {
         los.setId(koulutus.getOid());
-        if (koulutus instanceof KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO || 
-                koulutus instanceof ValmistavaKoulutusV1RDTO) { // Valma tai Telma
+        if (koulutus.getKoulutusohjelma() == null) {
             los.setName(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
             los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
         } else {

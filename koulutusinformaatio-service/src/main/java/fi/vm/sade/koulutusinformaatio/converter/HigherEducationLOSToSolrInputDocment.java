@@ -580,6 +580,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_PK_JALK)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_PK_JALK);
+            } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_IMM_UPSEC)) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_PK_JALK);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_IMM_UPSEC);
             }
         }
 

@@ -641,7 +641,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                 ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA.name(),
                 ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER.name(),
                 ToteutustyyppiEnum.VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS.name(),
-                ToteutustyyppiEnum.PERUSOPETUKSEN_LISAOPETUS.name());
+                ToteutustyyppiEnum.PERUSOPETUKSEN_LISAOPETUS.name(),
+                ToteutustyyppiEnum.MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
 
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
@@ -680,6 +681,9 @@ public class TarjontaServiceImpl implements TarjontaService {
                         break;
                     case PERUSOPETUKSEN_LISAOPETUS:
                         los = creator.createKymppiluokkaLOS(koulutusDTO, true);
+                        break;
+                    case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+                        los = creator.createMMLukioonValmistavaLOS(koulutusDTO, true);
                         break;
                     default:
                         break;
