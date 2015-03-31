@@ -844,6 +844,9 @@ public class LOSObjectCreator extends ObjectCreator {
         Date now = new Date();
         for (DateRange dr : ao.getApplicationDates()) {
             Date endDate = dr.getEndDate();
+            if(endDate == null){ // Jatkuva haku
+                return dr.getStartDate().before(now);
+            }
             Calendar endCal = Calendar.getInstance();
             endCal.setTime(endDate);
             endCal.add(Calendar.MONTH, 10);
