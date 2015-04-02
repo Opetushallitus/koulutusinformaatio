@@ -33,7 +33,7 @@ public class AdultVocationalParentLOSDTO extends LOSDTO implements Articled {
     private String shortTitle;
     private String goals;
     private String type;
-    private double charge;
+    private String charge;
     private boolean chargeable;
     private boolean osaamisala;
     
@@ -212,11 +212,11 @@ public class AdultVocationalParentLOSDTO extends LOSDTO implements Articled {
         return edTypeSuggestions;
     }
 
-    public double getCharge() {
+    public String getCharge() {
         return charge;
     }
 
-    public void setCharge(double charge) {
+    public void setCharge(String charge) {
         this.charge = charge;
     }
 

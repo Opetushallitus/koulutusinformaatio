@@ -1033,9 +1033,9 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setEdtUri(dto.getKoulutustyyppi().getUri());
         }
 
-        LOG.debug("setting charge with los: " + los.getId() + " and dto hinta: " + dto.getHinta());
-        if (dto.getHinta() != null) {
-            los.setCharge(dto.getHinta());
+        if (dto.getHintaString() != null) {
+            LOG.debug("setting charge with los: " + los.getId() + " and dto hinta: " + dto.getHintaString());
+            los.setCharge(dto.getHintaString());
         }
         los.setChargeable(dto.getOpintojenMaksullisuus());
         los.setOsaamisala(!dto.getKoulutusmoduuliTyyppi().name().equals(KoulutusmoduuliTyyppi.TUTKINTO.name()));
@@ -1371,8 +1371,8 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getMeta()));
             los.setPduCodeUri(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getUri());
             los.setChargeable(koulutus.getValmistavaKoulutus().getOpintojenMaksullisuus());
-            if (koulutus.getValmistavaKoulutus().getHinta() != null) {
-                los.setCharge(koulutus.getValmistavaKoulutus().getHinta());
+            if (koulutus.getValmistavaKoulutus().getHintaString() != null) {
+                los.setCharge(koulutus.getValmistavaKoulutus().getHintaString());
             }
 
             if (koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KOHDERYHMA) != null

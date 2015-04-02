@@ -26,7 +26,7 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private List<Code> availableTranslationLanguages;
     
     private boolean chargeable;
-    private double charge;
+    private String charge;
     private boolean osaamisala;
     private String edtUri;
     private String determiner;
@@ -102,11 +102,11 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     public void setChargeable(boolean chargeable) {
         this.chargeable = chargeable;
     }
-    public double getCharge() {
+    public String getCharge() {
         return charge;
     }
-    public void setCharge(double charge) {
-        this.charge = charge;
+    public void setCharge(String string) {
+        this.charge = string;
     }
     public void setOsaamisala(boolean isOsaamisala) {
         this.osaamisala = isOsaamisala;
