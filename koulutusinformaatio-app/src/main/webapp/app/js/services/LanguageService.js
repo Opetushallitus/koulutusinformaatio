@@ -25,9 +25,8 @@ service('LanguageService', ['CookieService', '$location', '_', function(CookieSe
             return null
         }
 
-        // initialize app language with value from cookie
-        // currentLanguage = getLanguageFromHost(window.location.host) || CookieService.get(key) || defaultLanguage,
-        currentLanguage = CookieService.get(key) || defaultLanguage,
+        // try to initialize app language with value derived from domain or cookie
+        currentLanguage = getLanguageFromHost(window.location.host) || CookieService.get(key) || defaultLanguage,
         
         getLanguage = function() {
             return currentLanguage;
