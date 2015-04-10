@@ -76,7 +76,8 @@ public final class CreatorUtil {
     protected static Predicate<KomoDTO> komoHasTutkintonimike = new Predicate<KomoDTO>() {
         @Override
         public boolean apply(KomoDTO komo) {
-            return (komo != null) ? komo.getTutkintonimikeUri() != null : false;
+            boolean isVapaanSivistysTyonKoulutus = TarjontaConstants.KANSANOPISTO_TYPE.equals(komo.getKoulutusTyyppiUri()); // kansanopistolla ei ole tutkintonimikettä
+            return (komo != null) ? komo.getTutkintonimikeUri() != null || isVapaanSivistysTyonKoulutus  : false;
         }
     };
 
