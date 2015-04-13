@@ -18,7 +18,9 @@ import static org.junit.Assert.assertTrue;
 public class PartialUpdateServiceImplTest {
     
     private final static String EDUCATION_OID = "19.231.4142";
-
+    private final static String APPLICATION_OID = "123.123.123";
+    
+    
     @Mock
     private UpdateService updateService;
     
@@ -37,6 +39,7 @@ public class PartialUpdateServiceImplTest {
     public void doesNotStartRunningIfUpdateServiceIsRunning() {
         when(updateService.isRunning()).thenReturn(true);
         service.updateEducation(EDUCATION_OID);
+        service.updateApplication(APPLICATION_OID);
         assertFalse(service.isRunning());
     }
     
@@ -44,12 +47,20 @@ public class PartialUpdateServiceImplTest {
     public void doesNotStartRunningIfIncrementalUpdateServiceIsRunning() {
         when(incrementalUpdateService.isRunning()).thenReturn(true);
         service.updateEducation(EDUCATION_OID);
+        service.updateApplication(APPLICATION_OID);
         assertFalse(service.isRunning());
     }
     
     @Test
-    public void startsRunning() {
+    public void startsRunningEducationIndexing() {
         service.updateEducation(EDUCATION_OID);
+        assertTrue(service.isRunning());
+        assertTrue(service.getRunningSince() > 0l);
+    }
+    
+    @Test
+    public void startsRunningApplicationIndexing() {
+        service.updateApplication(APPLICATION_OID);
         assertTrue(service.isRunning());
         assertTrue(service.getRunningSince() > 0l);
     }

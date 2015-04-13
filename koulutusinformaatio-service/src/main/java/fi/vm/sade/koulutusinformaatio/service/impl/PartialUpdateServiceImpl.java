@@ -15,18 +15,29 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 
 /**
  * @author risal1
  *
  */
+@Service
+@Profile("default")
 public class PartialUpdateServiceImpl implements PartialUpdateService {
     
     private final static Logger LOGGER = LoggerFactory.getLogger(PartialUpdateServiceImpl.class);
@@ -36,18 +47,54 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     
     @Autowired
     private UpdateService updateService;
+    
+    @Autowired
     private IncrementalUpdateService incrementalUpdateService;
     
+    @Autowired
+    private TarjontaRawService tarjontaService;
     
+    @Autowired
+    private IncrementalApplicationSystemIndexer asIndexer;
+    
+    @Autowired
+    private EducationIncrementalDataUpdateService dataUpdateService;
+    
+    @Async
     @Override
     public void updateEducation(String oid) {
+        if (startRunningIfNoIndexingIsRunning()) {
+            //running = false;
+        }
+    }
+    
+    @Async
+    @Override
+    public void updateApplication(String oid) {
+        if (startRunningIfNoIndexingIsRunning()) {
+            indexHaku(oid);
+        }
+        dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+        running = false;
+    }
+
+    private void indexHaku(String oid) {
+        try {
+            LOGGER.debug("Indexing application system: " + oid);
+            asIndexer.indexApplicationSystemData(oid);
+        } catch (Exception ex) {
+            LOGGER.error("Error indexing application system: " + oid, ex);
+        }
+    }
+    
+    private boolean startRunningIfNoIndexingIsRunning() {
         if (isRunning() || updateService.isRunning() || incrementalUpdateService.isRunning()) {
             LOGGER.debug("Indexing is running, not starting");
-            return;
+            return false;
         }
         running = true;
         runningSince = System.currentTimeMillis();
-        //running = false;
+        return true;
     }
 
     @Override

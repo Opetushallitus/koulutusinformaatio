@@ -23,6 +23,8 @@ public interface PartialUpdateService {
 
     void updateEducation(String oid);
     
+    void updateApplication(String oid);
+    
     boolean isRunning();
     
     long getRunningSince();
