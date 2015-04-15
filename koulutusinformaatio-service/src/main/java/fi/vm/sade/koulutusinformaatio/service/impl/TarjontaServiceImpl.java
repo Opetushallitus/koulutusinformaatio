@@ -828,8 +828,10 @@ public class TarjontaServiceImpl implements TarjontaService {
             return this.creator.createValmentavaLOS(dto, checkStatus);
         case PERUSOPETUKSEN_LISAOPETUS:
             return this.creator.createKymppiluokkaLOS(dto, checkStatus);
+        case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+            return this.creator.createMMLukioonValmistavaLOS(dto, checkStatus);
         default:
-            return null; // TODO: throw exception
+            throw new TarjontaParseException("Preview not implemented for education type " + dto.getToteutustyyppi());
         }
     }
 
