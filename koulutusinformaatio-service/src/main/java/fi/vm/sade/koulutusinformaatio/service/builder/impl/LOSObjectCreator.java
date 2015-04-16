@@ -1073,7 +1073,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public StandaloneLOS createKymppiluokkaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         LOG.debug("Creating Kymppiluokka los: " + koulutusDTO.getOid());
-        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_PK_JALK);
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_TENTH_GRADE);
     }
 
     public StandaloneLOS createMMLukioonValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, TarjontaParseException {
