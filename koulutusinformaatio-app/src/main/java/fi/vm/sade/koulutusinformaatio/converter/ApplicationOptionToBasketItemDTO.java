@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -150,33 +151,44 @@ public final class ApplicationOptionToBasketItemDTO {
                     }
                 }
             }
-            reorder(items);
+            items = reorder(items);
             return Lists.newArrayList(items.values());
         } else {
             return null;
         }
     }
 
-    // FIXME: Purkkakorjaus kunnes V1 on toteutettu loppuun 
-    private static void reorder(Map<String, BasketItemDTO> items) {
+    // FIXME: Purkkakorjaus kunnes V1 on toteutettu loppuun
+    private static Map<String, BasketItemDTO> reorder(Map<String, BasketItemDTO> items) {
+        Map<String, BasketItemDTO> reordered = new HashMap<String, BasketItemDTO>();
         for (String s : items.keySet()) {
-            if (s.endsWith("_")) { // V0 application option without hakuaikaID should be merged with V1 ao if one exists
-                BasketItemDTO item = items.remove(s);
-                String v1Key = searchPartialKey(items, s);
-                if (v1Key != null) {
-                    items.get(v1Key).getApplicationOptions().addAll(item.getApplicationOptions());
+            BasketItemDTO item = items.get(s);
+            if (s.endsWith("_null")) { // V0 application option without hakuaikaID should be merged with V1 ao if one exists
+                String v1Key = searchPartialKey(items, s.split("_")[0]);
+                if (v1Key != null) { // Existing key found
+                    appendAOs(reordered, v1Key, item);
                 } else {
-                    items.put(s, item); // There was no V1 haku, put the item back
+                    appendAOs(reordered, s, item); // There was no V1 haku, put the item back
                 }
+            } else {
+                appendAOs(reordered, s, item);
             }
         }
+        return reordered;
+    }
 
+    private static void appendAOs(Map<String, BasketItemDTO> reordered, String keyToBeAppended, BasketItemDTO source) {
+        if (reordered.containsKey(keyToBeAppended)) {
+            reordered.get(keyToBeAppended).getApplicationOptions().addAll(source.getApplicationOptions());
+        } else {
+            reordered.put(keyToBeAppended, source);
+        }
     }
 
     private static String searchPartialKey(Map<String, BasketItemDTO> items, String s) {
         for (String key : items.keySet()) {
-            if (key.contains(s))
-                return s;
+            if (key.contains(s) && !key.contains("_null"))
+                return key;
         }
 
         return null;
@@ -198,7 +210,7 @@ public final class ApplicationOptionToBasketItemDTO {
 
         return false;
     }
-    
+
     private static String generateAsId(ApplicationSystem as, BasketApplicationOptionDTO aoDTO) {
         return as.getId() + "_" + aoDTO.getHakuaikaId();
     }
