@@ -26,5 +26,6 @@ log4j.logger.org.apache.activemq.spring={{env_loglevel}}
 # cas session + singlelogout tracing
 log4j.logger.org.jasig.cas.client.session=INFO
 # Indexing
+log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.KoodistoServiceImpl=ERROR
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.UpdateServiceImpl=INFO
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl=INFO
