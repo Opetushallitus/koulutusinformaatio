@@ -122,7 +122,7 @@ public class UpdateServiceImpl implements UpdateService {
                     try {
                         specifications = tarjontaService.findParentLearningOpportunity(loOid);
                     } catch (TarjontaParseException e) {
-                        LOG.warn(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
+                        LOG.debug(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
                         continue;
                     }
                     if (specifications != null) {
@@ -271,7 +271,7 @@ public class UpdateServiceImpl implements UpdateService {
                 try {
                     curProv = this.providerService.getByOID(curOrg.getOid());
                 } catch (Exception ex) {
-                    LOG.error("Problem indexing organization: " + curOrg.getOid(), ex);
+                    LOG.warn("Problem indexing organization: " + curOrg.getOid(), ex);
                     continue;
                 }
                 if (curProv.getOlTypeFacets() != null && !curProv.getOlTypeFacets().isEmpty()) {
@@ -337,7 +337,7 @@ public class UpdateServiceImpl implements UpdateService {
         } catch (Exception ex) {
             indexerService.rollbackIncrementalSolrChanges();
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s", ex.getMessage())));
-            LOG.error("Article update failed ", ex);
+            LOG.warn("Article update failed ", ex);
 
         } finally {
             running = false;

@@ -183,7 +183,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
             // If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
-                LOG.warn(String.format("Komos changed. Update period was: %s", updatePeriod));
+                LOG.info(String.format("Komos changed. Update period was: %s", updatePeriod));
                 indexKomoChanges(result.get("koulutusmoduuli"));
                 komoCount = result.get("koulutusmoduuli").size();
             }
@@ -240,7 +240,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                     this.losIndexer.indexLoiData(curOid);
                 }
             } catch (Exception ex) {
-                LOG.error("problem indexing komoto: " + curOid, ex);
+                LOG.warn("problem indexing komoto: " + curOid, ex);
             }
         }
     }
@@ -255,7 +255,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 asDto = this.tarjontaRawService.getHaku(aoDto.getHakuOid());
                 this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
             } catch (Exception ex) {
-                LOG.error("Problem indexing hakukohde: " + curOid, ex);
+                LOG.warn("Problem indexing hakukohde: " + curOid, ex);
             } 
 
         }
@@ -267,7 +267,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 LOG.debug("Changed haku: " + curOid);
                 this.asIndexer.indexApplicationSystemData(curOid);
             } catch (Exception ex) {
-                LOG.error("Error indexing application system: " + curOid, ex);
+                LOG.warn("Error indexing application system: " + curOid, ex);
             }
         }
         
@@ -280,7 +280,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                     this.losIndexer.indexHigherEdKomo(curKomoOid);
                 }
             } catch (Exception ex) {
-                LOG.error("Error indexing komo: " + curKomoOid, ex);
+                LOG.warn("Error indexing komo: " + curKomoOid, ex);
             }
         }
     }
