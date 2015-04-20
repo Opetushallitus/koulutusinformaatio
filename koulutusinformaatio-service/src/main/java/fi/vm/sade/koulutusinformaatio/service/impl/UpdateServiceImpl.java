@@ -109,7 +109,7 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            LOG.info("Starting V0 indexing");
+            LOG.debug("Starting V0 indexing");
             while (count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
@@ -143,7 +143,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("V0 indexing finished");
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
-            LOG.info("Found higher educations: " + higherEducations.size());
+            LOG.debug("Found higher educations: " + higherEducations.size());
 
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("Saving highed education: " + curLOS.getId());
@@ -155,7 +155,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
-            LOG.info("Found adult upper secondary educations: " + adultUpperSecondaries.size());
+            LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
 
             for (AdultUpperSecondaryLOS curLOS : adultUpperSecondaries) {
                 LOG.debug("Saving adult education: " + curLOS.getId());
@@ -165,7 +165,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Adult upper secondary educations saved.");
 
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
-            LOG.info("Found " + adultVocationals.size() + " adult vocational educations");
+            LOG.debug("Found " + adultVocationals.size() + " adult vocational educations");
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
                 LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -174,7 +174,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Adult vocational educations saved.");
 
             List<StandaloneLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
-            LOG.info("Found " + valmistavaList.size() + " valmistava educations");
+            LOG.debug("Found " + valmistavaList.size() + " valmistava educations");
             for (StandaloneLOS curLOS : valmistavaList) {
                 LOG.debug("Saving valmistava los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

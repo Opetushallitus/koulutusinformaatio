@@ -162,7 +162,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug("Indexing is running, not starting");
             return;
         }
-        LOG.info("updateChangedEducationData on its way");
+        LOG.debug("updateChangedEducationData on its way");
         //Getting get update period
         long updatePeriod = getUpdatePeriod();
         LOG.debug(String.format("Update period: %s", updatePeriod));
@@ -178,19 +178,21 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 runningSince = 0;
                 return;
             }
-            
-            this.losIndexer.clearCreatedLOS();
 
-            //If there are changes in komo-data, a full update is performed
+            this.losIndexer.clearCreatedLOS();
+            int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
+            // If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
                 LOG.warn(String.format("Komos changed. Update period was: %s", updatePeriod));
-                    indexKomoChanges(result.get("koulutusmoduuli"));
-            } 
+                indexKomoChanges(result.get("koulutusmoduuli"));
+                komoCount = result.get("koulutusmoduuli").size();
+            }
 
-            //If changes in haku objects indexing them
+            // If changes in haku objects indexing them
             if (result.containsKey("haku")) {
                 LOG.debug("Haku changes: " + result.get("haku").size());
                 indexHakuChanges(result.get("haku"));
+                hakuCount = result.get("haku").size();
             }
 
             List<String> changedHakukohdeOids = new ArrayList<String>();
@@ -199,19 +201,21 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 changedHakukohdeOids = result.get("hakukohde");
                 LOG.debug("Hakukohde changes: " + changedHakukohdeOids.size());
                 indexHakukohdeChanges(result.get("hakukohde"));
+                hakukohdeCount = result.get("hakukohde").size();
             }
 
             //If changes in koulutusmoduuliToteutus, indexing them 
             if (result.containsKey("koulutusmoduuliToteutus")) {
                 LOG.debug("Changed komotos: " + result.get("koulutusmoduuliToteutus").size());
                 indexKomotoChanges(result.get("koulutusmoduuliToteutus"), changedHakukohdeOids);
+                koulutusCount = result.get("koulutusmoduuliToteutus").size();
             }
 
             LOG.debug("Committing to solr");
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             LOG.debug("Saving successful status");
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
-            LOG.debug("All done");
+            LOG.info(String.format("Incremental indexing finished. Indexed %s komos, %s hakus, %s hakukohdes and %s koulutus", komoCount, hakuCount, hakukohdeCount, koulutusCount));
 
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
