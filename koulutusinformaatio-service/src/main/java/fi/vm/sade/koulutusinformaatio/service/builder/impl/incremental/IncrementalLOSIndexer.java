@@ -55,6 +55,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
 
@@ -87,6 +88,8 @@ public class IncrementalLOSIndexer {
     
     private IncrementalHigherEducationLOSIndexer higherEdLOSIndexer;
     private IncrementalAdultLOSIndexer adultLosIndexer;
+
+    private IncrementalKoulutusLOSIndexer koulutusIndexer;
     
     public IncrementalLOSIndexer (TarjontaRawService tarjontaRawService, 
                                     TarjontaService tarjontaService, 
@@ -126,7 +129,9 @@ public class IncrementalLOSIndexer {
                 this.indexerService, 
                 this.loHttpSolrServer, 
                 this.lopHttpSolrServer, 
-                this.locationHttpSolrServer);     
+                this.locationHttpSolrServer);  
+        this.koulutusIndexer = new IncrementalKoulutusLOSIndexer(tarjontaRawService, tarjontaService, dataUpdateService, dataQueryService, indexerService,
+                loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
     
 
@@ -144,39 +149,83 @@ public class IncrementalLOSIndexer {
     //Indexes changed loi data
     public void indexLoiData(String komotoOid) throws Exception {
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
+        ResultV1RDTO<KoulutusGenericV1RDTO> komoRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(komotoOid);
+        KoulutusGenericV1RDTO koulutusDTO = komoRes.getResult();
+        LOG.debug(String.format("Loi: %s, status: %s", komotoOid, koulutusDTO.getTila()));
+
+        
+        switch (koulutusDTO.getToteutustyyppi()) {
+        
+        case KORKEAKOULUTUS:
+            LOG.debug(String.format("It is higer education komoto: %s", komotoOid));
+            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(komotoOid);
+            if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
+                this.higherEdLOSIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
+            }
+            return;
+        
+        case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
+            LOG.debug("Adult upsec komo: " + koulutusDTO.getKomoOid());
+            this.indexAdultUpsecKomo(koulutusDTO.getKomoOid());
+            return;
+
+        case AMMATTITUTKINTO:
+        case ERIKOISAMMATTITUTKINTO:
+        case AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA:
+            LOG.debug("Adult vocational komo: " + koulutusDTO.getKomoOid());
+            this.indexAdultVocationalKomoto(komotoOid);
+            return;
+
+        case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
+        case PERUSOPETUKSEN_LISAOPETUS:
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
+        case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+            LOG.debug("Valma/Telma koulutus: " + koulutusDTO.getKomoOid());
+            this.indexValmentavaKomoto(komotoOid);
+            return;
+            
+        case AIKUISTEN_PERUSOPETUS:
+        case AMMATILLINEN_PERUSTUTKINTO:
+        case LUKIOKOULUTUS:
+        case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
+        case KORKEAKOULUOPINTO:
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS:
+        case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+        case VAPAAN_SIVISTYSTYON_KOULUTUS:
+        case EB_RP_ISH:
+        case ESIOPETUS:
+        case PERUSOPETUS:
+
+            break;
+
+        default:
+            break;
+        }
+        
+        
+        // TODO: Nämä liitettäväksi ylläolevaan luetteloon V1 muutosten yhteydessä
         KomotoDTO komotoDto = null;
         try {
             komotoDto = this.tarjontaRawService.getKomoto(komotoOid);
         } catch (Exception ex) {
             return;
         }
-        LOG.debug(String.format("Loi: %s, status: %s", komotoOid, komotoDto.getTila()));
-
         if (isSecondaryEducation(komotoDto)) {
-            if (!isLoiProperlyPublished(komotoDto)) {//(komotoDto.getTila().name().equals(TarjontaConstants.STATE_PUBLISHED))) {
+            if (!isLoiProperlyPublished(komotoDto)) {
                 LOG.debug(String.format("Loi need to be removed: %s", komotoOid));
                 handleLoiRemoval(komotoDto);
             } else {
                 LOG.debug(String.format("Loi need to be indexed: %s", komotoOid));
                 handleLoiAdditionOrUpdate(komotoDto);
             }
-        } else if (isHigherEdKomo(komotoDto.getKomoOid())) {//!this.higherEdReindexed && this.isHigherEdKomo(komotoDto.getKomoOid())) {
-            //this.reIndexHigherEducation();
-            //this.higherEdReindexed = true;
-            LOG.debug(String.format("It is higer education komoto: %s", komotoOid));
-            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(komotoOid);
-            if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
-                this.higherEdLOSIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
-            }
-        } else if (isAdultUpsecKomo(komotoDto.getKomoOid())) {
-            LOG.debug("Adult upsec komo: " + komotoDto.getKomoOid());
-            this.indexAdultUpsecKomo(komotoDto.getKomoOid());
-        } else if (isAdultVocationalKomo(komotoDto.getKomoOid())) {
-            LOG.debug("Adult vocational komo: " + komotoDto.getKomoOid());
-            this.indexAdultVocationalKomoto(komotoOid);
         }
-
     }
+
+    private void indexValmentavaKomoto(String komotoOid) throws Exception {
+        this.koulutusIndexer.indexKoulutusKomoto(komotoOid);
+    }
+
 
     public void indexAdultVocationalKomoto(String komotoOid) throws Exception {
         this.adultLosIndexer.indexAdultVocationalKomoto(komotoOid);
@@ -247,12 +296,13 @@ public class IncrementalLOSIndexer {
     }
 
     private boolean isSecondaryEducation(KomotoDTO komotoDto) {
-        return !isHigherEdKomo(komotoDto.getKomoOid()) 
-                && (((komotoDto.getKoulutuslajiUris() != null 
-                && !komotoDto.getKoulutuslajiUris().isEmpty() 
-                && !komotoDto.getKoulutuslajiUris().get(0).contains("koulutuslaji_a"))
-                || (komotoDto.getKoulutuslajiUris() == null || komotoDto.getKoulutuslajiUris().isEmpty()))
-                || this.isRehabLOS(komotoDto.getKomoOid())); 
+        boolean isNotHigherEd = !isHigherEdKomo(komotoDto.getKomoOid());
+        boolean hasCorrectKoulutuslaji = (komotoDto.getKoulutuslajiUris() != null 
+                && !komotoDto.getKoulutuslajiUris().isEmpty() &&
+                !komotoDto.getKoulutuslajiUris().get(0).contains("koulutuslaji_a"))
+                || (komotoDto.getKoulutuslajiUris() == null || komotoDto.getKoulutuslajiUris().isEmpty());
+        boolean isRehabLOS = this.isRehabLOS(komotoDto.getKomoOid());
+        return isNotHigherEd && (hasCorrectKoulutuslaji || isRehabLOS);
     }
 
     private boolean isRehabLOS(String komoOid) {

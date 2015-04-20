@@ -665,29 +665,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 try {
                     LOG.debug("Indexing Valmistava education: " + koulutusDTO.getOid());
                     StandaloneLOS los = null;
-                    switch (koulutusDTO.getToteutustyyppi()) {
-                    case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
-                        los = creator.createValmaErLOS(koulutusDTO, true);
-                        break;
-                    case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
-                        los = creator.createValmaLOS(koulutusDTO, true);
-                        break;
-                    case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
-                        if(koulutusDTO.getKoulutuskoodi().getVersio() == 1){
-                            los = creator.createValmentavaLOS(koulutusDTO, true);
-                            break;
-                        }
-                        los = creator.createTelmaLOS(koulutusDTO, true);
-                        break;
-                    case PERUSOPETUKSEN_LISAOPETUS:
-                        los = creator.createKymppiluokkaLOS(koulutusDTO, true);
-                        break;
-                    case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-                        los = creator.createMMLukioonValmistavaLOS(koulutusDTO, true);
-                        break;
-                    default:
-                        break;
-                    }
+                    los = createKoulutusLOS(koulutusDTO, true);
                     if(los != null){
                         losList.add(los);
                         updateAOLosReferences(los, aoToEducationsMap);
@@ -708,7 +686,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         return losList;
     }
-    
+
     @Override
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException {
 
@@ -815,26 +793,41 @@ public class TarjontaServiceImpl implements TarjontaService {
     
     @Override
     public StandaloneLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+        ValmistavaKoulutusV1RDTO dto = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(oid).getResult();
+        return createKoulutusLOS(dto, checkStatus);
+    }
+
+    private StandaloneLOS createKoulutusLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
-        ValmistavaKoulutusV1RDTO dto = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(oid).getResult();
-        switch (dto.getToteutustyyppi()) {
-        case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
-            return this.creator.createTelmaLOS(dto, checkStatus);
+        StandaloneLOS los = null;
+        switch (koulutusDTO.getToteutustyyppi()) {
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
-            return this.creator.createValmaErLOS(dto, checkStatus);
+            los = creator.createValmaErLOS(koulutusDTO, checkStatus);
+            break;
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
-            return this.creator.createValmentavaLOS(dto, checkStatus);
+            los = creator.createValmaLOS(koulutusDTO, checkStatus);
+            break;
+        case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
+            if(koulutusDTO.getKoulutuskoodi().getVersio() == 1){
+                los = creator.createValmentavaLOS(koulutusDTO, checkStatus);
+                break;
+            }
+            los = creator.createTelmaLOS(koulutusDTO, checkStatus);
+            break;
         case PERUSOPETUKSEN_LISAOPETUS:
-            return this.creator.createKymppiluokkaLOS(dto, checkStatus);
+            los = creator.createKymppiluokkaLOS(koulutusDTO, checkStatus);
+            break;
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-            return this.creator.createMMLukioonValmistavaLOS(dto, checkStatus);
+            los = creator.createMMLukioonValmistavaLOS(koulutusDTO, checkStatus);
+            break;
         default:
-            throw new TarjontaParseException("Preview not implemented for education type " + dto.getToteutustyyppi());
+            break;
         }
+        return los;
     }
-
+    
     @Override
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException {
         
