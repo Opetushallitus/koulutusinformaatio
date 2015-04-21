@@ -45,31 +45,31 @@ public class ApplicationSystemCreator extends ObjectCreator {
         this.parameterService = parameterService;
     }
 
-    public ApplicationSystem createApplicationSystem(HakuDTO hakuDTO) throws KoodistoException {
-        if (hakuDTO != null) {
+    public ApplicationSystem createApplicationSystem(HakuV1RDTO asDto) throws KoodistoException {
+        if (asDto != null) {
             ApplicationSystem as = new ApplicationSystem();
-            as.setId(hakuDTO.getOid());
-            as.setMaxApplications(hakuDTO.getMaxHakukohdes());
-            as.setName(getI18nText(hakuDTO.getNimi()));
-            as.setApplicationFormLink( hakuDTO.getHakulomakeUrl() );
-            as.setHakutapaUri( koodistoService.searchFirstCodeValue(hakuDTO.getHakutapaUri()) );
-            as.setHakutyyppiUri( koodistoService.searchFirstCodeValue(hakuDTO.getHakutyyppiUri()));
-            if (hakuDTO.getHakuaikas() != null) {
-                for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
+            as.setId(asDto.getOid());
+            as.setMaxApplications(asDto.getMaxHakukohdes());
+            as.setName(getI18nText(asDto.getNimi()));
+            as.setApplicationFormLink( asDto.getHakulomakeUri() );
+            as.setHakutapaUri( koodistoService.searchFirstCodeValue(asDto.getHakutapaUri()) );
+            as.setHakutyyppiUri( koodistoService.searchFirstCodeValue(asDto.getHakutyyppiUri()));
+            if (asDto.getHakuaikas() != null) {
+                for (HakuaikaV1RDTO ha : asDto.getHakuaikas()) {
                     DateRange range = new DateRange();
                     range.setStartDate(ha.getAlkuPvm());
                     range.setEndDate(ha.getLoppuPvm());
                     as.getApplicationDates().add(range);
                 }
             }
-            if (hakuDTO.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
+            if (asDto.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
                 HandleHakuParameters(as);
             } else {
                 as.setShownAsFacet(false);
             }
             
             // TODO: read value from tarjonta when v1 API is taken into use 
-            as.setUseSystemApplicationForm( hakuDTO.getHakulomakeUrl() == null );
+            as.setUseSystemApplicationForm( asDto.getHakulomakeUri() == null );
             
             return as;
         } else {

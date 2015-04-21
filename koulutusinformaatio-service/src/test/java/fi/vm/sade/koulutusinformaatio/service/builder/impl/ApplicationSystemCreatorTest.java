@@ -39,26 +39,28 @@ import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
  */
 public class ApplicationSystemCreatorTest extends KoodistoAwareTest {
 
-    HakuDTO dto;
+    HakuV1RDTO dto;
     Date start;
     Date end;
     ApplicationSystemCreator creator;
 
     @Before
     public void init() {
-        dto = new HakuDTO();
+        dto = new HakuV1RDTO();
         dto.setOid("1.2.3");
         dto.setMaxHakukohdes(10);
         Map<String, String> name = Maps.newHashMap();
         name.put(getFiUri(), "as name fi");
         dto.setNimi(name);
-        HakuaikaRDTO hakuaika = new HakuaikaRDTO();
+        HakuaikaV1RDTO hakuaika = new HakuaikaV1RDTO();
         Calendar startCal = Calendar.getInstance();
         start = startCal.getTime();
         Calendar endCal = Calendar.getInstance();

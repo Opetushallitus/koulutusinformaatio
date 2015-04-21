@@ -40,9 +40,12 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 /**
  * 
@@ -67,9 +70,53 @@ public class IncrementalApplicationOptionIndexer {
         
     }
     
-    public void indexApplicationOptionData(HakukohdeDTO aoDto, HakuDTO asDto) throws Exception {
+    public void indexApplicationOptionData(HakukohdeV1RDTO aoDto, HakuV1RDTO asDto) throws Exception {
+        boolean toRemove = !TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila());
 
+        String toteutusTyyppi = aoDto.getToteutusTyyppi();
 
+        switch (ToteutustyyppiEnum.valueOf(toteutusTyyppi)) {
+        case KORKEAKOULUTUS:
+            LOG.debug("Indexing  higher education ao");
+            this.indexHigherEdAo(aoDto.getOid(), toRemove);
+            return;
+
+        case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
+        case AMMATTITUTKINTO:
+        case ERIKOISAMMATTITUTKINTO:
+        case AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA:
+            LOG.debug("Indexing  adult uppersecondary ao");
+            this.indexAdultUpsecEdAo(aoDto.getOid(), toRemove);
+            return;
+
+        case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
+        case PERUSOPETUKSEN_LISAOPETUS:
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
+        case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+            LOG.debug("Indexing  valmistava ao");
+            this.indexValmentavaEdAo(aoDto.getOid(), toRemove);
+            return;
+
+        case AIKUISTEN_PERUSOPETUS:
+        case AMMATILLINEN_PERUSTUTKINTO:
+        case LUKIOKOULUTUS:
+        case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
+        case KORKEAKOULUOPINTO:
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS:
+        case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+        case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
+        case EB_RP_ISH: // Lukiokoulutus
+        case ESIOPETUS:
+        case PERUSOPETUS:
+
+            break;
+
+        default:
+            break;
+        }
+
+        // TODO: Lisää ylläolevaan listaan kun V1 siirto on valmis
         if (CreatorUtil.isSecondaryAS(asDto)) {
             LOG.debug("Indexing  secondary ao");
             if (!TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila())) {
@@ -83,12 +130,6 @@ public class IncrementalApplicationOptionIndexer {
                     addApplicationOption(aoDto);
                 }
             }
-        } else if (CreatorUtil.isAdultUpperSecondaryAS(asDto)) {
-            LOG.debug("Indexing  adult uppersecondary ao");
-            this.indexAdultUpsecEdAo(aoDto.getOid(), !TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila()));
-        } else {
-            LOG.debug("Indexing  higher education ao");
-            this.indexHigherEdAo(aoDto.getOid(), !TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila()));
         }
 
     }
@@ -145,7 +186,7 @@ public class IncrementalApplicationOptionIndexer {
             }
     }
 
-    private void updateApplicationOption(ApplicationOption ao, HakukohdeDTO aoDto) throws KoodistoException, TarjontaParseException, SolrServerException, IOException {
+    private void updateApplicationOption(ApplicationOption ao, HakukohdeV1RDTO aoDto) throws KoodistoException, TarjontaParseException, SolrServerException, IOException {
 
         removeApplicationOption(ao.getId());
         addApplicationOption(aoDto);
@@ -155,7 +196,7 @@ public class IncrementalApplicationOptionIndexer {
     
   //when adding an application option, the lois that are connected to it
     //need to be added or updated.
-    private void addApplicationOption(HakukohdeDTO aoDto) throws KoodistoException {
+    private void addApplicationOption(HakukohdeV1RDTO aoDto) throws KoodistoException {
 
 
         try {
@@ -279,4 +320,49 @@ public class IncrementalApplicationOptionIndexer {
         }
         return false;
     }
+    
+    
+    private void indexValmentavaEdAo(String aoOid, boolean toRemove) throws Exception {
+        ResultV1RDTO<HakukohdeV1RDTO> aoRes = this.tarjontaRawService.getV1EducationHakukohode(aoOid);
+        if (aoRes != null) {
+            HakukohdeV1RDTO curAo = aoRes.getResult();
+            if (curAo != null) {
+
+                    ResultV1RDTO<List<NimiJaOidRDTO>> koulutusOidRes = this.tarjontaRawService.getHigherEducationByHakukohode(curAo.getOid());
+
+                    if (koulutusOidRes != null && koulutusOidRes.getResult() != null) {
+                        for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
+                            KoulutusGenericV1RDTO koulutus = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulOid.getOid()).getResult();
+                            if (koulutus != null && koulutus != null && koulutus.getKomoOid() != null) {
+                                if (!toRemove || hasOtherAos(koulutus.getOid(), aoOid)) {
+                                    this.losIndexer.indexKoulutusKomo(koulutus.getKomoOid());
+                                } else {
+                                    this.losIndexer.removeKoulutus(curKoulOid.getOid());
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (!curAo.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || toRemove) {
+                        LOG.debug("Removing ao: " + curAo.getOid() + " with tila: " + curAo.getTila());
+                        try {
+                        ApplicationOption ao = this.dataQueryService.getApplicationOption(aoOid);
+                        if (ao != null) {
+                            this.dataUpdateService.deleteAo(ao);
+                        }
+                        } catch (ResourceNotFoundException ex) {
+                            LOG.debug("Ao not found in mongo not doing anything");
+                        }
+                    }
+                    
+                }
+
+            }
+
+        
+        
+    }
+
+
+
 }

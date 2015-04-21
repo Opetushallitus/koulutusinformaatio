@@ -26,6 +26,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 
 /**
@@ -59,9 +60,9 @@ public final class CreatorUtil {
         }
     };
 
-    protected static Predicate<HakuDTO> hakuPublished = new Predicate<HakuDTO>() {
+    protected static Predicate<HakuV1RDTO> hakuPublished = new Predicate<HakuV1RDTO>() {
         @Override
-        public boolean apply(HakuDTO haku) {
+        public boolean apply(HakuV1RDTO haku) {
             return (haku != null) ? haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) : false;
         }
     };
@@ -100,11 +101,11 @@ public final class CreatorUtil {
         return Joiner.on("_").join(komoId, providerId);
     }
     
-    public static boolean isSecondaryAS(HakuDTO asDto) {
+    public static boolean isSecondaryAS(HakuV1RDTO asDto) {
         return asDto != null && asDto.getKohdejoukkoUri() != null && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_12") && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_10");
     }
 
-    public static boolean isAdultUpperSecondaryAS(HakuDTO asDto) {
+    public static boolean isAdultUpperSecondaryAS(HakuV1RDTO asDto) {
         return asDto != null && asDto.getKohdejoukkoUri() != null && asDto.getKohdejoukkoUri().contains("haunkohdejoukko_10");
     }
 }
