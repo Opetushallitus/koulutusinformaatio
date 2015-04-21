@@ -17,9 +17,11 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.Date;
 
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,11 @@ import org.springframework.stereotype.Service;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 
 /**
  * @author risal1
@@ -52,41 +55,61 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private IncrementalUpdateService incrementalUpdateService;
     
     @Autowired
-    private TarjontaRawService tarjontaService;
-    
-    @Autowired
     private IncrementalApplicationSystemIndexer asIndexer;
+
+    @Autowired
+    private IncrementalLOSIndexer losIndexer;
     
     @Autowired
     private EducationIncrementalDataUpdateService dataUpdateService;
     
+    @Autowired
+    private IndexerService indexerService;
+    
+    @Autowired @Qualifier("lopAliasSolrServer") 
+    private HttpSolrServer lopHttpSolrServer;
+    
+    @Autowired @Qualifier("loAliasSolrServer")
+    private HttpSolrServer loHttpSolrServer;
+    
+    @Autowired @Qualifier("locationAliasSolrServer") 
+    private HttpSolrServer locationHttpSolrServer;
+    
     @Async
     @Override
     public void updateEducation(String oid) {
-        if (startRunningIfNoIndexingIsRunning()) {
-            //running = false;
-        }
+        doUpdate(oid, new EducationUpdater());
     }
     
     @Async
     @Override
-    public void updateApplication(String oid) {
-        if (startRunningIfNoIndexingIsRunning()) {
-            indexHaku(oid);
-        }
-        dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
-        running = false;
-    }
-
-    private void indexHaku(String oid) {
-        try {
-            LOGGER.debug("Indexing application system: " + oid);
-            asIndexer.indexApplicationSystemData(oid);
-        } catch (Exception ex) {
-            LOGGER.error("Error indexing application system: " + oid, ex);
-        }
+    public void updateApplicationSystem(String oid) {
+        doUpdate(oid, new ApplicationSystemUpdater());
     }
     
+    private void doUpdate(String oid, Updater updater) {
+        if (startRunningIfNoIndexingIsRunning()) {
+            try {
+                runUpdate(oid, updater);
+            } catch (Exception e) {
+                LOGGER.error("Error indexing " + updater.getUpdateProcessName() + ": " + oid, e);
+                dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
+            } finally {
+                running = false;
+            }
+        }
+    }
+
+    private void runUpdate(String oid, Updater updater) throws Exception {
+        updater.update(oid);
+        LOGGER.debug("Committing to solr");
+        indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+        LOGGER.debug("Saving successful status");
+        dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+        LOGGER.info(String.format("Partial indexing finished for % with oid: %s. Indexing took %s", updater.getUpdateProcessName(),
+                oid, System.currentTimeMillis() - runningSince));
+    }
+
     private boolean startRunningIfNoIndexingIsRunning() {
         if (isRunning() || updateService.isRunning() || incrementalUpdateService.isRunning()) {
             LOGGER.debug("Indexing is running, not starting");
@@ -105,6 +128,41 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     @Override
     public long getRunningSince() {
         return runningSince;
+    }
+    
+    private abstract class Updater {
+        abstract void update(String oid) throws Exception;
+        abstract String getUpdateProcessName();
+        
+    }
+    
+    private class ApplicationSystemUpdater extends Updater {
+
+        @Override
+        void update(String oid) throws Exception {
+            LOGGER.debug("Indexing + " + this.getUpdateProcessName() + ": " + oid);
+            asIndexer.indexApplicationSystemData(oid);
+        }
+
+        @Override
+        String getUpdateProcessName() {
+            return "application system";
+        }
+        
+    }
+    
+    private class EducationUpdater extends Updater {
+
+        @Override
+        void update(String oid) throws Exception {
+            LOGGER.debug("Indexing + " + this.getUpdateProcessName() + ": " + oid);
+            losIndexer.indexLoiData(oid);
+        }
+
+        @Override
+        String getUpdateProcessName() {
+            return "education";
+        }
     }
 
 }
