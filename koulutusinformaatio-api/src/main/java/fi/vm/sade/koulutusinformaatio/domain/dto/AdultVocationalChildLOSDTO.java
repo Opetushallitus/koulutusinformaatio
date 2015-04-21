@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class AdultVocationalChildLOSDTO extends HigherEducationLOSDTO {
     
     private boolean valmistavaKoulutus;
-    private double charge;
+    private String charge;
     
     private String targetGroup;
     private String personalization;
@@ -31,12 +31,12 @@ public class AdultVocationalChildLOSDTO extends HigherEducationLOSDTO {
         this.valmistavaKoulutus = valmistavaKoulutus;
     }
 
-    public double getCharge() {
+    public String getCharge() {
         return charge;
     }
 
-    public void setCharge(double charge) {
-        this.charge = charge;
+    public void setCharge(String string) {
+        this.charge = string;
     }
 
     public String getTargetGroup() {

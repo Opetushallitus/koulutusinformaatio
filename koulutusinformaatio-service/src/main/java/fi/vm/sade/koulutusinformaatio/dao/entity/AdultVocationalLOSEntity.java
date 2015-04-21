@@ -138,7 +138,7 @@ public class AdultVocationalLOSEntity {
     private CodeEntity koulutuslaji;
     
     private boolean chargeable;
-    private double charge;
+    private String charge;
     
     private boolean valmistavaKoulutus;
     
@@ -430,10 +430,10 @@ public class AdultVocationalLOSEntity {
     public void setChargeable(boolean chargeable) {
         this.chargeable = chargeable;
     }
-    public double getCharge() {
+    public String getCharge() {
         return charge;
     }
-    public void setCharge(double charge) {
+    public void setCharge(String charge) {
         this.charge = charge;
     }
     public I18nTextEntity getOrganizer() {

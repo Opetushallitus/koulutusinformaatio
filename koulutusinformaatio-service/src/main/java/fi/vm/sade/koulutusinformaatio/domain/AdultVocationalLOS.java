@@ -30,7 +30,7 @@ public class AdultVocationalLOS extends StandaloneLOS {
     
     
     private boolean chargeable;
-    private double charge;
+    private String charge;
     
     private List<I18nText> professionalTitles;
     
@@ -62,12 +62,12 @@ public class AdultVocationalLOS extends StandaloneLOS {
         this.chargeable = chargeable;
     }
 
-    public double getCharge() {
+    public String getCharge() {
         return charge;
     }
 
-    public void setCharge(double charge) {
-        this.charge = charge;
+    public void setCharge(String string) {
+        this.charge = string;
     }
 
     public List<I18nText> getProfessionalTitles() {

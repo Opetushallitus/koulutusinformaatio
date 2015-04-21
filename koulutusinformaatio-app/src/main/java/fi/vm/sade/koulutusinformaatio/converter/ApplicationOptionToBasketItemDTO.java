@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,14 +82,14 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setVocational(ao.isVocational());
                 aoDTO.setEducationCodeUri(ao.getEducationCodeUri());
                 aoDTO.setEducationTypeUri(createEducationTypeUri(ao.getEducationTypeUri()));
-                aoDTO.setPrerequisite( CodeToDTO.convert(ao.getPrerequisite(), lang) );
+                aoDTO.setPrerequisite(CodeToDTO.convert(ao.getPrerequisite(), lang));
                 aoDTO.setKotitalous(ao.getEducationCodeUri() != null && ao.getEducationCodeUri().contains(TarjontaConstants.KOTITALOUSKOODI));
                 aoDTO.setHakuaikaId(ao.getInternalASDateRef());
                 aoDTO.setPseudo(ao.isPseudo());
-                
+
                 ParentLOSRef los = ao.getParent();
                 if (los != null) {
-                	aoDTO.setHigherEducation(TarjontaConstants.TYPE_KK.equals(los.getLosType()));
+                    aoDTO.setHigherEducation(TarjontaConstants.TYPE_KK.equals(los.getLosType()));
                 }
                 Provider provider = ao.getProvider();
                 if (provider != null) {
@@ -100,29 +101,29 @@ public final class ApplicationOptionToBasketItemDTO {
                     }
                 }
                 ApplicationSystem as = ao.getApplicationSystem();
-                
+
                 // add to generic application system pool (erikseen haettavat hakukohteet)
                 if (as.getMaxApplications() <= 1 || isHakutapaJatkuva(as) || ao.isSpecificApplicationDates() || as.getApplicationFormLink() != null) {
-                    
-                    aoDTO.setApplicationDates( DateRangeToDTO.convert(ao.getApplicationDates()) );
+
+                    aoDTO.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
                     aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
                     aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
-                    
+
                     // set hakutapa for application option
                     aoDTO.setHakutapaUri(as.getHakutapaUri());
-                    
+
                     // set application form link from application system to application option
                     aoDTO.setApplicationFormLink(as.getApplicationFormLink());
-                    
+
                     // set flag telling if system application form is used
-                    aoDTO.setUseSystemApplicationForm( as.isUseSystemApplicationForm() );
-                    
+                    aoDTO.setUseSystemApplicationForm(as.isUseSystemApplicationForm());
+
                     // set application system id and name for application option (used for routing to correct application form)
                     aoDTO.setAsId(as.getId());
                     aoDTO.setAsName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), lang));
-                    
-                    if (items.containsKey( HAKU_GENERIC_ID )) {
-                        items.get( HAKU_GENERIC_ID ).getApplicationOptions().add(aoDTO);
+
+                    if (items.containsKey(HAKU_GENERIC_ID)) {
+                        items.get(HAKU_GENERIC_ID).getApplicationOptions().add(aoDTO);
                     } else {
                         BasketItemDTO basketItem = new BasketItemDTO();
                         basketItem.setApplicationSystemId(HAKU_GENERIC_ID);
@@ -136,8 +137,8 @@ public final class ApplicationOptionToBasketItemDTO {
                         items.get(asId).getApplicationOptions().add(aoDTO);
                     } else if (as != null) {
                         BasketItemDTO basketItem = new BasketItemDTO();
-                        basketItem.setApplicationFormLink( as.getApplicationFormLink() );
-                        basketItem.setUseSystemApplicationForm( as.isUseSystemApplicationForm() );
+                        basketItem.setApplicationFormLink(as.getApplicationFormLink());
+                        basketItem.setUseSystemApplicationForm(as.isUseSystemApplicationForm());
                         basketItem.setMaxApplicationOptions(as.getMaxApplications());
                         basketItem.setApplicationSystemId(as.getId());
                         basketItem.getApplicationOptions().add(aoDTO);
@@ -145,24 +146,60 @@ public final class ApplicationOptionToBasketItemDTO {
                         basketItem.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
                         basketItem.setAsOngoing(ConverterUtil.isOngoing(ao.getApplicationDates()));
                         basketItem.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
-                        
-                       
+
                         items.put(asId, basketItem);
                     }
                 }
             }
+            items = reorder(items);
             return Lists.newArrayList(items.values());
         } else {
             return null;
         }
     }
-    
+
+    // FIXME: Purkkakorjaus kunnes V1 on toteutettu loppuun
+    private static Map<String, BasketItemDTO> reorder(Map<String, BasketItemDTO> items) {
+        Map<String, BasketItemDTO> reordered = new HashMap<String, BasketItemDTO>();
+        for (String s : items.keySet()) {
+            BasketItemDTO item = items.get(s);
+            if (s.endsWith("_null")) { // V0 application option without hakuaikaID should be merged with V1 ao if one exists
+                String v1Key = searchPartialKey(items, s.split("_")[0]);
+                if (v1Key != null) { // Existing key found
+                    appendAOs(reordered, v1Key, item);
+                } else {
+                    appendAOs(reordered, s, item); // There was no V1 haku, put the item back
+                }
+            } else {
+                appendAOs(reordered, s, item);
+            }
+        }
+        return reordered;
+    }
+
+    private static void appendAOs(Map<String, BasketItemDTO> reordered, String keyToBeAppended, BasketItemDTO source) {
+        if (reordered.containsKey(keyToBeAppended)) {
+            reordered.get(keyToBeAppended).getApplicationOptions().addAll(source.getApplicationOptions());
+        } else {
+            reordered.put(keyToBeAppended, source);
+        }
+    }
+
+    private static String searchPartialKey(Map<String, BasketItemDTO> items, String s) {
+        for (String key : items.keySet()) {
+            if (key.contains(s) && !key.contains("_null"))
+                return key;
+        }
+
+        return null;
+    }
+
     private static String createEducationTypeUri(String educationTypeUri) {
-        
+
         if (educationTypeUri != null) {
             return educationTypeUri.replace(".", "");
         }
-        
+
         return null;
     }
 
@@ -170,10 +207,10 @@ public final class ApplicationOptionToBasketItemDTO {
         if (as.getHakutapaUri() != null && as.getHakutapaUri().equals(HAKUTAPA_JATKUVA)) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     private static String generateAsId(ApplicationSystem as, BasketApplicationOptionDTO aoDTO) {
         return as.getId() + "_" + aoDTO.getHakuaikaId();
     }

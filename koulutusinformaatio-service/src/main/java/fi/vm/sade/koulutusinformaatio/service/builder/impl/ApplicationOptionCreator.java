@@ -99,7 +99,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setName(koodistoService.searchFirstName(hakukohdeDTO.getHakukohdeNimiUri()));
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
         } catch (Exception ex) {
-            LOG.warn("Problem with application option name generation: " + ao.getId() + " name: " + hakukohdeDTO.getHakukohdeNimiUri());
+            LOG.debug("HakukohdeNimiUri was not codeelement: " + ao.getId() + " name: " + hakukohdeDTO.getHakukohdeNimiUri());
         }
         if (ao.getName() == null) {
             ao.setName(createI18Name(hakukohdeDTO.getHakukohdeNimiUri()));

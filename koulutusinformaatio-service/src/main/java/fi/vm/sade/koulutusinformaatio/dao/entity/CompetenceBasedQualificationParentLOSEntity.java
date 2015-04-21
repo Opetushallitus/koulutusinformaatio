@@ -41,7 +41,7 @@ public class CompetenceBasedQualificationParentLOSEntity {
     private List<CodeEntity> availableTranslationLanguages;
     
     private boolean chargeable;
-    private double charge;
+    private String charge;
     private boolean osaamisala;
     
     private String edtUri;
@@ -137,10 +137,10 @@ public class CompetenceBasedQualificationParentLOSEntity {
     public void setChargeable(boolean chargeable) {
         this.chargeable = chargeable;
     }
-    public double getCharge() {
+    public String getCharge() {
         return charge;
     }
-    public void setCharge(double charge) {
+    public void setCharge(String charge) {
         this.charge = charge;
     }
     public boolean isOsaamisala() {

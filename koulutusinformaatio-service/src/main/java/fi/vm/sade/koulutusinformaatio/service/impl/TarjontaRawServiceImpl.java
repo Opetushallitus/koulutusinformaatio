@@ -52,6 +52,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
@@ -77,11 +78,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private WebResource lastModifiedResource;
     
     
-    @Value("${scheduling.data.incremental.period:300000}")
-    private String changePeriod;
-
-    
-
     @Autowired
     public TarjontaRawServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl,
             ConversionService conversionService, KoodistoService koodistoService, ProviderService providerService) {
@@ -394,6 +390,15 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .path(oid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<ValmistavaKoulutusV1RDTO>>() {
+                });
+    }
+
+    @Override
+    public ResultV1RDTO<KoulutusGenericV1RDTO> getV1KoulutusLearningOpportunity(String oid) {
+        return v1Resource
+                .path(oid)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<KoulutusGenericV1RDTO>>() {
                 });
     }
 

@@ -33,6 +33,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
@@ -46,6 +47,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationPar
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
@@ -62,6 +64,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
@@ -91,6 +94,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
+    private KoulutusLOSDAO koulutusLOSDAO;
 
     @Autowired
     public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -102,7 +106,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
-            AdultVocationalLOSDAO adultVocationalLOSDAO) {
+            AdultVocationalLOSDAO adultVocationalLOSDAO,
+            KoulutusLOSDAO koulutusLOSDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -115,6 +120,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
+        this.koulutusLOSDAO = koulutusLOSDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
@@ -131,6 +137,9 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         } 
         else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
             this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
+        } 
+        else if (learningOpportunitySpecification instanceof StandaloneLOS) {
+            this.saveKoulutusLOS((StandaloneLOS)learningOpportunitySpecification);
         } 
     }
 
@@ -337,6 +346,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.adultUpperSecondaryLOSDAO.deleteById(los.getId());
         } else if (los instanceof CompetenceBasedQualificationParentLOS) {
             this.adultVocationalLOSDAO.deleteById(los.getId());
+        } else if (los instanceof StandaloneLOS) {
+            this.koulutusLOSDAO.deleteById(los.getId());
         }
         
     }
@@ -548,6 +559,41 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         }
     }
 
+    private void saveKoulutusLOS(StandaloneLOS los) {
+        // TODO Auto-generated method stub
+        
+    }
 
+    @Override
+    public void updateKoulutusLos(StandaloneLOS los) {
+        if (los != null) {
 
+            try {
+                Provider existingProv = this.getProvider(los.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
+                    for (String curAsId : existingProv.getApplicationSystemIds()) {
+                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
+                            los.getProvider().getApplicationSystemIds().add(curAsId);
+                        }
+                    }
+                }
+            } catch (ResourceNotFoundException ex) {
+                LOG.warn("Problem updating provider's application system references");
+            }
+
+            KoulutusLOSEntity plos = modelMapper.map(los, KoulutusLOSEntity.class);
+
+            this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
+            save(plos.getProvider());
+            
+            if (plos.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    this.applicationOptionDAO.deleteById(ao.getId());
+                    save(ao);
+                }
+            }
+            this.koulutusLOSDAO.deleteById(plos.getId());
+            this.koulutusLOSDAO.save(plos);
+        }
+    }
 }

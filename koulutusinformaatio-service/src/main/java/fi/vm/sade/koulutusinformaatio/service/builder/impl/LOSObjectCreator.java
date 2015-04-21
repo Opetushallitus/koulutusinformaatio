@@ -1033,9 +1033,9 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setEdtUri(dto.getKoulutustyyppi().getUri());
         }
 
-        LOG.debug("setting charge with los: " + los.getId() + " and dto hinta: " + dto.getHinta());
-        if (dto.getHinta() != null) {
-            los.setCharge(dto.getHinta());
+        if (dto.getHintaString() != null) {
+            LOG.debug("setting charge with los: " + los.getId() + " and dto hinta: " + dto.getHintaString());
+            los.setCharge(dto.getHintaString());
         }
         los.setChargeable(dto.getOpintojenMaksullisuus());
         los.setOsaamisala(!dto.getKoulutusmoduuliTyyppi().name().equals(KoulutusmoduuliTyyppi.TUTKINTO.name()));
@@ -1073,24 +1073,34 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public StandaloneLOS createKymppiluokkaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         LOG.debug("Creating Kymppiluokka los: " + koulutusDTO.getOid());
-        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_PK_JALK);
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_TENTH_GRADE);
     }
 
-    private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edTypeValma) throws KoodistoException,
+    public StandaloneLOS createMMLukioonValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+        LOG.debug("Creating MM lukioon valmistava los: " + koulutusDTO.getOid());
+        return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_IMM_UPSEC);
+    }
+
+    private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException,
             TarjontaParseException {
+        StandaloneLOS los = createGenericLOS(koulutusDTO, checkStatus, edType);
+        addValmistavaKoulutusFields(koulutusDTO, los);
+        return los;
+    }
+
+    private StandaloneLOS createGenericLOS(KoulutusGenericV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException, TarjontaParseException {
         StandaloneLOS los = new StandaloneLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
-        los.setEducationType(edTypeValma);
+        los.setEducationType(edType);
         addLOSFields(koulutusDTO, los);
         addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
-        addDatabaseValuesForNamesAndCreditValue(koulutusDTO, los);
         if (!checkStatus) {
             los.setStatus(koulutusDTO.getTila().toString());
         }
         return los;
     }
 
-    private void addDatabaseValuesForNamesAndCreditValue(ValmistavaKoulutusV1RDTO koulutusDTO, StandaloneLOS los) {
+    private void addValmistavaKoulutusFields(ValmistavaKoulutusV1RDTO koulutusDTO, StandaloneLOS los) {
         if (koulutusDTO.getKoulutusohjelmanNimiKannassa() != null) {
             los.setName(new I18nText(koulutusDTO.getKoulutusohjelmanNimiKannassa()));
             los.setShortTitle(new I18nText(koulutusDTO.getKoulutusohjelmanNimiKannassa()));
@@ -1100,16 +1110,18 @@ public class LOSObjectCreator extends ObjectCreator {
         }
     }
 
-    private <S extends KoulutusV1RDTO, T extends LOS> void addLOSFields(S koulutus, T los) throws KoodistoException {
+    private <S extends KoulutusV1RDTO, T extends LOS> void addLOSFields(S koulutus, T los) throws KoodistoException, TarjontaParseException {
         los.setId(koulutus.getOid());
-        if (koulutus instanceof KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO || 
-                koulutus instanceof ValmistavaKoulutusV1RDTO) { // Valma tai Telma
+        los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
+        los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
+        if (los.getName() == null) {
             los.setName(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
             los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
-        } else {
-            los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
-            los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
         }
+        if (los.getName() == null) {
+            throw new TarjontaParseException("Generating LOS for oid " + koulutus.getOid() +" failed. Could not parse name from DTO.");
+        }
+
         if (koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET) != null
                 && !koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET).getTekstis().containsKey(UNDEFINED)) {
             los.setGoals(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
@@ -1367,8 +1379,8 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getMeta()));
             los.setPduCodeUri(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getUri());
             los.setChargeable(koulutus.getValmistavaKoulutus().getOpintojenMaksullisuus());
-            if (koulutus.getValmistavaKoulutus().getHinta() != null) {
-                los.setCharge(koulutus.getValmistavaKoulutus().getHinta());
+            if (koulutus.getValmistavaKoulutus().getHintaString() != null) {
+                los.setCharge(koulutus.getValmistavaKoulutus().getHintaString());
             }
 
             if (koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KOHDERYHMA) != null
