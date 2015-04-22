@@ -169,7 +169,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         for (String hakukohdeOID : hakukohdeOIDs) {
             HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(hakukohdeOID);
-            HakuV1RDTO hakuDTO = tarjontaRawService.getV1EducationHakuByOid(hakukohdeOID).getResult();
+            HakuV1RDTO hakuDTO = tarjontaRawService.getV1EducationHakuByOid(hakukohdeDTO.getHakuOid()).getResult();
 
             if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
                 LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
@@ -278,7 +278,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         for (String hakukohdeOID : hakukohdeOIDs) {
             HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(hakukohdeOID);
-            HakuV1RDTO hakuDTO = tarjontaRawService.getV1EducationHakuByOid(hakukohdeOID).getResult();
+            HakuV1RDTO hakuDTO = tarjontaRawService.getV1EducationHakuByOid(hakukohdeDTO.getHakuOid()).getResult();
 
             if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
                 LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
