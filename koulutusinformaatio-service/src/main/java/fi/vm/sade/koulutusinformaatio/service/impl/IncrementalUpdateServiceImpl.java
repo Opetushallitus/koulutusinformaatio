@@ -52,6 +52,8 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.SingleUpp
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 
 
 
@@ -248,11 +250,11 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void indexHakukohdeChanges(List<String> hakukohdeChanges) throws Exception {
         for (String curOid : hakukohdeChanges) {
             LOG.debug("Changed hakukohde: " + curOid);
-            HakukohdeDTO aoDto = null;
-            HakuDTO asDto = null;
+            HakukohdeV1RDTO aoDto = null;
+            HakuV1RDTO asDto = null;
             try {
-                aoDto = this.tarjontaRawService.getHakukohde(curOid);
-                asDto = this.tarjontaRawService.getHaku(aoDto.getHakuOid());
+                aoDto = this.tarjontaRawService.getV1EducationHakukohode(curOid).getResult();
+                asDto = this.tarjontaRawService.getV1EducationHakuByOid(aoDto.getHakuOid()).getResult();
                 this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
             } catch (Exception ex) {
                 LOG.warn("Problem indexing hakukohde: " + curOid, ex);

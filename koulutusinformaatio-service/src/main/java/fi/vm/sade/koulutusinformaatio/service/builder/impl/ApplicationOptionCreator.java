@@ -89,7 +89,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return applicationSystemCreator;
     }
 
-    private ApplicationOption createApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO, KomotoDTO komoto,
+    private ApplicationOption createApplicationOption(HakukohdeDTO hakukohdeDTO, HakuV1RDTO hakuDTO, KomotoDTO komoto,
                                                       Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setEducationTypeUri(educationType);
@@ -139,11 +139,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
         } else if (hakuDTO != null
                 && hakuDTO.getHakuaikas() != null
                 && !hakuDTO.getHakuaikas().isEmpty()) {
-            HakuaikaRDTO aoHakuaika = hakuDTO.getHakuaikas().get(0);
+            HakuaikaV1RDTO aoHakuaika = hakuDTO.getHakuaikas().get(0);
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
-            I18nText names = new I18nText();
-            names.put("fi", aoHakuaika.getNimi());
+            I18nText names = new I18nText(aoHakuaika.getNimet());
             ao.setApplicationPeriodName(names);
         }
 
@@ -170,7 +169,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         for (String hakukohdeOID : hakukohdeOIDs) {
             HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(hakukohdeOID);
-            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(hakukohdeOID);
+            HakuV1RDTO hakuDTO = tarjontaRawService.getV1EducationHakuByOid(hakukohdeDTO.getHakuOid()).getResult();
 
             if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
                 LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
@@ -191,7 +190,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return applicationOptions;
     }
 
-    public ApplicationOption createVocationalApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
+    public ApplicationOption createVocationalApplicationOption(HakukohdeDTO hakukohdeDTO, HakuV1RDTO hakuDTO,
                                                                KomotoDTO komoto, Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
         ApplicationOption ao = createApplicationOption(hakukohdeDTO, hakuDTO, komoto, prerequisite, educationCodeUri, educationType);
         ao.setExams(educationObjectCreator.createVocationalExams(hakukohdeDTO.getValintakoes()));
@@ -279,7 +278,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         for (String hakukohdeOID : hakukohdeOIDs) {
             HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(hakukohdeOID);
-            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(hakukohdeOID);
+            HakuV1RDTO hakuDTO = tarjontaRawService.getV1EducationHakuByOid(hakukohdeDTO.getHakuOid()).getResult();
 
             if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
                 LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
@@ -298,7 +297,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return applicationOptions;
     }
 
-    public ApplicationOption createUpperSecondaryApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
+    public ApplicationOption createUpperSecondaryApplicationOption(HakukohdeDTO hakukohdeDTO, HakuV1RDTO hakuDTO,
                                                                    KomotoDTO komoto, Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {
         ApplicationOption ao = createApplicationOption(hakukohdeDTO, hakuDTO, komoto, prerequisite, educationCodeUri, educationType);
         //ao.setEducationTypeUri(SolrConstants.ED_TYPE_LUKIO_SHORT);

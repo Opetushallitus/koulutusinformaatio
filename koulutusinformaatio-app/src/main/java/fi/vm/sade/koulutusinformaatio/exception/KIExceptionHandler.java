@@ -27,22 +27,23 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 /**
- * Provides utility methods that turn
- * {@link fi.vm.sade.koulutusinformaatio.domain.exception.KIException} objects thrown
- * by the service layer into {@link javax.ws.rs.WebApplicationException}
- * objects that can be thrown from resource methods.
+ * Provides utility methods that turn {@link fi.vm.sade.koulutusinformaatio.domain.exception.KIException} objects thrown by the service layer into {@link javax.ws.rs.WebApplicationException} objects that can be thrown from resource methods.
  *
  * @author Hannu Lyytikainen
  */
 public class KIExceptionHandler {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(KIExceptionHandler.class);
-    
+
     public static HTTPException resolveException(Exception e) {
-        LOGGER.error(e.getMessage(), e);
+        if (e instanceof ResourceNotFoundException) {
+            LOGGER.warn(e.getMessage(), e); // Propably invalid oid
+        } else {
+            LOGGER.error(e.getMessage(), e);
+        }
         HTTPException webException = null;
         if (e instanceof KIException) {
-            if(e instanceof SearchException) {
+            if (e instanceof SearchException) {
                 webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Error occurred while searching");
             } else if (e instanceof ResourceNotFoundException) {
                 webException = new HTTPException(Response.Status.NOT_FOUND, e.getMessage());
@@ -51,13 +52,11 @@ public class KIExceptionHandler {
             } else {
                 webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Internal error occurred");
             }
-        }
-        else {
+        } else {
             webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Internal error occurred");
         }
-        
+
         return webException;
     }
-
 
 }

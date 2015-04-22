@@ -65,6 +65,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 
 /**
@@ -121,7 +122,7 @@ public class IncrementalApplicationSystemIndexer {
      * Main method for indexing data based on application system changes
      */
     public void indexApplicationSystemData(String asOid) throws Exception {
-        HakuDTO asDto = this.tarjontaRawService.getHaku(asOid);
+        HakuV1RDTO asDto = this.tarjontaRawService.getV1EducationHakuByOid(asOid).getResult();
         if (CreatorUtil.isSecondaryAS(asDto)) {
             indexSecondaryEducationAsData(asDto);
         } else if (CreatorUtil.isAdultUpperSecondaryAS(asDto)) {
@@ -263,7 +264,7 @@ public class IncrementalApplicationSystemIndexer {
         }
     }
 
-    private void indexSecondaryEducationAsData(HakuDTO asDto) throws Exception {
+    private void indexSecondaryEducationAsData(HakuV1RDTO asDto) throws Exception {
         
         //Indexing application options connected to the changed application system
 
@@ -281,7 +282,7 @@ public class IncrementalApplicationSystemIndexer {
                 List<OidRDTO> hakukohdeOids = this.tarjontaRawService.getHakukohdesByHaku(asDto.getOid());
                 if (hakukohdeOids != null && !hakukohdeOids.isEmpty()) {
                     for (OidRDTO curOid : hakukohdeOids) {
-                        HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid.getOid());
+                        HakukohdeV1RDTO aoDto = this.tarjontaRawService.getV1EducationHakukohode(curOid.getOid()).getResult();
                         this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
                     }
                 }
@@ -294,7 +295,7 @@ public class IncrementalApplicationSystemIndexer {
     }
     
     private void handleAsChangesInSeondaryLos(String curLosId,
-            ApplicationSystem as, HakuDTO asDto) throws ResourceNotFoundException, KoodistoException, IOException, SolrServerException {
+            ApplicationSystem as, HakuV1RDTO asDto) throws ResourceNotFoundException, KoodistoException, IOException, SolrServerException {
         
         LOS curLos = this.dataQueryService.getLos(curLosId);
         if (curLos instanceof ChildLOS) {
@@ -316,7 +317,7 @@ public class IncrementalApplicationSystemIndexer {
         
     }
 
-    private void handleAsRemovalFromSecondaryLOS(String curLosId, HakuDTO asDto) throws ResourceNotFoundException, TarjontaParseException, KoodistoException, IOException, SolrServerException {
+    private void handleAsRemovalFromSecondaryLOS(String curLosId, HakuV1RDTO asDto) throws ResourceNotFoundException, TarjontaParseException, KoodistoException, IOException, SolrServerException {
         LOS curLos = this.dataQueryService.getLos(curLosId);
         if (curLos instanceof ChildLOS) {
             ParentLOS parent = this.dataQueryService.getParentLearningOpportunity(((ChildLOS) curLos).getParent().getId());
@@ -329,7 +330,7 @@ public class IncrementalApplicationSystemIndexer {
     }
 
     private void reIndexUpsecLOSForRemovedAs(UpperSecondaryLOS curLos,
-            HakuDTO asDto) throws IOException, SolrServerException {
+            HakuV1RDTO asDto) throws IOException, SolrServerException {
         boolean wasOtherAs = false;
         List<UpperSecondaryLOI> lois = new ArrayList<UpperSecondaryLOI>();
         for (UpperSecondaryLOI curUpsecLoi : curLos.getLois()) {
@@ -355,7 +356,7 @@ public class IncrementalApplicationSystemIndexer {
         }
     }
 
-    private void reIndexSpecialLOSForRemovedAs(SpecialLOS curLos, HakuDTO asDto) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
+    private void reIndexSpecialLOSForRemovedAs(SpecialLOS curLos, HakuV1RDTO asDto) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
         boolean wasOtherAs = false;
         //String komotoOid = null;
         List<ChildLOI> childLois = new ArrayList<ChildLOI>();
@@ -381,7 +382,7 @@ public class IncrementalApplicationSystemIndexer {
         }
     }
 
-    private void reIndexParentLOSForRemovedAs(ParentLOS parent, HakuDTO asDto) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
+    private void reIndexParentLOSForRemovedAs(ParentLOS parent, HakuV1RDTO asDto) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
         boolean wasOtherAs = false;
         
         List<ParentLOI> parentLois = new ArrayList<ParentLOI>();
@@ -474,7 +475,7 @@ public class IncrementalApplicationSystemIndexer {
 
     
     private void reIndexAsDataForUpsecLOS(UpperSecondaryLOS curLos,
-            HakuDTO asDto, ApplicationSystem as) throws KoodistoException {
+            HakuV1RDTO asDto, ApplicationSystem as) throws KoodistoException {
         for (UpperSecondaryLOI curUpsecLoi : curLos.getLois()) {
             for (ApplicationOption curAo : curUpsecLoi.getApplicationOptions()) {
                 if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
@@ -486,7 +487,7 @@ public class IncrementalApplicationSystemIndexer {
 
     }
 
-    private void reIndexAsDataForSpecialLOS(SpecialLOS curLos, HakuDTO asDto,
+    private void reIndexAsDataForSpecialLOS(SpecialLOS curLos, HakuV1RDTO asDto,
             ApplicationSystem as) throws KoodistoException {
 
         for (ChildLOI curChildLoi : curLos.getLois()) {
@@ -500,29 +501,27 @@ public class IncrementalApplicationSystemIndexer {
 
     }
 
-    private void reIndexAsDataForParentLOS(ParentLOS parent, HakuDTO hakuDTO, ApplicationSystem as) throws KoodistoException {
+    private void reIndexAsDataForParentLOS(ParentLOS parent, HakuV1RDTO asDto, ApplicationSystem as) throws KoodistoException {
         for (ParentLOI parentLoi : parent.getLois()) {
             for (ApplicationOption curAo : parentLoi.getApplicationOptions()) {
                 if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
                     curAo.setApplicationSystem(as);
-                    this.reIndexHakuaikaForSecondaryLOS(curAo, hakuDTO, as);
+                    this.reIndexHakuaikaForSecondaryLOS(curAo, asDto, as);
                 }
             }
         }
 
     }
     
-    private void reIndexHakuaikaForSecondaryLOS(ApplicationOption ao, HakuDTO hakuDTO, ApplicationSystem as) {
+    private void reIndexHakuaikaForSecondaryLOS(ApplicationOption ao, HakuV1RDTO asDto, ApplicationSystem as) {
         if (!ao.isSpecificApplicationDates()
-                && hakuDTO != null 
-                && hakuDTO.getHakuaikas() != null 
-                && !hakuDTO.getHakuaikas().isEmpty()) {
-            HakuaikaRDTO aoHakuaika =  hakuDTO.getHakuaikas().get(0);
+                && asDto != null 
+                && asDto.getHakuaikas() != null 
+                && !asDto.getHakuaikas().isEmpty()) {
+            HakuaikaV1RDTO aoHakuaika =  asDto.getHakuaikas().get(0);
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
-            I18nText nimet = new I18nText();
-            nimet.put("fi", aoHakuaika.getNimi());
-            ao.setApplicationPeriodName(nimet);
+            ao.setApplicationPeriodName(new I18nText(aoHakuaika.getNimet()));
         }
     }
     

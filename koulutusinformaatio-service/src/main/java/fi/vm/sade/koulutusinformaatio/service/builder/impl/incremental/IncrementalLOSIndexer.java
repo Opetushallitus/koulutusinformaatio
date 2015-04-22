@@ -153,10 +153,11 @@ public class IncrementalLOSIndexer {
     //Indexes changed loi data
     public void indexLoiData(String komotoOid) throws Exception {
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
-        ResultV1RDTO<KoulutusGenericV1RDTO> komoRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(komotoOid);
-        KoulutusGenericV1RDTO koulutusDTO = komoRes.getResult();
+        KoulutusGenericV1RDTO koulutusDTO = this.tarjontaRawService.getV1KoulutusLearningOpportunity(komotoOid).getResult();
+        if(koulutusDTO == null){
+            return;
+        }
         LOG.debug(String.format("Loi: %s, status: %s", komotoOid, koulutusDTO.getTila()));
-
         
         switch (koulutusDTO.getToteutustyyppi()) {
         
@@ -189,18 +190,17 @@ public class IncrementalLOSIndexer {
             this.indexValmentavaKomoto(komotoOid);
             return;
             
-        case AIKUISTEN_PERUSOPETUS:
-        case AMMATILLINEN_PERUSTUTKINTO:
-        case LUKIOKOULUTUS:
-        case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
-        case KORKEAKOULUOPINTO:
-        case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS:
-        case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-        case VAPAAN_SIVISTYSTYON_KOULUTUS:
-        case EB_RP_ISH:
-        case ESIOPETUS:
-        case PERUSOPETUS:
-
+        case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
+        case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA: // Ammatillinen
+        case LUKIOKOULUTUS: // Lukiokoulutus
+        case EB_RP_ISH: // Lukiokoulutus
+        case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
+        case KORKEAKOULUOPINTO: // Tulossa
+        case AIKUISTEN_PERUSOPETUS: // Tulossa
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS: // Poistunut
+        case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS: // Poistunut
+        case ESIOPETUS: // Ei käytössä
+        case PERUSOPETUS: // Ei käytössä
             break;
 
         default:
@@ -768,12 +768,18 @@ public class IncrementalLOSIndexer {
 
     public void indexHigherEdKomo(String komoOid) throws Exception {
         this.higherEdLOSIndexer.indexHigherEdKomo(komoOid);
-        
     }
-
 
     public void removeHigherEd(String oid, String komoOid) throws Exception {
         this.higherEdLOSIndexer.removeHigherEd(oid, komoOid);        
+    }
+    
+    public void indexKoulutusKomo(String komoOid) throws Exception {
+        this.koulutusIndexer.indexKoulutusKomo(komoOid);
+    }
+
+    public void removeKoulutus(String oid) throws Exception {
+        this.koulutusIndexer.removeKoulutusLOS(oid);        
     }
     
     public void removeAdultUpsecEd(String oid, String komoOid) throws Exception {
