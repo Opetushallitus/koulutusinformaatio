@@ -34,6 +34,7 @@ import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.partial.PartialUpdateIndexer;
 
 /**
  * @author risal1
@@ -55,9 +56,6 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private IncrementalUpdateService incrementalUpdateService;
     
     @Autowired
-    private IncrementalApplicationSystemIndexer asIndexer;
-
-    @Autowired
     private IncrementalLOSIndexer losIndexer;
     
     @Autowired
@@ -65,6 +63,9 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     
     @Autowired
     private IndexerService indexerService;
+    
+    @Autowired
+    private PartialUpdateIndexer updateIndexer;
     
     @Autowired @Qualifier("lopAliasSolrServer") 
     private HttpSolrServer lopHttpSolrServer;
@@ -141,7 +142,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         @Override
         void update(String oid) throws Exception {
             LOGGER.debug("Indexing + " + this.getUpdateProcessName() + ": " + oid);
-            asIndexer.indexApplicationSystemData(oid);
+            updateIndexer.update(oid);
         }
 
         @Override
