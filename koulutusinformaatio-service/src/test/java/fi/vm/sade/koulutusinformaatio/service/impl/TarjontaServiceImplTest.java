@@ -210,9 +210,9 @@ public class TarjontaServiceImplTest {
         verify(loDirector).constructLearningOpportunities(isA(UpperSecondaryLearningOpportunityBuilder.class));
     }
 
-    @Test
+    @Test(expected = TarjontaParseException.class)
     public void testRehabilitatingResolveBuilder() throws TarjontaParseException, KoodistoException {
-        service.findParentLearningOpportunity(KOMO_ID_REHAB);
+        service.findParentLearningOpportunity(KOMO_ID_REHAB); // Käytetään V1 rajapintaa
         verify(loDirector).constructLearningOpportunities(isA(RehabilitatingLearningOpportunityBuilder.class));
     }
 
