@@ -21,6 +21,8 @@ import java.util.List;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
@@ -49,6 +51,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakoulu
  * @author Markus
  *
  */
+@Component
 public class IncrementalApplicationOptionIndexer {
     
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalApplicationOptionIndexer.class);
@@ -59,6 +62,7 @@ public class IncrementalApplicationOptionIndexer {
     
     private IncrementalLOSIndexer losIndexer;
     
+    @Autowired
     public IncrementalApplicationOptionIndexer(TarjontaRawService tarjontaRawService, EducationIncrementalDataQueryService dataQueryService, EducationIncrementalDataUpdateService dataUpdateService, IncrementalLOSIndexer losIndexer) {
         this.tarjontaRawService = tarjontaRawService;
         this.dataQueryService = dataQueryService;

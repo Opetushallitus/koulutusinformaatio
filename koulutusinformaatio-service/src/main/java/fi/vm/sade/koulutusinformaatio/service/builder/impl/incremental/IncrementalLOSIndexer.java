@@ -23,6 +23,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -64,6 +66,7 @@ import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
  * @author Markus
  *
  */
+@Component
 public class IncrementalLOSIndexer {
     
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalLOSIndexer.class);
@@ -91,6 +94,7 @@ public class IncrementalLOSIndexer {
 
     private IncrementalKoulutusLOSIndexer koulutusIndexer;
     
+    @Autowired
     public IncrementalLOSIndexer (TarjontaRawService tarjontaRawService, 
                                     TarjontaService tarjontaService, 
                                     EducationIncrementalDataUpdateService dataUpdateService,

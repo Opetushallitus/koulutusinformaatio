@@ -28,6 +28,8 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -76,7 +78,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RD
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatilliseenPeruskoulutukseenValmentavaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
@@ -93,6 +94,7 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 /**
  * @author Hannu Lyytikainen
  */
+@Component
 public class LOSObjectCreator extends ObjectCreator {
 
     private static final Logger LOG = LoggerFactory.getLogger(LOSObjectCreator.class);
@@ -104,6 +106,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private LOIObjectCreator loiCreator;
     private TarjontaRawService tarjontaRawService;
 
+    @Autowired
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
                             ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         super(koodistoService);

@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
@@ -40,6 +42,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
  * @author Markus
  *
  */
+@Component
 public class SingleSpecialLOSBuilder {
 
     public static final Logger LOG = LoggerFactory.getLogger(SingleSpecialLOSBuilder.class);
@@ -47,7 +50,7 @@ public class SingleSpecialLOSBuilder {
     private LOSObjectCreator losObjectCreator;
     private TarjontaRawService tarjontaRawService;
 
-
+    @Autowired
     public SingleSpecialLOSBuilder(LOSObjectCreator losObjectCreator, TarjontaRawService tarjontaRawService) {
         this.losObjectCreator = losObjectCreator;
         this.tarjontaRawService = tarjontaRawService;

@@ -23,6 +23,8 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -57,6 +59,7 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
  * @author Markus
  *
  */
+@Component
 public class SingleParentLOSBuilder {
     
     public static final Logger LOG = LoggerFactory.getLogger(SingleParentLOSBuilder.class);
@@ -65,6 +68,7 @@ public class SingleParentLOSBuilder {
     private LOSObjectCreator losCreator;
     private TarjontaRawService tarjontaRawService;
     
+    @Autowired
     public SingleParentLOSBuilder(LOSObjectCreator losCreator, TarjontaRawService tarjontaRawService) {
         this.losCreator = losCreator;
         this.tarjontaRawService = tarjontaRawService;
