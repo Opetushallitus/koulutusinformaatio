@@ -186,18 +186,17 @@ public class IncrementalLOSIndexer {
             this.indexValmentavaKomoto(komotoOid);
             return;
             
-        case AIKUISTEN_PERUSOPETUS:
-        case AMMATILLINEN_PERUSTUTKINTO:
-        case LUKIOKOULUTUS:
-        case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
-        case KORKEAKOULUOPINTO:
-        case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS:
-        case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-        case VAPAAN_SIVISTYSTYON_KOULUTUS: //Kansanopistot
+        case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
+        case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA: // Ammatillinen
+        case LUKIOKOULUTUS: // Lukiokoulutus
         case EB_RP_ISH: // Lukiokoulutus
-        case ESIOPETUS:
-        case PERUSOPETUS:
-
+        case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
+        case KORKEAKOULUOPINTO: // Tulossa
+        case AIKUISTEN_PERUSOPETUS: // Tulossa
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS: // Poistunut
+        case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS: // Poistunut
+        case ESIOPETUS: // Ei käytössä
+        case PERUSOPETUS: // Ei käytössä
             break;
 
         default:
