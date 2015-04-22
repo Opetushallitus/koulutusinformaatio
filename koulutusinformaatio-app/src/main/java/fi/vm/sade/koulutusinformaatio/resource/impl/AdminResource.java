@@ -22,6 +22,7 @@ import java.util.Date;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,6 +37,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 
@@ -49,6 +51,7 @@ public class AdminResource {
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private LearningOpportunityService learningOpportunityService;
+    private PartialUpdateService partialUpdateService;
     private ModelMapper modelMapper;
     private SEOService seoService;
 
@@ -56,12 +59,14 @@ public class AdminResource {
     public AdminResource(UpdateService updateService,
                          LearningOpportunityService learningOpportunityService,
                          ModelMapper modelMapper, SEOService seoService,
-                         IncrementalUpdateService incrementalUpdateService) {
+                         IncrementalUpdateService incrementalUpdateService,
+                         PartialUpdateService partialUpdateService) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.modelMapper = modelMapper;
         this.seoService = seoService;
         this.incrementalUpdateService = incrementalUpdateService;
+        this.partialUpdateService = partialUpdateService;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
@@ -102,6 +107,28 @@ public class AdminResource {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/partial/lo/{oid}")
+    public Response partialUpdateEducationData(@PathParam("oid") String oid) throws URISyntaxException {
+        try {
+            partialUpdateService.updateEducation(oid);
+        } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/partial/as/{oid}")
+    public Response partialUpdateApplicatonSystemData(@PathParam("oid") String oid) throws URISyntaxException {
+        try {
+            partialUpdateService.updateApplicationSystem(oid);
+        } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();
