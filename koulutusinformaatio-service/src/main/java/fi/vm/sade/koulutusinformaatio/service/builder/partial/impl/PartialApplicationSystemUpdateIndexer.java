@@ -23,10 +23,10 @@ import org.springframework.stereotype.Component;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.partial.PartialUpdateIndexer;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 
 /**
  * @author risal1
@@ -49,15 +49,15 @@ public class PartialApplicationSystemUpdateIndexer implements PartialUpdateIndex
     @Override
     public void update(String oid) throws Exception {        
         asIndexer.indexApplicationSystemData(oid);
-        HakuDTO hakuDto = tarjontaService.getHaku(oid);
+        HakuV1RDTO hakuDto = tarjontaService.getV1EducationHakuByOid(oid).getResult();
         for (OidRDTO hakuKohde : tarjontaService.getHakukohdesByHaku(oid)) {
             updateApplicationOptions(hakuDto, hakuKohde.getOid());
         }        
     }
 
-    private void updateApplicationOptions(HakuDTO hakuDto, String hakuKohdeOid) throws Exception {
+    private void updateApplicationOptions(HakuV1RDTO hakuDto, String hakuKohdeOid) throws Exception {
         LOGGER.debug("Indexing + application option: " + hakuKohdeOid);
-        aoIndexer.indexApplicationOptionData(tarjontaService.getHakukohde(hakuKohdeOid), hakuDto);
+        aoIndexer.indexApplicationOptionData(tarjontaService.getV1EducationHakukohode(hakuKohdeOid).getResult(), hakuDto);
     }
 
 }

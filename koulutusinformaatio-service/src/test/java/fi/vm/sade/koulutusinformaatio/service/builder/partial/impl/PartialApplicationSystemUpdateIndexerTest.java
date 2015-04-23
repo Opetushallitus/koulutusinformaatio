@@ -15,9 +15,9 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import static org.mockito.Matchers.any;
 
 import static org.mockito.Mockito.times;
@@ -42,7 +42,7 @@ public class PartialApplicationSystemUpdateIndexerTest {
     
     @InjectMocks
     private PartialApplicationSystemUpdateIndexer indexer;
-
+    
     @Test
     public void usesTarjontaServiceToFetchEducation() throws Exception {
         indexer.update(APPLICATION_OID);
@@ -53,7 +53,7 @@ public class PartialApplicationSystemUpdateIndexerTest {
     public void updatesAllApplicationOptionsAssociatedWithSystem() throws Exception {        
         when(tarjontaService.getHakukohdesByHaku(APPLICATION_OID)).thenReturn(givenApplicationOptionsResponse());
         indexer.update(APPLICATION_OID);
-        verify(aoIndexer, times(ASSOCIATED_APPLICATION_OPTION_OIDS.size())).indexApplicationOptionData(any(HakukohdeDTO.class), any(HakuDTO.class));
+        verify(aoIndexer, times(ASSOCIATED_APPLICATION_OPTION_OIDS.size())).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
     }
 
     private List<OidRDTO> givenApplicationOptionsResponse() {
