@@ -3,6 +3,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.partial.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.Increment
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import static org.mockito.Matchers.any;
 
 import static org.mockito.Mockito.times;
@@ -43,10 +45,16 @@ public class PartialApplicationSystemUpdateIndexerTest {
     @InjectMocks
     private PartialApplicationSystemUpdateIndexer indexer;
     
+    @Before
+    public void init() {
+        when(tarjontaService.getV1EducationHakuByOid(APPLICATION_OID)).thenReturn(new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO()));
+        when(tarjontaService.getV1EducationHakukohode(any(String.class))).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>());
+    }
+    
     @Test
     public void usesTarjontaServiceToFetchEducation() throws Exception {
         indexer.update(APPLICATION_OID);
-        verify(tarjontaService).getHaku(APPLICATION_OID);
+        verify(tarjontaService).getV1EducationHakuByOid(APPLICATION_OID);
     }
     
     @Test
