@@ -41,6 +41,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
@@ -95,6 +96,8 @@ public class TransactionManagerImpl implements TransactionManager {
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    private KoulutusLOSDAO koulutusLOSDAO;
+    private KoulutusLOSDAO koulutusLOSTransactionDAO;
     
     private KoodistoService koodistoService;
     private ProviderService providerService;
@@ -134,6 +137,7 @@ public class TransactionManagerImpl implements TransactionManager {
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO,
+            KoulutusLOSDAO koulutusLOSTransactionDAO,
             SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             DataStatusDAO dataStatusTransactionDAO,
             ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -146,6 +150,7 @@ public class TransactionManagerImpl implements TransactionManager {
             HigherEducationLOSDAO higherEducationLOSDAO, 
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
+            KoulutusLOSDAO koulutusLOSDAO,
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             KoodistoService koodistoService,
             ProviderService providerService,
@@ -170,6 +175,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
         this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
         this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
+        this.koulutusLOSTransactionDAO = koulutusLOSTransactionDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -181,6 +187,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
+        this.koulutusLOSDAO = koulutusLOSDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.koodistoService = koodistoService;
         this.providerService = providerService;
@@ -271,6 +278,7 @@ public class TransactionManagerImpl implements TransactionManager {
         adultVocationalLOSTransactionDAO.getCollection().drop();
         specialLOSTransactionDAO.getCollection().drop();
         dataStatusTransactionDAO.getCollection().drop();
+        koulutusLOSTransactionDAO.getCollection().drop();
     }
 
     private void dropDbCollections() {
@@ -285,6 +293,8 @@ public class TransactionManagerImpl implements TransactionManager {
         adultUpperSecondaryLOSDAO.getCollection().drop();
         adultVocationalLOSDAO.getCollection().drop();
         specialLearningOpportunitySpecificationDAO.getCollection().drop();
+        koulutusLOSDAO.getCollection().drop();
+        
     }
 
     private CoreAdminRequest getCoreSwapRequest(final String fromCore, final String toCore) {
