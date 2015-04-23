@@ -363,6 +363,16 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 ao.setName(hakKohdeNames.get(0));
             }
         }
+        
+        try {
+            ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohde.getHakukohteenNimiUri()));
+        } catch (Exception ex) {
+            LOG.debug("HakukohdeNimiUri was not codeelement: " + ao.getId() + " name: " + hakukohde.getHakukohteenNimiUri());
+        }
+        if (ao.getAoIdentifier() == null) {
+            ao.setAoIdentifier(hakukohde.getHakukohteenNimiUri());
+        }
+        
         ao.setAthleteEducation(false);
         ao.setStartingQuota(hakukohde.getAloituspaikatLkm());
         ao.setStartingQuotaDescription(getI18nText(hakukohde.getAloituspaikatKuvaukset()));
