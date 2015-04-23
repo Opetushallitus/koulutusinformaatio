@@ -15,9 +15,9 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.RunningService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -42,6 +42,9 @@ public class AdminResourceTest {
     private IncrementalUpdateService incrementalUpdateService;
     
     @Mock
+    private RunningServiceChecker checker;
+    
+    @Mock
     private ModelMapper modelMapper;
     
     @Mock
@@ -55,7 +58,7 @@ public class AdminResourceTest {
         when(learningOpportunityService.getLastDataStatus()).thenReturn(new DataStatus(new Date(), 5l, 
                 "SUCCESS"));
         adminResource = new AdminResource(updateService, learningOpportunityService, modelMapper, 
-                seoService, incrementalUpdateService, partialUpdateService);
+                seoService, incrementalUpdateService, partialUpdateService, checker);
     }
     
     @Test
@@ -67,22 +70,11 @@ public class AdminResourceTest {
     }
     
     @Test
-    public void setsRunningValuesWhenUpdateServiceIsRunning() {
-        runningServiceReturnsRunInformation(updateService);
+    public void setsRunningValuesWhenServiceIsRunning() {
+        checkerReturnsRunInformation();
         assertRunningValuesExist(adminResource.dataStatus());
     }
     
-    @Test
-    public void setsRunningValuesWhenIncrementalUpdateServiceIsRunning() {
-        runningServiceReturnsRunInformation(incrementalUpdateService);
-        assertRunningValuesExist(adminResource.dataStatus());
-    }
-    
-    @Test
-    public void setsRunningValuesWhenPartialUpdateServiceIsRunning() {
-        runningServiceReturnsRunInformation(partialUpdateService);
-        assertRunningValuesExist(adminResource.dataStatus());
-    }
     
     private void assertRunningValuesExist(DataStatusDTO dto) {
         assertTrue(dto.isRunning());
@@ -90,8 +82,8 @@ public class AdminResourceTest {
         assertNotNull(dto.getRunningSinceStr());
     }
     
-    private void runningServiceReturnsRunInformation(RunningService rs) {
-        when(rs.isRunning()).thenReturn(true);
-        when(rs.getRunningSince()).thenReturn(50l);
+    private void checkerReturnsRunInformation() {
+        when(checker.isAnyServiceRunning()).thenReturn(true);
+        when(checker.getRunningSince()).thenReturn(new Date());
     }
 }

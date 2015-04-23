@@ -28,11 +28,8 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.partial.PartialUpdateIndexer;
 
@@ -48,12 +45,6 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     
     private long runningSince = 0l;
     private boolean running = false;
-    
-    @Autowired
-    private UpdateService updateService;
-    
-    @Autowired
-    private IncrementalUpdateService incrementalUpdateService;
     
     @Autowired
     private IncrementalLOSIndexer losIndexer;
@@ -89,7 +80,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     }
     
     private void doUpdate(String oid, Updater updater) {
-        if (startRunningIfNoIndexingIsRunning()) {
+        if (startRunning()) {
             try {
                 runUpdate(oid, updater);
             } catch (Exception e) {
@@ -111,11 +102,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
                 oid, System.currentTimeMillis() - runningSince));
     }
 
-    private boolean startRunningIfNoIndexingIsRunning() {
-        if (isRunning() || updateService.isRunning() || incrementalUpdateService.isRunning()) {
-            LOGGER.debug("Indexing is running, not starting");
-            return false;
-        }
+    private boolean startRunning() {
         running = true;
         runningSince = System.currentTimeMillis();
         return true;

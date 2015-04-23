@@ -41,6 +41,7 @@ import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.RunningService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 
 /**
  * @author Hannu Lyytikainen
@@ -55,13 +56,15 @@ public class AdminResource {
     private PartialUpdateService partialUpdateService;
     private ModelMapper modelMapper;
     private SEOService seoService;
+    private RunningServiceChecker runningServiceChecker;
 
     @Autowired
     public AdminResource(UpdateService updateService,
                          LearningOpportunityService learningOpportunityService,
                          ModelMapper modelMapper, SEOService seoService,
                          IncrementalUpdateService incrementalUpdateService,
-                         PartialUpdateService partialUpdateService) {
+                         PartialUpdateService partialUpdateService,
+                         RunningServiceChecker runningServiceChecker) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.modelMapper = modelMapper;
@@ -69,13 +72,14 @@ public class AdminResource {
         this.incrementalUpdateService = incrementalUpdateService;
         this.partialUpdateService = partialUpdateService;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        this.runningServiceChecker = runningServiceChecker;
     }
 
     @GET
     @Path("/update")
     public Response updateEducationData() throws URISyntaxException {
         try {
-            if (!isIndexingRunning()) {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
                 updateService.updateAllEducationData();
             }
         } catch (Exception e) {
@@ -89,7 +93,7 @@ public class AdminResource {
     @Path("/updateArticles")
     public Response updateArticles() throws URISyntaxException {
         try {
-            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
                 updateService.updateArticles();
             }
         } catch (Exception e) {
@@ -103,7 +107,7 @@ public class AdminResource {
     @Path("/increment")
     public Response incrementEducationData() throws URISyntaxException {
         try {
-            if (!isIndexingRunning()) {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
                 incrementalUpdateService.updateChangedEducationData();
             }
         } catch (Exception e) {
@@ -117,7 +121,9 @@ public class AdminResource {
     @Path("/partial/lo/{oid}")
     public Response partialUpdateEducationData(@PathParam("oid") String oid) throws URISyntaxException {
         try {
-            partialUpdateService.updateEducation(oid);
+            if (!runningServiceChecker.isAnyServiceRunning()) {
+                partialUpdateService.updateEducation(oid);
+            }
         } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
         }
@@ -128,7 +134,9 @@ public class AdminResource {
     @Path("/partial/as/{oid}")
     public Response partialUpdateApplicatonSystemData(@PathParam("oid") String oid) throws URISyntaxException {
         try {
-            partialUpdateService.updateApplicationSystem(oid);
+            if (!runningServiceChecker.isAnyServiceRunning()) {
+                partialUpdateService.updateApplicationSystem(oid);
+            }
         } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
         }
@@ -147,7 +155,7 @@ public class AdminResource {
         dto.setLastUpdateDuration(millis);
         dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
         dto.setLastUpdateOutcome(status.getLastUpdateOutcome());
-        Date runningSince = getRunningSince(updateService, incrementalUpdateService, partialUpdateService);
+        Date runningSince = runningServiceChecker.getRunningSince();
         dto.setRunning(runningSince != null);
         dto.setRunningSince(runningSince);
         dto.setRunningSinceStr(runningSince != null ? runningSince.toString() : null);
@@ -169,19 +177,6 @@ public class AdminResource {
             seoService.update();
         }
         return Response.seeOther(new URI("admin/status")).build();
-    }
-    
-    private Date getRunningSince(RunningService ... services) {
-        for (RunningService service : services) {
-            if (service.isRunning()) {
-                return new Date(service.getRunningSince());
-            }
-        }
-        return null;
-    }
-
-    private boolean isIndexingRunning() {
-        return updateService.isRunning() || incrementalUpdateService.isRunning() || partialUpdateService.isRunning();
     }
     
 }

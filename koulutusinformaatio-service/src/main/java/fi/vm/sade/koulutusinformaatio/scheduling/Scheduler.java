@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 
 /**
  * @author Mikko Majapuro
@@ -39,26 +40,26 @@ public class Scheduler {
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private SEOService seoService;
+    private RunningServiceChecker runningServiceChecker;
     private boolean enabled;
     private boolean seoEnabled;
-    private boolean textVersionEnabled;
     private boolean incrementalEnabled;
     private boolean articlesEnabled;
 
     @Autowired
     public Scheduler(final UpdateService updateService, 
             final IncrementalUpdateService incrementalUpdateService,
-            final SEOService seoService, 
+            final SEOService seoService,
+            final RunningServiceChecker runningServiceChecker,
             @Value("${scheduling.enabled}") boolean enabled,
             @Value("${scheduling.seo.enabled}") boolean seoEnabled, 
-            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled,
             @Value("${scheduling.data.incremental.enabled}") boolean incrementalEnabled,
             @Value("${scheduling.data.articles.enabled}") boolean articlesEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
+        this.runningServiceChecker = runningServiceChecker;
         this.enabled = enabled;
         this.seoEnabled = seoEnabled;
-        this.textVersionEnabled = textVersionEnabled;
         this.incrementalEnabled = incrementalEnabled;
         this.incrementalUpdateService = incrementalUpdateService;
         this.articlesEnabled = articlesEnabled;
@@ -67,9 +68,9 @@ public class Scheduler {
     @Scheduled(cron = "${scheduling.data.cron}")
     public void runDateUpdate() {
         if (enabled) {
-            LOG.info("Starting scheduled data update {}", new Date());
             try {
-                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+                if (!runningServiceChecker.isAnyServiceRunning()) {
+                    LOG.info("Starting scheduled data update {}", new Date());
                     updateService.updateAllEducationData();
                 }
             } catch (Exception e) {
@@ -98,7 +99,7 @@ public class Scheduler {
             LOG.info("Starting scheduled incremental data update {}", new Date());
             
             try {
-                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+                if (!runningServiceChecker.isAnyServiceRunning()) {
                     LOG.debug("indexing is not running, starting incremental indexing.");
                     this.incrementalUpdateService.updateChangedEducationData();
                 } else {
@@ -116,7 +117,7 @@ public class Scheduler {
             LOG.info("Starting scheduled article update {}", new Date());
             
             try {
-                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+                if (!runningServiceChecker.isAnyServiceRunning()) {
                     LOG.debug("indexing is not running, starting article indexing.");
                     this.updateService.updateArticles();
                 } else {

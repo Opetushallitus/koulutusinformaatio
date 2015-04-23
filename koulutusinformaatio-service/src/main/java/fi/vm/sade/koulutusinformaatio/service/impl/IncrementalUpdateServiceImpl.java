@@ -68,8 +68,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalUpdateServiceImpl.class);
 
     private TarjontaRawService tarjontaRawService;
-    private UpdateService updateService;
-    private PartialUpdateService partialUpdateService;
 
     private EducationIncrementalDataQueryService dataQueryService;
     //private EducationDataQueryService prodDataQueryService;
@@ -101,8 +99,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     @Autowired
     public IncrementalUpdateServiceImpl(TarjontaRawService tarjontaRawService, 
-            UpdateService updateService,
-            PartialUpdateService partialUpdateService,
             EducationIncrementalDataQueryService dataQueryService,
             EducationIncrementalDataUpdateService dataUpdateService,
             KoodistoService koodistoService,
@@ -115,8 +111,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
             @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer) {
         this.tarjontaRawService = tarjontaRawService;
-        this.updateService = updateService;
-        this.partialUpdateService = partialUpdateService;
         this.dataQueryService = dataQueryService;
         this.dataUpdateService = dataUpdateService;
         this.koodistoService = koodistoService;
@@ -162,10 +156,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     @Async
     public void updateChangedEducationData() throws Exception {
 
-        if (isRunning || updateService.isRunning() || partialUpdateService.isRunning()) {
-            LOG.debug("Indexing is running, not starting");
-            return;
-        }
         LOG.debug("updateChangedEducationData on its way");
         //Getting get update period
         long updatePeriod = getUpdatePeriod();

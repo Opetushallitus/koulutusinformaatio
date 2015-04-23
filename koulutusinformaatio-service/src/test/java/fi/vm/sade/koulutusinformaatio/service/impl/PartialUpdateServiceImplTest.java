@@ -13,8 +13,8 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateServ
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.partial.PartialUpdateIndexer;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -31,16 +31,10 @@ public class PartialUpdateServiceImplTest {
     
     
     @Mock
-    private UpdateService updateService;
-    
-    @Mock
-    private IncrementalUpdateService incrementalUpdateService;
-    
-    @Mock
     private EducationIncrementalDataUpdateService dataUpdateService;
     
     @Mock
-    private IncrementalApplicationSystemIndexer indexer;
+    private PartialUpdateIndexer indexer;
     
     @Mock
     private IncrementalLOSIndexer losIndexer;
@@ -59,28 +53,12 @@ public class PartialUpdateServiceImplTest {
             }
             
         };
-        doAnswer(delayedAnswer).when(indexer).indexApplicationSystemData(APPLICATION_OID);
+        doAnswer(delayedAnswer).when(indexer).update(APPLICATION_OID);
         doAnswer(delayedAnswer).when(losIndexer).indexLoiData(EDUCATION_OID);
     }
     
     @Test
     public void isNotInitiallyRunning() {
-        assertFalse(service.isRunning());
-    }
-    
-    @Test
-    public void doesNotStartRunningIfUpdateServiceIsRunning() {
-        when(updateService.isRunning()).thenReturn(true);
-        service.updateEducation(EDUCATION_OID);
-        service.updateApplicationSystem(APPLICATION_OID);
-        assertFalse(service.isRunning());
-    }
-    
-    @Test
-    public void doesNotStartRunningIfIncrementalUpdateServiceIsRunning() {
-        when(incrementalUpdateService.isRunning()).thenReturn(true);
-        service.updateEducation(EDUCATION_OID);
-        service.updateApplicationSystem(APPLICATION_OID);
         assertFalse(service.isRunning());
     }
     
