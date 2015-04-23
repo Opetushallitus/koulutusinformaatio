@@ -223,6 +223,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
         assertNotNull(ao);
         assertEquals(hakukohdeOid, ao.getId());
+        assertEquals("aoIdentifier", ao.getAoIdentifier());
         assertEquals("hakukohdeName", ao.getName().getTranslations().get("fi"));
         assertFalse(ao.isAthleteEducation());
         assertEquals(new Integer(10), ao.getStartingQuota());
