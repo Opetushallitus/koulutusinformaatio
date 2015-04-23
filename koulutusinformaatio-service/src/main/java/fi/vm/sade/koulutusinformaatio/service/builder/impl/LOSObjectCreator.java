@@ -1236,7 +1236,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
-
+        
+        //THIS ACTUALLY CREATES THE HAKUKOHDE!!!
         boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
         
         // If we are not fetching for preview, an exception is thrown if no valid application options exist
