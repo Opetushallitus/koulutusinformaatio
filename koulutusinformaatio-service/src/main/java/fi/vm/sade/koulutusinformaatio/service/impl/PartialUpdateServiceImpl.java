@@ -106,7 +106,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         LOGGER.debug("Committing to solr");
         indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
         LOGGER.debug("Saving successful status");
-        dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+        dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS-PARTIAL"));
         LOGGER.info(String.format("Partial indexing finished for %s with oid: %s. Indexing took %s", updater.getUpdateProcessName(),
                 oid, System.currentTimeMillis() - runningSince));
     }

@@ -1,12 +1,8 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
-public interface IncrementalUpdateService {
+public interface IncrementalUpdateService extends RunningService {
     
 
     public void updateChangedEducationData() throws Exception;
-
-    boolean isRunning();
-
-    long getRunningSince();
 
 }

@@ -19,10 +19,9 @@ package fi.vm.sade.koulutusinformaatio.service;
  * @author risal1
  *
  */
-public interface PartialUpdateService extends RunningService {
-
-    void updateEducation(String oid);
+public interface RunningService {
     
-    void updateApplicationSystem(String oid);
+    boolean isRunning();
     
+    long getRunningSince();
 }

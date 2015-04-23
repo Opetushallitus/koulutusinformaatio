@@ -38,6 +38,7 @@ import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.RunningService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 
@@ -74,7 +75,7 @@ public class AdminResource {
     @Path("/update")
     public Response updateEducationData() throws URISyntaxException {
         try {
-            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+            if (!isIndexingRunning()) {
                 updateService.updateAllEducationData();
             }
         } catch (Exception e) {
@@ -83,7 +84,7 @@ public class AdminResource {
         }
         return Response.seeOther(new URI("admin/status")).build();
     }
-    
+
     @GET
     @Path("/updateArticles")
     public Response updateArticles() throws URISyntaxException {
@@ -102,7 +103,7 @@ public class AdminResource {
     @Path("/increment")
     public Response incrementEducationData() throws URISyntaxException {
         try {
-            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+            if (!isIndexingRunning()) {
                 incrementalUpdateService.updateChangedEducationData();
             }
         } catch (Exception e) {
@@ -146,14 +147,10 @@ public class AdminResource {
         dto.setLastUpdateDuration(millis);
         dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
         dto.setLastUpdateOutcome(status.getLastUpdateOutcome());
-        dto.setRunning(updateService.isRunning() || incrementalUpdateService.isRunning());
-        if (dto.isRunning() && updateService.isRunning()) {
-            dto.setRunningSince(new Date(updateService.getRunningSince()));
-            dto.setRunningSinceStr(new Date(updateService.getRunningSince()).toString());
-        } else if (dto.isRunning() && incrementalUpdateService.isRunning()) {
-            dto.setRunningSince(new Date(incrementalUpdateService.getRunningSince()));
-            dto.setRunningSinceStr(new Date(incrementalUpdateService.getRunningSince()).toString());
-        }
+        Date runningSince = getRunningSince(updateService, incrementalUpdateService, partialUpdateService);
+        dto.setRunning(runningSince != null);
+        dto.setRunningSince(runningSince);
+        dto.setRunningSinceStr(runningSince != null ? runningSince.toString() : null);
         dto.setSnapshotRenderingRunning(seoService.isRunning());
         DataStatus succStatus = learningOpportunityService.getLastSuccesfulDataStatus();
         if (succStatus != null) {
@@ -172,6 +169,19 @@ public class AdminResource {
             seoService.update();
         }
         return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    private Date getRunningSince(RunningService ... services) {
+        for (RunningService service : services) {
+            if (service.isRunning()) {
+                return new Date(service.getRunningSince());
+            }
+        }
+        return null;
+    }
+
+    private boolean isIndexingRunning() {
+        return updateService.isRunning() || incrementalUpdateService.isRunning() || partialUpdateService.isRunning();
     }
     
 }
