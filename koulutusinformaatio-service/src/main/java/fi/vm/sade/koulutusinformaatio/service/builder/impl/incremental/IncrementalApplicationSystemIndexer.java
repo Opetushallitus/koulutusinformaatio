@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
 
@@ -71,6 +73,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
  * @author Markus
  *
  */
+@Component
 public class IncrementalApplicationSystemIndexer {
     
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalApplicationSystemIndexer.class);
@@ -90,7 +93,7 @@ public class IncrementalApplicationSystemIndexer {
 
     private final HttpSolrServer locationHttpSolrServer;
     
-    
+    @Autowired
     public IncrementalApplicationSystemIndexer(TarjontaRawService tarjontaRawService, 
                                                 TarjontaService tarjontaService,
                                                 EducationIncrementalDataQueryService dataQueryService, 

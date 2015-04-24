@@ -38,6 +38,7 @@ import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
+import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
@@ -49,8 +50,6 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.Increment
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.SingleParentLOSBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.SingleSpecialLOSBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.SingleUpperSecondaryLOSBuilder;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
@@ -69,7 +68,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalUpdateServiceImpl.class);
 
     private TarjontaRawService tarjontaRawService;
-    private UpdateService updateService;
 
     private EducationIncrementalDataQueryService dataQueryService;
     //private EducationDataQueryService prodDataQueryService;
@@ -101,7 +99,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     @Autowired
     public IncrementalUpdateServiceImpl(TarjontaRawService tarjontaRawService, 
-            UpdateService updateService, 
             EducationIncrementalDataQueryService dataQueryService,
             EducationIncrementalDataUpdateService dataUpdateService,
             KoodistoService koodistoService,
@@ -114,7 +111,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
             @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer) {
         this.tarjontaRawService = tarjontaRawService;
-        this.updateService = updateService;
         this.dataQueryService = dataQueryService;
         this.dataUpdateService = dataUpdateService;
         this.koodistoService = koodistoService;
@@ -160,10 +156,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     @Async
     public void updateChangedEducationData() throws Exception {
 
-        if (isRunning || updateService.isRunning()) {
-            LOG.debug("Indexing is running, not starting");
-            return;
-        }
         LOG.debug("updateChangedEducationData on its way");
         //Getting get update period
         long updatePeriod = getUpdatePeriod();

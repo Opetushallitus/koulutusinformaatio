@@ -22,6 +22,7 @@ import java.util.Date;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,8 +37,11 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.RunningService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 
 /**
  * @author Hannu Lyytikainen
@@ -49,27 +53,33 @@ public class AdminResource {
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private LearningOpportunityService learningOpportunityService;
+    private PartialUpdateService partialUpdateService;
     private ModelMapper modelMapper;
     private SEOService seoService;
+    private RunningServiceChecker runningServiceChecker;
 
     @Autowired
     public AdminResource(UpdateService updateService,
                          LearningOpportunityService learningOpportunityService,
                          ModelMapper modelMapper, SEOService seoService,
-                         IncrementalUpdateService incrementalUpdateService) {
+                         IncrementalUpdateService incrementalUpdateService,
+                         PartialUpdateService partialUpdateService,
+                         RunningServiceChecker runningServiceChecker) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.modelMapper = modelMapper;
         this.seoService = seoService;
         this.incrementalUpdateService = incrementalUpdateService;
+        this.partialUpdateService = partialUpdateService;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        this.runningServiceChecker = runningServiceChecker;
     }
 
     @GET
     @Path("/update")
     public Response updateEducationData() throws URISyntaxException {
         try {
-            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
                 updateService.updateAllEducationData();
             }
         } catch (Exception e) {
@@ -78,12 +88,12 @@ public class AdminResource {
         }
         return Response.seeOther(new URI("admin/status")).build();
     }
-    
+
     @GET
     @Path("/updateArticles")
     public Response updateArticles() throws URISyntaxException {
         try {
-            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
                 updateService.updateArticles();
             }
         } catch (Exception e) {
@@ -97,11 +107,37 @@ public class AdminResource {
     @Path("/increment")
     public Response incrementEducationData() throws URISyntaxException {
         try {
-            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
                 incrementalUpdateService.updateChangedEducationData();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/partial/lo/{oid}")
+    public Response partialUpdateEducationData(@PathParam("oid") String oid) throws URISyntaxException {
+        try {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
+                partialUpdateService.updateEducation(oid);
+            }
+        } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/partial/as/{oid}")
+    public Response partialUpdateApplicatonSystemData(@PathParam("oid") String oid) throws URISyntaxException {
+        try {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
+                partialUpdateService.updateApplicationSystem(oid);
+            }
+        } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();
@@ -119,14 +155,10 @@ public class AdminResource {
         dto.setLastUpdateDuration(millis);
         dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
         dto.setLastUpdateOutcome(status.getLastUpdateOutcome());
-        dto.setRunning(updateService.isRunning() || incrementalUpdateService.isRunning());
-        if (dto.isRunning() && updateService.isRunning()) {
-            dto.setRunningSince(new Date(updateService.getRunningSince()));
-            dto.setRunningSinceStr(new Date(updateService.getRunningSince()).toString());
-        } else if (dto.isRunning() && incrementalUpdateService.isRunning()) {
-            dto.setRunningSince(new Date(incrementalUpdateService.getRunningSince()));
-            dto.setRunningSinceStr(new Date(incrementalUpdateService.getRunningSince()).toString());
-        }
+        Date runningSince = runningServiceChecker.getRunningSince();
+        dto.setRunning(runningSince != null);
+        dto.setRunningSince(runningSince);
+        dto.setRunningSinceStr(runningSince != null ? runningSince.toString() : null);
         dto.setSnapshotRenderingRunning(seoService.isRunning());
         DataStatus succStatus = learningOpportunityService.getLastSuccesfulDataStatus();
         if (succStatus != null) {

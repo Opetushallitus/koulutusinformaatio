@@ -22,7 +22,7 @@ package fi.vm.sade.koulutusinformaatio.service;
  *
  * @author Hannu Lyytikainen
  */
-public interface UpdateService {
+public interface UpdateService extends RunningService {
 
     /**
      * Updates all the eduction data. Drops old data and
@@ -35,11 +35,4 @@ public interface UpdateService {
      */
     public void updateArticles() throws Exception;
     
-    public boolean isRunning();
-    
-    //public void setRunning(boolean running);
-
-    public long getRunningSince();
-    
-    //public void setRunningSince(long runningSince);
 }

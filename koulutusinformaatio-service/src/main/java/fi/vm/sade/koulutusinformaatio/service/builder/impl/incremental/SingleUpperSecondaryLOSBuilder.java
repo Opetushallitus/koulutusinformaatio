@@ -18,6 +18,9 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
@@ -36,11 +39,13 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
  * @author Markus
  *
  */
+@Component
 public class SingleUpperSecondaryLOSBuilder {
 
     private LOSObjectCreator losObjectCreator;
     private TarjontaRawService tarjontaRawService;
 
+    @Autowired
     public SingleUpperSecondaryLOSBuilder(LOSObjectCreator losObjectCreator, TarjontaRawService tarjontaRawService) {
         this.losObjectCreator = losObjectCreator;
         this.tarjontaRawService = tarjontaRawService;
