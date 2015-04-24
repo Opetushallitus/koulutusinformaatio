@@ -21,7 +21,9 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -60,6 +62,14 @@ public class PartialApplicationSystemUpdateIndexerTest {
     @Test
     public void updatesAllApplicationOptionsAssociatedWithSystem() throws Exception {        
         when(tarjontaService.getHakukohdesByHaku(APPLICATION_OID)).thenReturn(givenApplicationOptionsResponse());
+        indexer.update(APPLICATION_OID);
+        verify(aoIndexer, times(ASSOCIATED_APPLICATION_OPTION_OIDS.size())).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
+    }
+    
+    @Test
+    public void exceptionCausedByApplicationOptionIsCaught() throws Exception {
+        when(tarjontaService.getHakukohdesByHaku(APPLICATION_OID)).thenReturn(givenApplicationOptionsResponse());
+        doThrow(new RuntimeException()).when(aoIndexer).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
         indexer.update(APPLICATION_OID);
         verify(aoIndexer, times(ASSOCIATED_APPLICATION_OPTION_OIDS.size())).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
     }

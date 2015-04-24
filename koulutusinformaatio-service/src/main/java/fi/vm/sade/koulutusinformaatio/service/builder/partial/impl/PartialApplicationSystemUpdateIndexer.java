@@ -24,7 +24,6 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.partial.PartialUpdateIndexer;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 
@@ -56,8 +55,13 @@ public class PartialApplicationSystemUpdateIndexer implements PartialUpdateIndex
     }
 
     private void updateApplicationOptions(HakuV1RDTO hakuDto, String hakuKohdeOid) throws Exception {
-        LOGGER.debug("Indexing + application option: " + hakuKohdeOid);
-        aoIndexer.indexApplicationOptionData(tarjontaService.getV1EducationHakukohode(hakuKohdeOid).getResult(), hakuDto);
+        try {
+            LOGGER.debug("Indexing + application option: " + hakuKohdeOid);
+            aoIndexer.indexApplicationOptionData(tarjontaService.getV1EducationHakukohode(hakuKohdeOid).getResult(), hakuDto);
+        } catch (Exception e) {
+            LOGGER.error("Error when indexing hakukohde " + hakuKohdeOid + " for haku " + hakuDto.getOid());
+            LOGGER.debug("Stacktrace for error: ", e);
+        }
     }
 
 }
