@@ -149,5 +149,14 @@
             <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
     </bean>
-
+    
+    <bean id="koulutusLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryTransactionDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryTransactionDatastore"/>
+        </constructor-arg>
+    </bean>
+    
 </beans>
