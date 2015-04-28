@@ -98,6 +98,7 @@ public class IncrementalApplicationOptionIndexer {
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+        case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
             LOG.debug("Indexing  valmistava ao");
             this.indexValmentavaEdAo(aoDto.getOid(), toRemove);
             return;
@@ -109,7 +110,6 @@ public class IncrementalApplicationOptionIndexer {
         case KORKEAKOULUOPINTO:
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS:
         case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-        case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
         case EB_RP_ISH: // Lukiokoulutus
         case ESIOPETUS:
         case PERUSOPETUS:
