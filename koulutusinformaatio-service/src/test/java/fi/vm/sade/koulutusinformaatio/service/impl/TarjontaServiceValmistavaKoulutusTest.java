@@ -102,7 +102,7 @@ public class TarjontaServiceValmistavaKoulutusTest {
         TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> providerResults = mock(TarjoajaHakutulosV1RDTO.class);
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> mockedResult = mock(ResultV1RDTO.class);
         when(mockedResult.getResult()).thenReturn(searchResult);
-        when(rawService.listEducationsByToteutustyyppi(any(String.class), any(String.class), any(String.class), any(String.class), any(String.class)))
+        when(rawService.listEducationsByToteutustyyppi(any(String.class), any(String.class), any(String.class), any(String.class), any(String.class), any(String.class)))
             .thenReturn(mockedResult);
         when(searchResult.getTulokset()).thenReturn(Arrays.asList(providerResults));
         when(providerResults.getTulokset()).thenReturn(Arrays.asList(mockedEducationResult));
@@ -112,13 +112,13 @@ public class TarjontaServiceValmistavaKoulutusTest {
 
     @Test(expected = KoodistoException.class)
     public void throwsExceptionWhenFailsToCreateKoulutusLOS() throws TarjontaParseException, KoodistoException {
-        when(creator.createValmentavaLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenThrow(new NullPointerException());
+        when(creator.createKansanopistoLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenThrow(new NullPointerException());
         service.findValmistavaKoulutusEducations();
     }
     
     @Test
     public void returnsStandAloneLOS() throws TarjontaParseException, KoodistoException {
-        when(creator.createValmentavaLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenReturn(new StandaloneLOS());
+        when(creator.createKansanopistoLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenReturn(new StandaloneLOS());
         List<StandaloneLOS> losses = service.findValmistavaKoulutusEducations();
         assertEquals(1, losses.size());
     }
@@ -134,7 +134,7 @@ public class TarjontaServiceValmistavaKoulutusTest {
         result.setModifiedBy("Teppo Testaaja");
         result.setOid("921.00.123.12");
         result.setTila(TarjontaTila.JULKAISTU);
-        result.setToteutustyyppi(ToteutustyyppiEnum.VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS);
+        result.setToteutustyyppi(ToteutustyyppiEnum.VAPAAN_SIVISTYSTYON_KOULUTUS);
         result.setKoulutuskoodi(new KoodiV1RDTO("uri", 1, "arvo"));
         return new ResultV1RDTO<ValmistavaKoulutusV1RDTO>(result);
     }
