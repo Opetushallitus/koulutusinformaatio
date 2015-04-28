@@ -15,14 +15,13 @@
  */
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
 import org.junit.Test;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
@@ -35,7 +34,10 @@ import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Markus
@@ -43,13 +45,13 @@ import fi.vm.sade.koulutusinformaatio.util.TestUtil;
  */
 public class HigherEducationLOSToSolrInputDocmentTest {
 	
+    private HigherEducationLOSToSolrInputDocment converter = new HigherEducationLOSToSolrInputDocment(); 
+    
 
 	@Test
 	public void testConvert() {
 		
 	    HigherEducationLOS los = createLos("losId", "koulutus_someRandom");
-		
-		HigherEducationLOSToSolrInputDocment converter = new HigherEducationLOSToSolrInputDocment(); 
 		List<SolrInputDocument> docs = converter.convert(los);
 		assertEquals(7, docs.size());
 		SolrInputDocument doc = docs.get(0);
@@ -67,18 +69,34 @@ public class HigherEducationLOSToSolrInputDocmentTest {
     @Test
     public void testConvertAmmOpettaja() {
         HigherEducationLOS los = createLos("ammOpettajaLosId", SolrConstants.ED_CODE_AMM_OPETTAJA);
-        HigherEducationLOSToSolrInputDocment converter = new HigherEducationLOSToSolrInputDocment(); 
         List<SolrInputDocument> docs = converter.convert(los);
         assertEquals(7, docs.size());
         SolrInputDocument doc = docs.get(0);
         assertEquals(los.getId(), doc.get(LearningOpportunity.ID).getValue().toString());
         assertEquals("educationType_ffm=[et02, et02.11]", doc.getField(LearningOpportunity.EDUCATION_TYPE).toString());
     }
+    
+    @Test
+    public void testConvertKansanOpisto() {
+       HigherEducationLOS los = createLos("kansanOpistoID", "test", TarjontaConstants.TYPE_KOULUTUS, SolrConstants.ED_TYPE_KANSANOPISTO); 
+       List<SolrInputDocument> docs = converter.convert(los);
+       assertEquals(7, docs.size());
+       SolrInputDocument doc = docs.get(0);
+       assertEquals(los.getId(), doc.get(LearningOpportunity.ID).getValue().toString());
+       SolrInputField field = doc.getField(LearningOpportunity.EDUCATION_TYPE);
+       assertTrue(field.getValues().contains(SolrConstants.ED_TYPE_KANSANOPISTO));
+       assertTrue(field.getValues().contains(SolrConstants.ED_TYPE_MUU));
+    }
+    
+    private HigherEducationLOS createLos(String id, String edCodeUri) {
+        return createLos(id, edCodeUri, "KORKEAKOULU", null);
+    }
 	
-	private HigherEducationLOS createLos(String id, String edCodeUri) {
+	private HigherEducationLOS createLos(String id, String edCodeUri, String type, String edType) {
 	    HigherEducationLOS los = new HigherEducationLOS();
-        los.setType("KORKEAKOULU");
+        los.setType(type);
         los.setId(id);
+        los.setEducationType(edType);
         
         Code edCode = new Code();
         edCode.setName(TestUtil.createI18nText(edCodeUri, edCodeUri, edCodeUri));
