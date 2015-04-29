@@ -121,6 +121,21 @@ public class IndexerServiceImpl implements IndexerService {
     @Override
     public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) 
                                                         throws IOException, SolrServerException {
+        try {
+            addLearningOpportunitySpecificationInner(los, loSolr, lopSolr);
+        } catch (IOException e) {
+            throw e;
+        } catch (SolrServerException e) {
+            throw e;
+        } catch (Exception e) {
+            LOGGER.error(String.format("Indexing LOS(oid: %s) of type %s FAILED. Message: %s", los.getId(), 
+                    los.getClass().getSimpleName(), e.getMessage()));
+            LOGGER.debug("Exception: ", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addLearningOpportunitySpecificationInner(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws SolrServerException, IOException {
         Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
@@ -210,7 +225,6 @@ public class IndexerServiceImpl implements IndexerService {
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
-
 
         createProviderDocs(provider, 
                             lopSolr, 
