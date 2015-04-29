@@ -16,16 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -60,8 +53,17 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
@@ -227,6 +229,14 @@ public class IndexerServiceImplTest {
         this.indexerServiceImpl.createProviderDocs(prov, this.lopUpdateHttpSolrServer, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
         verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
     }
+    
+    @Test(expected=RuntimeException.class)
+    public void throwsRuntimeExceptionWhenUnknownExceptionIsCaughtWhileIndexingLearningOpportunitySpecification() throws SolrServerException, IOException {
+        SpecialLOS los = new SpecialLOS();
+        los.setId("123.56534.4534.32");
+        los.setLois(Arrays.asList(givenChildLOI(givenApplicationOption())));
+        indexerServiceImpl.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
+    }
 
     private ParentLOS createParentLOS() {
         ParentLOS p = new ParentLOS();
@@ -245,12 +255,7 @@ public class IndexerServiceImplTest {
         p.setGoals(TestUtil.createI18nText("Parent LOS goals fi", "Parent LOS goals sv", "Parent LOS goals en"));
 
         ParentLOI parentLOI1 = new ParentLOI();
-        ApplicationOption ao1 = new ApplicationOption();
-        ao1.setId("AO1_id");
-        ao1.setPrerequisite(new Code("PK",
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en"),
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en")));
-        ao1.setRequiredBaseEducations(Lists.newArrayList("1"));
+        ApplicationOption ao1 = givenApplicationOption();
         ApplicationSystem as1 = new ApplicationSystem();
         as1.setId("AS1_id");
         as1.setName(TestUtil.createI18nText("AS name fi", "AS name sv", "AS name en"));
@@ -269,6 +274,24 @@ public class IndexerServiceImplTest {
         childLOS1.setQualification(TestUtil.createI18nText("Qualification fi", "Qualification sv", "Qualification en"));
         childLOS1.setGoals(TestUtil.createI18nText("Degree goal fi", "Degree goal sv", "Degree goal en"));
 
+        ChildLOI childLOI1 = givenChildLOI(ao1);
+        childLOS1.setLois(Lists.newArrayList(childLOI1));
+
+        p.setChildren(Lists.newArrayList(childLOS1));
+        return p;
+    }
+
+    private ApplicationOption givenApplicationOption() {
+        ApplicationOption ao1 = new ApplicationOption();
+        ao1.setId("AO1_id");
+        ao1.setPrerequisite(new Code("PK",
+                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en"),
+                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en")));
+        ao1.setRequiredBaseEducations(Lists.newArrayList("1"));
+        return ao1;
+    }
+
+    private ChildLOI givenChildLOI(ApplicationOption ao1) {
         ChildLOI childLOI1 = new ChildLOI();
         childLOI1.setId("childLOI1_id");
         childLOI1.setPrerequisite(new Code("PK",
@@ -282,10 +305,7 @@ public class IndexerServiceImplTest {
         childLOI1.setProfessionalTitles(Lists.newArrayList(TestUtil.createI18nText("Professional title fi", "Professional title sv", "Professional title en")));
         childLOI1.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
         childLOI1.setApplicationOptions(Lists.newArrayList(ao1));
-        childLOS1.setLois(Lists.newArrayList(childLOI1));
-
-        p.setChildren(Lists.newArrayList(childLOS1));
-        return p;
+        return childLOI1;
     }
 
     private ParentLOS createParentLOSWithApplicationOptionSpecificDates() {
