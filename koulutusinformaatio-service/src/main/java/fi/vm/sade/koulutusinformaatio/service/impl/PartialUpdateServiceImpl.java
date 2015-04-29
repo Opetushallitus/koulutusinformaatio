@@ -26,13 +26,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.partial.PartialUpdateIndexer;
 
 /**
  * @author risal1
@@ -51,14 +50,14 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private IncrementalLOSIndexer losIndexer;
     
     @Autowired
+    private IncrementalApplicationSystemIndexer asIndexer;
+    
+    @Autowired
     private EducationIncrementalDataUpdateService dataUpdateService;
     
     @Autowired
     private IndexerService indexerService;
-    
-    @Autowired
-    private PartialUpdateIndexer updateIndexer;
-    
+        
     @Autowired @Qualifier("lopAliasSolrServer") 
     private HttpSolrServer lopHttpSolrServer;
     
@@ -130,7 +129,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         @Override
         void update(String oid) throws Exception {
             LOGGER.debug("Indexing + " + this.getUpdateProcessName() + ": " + oid);
-            updateIndexer.update(oid);
+            asIndexer.indexApplicationSystemData(oid);
         }
 
         @Override
