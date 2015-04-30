@@ -185,7 +185,6 @@ public class IncrementalLOSIndexer {
         case PERUSOPETUKSEN_LISAOPETUS:
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
-        case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
             LOG.debug("Valma/Telma koulutus: " + koulutusDTO.getKomoOid());
             this.indexValmentavaKomoto(komotoOid);
@@ -195,6 +194,7 @@ public class IncrementalLOSIndexer {
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA: // Ammatillinen
         case LUKIOKOULUTUS: // Lukiokoulutus
         case EB_RP_ISH: // Lukiokoulutus
+        case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
         case KORKEAKOULUOPINTO: // Tulossa
         case AIKUISTEN_PERUSOPETUS: // Tulossa
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS: // Poistunut
