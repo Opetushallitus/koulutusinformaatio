@@ -145,6 +145,20 @@ public class TarjontaServiceImpl implements TarjontaService {
             return new UpperSecondaryLearningOpportunityBuilder(
                     tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService, parameterService);
         }
+        else if (educationType.equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
+            return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService,
+                    komo, organisaatioRawService, parameterService);
+        } 
+        else if ((educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
+                || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
+                || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
+                || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
+                || educationType.endsWith(TarjontaConstants.KANSANOPISTO_TYPE))
+                && komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
+            return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService,
+                    komo, organisaatioRawService, parameterService);
+        }
         else {
             throw new TarjontaParseException(String.format("Unknown education degree %s and module type %s incompatible",
                     educationType, komo.getModuuliTyyppi()));
