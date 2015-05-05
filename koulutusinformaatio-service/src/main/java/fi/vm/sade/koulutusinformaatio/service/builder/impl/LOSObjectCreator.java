@@ -387,7 +387,7 @@ public class LOSObjectCreator extends ObjectCreator {
         Code name = los.getType().equals(TarjontaConstants.TYPE_SPECIAL)
                 ? koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())
                 : koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
-        
+
         los.setName(name.getName());
         los.setShortTitle(name.getShortTitle());
         if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
@@ -630,10 +630,10 @@ public class LOSObjectCreator extends ObjectCreator {
                     los.getAdditionalProviders().add(providerService.getByOID(curTarjoaja));
                 }
             }
-            
+
             /*
             if (koulutus.getOpetusTarjoajat() != null) {
-                
+
             }*/
 
         } catch (Exception ex) {
@@ -1222,6 +1222,10 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
 
+        if (koulutus.getKoulutuslaji() != null) {
+            los.setKoulutuslaji(koodistoService.searchFirst(koulutus.getKoulutuslaji().getUri()));
+        }
+
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
             los.setProvider(provider);
@@ -1236,10 +1240,10 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
-        
+
         //THIS ACTUALLY CREATES THE HAKUKOHDE!!!
         boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
-        
+
         // If we are not fetching for preview, an exception is thrown if no valid application options exist
         if (checkStatus && !existsValidHakukohde) {
             throw new TarjontaParseException("No valid application options for education: " + los.getId());
@@ -1258,7 +1262,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setFacetPrerequisites(facetPrequisites);
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
     }
-    
+
     public AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
 
         LOG.debug("Creating adult vocational los: " + koulutus.getOid());
@@ -1266,7 +1270,7 @@ public class LOSObjectCreator extends ObjectCreator {
         AdultVocationalLOS los = new AdultVocationalLOS();
 
         addLOSFields(koulutus, los);
-        
+
         los.setStatus(koulutus.getTila().toString());
 
         los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
