@@ -151,7 +151,6 @@ public class TarjontaServiceImpl implements TarjontaService {
                     komo, organisaatioRawService, parameterService);
         } 
         else if ((educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
-                || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
                 || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
                 || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
                 || educationType.endsWith(TarjontaConstants.KANSANOPISTO_TYPE))
