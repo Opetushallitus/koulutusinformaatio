@@ -24,14 +24,7 @@ import java.util.Map;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdditionalProof;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
-import fi.vm.sade.koulutusinformaatio.domain.Exam;
-import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
-import fi.vm.sade.koulutusinformaatio.domain.ScoreLimit;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -179,11 +172,16 @@ public class EducationObjectCreator extends ObjectCreator {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
                 if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null
-                        && valintakoe.getValintakoeNimi() != null
+                        && (valintakoe.getValintakoeNimi() != null || valintakoe.getValintakoetyyppi() != null)
                         && valintakoe.getKieliUri() != null) {
                     Exam exam = new Exam();
 
-                    exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
+                    if (valintakoe.getValintakoetyyppi() != null) {
+                        Code type = koodistoService.searchFirst(valintakoe.getValintakoetyyppi());
+                        exam.setType(type.getName());
+                    } else {
+                        exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
+                    }
                     exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
