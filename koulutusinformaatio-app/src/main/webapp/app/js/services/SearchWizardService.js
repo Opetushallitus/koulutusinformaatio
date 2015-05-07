@@ -113,79 +113,79 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
             getEducationTypesByOption: function(opt) {
                 if (opt === SearchWizardConstants.phaseOneOpts.PK) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),   // Ammatillinen koulutus
-                        SelectionBuilder.buildEducationTypeSelection('et01.01', opt),                                                                                           // Lukiokoulutus
-                        SelectionBuilder.buildEducationTypeSelection('et01.02', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),      // Kaksoistutkinto
-                        SelectionBuilder.buildEducationTypeSelection('et02.01.01', opt, SearchWizardConstants.educationKind.NUORTEN),                                           // 10. luokka
-                        SelectionBuilder.buildEducationTypeSelection('et02.01.06', opt, undefined),                                                                             // Valma
-                        SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.PK),                                        // Kansanopistojen pitkät linjat
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.02', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),   // Ammatillinen erityisopetus
-                        SelectionBuilder.buildEducationTypeSelection('et02.12.01', opt, undefined),                                                                             // Telma
-                        SelectionBuilder.buildEducationTypeSelection('et02.12.02', opt, undefined)                                                                              // Valma ER
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.LUKIOKOULUTUS, opt),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KAKSOISTUTKINTO, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KYMPPILUOKKA, opt, SearchWizardConstants.educationKind.NUORTEN),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, undefined),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT, opt, undefined, SearchWizardConstants.prerequisites.PK),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_ERITYISOPETUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.TELMA, opt, undefined),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA_ER, opt, undefined)
                     ];
                 } else if (opt === SearchWizardConstants.phaseOneOpts.YO) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),   // Ammatillinen koulutus
-                        SelectionBuilder.buildEducationTypeSelection('et01.04.01', opt, undefined, SearchWizardConstants.prerequisites.YO),                                     // Ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05', opt, undefined, SearchWizardConstants.prerequisites.YO),                                        // Yliopisto (alempi)
-                        SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.YO)                                         // Kansanopistojen pitkät linjat
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTIKORKEAKOULUTUTKINTO, opt, undefined, SearchWizardConstants.prerequisites.YO),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.YLIOPISTO, opt, undefined, SearchWizardConstants.prerequisites.YO),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT, opt, undefined, SearchWizardConstants.prerequisites.YO)
                     ];
                 } else if (opt === SearchWizardConstants.phaseOneOpts.AT) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.04.01', opt, undefined, SearchWizardConstants.prerequisites.AT),                                     // Ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05', opt, undefined, SearchWizardConstants.prerequisites.AT)                                         // Yliopisto
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTIKORKEAKOULUTUTKINTO, opt, undefined, SearchWizardConstants.prerequisites.AT),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.YLIOPISTO, opt, undefined, SearchWizardConstants.prerequisites.AT)
                     ];
                 } else if (opt === SearchWizardConstants.phaseOneOpts.MM) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et02.01.04', opt, SearchWizardConstants.educationKind.NUORTEN),                                           // Maahanmuuttajien lukioon valmistava
-                        SelectionBuilder.buildEducationTypeSelection('et02.01.06', opt, undefined),                                                                             // Valma
-                        SelectionBuilder.buildEducationTypeSelection('et02.12.02', opt, undefined)                                                                              // Valma ER
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.MAAHANMUUTTAJIEN_LUKIOON_VALMISTAVA, opt, SearchWizardConstants.educationKind.NUORTEN),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, undefined),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA_ER, opt, undefined)
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.YO_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),   // Ammatillinen perustutkinto 3-vuotisena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammatillinen perustutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.03', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.04', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Erikoisammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.04.01', opt),                                                                                        // Ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05', opt),                                                                                           // Alempi tutkinto yliopistossa
-                        SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.YO)                                         // Kansanopistojen pitkät linjat
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTIKORKEAKOULUTUTKINTO, opt),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.YLIOPISTO, opt),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT, opt, undefined, SearchWizardConstants.prerequisites.YO)
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.AMM_PT_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.03', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.04', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Erikoisammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.04.01', opt),                                                                                        // Ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05', opt),                                                                                           // Alempi tutkinto yliopistossa (kandidaatti ym)
-                        SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.YO)                                         // Kansanopistojen koulutukset
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTIKORKEAKOULUTUTKINTO, opt),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.YLIOPISTO, opt),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT, opt, undefined, SearchWizardConstants.prerequisites.YO)
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.ALEMPI_KK_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.04.02', opt),                                                                                        // Ylempi ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05.02', opt)                                                                                         // Ylempi tutkinto yliopistossa (maisteri ym.)
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.YLEMPI_AMMATTIKORKEAKOULUTUTKINTO, opt),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.YLEMPI_YLIOPISTO, opt)
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.PK_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.01.02', opt),                                                                                        // Aikuislukio ja ylioppilastutkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),   // Ammatillinen perustutkinto kolmivuotisena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammatillinen perustutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.03', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.04', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Erikoisammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et02.01.06', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Valma
-                        SelectionBuilder.buildEducationTypeSelection('et02.02', opt, SearchWizardConstants.educationKind.AIKUIS)                                                // Valmentava ja kuntouttava opetus ja ohjaus aikuisille
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AIKUISLUKIO, opt),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMENTAVA, opt, SearchWizardConstants.educationKind.AIKUIS)
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.LUKIO_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),   // Ammatillinen perustutkinto kolmivuotisena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammatillinen perustutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.03', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.04', opt, SearchWizardConstants.educationKind.AIKUIS)                                             // Erikoisammattitutkinto aikuiskoulutuksena
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS)
                     ];
                 } else if (opt === SearchWizardConstants.phaseOneOpts.MM_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection('et02.01.04', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // LUVA - maahanmuuttajien lukioon valmistava koulutus
-                        SelectionBuilder.buildEducationTypeSelection('et02.01.06', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Valma
-                        SelectionBuilder.buildEducationTypeSelection('et02.12.02', opt, SearchWizardConstants.educationKind.AIKUIS)                                             // Valma ER
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.MAAHANMUUTTAJIEN_LUKIOON_VALMISTAVA, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA_ER, opt, SearchWizardConstants.educationKind.AIKUIS)
                     ];
                 } 
             },
@@ -220,17 +220,17 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
 
             getEducationTypesRequiringThemeSelection: function() {
                 return [
-                    'et01.03.01',   // Ammatillinen koulutus
-                    'et01.02',      // Kaksoistutkinto
-                    'et01.03.02',   // Ammatillinen erityisopetus
-                    'et01.03.01',   // Ammatillinen koulutus
-                    'et01.04.01',   // Ammattikorkeakoulututkinto
-                    'et01.05',      // Yliopistotutkinto
-                    'et01.05.01',   // Yliopisto (alempi)
-                    'et01.03.03',   // Ammattitutkinto aikuiskoulutuksena
-                    'et01.03.04',   // Erikoisammattitutkinto aikuiskoulutuksena
-                    'et01.04.02',   // Ylempi ammattikorkeakoulututkinto
-                    'et01.05.02'    // Ylempi tutkinto yliopistossa
+                    Config.educationTypes.AMMATILLINEN_KOULUTUS,
+                    Config.educationTypes.KAKSOISTUTKINTO,
+                    Config.educationTypes.AMMATILLINEN_ERITYISOPETUS,
+                    Config.educationTypes.AMMATILLINEN_KOULUTUS,
+                    Config.educationTypes.AMMATTIKORKEAKOULUTUTKINTO,
+                    Config.educationTypes.YLIOPISTO,
+                    Config.educationTypes.ALEMPI_YLIOPISTO,
+                    Config.educationTypes.AMMATTITUTKINTO,
+                    Config.educationTypes.ERIKOISAMMATTITUTKINTO,
+                    Config.educationTypes.YLEMPI_AMMATTIKORKEAKOULUTUTKINTO,
+                    Config.educationTypes.YLEMPI_YLIOPISTO
                 ];
             },
 
