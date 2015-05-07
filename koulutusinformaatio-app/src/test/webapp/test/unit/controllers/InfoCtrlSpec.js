@@ -48,4 +48,26 @@ describe('InfoCtrl', function() {
     it('should load images for additional providers', function() {
         expect(scope.lo.additionalProviders[0].providerImage).toBeDefined();
     })
+
+    it('should set tab-title to hakeminen', function() {
+        scope.lo.applicationSystems = [{
+            useSystemApplicationForm: false
+        }];
+        scope.$digest();
+        expect(scope.tabtitle.valintaperusteet).toEqual('lo-application-er');
+    });
+
+    it('should set tab-title to valintaperusteet ja pääsykokeet', function() {
+        scope.lo.applicationSystems = [
+            {
+                useSystemApplicationForm: false
+            },
+            {
+                useSystemApplicationForm: true
+            }
+        ];
+        scope.$digest();
+        expect(scope.tabtitle.valintaperusteet).toEqual('lo-application');
+    });
+
 });

@@ -11,17 +11,15 @@
     $scope.virkailijaLang = VirkailijaLanguageService.getLanguage();
 
     // set tab titles based on lo and education type
-    $scope.$watch('lo.educationTypeUri', function(value) {
+    $scope.$watch('lo.applicationSystems', function(applicationSystems) {
         var getValintaperusteetTitle = function() {
-            if ($scope.loType == 'valmentava' ||
-                $scope.loType == 'ammatillinenaikuiskoulutus' ||
-                $scope.loType == 'aikuislukio' ||
-                $scope.loType == 'valmistava' && value == 'VapaanSivistystyonKoulutus') {
-                return TranslationService.getTranslation('lo-application-er');
-            } else {
+            var usesSystemApplicationForm = _.findWhere(applicationSystems, {
+                useSystemApplicationForm: true
+            }) !== undefined;
+            if (usesSystemApplicationForm) {
                 return TranslationService.getTranslation('lo-application');
             }
-
+            return TranslationService.getTranslation('lo-application-er');
         };
 
         $scope.tabtitle =  {
