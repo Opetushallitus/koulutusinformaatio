@@ -377,16 +377,16 @@ public class LOIObjectCreator extends ObjectCreator {
              return filtered;
          } else if (filtered.isEmpty()) {
              // filtered is empty, add head
-             if(isCurrentOrFuture(head(unfiltered))){
+             if(head(unfiltered).isCurrentOrFuture()){
                  filtered.add(head(unfiltered));
              }
              return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
          } else {
              ApplicationOption unfilteredHead = head(unfiltered);
              ApplicationOption filteredHead = head(filtered);
-             if (isCurrentOrFuture(unfilteredHead)) {
+             if (unfilteredHead.isCurrentOrFuture()) {
                  // unfiltered head is future/current, add to filtered
-                 if (!isFuture(filteredHead) && !isCurrent(filteredHead)) {
+                 if (!filteredHead.isFuture() && !filteredHead.isCurrent()) {
                      // remove past head from filtered list
                      filtered.remove(0);
                  }
@@ -394,7 +394,7 @@ public class LOIObjectCreator extends ObjectCreator {
                  return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
              } else {
                  // unfiltered head is in the past
-                 if (isCurrentOrFuture(filteredHead)) {
+                 if (filteredHead.isCurrentOrFuture()) {
                      // if filtered head is current/future -> pass
                      return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
                  } else {
@@ -437,36 +437,5 @@ public class LOIObjectCreator extends ObjectCreator {
              return applicationOptions;
          }
      }
-
-     private boolean isCurrentOrFuture(ApplicationOption ao) {
-         return isCurrent(ao) || isFuture(ao);
-     }
-
-     private boolean isCurrent(ApplicationOption ao) {
-         Date now = new Date();
-         for (DateRange dr : ao.getApplicationDates()) {
-             Date endDate = dr.getEndDate();
-             Calendar endCal = Calendar.getInstance();
-             endCal.setTime(endDate);
-             endCal.add(Calendar.MONTH, 10);
-             endDate = endCal.getTime();
-             if (dr.getStartDate().before(now) && endDate.after(now)) {
-                 return true;
-             }
-         }
-         return false;
-     }
-
-     private boolean isFuture(ApplicationOption ao) {
-         Date now = new Date();
-         for (DateRange dr : ao.getApplicationDates()) {
-             if (dr.getStartDate().before(now)) {
-                 return false;
-             }
-         }
-         return true;
-     }
-
-
 
 }

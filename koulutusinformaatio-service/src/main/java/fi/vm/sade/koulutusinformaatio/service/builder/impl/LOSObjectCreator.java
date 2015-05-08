@@ -825,7 +825,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     ao.setStatus(hakukohdeDTO.getTila());
                     ao.getApplicationSystem().setStatus(hakuDTO.getTila());
                 }
-                if (isCurrentOrFuture(ao))
+                if (ao.isCurrentOrFuture())
                     aos.add(ao);
 
             } catch (Exception ex) {
@@ -837,38 +837,6 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setApplicationOptions(aos);
 
         return !aos.isEmpty();
-    }
-
-    private boolean isCurrentOrFuture(ApplicationOption ao) {
-        return isCurrent(ao) || isFuture(ao);
-    }
-
-    private boolean isCurrent(ApplicationOption ao) {
-        Date now = new Date();
-        for (DateRange dr : ao.getApplicationDates()) {
-            Date endDate = dr.getEndDate();
-            if(endDate == null){ // Jatkuva haku
-                return dr.getStartDate().before(now);
-            }
-            Calendar endCal = Calendar.getInstance();
-            endCal.setTime(endDate);
-            endCal.add(Calendar.MONTH, 10);
-            endDate = endCal.getTime();
-            if (dr.getStartDate().before(now) && endDate.after(now)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isFuture(ApplicationOption ao) {
-        Date now = new Date();
-        for (DateRange dr : ao.getApplicationDates()) {
-            if (dr.getStartDate().before(now)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public HigherEducationLOS createHigherEducationLOSReference(

@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -471,5 +472,37 @@ public class ApplicationOption {
 
     public void setPseudo(boolean isPseudo) {
         this.isPseudo = isPseudo;
+    }
+
+    public boolean isCurrentOrFuture() {
+        return isCurrent() || isFuture();
+    }
+
+    public boolean isCurrent() {
+        Date now = new Date();
+        for (DateRange dr : getApplicationDates()) {
+            Date endDate = dr.getEndDate();
+            if(endDate == null){ // Jatkuva haku
+                return dr.getStartDate().before(now);
+            }
+            Calendar endCal = Calendar.getInstance();
+            endCal.setTime(endDate);
+            endCal.add(Calendar.MONTH, 10);
+            endDate = endCal.getTime();
+            if (dr.getStartDate().before(now) && endDate.after(now)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFuture() {
+        Date now = new Date();
+        for (DateRange dr : getApplicationDates()) {
+            if (dr.getStartDate().before(now)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
