@@ -84,7 +84,8 @@ public class IndexerServiceImpl implements IndexerService {
     private final HttpSolrServer loAliasHttpSolrServer;
     private final HttpSolrServer lopAliasHttpSolrServer;
     private final HttpSolrServer locationAliasHttpSolrServer;
-    
+
+    private Set<String> processedKomos;
 
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
     private String loHttpAliasName;
@@ -116,6 +117,8 @@ public class IndexerServiceImpl implements IndexerService {
         this.loAliasHttpSolrServer = loAliasHttpSolrServer;
         this.lopAliasHttpSolrServer = lopAliasHttpSolrServer;
         this.locationAliasHttpSolrServer = locationAliasHttpSolrServer;
+
+        clearProcessedLists();
     }
 
     @Override
@@ -730,6 +733,21 @@ public class IndexerServiceImpl implements IndexerService {
         
         
         
+    }
+
+    @Override
+    public boolean hasAlreadyProcessedKomo(String komoOid) {
+        return processedKomos.contains(komoOid);
+    }
+
+    @Override
+    public void clearProcessedLists() {
+        processedKomos = new HashSet<String>();
+    }
+
+    @Override
+    public void addProcessedKomo(String komoOid) {
+        processedKomos.add(komoOid);
     }
 
 }

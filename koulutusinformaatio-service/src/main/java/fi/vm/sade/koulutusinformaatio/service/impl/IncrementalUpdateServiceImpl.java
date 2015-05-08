@@ -173,6 +173,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 return;
             }
 
+            this.indexerService.clearProcessedLists();
             this.losIndexer.clearCreatedLOS();
             int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
             // If there are changes in komo-data, a full update is performed

@@ -82,6 +82,10 @@ public class IncrementalKoulutusLOSIndexer {
     }
 
     public void indexKoulutusKomo(String curKomoOid) throws Exception {
+        if (this.indexerService.hasAlreadyProcessedKomo(curKomoOid)) {
+            return;
+        }
+        this.indexerService.addProcessedKomo(curKomoOid);
 
         LOG.debug("Indexing adult upper secondary ed komo: " + curKomoOid);
 

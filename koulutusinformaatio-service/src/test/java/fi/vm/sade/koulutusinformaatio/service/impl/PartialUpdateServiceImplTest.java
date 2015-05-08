@@ -1,5 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,9 @@ public class PartialUpdateServiceImplTest {
     
     @Mock
     private TransactionManager transactionManager;
+
+    @Mock
+    private IndexerService indexerService;
     
     @InjectMocks
     private PartialUpdateService service = new PartialUpdateServiceImpl();

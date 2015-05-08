@@ -99,4 +99,10 @@ public interface IndexerService {
             Set<String> vocationalAsIds,
             Set<String> nonVocationalAsIds,
             Set<String> providerAsIds) throws SolrServerException, IOException;
+
+    boolean hasAlreadyProcessedKomo(String komoOid);
+
+    void clearProcessedLists();
+
+    void addProcessedKomo(String komoOid);
 }

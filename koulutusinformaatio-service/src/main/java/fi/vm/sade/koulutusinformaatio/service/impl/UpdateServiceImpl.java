@@ -104,6 +104,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Starting full education data update");
             running = true;
             runningSince = System.currentTimeMillis();
+            this.indexerService.clearProcessedLists();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             int count = MAX_RESULTS;

@@ -82,6 +82,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private void doUpdate(String oid, Updater updater) {
         if (startRunning()) {
             try {
+                indexerService.clearProcessedLists();
                 runUpdate(oid, updater);
             } catch (Exception e) {
                 LOGGER.error("Error indexing " + updater.getUpdateProcessName() + ": " + oid, e);
