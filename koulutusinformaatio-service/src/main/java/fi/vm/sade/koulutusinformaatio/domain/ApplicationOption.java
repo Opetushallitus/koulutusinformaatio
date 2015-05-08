@@ -380,7 +380,7 @@ public class ApplicationOption {
     }
 
     public void setStatus(String tila) {
-        this.status = tila;	
+        this.status = tila;
     }
 
     public String getStatus() {
@@ -451,7 +451,7 @@ public class ApplicationOption {
         this.applicationPeriodName = applicationPeriodName;
     }
     public void setStartingQuotaDescription(I18nText aloituspaikkaKuvaus) {
-        this.startingQuotaDescription = aloituspaikkaKuvaus;  
+        this.startingQuotaDescription = aloituspaikkaKuvaus;
     }
 
     public I18nText getStartingQuotaDescription() {
@@ -494,14 +494,22 @@ public class ApplicationOption {
     }
 
     private Date getLastDayToShow(Date endDate) {
+        Calendar cal = Calendar.getInstance();
         Date lastDayToShow = getApplicationSystem().getShowEducationsUntil();
+
         if (lastDayToShow == null) {
-            lastDayToShow = endDate;
-            Calendar cal = Calendar.getInstance();
             cal.setTime(endDate);
             cal.add(Calendar.MONTH, 10);
-            lastDayToShow.setTime(cal.getTimeInMillis());
         }
-        return lastDayToShow;
+        else {
+            cal.setTime(lastDayToShow);
+        }
+
+        // End of day
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+
+        return cal.getTime();
     }
 }
