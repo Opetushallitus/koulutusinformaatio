@@ -398,7 +398,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         los.getPrerequisites().addAll(koodistoService.searchMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
 
-        ApplicationSystem as = applicationSystemCreator.createHigherEdApplicationSystem(haku);
+        ApplicationSystem as = applicationSystemCreator.createApplicationSystem(haku);
 
         HakuaikaV1RDTO aoHakuaika = null;
 

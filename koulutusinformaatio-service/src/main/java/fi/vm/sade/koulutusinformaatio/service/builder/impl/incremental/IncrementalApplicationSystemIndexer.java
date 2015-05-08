@@ -151,7 +151,7 @@ public class IncrementalApplicationSystemIndexer {
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
                 ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService, parameterService);
-                ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
+                ApplicationSystem as = asCreator.createApplicationSystem(asDto);
                 
                 for (String curLosId : lossesInAS) {
                     AdultUpperSecondaryLOS curLos = null;
@@ -197,7 +197,7 @@ public class IncrementalApplicationSystemIndexer {
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
                 ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService, parameterService);
-                ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
+                ApplicationSystem as = asCreator.createApplicationSystem(asDto);
                 
                 for (String curLosId : lossesInAS) {
                     HigherEducationLOS curLos = null;

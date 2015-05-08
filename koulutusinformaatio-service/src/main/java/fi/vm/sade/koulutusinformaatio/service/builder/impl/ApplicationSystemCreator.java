@@ -39,7 +39,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 public class ApplicationSystemCreator extends ObjectCreator {
 
     private ParameterService parameterService;
-    
+
     public ApplicationSystemCreator(KoodistoService koodistoService, ParameterService parameterService) {
         super(koodistoService);
         this.parameterService = parameterService;
@@ -67,25 +67,22 @@ public class ApplicationSystemCreator extends ObjectCreator {
             } else {
                 as.setShownAsFacet(false);
             }
-            
-            // TODO: read value from tarjonta when v1 API is taken into use 
-            as.setUseSystemApplicationForm( asDto.getHakulomakeUri() == null );
-            
+            as.setUseSystemApplicationForm(asDto.isJarjestelmanHakulomake());
+
             return as;
         } else {
             return null;
         }
     }
-    
+
     /*
      * Setting the date range when this application system should be shown
      * as a facet filter in faceted search.
      */
     private void HandleHakuParameters(ApplicationSystem as) {
-        
         ApplicationSystemParameters params = this.parameterService.getParametersForHaku(as.getId());
         Date now = Calendar.getInstance().getTime();
-        if (params != null 
+        if (params != null
                 && params.getShownInFacetedSearch() != null
                 && params.getShownInFacetedSearch().getDateStart() != null
                 && !params.getShownInFacetedSearch().getDateStart().after(now)
@@ -96,48 +93,29 @@ public class ApplicationSystemCreator extends ObjectCreator {
         } else {
             as.setShownAsFacet(false);
         }
-        
     }
 
-    public ApplicationSystem createHigherEdApplicationSystem(HakuV1RDTO haku) throws KoodistoException {
-        ApplicationSystem as = new ApplicationSystem();
-        as.setId(haku.getOid());
-        as.setMaxApplications(haku.getMaxHakukohdes());
-        as.setName(getI18nText(haku.getNimi()));
-        as.setApplicationFormLink( haku.getHakulomakeUri());
-        as.setHakutapaUri(koodistoService.searchFirstCodeValue(haku.getHakutapaUri()));
-        as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(haku.getHakutyyppiUri()));
-        if (haku.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
-            HandleHakuParameters(as);
-        } else {
-            as.setShownAsFacet(false);
-        }
-        as.setUseSystemApplicationForm(haku.isJarjestelmanHakulomake());
-        
-        return as;
-    }
-    
     public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO haku, boolean shownInCalendar) throws KoodistoException {
         CalendarApplicationSystem as = new CalendarApplicationSystem();
         as.setId(haku.getOid());
         as.setName(getI18nText(haku.getNimi()));
         as.setShownInCalendar(shownInCalendar);
-        
+
         as.setTargetGroupCode(koodistoService.searchFirstCodeValue( haku.getKohdejoukkoUri() ));
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
                 DateRange range = new DateRange();
                 range.setStartDate(ha.getAlkuPvm());
                 range.setEndDate(ha.getLoppuPvm());
-                
+
                 ApplicationPeriod ap = new ApplicationPeriod();
                 ap.setDateRange(range);
                 ap.setName(getI18nText(ha.getNimet()));
-                
+
                 as.getApplicationPeriods().add(ap);
             }
         }
-        
+
         return as;
     }
 }
