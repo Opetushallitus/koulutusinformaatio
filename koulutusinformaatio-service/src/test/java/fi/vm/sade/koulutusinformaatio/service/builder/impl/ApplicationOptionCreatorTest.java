@@ -25,12 +25,10 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,6 +72,8 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     private static final String hakukohdeOid = "1.2.3.4";
     private static final String hakukohdeNameUri = "hakukohdeNameUri";
     private static final String educationCodeUri = "educationCodeUri";
+    private static final String PRIORITIZED_GROUP_OID = "group_with_prio";
+    private static final String HAKUAIKA_ID_1 = "hakuaika-id-1";
 
     @Before
     public void init() throws KoodistoException {
@@ -169,44 +169,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
     @Test
     public void testCreateV1EducationApplicationOption() throws Exception {
-        HakukohdeV1RDTO hakukohde = new HakukohdeV1RDTO();
-        hakukohde.setOid(hakukohdeOid);
-        hakukohde.setHakukohteenNimiUri(hakukohdeNameUri);
-        hakukohde.setAloituspaikatLkm(10);
-        hakukohde.setAlinValintaPistemaara(5);
-        hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
-        hakukohde.setLiitteidenToimitusPvm(new Date());
-        hakukohde.setEdellisenVuodenHakijatLkm(10);
-        Map<String, String> selectionCriteria = Maps.newHashMap();
-        selectionCriteria.put(getFiUri(), "selectionCriteria");
-        hakukohde.setValintaperusteKuvaukset(selectionCriteria);
-        hakukohde.setKaksoisTutkinto(false);
-        hakukohde.setSoraKuvausKoodiUri("soraUri");
-        hakukohde.setHakukelpoisuusvaatimusUris(Arrays.asList("prerequisiteUri1","prerequisiteUri2"));
-
-        RyhmaliitosV1RDTO groupWithPrio = new RyhmaliitosV1RDTO();
-        groupWithPrio.setRyhmaOid("group_with_prio");
-        groupWithPrio.setPrioriteetti(1);
-        OrganisaatioRDTO groupWithPrioOrg = new OrganisaatioRDTO();
-        groupWithPrioOrg.setOid(groupWithPrio.getRyhmaOid());
-        groupWithPrioOrg.setTyypit(Arrays.asList(OrganisaatioTyyppi.RYHMA.value()));
-
-        RyhmaliitosV1RDTO groupWithNoPrio = new RyhmaliitosV1RDTO();
-        groupWithNoPrio.setRyhmaOid("group_with_no_prio");
-        OrganisaatioRDTO groupWithNoPrioOrg = new OrganisaatioRDTO();
-        groupWithNoPrioOrg.setOid(groupWithNoPrio.getRyhmaOid());
-        groupWithNoPrioOrg.setTyypit(Arrays.asList(OrganisaatioTyyppi.RYHMA.value()));
-
-        hakukohde.setOrganisaatioRyhmaOids(new String[]{groupWithPrio.getRyhmaOid(), groupWithNoPrio.getRyhmaOid()});
-        hakukohde.setRyhmaliitokset(new ArrayList<RyhmaliitosV1RDTO>(Arrays.asList(groupWithPrio, groupWithNoPrio)));
-
-        when(organisaatioRawService.getOrganisaatio(eq(groupWithPrio.getRyhmaOid()))).thenReturn(groupWithPrioOrg);
-        when(organisaatioRawService.getOrganisaatio(eq(groupWithNoPrio.getRyhmaOid()))).thenReturn(groupWithNoPrioOrg);
-
-        Map<String, String> additionalInfo = Maps.newHashMap();
-        additionalInfo.put(getFiUri(), "additionalInfo");
-        hakukohde.setKaytetaanHakukohdekohtaistaHakuaikaa(false);
-        hakukohde.setLisatiedot(additionalInfo);
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
 
         StandaloneLOS los = new StandaloneLOS();
         Code educationCode = new Code();
@@ -248,7 +211,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         List<OrganizationGroup> groups = ao.getOrganizationGroups();
         assertEquals(2, groups.size());
         for (OrganizationGroup group: groups) {
-            if(group.getOid().equals(groupWithPrio.getRyhmaOid())) {
+            if(group.getOid().equals(PRIORITIZED_GROUP_OID)) {
                 assertEquals(1, group.getPrioriteetti().intValue());
             }
             else {
@@ -258,7 +221,165 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
     }
 
+    @Test
+    public void isVisibleWhenHakuRunning() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        StandaloneLOS los = getStandaloneLOS();
+        HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-1), getRelativeDateFromNow(2));
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+
+        assertTrue(ao.showInOpintopolku());
+    }
+
+    @Test
+    public void isVisibleWhenHakuInFuture() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        StandaloneLOS los = getStandaloneLOS();
+        HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(1), getRelativeDateFromNow(2));
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+
+        assertTrue(ao.showInOpintopolku());
+    }
+
+    @Test
+    public void isVisibleWhenHakuStoppedLessThan10monthsAgo() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        StandaloneLOS los = getStandaloneLOS();
+        HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-9));
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+
+        assertTrue(ao.showInOpintopolku());
+    }
+
+    @Test
+    public void isVisibleWhenHakuStoppedMoreThan10monthsAgoButHakuParameterAllows() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        StandaloneLOS los = getStandaloneLOS();
+        HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-11));
+        haku.setOpintopolunNayttaminenLoppuu(getRelativeDateFromNow(1));
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+
+        assertTrue(ao.showInOpintopolku());
+    }
 
 
+    /**
+     * When haku param says that application option should no longer be shown,
+     * but haku is still active => should still show because haku is active
+     * (problem in tarjonta if this happens)
+     */
+    @Test
+    public void isVisibleWhenHakuActiveButHakuParamConflict() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        StandaloneLOS los = getStandaloneLOS();
+        HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-1), getRelativeDateFromNow(2));
+        haku.setOpintopolunNayttaminenLoppuu(getRelativeDateFromNow(-1));
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+
+        assertTrue(ao.showInOpintopolku());
+    }
+
+    @Test
+    public void isNotVisibleWhenHakuStoppedMoreThan10monthsAgo() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        StandaloneLOS los = getStandaloneLOS();
+        HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-11));
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+
+        assertFalse(ao.showInOpintopolku());
+    }
+
+    @Test
+    public void isNotVisibleAfterHakuParam() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        StandaloneLOS los = getStandaloneLOS();
+        HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-2));
+        haku.setOpintopolunNayttaminenLoppuu(getRelativeDateFromNow(-1));
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+
+        assertFalse(ao.showInOpintopolku());
+    }
+
+    private Date getRelativeDateFromNow(int months) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, months);
+        return calendar.getTime();
+    }
+
+    private StandaloneLOS getStandaloneLOS() {
+        StandaloneLOS los = new StandaloneLOS();
+        Code educationCode = new Code();
+        educationCode.setUri(educationCodeUri);
+        los.setEducationCode(educationCode);
+        Code fi = new Code();
+        fi.setValue("fi");
+        los.setTeachingLanguages(Arrays.asList(fi));
+        return los;
+    }
+
+    private HakuV1RDTO getHakuV1RDTO(Date hakuaikaStart, Date hakuaikaEnd) {
+        HakuV1RDTO haku = new HakuV1RDTO();
+        haku.setOid("4.3.2.1");
+        HakuaikaV1RDTO hakuaika = new HakuaikaV1RDTO();
+        hakuaika.setHakuaikaId(HAKUAIKA_ID_1);
+        hakuaika.setAlkuPvm(hakuaikaStart);
+        hakuaika.setLoppuPvm(hakuaikaEnd);
+        haku.setHakuaikas(Lists.newArrayList(hakuaika));
+        haku.setHakutapaUri("dummyhaku");
+
+        return haku;
+    }
+
+    private HakukohdeV1RDTO getHakukohdeV1RDTO() throws Exception{
+        HakukohdeV1RDTO hakukohde = new HakukohdeV1RDTO();
+        hakukohde.setOid(hakukohdeOid);
+        hakukohde.setHakukohteenNimiUri(hakukohdeNameUri);
+        hakukohde.setAloituspaikatLkm(10);
+        hakukohde.setAlinValintaPistemaara(5);
+        hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
+        hakukohde.setLiitteidenToimitusPvm(new Date());
+        hakukohde.setEdellisenVuodenHakijatLkm(10);
+        Map<String, String> selectionCriteria = Maps.newHashMap();
+        selectionCriteria.put(getFiUri(), "selectionCriteria");
+        hakukohde.setValintaperusteKuvaukset(selectionCriteria);
+        hakukohde.setKaksoisTutkinto(false);
+        hakukohde.setSoraKuvausKoodiUri("soraUri");
+        hakukohde.setHakuaikaId(HAKUAIKA_ID_1);
+        hakukohde.setHakukelpoisuusvaatimusUris(Arrays.asList("prerequisiteUri1", "prerequisiteUri2"));
+
+        RyhmaliitosV1RDTO groupWithPrio = new RyhmaliitosV1RDTO();
+        groupWithPrio.setRyhmaOid(PRIORITIZED_GROUP_OID);
+        groupWithPrio.setPrioriteetti(1);
+        OrganisaatioRDTO groupWithPrioOrg = new OrganisaatioRDTO();
+        groupWithPrioOrg.setOid(groupWithPrio.getRyhmaOid());
+        groupWithPrioOrg.setTyypit(Arrays.asList(OrganisaatioTyyppi.RYHMA.value()));
+
+        RyhmaliitosV1RDTO groupWithNoPrio = new RyhmaliitosV1RDTO();
+        groupWithNoPrio.setRyhmaOid("group_with_no_prio");
+        OrganisaatioRDTO groupWithNoPrioOrg = new OrganisaatioRDTO();
+        groupWithNoPrioOrg.setOid(groupWithNoPrio.getRyhmaOid());
+        groupWithNoPrioOrg.setTyypit(Arrays.asList(OrganisaatioTyyppi.RYHMA.value()));
+
+        hakukohde.setOrganisaatioRyhmaOids(new String[]{groupWithPrio.getRyhmaOid(), groupWithNoPrio.getRyhmaOid()});
+        hakukohde.setRyhmaliitokset(new ArrayList<RyhmaliitosV1RDTO>(Arrays.asList(groupWithPrio, groupWithNoPrio)));
+
+        when(organisaatioRawService.getOrganisaatio(eq(groupWithPrio.getRyhmaOid()))).thenReturn(groupWithPrioOrg);
+        when(organisaatioRawService.getOrganisaatio(eq(groupWithNoPrio.getRyhmaOid()))).thenReturn(groupWithNoPrioOrg);
+
+        Map<String, String> additionalInfo = Maps.newHashMap();
+        additionalInfo.put(getFiUri(), "additionalInfo");
+        hakukohde.setKaytetaanHakukohdekohtaistaHakuaikaa(false);
+        hakukohde.setLisatiedot(additionalInfo);
+
+        return hakukohde;
+    }
 
 }

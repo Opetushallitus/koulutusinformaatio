@@ -102,6 +102,8 @@ public class LOSObjectCreatorTest extends TestCase {
         ApplicationOption ao = new ApplicationOption();
         ao.setName(new I18nText(givenCodeMap("Hakukohde", "FI")));
         ao.setApplicationSystem(new ApplicationSystem());
+        ao.setApplicationStartDate(new Date());
+        ao.setApplicationEndDate(new Date());
         return ao;
     }
 

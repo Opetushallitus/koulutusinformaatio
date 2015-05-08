@@ -474,35 +474,34 @@ public class ApplicationOption {
         this.isPseudo = isPseudo;
     }
 
-    public boolean isCurrentOrFuture() {
-        return isCurrent() || isFuture();
-    }
-
-    public boolean isCurrent() {
+    public boolean showInOpintopolku() {
         Date now = new Date();
         for (DateRange dr : getApplicationDates()) {
-            Date endDate = dr.getEndDate();
-            if(endDate == null){ // Jatkuva haku
-                return dr.getStartDate().before(now);
+            if (dr.getStartDate().after(now)) { // In Future
+                return true;
             }
-            Calendar endCal = Calendar.getInstance();
-            endCal.setTime(endDate);
-            endCal.add(Calendar.MONTH, 10);
-            endDate = endCal.getTime();
-            if (dr.getStartDate().before(now) && endDate.after(now)) {
+
+            Date endDate = dr.getEndDate();
+            if (endDate == null || endDate.after(now)) {
+                return true;
+            }
+
+            if (getLastDayToShow(endDate).after(now)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isFuture() {
-        Date now = new Date();
-        for (DateRange dr : getApplicationDates()) {
-            if (dr.getStartDate().before(now)) {
-                return false;
-            }
+    private Date getLastDayToShow(Date endDate) {
+        Date lastDayToShow = getApplicationSystem().getShowEducationsUntil();
+        if (lastDayToShow == null) {
+            lastDayToShow = endDate;
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(endDate);
+            cal.add(Calendar.MONTH, 10);
+            lastDayToShow.setTime(cal.getTimeInMillis());
         }
-        return true;
+        return lastDayToShow;
     }
 }

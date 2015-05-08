@@ -17,9 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,6 @@ import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOI;
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
@@ -377,16 +374,16 @@ public class LOIObjectCreator extends ObjectCreator {
              return filtered;
          } else if (filtered.isEmpty()) {
              // filtered is empty, add head
-             if(head(unfiltered).isCurrentOrFuture()){
+             if(head(unfiltered).showInOpintopolku()){
                  filtered.add(head(unfiltered));
              }
              return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
          } else {
              ApplicationOption unfilteredHead = head(unfiltered);
              ApplicationOption filteredHead = head(filtered);
-             if (unfilteredHead.isCurrentOrFuture()) {
+             if (unfilteredHead.showInOpintopolku()) {
                  // unfiltered head is future/current, add to filtered
-                 if (!filteredHead.isFuture() && !filteredHead.isCurrent()) {
+                 if (!filteredHead.showInOpintopolku()) {
                      // remove past head from filtered list
                      filtered.remove(0);
                  }
@@ -394,7 +391,7 @@ public class LOIObjectCreator extends ObjectCreator {
                  return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
              } else {
                  // unfiltered head is in the past
-                 if (filteredHead.isCurrentOrFuture()) {
+                 if (filteredHead.showInOpintopolku()) {
                      // if filtered head is current/future -> pass
                      return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
                  } else {

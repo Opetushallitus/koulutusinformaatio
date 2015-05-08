@@ -67,6 +67,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
             } else {
                 as.setShownAsFacet(false);
             }
+            as.setShowEducationsUntil(asDto.getOpintopolunNayttaminenLoppuu());
             as.setUseSystemApplicationForm(asDto.isJarjestelmanHakulomake());
 
             return as;

@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +36,8 @@ public class ApplicationSystem {
     private boolean shownAsFacet;
     private DateRange facetRange;
     private boolean useSystemApplicationForm;
+
+    private Date showEducationsUntil;
 
     public String getId() {
         return id;
@@ -78,7 +81,7 @@ public class ApplicationSystem {
     }
 
     public void setStatus(String tila) {
-        this.status = tila;	
+        this.status = tila;
     }
 
     public String getStatus() {
@@ -110,7 +113,7 @@ public class ApplicationSystem {
     }
 
     public void setHakutyyppiUri(String hakutyyppiUri) {
-        this.hakutyyppiUri = hakutyyppiUri; 
+        this.hakutyyppiUri = hakutyyppiUri;
     }
 
     public String getHakutyyppiUri() {
@@ -139,5 +142,13 @@ public class ApplicationSystem {
 
     public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
         this.useSystemApplicationForm = useSystemApplicationForm;
+    }
+
+    public Date getShowEducationsUntil() {
+        return showEducationsUntil;
+    }
+
+    public void setShowEducationsUntil(Date showEducationsUntil) {
+        this.showEducationsUntil = showEducationsUntil;
     }
 }

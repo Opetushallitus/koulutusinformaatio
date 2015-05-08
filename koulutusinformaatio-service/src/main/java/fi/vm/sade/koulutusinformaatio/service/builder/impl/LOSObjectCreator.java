@@ -18,8 +18,6 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +43,6 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -825,7 +822,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     ao.setStatus(hakukohdeDTO.getTila());
                     ao.getApplicationSystem().setStatus(hakuDTO.getTila());
                 }
-                if (ao.isCurrentOrFuture())
+                if (ao.showInOpintopolku())
                     aos.add(ao);
 
             } catch (Exception ex) {
