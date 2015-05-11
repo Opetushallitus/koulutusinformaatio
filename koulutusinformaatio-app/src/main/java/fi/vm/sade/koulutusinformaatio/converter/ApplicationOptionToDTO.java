@@ -37,7 +37,7 @@ public final class ApplicationOptionToDTO {
             dto.setId(applicationOption.getId());
             dto.setType(applicationOption.getType());
             dto.setEducationTypeUri(createEducationTypeUri(applicationOption.getEducationTypeUri()));
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), defaultLang));
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), uiLang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
             dto.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress(), uiLang));

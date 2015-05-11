@@ -350,7 +350,7 @@ public class LearningOpportunityServiceImplTest {
         assertNotNull(result);
         assertEquals(applicationOption.getId(), result.getId());
         assertEquals(applicationOption.getAoIdentifier(), result.getAoIdentifier());
-        assertEquals(applicationOption.getName().getTranslations().get(defaultLang), result.getName());
+        assertEquals(applicationOption.getName().getTranslations().get(lang), result.getName());
         assertEquals(applicationOption.getEducationDegree(), result.getEducationDegree());
         assertEquals(applicationOption.getProvider().getId(), result.getProvider().getId());
         assertEquals(applicationOption.getAttachmentDeliveryDeadline(), result.getAttachmentDeliveryDeadline());
@@ -383,7 +383,7 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLOI.getPrerequisite().getValue(), loi.getPrerequisite().getValue());
         assertEquals(parentLOI.getApplicationOptions().iterator().next().getApplicationSystem().getName().getTranslations().get(lang),
                 loi.getApplicationSystems().iterator().next().getName());
-        assertEquals(parentLOI.getApplicationOptions().iterator().next().getName().getTranslations().get(defaultLang),
+        assertEquals(parentLOI.getApplicationOptions().iterator().next().getName().getTranslations().get(lang),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().get(0).getName());
 
         assertEquals(lang, result.getTranslationLanguage());
@@ -406,7 +406,7 @@ public class LearningOpportunityServiceImplTest {
         ChildLearningOpportunityInstanceDTO loi = result.getLois().get(0);
         assertEquals(childLOI.getApplicationOptions().get(0).getId(),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getId());
-        assertEquals(childLOI.getApplicationOptions().get(0).getName().getTranslations().get(defaultLang),
+        assertEquals(childLOI.getApplicationOptions().get(0).getName().getTranslations().get(lang),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getName());
         assertEquals(childLOI.getPrerequisite().getValue(),
                 loi.getPrerequisite().getValue());
