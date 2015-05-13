@@ -24,5 +24,7 @@ public interface PartialUpdateService extends RunningService {
     void updateEducation(String oid);
     
     void updateApplicationSystem(String oid);
+
+    void updateApplicationOption(String oid);
     
 }

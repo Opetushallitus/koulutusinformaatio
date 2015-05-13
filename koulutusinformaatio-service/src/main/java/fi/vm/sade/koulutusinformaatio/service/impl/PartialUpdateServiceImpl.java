@@ -30,8 +30,12 @@ import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 
 /**
  * @author risal1
@@ -56,7 +60,13 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private EducationIncrementalDataUpdateService dataUpdateService;
     
     @Autowired
+    private TarjontaRawService tarjontaRawService;
+    
+    @Autowired
     private IndexerService indexerService;
+    
+    @Autowired
+    private IncrementalApplicationOptionIndexer aoIndexer;
         
     @Autowired @Qualifier("lopAliasSolrServer") 
     private HttpSolrServer lopHttpSolrServer;
@@ -79,17 +89,21 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         doUpdate(oid, new ApplicationSystemUpdater());
     }
     
+    @Override
+    public void updateApplicationOption(String oid) {
+        doUpdate(oid, new ApplicationOptionUpdater());
+    }
+    
     private void doUpdate(String oid, Updater updater) {
-        if (startRunning()) {
-            try {
-                indexerService.clearProcessedLists();
-                runUpdate(oid, updater);
-            } catch (Exception e) {
-                LOGGER.error("Error indexing " + updater.getUpdateProcessName() + ": " + oid, e);
-                dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
-            } finally {
-                running = false;
-            }
+        startRunning();
+        try {
+            indexerService.clearProcessedLists();
+            runUpdate(oid, updater);
+        } catch (Exception e) {
+            LOGGER.error("Error indexing " + updater.getUpdateProcessName() + ": " + oid, e);
+            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
+        } finally {
+            running = false;
         }
     }
 
@@ -103,10 +117,9 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
                 oid, System.currentTimeMillis() - runningSince));
     }
 
-    private boolean startRunning() {
+    private void startRunning() {
         running = true;
         runningSince = System.currentTimeMillis();
-        return true;
     }
 
     @Override
@@ -152,6 +165,22 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         String getUpdateProcessName() {
             return "education";
         }
+    }
+    
+    private class ApplicationOptionUpdater extends Updater {
+
+        @Override
+        void update(String oid) throws Exception {
+            HakukohdeV1RDTO aoDto = tarjontaRawService.getV1EducationHakukohode(oid).getResult();
+            HakuV1RDTO asDto = tarjontaRawService.getV1EducationHakuByOid(aoDto.getHakuOid()).getResult();
+            aoIndexer.indexApplicationOptionData(aoDto, asDto);
+        }
+
+        @Override
+        String getUpdateProcessName() {
+            return "application option";
+        }
+        
     }
 
 }

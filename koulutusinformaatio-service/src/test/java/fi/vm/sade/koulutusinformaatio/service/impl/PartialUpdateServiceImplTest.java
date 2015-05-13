@@ -1,6 +1,5 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +11,21 @@ import org.mockito.stubbing.Answer;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PartialUpdateServiceImplTest {
@@ -27,6 +34,7 @@ public class PartialUpdateServiceImplTest {
     private static final int OUTER_THREAD_DELAY = 20;
     private final static String EDUCATION_OID = "19.231.4142";
     private final static String APPLICATION_OID = "123.123.123";
+    private final static String APPLICATION_OPTION_OID = "321.234.551.5354";
     
     
     @Mock
@@ -36,6 +44,9 @@ public class PartialUpdateServiceImplTest {
     private IncrementalApplicationSystemIndexer indexer;
     
     @Mock
+    private IncrementalApplicationOptionIndexer aoIndexer;
+    
+    @Mock
     private IncrementalLOSIndexer losIndexer;
     
     @Mock
@@ -43,6 +54,9 @@ public class PartialUpdateServiceImplTest {
 
     @Mock
     private IndexerService indexerService;
+    
+    @Mock
+    private TarjontaRawService tarjontaService;
     
     @InjectMocks
     private PartialUpdateService service = new PartialUpdateServiceImpl();
@@ -60,6 +74,13 @@ public class PartialUpdateServiceImplTest {
         };
         doAnswer(delayedAnswer).when(indexer).indexApplicationSystemData(APPLICATION_OID);
         doAnswer(delayedAnswer).when(losIndexer).indexLoiData(EDUCATION_OID);
+        doAnswer(delayedAnswer).when(aoIndexer).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
+        
+        HakukohdeV1RDTO ao = new HakukohdeV1RDTO();
+        ao.setOid(APPLICATION_OPTION_OID);
+        ao.setHakuOid(APPLICATION_OID);
+        when(tarjontaService.getV1EducationHakukohode(APPLICATION_OPTION_OID)).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>(ao));
+        when(tarjontaService.getV1EducationHakuByOid(APPLICATION_OID)).thenReturn(new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO()));
     }
     
     @Test
@@ -70,13 +91,23 @@ public class PartialUpdateServiceImplTest {
     @Test
     public void startsRunningApplicationIndexing() throws Exception {
         updateApplicationOnSeparateThreadAndSleep();
-        assertTrue(service.isRunning());
-        assertTrue(service.getRunningSince() > 0l);
+        assertServiceIsRunning();
     }
+
     
     @Test
     public void startsRunningEducationIndexing() throws Exception {
         updateEducationOnSeparateThreadAndSleep();
+        assertServiceIsRunning();
+    }
+    
+    @Test
+    public void startsRunningApplicationOptionIndexing() throws Exception {
+        updateApplicationOptionOnSeparateThreadAndSleep();
+        assertServiceIsRunning();
+    }
+    
+    private void assertServiceIsRunning() {
         assertTrue(service.isRunning());
         assertTrue(service.getRunningSince() > 0l);
     }
@@ -98,6 +129,17 @@ public class PartialUpdateServiceImplTest {
             @Override
             public void run() {
                 service.updateApplicationSystem(APPLICATION_OID);
+            }
+        }).start();
+        Thread.sleep(OUTER_THREAD_DELAY);
+    }
+    
+    private void updateApplicationOptionOnSeparateThreadAndSleep() throws Exception {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                service.updateApplicationOption(APPLICATION_OPTION_OID);
             }
         }).start();
         Thread.sleep(OUTER_THREAD_DELAY);

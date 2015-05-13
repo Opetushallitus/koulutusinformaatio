@@ -38,7 +38,6 @@ import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.RunningService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
@@ -136,6 +135,19 @@ public class AdminResource {
         try {
             if (!runningServiceChecker.isAnyServiceRunning()) {
                 partialUpdateService.updateApplicationSystem(oid);
+            }
+        } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/partial/ao/{oid}")
+    public Response partialUpdateApplicationOptionData(@PathParam("oid") String oid) throws URISyntaxException {
+        try {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
+                partialUpdateService.updateApplicationOption(oid);
             }
         } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
