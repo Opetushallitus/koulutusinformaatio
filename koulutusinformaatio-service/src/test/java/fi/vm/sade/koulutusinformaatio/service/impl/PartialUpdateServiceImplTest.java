@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -105,6 +106,24 @@ public class PartialUpdateServiceImplTest {
     public void startsRunningApplicationOptionIndexing() throws Exception {
         updateApplicationOptionOnSeparateThreadAndSleep();
         assertServiceIsRunning();
+    }
+    
+    @Test
+    public void indexesEducation() throws Exception {
+        service.updateEducation(EDUCATION_OID);
+        verify(losIndexer).indexLoiData(EDUCATION_OID);
+    }
+    
+    @Test
+    public void indexesApplicationSystem() throws Exception {
+        service.updateApplicationSystem(APPLICATION_OID);
+        verify(indexer).indexApplicationSystemData(APPLICATION_OID);
+    }
+    
+    @Test
+    public void indexesApplicationOption() throws Exception {
+        service.updateApplicationOption(APPLICATION_OPTION_OID);
+        verify(aoIndexer).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
     }
     
     private void assertServiceIsRunning() {
