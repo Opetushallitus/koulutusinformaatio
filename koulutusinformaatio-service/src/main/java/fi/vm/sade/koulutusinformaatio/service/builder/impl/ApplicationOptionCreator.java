@@ -534,16 +534,25 @@ public class ApplicationOptionCreator extends ObjectCreator {
             postOffice.put(yt.getLang(), yt.getPostitoimipaikka());
             postalCode.put(yt.getLang(), yt.getPostinumero());
         }
-        a.setStreetAddress(new I18nText(streetAddress));
-        a.setSecondForeignAddr(new I18nText(secondForeignAddr));
-        a.setPostOffice(new I18nText(postOffice));
-        a.setPostalCode(new I18nText(postalCode));
+        a.setStreetAddress(getSanitizedI18nText(streetAddress));
+        a.setSecondForeignAddr(getSanitizedI18nText(secondForeignAddr));
+        a.setPostOffice(getSanitizedI18nText(postOffice));
+        a.setPostalCode(getSanitizedI18nText(postalCode));
         return a;
+    }
+
+    private I18nText getSanitizedI18nText(Map<String, String> translations) {
+        for (String key : translations.keySet()) {
+            if(translations.get(key) == null)
+                translations.put(key, "");
+        }
+        return new I18nText(translations);
     }
 
     private Address getLocalizedVisitingAddress(List<YhteystiedotV1RDTO> yhteystiedot) {
         List<YhteystiedotV1RDTO> visitingAddreses = new ArrayList<YhteystiedotV1RDTO>();
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
+            yt.getKayntiosoite().setLang(yt.getLang());;
             visitingAddreses.add(yt.getKayntiosoite());
         }
         return getLocalizedAddress(visitingAddreses);
