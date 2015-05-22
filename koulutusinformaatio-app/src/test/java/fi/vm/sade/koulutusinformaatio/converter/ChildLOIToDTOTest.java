@@ -38,6 +38,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityInstanceDTO;
 
 /**
@@ -96,8 +97,10 @@ public class ChildLOIToDTOTest {
         loi.setPlannedDurationUnit(new I18nText(pdu));
         ApplicationOption ao1 = new ApplicationOption();
         ao1.setId("aoid1");
+        ao1.setProvider(new Provider());
         ApplicationOption ao2 = new ApplicationOption();
-        ao1.setId("aoid2");
+        ao2.setId("aoid2");
+        ao2.setProvider(new Provider());
         ApplicationSystem as = new ApplicationSystem();
         as.setId("asid");
         Map<String, String> asName = Maps.newHashMap();

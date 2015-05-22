@@ -34,15 +34,14 @@ public final class ApplicationOfficeToDTO {
         return convert(null, provider, lang);
     }
     
-    public static ApplicationOfficeDTO convert(ApplicationOffice applicationOffice, Provider provider, String lang) {
+    public static ApplicationOfficeDTO convert(ApplicationOffice aoFromApplicationOption, Provider provider, String lang) {
         ApplicationOffice ao = null;
-        if(applicationOffice != null){
-            ao = applicationOffice;
-        } else if(provider != null){
-            ao = provider.getApplicationOffice() != null ? provider.getApplicationOffice() : new ApplicationOffice();
+        if(aoFromApplicationOption != null){
+            ao = aoFromApplicationOption;
+        } else if(provider.getApplicationOffice() != null){
+            ao = provider.getApplicationOffice();
         } else {
-            ao = new ApplicationOffice();
-            provider = new Provider();
+           ao = new ApplicationOffice(); 
         }
         ApplicationOfficeDTO dto = new ApplicationOfficeDTO();
         if (ao.getName() != null) {
