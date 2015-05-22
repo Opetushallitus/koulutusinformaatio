@@ -474,7 +474,7 @@ public class LearningOpportunityServiceImplTest {
         event.setStart(new Date());
         event.setEnd(new Date());
         Address address = new Address();
-        address.setPostalCode("00100");
+        address.setPostalCode(createI18nText("00100"));
         address.setPostOffice(createI18nText("Helsinki"));
         address.setStreetAddress(createI18nText("street address"));
         event.setAddress(address);

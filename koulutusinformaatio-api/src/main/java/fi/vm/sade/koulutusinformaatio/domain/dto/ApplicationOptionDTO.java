@@ -49,6 +49,7 @@ public class ApplicationOptionDTO {
     private List<ChildLOIRefDTO> childRefs = new ArrayList<ChildLOIRefDTO>();
     private List<HigherEducationLOSRefDTO> higherEdLOSRefs = new ArrayList<HigherEducationLOSRefDTO>();
     private LearningOpportunityProviderDTO provider;
+    private ApplicationOfficeDTO applicationOffice;
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
@@ -423,6 +424,14 @@ public class ApplicationOptionDTO {
 
     public void setTeachingLanguageNames(List<String> teachingLanguageNames) {
         this.teachingLanguageNames = teachingLanguageNames;
+    }
+
+    public ApplicationOfficeDTO getApplicationOffice() {
+        return applicationOffice;
+    }
+
+    public void setApplicationOffice(ApplicationOfficeDTO applicationOffice) {
+        this.applicationOffice = applicationOffice;
     }
 
 }

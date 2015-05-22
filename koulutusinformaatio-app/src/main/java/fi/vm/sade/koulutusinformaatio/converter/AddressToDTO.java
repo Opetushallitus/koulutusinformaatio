@@ -36,7 +36,7 @@ public final class AddressToDTO {
                     && address.getStreetAddress() != null 
                     && address.getStreetAddress().getTranslations() != null 
                     && address.getStreetAddress().getTranslations().containsKey(lang))) {
-                addrs.setPostalCode(address.getPostalCode());
+                addrs.setPostalCode(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostalCode(), lang));
                 addrs.setPostOffice(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostOffice(), lang));
             }
             return addrs;

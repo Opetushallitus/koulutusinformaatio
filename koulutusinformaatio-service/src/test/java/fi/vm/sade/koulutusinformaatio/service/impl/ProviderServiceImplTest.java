@@ -127,8 +127,8 @@ public class ProviderServiceImplTest {
         assertEquals(HOMEPLACE.getTranslations().get("fi"), p.getHomePlace().getTranslations().get("fi"));
         assertEquals(HOMEPLACE.getTranslations().get("sv"), p.getHomePlace().getTranslations().get("sv"));
         assertEquals(HOMEPLACE.getTranslations().get("en"), p.getHomePlace().getTranslations().get("en"));
-        assertEquals(POSTALNUMBER, p.getVisitingAddress().getPostalCode());
-        assertEquals(POSTALNUMBER, p.getPostalAddress().getPostalCode());
+        assertEquals(POSTALNUMBER, p.getVisitingAddress().getPostalCode().get("fi"));
+        assertEquals(POSTALNUMBER, p.getPostalAddress().getPostalCode().get("fi"));
         assertEquals("yleiskuvaus", p.getDescription().getTranslations().get("fi"));
         assertEquals("terveydenhuolto", p.getHealthcare().getTranslations().get("fi"));
         assertEquals("ruokailu", p.getDining().getTranslations().get("fi"));

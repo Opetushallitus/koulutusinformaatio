@@ -76,7 +76,7 @@ public class ModelMapperTest {
         exam.setType(TestUtil.createI18nText("EXAM TYPE fi", "EXAM TYPE sv", "EXAM TYPE en"));
         ExamEvent examEvent = new ExamEvent();
         Address address = new Address();
-        address.setPostalCode("00100");
+        address.setPostalCode(TestUtil.createI18nText("00100"));
         address.setPostOffice(TestUtil.createI18nText("Helsinki"));
         address.setStreetAddress(TestUtil.createI18nText("Exam street address"));
         examEvent.setAddress(address);

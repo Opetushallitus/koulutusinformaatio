@@ -42,6 +42,8 @@ public class ApplicationOptionEntity {
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Embedded
+    private ApplicationOfficeEntity applicationOffice;
+    @Embedded
     private List<ChildLOIRefEntity> childLOIRefs = new ArrayList<ChildLOIRefEntity>();
     @Embedded
     private List<HigherEducationLOSRefEntity> higherEdLOSRefs = new ArrayList<HigherEducationLOSRefEntity>();
@@ -442,5 +444,13 @@ public class ApplicationOptionEntity {
 
     public void setPseudo(boolean isPseudo) {
         this.isPseudo = isPseudo;
+    }
+
+    public ApplicationOfficeEntity getApplicationOffice() {
+        return applicationOffice;
+    }
+
+    public void setApplicationOffice(ApplicationOfficeEntity applicationOffice) {
+        this.applicationOffice = applicationOffice;
     }
 }

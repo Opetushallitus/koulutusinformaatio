@@ -107,7 +107,7 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
-        assertEquals(postCode, address.getPostalCode());
+        assertEquals(postCode, address.getPostalCode().get("fi"));
         assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
         assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("eventinfo", event.getDescription());
@@ -124,7 +124,7 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         addressDTO.setOsoiterivi2("streetaddress2");
         Address address = creator.createAddress(addressDTO);
         assertNotNull(address);
-        assertEquals(postCode, address.getPostalCode());
+        assertEquals(postCode, address.getPostalCode().get("fi"));
         assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
         assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("streetaddress2", address.getSecondForeignAddr().getTranslations().get("fi"));
@@ -206,7 +206,7 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
-        assertEquals(postCode, address.getPostalCode());
+        assertEquals(postCode, address.getPostalCode().get("fi"));
         assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
         assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("eventinfo", event.getDescription());
@@ -273,7 +273,7 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
-        assertEquals(postCode, address.getPostalCode());
+        assertEquals(postCode, address.getPostalCode().get("fi"));
         assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
         assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("eventinfo", event.getDescription());

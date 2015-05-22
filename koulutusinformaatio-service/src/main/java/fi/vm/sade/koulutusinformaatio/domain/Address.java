@@ -23,7 +23,7 @@ public class Address {
 
     private I18nText streetAddress;
     private I18nText secondForeignAddr;
-    private String postalCode;
+    private I18nText postalCode;
     private I18nText postOffice;
 
     public I18nText getStreetAddress() {
@@ -34,11 +34,11 @@ public class Address {
         this.streetAddress = streetAddress;
     }
 
-    public String getPostalCode() {
+    public I18nText getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode) {
+    public void setPostalCode(I18nText postalCode) {
         this.postalCode = postalCode;
     }
 

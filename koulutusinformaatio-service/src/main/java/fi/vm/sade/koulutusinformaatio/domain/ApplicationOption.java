@@ -36,6 +36,7 @@ public class ApplicationOption {
     private List<ChildLOIRef> childLOIRefs = new ArrayList<ChildLOIRef>();
     private List<HigherEducationLOSRef> higherEdLOSRefs = new ArrayList<HigherEducationLOSRef>();
     private Provider provider;
+    private ApplicationOffice applicationOffice;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
     // "alinValintaPistemaara" : 0,
@@ -511,5 +512,13 @@ public class ApplicationOption {
         cal.set(Calendar.SECOND, 59);
 
         return cal.getTime();
+    }
+
+    public ApplicationOffice getApplicationOffice() {
+        return applicationOffice;
+    }
+
+    public void setApplicationOffice(ApplicationOffice applicationOffice) {
+        this.applicationOffice = applicationOffice;
     }
 }

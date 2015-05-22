@@ -38,7 +38,7 @@ public class AddressToDTOTest {
     @Test
     public void testConvert() {
         Address address = new Address();
-        address.setPostalCode("00100");
+        address.setPostalCode(createI18nText("00100"));
         address.setPostOffice(createI18nText("Helsinki"));
         address.setStreetAddress(createI18nText("street one"));
         address.setSecondForeignAddr(createI18nText("street two"));

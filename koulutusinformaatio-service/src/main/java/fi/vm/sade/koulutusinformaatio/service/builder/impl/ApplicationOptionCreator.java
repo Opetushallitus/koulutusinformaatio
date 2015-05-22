@@ -31,6 +31,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
@@ -48,6 +50,7 @@ import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
@@ -59,6 +62,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -69,7 +73,6 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
     private KoodistoService koodistoService;
     private TarjontaRawService tarjontaRawService;
-    private OrganisaatioRawService organisaatioRawService;
     private EducationObjectCreator educationObjectCreator;
     private ApplicationSystemCreator applicationSystemCreator;
 
@@ -80,7 +83,6 @@ public class ApplicationOptionCreator extends ObjectCreator {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.tarjontaRawService = tarjontaRawService;
-        this.organisaatioRawService = organisaatioRawService;
         this.educationObjectCreator = new EducationObjectCreator(koodistoService, organisaatioRawService);
         this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService, parameterService);
     }
@@ -460,6 +462,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         ao.setAttachments(attachments);
         ao.setAdditionalInfo(getI18nText(hakukohde.getLisatiedot()));
+        
+        ao.setApplicationOffice(getApplicationOffice(hakukohde.getYhteystiedot(), los.getProvider().getApplicationOffice()));
+        
         return ao;
     }
 
@@ -471,5 +476,76 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return vals;
     }
 
+    private ApplicationOffice getApplicationOffice(List<YhteystiedotV1RDTO> yhteystiedot, ApplicationOffice applicationOffice) throws KoodistoException {
+        if (yhteystiedot == null || yhteystiedot.isEmpty()) {
+            return applicationOffice;
+        } else {
+            Address visitingAddress = getLocalizedVisitingAddress(yhteystiedot);
+            Address postalAddress = getLocalizedAddress(yhteystiedot);
+            I18nText hakutoimistonNimi = getHakutoimistonNimi(yhteystiedot);
+            I18nText phone = getPhoneNumber(yhteystiedot);
+            I18nText email = getEmail(yhteystiedot);
+            I18nText www = getWww(yhteystiedot);
+            return new ApplicationOffice(hakutoimistonNimi, phone, email, www, visitingAddress, postalAddress);
+        }
+    }
 
+    private I18nText getHakutoimistonNimi(List<YhteystiedotV1RDTO> yhteystiedot) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (YhteystiedotV1RDTO yt : yhteystiedot) {
+            map.put(yt.getLang(), yt.getHakutoimistonNimi());
+        }
+        return new I18nText(map);
+    }
+
+    private I18nText getWww(List<YhteystiedotV1RDTO> yhteystiedot) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (YhteystiedotV1RDTO yt : yhteystiedot) {
+            map.put(yt.getLang(), yt.getWwwOsoite());
+        }
+        return new I18nText(map);
+    }
+
+    private I18nText getEmail(List<YhteystiedotV1RDTO> yhteystiedot) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (YhteystiedotV1RDTO yt : yhteystiedot) {
+            map.put(yt.getLang(), yt.getSahkopostiosoite());
+        }
+        return new I18nText(map);
+    }
+
+    private I18nText getPhoneNumber(List<YhteystiedotV1RDTO> yhteystiedot) {
+        Map<String, String> map = new HashMap<String, String>();
+        for (YhteystiedotV1RDTO yt : yhteystiedot) {
+            map.put(yt.getLang(), yt.getPuhelinnumero());
+        }
+        return new I18nText(map);
+    }
+
+    private Address getLocalizedAddress(List<YhteystiedotV1RDTO> yhteystiedot) {
+        Address a = new Address();
+        Map<String, String> streetAddress = new HashMap<String, String>();
+        Map<String, String> secondForeignAddr = new HashMap<String, String>();
+        Map<String, String> postalCode = new HashMap<String, String>();
+        Map<String, String> postOffice = new HashMap<String, String>();
+        for (YhteystiedotV1RDTO yt : yhteystiedot) {
+            streetAddress.put(yt.getLang(), yt.getOsoiterivi1());
+            secondForeignAddr.put(yt.getLang(), yt.getOsoiterivi2());
+            postOffice.put(yt.getLang(), yt.getPostitoimipaikka());
+            postalCode.put(yt.getLang(), yt.getPostinumero());
+        }
+        a.setStreetAddress(new I18nText(streetAddress));
+        a.setSecondForeignAddr(new I18nText(secondForeignAddr));
+        a.setPostOffice(new I18nText(postOffice));
+        a.setPostalCode(new I18nText(postalCode));
+        return a;
+    }
+
+    private Address getLocalizedVisitingAddress(List<YhteystiedotV1RDTO> yhteystiedot) {
+        List<YhteystiedotV1RDTO> visitingAddreses = new ArrayList<YhteystiedotV1RDTO>();
+        for (YhteystiedotV1RDTO yt : yhteystiedot) {
+            visitingAddreses.add(yt.getKayntiosoite());
+        }
+        return getLocalizedAddress(visitingAddreses);
+    }
 }

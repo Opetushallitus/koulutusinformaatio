@@ -20,6 +20,7 @@ import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 public class OrganisaatioRDTOToProviderTest {
     private static final String KIELI_CODE_VALUE = "kielicodevalue";
     private static final String KUNTA_CODE_VALUE = "kuntacodevalue";
+    private static final String POSTI_CODE_VALUE = "posticodevalue";
     private static final String MAA_CODE_VALUE = "maacodevalue";
     private static final String OPPILAITOS_CODE_VALUE = "oppilaitoscodevalue";
     private static final String SOME_CODE_VALUE = "somecodevalue";
@@ -45,6 +46,7 @@ public class OrganisaatioRDTOToProviderTest {
             when(koodistoService.searchFirstCodeValue((String) isNull())).thenReturn(null);
             when(koodistoService.searchFirstCodeValue(startsWith("kieli_"))).thenReturn(KIELI_CODE_VALUE);
             when(koodistoService.searchFirstCodeValue(startsWith("kunta_"))).thenReturn(KUNTA_CODE_VALUE);
+            when(koodistoService.searchFirstCodeValue(startsWith("posti_"))).thenReturn(POSTI_CODE_VALUE);
             when(koodistoService.searchFirstCodeValue(startsWith("maatjavaltiot1_"))).thenReturn(MAA_CODE_VALUE);
             when(koodistoService.searchFirstCodeValue(startsWith("oppilaitostyyppi_"))).thenReturn(OPPILAITOS_CODE_VALUE);
             when(koodistoService.searchFirstCodeValue(startsWith("sosiaalinenmedia_"))).thenReturn(SOME_CODE_VALUE);

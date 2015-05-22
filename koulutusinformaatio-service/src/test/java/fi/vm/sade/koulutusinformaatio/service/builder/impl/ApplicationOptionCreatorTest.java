@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,6 +40,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
@@ -172,6 +174,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
 
         StandaloneLOS los = new StandaloneLOS();
+        los.setProvider(new Provider());
         Code educationCode = new Code();
         educationCode.setUri(educationCodeUri);
         los.setEducationCode(educationCode);
@@ -319,6 +322,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         Code educationCode = new Code();
         educationCode.setUri(educationCodeUri);
         los.setEducationCode(educationCode);
+        los.setProvider(new Provider());
         Code fi = new Code();
         fi.setValue("fi");
         los.setTeachingLanguages(Arrays.asList(fi));

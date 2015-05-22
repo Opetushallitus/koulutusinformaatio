@@ -146,6 +146,7 @@ public class EducationObjectCreator extends ObjectCreator {
             Map<String,String> streetAddrTransls = new HashMap<String,String>();
             Map<String,String> streetAddrTransls2 = new HashMap<String,String>();
             Map<String,String> postOfficeTransls = new HashMap<String,String>();
+            Map<String,String> postalCodeTransls = new HashMap<String,String>();
 
             if (osoite.getOsoiterivi1() != null) {
                 streetAddrTransls.put("fi", osoite.getOsoiterivi1());
@@ -155,11 +156,13 @@ public class EducationObjectCreator extends ObjectCreator {
                 streetAddrTransls2.put("fi", osoite.getOsoiterivi2());
                 attachmentDeliveryAddress.setSecondForeignAddr(new I18nText(streetAddrTransls2));
             }
-            attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(osoite.getPostinumero()));
-
             if (osoite.getPostitoimipaikka() != null) {
                 postOfficeTransls.put("fi", osoite.getPostitoimipaikka());
                 attachmentDeliveryAddress.setPostOffice(new I18nText(postOfficeTransls));
+            }
+            if (osoite.getPostinumero() != null) {
+                postalCodeTransls.put("fi", koodistoService.searchFirstCodeValue(osoite.getPostinumero()));
+                attachmentDeliveryAddress.setPostalCode(new I18nText(postalCodeTransls));
             }
             return attachmentDeliveryAddress;
         } else {

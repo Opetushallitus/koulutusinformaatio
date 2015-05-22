@@ -70,7 +70,7 @@ public class UpperSecondaryLOSToSolrInputDocumentTest {
 		provider.setHomeDistrict(TestUtil.createI18nText("Uusimaa fi", "Uusimaa sv", "Uusimaa en"));
 		provider.setHomePlace(TestUtil.createI18nText("Hki fi", "Hki sv", "Hki en"));
 		Address addr = new Address();
-		addr.setPostalCode("04620");
+		addr.setPostalCode(TestUtil.createI18nText("04620","04620","04620"));
 		provider.setVisitingAddress(addr);
 		provider.setDescription(TestUtil.createI18nText("prov descr fi", "prov descr sv", "prov descr en"));
 		los.setProvider(provider);

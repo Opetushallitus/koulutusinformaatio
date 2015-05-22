@@ -211,8 +211,8 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         
         Map<String,String> streetAddrTransls = new HashMap<String,String>();
         Map<String,String> postOfficeTransls = new HashMap<String,String>();
-        String postalCode = null;
-        
+        Map<String,String> postalCodeTransls = new HashMap<String,String>();
+               
         
         LOG.debug("Getting " + addressType);
         
@@ -233,14 +233,17 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
                 if (curYht.get(POST_OFFICE) != null) {
                     postOfficeTransls.put(key.toLowerCase(), curYht.get(POST_OFFICE));
                 }
-                postalCode = postalCode == null ? koodistoService.searchFirstCodeValue(curYht.get(POSTAL_CODE)) : postalCode;
+                if (curYht.get(POSTAL_CODE) != null) {
+                    String searchFirstCodeValue = koodistoService.searchFirstCodeValue(curYht.get(POSTAL_CODE));
+                    postalCodeTransls.put(key.toLowerCase(), searchFirstCodeValue);
+                }
             }
         }
         
         Address addr = new Address();
         addr.setStreetAddress(new I18nText(streetAddrTransls));
         addr.setPostOffice(new I18nText(postOfficeTransls));
-        addr.setPostalCode(postalCode);
+        addr.setPostalCode(new I18nText(postalCodeTransls));
         return addr;
     }
 
