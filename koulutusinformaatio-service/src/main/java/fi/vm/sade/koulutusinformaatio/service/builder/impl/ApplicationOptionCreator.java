@@ -63,6 +63,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
+import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
 
 /**
  * @author Hannu Lyytikainen
@@ -534,10 +535,14 @@ public class ApplicationOptionCreator extends ObjectCreator {
         Map<String, String> postalCode = new HashMap<String, String>();
         Map<String, String> postOffice = new HashMap<String, String>();
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
-            streetAddress.put(yt.getLang(), yt.getOsoiterivi1());
-            secondForeignAddr.put(yt.getLang(), yt.getOsoiterivi2());
-            postOffice.put(yt.getLang(), yt.getPostitoimipaikka());
-            postalCode.put(yt.getLang(), yt.getPostinumero());
+            if (Osoitemuoto.KANSAINVALINEN.equals(yt.getOsoitemuoto())) {
+                streetAddress.put(yt.getLang(), yt.getKansainvalinenOsoite());
+            } else {
+                streetAddress.put(yt.getLang(), yt.getOsoiterivi1());
+                secondForeignAddr.put(yt.getLang(), yt.getOsoiterivi2());
+                postOffice.put(yt.getLang(), yt.getPostitoimipaikka());
+                postalCode.put(yt.getLang(), yt.getPostinumero());
+            }
         }
         a.setStreetAddress(getSanitizedI18nText(streetAddress));
         a.setSecondForeignAddr(getSanitizedI18nText(secondForeignAddr));
@@ -557,8 +562,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
     private Address getLocalizedVisitingAddress(List<YhteystiedotV1RDTO> yhteystiedot) {
         List<YhteystiedotV1RDTO> visitingAddreses = new ArrayList<YhteystiedotV1RDTO>();
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
-            yt.getKayntiosoite().setLang(yt.getLang());;
-            visitingAddreses.add(yt.getKayntiosoite());
+            YhteystiedotV1RDTO kayntiosoite = yt.getKayntiosoite();
+            kayntiosoite.setLang(yt.getLang());
+            kayntiosoite.setOsoitemuoto(yt.getOsoitemuoto());
+            visitingAddreses.add(kayntiosoite);
         }
         return getLocalizedAddress(visitingAddreses);
     }

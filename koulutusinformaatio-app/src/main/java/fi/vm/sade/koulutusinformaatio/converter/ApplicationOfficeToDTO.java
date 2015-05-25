@@ -31,7 +31,7 @@ public final class ApplicationOfficeToDTO {
     }
 
     public static ApplicationOfficeDTO convert(ApplicationOffice ao, Provider provider, String lang) {
-        if(ao == null){
+        if(ao == null || ao.getName() == null || ao.getName().getTranslations() == null || ao.getName().getTranslations().get(lang) == null){
             return convert(provider, lang);
         }
         ApplicationOfficeDTO dto = new ApplicationOfficeDTO();
