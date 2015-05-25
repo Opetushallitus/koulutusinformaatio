@@ -30,47 +30,50 @@ public final class ApplicationOfficeToDTO {
     private ApplicationOfficeToDTO() {
     }
 
-    public static ApplicationOfficeDTO convert(Provider provider, String lang) {
-        return convert(null, provider, lang);
-    }
-    
-    public static ApplicationOfficeDTO convert(ApplicationOffice aoFromApplicationOption, Provider provider, String lang) {
-        ApplicationOffice ao = null;
-        if(aoFromApplicationOption != null){
-            ao = aoFromApplicationOption;
-        } else if(provider.getApplicationOffice() != null){
-            ao = provider.getApplicationOffice();
-        } else {
-           ao = new ApplicationOffice(); 
+    public static ApplicationOfficeDTO convert(ApplicationOffice ao, Provider provider, String lang) {
+        if(ao == null){
+            return convert(provider, lang);
         }
         ApplicationOfficeDTO dto = new ApplicationOfficeDTO();
-        if (ao.getName() != null) {
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
+        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
+        dto.setVisitingAddress(AddressToDTO.convert(ao.getVisitingAddress(), lang));
+        dto.setPostalAddress(AddressToDTO.convert(ao.getPostalAddress(), lang));
+        dto.setPhone(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getPhone(), lang));
+        dto.setEmail(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getEmail(), lang));
+        dto.setWww(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getWww(), lang));
+        return dto;
+    }
+    
+    public static ApplicationOfficeDTO convert(Provider provider, String lang) {
+        ApplicationOffice applicationOffice = provider.getApplicationOffice() != null ? provider.getApplicationOffice() : new ApplicationOffice();
+        ApplicationOfficeDTO dto = new ApplicationOfficeDTO();
+        if (applicationOffice.getName() != null) {
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getName(), lang));
         } else {
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
         }
-        if (ao.getVisitingAddress() != null && !emptyAddress(ao.getVisitingAddress())) {
-            dto.setVisitingAddress(AddressToDTO.convert(ao.getVisitingAddress(), lang));
+        if (applicationOffice.getVisitingAddress() != null && !emptyAddress(applicationOffice.getVisitingAddress())) {
+            dto.setVisitingAddress(AddressToDTO.convert(applicationOffice.getVisitingAddress(), lang));
         } else {
             dto.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress(), lang));
         }
-        if (ao.getPostalAddress() != null && !emptyAddress(ao.getPostalAddress())) {
-            dto.setPostalAddress(AddressToDTO.convert(ao.getPostalAddress(), lang));
+        if (applicationOffice.getPostalAddress() != null && !emptyAddress(applicationOffice.getPostalAddress())) {
+            dto.setPostalAddress(AddressToDTO.convert(applicationOffice.getPostalAddress(), lang));
         } else {
             dto.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress(), lang));
         }
-        if (ao.getPhone() != null) {
-            dto.setPhone(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getPhone(), lang));
+        if (applicationOffice.getPhone() != null) {
+            dto.setPhone(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getPhone(), lang));
         } else {
             dto.setPhone(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getPhone(), lang));
         }
-        if (ao.getEmail() != null) {
-            dto.setEmail(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getEmail(), lang));
+        if (applicationOffice.getEmail() != null) {
+            dto.setEmail(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getEmail(), lang));
         } else {
             dto.setEmail(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getEmail(), lang));
         } 
-        if (ao.getWww() != null) {
-            dto.setWww(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getWww(), lang));
+        if (applicationOffice.getWww() != null) {
+            dto.setWww(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getWww(), lang));
         } else {
             dto.setWww(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getWebPage(), lang));
         }

@@ -69,6 +69,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
  */
 public class ApplicationOptionCreator extends ObjectCreator {
 
+    private static final String KIELI = "kieli_";
+
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationOptionCreator.class);
 
     private KoodistoService koodistoService;
@@ -463,7 +465,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setAttachments(attachments);
         ao.setAdditionalInfo(getI18nText(hakukohde.getLisatiedot()));
         
-        ao.setApplicationOffice(getApplicationOffice(hakukohde.getYhteystiedot(), los.getProvider().getApplicationOffice()));
+        ao.setApplicationOffice(getApplicationOffice(hakukohde.getYhteystiedot()));
         
         return ao;
     }
@@ -476,10 +478,13 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return vals;
     }
 
-    private ApplicationOffice getApplicationOffice(List<YhteystiedotV1RDTO> yhteystiedot, ApplicationOffice applicationOffice) throws KoodistoException {
+    private ApplicationOffice getApplicationOffice(List<YhteystiedotV1RDTO> yhteystiedot) throws KoodistoException {
         if (yhteystiedot == null || yhteystiedot.isEmpty()) {
-            return applicationOffice;
+            return null;
         } else {
+            for (YhteystiedotV1RDTO yt : yhteystiedot) {
+                yt.setLang(yt.getLang().replace(KIELI, ""));
+            }
             Address visitingAddress = getLocalizedVisitingAddress(yhteystiedot);
             Address postalAddress = getLocalizedAddress(yhteystiedot);
             I18nText hakutoimistonNimi = getHakutoimistonNimi(yhteystiedot);
