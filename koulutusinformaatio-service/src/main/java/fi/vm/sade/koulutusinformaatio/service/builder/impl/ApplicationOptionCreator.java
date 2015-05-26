@@ -70,7 +70,6 @@ import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
  */
 public class ApplicationOptionCreator extends ObjectCreator {
 
-    private static final String KIELI = "kieli_";
 
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationOptionCreator.class);
 
@@ -484,7 +483,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             return null;
         } else {
             for (YhteystiedotV1RDTO yt : yhteystiedot) {
-                yt.setLang(yt.getLang().replace(KIELI, ""));
+                yt.setLang(koodistoService.searchFirstCodeValue(yt.getLang()));
             }
             Address visitingAddress = getLocalizedVisitingAddress(yhteystiedot);
             Address postalAddress = getLocalizedAddress(yhteystiedot);
@@ -541,7 +540,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 streetAddress.put(yt.getLang(), yt.getOsoiterivi1());
                 secondForeignAddr.put(yt.getLang(), yt.getOsoiterivi2());
                 postOffice.put(yt.getLang(), yt.getPostitoimipaikka());
-                postalCode.put(yt.getLang(), yt.getPostinumero());
+                postalCode.put(yt.getLang(), yt.getPostinumeroArvo());
             }
         }
         a.setStreetAddress(getSanitizedI18nText(streetAddress));
