@@ -2,7 +2,7 @@
     <li>
     	<h2>{{ao.name}}</h2>
     </li>
-    <li class="text-muted">
+    <li class="text-muted" data-ng-if="ao.startingQuota > 0">
     	<span data-ki-i18n="starting-quota" data-show-colon="true"></span>
     	<span>{{ao.startingQuota}}</span>
     </li>
