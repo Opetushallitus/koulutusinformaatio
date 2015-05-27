@@ -20,6 +20,7 @@ import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -482,15 +483,18 @@ public class ApplicationOptionCreator extends ObjectCreator {
         if (yhteystiedot == null || yhteystiedot.isEmpty()) {
             return null;
         } else {
+            fallbacklang = null;
+            langsToBeFallbacked = new ArrayList<String>(Arrays.asList(new String[] { "fi", "sv", "en" }));
             for (YhteystiedotV1RDTO yt : yhteystiedot) {
-                yt.setLang(koodistoService.searchFirstCodeValue(yt.getLang()));
+                yt.setLang(koodistoService.searchFirstCodeValue(yt.getLang()).toLowerCase());
+                setFallbacklanguage(yt.getLang());
             }
-            Address visitingAddress = getLocalizedVisitingAddress(yhteystiedot);
-            Address postalAddress = getLocalizedAddress(yhteystiedot);
             I18nText hakutoimistonNimi = getHakutoimistonNimi(yhteystiedot);
             I18nText phone = getPhoneNumber(yhteystiedot);
             I18nText email = getEmail(yhteystiedot);
             I18nText www = getWww(yhteystiedot);
+            Address visitingAddress = getLocalizedVisitingAddress(yhteystiedot);
+            Address postalAddress = getLocalizedAddress(yhteystiedot);
             return new ApplicationOffice(hakutoimistonNimi, phone, email, www, visitingAddress, postalAddress);
         }
     }
@@ -500,6 +504,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getHakutoimistonNimi());
         }
+        insertFallbackLanguageValues(map);
         return new I18nText(map);
     }
 
@@ -508,6 +513,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getWwwOsoite());
         }
+        insertFallbackLanguageValues(map);
         return new I18nText(map);
     }
 
@@ -516,6 +522,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getSahkopostiosoite());
         }
+        insertFallbackLanguageValues(map);
         return new I18nText(map);
     }
 
@@ -524,6 +531,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getPuhelinnumero());
         }
+        insertFallbackLanguageValues(map);
         return new I18nText(map);
     }
 
@@ -552,9 +560,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
     private I18nText getSanitizedI18nText(Map<String, String> translations) {
         for (String key : translations.keySet()) {
-            if(translations.get(key) == null)
+            if (translations.get(key) == null)
                 translations.put(key, "");
         }
+        insertFallbackLanguageValues(translations);
         return new I18nText(translations);
     }
 
@@ -568,4 +577,23 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         return getLocalizedAddress(visitingAddreses);
     }
+
+    private String fallbacklang;
+    private List<String> langsToBeFallbacked;
+
+    private void setFallbacklanguage(String lang) {
+        langsToBeFallbacked.remove(lang);
+        if (fallbacklang == null || fallbacklang.equals("en") || lang.equals("fi")) {
+            fallbacklang = lang;
+        }
+    }
+
+    private void insertFallbackLanguageValues(Map<String, String> map) {
+        if (map.get(fallbacklang) != null) {
+            for (String lang : langsToBeFallbacked) {
+                map.put(lang, map.get(fallbacklang));
+            }
+        }
+    }
+
 }
