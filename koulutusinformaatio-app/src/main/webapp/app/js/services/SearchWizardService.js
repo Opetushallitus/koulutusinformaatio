@@ -230,7 +230,8 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                     Config.educationTypes.AMMATTITUTKINTO,
                     Config.educationTypes.ERIKOISAMMATTITUTKINTO,
                     Config.educationTypes.YLEMPI_AMMATTIKORKEAKOULUTUTKINTO,
-                    Config.educationTypes.YLEMPI_YLIOPISTO
+                    Config.educationTypes.YLEMPI_YLIOPISTO,
+                    Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT
                 ];
             },
 

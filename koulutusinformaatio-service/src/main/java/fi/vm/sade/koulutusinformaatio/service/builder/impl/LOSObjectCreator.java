@@ -1111,6 +1111,8 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setTopics(getTopics(koulutus.getOpintoala().getUri()));
             los.setThemes(getThemes(los));
         }
+        los.setTopics(createCodes(koulutus.getAihees()));
+        los.setThemes(getThemes(los));
     }
 
     private <S extends KoulutusGenericV1RDTO, T extends StandaloneLOS> void addStandaloneLOSFields(S koulutus, T los, boolean checkStatus, String aoType)
