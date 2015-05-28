@@ -5,12 +5,11 @@
 /**
  *  Controls the selected user interface language
  */
-function LanguageCtrl($scope, LanguageService, $window) {
+function LanguageCtrl($scope, LanguageService, $window, $location) {
     $scope.changeLanguage = function(code) {
-       LanguageService.setLanguage(code);
-       i18n.setLng(code);
-       $window.location.reload(true);
-   }
+        $location.search('lang', code);
+        $window.location.reload(true);
+    }
 };
 
 /**

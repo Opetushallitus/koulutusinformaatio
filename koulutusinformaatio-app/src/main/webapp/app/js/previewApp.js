@@ -97,17 +97,16 @@ var kiApp = angular.module('previewApp',
 
 // initialize i18n library
 .run(['$location', 'LanguageService', 'HostResolver', 'VirkailijaLanguageService', function($location, LanguageService, HostResolver, VirkailijaLanguageService) {
-	
-	// 1. Setting ui-language based on url-parameter.
-	// 2. Setting virkailija ui language
+    // 1. Setting ui-language based on url-parameter.
+    // 2. Setting virkailija ui language
     // 3. Removing the parameter, to enable changing of language from ui
-	if ($location.search().lang != undefined 
-			&& ($location.search().lang == 'fi' || $location.search().lang == 'sv')) {
-		LanguageService.setLanguage($location.search().lang);
+    var allowedLangs = ['fi', 'sv', 'en'];
+    if (_.contains(allowedLangs, $location.search().lang)) {
+        LanguageService.setLanguage($location.search().lang);
         VirkailijaLanguageService.setLanguage(LanguageService.getLanguage());
-		$location.search('').replace();
-	}
-	
+        $location.search('').replace();
+    }
+
     // initialize i18next library
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',

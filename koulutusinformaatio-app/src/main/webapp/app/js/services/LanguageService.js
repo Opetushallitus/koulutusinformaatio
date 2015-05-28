@@ -23,10 +23,18 @@ service('LanguageService', ['CookieService', '$location', '_', function(CookieSe
             case 'studyinfo': return 'en'
             }
             return null
-        }
+        },
+        
+        getLanguageFromQueryParam = function(host) {
+            var lang = $location.search().lang
+            var allowedLangs = ['fi', 'sv', 'en'];
+            if(_.contains(allowedLangs, lang)) {
+                return lang;
+            }
+        },
 
         // try to initialize app language with value derived from domain or cookie
-        currentLanguage = getLanguageFromHost(window.location.host) || CookieService.get(key) || defaultLanguage,
+        currentLanguage = getLanguageFromQueryParam() || getLanguageFromHost(window.location.host) || CookieService.get(key) || defaultLanguage,
         
         getLanguage = function() {
             return currentLanguage;
