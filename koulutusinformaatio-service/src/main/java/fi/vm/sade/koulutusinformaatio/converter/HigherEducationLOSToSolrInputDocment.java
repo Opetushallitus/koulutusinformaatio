@@ -80,7 +80,8 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, los.getFacetPrerequisites().get(0).getValue());            
         }
 
-        if (los.getCreditValue() != null) {
+        if (los.getCreditValue() != null && los.getCreditUnit() != null && los.getCreditUnit().getTranslations() != null
+                && !los.getCreditUnit().getTranslations().isEmpty()) {
             doc.addField(LearningOpportunity.CREDITS, 
                     String.format("%s %s", los.getCreditValue(), 
                             SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(),
