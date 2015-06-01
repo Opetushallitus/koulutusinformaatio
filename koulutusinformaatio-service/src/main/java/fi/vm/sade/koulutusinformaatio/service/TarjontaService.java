@@ -86,7 +86,7 @@ public interface TarjontaService {
     HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
             throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
-    public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() throws KoodistoException;
+    public List<AdultUpperSecondaryLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException;
     
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 

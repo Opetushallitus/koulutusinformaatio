@@ -456,6 +456,7 @@ public final class SolrUtil {
         //public static final String ED_TYPE_TUTKINTOON = "et01";
         public static final String ED_TYPE_LUKIO = "et01.01";
         public static final String ED_TYPE_AIKUISLUKIO = "et01.01.02";
+        public static final String ED_TYPE_AIKUISTEN_PERUSOPETUS = "et01.01.03";
         public static final String ED_TYPE_NUORTENLUKIO = "et01.01.01";
         public static final String ED_TYPE_KAKSOIS = "et01.03.001";
         public static final String ED_TYPE_AMMATILLISET = "et01.03";

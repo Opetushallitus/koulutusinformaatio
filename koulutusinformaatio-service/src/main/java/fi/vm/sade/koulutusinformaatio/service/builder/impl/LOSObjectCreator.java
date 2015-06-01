@@ -75,6 +75,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RD
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
@@ -681,36 +683,52 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
         addLOSFields(koulutus, los);
         addStandaloneLOSFields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
-
-        if (koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT) != null
-                && !koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT).getTekstis().containsKey("UNDEFINED")) {
-            los.setSubjectsAndCourses(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT)));
-        }
-
-        if (koulutus.getKielivalikoima() != null) {//komoto.getTarjotutKielet() != null) {
-
-            //Map<String, List<String>> kielivalikoimat = komoto.getTarjotutKielet();
-            List<LanguageSelection> languageSelection = Lists.newArrayList();
-            KoodiValikoimaV1RDTO kielivalikoima = koulutus.getKielivalikoima();
-            //kielivalikoima.
-
-            for (Map.Entry<String, KoodiUrisV1RDTO> oppiaine : kielivalikoima.entrySet()) {
-                List<I18nText> languages = getI18nTextMultiple(oppiaine.getValue());//Lists.newArrayList();
-                languageSelection.add(new LanguageSelection(oppiaine.getKey(), languages));
-            }
-            los.setLanguageSelection(languageSelection);
-        }
+        addKoulutus2AsteFields(koulutus, los);
 
         if (koulutus.getLukiodiplomit() != null) {
             los.setDiplomas(getI18nTextMultiple(koulutus.getLukiodiplomit()));
         }
 
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
-        los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
+        return los;
+    }
+
+
+    public AdultUpperSecondaryLOS createAdultBaseEducationLOS(Koulutus2AsteV1RDTO koulutus, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+        AdultUpperSecondaryLOS los = new AdultUpperSecondaryLOS();
+
+        los.setType(TarjontaConstants.TYPE_ADULT_BASE);
+        los.setEducationType(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
+        addLOSFields(koulutus, los);
+        addStandaloneLOSFields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
+        addKoulutus2AsteFields(koulutus, los);
 
         return los;
     }
 
+    private void addKoulutus2AsteFields(Koulutus2AsteV1RDTO koulutus, AdultUpperSecondaryLOS los) throws KoodistoException {
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT).getTekstis().containsKey("UNDEFINED")) {
+            los.setSubjectsAndCourses(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT)));
+        }
+
+        if (koulutus.getKielivalikoima() != null) {
+
+            List<LanguageSelection> languageSelection = Lists.newArrayList();
+            KoodiValikoimaV1RDTO kielivalikoima = koulutus.getKielivalikoima();
+
+            for (Map.Entry<String, KoodiUrisV1RDTO> oppiaine : kielivalikoima.entrySet()) {
+                List<I18nText> languages = getI18nTextMultiple(oppiaine.getValue());
+                languageSelection.add(new LanguageSelection(oppiaine.getKey(), languages));
+            }
+            los.setLanguageSelection(languageSelection);
+        }
+
+        if(koulutus.getTutkintonimike() != null && koulutus.getTutkintonimike().getMeta() != null){
+            los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
+            los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
+        }
+    }
+    
     private String getEducationType(String uri) {
         if (uri.contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
             return SolrConstants.ED_TYPE_AMK;
@@ -1061,7 +1079,7 @@ public class LOSObjectCreator extends ObjectCreator {
         LOG.debug("Creating MM lukioon valmistava los: " + koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_IMM_UPSEC);
     }
-
+    
     private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException,
             TarjontaParseException {
         StandaloneLOS los = createGenericLOS(koulutusDTO, checkStatus, edType);
@@ -1477,5 +1495,6 @@ public class LOSObjectCreator extends ObjectCreator {
     public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO hakuDTO, boolean shownInCalendar) throws KoodistoException {
         return this.loiCreator.applicationOptionCreator.getApplicationSystemCreator().createApplicationSystemForCalendar(hakuDTO, shownInCalendar);
     }
+
 
 }

@@ -43,6 +43,7 @@ public class TarjontaConstants {
     public static final String TYPE_KK = "KORKEAKOULU";
     public static final String TYPE_ADULT_UPSEC = "AIKUISLUKIO";
     public static final String TYPE_ADULT_VOCATIONAL = "AMMATILLINENAIKUISKOULUTUS";
+    public static final String TYPE_ADULT_BASE = "AIKUISTENPERUSOPETUS";
     public static final String TYPE_KOULUTUS = "KOULUTUS"; 
 
     public static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";

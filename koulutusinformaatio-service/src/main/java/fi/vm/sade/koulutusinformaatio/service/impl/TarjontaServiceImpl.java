@@ -71,8 +71,11 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
@@ -563,7 +566,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() throws KoodistoException {
+    public List<AdultUpperSecondaryLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException {
 
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
@@ -571,9 +574,10 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         List<AdultUpperSecondaryLOS> koulutukset = new ArrayList<AdultUpperSecondaryLOS>();
 
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
+                ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA.name(), ToteutustyyppiEnum.AIKUISTEN_PERUSOPETUS.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-        Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
+        Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
 
@@ -581,16 +585,26 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
 
-                ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid());
-                KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
+                Koulutus2AsteV1RDTO koulutusDTO = null;
 
-                //LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
-                if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
+                if (curKoulutus.getToteutustyyppiEnum().equals(ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA)) {
+                    koulutusDTO = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid()).getResult();
+                } else {
+                    koulutusDTO = this.tarjontaRawService.getAdultBaseEducationLearningOpportunity(curKoulutus.getOid()).getResult();
+                }
+
+                if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null
+                        || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
                     continue;
                 }
 
                 try {
-                    AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
+                    AdultUpperSecondaryLOS los = null;
+                    if (curKoulutus.getToteutustyyppiEnum().equals(ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA)) {
+                        los = creator.createAdultUpperSeconcaryLOS((KoulutusLukioV1RDTO) koulutusDTO, true);
+                    } else {
+                        los = creator.createAdultBaseEducationLOS((KoulutusAikuistenPerusopetusV1RDTO) koulutusDTO, true);
+                    }
                     LOG.debug("Created los: " + los.getId());
                     koulutukset.add(los);
                     updateAOLosReferences(los, aoToEducationsMap);
