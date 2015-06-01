@@ -100,7 +100,7 @@ public class UpdateServiceImpl implements UpdateService {
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
 
         try {
-/*
+
             LOG.info("Starting full education data update");
             running = true;
             runningSince = System.currentTimeMillis();
@@ -153,7 +153,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Higher educations saved.");
-*/
+
             // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
             List<AdultUpperSecondaryLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
             LOG.debug("Found adult educations: " + adultEducations.size());
@@ -164,7 +164,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Adult upper secondary and base educations saved.");
-/*
+
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             LOG.debug("Found " + adultVocationals.size() + " adult vocational educations");
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
@@ -215,7 +215,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.info("Articles indexed to solr");
-*/
+
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

@@ -543,8 +543,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 || educationUri.contains(SolrConstants.ED_CODE_AMM_ER_OPETTAJA) || educationUri.contains(SolrConstants.ED_CODE_AMM_OPO)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_OPETTAJA);
-        }
-        else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
+        } else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMKS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMK);
         } else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_YLEMPI_AMK)) {
@@ -562,6 +561,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         } else if (los.getType().equals(TarjontaConstants.TYPE_ADULT_VOCATIONAL)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
+        } else if (los.getType().equals(TarjontaConstants.TYPE_ADULT_BASE)) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
         } else if (los.getType().equals(TarjontaConstants.TYPE_KOULUTUS)) {
             if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMA)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);

@@ -456,7 +456,6 @@ public final class SolrUtil {
         //public static final String ED_TYPE_TUTKINTOON = "et01";
         public static final String ED_TYPE_LUKIO = "et01.01";
         public static final String ED_TYPE_AIKUISLUKIO = "et01.01.02";
-        public static final String ED_TYPE_AIKUISTEN_PERUSOPETUS = "et01.01.03";
         public static final String ED_TYPE_NUORTENLUKIO = "et01.01.01";
         public static final String ED_TYPE_KAKSOIS = "et01.03.001";
         public static final String ED_TYPE_AMMATILLISET = "et01.03";
@@ -485,6 +484,7 @@ public final class SolrUtil {
         public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
         public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
+        public static final String ED_TYPE_AIKUISTEN_PERUSOPETUS = "et02.03";
         public static final String ED_TYPE_KOTITALOUS = "et02.015";
         public static final String ED_TYPE_AMM_OPETTAJA = "et02.11";
         public static final String ED_TYPE_KOTITALOUS_DISPLAY = "kotitalous";

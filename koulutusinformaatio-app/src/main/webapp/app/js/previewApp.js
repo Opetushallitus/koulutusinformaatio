@@ -56,7 +56,7 @@ var kiApp = angular.module('previewApp',
                         return HigherEducationPreviewLOService;
                 }
             },
-            partialUrl: function($rootScope, $route) {
+            partialUrl: function($rootScope, $route, UtilityService) {
                 $rootScope.partialUrl = 'partials/lo/' + UtilityService.getTemplateByLoType($route.current.params.loType) + '/';
                 $rootScope.partialCommonUrl = 'partials/lo/common/';
             }

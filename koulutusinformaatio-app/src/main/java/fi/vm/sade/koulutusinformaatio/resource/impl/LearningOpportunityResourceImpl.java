@@ -281,6 +281,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 return dto; 
             } else if ("aikuislukio".equals(loType)) {
                 return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
+            } else if ("aikuistenperusopetus".equals(loType)) {
+                return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
             } else if ("koulutus".equals(loType)) {
                 return learningOpportunityService.previewKoulutusLearningOpportunity(oid, lang, uiLang);
             } else if ("ammatillinenaikuiskoulutus".equals(loType)) {
