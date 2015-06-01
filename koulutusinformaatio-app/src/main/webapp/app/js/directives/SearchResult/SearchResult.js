@@ -22,7 +22,7 @@ constant('SearchResultConstants', {
 /**
  *  Updates the title element of the page.
  */
-directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', function(FilterService, TranslationService, LOTypes) {
+directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', 'UtilityService', function(FilterService, TranslationService, LOTypes, UtilityService) {
     return {
         restrict: 'A',
         template: '<div data-ng-include="getTemplate()" class="search-result"></div>',
@@ -33,7 +33,7 @@ directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', fun
             }
 
             scope.getTemplate = function() {
-                return 'js/directives/SearchResult/' + scope.lo.type + '/searchResult.html';
+                return 'js/directives/SearchResult/' + UtilityService.getTemplateByLoType(scope.lo.type) + '/searchResult.html';
             }
 
             // remove prerequisite hash from lo id (it's there for solr indexing purposes)
@@ -122,6 +122,8 @@ directive('extendedSearchresultData',
                     LOService = AdultUpperSecondaryLOService;
                 } else if (iAttrs.extendedSearchresultData === LOTypes.AMMATILLINENAIKUISKOULUTUS) {
                     LOService = AdultVocationalLOService;
+                } else if (iAttrs.extendedSearchresultData === LOTypes.AIKUISTENPERUSOPETUS) {
+                    LOService = AdultUpperSecondaryLOService;
                 }
 
                 LOService.query({id: $scope.lo.id}).then(function(result) {

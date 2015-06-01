@@ -48,6 +48,8 @@ var kiApp = angular.module('previewApp',
                         return HigherEducationPreviewLOService;
                     case 'aikuislukio':
                         return HigherEducationPreviewLOService;
+                    case 'aikuistenperusopetus':
+                        return HigherEducationPreviewLOService;
                     case 'ammatillinenaikuiskoulutus':
                         return HigherEducationPreviewLOService;
                     case 'koulutus':
@@ -55,7 +57,7 @@ var kiApp = angular.module('previewApp',
                 }
             },
             partialUrl: function($rootScope, $route) {
-                $rootScope.partialUrl = 'partials/lo/' + $route.current.params.loType + '/';
+                $rootScope.partialUrl = 'partials/lo/' + UtilityService.getTemplateByLoType($route.current.params.loType) + '/';
                 $rootScope.partialCommonUrl = 'partials/lo/common/';
             }
             

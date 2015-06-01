@@ -1936,6 +1936,13 @@ service('UtilityService', function() {
             } else {
                 return number;
             }
+        },
+        getTemplateByLoType: function(type) {
+            var map = {
+                aikuistenperusopetus: 'aikuislukio'
+            };
+            
+            return map[type] || type;
         }
     };
 });

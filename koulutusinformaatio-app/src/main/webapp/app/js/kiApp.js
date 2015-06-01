@@ -64,7 +64,18 @@ var kiApp = angular.module('kiApp',
         controller: InfoCtrl,
         reloadOnSearch: false,
         resolve: {
-            loResource: function($route, $location, UpperSecondaryLOService, KoulutusLOService, ChildLOService, ParentLOService, SpecialLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService) {
+            loResource : function(
+                    $route,
+                    $location,
+                    UpperSecondaryLOService,
+                    KoulutusLOService,
+                    ChildLOService,
+                    ParentLOService,
+                    SpecialLOService,
+                    HigherEducationLOService,
+                    AdultUpperSecondaryLOService,
+                    AdultVocationalLOService) {
+                
                 switch($route.current.params.loType) {
                     case 'lukio':
                         return UpperSecondaryLOService;
@@ -86,10 +97,12 @@ var kiApp = angular.module('kiApp',
                         return AdultUpperSecondaryLOService;
                     case 'ammatillinenaikuiskoulutus':
                         return AdultVocationalLOService;
+                    case 'aikuistenperusopetus':
+                        return AdultUpperSecondaryLOService;
                 }
             },
-            partialUrl: function($rootScope, $route) {
-                $rootScope.partialUrl = 'partials/lo/' + $route.current.params.loType + '/';
+            partialUrl: function($rootScope, $route, UtilityService) {
+                $rootScope.partialUrl = 'partials/lo/' + UtilityService.getTemplateByLoType($route.current.params.loType) + '/';
                 $rootScope.partialCommonUrl = 'partials/lo/common/';
             }
         }
@@ -133,7 +146,8 @@ var kiApp = angular.module('kiApp',
     VALMISTAVA: 'valmistava',
     KOULUTUS: 'koulutus',
     AMMATILLINENAIKUISKOULUTUS: 'ammatillinenaikuiskoulutus',
-    AIKUISLUKIO: 'aikuislukio'
+    AIKUISLUKIO: 'aikuislukio',
+    AIKUISTENPERUSOPETUS: 'aikuistenperusopetus'
 })
 
 // initialize i18n and recaptcha libraries
