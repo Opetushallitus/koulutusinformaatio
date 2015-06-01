@@ -7,8 +7,8 @@
  */
 function LanguageCtrl($scope, LanguageService, $window, $location) {
     $scope.changeLanguage = function(code) {
-        window.location.href = window.location.href + '?lang=' + code
-        window.location.reload();
+        $window.location.href += '?lang=' + code;
+        $window.location.reload();
     }
 };
 
