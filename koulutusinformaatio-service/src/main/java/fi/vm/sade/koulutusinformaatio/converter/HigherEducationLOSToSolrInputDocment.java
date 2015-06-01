@@ -299,7 +299,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         if (teachingLang.equals("fi")) {
             doc.setField(LearningOpportunity.NAME_FI, SolrUtil.resolveTextWithFallback("fi", transls));
             if (los.getCreditValue() != null && los.getType() != null && los.getType().equals(TarjontaConstants.TYPE_KK)) {
-                createDisplayNameForHigherEd("fi",  transls, los.getCreditValue(), los.getCreditUnit().getTranslations(), LearningOpportunity.NAME_DISPLAY_FI, doc);
+                createDisplayNameForHigherEd("fi",  transls, LearningOpportunity.NAME_DISPLAY_FI, doc);
             } else {
                 doc.setField(LearningOpportunity.NAME_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi", transls));
             }
@@ -307,7 +307,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         } else if (teachingLang.equals("sv")) {
             doc.setField(LearningOpportunity.NAME_SV, SolrUtil.resolveTextWithFallback("sv", transls));
             if (los.getCreditValue() != null && los.getType() != null && los.getType().equals(TarjontaConstants.TYPE_KK)) {
-                createDisplayNameForHigherEd("sv", transls, los.getCreditValue(), los.getCreditUnit().getTranslations(), LearningOpportunity.NAME_DISPLAY_SV, doc);
+                createDisplayNameForHigherEd("sv", transls, LearningOpportunity.NAME_DISPLAY_SV, doc);
             } else {
                 doc.setField(LearningOpportunity.NAME_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv", transls));
             }
@@ -315,7 +315,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         } else if (teachingLang.equals("en")) {
             doc.setField(LearningOpportunity.NAME_EN, SolrUtil.resolveTextWithFallback("en", transls));
             if (los.getCreditValue() != null && los.getType() != null && los.getType().equals(TarjontaConstants.TYPE_KK)) {
-                createDisplayNameForHigherEd("en", transls, los.getCreditValue(), los.getCreditUnit().getTranslations(), LearningOpportunity.NAME_DISPLAY_EN, doc);
+                createDisplayNameForHigherEd("en", transls, LearningOpportunity.NAME_DISPLAY_EN, doc);
             } else {
                 doc.setField(LearningOpportunity.NAME_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en", transls));
             }
@@ -496,35 +496,12 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
 
     }
 
-    private void createDisplayNameForHigherEd(String lang, Map<String, String> nameTransls,
-            String creditValue, Map<String, String> creditTransls, String nameDisplayField,
-            SolrInputDocument doc) {
-        
+    private void createDisplayNameForHigherEd(String lang, Map<String, String> nameTransls, String nameDisplayField, SolrInputDocument doc) {
         String translation = nameTransls.get(lang);
-        String creditTranslation = creditTransls.get(lang);
-        if (translation == null) {
-            translation = nameTransls.get(SolrUtil.FALLBACK_LANG);
-            creditTranslation = creditTransls.get(SolrUtil.FALLBACK_LANG);
-        }
-        if ((translation == null)
-                && !nameTransls.isEmpty() 
-                && !nameTransls.values().isEmpty()) {
-            String key = nameTransls.keySet().iterator().next();
-            translation = nameTransls.get(key);
-            creditTranslation = creditTransls.get(key);
-        }
-        if (creditTranslation == null) {
-            creditTranslation = creditTransls.get(SolrUtil.FALLBACK_LANG);
-        }
-        if ((creditTranslation == null)
-                && !creditTransls.isEmpty() 
-                && !creditTransls.values().isEmpty()) {
-            creditTranslation = creditTransls.values().iterator().next();
-        }
-        
+
         //return translation;
-        LOG.debug("Setting display name: " + nameDisplayField + ": " + String.format("%s, %s", translation, creditTranslation));
-        doc.setField(nameDisplayField, String.format("%s, %s %s", translation, creditValue, creditTranslation));
+        LOG.debug("Setting display name: " + nameDisplayField + ": " + translation);
+        doc.setField(nameDisplayField, translation);
         
     }
 
