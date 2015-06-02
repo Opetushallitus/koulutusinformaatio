@@ -44,6 +44,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
@@ -398,7 +399,11 @@ public class IndexerServiceImpl implements IndexerService {
                     && addr.getStreetAddress().getTranslations() != null
                     && !addr.getStreetAddress().getTranslations().isEmpty()) 
                     ? this.resolveTextByLangWithFallback(lang, addr.getStreetAddress().getTranslations()) : addrStr;
-            addrStr = (addr.getPostalCode() != null) ? String.format("%s, %s",  addrStr, addr.getPostalCode()) : addrStr;
+            String postalCode = (addr.getPostalCode() != null 
+                    && addr.getPostalCode().getTranslations() != null
+                    && !addr.getPostalCode().getTranslations().isEmpty()) 
+                    ? this.resolveTextByLangWithFallback(lang, addr.getPostalCode().getTranslations()) : "";
+            addrStr = (postalCode != "") ? String.format("%s, %s",  addrStr, postalCode) : addrStr;
             addrStr = (addr.getPostOffice() != null 
                     && addr.getPostOffice().getTranslations() != null
                     && !addr.getPostOffice().getTranslations().isEmpty()) 
