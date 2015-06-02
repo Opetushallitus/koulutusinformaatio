@@ -105,7 +105,8 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                 } else if (opt === SearchWizardConstants.phaseOneOpts.EI_TUTKINTOA) {
                     return [
                         SelectionBuilder.buildPhaseTwoSelection(SearchWizardConstants.phaseTwoOpts.PK_AIKU),
-                        SelectionBuilder.buildPhaseTwoSelection(SearchWizardConstants.phaseTwoOpts.LUKIO_AIKU)
+                        SelectionBuilder.buildPhaseTwoSelection(SearchWizardConstants.phaseTwoOpts.LUKIO_AIKU),
+                        SelectionBuilder.buildPhaseTwoSelection(SearchWizardConstants.phaseTwoOpts.EI_PK_AIKU)
                     ];
                 } 
             },
@@ -174,6 +175,10 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMENTAVA, opt, SearchWizardConstants.educationKind.AIKUIS)
                     ];
+                } else if (opt === SearchWizardConstants.phaseTwoOpts.EI_PK_AIKU) {
+                    return [
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AIKUISTENPERUSOPETUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                    ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.LUKIO_AIKU) {
                     return [
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),
@@ -185,7 +190,8 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                     return [
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.MAAHANMUUTTAJIEN_LUKIOON_VALMISTAVA, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, SearchWizardConstants.educationKind.AIKUIS),
-                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA_ER, opt, SearchWizardConstants.educationKind.AIKUIS)
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA_ER, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AIKUISTENPERUSOPETUS, opt, SearchWizardConstants.educationKind.AIKUIS)
                     ];
                 } 
             },

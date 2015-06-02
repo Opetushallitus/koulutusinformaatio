@@ -33,6 +33,7 @@
     "phasetwo-alempi_kk_aiku": "Alempi korkeakoulututkinto",
     "phasetwo-pk_aiku": "Olen käynyt peruskoulun",
     "phasetwo-lukio_aiku": "Olen käynyt lukion",
+    "phasetwo-ei_pk_aiku": "En ole käynyt peruskoulua",
 
     "pk-et010301-n": "Ammatillinen koulutus",
     "pk-et0101": "Lukiokoulutus",
@@ -87,6 +88,8 @@
     "pk_aiku-et020106-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
     "pk_aiku-et0202-a": "Valmentava ja kuntouttava opetus ja ohjaus aikuisille",
 
+    "ei_pk_aiku-et0203-a": "Aikuisten perusopetus",
+
     "lukio_aiku-et010301-n": "Ammatillinen perustutkinto nuorten koulutuksena",
     "lukio_aiku-et010301-a": "Ammatillinen perustutkinto aikuiskoulutuksena - usein vaaditaan myös työkokemusta tai muuten hankittua osaamista",
     "lukio_aiku-et010303-a": "Ammattitutkinto aikuiskoulutuksena - usein vaaditaan myös työkokemusta tai muuten hankittua osaamista",
@@ -96,6 +99,7 @@
     "mm_aiku-et020106-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
     "mm_aiku-et021202-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille erityisopetuksena (VALMA er)",
     "mm_aiku-et020104-a": "LUVA - maahanmuuttajille ja vieraskielisille järjestettävä lukiokoulutukseen valmistava koulutus aikuisille",
+    "mm_aiku-et0203-a": "Aikuisten perusopetus",
 
     "show-results": "Näytä opiskelupaikat"
 }

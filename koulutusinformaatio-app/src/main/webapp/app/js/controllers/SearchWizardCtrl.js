@@ -25,6 +25,7 @@ constant('SearchWizardConstants', {
         AMM_PT_AIKU: 'amm_pt_aiku',
         ALEMPI_KK_AIKU: 'alempi_kk_aiku',
         PK_AIKU: 'pk_aiku',
+        EI_PK_AIKU: 'ei_pk_aiku',
         LUKIO_AIKU: 'lukio_aiku'
     },
     phases: {
