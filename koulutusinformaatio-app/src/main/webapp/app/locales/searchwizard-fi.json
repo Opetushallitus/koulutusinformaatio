@@ -44,7 +44,6 @@
     "pk-et02015": "Kotitalousopetus (Talouskoulu)",
     "pk-et0205": "Kansanopistojen pitkät linjat",
     "pk-et010302-n": "Ammatillinen erityisopetus",
-    "pk-et0202-n": "Valmentava ja kuntouttava opetus ja ohjaus",
     "pk-et021201": "Työhön ja itsenäiseen elämän valmentava (TELMA)",
     "pk-et021202": "Ammatilliseen koulutukseen valmentava koulutus erityisopetuksena (VALMA er)",
 
@@ -86,9 +85,13 @@
     "pk_aiku-et010303-a": "Ammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 3 vuotta työkokemusta tai muuten hankittua osaamista",
     "pk_aiku-et010304-a": "Erikoisammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 5 vuotta työkokemusta tai muuten hankittua osaamista",
     "pk_aiku-et020106-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
-    "pk_aiku-et0202-a": "Valmentava ja kuntouttava opetus ja ohjaus aikuisille",
+    "pk_aiku-et021201-a": "Työhön ja itsenäiseen elämän valmentava (TELMA)",
 
     "ei_pk_aiku-et0203-a": "Aikuisten perusopetus",
+    "ei_pk_aiku-et010301-a": "Ammatillinen perustutkinto aikuiskoulutuksena  - usein vaaditaan myös työkokemusta tai muuten hankittua osaamista",
+    "ei_pk_aiku-et010303-a": "Ammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 3 vuotta työkokemusta tai muuten hankittua osaamista",
+    "ei_pk_aiku-et010304-a": "Erikoisammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 5 vuotta työkokemusta tai muuten hankittua osaamista",
+    "ei_pk_aiku-et020106-a": "Ammatilliseen peruskoulutukseen valmentava koulutus aikuisille (VALMA)",
 
     "lukio_aiku-et010301-n": "Ammatillinen perustutkinto nuorten koulutuksena",
     "lukio_aiku-et010301-a": "Ammatillinen perustutkinto aikuiskoulutuksena - usein vaaditaan myös työkokemusta tai muuten hankittua osaamista",

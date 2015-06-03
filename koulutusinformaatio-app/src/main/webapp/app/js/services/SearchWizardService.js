@@ -173,11 +173,15 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, SearchWizardConstants.educationKind.AIKUIS),
-                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMENTAVA, opt, SearchWizardConstants.educationKind.AIKUIS)
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.TELMA, opt, SearchWizardConstants.educationKind.AIKUIS)
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.EI_PK_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AIKUISTENPERUSOPETUS, opt, SearchWizardConstants.educationKind.AIKUIS)
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AIKUISTENPERUSOPETUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, SearchWizardConstants.educationKind.AIKUIS)
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.LUKIO_AIKU) {
                     return [
