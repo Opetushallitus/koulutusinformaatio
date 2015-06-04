@@ -82,10 +82,11 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO implements Articled 
     private String startSeason;
     private int startYear;
     private String status;
-    
+
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
-    
+    private List<String> subjects;
+
     private List<ArticleResultDTO> edCodeSuggestions = new ArrayList<ArticleResultDTO>();
     private List<ArticleResultDTO> edTypeSuggestions = new ArrayList<ArticleResultDTO>();
     private String educationType;
@@ -526,7 +527,15 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO implements Articled 
 		return degreeTitles;
 	}
 
-	public void setDegreeTitles(List<String> degreeTitles) {
-		this.degreeTitles = degreeTitles;
-	}
+    public void setDegreeTitles(List<String> degreeTitles) {
+        this.degreeTitles = degreeTitles;
+    }
+
+    public List<String> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<String> subjects) {
+        this.subjects = subjects;
+    }
 }

@@ -3,6 +3,7 @@ package fi.vm.sade.koulutusinformaatio.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class StandaloneLOS extends LOS {
@@ -69,6 +70,7 @@ public class StandaloneLOS extends LOS {
 
     private Code koulutuslaji;
 
+    private Map<String, List<String>> subjects;
 
     public String getId() {
         return id;
@@ -443,6 +445,14 @@ public class StandaloneLOS extends LOS {
 
     public void setStartDates(List<Date> startDates) {
         this.startDates = startDates;
+    }
+
+    public Map<String, List<String>> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Map<String, List<String>> subjects) {
+        this.subjects = subjects;
     }
 
 }

@@ -114,6 +114,12 @@ public class HigherEducationLOSToDTO {
         if (los.getTopics() != null) {
             dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
         }
+        if (los.getSubjects() != null) {
+            List<String> subjectsByLang = los.getSubjects().get(uiLang);
+            List<String> subjects = (subjectsByLang != null ? subjectsByLang : (los.getSubjects()
+                    .get(ConverterUtil.FALLBACK_LANG)));
+            dto.setSubjects(subjects);
+        }
         dto.setEducationType(los.getEducationType());
         dto.setStructureImageId(getStructureImageId(los, descriptionLang));
         return dto;

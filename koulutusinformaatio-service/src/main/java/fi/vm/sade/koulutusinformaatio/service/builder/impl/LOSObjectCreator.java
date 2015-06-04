@@ -70,6 +70,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.OppiaineV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
@@ -670,8 +671,28 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         los.setFacetPrerequisites(getFacetPrequisites(los.getPrerequisites()));
+        los.setSubjects(getSubjects(koulutus.getOppiaineet()));
 
         return los;
+        
+    }
+
+    private HashMap<String, List<String>> getSubjects(List<OppiaineV1RDTO> list) {
+        HashMap<String, List<String>> subjects = new HashMap<String, List<String>>();
+        subjects.put("fi", getSubjectsByLang(list, "kieli_fi"));
+        subjects.put("sv", getSubjectsByLang(list, "kieli_sv"));
+        subjects.put("en", getSubjectsByLang(list, "kieli_en"));
+        return subjects;
+    }
+    
+    private ArrayList<String> getSubjectsByLang(List<OppiaineV1RDTO> list, String lang){
+        ArrayList<String> subjects = new ArrayList<String>();
+        for (OppiaineV1RDTO subject : list) {
+            if(lang.equals(subject.getKieliKoodi())){
+                subjects.add(subject.getOppiaine());
+            }
+        }
+        return subjects;
     }
 
     public AdultUpperSecondaryLOS createAdultUpperSeconcaryLOS(KoulutusLukioV1RDTO koulutus, boolean checkStatus)

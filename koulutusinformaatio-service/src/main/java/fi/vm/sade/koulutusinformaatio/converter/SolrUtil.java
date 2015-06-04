@@ -276,6 +276,9 @@ public final class SolrUtil {
         public static final String AS_FACET = "asFacet_ffm"; //The education type of the learning opportunity
         public static final String TOPIC = "topic_ffm"; //The topic of the learning opportunity
         public static final String THEME = "theme_ffm"; //The theme of the learning opportunity
+        public static final String SUBJECT_FI = "subject_fi_ffm";
+        public static final String SUBJECT_SV = "subject_sv_ffm";
+        public static final String SUBJECT_EN = "subject_en_ffm";
         public static final String FORM_OF_TEACHING = "formOfTeaching_ffm"; //The education type of the learning opportunity
         public static final String TIME_OF_TEACHING = "timeOfTeaching_ffm"; //The education type of the learning opportunity
         public static final String FORM_OF_STUDY = "formOfStudy_ffm"; //The education type of the learning opportunity

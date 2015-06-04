@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -137,6 +138,9 @@ public class HigherEducationLOSEntity {
     private List<CodeEntity> topics;
     @Embedded
     private List<CodeEntity> themes;
+
+    @Embedded
+    private Map<String, List<String>> subjects;
     
     private String educationType;
     
@@ -507,5 +511,11 @@ public class HigherEducationLOSEntity {
 	public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
 		this.degreeTitles = degreeTitles;
 	}
+    public Map<String, List<String>> getSubjects() {
+        return subjects;
+    }
+    public void setSubjects(Map<String, List<String>> subjects) {
+        this.subjects = subjects;
+    }
 
 }

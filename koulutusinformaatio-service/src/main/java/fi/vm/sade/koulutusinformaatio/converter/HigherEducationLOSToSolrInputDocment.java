@@ -611,6 +611,18 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 }
             }
         }
+        
+        if (los.getSubjects() != null) {
+            for (String curSubject : los.getSubjects().get("fi")) {
+                doc.addField(LearningOpportunity.SUBJECT_FI, curSubject);
+            }
+            for (String curSubject : los.getSubjects().get("sv")) {
+                doc.addField(LearningOpportunity.SUBJECT_SV, curSubject);
+            }
+            for (String curSubject : los.getSubjects().get("en")) {
+                doc.addField(LearningOpportunity.SUBJECT_EN, curSubject);
+            }
+        }
 
         if (los.getFotFacet() != null) {
             List<String> usedVals = new ArrayList<String>();
