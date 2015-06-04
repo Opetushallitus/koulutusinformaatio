@@ -482,7 +482,10 @@ a.label:hover, a.label:focus {
 
 .label-subject {
   background-color: #0f7395;
+  cursor: pointer;
   margin: 2px 2px 0 0; }
+  .label-subject:hover, .label-subject:focus {
+    background-color: #0c5c77; }
 
 
 .caret {

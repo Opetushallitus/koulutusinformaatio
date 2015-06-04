@@ -53,7 +53,10 @@ public final class SolrUtil {
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.NAME_AUTO_FI,
             LearningOpportunity.NAME_AUTO_SV,
-            LearningOpportunity.NAME_AUTO_EN
+            LearningOpportunity.NAME_AUTO_EN,
+            LearningOpportunity.SUBJECT_FI,
+            LearningOpportunity.SUBJECT_SV,
+            LearningOpportunity.SUBJECT_EN
     );
     
     public static final List<String> FIELDS_FI = Lists.newArrayList(
@@ -64,8 +67,8 @@ public final class SolrUtil {
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.ARTICLE_CONTENT_FI,
-            LearningOpportunity.NAME_AUTO_FI
-            //LearningOpportunity.ARTICLE_CONTENT_FI
+            LearningOpportunity.NAME_AUTO_FI,
+            LearningOpportunity.SUBJECT_FI
     );
     
     public static final List<String> FIELDS_SV = Lists.newArrayList(
@@ -76,8 +79,8 @@ public final class SolrUtil {
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.ARTICLE_CONTENT_SV,
-            LearningOpportunity.NAME_AUTO_SV
-//            LearningOpportunity.ARTICLE_CONTENT_SV
+            LearningOpportunity.NAME_AUTO_SV,
+            LearningOpportunity.SUBJECT_SV
     );
     
     public static final List<String> FIELDS_EN = Lists.newArrayList(
@@ -88,8 +91,8 @@ public final class SolrUtil {
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.ARTICLE_CONTENT_EN,
-            LearningOpportunity.NAME_AUTO_EN
-//            LearningOpportunity.ARTICLE_CONTENT_EN
+            LearningOpportunity.NAME_AUTO_EN,
+            LearningOpportunity.SUBJECT_EN
     );
     
     private SolrUtil() {
@@ -129,21 +132,11 @@ public final class SolrUtil {
     public static void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
         for (ApplicationOption ao : applicationOptions) {
-            //if (ao.isSpecificApplicationDates()) {
-                doc.addField(new StringBuilder().append("asStart").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationStartDate());
-                doc.addField(new StringBuilder().append("asEnd").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationEndDate());
-                parentApplicationDateRangeIndex++;
-            /*} else {
-                for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
-                    doc.addField(new StringBuilder().append("asStart").append("_").
-                            append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
-                    doc.addField(new StringBuilder().append("asEnd").append("_").
-                            append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
-                    parentApplicationDateRangeIndex++;
-                }
-            }*/
+            doc.addField(new StringBuilder().append("asStart").append("_").append(String.valueOf(parentApplicationDateRangeIndex)).toString(),
+                    ao.getApplicationStartDate());
+            doc.addField(new StringBuilder().append("asEnd").append("_").append(String.valueOf(parentApplicationDateRangeIndex)).toString(),
+                    ao.getApplicationEndDate());
+            parentApplicationDateRangeIndex++;
         }
     }
     

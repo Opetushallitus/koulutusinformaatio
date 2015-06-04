@@ -5,7 +5,7 @@
                 <a href="{{lo.linkHref}}">{{lo.name}}</a>
             </h2>
             
-            <span data-ng-repeat="subject in lo.subjects" class="label label-subject">{{subject}}</span>
+            <span tabindex="0" class="label label-subject" data-ng-repeat="subject in lo.subjects" data-ng-click="selectLabel(subject)" data-ng-keypress="selectLabel(subject)">{{subject}}</span>
 
             <div>
                 <span data-ng-show="lo.educationDegreeCode != 'koulutusasteoph2002_90'" class="italic">{{lo.educationDegree}}</span><br />

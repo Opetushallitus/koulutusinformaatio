@@ -295,6 +295,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             }
         });
     }
+    
+    $scope.selectLabel = function(label){
+        $location.path("/haku/" + label);
+    }
 };
 
 /**
