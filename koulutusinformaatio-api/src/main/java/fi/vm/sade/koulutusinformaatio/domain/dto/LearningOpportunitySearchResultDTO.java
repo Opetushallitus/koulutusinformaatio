@@ -47,6 +47,7 @@ public class LearningOpportunitySearchResultDTO {
     private String educationDegreeCode;
     private String homeplace;
     private String childName;
+    private List<String> subjects;
 
 
     public String getId() {
@@ -183,5 +184,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setLopNames(List<String> lopNames) {
         this.lopNames = lopNames;
+    }
+
+    public List<String> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<String> subjects) {
+        this.subjects = subjects;
     }
 }

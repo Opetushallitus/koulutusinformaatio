@@ -480,6 +480,11 @@ a.label:hover, a.label:focus {
   .label-danger[href]:hover, .label-danger[href]:focus {
     background-color: #fde5a1; }
 
+.label-subject {
+  background-color: #0f7395;
+  margin: 2px 2px 0 0; }
+
+
 .caret {
   display: inline-block;
   width: 0;

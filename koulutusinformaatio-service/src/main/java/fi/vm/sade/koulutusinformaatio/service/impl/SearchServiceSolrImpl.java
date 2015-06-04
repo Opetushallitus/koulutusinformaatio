@@ -501,6 +501,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                 String homeplace = getHomeplace(doc, lang);
                                 List<String> lopId = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>)(doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
                                 String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
+                                List<String> subjects = getSubjects(doc, lang);
 
                                 LOG.debug("gathered info now creating search result: " + id);
 
@@ -508,7 +509,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                         id, name,
                                         lopId, lopNames, prerequisiteText,
                                         prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                                        credits, edType, edDegree, edDegreeCode, homeplace, childName);
+                                        credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects);
 
                                 LOG.debug("Created search result: " + id);
 
@@ -518,6 +519,22 @@ public class SearchServiceSolrImpl implements SearchService {
 
                                 return lo;
 
+    }
+
+    private List<String> getSubjects(SolrDocument doc, String lang) {
+        if (lang.equalsIgnoreCase("fi")
+                && doc.getFieldValue(LearningOpportunity.SUBJECT_FI) != null) {
+            return (List<String>)doc.getFieldValue(LearningOpportunity.SUBJECT_FI);
+        }
+        if (lang.equalsIgnoreCase("sv")
+                && doc.getFieldValue(LearningOpportunity.SUBJECT_SV) != null) {
+            return (List<String>)doc.getFieldValue(LearningOpportunity.SUBJECT_SV);
+        }
+        if (lang.equalsIgnoreCase("en")
+                && doc.getFieldValue(LearningOpportunity.SUBJECT_EN) != null) {
+            return (List<String>)doc.getFieldValue(LearningOpportunity.SUBJECT_EN);
+        }
+        return null;
     }
 
     private String getChildName(SolrDocument doc) {
@@ -671,6 +688,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                                     String homeplace = getHomeplace(doc, lang);
                                                     String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? doc.get(LearningOpportunity.CHILD_NAME).toString() : null;
                                                     List<String> lopIds = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>)(doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
+                                                    List<String> subjects = getSubjects(doc, lang);
 
                                                     LOSearchResult lo = null;
                                                     try {
@@ -678,7 +696,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                                                 id, name,
                                                                 lopIds, lopNames, prerequisiteText,
                                                                 prerequisiteCodeText, parentId, losId, doc.get(LearningOpportunity.TYPE).toString(),
-                                                                credits, edType, edDegree, edDegreeCode, homeplace, childName);
+                                                                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects);
 
                                                         updateAsStatus(lo, doc);
                                                     } catch (Exception e) {

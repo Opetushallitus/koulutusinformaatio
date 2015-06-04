@@ -44,11 +44,12 @@ public class LOSearchResult {
     private String educationDegreeCode;
     private String homeplace;
     private String childName;
+    private List<String> subjects;
 
     public LOSearchResult(String id, String name, List<String> lopIds, List<String> lopNames,
             String prerequisite, String prerequisiteCode, String parentId, 
             String losId, String type, String credits, String educationType, 
-            String educationDegree, String educationDegreeCode, String homeplace, String childName) {
+            String educationDegree, String educationDegreeCode, String homeplace, String childName, List<String> subjects) {
         this.id = id;
         this.name = name;
         this.lopIds = lopIds;
@@ -64,6 +65,7 @@ public class LOSearchResult {
         this.educationDegreeCode = educationDegreeCode;
         this.homeplace = homeplace;
         this.childName = childName;
+        this.subjects = subjects;
     }
 
     public LOSearchResult() {
@@ -203,5 +205,13 @@ public class LOSearchResult {
 
     public void setChildName(String childName) {
         this.childName = childName;
+    }
+
+    public List<String> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<String> subjects) {
+        this.subjects = subjects;
     }
 }
