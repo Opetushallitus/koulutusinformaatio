@@ -1,49 +1,61 @@
 <section class="col-md-11">
     <div class="panel panel-gray">
         <div class="panel-body">
-            <ul class="list-unstyled">
-                <li>
-                    <span data-ki-i18n="education-starts" data-show-colon="true"></span>
-                    <strong data-ng-show="lo.startDate">{{lo.startDate}}</strong>
-                    <strong data-ng-hide="lo.startDate">{{lo.startSeason}} {{lo.startYear}}</strong>
-                </li>
-                <li>
-                    <span data-ki-i18n="language-of-instruction" data-show-colon="true"></span>
-                     <span data-ng-repeat="tl in lo.teachingLanguages">
-                        <strong>{{tl}}</strong><span data-ng-show="!$last">,</span>
-                    </span>
-                </li>
-                <li>
-                    <span data-ki-i18n="duration" data-show-colon="true"></span>
-                    <strong>{{lo.creditValue}} {{lo.creditUnit}}</strong>
-                </li>
-                <li>
-                    <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
-                    <strong>{{lo.plannedDuration}} {{lo.plannedDurationUnit}}</strong>
-                </li>
-                <li>
-                    <span data-ki-i18n="time-of-teaching" data-show-colon="true"></span>
-                    <span data-ng-repeat="tot in lo.teachingTimes">
-                        <strong>{{tot}}</strong><span data-ng-show="!$last">,</span>
-                    </span>
-                </li>
-                <li>
-                    <span data-ki-i18n="place-of-teaching" data-show-colon="true"></span>
-                    <span data-ng-repeat="top in lo.teachingPlaces">
-                        <strong>{{top}}</strong><span data-ng-show="!$last">,</span>
-                    </span>
-                </li>
-                <li>
-                    <span data-ki-i18n="form-of-education-higher" data-show-colon="true"></span>
-                    <span data-ng-repeat="fot in lo.formOfTeaching">
-                        <strong>{{fot}}</strong><span data-ng-show="!$last">,</span>
-                    </span>
-                </li>
-                <li>
-                    <span data-ki-i18n="chargeable" data-show-colon="true"></span>
-                    <strong data-ki-i18n="chargeable-{{lo.chargeable}}"></strong>
-                </li>
-            </ul>
+        <div class="column-container">
+            <div class="column-50-procent">
+                <ul class="list-unstyled">
+                    <li>
+                        <span data-ki-i18n="education-starts" data-show-colon="true"></span>
+                        <strong data-ng-show="lo.startDate">{{lo.startDate}}</strong>
+                        <strong data-ng-hide="lo.startDate">{{lo.startSeason}} {{lo.startYear}}</strong>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="language-of-instruction" data-show-colon="true"></span>
+                         <span data-ng-repeat="tl in lo.teachingLanguages">
+                            <strong>{{tl}}</strong><span data-ng-show="!$last">,</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="time-of-teaching" data-show-colon="true"></span>
+                        <span data-ng-repeat="tot in lo.teachingTimes">
+                            <strong>{{tot}}</strong><span data-ng-show="!$last">,</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="place-of-teaching" data-show-colon="true"></span>
+                        <span data-ng-repeat="top in lo.teachingPlaces">
+                            <strong>{{top}}</strong><span data-ng-show="!$last">,</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="form-of-education-higher" data-show-colon="true"></span>
+                        <span data-ng-repeat="fot in lo.formOfTeaching">
+                            <strong>{{fot}}</strong><span data-ng-show="!$last">,</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="column-50-procent">
+                <ul class="list-unstyled">
+                    <li>
+                        <span data-ki-i18n="duration" data-show-colon="true"></span>
+                        <strong>{{lo.creditValue}} {{lo.creditUnit}}</strong>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
+                        <strong>{{lo.plannedDuration}} {{lo.plannedDurationUnit}}</strong>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="chargeable" data-show-colon="true"></span>
+                        <strong data-ki-i18n="chargeable-{{lo.chargeable}}"></strong>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="qualifications" data-show-colon="true"></span>
+                        <strong data-ng-repeat="qual in lo.qualifications">{{qual}}{{$last ? '' : ', '}}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
         </div>
     </div>
     <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
