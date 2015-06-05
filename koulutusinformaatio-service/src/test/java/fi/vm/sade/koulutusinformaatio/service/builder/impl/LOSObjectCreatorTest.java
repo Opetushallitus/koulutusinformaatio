@@ -22,6 +22,8 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
@@ -29,14 +31,15 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.OppiaineV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import static org.mockito.Matchers.any;
-
 import static org.mockito.Mockito.when;
 
 /**
@@ -82,6 +85,41 @@ public class LOSObjectCreatorTest extends TestCase {
         creator.createKansanopistoLOS(givenValmistavaKoulutus(), true);
     }
     
+    @Test
+    public void createHigherEducationLOSWithSubjects() throws Exception{
+        KoulutusKorkeakouluV1RDTO dto = givenKorkeakouluKoulutus();
+        ArrayList<OppiaineV1RDTO> oppiaineet = new ArrayList<OppiaineV1RDTO>();
+        oppiaineet.add(givenOppiaine("kieli_fi", "oppiaine1"));
+        oppiaineet.add(givenOppiaine("kieli_sv", "oppiaine2"));
+        oppiaineet.add(givenOppiaine("kieli_sv", "oppiaine3"));
+        dto.setOppiaineet(oppiaineet);
+        StandaloneLOS los = creator.createHigherEducationLOS(dto, false);
+        assertEquals(1, los.getSubjects().get("fi").size());
+        assertEquals(2, los.getSubjects().get("sv").size());
+        assertNotNull(los);
+    }
+
+    private OppiaineV1RDTO givenOppiaine(String kieli, String arvo) {
+        OppiaineV1RDTO e = new OppiaineV1RDTO();
+        e.setKieliKoodi(kieli);
+        e.setOppiaine(arvo);
+        return e;
+    }
+    
+    
+    private KoulutusKorkeakouluV1RDTO givenKorkeakouluKoulutus() {
+        KoulutusKorkeakouluV1RDTO dto = new KoulutusKorkeakouluV1RDTO();
+        dto.setKoulutusala(givenKoodiV1RDTOWithMeta());
+        dto.setKoulutuskoodi(givenKoodiV1RDTOWithMeta());
+        dto.setKoulutusaste(givenKoodiV1RDTOWithMeta());
+        dto.setTutkinto(givenKoodiV1RDTOWithMeta());
+        dto.setSuunniteltuKestoTyyppi(givenKoodiV1RDTOWithMeta());
+        dto.setOpintojenLaajuusarvo(givenKoodiV1RDTOWithMeta());
+        dto.setOpintojenLaajuusyksikko(givenKoodiV1RDTOWithMeta());
+        dto.setOppiaineet(new ArrayList<OppiaineV1RDTO>());
+        return dto;
+    }
+
     @Test
     public void setsNameForKansanopistoLOSFromApplicationOptionWhenHakukohteenNimiKannassaIsNull() throws Exception {
         ValmistavaKoulutusV1RDTO koulutus = givenValmistavaKoulutus();
