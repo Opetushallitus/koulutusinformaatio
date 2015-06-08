@@ -51,7 +51,9 @@
                     </li>
                     <li>
                         <span data-ki-i18n="qualifications" data-show-colon="true"></span>
-                        <strong data-ng-repeat="qual in lo.qualifications">{{qual}}{{$last ? '' : ', '}}</strong>
+                        <ul>
+                            <li data-ng-repeat="qual in lo.qualifications | orderBy:'toString()'"><strong>{{qual}}</strong></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
