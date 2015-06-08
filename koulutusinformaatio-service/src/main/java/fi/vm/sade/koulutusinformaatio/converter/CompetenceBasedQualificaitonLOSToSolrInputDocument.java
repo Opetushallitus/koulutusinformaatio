@@ -297,7 +297,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                     }
                     if (curChild.getKoulutuslaji() != null 
                             && !usedVals.contains(curChild.getKoulutuslaji().getUri())) {
-                        doc.addField(LearningOpportunity.KIND_OF_EDUCATION, curChild.getKoulutuslaji().getUri());
+                        SolrUtil.addKindOfEducationFields(curChild, doc);
                         usedVals.add(curChild.getKoulutuslaji().getUri());
                     }
                 }

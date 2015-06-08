@@ -28,8 +28,12 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 /**
  * @author Hannu Lyytikainen
@@ -536,6 +540,24 @@ public final class SolrUtil {
             doc.addField(LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi",provider.getName().getTranslations()));
         }
 
+    }
+
+    public static void addKindOfEducationFields(BasicLOI loi, SolrInputDocument doc) {
+        if (loi.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
+        } else {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, loi.getKoulutuslaji().getUri());
+        }
+    }
+
+    public static void addKindOfEducationFields(StandaloneLOS loi, SolrInputDocument doc) {
+        if (loi.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
+        } else {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, loi.getKoulutuslaji().getUri());
+        }
     }
 
 

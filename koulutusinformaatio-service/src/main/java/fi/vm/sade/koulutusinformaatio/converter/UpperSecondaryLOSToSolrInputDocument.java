@@ -398,14 +398,8 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         if (loi.getKoulutuslaji() != null 
                 && !usedVals.contains(loi.getKoulutuslaji().getUri())) {
-            
-            if (loi.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
-                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
-                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
-            } else {
-                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, loi.getKoulutuslaji().getUri());
-                usedVals.add(loi.getKoulutuslaji().getUri());
-            }
+            SolrUtil.addKindOfEducationFields(loi, doc);
+            usedVals.add(loi.getKoulutuslaji().getUri());
         } 
         
     }

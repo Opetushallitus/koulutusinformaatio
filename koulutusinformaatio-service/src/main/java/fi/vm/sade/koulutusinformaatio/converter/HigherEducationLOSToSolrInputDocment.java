@@ -655,7 +655,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         }
 
         if (los.getKoulutuslaji() != null) {
-            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, los.getKoulutuslaji().getUri());
+            SolrUtil.addKindOfEducationFields(los, doc);
         }
 
     }
