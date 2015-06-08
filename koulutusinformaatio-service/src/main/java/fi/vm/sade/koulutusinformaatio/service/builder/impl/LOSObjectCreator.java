@@ -16,13 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -674,17 +668,19 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setSubjects(getSubjects(koulutus.getOppiaineet()));
 
         return los;
-        
+
     }
 
-    private HashMap<String, List<String>> getSubjects(List<OppiaineV1RDTO> list) {
+    private HashMap<String, List<String>> getSubjects(Set<OppiaineV1RDTO> oppiaines) {
+        List<OppiaineV1RDTO> asList = new LinkedList<OppiaineV1RDTO>();
+        asList.addAll(oppiaines);
         HashMap<String, List<String>> subjects = new HashMap<String, List<String>>();
-        subjects.put("fi", getSubjectsByLang(list, "kieli_fi"));
-        subjects.put("sv", getSubjectsByLang(list, "kieli_sv"));
-        subjects.put("en", getSubjectsByLang(list, "kieli_en"));
+        subjects.put("fi", getSubjectsByLang(asList, "kieli_fi"));
+        subjects.put("sv", getSubjectsByLang(asList, "kieli_sv"));
+        subjects.put("en", getSubjectsByLang(asList, "kieli_en"));
         return subjects;
     }
-    
+
     private ArrayList<String> getSubjectsByLang(List<OppiaineV1RDTO> list, String lang){
         ArrayList<String> subjects = new ArrayList<String>();
         for (OppiaineV1RDTO subject : list) {
@@ -749,7 +745,7 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
         }
     }
-    
+
     private String getEducationType(String uri) {
         if (uri.contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
             return SolrConstants.ED_TYPE_AMK;
@@ -1082,7 +1078,7 @@ public class LOSObjectCreator extends ObjectCreator {
     public StandaloneLOS createKansanopistoLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, TarjontaParseException {
         LOG.debug("Creating MM kansanopisto los: " + koulutusDTO.getOid());
         StandaloneLOS los = createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_KANSANOPISTO);
-        if ((koulutusDTO.getKoulutusohjelmanNimiKannassa() == null || koulutusDTO.getKoulutusohjelmanNimiKannassa().isEmpty()) 
+        if ((koulutusDTO.getKoulutusohjelmanNimiKannassa() == null || koulutusDTO.getKoulutusohjelmanNimiKannassa().isEmpty())
                 && !(los.getApplicationOptions() == null || los.getApplicationOptions().isEmpty())) {
             ApplicationOption ao = los.getApplicationOptions().get(0);
             los.setName(ao.getName());
@@ -1100,7 +1096,7 @@ public class LOSObjectCreator extends ObjectCreator {
         LOG.debug("Creating MM lukioon valmistava los: " + koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_IMM_UPSEC);
     }
-    
+
     private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException,
             TarjontaParseException {
         StandaloneLOS los = createGenericLOS(koulutusDTO, checkStatus, edType);

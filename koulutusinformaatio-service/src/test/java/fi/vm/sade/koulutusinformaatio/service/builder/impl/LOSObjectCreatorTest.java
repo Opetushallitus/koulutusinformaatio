@@ -1,11 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import junit.framework.TestCase;
 
@@ -47,7 +42,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class LOSObjectCreatorTest extends TestCase {
-    
+
     @Mock
     private ApplicationOptionCreator aoCreator;
 
@@ -73,7 +68,7 @@ public class LOSObjectCreatorTest extends TestCase {
         when(koodistoService.search(any(String.class))).thenReturn(new ArrayList<Code>());
         when(tarjontaRawService.getHakukohdesByEducationOid(any(String.class))).thenReturn(null);
     }
-    
+
     @Test
     public void createsKansanopistoLOSWithoutCheckingStatus() throws Exception {
         StandaloneLOS los = creator.createKansanopistoLOS(givenValmistavaKoulutus(), false);
@@ -84,11 +79,11 @@ public class LOSObjectCreatorTest extends TestCase {
     public void doesNotCreateKansanopistoLOSWhenStatusCheckFails() throws Exception {
         creator.createKansanopistoLOS(givenValmistavaKoulutus(), true);
     }
-    
+
     @Test
     public void createHigherEducationLOSWithSubjects() throws Exception{
         KoulutusKorkeakouluV1RDTO dto = givenKorkeakouluKoulutus();
-        ArrayList<OppiaineV1RDTO> oppiaineet = new ArrayList<OppiaineV1RDTO>();
+        Set<OppiaineV1RDTO> oppiaineet = new HashSet<OppiaineV1RDTO>();
         oppiaineet.add(givenOppiaine("kieli_fi", "oppiaine1"));
         oppiaineet.add(givenOppiaine("kieli_sv", "oppiaine2"));
         oppiaineet.add(givenOppiaine("kieli_sv", "oppiaine3"));
@@ -105,8 +100,8 @@ public class LOSObjectCreatorTest extends TestCase {
         e.setOppiaine(arvo);
         return e;
     }
-    
-    
+
+
     private KoulutusKorkeakouluV1RDTO givenKorkeakouluKoulutus() {
         KoulutusKorkeakouluV1RDTO dto = new KoulutusKorkeakouluV1RDTO();
         dto.setKoulutusala(givenKoodiV1RDTOWithMeta());
@@ -116,7 +111,7 @@ public class LOSObjectCreatorTest extends TestCase {
         dto.setSuunniteltuKestoTyyppi(givenKoodiV1RDTOWithMeta());
         dto.setOpintojenLaajuusarvo(givenKoodiV1RDTOWithMeta());
         dto.setOpintojenLaajuusyksikko(givenKoodiV1RDTOWithMeta());
-        dto.setOppiaineet(new ArrayList<OppiaineV1RDTO>());
+        dto.setOppiaineet(new HashSet<OppiaineV1RDTO>());
         return dto;
     }
 
@@ -145,7 +140,7 @@ public class LOSObjectCreatorTest extends TestCase {
         return ao;
     }
 
-    private ResultV1RDTO<HakuV1RDTO> givenV1Haku() {        
+    private ResultV1RDTO<HakuV1RDTO> givenV1Haku() {
         return new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO());
     }
 
@@ -197,7 +192,7 @@ public class LOSObjectCreatorTest extends TestCase {
         koodi.setMeta(givenKoodiMeta());
         return koodi;
     }
-    
+
     private Map<String, KoodiV1RDTO> givenKoodiMeta() {
         Map<String, KoodiV1RDTO> map = new HashMap<String, KoodiV1RDTO>();
         KoodiV1RDTO koodi = new KoodiV1RDTO("uri", 1, "arvo", "KoulutuksenNimi");
