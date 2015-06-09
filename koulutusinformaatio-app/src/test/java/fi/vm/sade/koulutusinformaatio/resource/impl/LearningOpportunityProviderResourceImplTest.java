@@ -15,20 +15,6 @@
  */
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
@@ -39,6 +25,16 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -49,8 +45,7 @@ public class LearningOpportunityProviderResourceImplTest {
     private SearchService searchService;
     private LearningOpportunityService learningOpportunityService;
     LearningOpportunityProviderResource providerResource;
-    
-    
+
     @Before
     public void init() throws SearchException, ResourceNotFoundException {
         
@@ -77,8 +72,9 @@ public class LearningOpportunityProviderResourceImplTest {
         
         providers.add(provider);
         providers.add(provider2);
-        
+
         when(searchService.searchLearningOpportunityProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi", false, null)).thenReturn(providers);
+        when(searchService.searchLearningOpportunityProviders("prov* AND 2", "", Arrays.asList(""), true, true, 10, 10, "fi", false, null)).thenReturn(providers.subList(1, 2));
         
         PictureDTO pict = new PictureDTO();
         pict.setId("pict1");
@@ -102,12 +98,43 @@ public class LearningOpportunityProviderResourceImplTest {
         LearningOpportunityProviderDTO dto = this.providerResource.getProvider("prov111", "fi");
         assertTrue(dto.getId().equals("prov111"));
     }
-    
+
     @Test
     public void testSearchProviders() {
         List<ProviderSearchResultDTO> results = providerResource.searchProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi", null);
         assertEquals(results.size(), 2);
-        assertTrue(results.get(0).getId().contains("prov"));
+        boolean foundOne = false;
+        boolean foundTwo = false;
+        for (ProviderSearchResultDTO resultDTO : results) {
+            if (resultDTO.getId().equals("prov111")) {
+                foundOne = true;
+            }
+            if (resultDTO.getId().equals("prov211")) {
+                foundTwo = true;
+            }
+
+        }
+        assertTrue("Provider prov111 not found", foundOne);
+        assertTrue("Provider prov211 not found", foundTwo);
+    }
+
+    @Test
+    public void testSearchProvidersWtihSpace() {
+        List<ProviderSearchResultDTO> results = providerResource.searchProviders("prov 2", "", Arrays.asList(""), true, true, 10, 10, "fi", null);
+        assertEquals(results.size(), 1);
+        boolean foundOne = false;
+        boolean foundTwo = false;
+        for (ProviderSearchResultDTO resultDTO : results) {
+            if (resultDTO.getId().equals("prov111")) {
+                foundOne = true;
+            }
+            if (resultDTO.getId().equals("prov211")) {
+                foundTwo = true;
+            }
+
+        }
+        assertFalse("Provider prov111 found", foundOne);
+        assertTrue("Provider prov211 not found", foundTwo);
     }
     
     @Test

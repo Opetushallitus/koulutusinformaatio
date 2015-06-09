@@ -16,17 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import java.util.List;
-
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.params.DisMaxParams;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import java.util.List;
 
 /**
  * Solr query for querying learning opportunity providers.
@@ -66,8 +64,8 @@ public class ProviderQuery extends SolrQuery {
 
     public ProviderQuery(String q, String asId, List<String> baseEducations, int start, int rows, boolean vocational,
                          boolean nonVocational, String lang, boolean prefix, String type) {
-        super(Joiner.on(":").join(resolveNameField(lang, prefix), ClientUtils.escapeQueryChars(q) + "*"));
-        
+        super(Joiner.on(":").join(resolveNameField(lang, prefix), q + "*"));
+
         this.setStart(start);
         this.setRows(rows);
         this.setSort(resolveNameField(lang, prefix), ORDER.asc);

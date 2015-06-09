@@ -16,18 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Collections;
-import java.util.List;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
@@ -40,6 +31,14 @@ import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -68,7 +67,11 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             } catch (UnsupportedEncodingException e) {
                 key = term;
             }
-            key = key.replace("*", "");
+            if (key.equals("*")) {
+                key = "";
+            } else {
+                key = Joiner.on("* AND ").join(key.split(" "));
+            }
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducations, vocational,
                     nonVocational, start, rows, lang, false, type);
             List<ProviderSearchResultDTO> result = Lists.newArrayList(
