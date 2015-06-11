@@ -18,6 +18,9 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
@@ -25,6 +28,7 @@ import com.google.common.collect.Maps;
  * @author Mikko Majapuro
  */
 public class I18nText {
+    private final static Logger LOGGER = LoggerFactory.getLogger(I18nText.class);
 
     private Map<String, String> translations;
 
@@ -33,7 +37,11 @@ public class I18nText {
     }
 
     public I18nText(final Map<String, String> translations) {
-        this.translations = ImmutableMap.copyOf(translations);
+        try {
+            this.translations = ImmutableMap.copyOf(translations);
+        } catch (NullPointerException np) {
+            LOGGER.error("Constructing I18nText failed: " + translations, np);
+        }
     }
 
     public Map<String, String> getTranslations() {

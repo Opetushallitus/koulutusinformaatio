@@ -51,9 +51,6 @@ import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
@@ -504,8 +501,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getHakutoimistonNimi());
         }
-        insertFallbackLanguageValues(map);
-        return new I18nText(map);
+        return getSanitizedI18nText(map);
     }
 
     private I18nText getWww(List<YhteystiedotV1RDTO> yhteystiedot) {
@@ -513,8 +509,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getWwwOsoite());
         }
-        insertFallbackLanguageValues(map);
-        return new I18nText(map);
+        return getSanitizedI18nText(map);
     }
 
     private I18nText getEmail(List<YhteystiedotV1RDTO> yhteystiedot) {
@@ -522,8 +517,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getSahkopostiosoite());
         }
-        insertFallbackLanguageValues(map);
-        return new I18nText(map);
+        return getSanitizedI18nText(map);
     }
 
     private I18nText getPhoneNumber(List<YhteystiedotV1RDTO> yhteystiedot) {
@@ -531,8 +525,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         for (YhteystiedotV1RDTO yt : yhteystiedot) {
             map.put(yt.getLang(), yt.getPuhelinnumero());
         }
-        insertFallbackLanguageValues(map);
-        return new I18nText(map);
+        return getSanitizedI18nText(map);
     }
 
     private Address getLocalizedAddress(List<YhteystiedotV1RDTO> yhteystiedot) {
