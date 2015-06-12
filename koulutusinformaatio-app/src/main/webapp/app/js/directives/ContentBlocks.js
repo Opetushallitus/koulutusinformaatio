@@ -67,11 +67,11 @@ directive('kiInfoCenterAddresses', ['CollapseBlockService', function(CollapseBlo
                     $scope.applicationOffices = value;
                     var showInfoCenterAddresses = ((value.length > 0) 
                             && (value[0].visitingAddress ||
-                                    valuevalue[0].postalAddress ||
-                                    valuevalue[0].name ||
-                                    valuevalue[0].email ||
-                                    valuevalue[0].phone ||
-                                    valuevalue[0].www)) ? true : false;
+                                    value[0].postalAddress ||
+                                    value[0].name ||
+                                    value[0].email ||
+                                    value[0].phone ||
+                                    value[0].www)) ? true : false;
                     CollapseBlockService.setBlock($scope.blockId, showInfoCenterAddresses);   
                 }
             });

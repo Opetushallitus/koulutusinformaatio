@@ -20,7 +20,7 @@
     <!-- END PREVIEW -->
     
     <div>
-        <span tabindex="0" class="label label-subject" data-ng-repeat="subject in lo.subjects" data-ng-click="selectLabel(subject)" data-ng-keypress="selectLabel(subject)">{{subject}}</span>
+        <span tabindex="0" class="label label-subject" data-ng-repeat="subject in lo.subjects | orderBy:'toString()'" data-ng-click="selectLabel(subject)" data-ng-keypress="selectLabel(subject)">{{subject}}</span>
     </div>
     
     <div data-ki-child-ribbon data-children="lo.children" data-lang="virkailijaLang" type="loType" class="ribbon"></div>
