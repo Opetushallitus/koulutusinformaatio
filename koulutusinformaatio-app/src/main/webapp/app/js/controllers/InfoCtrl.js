@@ -258,6 +258,10 @@
         }
     });
 
+    $scope.selectLabel = function(label){
+        $location.path("/haku/" + label);
+    }
+    
     // initialize view model
     loadLo();
 };
