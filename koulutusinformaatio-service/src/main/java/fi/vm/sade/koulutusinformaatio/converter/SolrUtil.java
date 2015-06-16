@@ -57,10 +57,7 @@ public final class SolrUtil {
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.NAME_AUTO_FI,
             LearningOpportunity.NAME_AUTO_SV,
-            LearningOpportunity.NAME_AUTO_EN,
-            LearningOpportunity.SUBJECT_FI,
-            LearningOpportunity.SUBJECT_SV,
-            LearningOpportunity.SUBJECT_EN
+            LearningOpportunity.NAME_AUTO_EN
     );
     
     public static final List<String> FIELDS_FI = Lists.newArrayList(
@@ -71,8 +68,7 @@ public final class SolrUtil {
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.ARTICLE_CONTENT_FI,
-            LearningOpportunity.NAME_AUTO_FI,
-            LearningOpportunity.SUBJECT_FI
+            LearningOpportunity.NAME_AUTO_FI
     );
     
     public static final List<String> FIELDS_SV = Lists.newArrayList(
@@ -83,8 +79,7 @@ public final class SolrUtil {
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.ARTICLE_CONTENT_SV,
-            LearningOpportunity.NAME_AUTO_SV,
-            LearningOpportunity.SUBJECT_SV
+            LearningOpportunity.NAME_AUTO_SV
     );
     
     public static final List<String> FIELDS_EN = Lists.newArrayList(
@@ -95,8 +90,7 @@ public final class SolrUtil {
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
             LearningOpportunity.ARTICLE_CONTENT_EN,
-            LearningOpportunity.NAME_AUTO_EN,
-            LearningOpportunity.SUBJECT_EN
+            LearningOpportunity.NAME_AUTO_EN
     );
     
     private SolrUtil() {
