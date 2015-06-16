@@ -28,7 +28,7 @@ import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
@@ -103,7 +103,7 @@ public class IncrementalKoulutusLOSIndexer {
 
                         LOG.debug("Now indexing koulutus education: " + curKoul.getOid());
 
-                        StandaloneLOS createdLos = null;
+                        KoulutusLOS createdLos = null;
 
                         try {
                             createdLos = this.tarjontaService.createKoulutusLOS(curKoul.getOid(), true);
@@ -127,7 +127,7 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
-    private void indexToSolr(StandaloneLOS createdLos) throws IOException, SolrServerException {
+    private void indexToSolr(KoulutusLOS createdLos) throws IOException, SolrServerException {
         LOG.debug("Indexing adult upper secondary ed: " + createdLos.getId());
         LOG.debug("Indexing adult upper secondary ed: " + createdLos.getShortTitle());
         this.indexerService.removeLos(createdLos, loHttpSolrServer);
@@ -138,7 +138,7 @@ public class IncrementalKoulutusLOSIndexer {
     public void removeKoulutusLOS(String oid)  throws Exception {
         loHttpSolrServer.deleteById(oid);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        StandaloneLOS toDeleteLos = new StandaloneLOS();
+        KoulutusLOS toDeleteLos = new KoulutusLOS();
         toDeleteLos.setId(oid);
         this.dataUpdateService.deleteLos(toDeleteLos);
     }
@@ -147,7 +147,7 @@ public class IncrementalKoulutusLOSIndexer {
     public void indexKoulutusKomoto(String curKomotoOid) throws Exception {
         LOG.debug("Indexing koulutus ed komoto: " + curKomotoOid);
 
-        StandaloneLOS createdLos = null;
+        KoulutusLOS createdLos = null;
 
         try {
             createdLos = this.tarjontaService.createKoulutusLOS(curKomotoOid, true);

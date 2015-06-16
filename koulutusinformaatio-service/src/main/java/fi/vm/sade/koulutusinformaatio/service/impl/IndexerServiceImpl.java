@@ -50,7 +50,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -195,8 +195,8 @@ public class IndexerServiceImpl implements IndexerService {
             }
 
             //Adding higher education los
-        } else if (los instanceof StandaloneLOS) {
-            StandaloneLOS uas = (StandaloneLOS)los;
+        } else if (los instanceof KoulutusLOS) {
+            KoulutusLOS uas = (KoulutusLOS)los;
             provider = uas.getProvider();
 
             if (uas.getApplicationOptions() != null) {
@@ -238,8 +238,8 @@ public class IndexerServiceImpl implements IndexerService {
                             providerAsIds);
         
         
-        if (los instanceof StandaloneLOS) {
-            StandaloneLOS uas = (StandaloneLOS)los;
+        if (los instanceof KoulutusLOS) {
+            KoulutusLOS uas = (KoulutusLOS)los;
             for (Provider curAddProv : uas.getAdditionalProviders()) {
                 createProviderDocs(curAddProv,
                                     lopSolr, 

@@ -37,10 +37,10 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -117,7 +117,6 @@ public class UpdateServiceImpl implements UpdateService {
                 count = loOids.size();
                 index += count;
 
-            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -143,9 +142,9 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("V0 indexing finished");
 
-            List<StandaloneLOS> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusEducations();
+            List<KoulutusLOS> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusEducations();
             LOG.debug("Found vocational educations: " + vocationalEducations.size());
-            for (StandaloneLOS curLOS : vocationalEducations) {
+            for (KoulutusLOS curLOS : vocationalEducations) {
                 LOG.debug("Saving vocational education: " + curLOS.getId());
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
@@ -183,25 +182,23 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Adult vocational educations saved.");
 
-            List<StandaloneLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
+            List<KoulutusLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
             LOG.debug("Found " + valmistavaList.size() + " valmistava educations");
-            for (StandaloneLOS curLOS : valmistavaList) {
+            for (KoulutusLOS curLOS : valmistavaList) {
                 LOG.debug("Saving valmistava los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Valmistava educations saved.");
 
-
-            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.info("Providers indexed");
-
 
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addFacetCodes(edTypeCodes, loUpdateSolr);
             LOG.info("Education types indexded.");
-            
+
             List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
             indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
             LOG.info("Base educations indexded.");
@@ -219,7 +216,6 @@ public class UpdateServiceImpl implements UpdateService {
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.info("Application systems indexed");
 
-            
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
@@ -294,7 +290,7 @@ public class UpdateServiceImpl implements UpdateService {
         }
     }
 
-    private void indexToSolr(StandaloneLOS curLOS,
+    private void indexToSolr(KoulutusLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);

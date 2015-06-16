@@ -38,11 +38,9 @@ import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
@@ -157,15 +155,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     public void updateChangedEducationData() throws Exception {
 
         LOG.debug("updateChangedEducationData on its way");
-        //Getting get update period
+        // Getting get update period
         long updatePeriod = getUpdatePeriod();
         LOG.debug(String.format("Update period: %s", updatePeriod));
-        
+
         try {
-            //Fetching changes within the update period
+            // Fetching changes within the update period
             runningSince = System.currentTimeMillis();
             isRunning = true;
-            Map<String,List<String>> result = listChangedLearningOpportunities(updatePeriod);
+            Map<String, List<String>> result = listChangedLearningOpportunities(updatePeriod);
             LOG.debug("Starting incremental update");
             if (!hasChanges(result)) {
                 isRunning = false;
@@ -191,7 +189,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             }
 
             List<String> changedHakukohdeOids = new ArrayList<String>();
-            //If changes in hakukohde, indexing them   
+            // If changes in hakukohde, indexing them
             if (result.containsKey("hakukohde")) {
                 changedHakukohdeOids = result.get("hakukohde");
                 LOG.debug("Hakukohde changes: " + changedHakukohdeOids.size());
@@ -199,7 +197,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 hakukohdeCount = result.get("hakukohde").size();
             }
 
-            //If changes in koulutusmoduuliToteutus, indexing them 
+            // If changes in koulutusmoduuliToteutus, indexing them
             if (result.containsKey("koulutusmoduuliToteutus")) {
                 LOG.debug("Changed komotos: " + result.get("koulutusmoduuliToteutus").size());
                 indexKomotoChanges(result.get("koulutusmoduuliToteutus"), changedHakukohdeOids);
@@ -210,7 +208,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             LOG.debug("Saving successful status");
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
-            LOG.info(String.format("Incremental indexing finished. Indexed %s komos, %s hakus, %s hakukohdes and %s koulutus", komoCount, hakuCount, hakukohdeCount, koulutusCount));
+            LOG.info(String.format("Incremental indexing finished. Indexed %s komos, %s hakus, %s hakukohdes and %s koulutus", komoCount, hakuCount,
+                    hakukohdeCount, koulutusCount));
 
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);

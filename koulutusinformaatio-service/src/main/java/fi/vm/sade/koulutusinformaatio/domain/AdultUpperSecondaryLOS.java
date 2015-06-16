@@ -21,6 +21,6 @@ package fi.vm.sade.koulutusinformaatio.domain;
  * @author Markus
  *
  */
-public class AdultUpperSecondaryLOS extends StandaloneLOS {
+public class AdultUpperSecondaryLOS extends KoulutusLOS {
 
 }

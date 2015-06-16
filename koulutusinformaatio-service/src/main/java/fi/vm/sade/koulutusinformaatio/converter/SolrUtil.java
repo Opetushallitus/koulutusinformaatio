@@ -32,7 +32,7 @@ import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 /**
@@ -545,7 +545,7 @@ public final class SolrUtil {
         }
     }
 
-    public static void addKindOfEducationFields(StandaloneLOS loi, SolrInputDocument doc) {
+    public static void addKindOfEducationFields(KoulutusLOS loi, SolrInputDocument doc) {
         if (loi.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
             doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
             doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);

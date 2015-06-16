@@ -34,19 +34,19 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 /**
  * 
  * @author Markus
  */
-public class HigherEducationLOSToSolrInputDocment implements Converter<StandaloneLOS, List<SolrInputDocument>> {
+public class HigherEducationLOSToSolrInputDocment implements Converter<KoulutusLOS, List<SolrInputDocument>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(HigherEducationLOSToSolrInputDocment.class);
     
     @Override
-    public List<SolrInputDocument> convert(StandaloneLOS los) {
+    public List<SolrInputDocument> convert(KoulutusLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
 
@@ -59,7 +59,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
     /*
      * Creates a higher education learning opportunity solr document.
      */
-    private SolrInputDocument createDoc(StandaloneLOS los) {
+    private SolrInputDocument createDoc(KoulutusLOS los) {
 
         SolrInputDocument doc = new SolrInputDocument();
 
@@ -167,7 +167,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
     }
 
 
-    private void setSortFields(StandaloneLOS los, SolrInputDocument doc,
+    private void setSortFields(KoulutusLOS los, SolrInputDocument doc,
             Provider provider) {
         if (los.getType().equals(TarjontaConstants.TYPE_ADULT_UPSEC)) {
             String nameSort = String.format("%s, %s",
@@ -228,7 +228,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
 
     }
 
-    private void indexHomeplaceDisplay(Provider provider, StandaloneLOS los, String teachingLang, SolrInputDocument doc) {
+    private void indexHomeplaceDisplay(Provider provider, KoulutusLOS los, String teachingLang, SolrInputDocument doc) {
         String homePlaceDisplay = null; 
         if (provider.getHomePlace() != null) {
             homePlaceDisplay = SolrUtil.resolveTextWithFallback(teachingLang,
@@ -255,7 +255,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
      * Indexes language specific fields according to teaching languages
      * and tries to index fi, sv, and en regardles of teaching languages
      */
-    private void indexLanguageFields(StandaloneLOS los,
+    private void indexLanguageFields(KoulutusLOS los,
             SolrInputDocument doc) {
 
         boolean fiIndexed = false;
@@ -289,7 +289,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
      * Indexes language specific fields according to given teachingLang
      */
     private void indexLangSpecificFields(String teachingLang,
-            StandaloneLOS los, SolrInputDocument doc, boolean enIndexed) {
+            KoulutusLOS los, SolrInputDocument doc, boolean enIndexed) {
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 los.getTeachingLanguages(), los.getShortTitle().getTranslations());
@@ -506,7 +506,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
     }
 
     private void indexFacetFields(SolrInputDocument doc,
-            StandaloneLOS los, String teachLang) {
+            KoulutusLOS los, String teachLang) {
 
         for (Code teachingLangCode : los.getTeachingLanguages()) {
             String curTeachingLang = teachingLangCode.getValue();

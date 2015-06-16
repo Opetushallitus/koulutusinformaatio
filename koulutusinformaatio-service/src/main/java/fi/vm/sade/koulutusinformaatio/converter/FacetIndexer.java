@@ -28,7 +28,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 
@@ -243,7 +243,7 @@ public class FacetIndexer {
     /*
      * Creates the solr docs needed in facet search.
      */
-    public List<SolrInputDocument> createFacetDocs(StandaloneLOS los) {
+    public List<SolrInputDocument> createFacetDocs(KoulutusLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         for (Code curLang : los.getTeachingLanguages()) {
             SolrUtil.indexCodeAsFacetDoc(curLang, docs, true);

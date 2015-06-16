@@ -39,7 +39,7 @@ import fi.vm.sade.koulutusinformaatio.converter.ParentLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.PictureToThumbnail;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.SpecialLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.StandaloneLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.KoulutusLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.UpperSecondaryLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -54,7 +54,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
@@ -384,12 +384,12 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public StandaloneLOSDTO previewKoulutusLearningOpportunity(
             String oid, String lang, String uiLang)
             throws ResourceNotFoundException {
-        StandaloneLOS los = this.previewService.previewKoulutusLearningOpportunity(oid);
+        KoulutusLOS los = this.previewService.previewKoulutusLearningOpportunity(oid);
         StandaloneLOSDTO dto = null;
         if (lang != null && !lang.isEmpty()) {
-            dto = StandaloneLOSToDTO.convert(los, lang, uiLang);
+            dto = KoulutusLOSToDTO.convert(los, lang, uiLang);
         } else {
-            dto = StandaloneLOSToDTO.convert(los, uiLang, uiLang); 
+            dto = KoulutusLOSToDTO.convert(los, uiLang, uiLang); 
         }
         return dto;
     }
@@ -441,25 +441,25 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     @Override
     public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id) throws ResourceNotFoundException {
-        StandaloneLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
+        KoulutusLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
         String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
                 ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
-        return StandaloneLOSToDTO.convert(los, lang, lang);
+        return KoulutusLOSToDTO.convert(los, lang, lang);
     }
     
     @Override
     public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id, String uiLang) throws ResourceNotFoundException {
-        StandaloneLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
-        return StandaloneLOSToDTO.convert(los, uiLang, uiLang);
+        KoulutusLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
+        return KoulutusLOSToDTO.convert(los, uiLang, uiLang);
     }
 
     @Override
     public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id, String lang, String uiLang)
                     throws ResourceNotFoundException {
-        StandaloneLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
-        return StandaloneLOSToDTO.convert(los, lang, uiLang);
+        KoulutusLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
+        return KoulutusLOSToDTO.convert(los, lang, uiLang);
     }
 
     

@@ -28,7 +28,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -118,8 +118,8 @@ public class TarjontaServiceValmistavaKoulutusTest {
     
     @Test
     public void returnsStandAloneLOS() throws TarjontaParseException, KoodistoException {
-        when(creator.createKansanopistoLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenReturn(new StandaloneLOS());
-        List<StandaloneLOS> losses = service.findValmistavaKoulutusEducations();
+        when(creator.createKansanopistoLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenReturn(new KoulutusLOS());
+        List<KoulutusLOS> losses = service.findValmistavaKoulutusEducations();
         assertEquals(1, losses.size());
     }
 

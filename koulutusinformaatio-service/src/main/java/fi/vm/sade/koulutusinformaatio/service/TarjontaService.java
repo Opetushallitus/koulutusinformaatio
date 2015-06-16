@@ -26,7 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentL
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -90,13 +90,13 @@ public interface TarjontaService {
     
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 
-    List<StandaloneLOS> findValmistavaKoulutusEducations() throws KoodistoException;
+    List<KoulutusLOS> findValmistavaKoulutusEducations() throws KoodistoException;
 
     public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
     public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
-    public StandaloneLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException;
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException;
 
     public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo);
 
@@ -108,5 +108,5 @@ public interface TarjontaService {
 
     List<Code> getEdBaseEducationCodes() throws KoodistoException;
 
-    public List<StandaloneLOS> findAmmatillinenKoulutusEducations() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+    public List<KoulutusLOS> findAmmatillinenKoulutusEducations() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 }

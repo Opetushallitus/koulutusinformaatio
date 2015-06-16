@@ -62,7 +62,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -237,10 +237,10 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
     
     @Override
-    public StandaloneLOS getKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
+    public KoulutusLOS getKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         KoulutusLOSEntity entity = this.koulutusLOSDAO.get(oid);
         if (entity != null) {
-            return modelMapper.map(entity, StandaloneLOS.class);
+            return modelMapper.map(entity, KoulutusLOS.class);
         } else {
             throw new ResourceNotFoundException(String.format("Koulutus learning opportunity specification not found: %s", oid));
         }

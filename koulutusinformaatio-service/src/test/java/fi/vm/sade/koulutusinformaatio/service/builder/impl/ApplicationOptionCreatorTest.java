@@ -41,7 +41,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -173,7 +173,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     public void testCreateV1EducationApplicationOption() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
 
-        StandaloneLOS los = new StandaloneLOS();
+        KoulutusLOS los = new KoulutusLOS();
         los.setProvider(new Provider());
         Code educationCode = new Code();
         educationCode.setUri(educationCodeUri);
@@ -227,7 +227,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     @Test
     public void isVisibleWhenHakuRunning() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        StandaloneLOS los = getStandaloneLOS();
+        KoulutusLOS los = getKoulutusLOS();
         HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-1), getRelativeDateFromNow(2));
 
         ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
@@ -238,7 +238,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     @Test
     public void isVisibleWhenHakuInFuture() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        StandaloneLOS los = getStandaloneLOS();
+        KoulutusLOS los = getKoulutusLOS();
         HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(1), getRelativeDateFromNow(2));
 
         ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
@@ -249,7 +249,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     @Test
     public void isVisibleWhenHakuStoppedLessThan10monthsAgo() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        StandaloneLOS los = getStandaloneLOS();
+        KoulutusLOS los = getKoulutusLOS();
         HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-9));
 
         ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
@@ -260,7 +260,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     @Test
     public void isVisibleWhenHakuStoppedMoreThan10monthsAgoButHakuParameterAllows() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        StandaloneLOS los = getStandaloneLOS();
+        KoulutusLOS los = getKoulutusLOS();
         HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-11));
         haku.setOpintopolunNayttaminenLoppuu(getRelativeDateFromNow(1));
 
@@ -278,7 +278,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     @Test
     public void isVisibleWhenHakuActiveButHakuParamConflict() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        StandaloneLOS los = getStandaloneLOS();
+        KoulutusLOS los = getKoulutusLOS();
         HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-1), getRelativeDateFromNow(2));
         haku.setOpintopolunNayttaminenLoppuu(getRelativeDateFromNow(-1));
 
@@ -290,7 +290,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     @Test
     public void isNotVisibleWhenHakuStoppedMoreThan10monthsAgo() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        StandaloneLOS los = getStandaloneLOS();
+        KoulutusLOS los = getKoulutusLOS();
         HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-11));
 
         ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
@@ -301,7 +301,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     @Test
     public void isNotVisibleAfterHakuParam() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        StandaloneLOS los = getStandaloneLOS();
+        KoulutusLOS los = getKoulutusLOS();
         HakuV1RDTO haku = getHakuV1RDTO(getRelativeDateFromNow(-12), getRelativeDateFromNow(-2));
         haku.setOpintopolunNayttaminenLoppuu(getRelativeDateFromNow(-1));
 
@@ -317,8 +317,8 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         return calendar.getTime();
     }
 
-    private StandaloneLOS getStandaloneLOS() {
-        StandaloneLOS los = new StandaloneLOS();
+    private KoulutusLOS getKoulutusLOS() {
+        KoulutusLOS los = new KoulutusLOS();
         Code educationCode = new Code();
         educationCode.setUri(educationCodeUri);
         los.setEducationCode(educationCode);

@@ -64,7 +64,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
@@ -138,8 +138,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
             this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
         } 
-        else if (learningOpportunitySpecification instanceof StandaloneLOS) {
-            this.saveKoulutusLOS((StandaloneLOS)learningOpportunitySpecification);
+        else if (learningOpportunitySpecification instanceof KoulutusLOS) {
+            this.saveKoulutusLOS((KoulutusLOS)learningOpportunitySpecification);
         } 
     }
 
@@ -346,7 +346,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.adultUpperSecondaryLOSDAO.deleteById(los.getId());
         } else if (los instanceof CompetenceBasedQualificationParentLOS) {
             this.adultVocationalLOSDAO.deleteById(los.getId());
-        } else if (los instanceof StandaloneLOS) {
+        } else if (los instanceof KoulutusLOS) {
             this.koulutusLOSDAO.deleteById(los.getId());
         }
         
@@ -559,13 +559,13 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         }
     }
 
-    private void saveKoulutusLOS(StandaloneLOS los) {
+    private void saveKoulutusLOS(KoulutusLOS los) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void updateKoulutusLos(StandaloneLOS los) {
+    public void updateKoulutusLos(KoulutusLOS los) {
         if (los != null) {
 
             try {

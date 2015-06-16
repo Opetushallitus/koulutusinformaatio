@@ -45,7 +45,7 @@ import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nPicture;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -272,7 +272,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         return structureImage;
     }
 
-    private void updateAOLosReferences(StandaloneLOS los,
+    private void updateAOLosReferences(KoulutusLOS los,
             Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
@@ -287,7 +287,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 newRef.setId(los.getId());
                 newRef.setName(los.getName());
                 newRef.setPrerequisite(curAo.getPrerequisite());
-                newRef.setQualifications(((StandaloneLOS)los).getQualifications());
+                newRef.setQualifications(((KoulutusLOS)los).getQualifications());
                 newRef.setProvider(curAo.getProvider().getName());
                 aoLoss.add(newRef);
                 aoToEducationsMap.put(curAo.getId(), aoLoss);
@@ -628,13 +628,13 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<StandaloneLOS> findValmistavaKoulutusEducations() throws KoodistoException {
+    public List<KoulutusLOS> findValmistavaKoulutusEducations() throws KoodistoException {
 
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         
-        List<StandaloneLOS> losList = new ArrayList<StandaloneLOS>();
+        List<KoulutusLOS> losList = new ArrayList<KoulutusLOS>();
         
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
                 ToteutustyyppiEnum.AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA.name(),
@@ -664,7 +664,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }
                 try {
                     LOG.debug("Indexing Valmistava education: " + koulutusDTO.getOid());
-                    StandaloneLOS los = null;
+                    KoulutusLOS los = null;
                     los = createKoulutusLOS(koulutusDTO, true);
                     if(los != null){
                         losList.add(los);
@@ -792,16 +792,16 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
     
     @Override
-    public StandaloneLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
         ValmistavaKoulutusV1RDTO dto = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(oid).getResult();
         return createKoulutusLOS(dto, checkStatus);
     }
 
-    private StandaloneLOS createKoulutusLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    private KoulutusLOS createKoulutusLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
-        StandaloneLOS los = null;
+        KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
             los = creator.createValmaErLOS(koulutusDTO, checkStatus);
@@ -831,7 +831,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         return los;
     }
 
-    private StandaloneLOS createKoulutusLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException,
+    private KoulutusLOS createKoulutusLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException,
             KoodistoException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
@@ -896,13 +896,13 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<StandaloneLOS> findAmmatillinenKoulutusEducations() throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
+    public List<KoulutusLOS> findAmmatillinenKoulutusEducations() throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
 
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
 
-        List<StandaloneLOS> losList = new ArrayList<StandaloneLOS>();
+        List<KoulutusLOS> losList = new ArrayList<KoulutusLOS>();
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
                 ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO.name(), ToteutustyyppiEnum.AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA.name());
@@ -928,7 +928,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }
                 try {
                     LOG.debug("Indexing ammatillinen education: " + koulutusDTO.getOid());
-                    StandaloneLOS los = null;
+                    KoulutusLOS los = null;
                     los = createKoulutusLOS(koulutusDTO, true);
                     if (los != null) {
                         losList.add(los);

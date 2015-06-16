@@ -44,7 +44,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -161,7 +161,7 @@ public class IncrementalApplicationSystemIndexer {
                         LOG.warn("higher education los not found");
                     }
                     if (curLos != null) {
-                        this.reIndexAsDataForStandaloneLOS(curLos, asDto, as);
+                        this.reIndexAsDataForKoulutusLOS(curLos, asDto, as);
                         this.losIndexer.updateAdultUpsecLos(curLos);;
                     }
                 }
@@ -207,7 +207,7 @@ public class IncrementalApplicationSystemIndexer {
                         LOG.warn("higher education los not found");
                     }
                     if (curLos != null) {
-                        this.reIndexAsDataForStandaloneLOS(curLos, asDto, as);
+                        this.reIndexAsDataForKoulutusLOS(curLos, asDto, as);
                         this.losIndexer.updateHigherEdLos(curLos);
                     }
                 }
@@ -432,19 +432,19 @@ public class IncrementalApplicationSystemIndexer {
         }
     }
 
-    private void reIndexAsDataForStandaloneLOS(StandaloneLOS curLos,
+    private void reIndexAsDataForKoulutusLOS(KoulutusLOS curLos,
             HakuV1RDTO asDto, ApplicationSystem as) throws KoodistoException {
         
      for (ApplicationOption curAo : curLos.getApplicationOptions()) {
          if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
              curAo.setApplicationSystem(as);
-             this.reIndexHakuaikaForStandaloneLOS(curAo, as, asDto);
+             this.reIndexHakuaikaForKoulutusLOS(curAo, as, asDto);
          }
      }
         
     }
     
-    private void reIndexHakuaikaForStandaloneLOS(ApplicationOption ao, ApplicationSystem as, HakuV1RDTO haku) throws KoodistoException {
+    private void reIndexHakuaikaForKoulutusLOS(ApplicationOption ao, ApplicationSystem as, HakuV1RDTO haku) throws KoodistoException {
         HakuaikaV1RDTO aoHakuaika = null;
     
         if (haku.getHakuaikas() != null) {

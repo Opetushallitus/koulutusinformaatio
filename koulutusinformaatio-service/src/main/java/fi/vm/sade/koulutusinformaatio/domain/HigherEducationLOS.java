@@ -22,7 +22,7 @@ import java.util.List;
  * 
  * @author Markus
  */
-public class HigherEducationLOS extends StandaloneLOS {  
+public class HigherEducationLOS extends KoulutusLOS {  
     
     private I18nText infoAboutTeachingLangs;
     private I18nText majorSelection;

@@ -42,7 +42,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.EmphasizedSubject;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -350,7 +350,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
-    public ApplicationOption createV1EducationApplicationOption(StandaloneLOS los,
+    public ApplicationOption createV1EducationApplicationOption(KoulutusLOS los,
                                                                 HakukohdeV1RDTO hakukohde,
                                                                 HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
 

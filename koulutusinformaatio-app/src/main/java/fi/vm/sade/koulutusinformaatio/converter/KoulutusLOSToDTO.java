@@ -5,17 +5,17 @@ import com.google.common.collect.SetMultimap;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 
-public class StandaloneLOSToDTO {
+public class KoulutusLOSToDTO {
 
-    public StandaloneLOSToDTO() {
+    public KoulutusLOSToDTO() {
 
     }
 
-    public static KoulutusLOSDTO convert(final StandaloneLOS los, final String lang, final String uiLang) {
+    public static KoulutusLOSDTO convert(final KoulutusLOS los, final String lang, final String uiLang) {
         KoulutusLOSDTO dto = new KoulutusLOSDTO();
 
         dto.setId(los.getId());

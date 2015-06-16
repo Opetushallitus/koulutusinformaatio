@@ -16,7 +16,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -71,7 +71,7 @@ public class LOSObjectCreatorTest extends TestCase {
 
     @Test
     public void createsKansanopistoLOSWithoutCheckingStatus() throws Exception {
-        StandaloneLOS los = creator.createKansanopistoLOS(givenValmistavaKoulutus(), false);
+        KoulutusLOS los = creator.createKansanopistoLOS(givenValmistavaKoulutus(), false);
         assertNotNull(los);
     }
 
@@ -88,7 +88,7 @@ public class LOSObjectCreatorTest extends TestCase {
         oppiaineet.add(givenOppiaine("kieli_sv", "oppiaine2"));
         oppiaineet.add(givenOppiaine("kieli_sv", "oppiaine3"));
         dto.setOppiaineet(oppiaineet);
-        StandaloneLOS los = creator.createHigherEducationLOS(dto, false);
+        KoulutusLOS los = creator.createHigherEducationLOS(dto, false);
         assertEquals(1, los.getSubjects().get("fi").size());
         assertEquals(2, los.getSubjects().get("sv").size());
         assertNotNull(los);
@@ -123,9 +123,9 @@ public class LOSObjectCreatorTest extends TestCase {
         when(tarjontaRawService.getV1EducationHakukohode(any(String.class))).thenReturn(givenV1Hakukohde());
         when(tarjontaRawService.getV1EducationHakuByOid(any(String.class))).thenReturn(givenV1Haku());
         when(providerService.getByOID(any(String.class))).thenReturn(new Provider());
-        when(aoCreator.createV1EducationApplicationOption(any(StandaloneLOS.class), any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class)))
+        when(aoCreator.createV1EducationApplicationOption(any(KoulutusLOS.class), any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class)))
                 .thenReturn(givenApplicationOption());
-        StandaloneLOS los = creator.createKansanopistoLOS(koulutus, false);
+        KoulutusLOS los = creator.createKansanopistoLOS(koulutus, false);
         assertEquals(los.getName(), los.getApplicationOptions().get(0).getName());
         assertEquals(los.getShortTitle(), los.getApplicationOptions().get(0).getName());
     }

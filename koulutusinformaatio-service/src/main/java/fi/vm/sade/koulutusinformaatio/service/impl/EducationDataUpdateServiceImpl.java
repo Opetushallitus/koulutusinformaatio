@@ -62,7 +62,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -132,8 +132,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
             saveAdultUpperSecondaryLOS((AdultUpperSecondaryLOS)learningOpportunitySpecification);
         } 
-        else if (learningOpportunitySpecification instanceof StandaloneLOS) {
-            saveKoulutusLOS((StandaloneLOS)learningOpportunitySpecification);
+        else if (learningOpportunitySpecification instanceof KoulutusLOS) {
+            saveKoulutusLOS((KoulutusLOS)learningOpportunitySpecification);
         } 
         else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
             saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS)learningOpportunitySpecification);
@@ -179,7 +179,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     }
 
     private void saveKoulutusLOS(
-            StandaloneLOS learningOpportunitySpecification) {
+            KoulutusLOS learningOpportunitySpecification) {
         
         if (learningOpportunitySpecification != null) {
             KoulutusLOSEntity entity =

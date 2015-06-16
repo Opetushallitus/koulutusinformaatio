@@ -23,7 +23,7 @@ import java.util.List;
  * @author Markus
  *
  */
-public class AdultVocationalLOS extends StandaloneLOS {
+public class AdultVocationalLOS extends KoulutusLOS {
     
     private ParentLOSRef parent;
     private boolean valmistavaKoulutus;
