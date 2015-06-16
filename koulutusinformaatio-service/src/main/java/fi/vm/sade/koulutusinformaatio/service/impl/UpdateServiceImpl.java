@@ -143,6 +143,15 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("V0 indexing finished");
 
+            List<StandaloneLOS> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusEducations();
+            LOG.debug("Found vocational educations: " + vocationalEducations.size());
+            for (StandaloneLOS curLOS : vocationalEducations) {
+                LOG.debug("Saving vocational education: " + curLOS.getId());
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            LOG.info("Vocational educations saved.");
+
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 

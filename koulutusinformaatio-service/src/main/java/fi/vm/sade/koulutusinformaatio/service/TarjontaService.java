@@ -108,4 +108,5 @@ public interface TarjontaService {
 
     List<Code> getEdBaseEducationCodes() throws KoodistoException;
 
+    public List<StandaloneLOS> findAmmatillinenKoulutusEducations() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 }

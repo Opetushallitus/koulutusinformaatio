@@ -125,6 +125,10 @@ public class KoulutusLOSEntity {
     @Embedded
     private List<I18nTextEntity> diplomas = new ArrayList<I18nTextEntity>(); 
 
+    @Embedded
+    private I18nTextEntity workingLifePlacement;
+    private String linkToCurriculum;
+
     public String getId() {
         return id;
     }
@@ -437,6 +441,22 @@ public class KoulutusLOSEntity {
     }
     public void setStartDates(List<Date> startDates) {
         this.startDates = startDates;
+    }
+
+    public I18nTextEntity getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(I18nTextEntity workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public String getLinkToCurriculum() {
+        return linkToCurriculum;
+    }
+
+    public void setLinkToCurriculum(String linkToCurriculum) {
+        this.linkToCurriculum = linkToCurriculum;
     }
 
 }

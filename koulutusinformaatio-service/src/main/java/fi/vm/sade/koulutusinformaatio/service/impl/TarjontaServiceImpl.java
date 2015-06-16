@@ -59,7 +59,6 @@ import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
@@ -73,9 +72,9 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatillinenPerustutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
@@ -831,6 +830,14 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         return los;
     }
+
+    private StandaloneLOS createKoulutusLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException,
+            KoodistoException {
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
+        }
+        return creator.createAmmatillinenLOS(koulutusDTO, checkStatus);
+    }
     
     @Override
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException {
@@ -886,6 +893,62 @@ public class TarjontaServiceImpl implements TarjontaService {
             return this.creator.createApplicationSystemForCalendar(curHaku, isValidCalendarHaku(curHaku));
         }
         return null;
+    }
+
+    @Override
+    public List<StandaloneLOS> findAmmatillinenKoulutusEducations() throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
+
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
+        }
+
+        List<StandaloneLOS> losList = new ArrayList<StandaloneLOS>();
+
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
+                ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO.name(), ToteutustyyppiEnum.AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA.name());
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+
+        Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
+
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset().subList(0, 3)) {
+            LOG.debug("Cur ammatillinen tarjoaja result: " + curRes.getOid());
+
+            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                LOG.debug("cur ammatillinen koulutus result: " + curKoulutus.getOid());
+                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    LOG.debug("koulutus not published, discarding");
+                    continue;
+                }
+
+                ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO> koulutusRes = this.tarjontaRawService
+                        .getAmmatillinenPerustutkintoLearningOpportunity(curKoulutus.getOid());
+                KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO = koulutusRes.getResult();
+                if (koulutusDTO == null) {
+                    continue;
+                }
+                try {
+                    LOG.debug("Indexing ammatillinen education: " + koulutusDTO.getOid());
+                    StandaloneLOS los = null;
+                    los = createKoulutusLOS(koulutusDTO, true);
+                    if (los != null) {
+                        losList.add(los);
+                        updateAOLosReferences(los, aoToEducationsMap);
+                    }
+
+                } catch (TarjontaParseException ex) {
+                    LOG.warn("Problem with ammatillinen education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
+                    continue;
+                } catch (KoodistoException ex) {
+                    LOG.error("Problem with ammatillinen education: " + koulutusDTO.getOid(), ex);
+                    continue;
+                } catch (Exception exc) {
+                    LOG.error("Problem indexing ammatillinen education los: " + koulutusDTO.getOid(), exc);
+                    throw new KoodistoException(exc);
+                }
+            }
+        }
+
+        return losList;
     }
     
 }

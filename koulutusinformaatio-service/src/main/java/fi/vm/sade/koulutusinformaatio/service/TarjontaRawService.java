@@ -34,6 +34,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatillinenPerustutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
@@ -115,5 +116,7 @@ public interface TarjontaRawService {
     public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
 
     ResultV1RDTO<KoulutusGenericV1RDTO> getV1KoulutusLearningOpportunity(String oid);
+
+    public ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO> getAmmatillinenPerustutkintoLearningOpportunity(String oid);
 
 }

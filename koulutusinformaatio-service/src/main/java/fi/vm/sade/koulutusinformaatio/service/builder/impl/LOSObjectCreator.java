@@ -16,7 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +78,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatillinenPerustutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
@@ -698,9 +705,9 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
-        addLOSFields(koulutus, los);
-        addStandaloneLOSFields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
-        addKoulutus2AsteFields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los);
+        addKoulutusGenericV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
+        addKoulutus2AsteV1Fields(koulutus, los);
 
         if (koulutus.getLukiodiplomit() != null) {
             los.setDiplomas(getI18nTextMultiple(koulutus.getLukiodiplomit()));
@@ -715,14 +722,14 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_ADULT_BASE);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
-        addLOSFields(koulutus, los);
-        addStandaloneLOSFields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
-        addKoulutus2AsteFields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los);
+        addKoulutusGenericV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
+        addKoulutus2AsteV1Fields(koulutus, los);
 
         return los;
     }
 
-    private void addKoulutus2AsteFields(Koulutus2AsteV1RDTO koulutus, AdultUpperSecondaryLOS los) throws KoodistoException {
+    private void addKoulutus2AsteV1Fields(Koulutus2AsteV1RDTO koulutus, StandaloneLOS los) throws KoodistoException {
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT) != null
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT).getTekstis().containsKey("UNDEFINED")) {
             los.setSubjectsAndCourses(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT)));
@@ -1099,24 +1106,33 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private StandaloneLOS createValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException,
             TarjontaParseException {
-        StandaloneLOS los = createGenericLOS(koulutusDTO, checkStatus, edType);
-        addValmistavaKoulutusFields(koulutusDTO, los);
+        StandaloneLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, edType);
+        addValmistavaKoulutusV1Fields(koulutusDTO, los);
         return los;
     }
 
-    private StandaloneLOS createGenericLOS(KoulutusGenericV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException, TarjontaParseException {
+    public StandaloneLOS createAmmatillinenLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
+            TarjontaParseException {
+        StandaloneLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_AMMATILLINEN);
+        addKoulutus2AsteV1Fields(koulutusDTO, los);
+        addKoulutusAmmatillinenPerustutkintoV1Fields(koulutusDTO, los);
+        return los;
+
+    }
+
+    private StandaloneLOS createKoulutusGenericV1LOS(KoulutusGenericV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException, TarjontaParseException {
         StandaloneLOS los = new StandaloneLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(edType);
-        addLOSFields(koulutusDTO, los);
-        addStandaloneLOSFields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
+        addKoulutusV1Fields(koulutusDTO, los);
+        addKoulutusGenericV1Fields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
         if (!checkStatus) {
             los.setStatus(koulutusDTO.getTila().toString());
         }
         return los;
     }
 
-    private void addValmistavaKoulutusFields(ValmistavaKoulutusV1RDTO koulutusDTO, StandaloneLOS los) {
+    private void addValmistavaKoulutusV1Fields(ValmistavaKoulutusV1RDTO koulutusDTO, StandaloneLOS los) {
         if (koulutusDTO.getKoulutusohjelmanNimiKannassa() != null) {
             los.setName(new I18nText(koulutusDTO.getKoulutusohjelmanNimiKannassa()));
             los.setShortTitle(new I18nText(koulutusDTO.getKoulutusohjelmanNimiKannassa()));
@@ -1126,7 +1142,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
     }
 
-    private <S extends KoulutusV1RDTO, T extends LOS> void addLOSFields(S koulutus, T los) throws KoodistoException, TarjontaParseException {
+    private <S extends KoulutusV1RDTO, T extends LOS> void addKoulutusV1Fields(S koulutus, T los) throws KoodistoException, TarjontaParseException {
         los.setId(koulutus.getOid());
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
         los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
@@ -1153,7 +1169,13 @@ public class LOSObjectCreator extends ObjectCreator {
         }
     }
 
-    private <S extends KoulutusGenericV1RDTO, T extends StandaloneLOS> void addStandaloneLOSFields(S koulutus, T los, boolean checkStatus, String aoType)
+    private <S extends KoulutusAmmatillinenPerustutkintoV1RDTO, T extends StandaloneLOS> void addKoulutusAmmatillinenPerustutkintoV1Fields(S koulutus, T los)
+            throws KoodistoException, TarjontaParseException {
+        los.setGoals(getI18nText(koulutus.getKoulutuksenTavoitteet()));
+        los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes()));
+    }
+
+    private <S extends KoulutusGenericV1RDTO, T extends StandaloneLOS> void addKoulutusGenericV1Fields(S koulutus, T los, boolean checkStatus, String aoType)
             throws KoodistoException, TarjontaParseException {
         los.setKomoOid(koulutus.getKomoOid());
 
@@ -1167,11 +1189,16 @@ public class LOSObjectCreator extends ObjectCreator {
             rawTranslCodes.addAll(koodistoService.searchMultiple(this.getTranslationUris(koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO))));
         }
 
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN).getTekstis().containsKey(UNDEFINED)) {
+            los.setWorkingLifePlacement(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)));
+        }
+
         if (koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE) != null
                 && !koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE).getTekstis().containsKey(UNDEFINED)) {
             los.setStructure(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
         }
-
+        
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.KANSAINVALISTYMINEN) != null
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.KANSAINVALISTYMINEN).getTekstis().containsKey(UNDEFINED)) {
             los.setInternationalization(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KANSAINVALISTYMINEN)));
@@ -1279,6 +1306,7 @@ public class LOSObjectCreator extends ObjectCreator {
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
+        los.setLinkToCurriculum(koulutus.getLinkkiOpetussuunnitelmaan());
     }
 
     public AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
@@ -1287,7 +1315,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         AdultVocationalLOS los = new AdultVocationalLOS();
 
-        addLOSFields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los);
 
         los.setStatus(koulutus.getTila().toString());
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class StandaloneLOS extends LOS {
     
@@ -34,6 +33,8 @@ public class StandaloneLOS extends LOS {
     private I18nText infoAboutCharge;
     private I18nText careerOpportunities;
     private I18nText targetGroup;
+    private I18nText workingLifePlacement;
+    private String linkToCurriculum;
     
     
     private Code educationCode;
@@ -71,6 +72,11 @@ public class StandaloneLOS extends LOS {
     private Code koulutuslaji;
 
     private Map<String, List<String>> subjects;
+
+    // AdultUpperSecondaryLOSin kentät
+    private I18nText subjectsAndCourses;
+    private List<LanguageSelection> languageSelection;
+    private List<I18nText> diplomas = new ArrayList<I18nText>();
 
     public String getId() {
         return id;
@@ -453,6 +459,46 @@ public class StandaloneLOS extends LOS {
 
     public void setSubjects(Map<String, List<String>> subjects) {
         this.subjects = subjects;
+    }
+
+    public I18nText getSubjectsAndCourses() {
+        return subjectsAndCourses;
+    }
+
+    public void setSubjectsAndCourses(I18nText subjectsAndCourses) {
+        this.subjectsAndCourses = subjectsAndCourses;
+    }
+
+    public void setLanguageSelection(List<LanguageSelection> languageSelection) {
+        this.languageSelection = languageSelection;
+    }
+
+    public List<LanguageSelection> getLanguageSelection() {
+        return languageSelection;
+    }
+
+    public List<I18nText> getDiplomas() {
+        return diplomas;
+    }
+
+    public void setDiplomas(List<I18nText> diplomas) {
+        this.diplomas = diplomas;
+    }
+
+    public String getLinkToCurriculum() {
+        return linkToCurriculum;
+    }
+
+    public void setLinkToCurriculum(String linkToCurriculum) {
+        this.linkToCurriculum = linkToCurriculum;
+    }
+
+    public I18nText getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(I18nText i18nText) {
+        this.workingLifePlacement = i18nText;
     }
 
 }
