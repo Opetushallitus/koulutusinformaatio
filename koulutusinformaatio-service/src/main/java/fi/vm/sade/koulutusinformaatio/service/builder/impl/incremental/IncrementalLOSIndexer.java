@@ -57,7 +57,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
 
@@ -153,13 +152,21 @@ public class IncrementalLOSIndexer {
     //Indexes changed loi data
     public void indexLoiData(String komotoOid) throws Exception {
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
-        KoulutusGenericV1RDTO koulutusDTO = this.tarjontaRawService.getV1KoulutusLearningOpportunity(komotoOid).getResult();
-        if(koulutusDTO == null){
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> dto = this.tarjontaRawService.searchEducation(komotoOid);
+        if (dto == null || 
+                dto.getResult() == null || 
+                dto.getResult().getTulokset() == null || 
+                dto.getResult().getTulokset().isEmpty() || 
+                dto.getResult().getTulokset().get(0) == null || 
+                dto.getResult().getTulokset().get(0).getTulokset() == null || 
+                dto.getResult().getTulokset().get(0).getTulokset().isEmpty() || 
+                dto.getResult().getTulokset().get(0).getTulokset().get(0) == null) {
             return;
         }
+        KoulutusHakutulosV1RDTO koulutusDTO = dto.getResult().getTulokset().get(0).getTulokset().get(0);
         LOG.debug(String.format("Loi: %s, status: %s", komotoOid, koulutusDTO.getTila()));
         
-        switch (koulutusDTO.getToteutustyyppi()) {
+        switch (koulutusDTO.getToteutustyyppiEnum()) {
         
         case KORKEAKOULUTUS:
             LOG.debug(String.format("It is higer education komoto: %s", komotoOid));

@@ -119,4 +119,6 @@ public interface TarjontaRawService {
 
     public ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO> getAmmatillinenPerustutkintoLearningOpportunity(String oid);
 
+    ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> searchEducation(String oid);
+
 }

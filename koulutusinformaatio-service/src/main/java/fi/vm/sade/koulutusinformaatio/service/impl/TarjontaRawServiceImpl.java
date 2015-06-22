@@ -226,6 +226,17 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> searchEducation(String oid) {
+        return this.v1Resource
+                .path("search")
+                .queryParam("koulutusOid", oid)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                });
+    }
+
+    
+    @Override
     public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(
             String oid) {
         return v1Resource
@@ -416,7 +427,10 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO> getAmmatillinenPerustutkintoLearningOpportunity(String oid) {
-        return v1Resource.path(oid).accept(JSON_UTF8).get(new GenericType<ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO>>() {
+        return v1Resource
+                .path(oid)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO>>() {
         });
     }
 
