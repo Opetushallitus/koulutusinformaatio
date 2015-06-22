@@ -69,6 +69,9 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private List<String> diplomas = new ArrayList<String>();
     private List<ArticleResultDTO> edCodeSuggestions;
     private List<ArticleResultDTO> edTypeSuggestions;
+    private String workingLifePlacement;
+    private String linkToCurriculum;
+
 
     // Status of the lo. For preview
     private String status;
@@ -448,5 +451,21 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setStartDates(List<Date> startDates) {
         this.startDates = startDates;
+    }
+
+    public String getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(String workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public String getLinkToCurriculum() {
+        return linkToCurriculum;
+    }
+
+    public void setLinkToCurriculum(String linkToCurriculum) {
+        this.linkToCurriculum = linkToCurriculum;
     }
 }

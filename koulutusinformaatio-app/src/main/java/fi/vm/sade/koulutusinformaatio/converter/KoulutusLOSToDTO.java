@@ -34,9 +34,9 @@ public class KoulutusLOSToDTO {
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), descriptionLang));
 
         dto.setTargetGroup(ConverterUtil.getTextByLanguage(los.getTargetGroup(), descriptionLang));
-        // dto.setSubjectsAndCourses(ConverterUtil.getTextByLanguage(los.getSubjectsAndCourses(), descriptionLang));
-        // dto.setDiplomas(ConverterUtil.getTextsByLanguage(los.getDiplomas(), lang));
-        // dto.setLanguageSelection(LanguageSelectionToDTO.convertAll(los.getLanguageSelection(), lang));
+        dto.setSubjectsAndCourses(ConverterUtil.getTextByLanguage(los.getSubjectsAndCourses(), descriptionLang));
+        dto.setDiplomas(ConverterUtil.getTextsByLanguage(los.getDiplomas(), lang));
+        dto.setLanguageSelection(LanguageSelectionToDTO.convertAll(los.getLanguageSelection(), lang));
 
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi", uiLang));
         dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang));
@@ -44,14 +44,11 @@ public class KoulutusLOSToDTO {
 
         dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));
 
-        // DO MORE
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getFormOfTeaching(), uiLang));
-        // dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), descriptionLang));
         dto.setTeachingTimes(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingTimes(), uiLang));
         dto.setTeachingPlaces(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingPlaces(), uiLang));
         dto.setTeachingLanguages(CodeToName.convertAll(los.getTeachingLanguages(), uiLang));
-        // TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
         if (los.getStartDate() != null) {
             dto.setStartDate(los.getStartDate());
         } else {
@@ -62,11 +59,13 @@ public class KoulutusLOSToDTO {
         dto.setInternationalization(ConverterUtil.getTextByLanguage(los.getInternationalization(), descriptionLang));
         dto.setCooperation(ConverterUtil.getTextByLanguage(los.getCooperation(), descriptionLang));
         dto.setContent(ConverterUtil.getTextByLanguage(los.getContent(), descriptionLang));
+        dto.setWorkingLifePlacement(ConverterUtil.getTextByLanguageUseFallbackLang(los.getWorkingLifePlacement(), descriptionLang));
         dto.setContactPersons(ContactPersonToDTO.convertAll(los.getContactPersons()));
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
         dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), uiLang));
+        dto.setLinkToCurriculum(los.getLinkToCurriculum());
 
         // as based approach for UI
 
