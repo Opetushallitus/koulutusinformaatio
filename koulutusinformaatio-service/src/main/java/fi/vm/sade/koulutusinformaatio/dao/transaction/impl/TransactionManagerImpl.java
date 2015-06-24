@@ -46,6 +46,7 @@ import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
@@ -84,6 +85,8 @@ public class TransactionManagerImpl implements TransactionManager {
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private DataStatusDAO dataStatusTransactionDAO;
+    private KoulutusLOSDAO koulutusLOSTransactionDAO;
+    private TutkintoLOSDAO tutkintoLOSTransactionDAO;
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
@@ -97,7 +100,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
-    private KoulutusLOSDAO koulutusLOSTransactionDAO;
+    private TutkintoLOSDAO tutkintoLOSDAO;
     
     private KoodistoService koodistoService;
     private ProviderService providerService;
@@ -138,6 +141,7 @@ public class TransactionManagerImpl implements TransactionManager {
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO,
             KoulutusLOSDAO koulutusLOSTransactionDAO,
+            TutkintoLOSDAO tutkintoLOSTransactionDAO,
             SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             DataStatusDAO dataStatusTransactionDAO,
             ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -151,6 +155,7 @@ public class TransactionManagerImpl implements TransactionManager {
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
+            TutkintoLOSDAO tutkintoLOSDAO,
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             KoodistoService koodistoService,
             ProviderService providerService,
@@ -176,6 +181,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
         this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
         this.koulutusLOSTransactionDAO = koulutusLOSTransactionDAO;
+        this.tutkintoLOSTransactionDAO = tutkintoLOSTransactionDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -188,6 +194,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
+        this.tutkintoLOSDAO = tutkintoLOSDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.koodistoService = koodistoService;
         this.providerService = providerService;
@@ -243,6 +250,7 @@ public class TransactionManagerImpl implements TransactionManager {
             this.parameterService.clearCache();
             
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new KICommitException(ex);
         }
     }
@@ -279,6 +287,7 @@ public class TransactionManagerImpl implements TransactionManager {
         specialLOSTransactionDAO.getCollection().drop();
         dataStatusTransactionDAO.getCollection().drop();
         koulutusLOSTransactionDAO.getCollection().drop();
+        tutkintoLOSTransactionDAO.getCollection().drop();
     }
 
     private void dropDbCollections() {
@@ -294,6 +303,7 @@ public class TransactionManagerImpl implements TransactionManager {
         adultVocationalLOSDAO.getCollection().drop();
         specialLearningOpportunitySpecificationDAO.getCollection().drop();
         koulutusLOSDAO.getCollection().drop();
+        tutkintoLOSDAO.getCollection().drop();
         
     }
 

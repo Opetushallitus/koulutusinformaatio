@@ -16,18 +16,12 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
@@ -52,7 +46,6 @@ public class IncrementalKoulutusLOSIndexer {
     private TarjontaRawService tarjontaRawService;
     private TarjontaService tarjontaService;
     private EducationIncrementalDataUpdateService dataUpdateService;
-    private EducationIncrementalDataQueryService dataQueryService;
     private IndexerService indexerService;
 
     private final HttpSolrServer loHttpSolrServer;
@@ -73,7 +66,6 @@ public class IncrementalKoulutusLOSIndexer {
         this.tarjontaRawService = tarjontaRawService;
         this.tarjontaService = tarjontaService;
         this.dataUpdateService = dataUpdateService;
-        this.dataQueryService = dataQueryService;
         this.indexerService = indexerService;
         this.loHttpSolrServer = loHttpSolrServer;
         this.lopHttpSolrServer = lopHttpSolrServer;

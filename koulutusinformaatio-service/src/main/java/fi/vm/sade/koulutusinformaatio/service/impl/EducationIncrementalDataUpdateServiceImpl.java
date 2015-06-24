@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.modelmapper.ModelMapper;
@@ -38,6 +39,7 @@ import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
@@ -52,6 +54,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEnti
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
@@ -60,11 +63,12 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
@@ -95,6 +99,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
+    private TutkintoLOSDAO tutkintoLOSDAO;
 
     @Autowired
     public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -107,7 +112,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             HigherEducationLOSDAO higherEducationLOSDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
-            KoulutusLOSDAO koulutusLOSDAO) {
+            KoulutusLOSDAO koulutusLOSDAO,
+            TutkintoLOSDAO tutkintoLOSDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -121,6 +127,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
+        this.tutkintoLOSDAO = tutkintoLOSDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
@@ -141,6 +148,9 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         else if (learningOpportunitySpecification instanceof KoulutusLOS) {
             this.saveKoulutusLOS((KoulutusLOS)learningOpportunitySpecification);
         } 
+        else if (learningOpportunitySpecification instanceof TutkintoLOS) {
+            this.saveTutkintoLOS((KoulutusLOS) learningOpportunitySpecification);
+        }
     }
 
     @Override
@@ -348,6 +358,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.adultVocationalLOSDAO.deleteById(los.getId());
         } else if (los instanceof KoulutusLOS) {
             this.koulutusLOSDAO.deleteById(los.getId());
+        } else if (los instanceof TutkintoLOS) {
+            this.tutkintoLOSDAO.deleteById(los.getId());
         }
         
     }
@@ -561,7 +573,12 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     private void saveKoulutusLOS(KoulutusLOS los) {
         // TODO Auto-generated method stub
-        
+        throw new NotImplementedException();
+    }
+
+    private void saveTutkintoLOS(KoulutusLOS learningOpportunitySpecification) {
+        // TODO Auto-generated method stub
+        throw new NotImplementedException();
     }
 
     @Override
@@ -594,6 +611,35 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             }
             this.koulutusLOSDAO.deleteById(plos.getId());
             this.koulutusLOSDAO.save(plos);
+        }
+    }
+
+    @Override
+    public void updateTutkintoLos(TutkintoLOS los) {
+        if (los != null) {
+
+            try {
+                Provider existingProv = this.getProvider(los.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
+                    for (String curAsId : existingProv.getApplicationSystemIds()) {
+                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
+                            los.getProvider().getApplicationSystemIds().add(curAsId);
+                        }
+                    }
+                }
+            } catch (ResourceNotFoundException ex) {
+                LOG.warn("Problem updating provider's application system references");
+            }
+
+            TutkintoLOSEntity plos = modelMapper.map(los, TutkintoLOSEntity.class);
+
+            this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
+            save(plos.getProvider());
+
+            // TODO save childeducaions?
+
+            this.tutkintoLOSDAO.deleteById(plos.getId());
+            this.tutkintoLOSDAO.save(plos);
         }
     }
 }

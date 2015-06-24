@@ -392,6 +392,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         for (String curType : educationType) {
             call = call.queryParam("toteutustyyppi", curType);
         }
+        call.queryParam("tila", "JULKAISTU");
         return call
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {

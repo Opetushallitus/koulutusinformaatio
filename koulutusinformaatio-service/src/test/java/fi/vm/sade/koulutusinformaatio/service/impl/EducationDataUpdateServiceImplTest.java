@@ -20,12 +20,13 @@ import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
@@ -63,6 +64,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     private AdultUpperSecondaryLOSDAO adultUpsecDAO;
     private AdultVocationalLOSDAO adultVocDAO;
     private KoulutusLOSDAO koulutusDAO;
+    private TutkintoLOSDAO tutkintoDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
@@ -83,10 +85,11 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         higherEdDAO = mockHigherEdDAO();
         adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
         koulutusDAO = mock(KoulutusLOSDAO.class);
+        tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataUpdateServiceImpl(modelMapper, parentLearningOpportunitySpecificationDAO, applicationOptionDAO,
                 learningOpportunityProviderDAO, childLearningOpportunityDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, koulutusDAO, adultVocDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, koulutusDAO, tutkintoDAO, adultVocDAO);
     }
 
     @Test

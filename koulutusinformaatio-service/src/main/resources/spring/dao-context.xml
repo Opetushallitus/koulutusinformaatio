@@ -160,6 +160,15 @@
         </constructor-arg>
     </bean>
     
+    <bean id="tutkintoLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
+    </bean>
+    
     <bean id="adultVocationalLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO">
         <constructor-arg>
             <ref bean="primaryDatastore"/>

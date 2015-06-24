@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class KoulutusLOS extends LOS {
-    
-    //Varmistetut
+
+    // Varmistetut
     private String id;
     private I18nText content;
     private I18nText goals;
@@ -17,7 +17,7 @@ public class KoulutusLOS extends LOS {
     private I18nText accessToFurtherStudies;
     private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
     private I18nText educationDomain;
-    //private I18nText name;
+    // private I18nText name;
     private I18nText koulutuskoodi;
     private String educationDegree;
     private I18nText educationDegreeLang;
@@ -35,8 +35,7 @@ public class KoulutusLOS extends LOS {
     private I18nText targetGroup;
     private I18nText workingLifePlacement;
     private String linkToCurriculum;
-    
-    
+
     private Code educationCode;
     private List<Code> teachingLanguages;
 
@@ -55,18 +54,17 @@ public class KoulutusLOS extends LOS {
     private I18nText startSeason;
     private int startYear;
 
-    //Status of the lo. For preview
+    // Status of the lo. For preview
     private String status;
     private List<Code> availableTranslationLanguages;
-    
 
     private List<Code> facetPrerequisites = new ArrayList<Code>();
     private String educationType;
-    
+
     private List<Code> fotFacet = new ArrayList<Code>();
-    
+
     private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
-    
+
     private List<Code> formOfStudyFacet = new ArrayList<Code>();
 
     private Code koulutuslaji;
@@ -77,6 +75,10 @@ public class KoulutusLOS extends LOS {
     private I18nText subjectsAndCourses;
     private List<LanguageSelection> languageSelection;
     private List<I18nText> diplomas = new ArrayList<I18nText>();
+    private TutkintoLOS tutkinto;
+
+    // AmmatillinenKoulutusLOSin kenttä
+    private List<KoulutusLOS> siblings = new ArrayList<KoulutusLOS>();
 
     public String getId() {
         return id;
@@ -85,15 +87,6 @@ public class KoulutusLOS extends LOS {
     public void setId(String id) {
         this.id = id;
     }
-
-    /*
-    public void setName(I18nText name) {
-        this.name = name;
-    }
-
-    public I18nText getName() {
-        return this.name;
-    }*/
 
     public void setEducationDegree(String degree) {
         this.educationDegree = degree;
@@ -176,7 +169,7 @@ public class KoulutusLOS extends LOS {
     }
 
     public void setCooperation(I18nText i18nTextEnriched) {
-        this.cooperation  = i18nTextEnriched;
+        this.cooperation = i18nTextEnriched;
     }
 
     public I18nText getCooperation() {
@@ -201,7 +194,7 @@ public class KoulutusLOS extends LOS {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }   
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -261,7 +254,7 @@ public class KoulutusLOS extends LOS {
 
     public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
-    }    
+    }
 
     public String getKomoOid() {
         return komoOid;
@@ -280,7 +273,7 @@ public class KoulutusLOS extends LOS {
     }
 
     public void setFormOfTeaching(List<I18nText> opetusmuodos) {
-        this.formOfTeaching = opetusmuodos; 
+        this.formOfTeaching = opetusmuodos;
     }
 
     public List<I18nText> getFormOfTeaching() {
@@ -302,17 +295,21 @@ public class KoulutusLOS extends LOS {
     public void setEducationDegreeLang(I18nText educationDegreeLang) {
         this.educationDegreeLang = educationDegreeLang;
     }
+
     public void setTeachingTimes(List<I18nText> teachingTimes) {
         this.teachingTimes = teachingTimes;
 
     }
+
     public List<I18nText> getTeachingTimes() {
         return teachingTimes;
     }
+
     public void setTeachingPlaces(List<I18nText> teachingPlaces) {
         this.teachingPlaces = teachingPlaces;
 
     }
+
     public List<I18nText> getTeachingPlaces() {
         return teachingPlaces;
     }
@@ -348,7 +345,7 @@ public class KoulutusLOS extends LOS {
     public void setAvailableTranslationLanguages(List<Code> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
-    
+
     public List<Code> getFacetPrerequisites() {
         return facetPrerequisites;
     }
@@ -358,10 +355,11 @@ public class KoulutusLOS extends LOS {
     }
 
     public void setEducationType(String educationType) {
-        this.educationType = educationType;   
+        this.educationType = educationType;
     }
+
     public String getEducationType() {
-        return educationType;   
+        return educationType;
     }
 
     public List<Code> getFotFacet() {
@@ -403,18 +401,18 @@ public class KoulutusLOS extends LOS {
     public void setQualifications(List<I18nText> qualifications) {
         this.qualifications = qualifications;
     }
-    
+
     public void setInfoAboutCharge(I18nText i18nTextEnriched) {
         this.infoAboutCharge = i18nTextEnriched;
 
     }
-    
+
     public I18nText getInfoAboutCharge() {
         return infoAboutCharge;
     }
 
     public void setCareerOpportunities(I18nText i18nTextEnriched) {
-        this.careerOpportunities = i18nTextEnriched;    
+        this.careerOpportunities = i18nTextEnriched;
     }
 
     public I18nText getCareerOpportunities() {
@@ -437,13 +435,13 @@ public class KoulutusLOS extends LOS {
         this.additionalProviders = additionalProviders;
     }
 
-	public List<I18nText> getDegreeTitles() {
-		return degreeTitles;
-	}
+    public List<I18nText> getDegreeTitles() {
+        return degreeTitles;
+    }
 
-	public void setDegreeTitles(List<I18nText> degreeTitles) {
-		this.degreeTitles = degreeTitles;
-	}
+    public void setDegreeTitles(List<I18nText> degreeTitles) {
+        this.degreeTitles = degreeTitles;
+    }
 
     public List<Date> getStartDates() {
         return startDates;
@@ -499,6 +497,22 @@ public class KoulutusLOS extends LOS {
 
     public void setWorkingLifePlacement(I18nText i18nText) {
         this.workingLifePlacement = i18nText;
+    }
+
+    public TutkintoLOS getTutkinto() {
+        return this.tutkinto;
+    }
+
+    public void setTutkinto(TutkintoLOS tutkinto) {
+        this.tutkinto = tutkinto;
+    }
+
+    public List<KoulutusLOS> getSiblings() {
+        return siblings;
+    }
+
+    public void setSiblings(List<KoulutusLOS> siblings) {
+        this.siblings = siblings;
     }
 
 }

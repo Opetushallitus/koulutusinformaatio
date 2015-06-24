@@ -75,6 +75,8 @@ public class KoulutusLOSEntity {
     private List<LearningOpportunityProviderEntity> additionalProviders = new ArrayList<LearningOpportunityProviderEntity>();
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
+    @Reference
+    private TutkintoLOSEntity tutkinto;
 
     private String komoOid;
     @Embedded
@@ -128,6 +130,9 @@ public class KoulutusLOSEntity {
     @Embedded
     private I18nTextEntity workingLifePlacement;
     private String linkToCurriculum;
+
+    @Reference
+    private List<KoulutusLOSEntity> siblings = new ArrayList<KoulutusLOSEntity>();
 
     public String getId() {
         return id;
@@ -457,6 +462,12 @@ public class KoulutusLOSEntity {
 
     public void setLinkToCurriculum(String linkToCurriculum) {
         this.linkToCurriculum = linkToCurriculum;
+    }
+    public List<KoulutusLOSEntity> getSiblings() {
+        return siblings;
+    }
+    public void setSiblings(List<KoulutusLOSEntity> siblings) {
+        this.siblings = siblings;
     }
 
 }

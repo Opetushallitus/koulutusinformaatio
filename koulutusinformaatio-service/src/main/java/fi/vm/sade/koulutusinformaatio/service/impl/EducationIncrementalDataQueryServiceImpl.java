@@ -35,10 +35,12 @@ import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
@@ -48,10 +50,12 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationPar
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -59,11 +63,13 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -91,6 +97,8 @@ EducationIncrementalDataQueryService {
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
+    private KoulutusLOSDAO koulutusLOSDAO;
+    private TutkintoLOSDAO tutkintoLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
@@ -105,6 +113,8 @@ EducationIncrementalDataQueryService {
             HigherEducationLOSDAO higherEducationLOSDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
+            KoulutusLOSDAO koulutusLOSDAO,
+            TutkintoLOSDAO tutkintoLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             IndexerService indexerService) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
@@ -118,6 +128,8 @@ EducationIncrementalDataQueryService {
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
+        this.koulutusLOSDAO = koulutusLOSDAO;
+        this.tutkintoLOSDAO = tutkintoLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -348,7 +360,15 @@ EducationIncrementalDataQueryService {
             return modelMapper.map(adultVocationalEdE, CompetenceBasedQualificationParentLOS.class);
         }
         
-        
+        KoulutusLOSEntity koulutusEntity = this.koulutusLOSDAO.get(losId);
+        if (koulutusEntity != null) {
+            return modelMapper.map(koulutusEntity, KoulutusLOS.class);
+        }
+
+        TutkintoLOSEntity tutkintoEntity = this.tutkintoLOSDAO.get(losId);
+        if (tutkintoEntity != null) {
+            return modelMapper.map(tutkintoEntity, TutkintoLOS.class);
+        }
 
         return null;
     }

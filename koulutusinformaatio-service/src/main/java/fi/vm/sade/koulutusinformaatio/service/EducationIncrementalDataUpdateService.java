@@ -10,8 +10,9 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 
 public interface EducationIncrementalDataUpdateService {
     
@@ -33,5 +34,7 @@ public interface EducationIncrementalDataUpdateService {
             CompetenceBasedQualificationParentLOS createdLos);
 
     void updateKoulutusLos(KoulutusLOS createdLos);
+
+    void updateTutkintoLos(TutkintoLOS los);
 
 }

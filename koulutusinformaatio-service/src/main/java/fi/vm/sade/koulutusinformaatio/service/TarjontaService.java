@@ -25,11 +25,12 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -108,5 +109,20 @@ public interface TarjontaService {
 
     List<Code> getEdBaseEducationCodes() throws KoodistoException;
 
-    public List<KoulutusLOS> findAmmatillinenKoulutusEducations() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+    List<KoulutusHakutulosV1RDTO> findAmmatillinenKoulutusDTOs() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+
+    /**
+     * Creates a KoulutusLOS from given DTO. Additionally creates all siblingLOSes.
+     * 
+     * @param curDTO
+     * @return List of created LOSes
+     * @throws TarjontaParseException
+     * @throws KoodistoException
+     */
+    public List<KoulutusLOS> createAmmatillinenKoulutusLOS(KoulutusHakutulosV1RDTO curDTO) throws KoodistoException, TarjontaParseException;
+
+    /**
+     * Helper method to reset duplicate sibling creation in createAmmatillinenKoulutusLOS
+     */
+    void clearProcessedLists();
 }

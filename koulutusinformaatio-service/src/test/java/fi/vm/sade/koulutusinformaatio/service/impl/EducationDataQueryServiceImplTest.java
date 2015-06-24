@@ -36,12 +36,13 @@ import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -72,6 +73,7 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     private HigherEducationLOSDAO higherEdDAO;
     private AdultUpperSecondaryLOSDAO adultUpsecDAO;
     private KoulutusLOSDAO koulutusDAO;
+    private TutkintoLOSDAO tutkintoDAO;
     private AdultVocationalLOSDAO adultVocDAO;
 
     @Before
@@ -89,11 +91,12 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         higherEdDAO = mockHigherEdDAO();
         adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
         koulutusDAO = mock(KoulutusLOSDAO.class);
+        tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, koulutusDAO, providerDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, koulutusDAO, tutkintoDAO, providerDAO);
     }
     
     /**

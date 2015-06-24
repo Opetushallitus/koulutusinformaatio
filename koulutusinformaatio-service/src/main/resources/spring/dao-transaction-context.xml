@@ -159,4 +159,13 @@
         </constructor-arg>
     </bean>
     
+    <bean id="tutkintoLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryTransactionDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryTransactionDatastore"/>
+        </constructor-arg>
+    </bean>
+    
 </beans>
