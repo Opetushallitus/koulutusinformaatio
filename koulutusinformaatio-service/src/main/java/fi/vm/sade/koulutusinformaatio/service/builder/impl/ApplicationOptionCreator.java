@@ -32,6 +32,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -352,7 +353,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
     public ApplicationOption createV1EducationApplicationOption(KoulutusLOS los,
                                                                 HakukohdeV1RDTO hakukohde,
-                                                                HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
+            HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
 
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
@@ -387,8 +388,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setEligibilityDescription(getI18nText(hakukohde.getHakukelpoisuusVaatimusKuvaukset()));
         ao.setExams(educationObjectCreator.createHigherEducationExams(hakukohde.getValintakokeet()));
         ao.setOrganizationGroups(educationObjectCreator.createOrganizationGroups(hakukohde.getRyhmaliitokset(), hakukohde.getOrganisaatioRyhmaOids()));
-        ao.setKaksoistutkinto(false);
-        ao.setVocational(false);
+        ao.setKaksoistutkinto(hakukohde.getKaksoisTutkinto());
+        ao.setVocational(SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType()));
         ao.setEducationCodeUri(los.getEducationCode().getUri());
         
         List<String> baseEducations = new ArrayList<String>();

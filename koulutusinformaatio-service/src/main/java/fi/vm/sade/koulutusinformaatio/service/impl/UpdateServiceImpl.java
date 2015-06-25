@@ -151,11 +151,10 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Indexing vocational education: " + curDTO.getOid());
                 List<KoulutusLOS> losses = tarjontaService.createAmmatillinenKoulutusLOS(curDTO);
                 for (KoulutusLOS curLOS : losses) {
-                    indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(curLOS);
                 }
                 TutkintoLOS tutkintolos = losses.get(0).getTutkinto();
-                // indexToSolr(tutkintolos, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                indexToSolr(tutkintolos, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(tutkintolos);
             }
             LOG.info("Vocational educations saved.");
@@ -310,16 +309,9 @@ public class UpdateServiceImpl implements UpdateService {
         }
     }
 
-    private void indexToSolr(TutkintoLOS curLOS,
+    private void indexToSolr(LOS los,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-        this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-    }
-
-
-    private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
-            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-        this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+        this.indexerService.addLearningOpportunitySpecification(los, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
     }
 

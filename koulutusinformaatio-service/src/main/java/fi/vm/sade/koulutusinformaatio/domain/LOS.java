@@ -30,6 +30,7 @@ public abstract class LOS {
     private String type;
     private List<Code> topics;
     private List<Code> themes;
+    private List<I18nText> professionalTitles;
 
     public String getId() {
         return id;
@@ -87,5 +88,13 @@ public abstract class LOS {
 
     public void setThemes(List<Code> themes) {
         this.themes = themes;
+    }
+
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nText> professionalTitles) {
+        this.professionalTitles = professionalTitles;
     }
 }

@@ -23,12 +23,11 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 
@@ -89,30 +88,28 @@ public class FacetIndexer {
      * Creates the solr docs needed in facet search.
      */
     public List<SolrInputDocument> createFacetsDocs(
-            ParentLOS parent) {
+            TutkintoLOS parent) {
         List<SolrInputDocument> docs = Lists.newArrayList();
-        for (ChildLOS childLOS : parent.getChildren()) {
-            for (ChildLOI childLOI : childLOS.getLois()) {
-                docs.addAll(createFacetDocs(childLOI));
+        for (KoulutusLOS koulutus : parent.getChildEducations()) {
+            docs.addAll(createFacetDocs(koulutus));
 
-                if (childLOI.getFotFacet() != null) {
-                    for (Code curFOT : childLOI.getFotFacet()) {
-                        SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
-                    }
+            if (koulutus.getFotFacet() != null) {
+                for (Code curFOT : koulutus.getFotFacet()) {
+                    SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
                 }
-                if (childLOI.getTimeOfTeachingFacet() != null) {
-                    for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
-                        SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
-                    }
+            }
+            if (koulutus.getTimeOfTeachingFacet() != null) {
+                for (Code curTimeOfTeaching : koulutus.getTimeOfTeachingFacet()) {
+                    SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
                 }
-                if (childLOI.getFormOfStudyFacet() != null) {
-                    for (Code curFormOfStudy : childLOI.getFormOfStudyFacet()) {
-                        SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
-                    }
+            }
+            if (koulutus.getFormOfStudyFacet() != null) {
+                for (Code curFormOfStudy : koulutus.getFormOfStudyFacet()) {
+                    SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
                 }
-                if (childLOI.getKoulutuslaji() != null) {
-                    SolrUtil.indexCodeAsFacetDoc(childLOI.getKoulutuslaji(), docs, false);
-                }
+            }
+            if (koulutus.getKoulutuslaji() != null) {
+                SolrUtil.indexCodeAsFacetDoc(koulutus.getKoulutuslaji(), docs, false);
             }
         }
 

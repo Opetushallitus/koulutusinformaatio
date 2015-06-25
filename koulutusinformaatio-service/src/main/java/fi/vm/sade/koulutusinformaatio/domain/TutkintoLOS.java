@@ -218,34 +218,31 @@ public class TutkintoLOS extends LOS {
         this.creditUnit = creditUnit;
     }
 
-    public ChildLOI getLatestLoi() {
-        ChildLOI latest = null;
+    public KoulutusLOS getLatestLoi() {
+        KoulutusLOS latest = null;
         try {
             Date latestDate = null;
-            for (ChildLOS c : getChildren()) {
-                List<ChildLOI> lois = c.getLois();
-                for (ChildLOI loi : lois) {
-                    if (latestDate == null || getComparisonDate(loi).after(latestDate)) {
-                        latestDate = getComparisonDate(loi);
-                        latest = loi;
+            for (KoulutusLOS koulutus : getChildEducations()) {
+                if (latestDate == null || getComparisonDate(koulutus).after(latestDate)) {
+                    latestDate = getComparisonDate(koulutus);
+                    latest = koulutus;
                     }
                 }
-            }
         } catch (Exception e) {
             LOG.debug("Calculating the latest child loi date failed.");
         }
         return latest;
     }
 
-    private static Date getComparisonDate(ChildLOI loi) {
-        if (loi.getStartDate() != null) {
-            return loi.getStartDate();
+    private static Date getComparisonDate(KoulutusLOS koulutus) {
+        if (koulutus.getStartDate() != null) {
+            return koulutus.getStartDate();
         }
         int month = 0;
-        if (loi.getStartSeason().getTranslations().get("fi").equals("Syksy")) {
+        if (koulutus.getStartSeason().getTranslations().get("fi").equals("Syksy")) {
             month = 7;
         }
-        GregorianCalendar cal = new GregorianCalendar(loi.getStartYear(), month, 0);
+        GregorianCalendar cal = new GregorianCalendar(koulutus.getStartYear(), month, 0);
         return cal.getTime();
     }
 

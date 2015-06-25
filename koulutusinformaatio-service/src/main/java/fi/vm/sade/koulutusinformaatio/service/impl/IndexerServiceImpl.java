@@ -44,13 +44,13 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -145,7 +145,7 @@ public class IndexerServiceImpl implements IndexerService {
         Set<String> requiredBaseEducations = Sets.newHashSet();
         Set<String> vocationalAsIds = Sets.newHashSet();
         Set<String> nonVocationalAsIds = Sets.newHashSet();
-        //Adding parent los (vocational learning opportunity)
+        // Adding parent los (vocational learning opportunity)
         if (los instanceof ParentLOS) {
             ParentLOS parent = (ParentLOS) los;
             provider = parent.getProvider();
@@ -162,7 +162,22 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
-            //Adding upper secondary los (high school)
+            // Adding Tutkinto (replaces the old V0 ParentLOS)
+        } else if (los instanceof TutkintoLOS) {
+            TutkintoLOS tutkinto = (TutkintoLOS) los;
+            provider = tutkinto.getProvider();
+            for (KoulutusLOS childLOS : tutkinto.getChildEducations()) {
+                for (ApplicationOption ao : childLOS.getApplicationOptions()) {
+                    providerAsIds.add(ao.getApplicationSystem().getId());
+                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                    if (ao.isVocational()) {
+                        vocationalAsIds.add(ao.getApplicationSystem().getId());
+                    } else {
+                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                    }
+                }
+            }
+            // Adding upper secondary los (high school)
         } else if (los instanceof UpperSecondaryLOS) {
             UpperSecondaryLOS upperLOS = (UpperSecondaryLOS) los;
             provider = upperLOS.getProvider();
@@ -177,7 +192,7 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
-            //Adding special los 
+            // Adding special los
         } else if (los instanceof SpecialLOS) {
             SpecialLOS special = (SpecialLOS) los;
             provider = special.getProvider();
@@ -194,9 +209,9 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
 
-            //Adding higher education los
+            // Adding higher education los
         } else if (los instanceof KoulutusLOS) {
-            KoulutusLOS uas = (KoulutusLOS)los;
+            KoulutusLOS uas = (KoulutusLOS) los;
             provider = uas.getProvider();
 
             if (uas.getApplicationOptions() != null) {
@@ -212,7 +227,7 @@ public class IndexerServiceImpl implements IndexerService {
             }
 
         } else if (los instanceof CompetenceBasedQualificationParentLOS) {
-            CompetenceBasedQualificationParentLOS cbqpLos = (CompetenceBasedQualificationParentLOS)los;
+            CompetenceBasedQualificationParentLOS cbqpLos = (CompetenceBasedQualificationParentLOS) los;
             provider = cbqpLos.getProvider();
 
             if (cbqpLos.getApplicationOptions() != null) {
@@ -230,26 +245,25 @@ public class IndexerServiceImpl implements IndexerService {
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
 
-        createProviderDocs(provider, 
-                            lopSolr, 
-                            requiredBaseEducations, 
-                            vocationalAsIds, 
-                            nonVocationalAsIds, 
-                            providerAsIds);
-        
-        
+        createProviderDocs(provider,
+                lopSolr,
+                requiredBaseEducations,
+                vocationalAsIds,
+                nonVocationalAsIds,
+                providerAsIds);
+
         if (los instanceof KoulutusLOS) {
-            KoulutusLOS uas = (KoulutusLOS)los;
+            KoulutusLOS uas = (KoulutusLOS) los;
             for (Provider curAddProv : uas.getAdditionalProviders()) {
                 createProviderDocs(curAddProv,
-                                    lopSolr, 
-                                    requiredBaseEducations, 
-                                    vocationalAsIds, 
-                                    nonVocationalAsIds, 
-                                    providerAsIds);
+                        lopSolr,
+                        requiredBaseEducations,
+                        vocationalAsIds,
+                        nonVocationalAsIds,
+                        providerAsIds);
             }
         }
-       
+
         loSolr.add(docs);
     }
     
@@ -426,10 +440,10 @@ public class IndexerServiceImpl implements IndexerService {
             timestampDoc.addField("id", "loUpdateTimestampDocument");
             timestampDoc.addField("name", getTimestampStr());
             timeStampDocs.add(timestampDoc);
-            loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
+            loUpdateSolr.add(timeStampDocs);
         }
-        loUpdateSolr.commit();//loUpdateHttpSolrServer.commit();
-        lopUpdateSolr.commit();//lopUpdateHttpSolrServer.commit();
+        loUpdateSolr.commit();
+        lopUpdateSolr.commit();
         locationUpdateSolr.commit();
     }
 
