@@ -86,6 +86,8 @@ public class KoulutusLOSEntity {
     @Embedded
     private List<CodeEntity> prerequisites;
     @Embedded
+    private CodeEntity koulutusPrerequisite;
+    @Embedded
     private List<I18nTextEntity> teachingTimes;
     @Embedded
     private List<I18nTextEntity> teachingPlaces;
@@ -477,4 +479,13 @@ public class KoulutusLOSEntity {
     public void setTutkinto(TutkintoLOSEntity tutkinto) {
         this.tutkinto = tutkinto;
     }
+
+    public CodeEntity getKoulutusPrerequisite() {
+        return koulutusPrerequisite;
+    }
+
+    public void setKoulutusPrerequisite(CodeEntity koulutusPrerequisite) {
+        this.koulutusPrerequisite = koulutusPrerequisite;
+    }
+
 }

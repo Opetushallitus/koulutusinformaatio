@@ -74,6 +74,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String linkToCurriculum;
     private Set<ChildLOIRefDTO> siblings;
     private ParentLOSRefDTO parentLos;
+    private CodeDTO koulutusPrerequisite;
 
     // Status of the lo. For preview
     private String status;
@@ -485,6 +486,14 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setParentLos(ParentLOSRefDTO parentLos) {
         this.parentLos = parentLos;
+    }
+
+    public CodeDTO getKoulutusPrerequisite() {
+        return koulutusPrerequisite;
+    }
+
+    public void setKoulutusPrerequisite(CodeDTO koulutusPrerequisite) {
+        this.koulutusPrerequisite = koulutusPrerequisite;
     }
 
 }

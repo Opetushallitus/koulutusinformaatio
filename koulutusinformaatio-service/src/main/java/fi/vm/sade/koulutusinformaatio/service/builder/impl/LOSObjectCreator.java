@@ -635,7 +635,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
             /*
              * if (koulutus.getOpetusTarjoajat() != null) {
-             * 
+             *
              * }
              */
 
@@ -1319,6 +1319,7 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
         los.getPrerequisites().addAll(koodistoService.search(koulutus.getPohjakoulutusvaatimus().getUri()));
+        los.setKoulutusPrerequisite(koodistoService.search(koulutus.getPohjakoulutusvaatimus().getUri()).get(0));
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));

@@ -46,6 +46,7 @@ public class KoulutusLOS extends LOS {
     private String komoOid;
 
     private List<Code> prerequisites = new ArrayList<Code>();
+    private Code koulutusPrerequisite;
     private List<I18nText> formOfTeaching;
     private List<I18nText> teachingTimes;
     private List<I18nText> teachingPlaces;
@@ -513,6 +514,14 @@ public class KoulutusLOS extends LOS {
 
     public void setSiblings(List<KoulutusLOS> siblings) {
         this.siblings = siblings;
+    }
+
+    public Code getKoulutusPrerequisite() {
+        return koulutusPrerequisite;
+    }
+
+    public void setKoulutusPrerequisite(Code koulutusPrerequisite) {
+        this.koulutusPrerequisite = koulutusPrerequisite;
     }
 
 }

@@ -121,6 +121,8 @@ public class KoulutusLOSToDTO {
             dto.setParentLos(parentLos);
         }
 
+        dto.setKoulutusPrerequisite(CodeToDTO.convert(los.getKoulutusPrerequisite(), lang));
+
         return dto;
     }
 
