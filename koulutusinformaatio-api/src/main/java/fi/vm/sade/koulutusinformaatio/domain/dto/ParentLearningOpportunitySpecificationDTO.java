@@ -17,7 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -41,12 +43,13 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
     private String creditValue;
     private String creditUnit;
     private boolean containsPseudoChildLOS = false;
+    private Set<ChildLOIRefDTO> children = new HashSet<ChildLOIRefDTO>();
 
     private String translationLanguage;
-    
+
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
-    
+
     private List<ArticleResultDTO> edCodeSuggestions;
     private List<ArticleResultDTO> edTypeSuggestions;
 
@@ -177,29 +180,37 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
     public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
         this.additionalProviders = additionalProviders;
     }
-    
+
     public void setContainsPseudoChildLOS(boolean containsPseudChildLOS) {
         this.containsPseudoChildLOS = containsPseudChildLOS;
     }
-    
+
     public boolean isContainsPseudoChildLOS() {
         return containsPseudoChildLOS;
     }
-    
+
     public void setEdCodeSuggestions(List<ArticleResultDTO> edCodeSuggestions) {
         this.edCodeSuggestions = edCodeSuggestions;
     }
-    
+
     public List<ArticleResultDTO> getEdCodeSuggestions() {
         return edCodeSuggestions;
     }
-    
+
     public void setEdTypeSuggestions(List<ArticleResultDTO> edTypeSuggestions) {
         this.edTypeSuggestions = edTypeSuggestions;
     }
-    
+
     public List<ArticleResultDTO> getEdTypeSuggestions() {
         return edTypeSuggestions;
+    }
+
+    public Set<ChildLOIRefDTO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<ChildLOIRefDTO> children) {
+        this.children = children;
     }
 
     @Override
@@ -211,6 +222,6 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
                 + ", translationLanguage=" + translationLanguage + ", topics=" + topics + ", themes=" + themes + ", edCodeSuggestions=" + edCodeSuggestions
                 + ", edTypeSuggestions=" + edTypeSuggestions + "]";
     }
-    
-    
+
+
 }

@@ -21,10 +21,8 @@ import java.util.List;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 
 /**
@@ -35,11 +33,11 @@ public final class ParentLOSToDTO {
     private ParentLOSToDTO() {
     }
 
-    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, 
-                                                                    final String lang, 
-                                                                    final String uiLang, 
+    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS,
+                                                                    final String lang,
+                                                                    final String uiLang,
                                                                     final String defaultLang) {
-        
+
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
         parent.setId(parentLOS.getId());
         parent.setName(ConverterUtil.getTextByLanguage(parentLOS.getName(), defaultLang));
@@ -76,6 +74,60 @@ public final class ParentLOSToDTO {
         }
 
         parent.setContainsPseudoChildLOS(containsPseudoChild(parentLOS.getChildren()));
+
+        return parent;
+    }
+
+    public static ParentLearningOpportunitySpecificationDTO convert(final TutkintoLOS tutkintoLOS,
+                                                                    final String lang,
+                                                                    final String uiLang,
+                                                                    final String defaultLang) {
+
+        ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
+        parent.setId(tutkintoLOS.getId());
+        parent.setName(ConverterUtil.getTextByLanguage(tutkintoLOS.getName(), defaultLang));
+        parent.setEducationDegree(tutkintoLOS.getEducationDegree());
+        parent.setProvider(ProviderToDTO.convert(tutkintoLOS.getProvider(), lang, defaultLang, uiLang));
+        parent.setStructure(ConverterUtil.getTextByLanguage(tutkintoLOS.getStructure(), lang));
+        parent.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(tutkintoLOS.getAccessToFurtherStudies(), lang));
+        parent.setGoals(ConverterUtil.getTextByLanguage(tutkintoLOS.getGoals(), lang));
+        parent.setEducationDomain(ConverterUtil.getTextByLanguage(tutkintoLOS.getEducationDomain(), uiLang));
+        parent.setStydyDomain(ConverterUtil.getTextByLanguage(tutkintoLOS.getStydyDomain(), uiLang));
+        parent.setTranslationLanguage(lang);
+
+        try {
+            ChildLOI latestLoi = tutkintoLOS.getLatestLoi();
+            parent.setCreditValue(latestLoi.getCreditValue());
+            parent.setCreditUnit(ConverterUtil.getTextByLanguage(latestLoi.getCreditUnit(), uiLang));
+        } catch (Exception e) {
+            parent.setCreditValue(tutkintoLOS.getCreditValue());
+            parent.setCreditUnit(ConverterUtil.getTextByLanguage(tutkintoLOS.getCreditUnit(), uiLang));
+        }
+
+        if (tutkintoLOS.getLois() != null) {
+            for (ParentLOI loi : tutkintoLOS.getLois()) {
+                parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang, defaultLang));
+            }
+        }
+
+
+        if (tutkintoLOS.getThemes() != null) {
+            parent.setThemes(CodeToDTO.convertCodesDistinct(tutkintoLOS.getThemes(), uiLang));
+        }
+        if (tutkintoLOS.getTopics() != null) {
+            parent.setTopics(CodeToDTO.convertAll(tutkintoLOS.getTopics(), uiLang));
+        }
+
+        parent.setContainsPseudoChildLOS(containsPseudoChild(tutkintoLOS.getChildren()));
+
+        if (!tutkintoLOS.getChildEducations().isEmpty()) {
+            for (KoulutusLOS child : tutkintoLOS.getChildEducations()) {
+                ChildLOIRefDTO childDto = new ChildLOIRefDTO();
+                childDto.setId(child.getId());
+                childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(child.getName(), lang));
+                parent.getChildren().add(childDto);
+            }
+        }
 
         return parent;
     }

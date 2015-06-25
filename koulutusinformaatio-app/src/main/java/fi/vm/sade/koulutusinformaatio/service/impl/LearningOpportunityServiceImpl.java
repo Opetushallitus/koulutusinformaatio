@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,22 +42,6 @@ import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.SpecialLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.UpperSecondaryLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
@@ -111,11 +96,21 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) 
+    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang)
             throws ResourceNotFoundException {
         ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
         String defaultLang = resolveDefaultLanguage(parentLOS);
         return ParentLOSToDTO.convert(parentLOS, lang, uiLang, defaultLang);
+    }
+
+    @Override
+    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang)
+            throws ResourceNotFoundException {
+        TutkintoLOS tutkintoLOS = educationDataQueryService.getTutkintoLearningOpportunity(id);
+        if (lang == null) {
+            lang = uiLang;
+        }
+        return ParentLOSToDTO.convert(tutkintoLOS, lang, uiLang, LANG_FI);
     }
 
     @Override
@@ -154,7 +149,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) 
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang)
             throws ResourceNotFoundException {
         UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
         String defaultLang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0), lang);
@@ -176,9 +171,9 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, 
-            String lang, 
-            String uiLang) 
+    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id,
+            String lang,
+            String uiLang)
                     throws ResourceNotFoundException {
         SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
         String defaultLang = resolveDefaultLanguage(los.getLois().get(0), lang);
@@ -186,23 +181,23 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, 
-            String lopId, 
-            String baseEducation, 
-            boolean vocational, 
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId,
+            String lopId,
+            String baseEducation,
+            boolean vocational,
             boolean nonVocational,
             boolean ongoing,
             final String uiLang) {
 
         List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation,
                 vocational, nonVocational);
-        
+
         List<ApplicationOptionSearchResultDTO> res = new ArrayList<ApplicationOptionSearchResultDTO>();
         for (ApplicationOption curAo : applicationOptions) {
             if (!ongoing) {
                 res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo, uiLang), uiLang));
-            } else if (ongoing 
-                    && curAo.getApplicationStartDate() != null 
+            } else if (ongoing
+                    && curAo.getApplicationStartDate() != null
                     && curAo.getApplicationEndDate() != null) {
                 if (ConverterUtil.isOngoing(new DateRange(curAo.getApplicationStartDate(),
                         curAo.getApplicationEndDate()))) {
@@ -211,7 +206,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             } else if (ongoing) {
                 if (ConverterUtil.isOngoing(curAo.getApplicationSystem().getApplicationDates())) {
                     res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo, uiLang), uiLang));
-                }    
+                }
             }
         }
         return res;
@@ -325,7 +320,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
             String id) throws ResourceNotFoundException {
         HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
-        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty())
                 ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
                 return HigherEducationLOSToDTO.convert(los, lang, lang);
     }
@@ -344,8 +339,8 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
         return HigherEducationLOSToDTO.convert(los, lang, uiLang);
     }
-    
-    
+
+
 
     @Override
     public HigherEducationLOSDTO previewHigherEdLearningOpportunity(
@@ -356,15 +351,15 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         if (lang != null && !lang.isEmpty()) {
             dto = HigherEducationLOSToDTO.convert(los, lang, uiLang);
         } else {
-            dto = HigherEducationLOSToDTO.convert(los, uiLang, uiLang); 
+            dto = HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
         }
-        
+
         if (dto.getStructureImageId() != null && los.getStructureImage() != null &&  los.getStructureImage().getPictureTranslations().get(uiLang) != null) {
             dto.setStructureImage(modelMapper.map(los.getStructureImage().getPictureTranslations().get(uiLang), PictureDTO.class));
         }
         return dto;
     }
-    
+
 
     @Override
     public AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(
@@ -375,11 +370,11 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         if (lang != null && !lang.isEmpty()) {
             dto = AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
         } else {
-            dto = AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang); 
+            dto = AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang);
         }
         return dto;
     }
-    
+
     @Override
     public StandaloneLOSDTO previewKoulutusLearningOpportunity(
             String oid, String lang, String uiLang)
@@ -389,18 +384,18 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         if (lang != null && !lang.isEmpty()) {
             dto = KoulutusLOSToDTO.convert(los, lang, uiLang);
         } else {
-            dto = KoulutusLOSToDTO.convert(los, uiLang, uiLang); 
+            dto = KoulutusLOSToDTO.convert(los, uiLang, uiLang);
         }
         return dto;
     }
-    
+
     @Override
     public AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(
             String oid, String lang, String uiLang)
             throws ResourceNotFoundException {
-        
+
         CompetenceBasedQualificationParentLOS los = this.previewService.previewAdultVocationaParentLearningOpportunity(oid);
-        
+
         if (lang != null && !lang.isEmpty()) {
             return AdultVocationalParentLOSToDTO.convert(los, lang, uiLang);
         } else {
@@ -409,20 +404,20 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public DataStatus getLastSuccesfulDataStatus() { 
+    public DataStatus getLastSuccesfulDataStatus() {
        return educationDataQueryService.getLatestSuccessDataStatus();
-        
+
     }
 
     @Override
     public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
             String id) throws ResourceNotFoundException {
         AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
-        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty())
                 ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
         return AdultUpperSecondaryLOSToDTO.convert(los, lang, lang);
     }
-    
+
     @Override
     public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
             String id, String uiLang) throws ResourceNotFoundException {
@@ -442,11 +437,11 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id) throws ResourceNotFoundException {
         KoulutusLOS los = educationDataQueryService.getKoulutusLearningOpportunity(id);
-        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty())
                 ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
         return KoulutusLOSToDTO.convert(los, lang, lang);
     }
-    
+
     @Override
     public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id, String uiLang) throws ResourceNotFoundException {
@@ -462,13 +457,13 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return KoulutusLOSToDTO.convert(los, lang, uiLang);
     }
 
-    
+
     @Override
     public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
             String id) throws ResourceNotFoundException {
         CompetenceBasedQualificationParentLOS los = educationDataQueryService.getAdultVocationalLearningOpportunity(id);
-        String lang = (los.getChildren() != null && !los.getChildren().isEmpty() 
-                && los.getChildren().get(0).getTeachingLanguages() != null && !los.getChildren().get(0).getTeachingLanguages().isEmpty())  
+        String lang = (los.getChildren() != null && !los.getChildren().isEmpty()
+                && los.getChildren().get(0).getTeachingLanguages() != null && !los.getChildren().get(0).getTeachingLanguages().isEmpty())
                 ? los.getChildren().get(0).getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
         return AdultVocationalParentLOSToDTO.convert(los, lang, lang);
     }

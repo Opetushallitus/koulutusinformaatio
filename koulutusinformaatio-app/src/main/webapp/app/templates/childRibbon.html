@@ -1,6 +1,6 @@
 <ul class="ribbon-content list-unstyled">
-	<li data-ng-repeat="child in children" >
-		<a data-ng-href="{{child.url}}">{{child.name}}</a> 
+	<li data-ng-repeat="child in children | orderBy: 'name'">
+		<a data-ng-href="#!/koulutus/{{child.id}}">{{child.name}}</a>
 		<!-- PREVIEW -->
 		<span data-ng-if="child.preview" data-ki-preview-status-label="child.status" data-lang="lang"></span>
 		<!-- END PREVIEW -->

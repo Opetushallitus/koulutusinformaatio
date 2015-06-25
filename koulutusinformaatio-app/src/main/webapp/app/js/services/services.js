@@ -122,7 +122,7 @@ service('ParentLOService', ['GeneralLOService', 'ParentLOTransformer', function(
     
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/parent/', ParentLOTransformer);
+            return GeneralLOService.query(options, '../lo/tutkinto/', ParentLOTransformer);
         }
     }
 }]).

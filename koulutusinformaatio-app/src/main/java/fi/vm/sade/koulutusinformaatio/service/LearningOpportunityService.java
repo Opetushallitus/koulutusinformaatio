@@ -47,6 +47,8 @@ public interface LearningOpportunityService {
 
     ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) throws ResourceNotFoundException;
 
+    ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
+
     ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException;
 
     ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String uiLang) throws ResourceNotFoundException;
@@ -68,7 +70,7 @@ public interface LearningOpportunityService {
 
     /**
      * Gets a higher education learning opportunity.
-     * 
+     *
      * @param id
      *            oid of the learning opportunity
      * @return higher education learning opportunity
@@ -78,7 +80,7 @@ public interface LearningOpportunityService {
 
     /**
      * Gets a higher education learning opportunity.
-     * 
+     *
      * @param id
      *            oid of the learning opportunity
      * @param uiLang
@@ -90,7 +92,7 @@ public interface LearningOpportunityService {
 
     /**
      * Gets a higher education learning opportunity.
-     * 
+     *
      * @param id
      *            oid of the learning opportunity
      * @param lang
@@ -118,9 +120,9 @@ public interface LearningOpportunityService {
     List<LearningOpportunitySearchResultDTO> findLearningOpportunitiesByProviderId(String providerId, String lang);
 
     /**
-     * 
+     *
      * Fetches (from tarjonta) and returns a higher education learning opportunity for preview.
-     * 
+     *
      * @param id
      *            the oid of the learning opportunity
      * @param lang

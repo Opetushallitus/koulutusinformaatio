@@ -1,6 +1,6 @@
 <ul class="inside">
-    <li data-ng-repeat="child in children">
-        <a data-ng-show="child.losId" class="internal" href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{child.prerequisite.value}}">{{child.name}}</a>
+    <li data-ng-repeat="child in children | orderBy: 'name'">
+        <a data-ng-show="child.id" class="internal" href="#!/koulutus/{{child.id}}">{{child.name}}</a>
     </li>
 </ul>
 

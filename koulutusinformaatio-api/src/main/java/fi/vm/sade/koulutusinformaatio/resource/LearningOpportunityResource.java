@@ -69,7 +69,7 @@ public interface LearningOpportunityResource {
                                                              @DefaultValue(value = "false") @QueryParam("upcomingLater") boolean upcomingLater,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows,
-                                                             @QueryParam("sort") String sort, 
+                                                             @QueryParam("sort") String sort,
                                                              @DefaultValue(value = "asc") @QueryParam("order") String order,
                                                              @QueryParam("lopFilter") String lopFilter,
                                                              @QueryParam("educationCodeFilter") String educationCodeFilter,
@@ -93,6 +93,13 @@ public interface LearningOpportunityResource {
     @Path("parent/{parentId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId,
+                                                                                  @QueryParam("lang") String lang,
+                                                                                  @QueryParam("uiLang") String uiLang);
+
+    @GET
+    @Path("tutkinto/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(@PathParam("id") String id,
                                                                                   @QueryParam("lang") String lang,
                                                                                   @QueryParam("uiLang") String uiLang);
 
@@ -156,7 +163,7 @@ public interface LearningOpportunityResource {
     public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
-    
+
     /**
      * Fetches a higher education learning opportunity specification.
      *
@@ -171,7 +178,7 @@ public interface LearningOpportunityResource {
     public HigherEducationLOSDTO getHigherEducationLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
-    
+
     /**
      * Fetches an adult upper secondary learning opportunity specification.
      *
@@ -186,8 +193,8 @@ public interface LearningOpportunityResource {
     public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
-    
-    
+
+
     /**
      * Fetches an adult upper secondary learning opportunity specification.
      *
@@ -202,10 +209,10 @@ public interface LearningOpportunityResource {
     public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
-    
+
 
     /**
-     * Fetches suggested terms to be used in free text search. 
+     * Fetches suggested terms to be used in free text search.
      * The returned terms match the term given as parameter.
      *
      * @param term for which matching terms are searched
@@ -217,7 +224,7 @@ public interface LearningOpportunityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public SuggestedTermsResultDTO getSuggestedTerms(@QueryParam("term") String term,
                                                      @QueryParam("lang") String lang);
-    
+
     /**
      * Fetches a higher education learning opportunity. To be used in preview for learning opportunity.
      *
@@ -232,7 +239,7 @@ public interface LearningOpportunityResource {
                                                      @QueryParam("lang") String lang,
                                                      @QueryParam("uiLang") String uiLang,
                                                      @QueryParam("loType") String loType);
-    
+
     @GET
     @Path("/picture/{id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

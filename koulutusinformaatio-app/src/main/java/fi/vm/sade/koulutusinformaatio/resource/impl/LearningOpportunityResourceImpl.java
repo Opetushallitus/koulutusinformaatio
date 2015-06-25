@@ -56,6 +56,9 @@ import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -79,28 +82,28 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public LOSearchResultListDTO searchLearningOpportunities(String text, 
-                                                            String prerequisite, 
-                                                            List<String> cities, 
+    public LOSearchResultListDTO searchLearningOpportunities(String text,
+                                                            String prerequisite,
+                                                            List<String> cities,
                                                             List<String> facetFilters,
                                                             List<String> articleFilters,
                                                             List<String> providerFilters,
-                                                            String lang, 
-                                                            boolean ongoing, 
+                                                            String lang,
+                                                            boolean ongoing,
                                                             boolean upcoming,
                                                             boolean upcomingLater,
-                                                            int start, 
-                                                            int rows, 
-                                                            String sort, 
-                                                            String order, 
-                                                            String lopFilter, 
+                                                            int start,
+                                                            int rows,
+                                                            String sort,
+                                                            String order,
+                                                            String lopFilter,
                                                             String educationCodeFilter,
-                                                            List<String> excludes, 
+                                                            List<String> excludes,
                                                             SearchType searchType) {
         try {
             sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(text, prerequisite,
-                    cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
+                    cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order,
                     lopFilter, educationCodeFilter, excludes, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
@@ -132,7 +135,20 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             throw KIExceptionHandler.resolveException(e);
         }
     }
-    
+
+    @Override
+    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang) {
+        try {
+            ParentLearningOpportunitySpecificationDTO dto = null;
+
+            dto = learningOpportunityService.getTutkintoLearningOpportunity(id, lang, uiLang);
+
+            return dto;
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
     private String getEducationCodeForParent(ParentLearningOpportunitySpecificationDTO dto) {
         try {
             return dto.getLois().get(0).getApplicationSystems().get(0).getApplicationOptions().get(0).getEducationCodeUri();
@@ -195,7 +211,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             throw KIExceptionHandler.resolveException(e);
         }
     }
-    
+
 
     @Override
     public StandaloneLOSDTO getKoulutusLearningOpportunity(
@@ -251,7 +267,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
             if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
                 dto = learningOpportunityService.getHigherEducationLearningOpportunity(id);
-                uiLang = (dto.getTeachingLanguages() != null && !dto.getTeachingLanguages().isEmpty()) 
+                uiLang = (dto.getTeachingLanguages() != null && !dto.getTeachingLanguages().isEmpty())
                         ? dto.getTeachingLanguages().get(0).toLowerCase() : LANG_FI;
             }
             else if (Strings.isNullOrEmpty(lang)) {
@@ -260,7 +276,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             else {
                 dto = learningOpportunityService.getHigherEducationLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
-            
+
             setArticles(uiLang, dto, dto.getKoulutuskoodi(), dto.getEducationType());
 
             return dto;
@@ -278,7 +294,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             if ("korkeakoulu".equals(loType)) {
                 HigherEducationLOSDTO dto = learningOpportunityService.previewHigherEdLearningOpportunity(oid, lang, uiLang);
                 setArticles(uiLang, dto, dto.getKoulutuskoodi(), dto.getEducationType());
-                return dto; 
+                return dto;
             } else if ("aikuislukio".equals(loType)) {
                 return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
             } else if ("aikuistenperusopetus".equals(loType)) {
@@ -290,7 +306,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 String koulutuskoodi = dto.getChildren().get(0).getKoulutuskoodi();
                 String edType = dto.getChildren().get(0).getEducationType();
                 setArticles(uiLang, dto, koulutuskoodi, edType);
-                return dto; 
+                return dto;
             }
             throw new ResourceNotFoundException("No preview implemented for loType: " + loType);
         } catch (ResourceNotFoundException e) {
@@ -319,7 +335,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
             if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
                 dto = learningOpportunityService.getAdultUpperSecondaryLearningOpportunity(id);
-                uiLang = (dto.getTeachingLanguages() != null && !dto.getTeachingLanguages().isEmpty()) 
+                uiLang = (dto.getTeachingLanguages() != null && !dto.getTeachingLanguages().isEmpty())
                         ? dto.getTeachingLanguages().get(0).toLowerCase() : LANG_FI;
             }
             else if (Strings.isNullOrEmpty(lang)) {
@@ -328,10 +344,10 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             else {
                 dto = learningOpportunityService.getAdultUpperSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
-            
+
             String koulutuskoodi = dto.getKoulutuskoodi();
             String edType = dto.getEducationType();
-            
+
             setArticles(uiLang, dto, koulutuskoodi, edType);
 
             return dto;
@@ -346,7 +362,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
             String id, String lang, String uiLang) {
-       
+
         try {
 
             AdultVocationalParentLOSDTO dto = null;
@@ -355,8 +371,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 dto = learningOpportunityService.getAdultVocationalLearningOpportunity(id);
                 /*uiLang = (dto.getChildren() != null
                         && !dto.getChildren().isEmpty()
-                        && dto.getChildren().get(0).getTeachingLanguages() != null 
-                            && !dto.getChildren().get(0).getTeachingLanguages().isEmpty()) 
+                        && dto.getChildren().get(0).getTeachingLanguages() != null
+                            && !dto.getChildren().get(0).getTeachingLanguages().isEmpty())
                         ? dto.getChildren().get(0).getTeachingLanguages().get(0).toLowerCase() : LANG_FI;*/
             }
             else if (Strings.isNullOrEmpty(lang)) {
@@ -365,7 +381,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             else {
                 dto = learningOpportunityService.getAdultVocationalLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
-            
+
             String koulutuskoodi = dto.getChildren().get(0).getKoulutuskoodi();
             String edType = dto.getChildren().get(0).getEducationType();
             setArticles(uiLang, dto, koulutuskoodi, edType);
@@ -377,7 +393,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             throw KIExceptionHandler.resolveException(se);
         }
     }
-    
+
     private void setArticles(String uiLang, Articled dto, String koulutuskoodi, String edType) throws SearchException {
         List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, koulutuskoodi), uiLang);
         List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, edType), uiLang);
