@@ -73,6 +73,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String workingLifePlacement;
     private String linkToCurriculum;
     private Set<ChildLOIRefDTO> siblings;
+    private ParentLOSRefDTO parentLos;
 
     // Status of the lo. For preview
     private String status;
@@ -476,6 +477,14 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setSiblings(Set<ChildLOIRefDTO> siblings) {
         this.siblings = siblings;
+    }
+
+    public ParentLOSRefDTO getParentLos() {
+        return parentLos;
+    }
+
+    public void setParentLos(ParentLOSRefDTO parentLos) {
+        this.parentLos = parentLos;
     }
 
 }

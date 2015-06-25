@@ -2,12 +2,11 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -105,7 +104,7 @@ public class KoulutusLOSToDTO {
             Set<ChildLOIRefDTO> siblings = new HashSet<ChildLOIRefDTO>();
             for (KoulutusLOS sibling : los.getSiblings()) {
                 ChildLOIRefDTO siblingDto = new ChildLOIRefDTO();
-                String siblingName = sibling.getName().getTranslations().entrySet().iterator().next().getValue();
+                String siblingName = sibling.getName().getTranslations().values().iterator().next();
                 if (sibling.getName().get(lang) != null) {
                     siblingName = sibling.getName().get(lang);
                 }
@@ -115,6 +114,18 @@ public class KoulutusLOSToDTO {
                 siblings.add(siblingDto);
             }
             dto.setSiblings(siblings);
+        }
+
+        if (los.getTutkinto() != null) {
+            ParentLOSRefDTO parentLos = new ParentLOSRefDTO();
+            TutkintoLOS tutkintoLOS = los.getTutkinto();
+
+            parentLos.setId(tutkintoLOS.getId());
+            parentLos.setName(tutkintoLOS.getName().getTranslations().values().iterator().next());
+            if (tutkintoLOS.getName().get(lang) != null) {
+                parentLos.setName(tutkintoLOS.getName().get(lang));
+            }
+            dto.setParentLos(parentLos);
         }
 
         return dto;

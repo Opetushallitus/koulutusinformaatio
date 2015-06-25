@@ -11,7 +11,7 @@ import org.mongodb.morphia.annotations.Reference;
 
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
 /**
- * 
+ *
  * @author Markus
  *
  */
@@ -99,22 +99,22 @@ public class KoulutusLOSEntity {
 
     @Embedded
     private List<CodeEntity> facetPrerequisites;
-    
+
     @Embedded
     private List<CodeEntity> topics;
     @Embedded
     private List<CodeEntity> themes;
-    
+
     private String educationType;
-    
+
     @Embedded
     private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
-    
+
     @Embedded
     private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
     @Embedded
     private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
-    
+
     @Embedded
     private CodeEntity koulutuslaji;
     //specials
@@ -122,10 +122,10 @@ public class KoulutusLOSEntity {
     private I18nTextEntity targetGroup;
     @Embedded
     private I18nTextEntity subjectsAndCourses;
-    
+
     private List<LanguageSelection> languageSelection;
     @Embedded
-    private List<I18nTextEntity> diplomas = new ArrayList<I18nTextEntity>(); 
+    private List<I18nTextEntity> diplomas = new ArrayList<I18nTextEntity>();
 
     @Embedded
     private I18nTextEntity workingLifePlacement;
@@ -274,7 +274,7 @@ public class KoulutusLOSEntity {
     }
     public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
-    }   
+    }
     public LearningOpportunityProviderEntity getProvider() {
         return provider;
     }
@@ -470,4 +470,11 @@ public class KoulutusLOSEntity {
         this.siblings = siblings;
     }
 
+    public TutkintoLOSEntity getTutkinto() {
+        return tutkinto;
+    }
+
+    public void setTutkinto(TutkintoLOSEntity tutkinto) {
+        this.tutkinto = tutkinto;
+    }
 }
