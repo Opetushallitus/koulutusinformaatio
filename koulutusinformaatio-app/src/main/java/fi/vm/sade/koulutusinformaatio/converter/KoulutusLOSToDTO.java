@@ -104,12 +104,8 @@ public class KoulutusLOSToDTO {
             Set<ChildLOIRefDTO> siblings = new HashSet<ChildLOIRefDTO>();
             for (KoulutusLOS sibling : los.getSiblings()) {
                 ChildLOIRefDTO siblingDto = new ChildLOIRefDTO();
-                String siblingName = sibling.getName().getTranslations().values().iterator().next();
-                if (sibling.getName().get(lang) != null) {
-                    siblingName = sibling.getName().get(lang);
-                }
                 siblingDto.setId(sibling.getId());
-                siblingDto.setName(siblingName);
+                siblingDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(sibling.getName(), lang));
                 siblingDto.setActive(los.getId().equals(sibling.getId()));
                 siblings.add(siblingDto);
             }
@@ -121,10 +117,7 @@ public class KoulutusLOSToDTO {
             TutkintoLOS tutkintoLOS = los.getTutkinto();
 
             parentLos.setId(tutkintoLOS.getId());
-            parentLos.setName(tutkintoLOS.getName().getTranslations().values().iterator().next());
-            if (tutkintoLOS.getName().get(lang) != null) {
-                parentLos.setName(tutkintoLOS.getName().get(lang));
-            }
+            parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(tutkintoLOS.getName(), lang));
             dto.setParentLos(parentLos);
         }
 
