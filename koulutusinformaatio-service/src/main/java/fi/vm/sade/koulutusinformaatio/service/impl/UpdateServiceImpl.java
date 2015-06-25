@@ -30,15 +30,21 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -105,38 +111,38 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             int count = MAX_RESULTS;
             int index = 0;
-//
-//            LOG.debug("Starting V0 indexing");
-//            while (count >= MAX_RESULTS) {
-//                LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-//                List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
-//                count = loOids.size();
-//                index += count;
-//
-//                for (String loOid : loOids) {
-//                    List<LOS> specifications = null;
-//                    try {
-//                        specifications = tarjontaService.findParentLearningOpportunity(loOid);
-//                    } catch (TarjontaParseException e) {
-//                        LOG.debug(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
-//                        continue;
-//                    }
-//                    if (specifications != null) {
-//                        LOG.debug("Specifications foud: " + specifications.size());
-//                    }
-//                    for (LOS spec : specifications) {
-//                        try {
-//                            this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
-//                            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-//                            this.educationDataUpdateService.save(spec);
-//                        } catch (Exception exc) {
-//                            LOG.error("Problem indexing los: " + spec.getId(), exc);
-//                            throw exc;
-//                        }
-//                    }
-//                }
-//            }
-//            LOG.info("V0 indexing finished");
+
+            LOG.debug("Starting V0 indexing");
+            while (count >= MAX_RESULTS) {
+                LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
+                List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+                count = loOids.size();
+                index += count;
+
+                for (String loOid : loOids) {
+                    List<LOS> specifications = null;
+                    try {
+                        specifications = tarjontaService.findParentLearningOpportunity(loOid);
+                    } catch (TarjontaParseException e) {
+                        LOG.debug(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
+                        continue;
+                    }
+                    if (specifications != null) {
+                        LOG.debug("Specifications foud: " + specifications.size());
+                    }
+                    for (LOS spec : specifications) {
+                        try {
+                            this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
+                            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+                            this.educationDataUpdateService.save(spec);
+                        } catch (Exception exc) {
+                            LOG.error("Problem indexing los: " + spec.getId(), exc);
+                            throw exc;
+                        }
+                    }
+                }
+            }
+            LOG.info("V0 indexing finished");
 
             tarjontaService.clearProcessedLists();
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
@@ -154,76 +160,76 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Vocational educations saved.");
 
-//            List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
-//            LOG.debug("Found higher educations: " + higherEducations.size());
-//
-//            for (HigherEducationLOS curLOS : higherEducations) {
-//                LOG.debug("Saving highed education: " + curLOS.getId());
-//
-//                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-//                this.educationDataUpdateService.save(curLOS);
-//            }
-//            LOG.info("Higher educations saved.");
-//
-//            // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
-//            List<AdultUpperSecondaryLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
-//            LOG.debug("Found adult educations: " + adultEducations.size());
-//
-//            for (AdultUpperSecondaryLOS curLOS : adultEducations) {
-//                LOG.debug("Saving adult education: " + curLOS.getId());
-//                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-//                this.educationDataUpdateService.save(curLOS);
-//            }
-//            LOG.info("Adult upper secondary and base educations saved.");
-//
-//            List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
-//            LOG.debug("Found " + adultVocationals.size() + " adult vocational educations");
-//            for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
-//                LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
-//                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-//                this.educationDataUpdateService.save(curLOS);
-//            }
-//            LOG.info("Adult vocational educations saved.");
-//
-//            List<KoulutusLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
-//            LOG.debug("Found " + valmistavaList.size() + " valmistava educations");
-//            for (KoulutusLOS curLOS : valmistavaList) {
-//                LOG.debug("Saving valmistava los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
-//                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-//                this.educationDataUpdateService.save(curLOS);
-//            }
-//            LOG.info("Valmistava educations saved.");
-//
-//            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-//            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
-//            LOG.info("Providers indexed");
-//
-//            List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
-//            indexerService.addFacetCodes(edTypeCodes, loUpdateSolr);
-//            LOG.info("Education types indexded.");
-//
-//            List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
-//            indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
-//            LOG.info("Base educations indexded.");
-//
-//            List<Location> locations = locationService.getMunicipalities();
-//            LOG.debug("Got locations");
-//            indexerService.addLocations(locations, locationUpdateSolr);
-//            LOG.info("Location indexed");
-//
-//            List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
-//            for (CalendarApplicationSystem curAs : applicationSystems) {
-//                LOG.debug("Indexing application system: " + curAs.getId());
-//                this.indexerService.indexASToSolr(curAs, loUpdateSolr);
-//            }
-//            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-//            LOG.info("Application systems indexed");
-//
-//            List<Article> articles = this.articleService.fetchArticles();
-//            LOG.debug("Articles fetched");
-//            indexerService.addArticles(loUpdateSolr, articles);
-//            LOG.info("Articles indexed to solr");
-//
+            List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
+            LOG.debug("Found higher educations: " + higherEducations.size());
+
+            for (HigherEducationLOS curLOS : higherEducations) {
+                LOG.debug("Saving highed education: " + curLOS.getId());
+
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            LOG.info("Higher educations saved.");
+
+            // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
+            List<AdultUpperSecondaryLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
+            LOG.debug("Found adult educations: " + adultEducations.size());
+
+            for (AdultUpperSecondaryLOS curLOS : adultEducations) {
+                LOG.debug("Saving adult education: " + curLOS.getId());
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            LOG.info("Adult upper secondary and base educations saved.");
+
+            List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
+            LOG.debug("Found " + adultVocationals.size() + " adult vocational educations");
+            for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
+                LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            LOG.info("Adult vocational educations saved.");
+
+            List<KoulutusLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
+            LOG.debug("Found " + valmistavaList.size() + " valmistava educations");
+            for (KoulutusLOS curLOS : valmistavaList) {
+                LOG.debug("Saving valmistava los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            LOG.info("Valmistava educations saved.");
+
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
+            LOG.info("Providers indexed");
+
+            List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
+            indexerService.addFacetCodes(edTypeCodes, loUpdateSolr);
+            LOG.info("Education types indexded.");
+
+            List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
+            indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
+            LOG.info("Base educations indexded.");
+
+            List<Location> locations = locationService.getMunicipalities();
+            LOG.debug("Got locations");
+            indexerService.addLocations(locations, locationUpdateSolr);
+            LOG.info("Location indexed");
+
+            List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
+            for (CalendarApplicationSystem curAs : applicationSystems) {
+                LOG.debug("Indexing application system: " + curAs.getId());
+                this.indexerService.indexASToSolr(curAs, loUpdateSolr);
+            }
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+            LOG.info("Application systems indexed");
+
+            List<Article> articles = this.articleService.fetchArticles();
+            LOG.debug("Articles fetched");
+            indexerService.addArticles(loUpdateSolr, articles);
+            LOG.info("Articles indexed to solr");
+
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

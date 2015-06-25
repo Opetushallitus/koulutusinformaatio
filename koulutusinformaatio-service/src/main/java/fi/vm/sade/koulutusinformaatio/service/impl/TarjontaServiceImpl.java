@@ -907,8 +907,6 @@ public class TarjontaServiceImpl implements TarjontaService {
             LOG.debug("Cur ammatillinen tarjoaja result: " + curRes.getOid());
 
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                if (!curKoulutus.getOid().equals("1.2.246.562.17.92587271435"))
-                    continue; // XXX poista!
                 LOG.debug("cur ammatillinen koulutus result: " + curKoulutus.getOid());
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     LOG.debug("koulutus not published, discarding");
