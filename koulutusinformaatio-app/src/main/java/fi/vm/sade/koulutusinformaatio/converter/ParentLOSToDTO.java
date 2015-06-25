@@ -96,7 +96,7 @@ public final class ParentLOSToDTO {
         parent.setTranslationLanguage(lang);
 
         try {
-            ChildLOI latestLoi = tutkintoLOS.getLatestLoi();
+            KoulutusLOS latestLoi = tutkintoLOS.getLatestLoi();
             parent.setCreditValue(latestLoi.getCreditValue());
             parent.setCreditUnit(ConverterUtil.getTextByLanguage(latestLoi.getCreditUnit(), uiLang));
         } catch (Exception e) {
