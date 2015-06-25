@@ -1,0 +1,6 @@
+<ul class="ribbon-content list-unstyled" data-ng-class="{hidden: siblings.length <= 1}">
+	<li data-ng-repeat="sibling in siblings | orderBy: 'name'">
+		<a ng-if="!sibling.active" href="#!/koulutus/{{sibling.id}}">{{sibling.name}}</a>
+		<span ng-if="sibling.active">{{sibling.name}}</span>
+	</li>
+</ul>

@@ -2,12 +2,15 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class KoulutusLOSToDTO {
 
@@ -97,6 +100,22 @@ public class KoulutusLOSToDTO {
             dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
         }
         dto.setEducationType(los.getEducationType());
+
+        if (!los.getSiblings().isEmpty()) {
+            Set<ChildLOIRefDTO> siblings = new HashSet<ChildLOIRefDTO>();
+            for (KoulutusLOS sibling : los.getSiblings()) {
+                ChildLOIRefDTO siblingDto = new ChildLOIRefDTO();
+                String siblingName = sibling.getName().getTranslations().entrySet().iterator().next().getValue();
+                if (sibling.getName().get(lang) != null) {
+                    siblingName = sibling.getName().get(lang);
+                }
+                siblingDto.setId(sibling.getId());
+                siblingDto.setName(siblingName);
+                siblingDto.setActive(los.getId().equals(sibling.getId()));
+                siblings.add(siblingDto);
+            }
+            dto.setSiblings(siblings);
+        }
 
         return dto;
     }

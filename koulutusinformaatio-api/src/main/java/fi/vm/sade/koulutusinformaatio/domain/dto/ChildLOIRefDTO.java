@@ -32,6 +32,7 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
     private String qualification;
     private List<String> qualifications;
     private CodeDTO prerequisite;
+    private Boolean active;
 
     public String getId() {
         return id;
@@ -88,4 +89,13 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
     public void setQualifications(List<String> qualifications) {
         this.qualifications = qualifications;
     }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
 }

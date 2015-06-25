@@ -2,7 +2,7 @@
 
 /* Directives */
 
-angular.module('kiApp.directives', 
+angular.module('kiApp.directives',
     [
         'kiApp.directives.FacetTree',
         'kiApp.directives.KeyboardControl',
@@ -156,7 +156,10 @@ directive('kiAbsoluteLink', function() {
   directive('kiSiblingRibbon', ['$routeParams', function($routeParams) {
     return {
         restrict: 'A',
-        templateUrl: 'templates/siblings.html',
+        templateUrl: function(el, attrs) {
+            var template = attrs.template || 'siblings';
+            return 'templates/' + template + '.html';
+        },
         scope: {
             siblings: '='
         },
@@ -165,7 +168,7 @@ directive('kiAbsoluteLink', function() {
                 if (sibling.losId == $routeParams.id || sibling.id == $routeParams.id) {
                     return 'disabled';
                 }
-                
+
                 return '';
             };
         }
@@ -256,7 +259,7 @@ directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'Translat
                 update();
             }, true);
 
-            
+
             $scope.$watch('kiBreadcrumb', function(data) {
                 root = {
                     name: TranslationService.getTranslation(data),
@@ -265,7 +268,7 @@ directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'Translat
                 }
                 update();
             });
-            
+
 
             var update = function() {
                 $scope.breadcrumbItems = [];
@@ -360,14 +363,14 @@ directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(Ut
  *  Render application system state as label
  */
 directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(UtilityService, TranslationService) {
-    
+
     var isAsOngoing = function(as) {
         var result = false;
         if (UtilityService.isLisahaku(as)) {
             angular.forEach(as.applicationOptions, function(value) {
                 if (value.canBeApplied) {
                     result = true;
-                }          
+                }
             });
         } else if (as.asOngoing) {
             result = true;
@@ -386,7 +389,7 @@ directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(Ut
                         var as = data.applicationSystems[asIndex];
                         if (isAsOngoing(as)) {
                             isOngoing = true;
-                            break; 
+                            break;
                         }
                     }
                 }
@@ -407,10 +410,10 @@ directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(Ut
  *  Render application system state for search result view
  */
 directive('kiAsState', ['TranslationService', 'UtilityService', function(TranslationService, UtilityService) {
-    return { 
+    return {
     	templateUrl: 'templates/asState.html',
     	controller: function($scope) {
-    		
+
     		if ($scope.lo.nextApplicationPeriodStarts && $scope.lo.nextApplicationPeriodStarts.length > 0) {
     			var parsedPeriods = [];
     			for (var i = 0; i < $scope.lo.nextApplicationPeriodStarts.length; ++i) {
@@ -418,17 +421,17 @@ directive('kiAsState', ['TranslationService', 'UtilityService', function(Transla
     				var parsedPeriod = ts.getDate() +
             			'.' + (ts.getMonth() + 1) +
             			'.' + ts.getFullYear() +
-            			' ' + TranslationService.getTranslation('time-abbreviation') + 
+            			' ' + TranslationService.getTranslation('time-abbreviation') +
             			' ' + UtilityService.padWithZero(ts.getHours()) +
             			':' + UtilityService.padWithZero(ts.getMinutes());
     				if (parsedPeriods.indexOf(parsedPeriod) < 0) {
     					parsedPeriods.push(parsedPeriod);
     				}
-    				
+
     			}
     			$scope.lo.parsedAppPeriods = parsedPeriods;
     		}
-            
+
             $scope.isPeriodsForthcoming = function() {
             	return !$scope.lo.asOngoing && $scope.lo.nextApplicationPeriodStarts && $scope.lo.nextApplicationPeriodStarts.length > 0;
             }
@@ -576,7 +579,7 @@ directive('kiI18n', ['$sanitize', 'TranslationService', function($sanitize, Tran
                 } else {
                     translation = TranslationService.getTranslation(key);
                 }
-                
+
                 if (attrs.showColon) {
                     translation += ':';
                 }

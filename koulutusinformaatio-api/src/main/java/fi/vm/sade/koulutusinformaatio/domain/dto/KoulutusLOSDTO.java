@@ -15,11 +15,12 @@
  */
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import java.util.Set;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
@@ -71,7 +72,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private List<ArticleResultDTO> edTypeSuggestions;
     private String workingLifePlacement;
     private String linkToCurriculum;
-
+    private Set<ChildLOIRefDTO> siblings;
 
     // Status of the lo. For preview
     private String status;
@@ -468,4 +469,13 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     public void setLinkToCurriculum(String linkToCurriculum) {
         this.linkToCurriculum = linkToCurriculum;
     }
+
+    public Set<ChildLOIRefDTO> getSiblings() {
+        return siblings;
+    }
+
+    public void setSiblings(Set<ChildLOIRefDTO> siblings) {
+        this.siblings = siblings;
+    }
+
 }
