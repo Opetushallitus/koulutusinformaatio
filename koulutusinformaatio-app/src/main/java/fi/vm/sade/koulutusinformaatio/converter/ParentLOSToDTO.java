@@ -21,7 +21,12 @@ import java.util.List;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 
@@ -125,6 +130,7 @@ public final class ParentLOSToDTO {
                 ChildLOIRefDTO childDto = new ChildLOIRefDTO();
                 childDto.setId(child.getId());
                 childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(child.getName(), lang));
+                childDto.setPrerequisite(CodeToDTO.convert(child.getKoulutusPrerequisite(), lang));
                 parent.getChildren().add(childDto);
             }
         }

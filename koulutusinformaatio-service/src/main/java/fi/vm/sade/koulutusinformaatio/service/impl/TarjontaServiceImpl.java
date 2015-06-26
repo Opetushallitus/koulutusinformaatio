@@ -62,7 +62,6 @@ import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
@@ -125,6 +124,9 @@ public class TarjontaServiceImpl implements TarjontaService {
         try {
             KomoDTO komo = tarjontaRawService.getKomo(oid);
             LearningOpportunityBuilder builder = resolveBuilder(komo);
+            if (builder == null) {
+                return null;
+            }
             return loDirector.constructLearningOpportunities(builder);
 
         } catch (KoodistoException e) {
@@ -139,19 +141,13 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private LearningOpportunityBuilder resolveBuilder(KomoDTO komo) throws KoodistoException, TarjontaParseException {
         String educationType = komo.getKoulutusTyyppiUri();
-        if (educationType.equals(TarjontaConstants.VOCATIONAL_EDUCATION_TYPE) &&
-                komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_PARENT)) {
-            return new VocationalLearningOpportunityBuilder(
-                    tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService, parameterService);
-        }
-        else if (educationType.equals(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE) &&
+        if (educationType.equals(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE) &&
                 komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new UpperSecondaryLearningOpportunityBuilder(
                     tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService, parameterService);
         }
         else {
-            throw new TarjontaParseException(String.format("Unknown education degree %s and module type %s incompatible",
-                    educationType, komo.getModuuliTyyppi()));
+            return null;
         }
     }
 
@@ -955,6 +951,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         for (KoulutusLOS los : losses) {
             tutkinto.getChildEducations().add(los);
+            tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
             los.setSiblings(losses);
             addProcessedOid(los.getId());
         }

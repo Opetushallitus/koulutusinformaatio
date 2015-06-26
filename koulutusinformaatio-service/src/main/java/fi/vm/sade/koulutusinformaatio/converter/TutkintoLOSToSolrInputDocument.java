@@ -63,7 +63,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             }
         }
         for (Code curPrereq : prerequisitesMap.values()) {
-            if (SolrConstants.PK.equals(curPrereq.getValue()) || SolrConstants.YO.equals(curPrereq.getValue()))
+            if (SolrConstants.PK.equalsIgnoreCase(curPrereq.getValue()) || SolrConstants.YO.equalsIgnoreCase(curPrereq.getValue()))
                 docs.add(createTutkintoDoc(tutkinto, curPrereq));
         }
 
@@ -86,8 +86,6 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 tutkinto.getTeachingLanguages(), prerequisite.getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, prereqVal);
-
-        //doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
 
         String teachLang = tutkinto.getTeachingLanguages().isEmpty() ? "EXC" : tutkinto.getTeachingLanguages().get(0).getValue().toLowerCase();
 

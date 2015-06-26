@@ -1318,8 +1318,10 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setType(aoType);
             }
         }
-        los.getPrerequisites().addAll(koodistoService.search(koulutus.getPohjakoulutusvaatimus().getUri()));
-        los.setKoulutusPrerequisite(koodistoService.search(koulutus.getPohjakoulutusvaatimus().getUri()).get(0));
+        los.getPrerequisites().add(createCode(koulutus.getPohjakoulutusvaatimus()));
+        if (!los.getPrerequisites().isEmpty()) {
+            los.setKoulutusPrerequisite(los.getPrerequisites().get(0));
+        }
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
@@ -1558,7 +1560,6 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public TutkintoLOS createTutkintoLOS(KomoV1RDTO komo, String providerOid) throws KoodistoException, TarjontaParseException {
         LOG.debug("Creating provider specific parent (" + providerOid + ") LOS from komo: " + komo.getOid());
-
         TutkintoLOS tutkintoLOS = new TutkintoLOS();
         tutkintoLOS.setType(TarjontaConstants.TYPE_PARENT);
 
@@ -1583,9 +1584,8 @@ public class LOSObjectCreator extends ObjectCreator {
         tutkintoLOS.setTopics(getTopics(komo.getOpintoala().getUri()));
         tutkintoLOS.setThemes(getThemes(tutkintoLOS));
 
-        // FIXME miksi tällä kotitaloustiedolla on merkitystä?
-        // parentLOS.setKotitalousopetus(komo.getKoulutuskoodi() != null
-        // && komo.getKoulutuskoodi().contains(TarjontaConstants.KOTITALOUSKOODI));
+        tutkintoLOS.setKotitalousopetus(komo.getKoulutuskoodi() != null
+                && komo.getKoulutuskoodi().getArvo().contains(TarjontaConstants.KOTITALOUSKOODI));
 
         return tutkintoLOS;
     }

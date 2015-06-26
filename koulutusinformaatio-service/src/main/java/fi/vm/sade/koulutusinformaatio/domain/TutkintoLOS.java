@@ -19,7 +19,9 @@ package fi.vm.sade.koulutusinformaatio.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +56,7 @@ public class TutkintoLOS extends LOS {
     private I18nText educationDomain;
     private I18nText stydyDomain;
 
-    private List<Code> teachingLanguages;
+    private Set<Code> teachingLanguages = new HashSet<Code>();
 
     private boolean kotitalousopetus;
 
@@ -90,12 +92,20 @@ public class TutkintoLOS extends LOS {
         this.stydyDomain = stydyDomain;
     }
 
-    public List<Code> getTeachingLanguages() {
+    public Set<Code> getTeachingLanguagesRaw() {
         return teachingLanguages;
     }
 
-    public void setTeachingLanguages(List<Code> teachingLanguages) {
+    public List<Code> getTeachingLanguages() {
+        return new ArrayList<Code>(teachingLanguages);
+    }
+
+    public void setTeachingLanguages(Set<Code> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<Code> teachingLanguages) {
+        this.teachingLanguages = new HashSet<Code>(teachingLanguages);
     }
 
     public boolean isKotitalousopetus() {

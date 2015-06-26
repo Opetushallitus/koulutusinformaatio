@@ -219,12 +219,20 @@ public abstract class ObjectCreator {
         if (opetuskielis != null && opetuskielis.getMeta() != null) {
 
             for (KoodiV1RDTO curKoodi : opetuskielis.getMeta().values()) {
-                codes.addAll(koodistoService.search(curKoodi.getUri()));
+                codes.add(createCode(curKoodi));
             }
-
 
         }
         return codes;
+    }
+
+    protected Code createCode(KoodiV1RDTO koodi) throws KoodistoException {
+        Code code = new Code();
+        code.setDescription(getI18nTextEnriched(koodi.getMeta()));
+        code.setName(getI18nTextEnriched(koodi.getMeta()));
+        code.setUri(koodi.getUri());
+        code.setValue(koodi.getArvo());
+        return code;
     }
 
     protected I18nText getTypeText(String text, String kieliUri) {//ValintakoeV1RDTO valintakoe) {
