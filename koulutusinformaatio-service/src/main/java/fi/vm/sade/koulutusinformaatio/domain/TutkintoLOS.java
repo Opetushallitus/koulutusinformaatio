@@ -92,20 +92,12 @@ public class TutkintoLOS extends LOS {
         this.stydyDomain = stydyDomain;
     }
 
-    public Set<Code> getTeachingLanguagesRaw() {
+    public Set<Code> getTeachingLanguages() {
         return teachingLanguages;
-    }
-
-    public List<Code> getTeachingLanguages() {
-        return new ArrayList<Code>(teachingLanguages);
     }
 
     public void setTeachingLanguages(Set<Code> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
-    }
-
-    public void setTeachingLanguages(List<Code> teachingLanguages) {
-        this.teachingLanguages = new HashSet<Code>(teachingLanguages);
     }
 
     public boolean isKotitalousopetus() {

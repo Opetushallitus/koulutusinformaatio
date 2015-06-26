@@ -81,16 +81,21 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         
         doc.addField(LearningOpportunity.PREREQUISITES, prereqVal);
 
-        doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                tutkinto.getTeachingLanguages(), prerequisite.getName().getTranslations()));
-        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                tutkinto.getTeachingLanguages(), prerequisite.getName().getTranslations()));
+        List<Code> languages = Lists.newArrayList(tutkinto.getTeachingLanguages());
+        String prerequisiteText = SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                languages, prerequisite.getName().getTranslations()
+        );
+
+        doc.setField(LearningOpportunity.PREREQUISITE, prerequisiteText);
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, prerequisiteText);
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, prereqVal);
 
-        String teachLang = tutkinto.getTeachingLanguages().isEmpty() ? "EXC" : tutkinto.getTeachingLanguages().get(0).getValue().toLowerCase();
+        String teachLang = tutkinto.getTeachingLanguages().isEmpty() ? "EXC" : tutkinto.getTeachingLanguages().iterator().next().getValue().toLowerCase();
 
-        String parentName = SolrUtil.resolveTranslationInTeachingLangUseFallback(tutkinto.getTeachingLanguages(),
-                tutkinto.getName().getTranslations());
+        String parentName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                languages,
+                tutkinto.getName().getTranslations()
+        );
         doc.setField(LearningOpportunity.NAME, parentName);
 
         
@@ -98,13 +103,17 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             KoulutusLOS latest = tutkinto.getLatestLoi();
             String cv = latest.getCreditValue();
             Map<String, String> cu = latest.getCreditUnit().getTranslations();
-            doc.addField(LearningOpportunity.CREDITS,
-                    String.format("%s %s", cv, SolrUtil.resolveTranslationInTeachingLangUseFallback(tutkinto.getTeachingLanguages(), cu)));
+            doc.addField(
+                    LearningOpportunity.CREDITS,
+                    String.format("%s %s", cv, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                            languages, cu
+                    ))
+            );
         } catch (Exception e) {
             doc.addField(
                     LearningOpportunity.CREDITS,
                     String.format("%s %s", tutkinto.getCreditValue(),
-                            SolrUtil.resolveTranslationInTeachingLangUseFallback(tutkinto.getTeachingLanguages(), tutkinto.getCreditUnit().getTranslations())));
+                            SolrUtil.resolveTranslationInTeachingLangUseFallback(languages, tutkinto.getCreditUnit().getTranslations())));
         }
 
         doc.addField(LearningOpportunity.NAME_FI_SORT, parentName.toLowerCase().trim());

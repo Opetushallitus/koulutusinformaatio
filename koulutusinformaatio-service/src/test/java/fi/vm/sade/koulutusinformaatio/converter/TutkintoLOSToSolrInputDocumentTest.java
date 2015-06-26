@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.google.common.collect.Sets;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +67,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         lang.setName(TestUtil.createI18nText("Suomi", "Finska", "Finnish"));
         lang.setValue("FI");
         lang.setUri("fi_uri");
-        los.setTeachingLanguages(Arrays.asList(lang));
+        los.setTeachingLanguages(Sets.newHashSet(lang));
 
         los.setEducationDomain(TestUtil.createI18nText("parent domain fi", "parent domain sv", "parent name end"));
         los.setStydyDomain(TestUtil.createI18nText("study domain fi", "study domain sv", "study domain en"));
