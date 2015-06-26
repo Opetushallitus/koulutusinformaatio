@@ -112,37 +112,7 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            LOG.debug("Starting V0 indexing");
-            while (count >= MAX_RESULTS) {
-                LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-                List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
-                count = loOids.size();
-                index += count;
-
-                for (String loOid : loOids) {
-                    List<LOS> specifications = null;
-                    try {
-                        specifications = tarjontaService.findParentLearningOpportunity(loOid);
-                    } catch (TarjontaParseException e) {
-                        LOG.debug(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
-                        continue;
-                    }
-                    if (specifications != null) {
-                        LOG.debug("Specifications foud: " + specifications.size());
-                    }
-                    for (LOS spec : specifications) {
-                        try {
-                            this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
-                            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-                            this.educationDataUpdateService.save(spec);
-                        } catch (Exception exc) {
-                            LOG.error("Problem indexing los: " + spec.getId(), exc);
-                            throw exc;
-                        }
-                    }
-                }
-            }
-            LOG.info("V0 indexing finished");
+            // TODO: lukiokoulutusten V1 indeksointi!
 
             tarjontaService.clearProcessedLists();
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
