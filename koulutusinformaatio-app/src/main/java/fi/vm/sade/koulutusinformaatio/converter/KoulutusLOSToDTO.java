@@ -103,6 +103,13 @@ public class KoulutusLOSToDTO {
         if (!los.getSiblings().isEmpty()) {
             Set<ChildLOIRefDTO> siblings = new HashSet<ChildLOIRefDTO>();
             for (KoulutusLOS sibling : los.getSiblings()) {
+
+                if (los.getKoulutusPrerequisite() != null
+                    && !ParentLOSToDTO.isSamePrerequisite(los.getKoulutusPrerequisite().getValue(), sibling)
+                ) {
+                    continue;
+                }
+
                 ChildLOIRefDTO siblingDto = new ChildLOIRefDTO();
                 siblingDto.setId(sibling.getId());
                 siblingDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(sibling.getName(), lang));
