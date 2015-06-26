@@ -76,26 +76,6 @@ public interface LearningOpportunityResource {
                                                              @QueryParam("excludes") List<String> excludes,
                                                              @QueryParam("searchType") SearchType searchType);
 
-    /**
-     * Fetches a parent learning opportunity. Contains parent information and
-     * references to all the child learning opportunities that belong to the parent.
-     *
-     * Parent lo texts are translated to language corresponding given lang parameter.
-     * If the given language is not found or the parameter is null it will try to fall back to default 'fi' or other
-     * language found
-     *
-     * @param parentId learning opportunity id
-     * @param lang translation language (optional)
-     * @param uiLang user interface language, used to translate some information
-     * @return parent learning opportunity dto object
-     */
-    @GET
-    @Path("parent/{parentId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId,
-                                                                                  @QueryParam("lang") String lang,
-                                                                                  @QueryParam("uiLang") String uiLang);
-
     @GET
     @Path("tutkinto/{id}")
     @Produces(MediaType.APPLICATION_JSON)

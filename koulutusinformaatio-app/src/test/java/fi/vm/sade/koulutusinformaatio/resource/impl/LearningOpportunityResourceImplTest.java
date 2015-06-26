@@ -70,9 +70,6 @@ public class LearningOpportunityResourceImplTest {
         parentDTO.setId("parentLOSId");
         parentDTO.setName("parent name");
 
-        when(learningOpportunityService.getParentLearningOpportunity(eq("parentlosid"), eq("fi"), eq("fi"))).thenReturn(parentDTO);
-        when(learningOpportunityService.getParentLearningOpportunity(eq("parentlosid"))).thenReturn(parentDTO);
-
         ChildLearningOpportunitySpecificationDTO childDTO = new ChildLearningOpportunitySpecificationDTO();
         childDTO.setId("childid");
         childDTO.setName("childName");
@@ -126,14 +123,6 @@ public class LearningOpportunityResourceImplTest {
         assertEquals("PK", result.getResults().get(0).getPrerequisiteCode());
         assertEquals("3.4.5", result.getResults().get(0).getParentId());
         assertEquals("4.5.6", result.getResults().get(0).getLosId());
-    }
-
-    @Test
-    public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationDTO dto1 = resource.getParentLearningOpportunity("parentlosid", "fi", "fi");
-        assertNotNull(dto1);
-        ParentLearningOpportunitySpecificationDTO dto2 = resource.getParentLearningOpportunity("parentlosid", null, null);
-        assertNotNull(dto2);
     }
 
     @Test

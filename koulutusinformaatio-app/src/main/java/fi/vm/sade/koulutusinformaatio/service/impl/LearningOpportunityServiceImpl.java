@@ -82,28 +82,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException {
-        ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
-        String lang = resolveDefaultLanguage(parentLOS);
-        return ParentLOSToDTO.convert(parentLOS, lang, lang, lang);
-    }
-
-    @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String uiLang) throws ResourceNotFoundException {
-        ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
-        String lang = resolveDefaultLanguage(parentLOS);
-        return ParentLOSToDTO.convert(parentLOS, lang, uiLang, lang);
-    }
-
-    @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang)
-            throws ResourceNotFoundException {
-        ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
-        String defaultLang = resolveDefaultLanguage(parentLOS);
-        return ParentLOSToDTO.convert(parentLOS, lang, uiLang, defaultLang);
-    }
-
-    @Override
     public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite)
             throws ResourceNotFoundException {
         TutkintoLOS tutkintoLOS = educationDataQueryService.getTutkintoLearningOpportunity(id);

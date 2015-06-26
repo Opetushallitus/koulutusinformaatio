@@ -136,16 +136,6 @@ EducationIncrementalDataQueryService {
     }
 
     @Override
-    public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.getFromSecondary(oid);
-        if (entity != null) {
-            return modelMapper.map(entity, ParentLOS.class);
-        } else {
-            throw new ResourceNotFoundException("Parent learning opportunity not found: " + oid);
-        }
-    }
-
-    @Override
     public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation,
             boolean vocational, boolean nonVocational) {
         List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(asId, lopId, baseEducation,

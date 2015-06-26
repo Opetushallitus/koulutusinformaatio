@@ -93,7 +93,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
-    public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
+    public EducationDataQueryServiceImpl(
             ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
             ChildLearningOpportunityDAO childLearningOpportunityDAO,
             DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
@@ -105,7 +105,6 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
-        this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
@@ -120,16 +119,6 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.tutkintoLOSDAO = tutkintoLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-    }
-
-    @Override
-    public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.getFromSecondary(oid);
-        if (entity != null) {
-            return modelMapper.map(entity, ParentLOS.class);
-        } else {
-            throw new ResourceNotFoundException("Parent learning opportunity not found: " + oid);
-        }
     }
 
     @Override

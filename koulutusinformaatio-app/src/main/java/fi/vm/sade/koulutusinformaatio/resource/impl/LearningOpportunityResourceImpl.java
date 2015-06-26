@@ -112,31 +112,6 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) {
-        try {
-            ParentLearningOpportunitySpecificationDTO dto = null;
-            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                dto = learningOpportunityService.getParentLearningOpportunity(parentId);
-                uiLang = dto.getTranslationLanguage();
-            } else if (Strings.isNullOrEmpty(lang)) {
-                dto = learningOpportunityService.getParentLearningOpportunity(parentId, uiLang.toLowerCase());
-            } else {
-                dto = learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase(), uiLang.toLowerCase());
-            }
-            String educationType = getEducationTypeForParent(dto);
-            String educationCode = getEducationCodeForParent(dto);
-            if (!StringUtils.isBlank(educationType) && !StringUtils.isBlank(educationCode)) {
-                setArticles(uiLang, dto, educationCode, educationType);
-            }
-            return dto;
-        } catch (ResourceNotFoundException e) {
-            throw KIExceptionHandler.resolveException(e);
-        } catch (SearchException e) {
-            throw KIExceptionHandler.resolveException(e);
-        }
-    }
-
-    @Override
     public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite) {
         try {
             ParentLearningOpportunitySpecificationDTO dto = null;

@@ -41,13 +41,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 public interface EducationDataQueryService {
 
     /**
-     * Gets the parent learning opportunity by oid
-     * @param oid
-     * @return
-     */
-    ParentLOS getParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
-
-    /**
      * Finds application options by the application system, learning opportunity provider and base education.
      * @param asId application system id
      * @param lopId learning opportunity provider id

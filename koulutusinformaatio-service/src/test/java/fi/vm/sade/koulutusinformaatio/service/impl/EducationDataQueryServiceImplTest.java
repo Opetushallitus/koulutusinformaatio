@@ -80,7 +80,6 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     public void setUp() {
         lastDataUpdate = new Date();
         ModelMapper modelMapper = new ModelMapper();
-        parentLearningOpportunitySpecificationDAO = mockParentDAO();
         applicationOptionDAO = mockApplicationOptionDAO();
         childLearningOpportunityDAO = mockChildDAO();
         dataStatusDAO = mockDataStatudDAO();
@@ -93,7 +92,7 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         koulutusDAO = mock(KoulutusLOSDAO.class);
         tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
-        service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
+        service = new EducationDataQueryServiceImpl(
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
                 specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, koulutusDAO, tutkintoDAO, providerDAO);
@@ -109,18 +108,6 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         assertEquals("mainProvider", los.getProvider().getId());
         assertEquals(1, los.getAdditionalProviders().size());
         assertEquals("additionalProvider", los.getAdditionalProviders().get(0).getId());
-    }
-
-	@Test
-    public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
-        ParentLOS plo = service.getParentLearningOpportunity("1.2.3");
-        assertNotNull(plo);
-        assertEquals("1.2.3", plo.getId());
-    }
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void testGetParentLearningOpportunityNotExists() throws ResourceNotFoundException {
-        service.getParentLearningOpportunity("1.1.1");
     }
 
     @Test

@@ -17,13 +17,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersExceptio
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
 public interface EducationIncrementalDataQueryService {
-    
-    /**
-     * Gets the parent learning opportunity by oid
-     * @param oid
-     * @return
-     */
-    ParentLOS getParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
 
     /**
      * Finds application options by the application system, learning opportunity provider and base education.

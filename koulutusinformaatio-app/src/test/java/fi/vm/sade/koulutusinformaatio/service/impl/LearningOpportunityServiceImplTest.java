@@ -156,7 +156,6 @@ public class LearningOpportunityServiceImplTest {
 
         ModelMapper modelMapper = new ModelMapper();
 
-        when(educationDataQueryService.getParentLearningOpportunity(eq("1234"))).thenReturn(parentLOS);
         when(educationDataQueryService.getChildLearningOpportunity(eq("clo123"))).thenReturn(childLOS);
         when(educationDataQueryService.getApplicationOption(eq("ao123"))).thenReturn(applicationOption);
         
@@ -260,18 +259,6 @@ public class LearningOpportunityServiceImplTest {
         List<LearningOpportunitySearchResultDTO> results = learningOpportunityService.findLearningOpportunitiesByProviderId("provId", "fi");
         assertEquals(results.size(), 4);
         assertTrue(results.get(0).getId().contains("23"));
-    }
-
-    @Test
-    public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationDTO result = learningOpportunityService.getParentLearningOpportunity("1234");
-        checkResult("fi", "fi", result);
-    }
-
-    @Test
-    public void testGetParentLearningOpportunityEn() throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationDTO result = learningOpportunityService.getParentLearningOpportunity("1234", "en", "en");
-        checkResult("en", "fi", result);
     }
 
     @Test
