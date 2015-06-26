@@ -227,6 +227,9 @@ public abstract class ObjectCreator {
     }
 
     protected Code createCode(KoodiV1RDTO koodi) throws KoodistoException {
+        if (koodi == null) {
+            return null;
+        }
         Code code = new Code();
         code.setDescription(getI18nTextEnriched(koodi.getMeta()));
         code.setName(getI18nTextEnriched(koodi.getMeta()));

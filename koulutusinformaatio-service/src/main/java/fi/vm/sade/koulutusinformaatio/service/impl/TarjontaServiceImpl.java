@@ -952,6 +952,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         for (KoulutusLOS los : losses) {
             tutkinto.getChildEducations().add(los);
             tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
+            tutkinto.getApplicationOptions().addAll(los.getApplicationOptions());
             los.setSiblings(losses);
             addProcessedOid(los.getId());
         }

@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -45,9 +46,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
@@ -200,8 +199,7 @@ public class TarjontaServiceImplTest {
 
 	@Test
     public void testVocationalResolveBuilder() throws TarjontaParseException, KoodistoException {
-        service.findParentLearningOpportunity(KOMO_ID_VOC);
-        verify(loDirector).constructLearningOpportunities(isA(VocationalLearningOpportunityBuilder.class));
+        assertNull(service.findParentLearningOpportunity(KOMO_ID_VOC));
     }
 
     @Test
@@ -210,15 +208,14 @@ public class TarjontaServiceImplTest {
         verify(loDirector).constructLearningOpportunities(isA(UpperSecondaryLearningOpportunityBuilder.class));
     }
 
-    @Test(expected = TarjontaParseException.class)
+    @Test
     public void testRehabilitatingResolveBuilder() throws TarjontaParseException, KoodistoException {
-        service.findParentLearningOpportunity(KOMO_ID_REHAB); // Käytetään V1 rajapintaa
-        verify(loDirector).constructLearningOpportunities(isA(RehabilitatingLearningOpportunityBuilder.class));
+        assertNull(service.findParentLearningOpportunity(KOMO_ID_REHAB));
     }
 
-    @Test(expected = TarjontaParseException.class)
+    @Test
     public void testResolveBuilderInvalidEducationType() throws TarjontaParseException {
-        service.findParentLearningOpportunity(KOMO_ID_INVALID);
+        assertNull(service.findParentLearningOpportunity(KOMO_ID_INVALID));
     }
     
     @Test

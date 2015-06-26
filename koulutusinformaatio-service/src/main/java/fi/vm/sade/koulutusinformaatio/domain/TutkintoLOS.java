@@ -60,6 +60,8 @@ public class TutkintoLOS extends LOS {
 
     private boolean kotitalousopetus;
 
+    private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
+
     public List<ParentLOI> getLois() {
         return lois;
     }
@@ -254,6 +256,14 @@ public class TutkintoLOS extends LOS {
 
     public void setChildEducations(List<KoulutusLOS> childEducations) {
         this.childEducations = childEducations;
+    }
+
+    public Set<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
 }

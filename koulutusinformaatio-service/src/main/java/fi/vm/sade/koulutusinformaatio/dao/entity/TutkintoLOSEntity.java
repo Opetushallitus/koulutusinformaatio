@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.mongodb.morphia.annotations.Embedded;
@@ -64,7 +65,10 @@ public class TutkintoLOSEntity {
 
     @Embedded
     private List<CodeEntity> teachingLanguages;
-
+    
+    @Reference
+    private HashSet<ApplicationOptionEntity> applicationOptions = new HashSet<ApplicationOptionEntity>();
+    
     private boolean kotitalousopetus;
 
     public TutkintoLOSEntity() {
@@ -220,6 +224,14 @@ public class TutkintoLOSEntity {
 
     public void setKotitalousopetus(boolean kotitalousopetus) {
         this.kotitalousopetus = kotitalousopetus;
+    }
+
+    public HashSet<ApplicationOptionEntity> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(HashSet<ApplicationOptionEntity> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
 }

@@ -44,6 +44,7 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
     private String creditUnit;
     private boolean containsPseudoChildLOS = false;
     private Set<ChildLOIRefDTO> children = new HashSet<ChildLOIRefDTO>();
+    private Set<ApplicationOptionDTO> applicationOptions = new HashSet<ApplicationOptionDTO>();
 
     private String translationLanguage;
 
@@ -221,6 +222,14 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
                 + ", creditValue=" + creditValue + ", creditUnit=" + creditUnit + ", containsPseudoChildLOS=" + containsPseudoChildLOS
                 + ", translationLanguage=" + translationLanguage + ", topics=" + topics + ", themes=" + themes + ", edCodeSuggestions=" + edCodeSuggestions
                 + ", edTypeSuggestions=" + edTypeSuggestions + "]";
+    }
+
+    public Set<ApplicationOptionDTO> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(Set<ApplicationOptionDTO> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
 

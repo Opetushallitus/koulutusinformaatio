@@ -21,6 +21,7 @@ import java.util.List;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
@@ -115,6 +116,9 @@ public final class ParentLOSToDTO {
             }
         }
 
+        for (ApplicationOption ao : tutkintoLOS.getApplicationOptions()) {
+            parent.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang));
+        }
 
         if (tutkintoLOS.getThemes() != null) {
             parent.setThemes(CodeToDTO.convertCodesDistinct(tutkintoLOS.getThemes(), uiLang));

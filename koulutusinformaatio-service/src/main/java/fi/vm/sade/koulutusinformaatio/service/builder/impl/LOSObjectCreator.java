@@ -1320,7 +1320,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.getPrerequisites().add(createCode(koulutus.getPohjakoulutusvaatimus()));
         if (!los.getPrerequisites().isEmpty()) {
-            los.setKoulutusPrerequisite(los.getPrerequisites().get(0));
+            los.setKoulutusPrerequisite(createCode(koulutus.getPohjakoulutusvaatimus()));
         }
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
@@ -1338,7 +1338,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setStatus(koulutus.getTila().toString());
 
-        los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);// TarjontaConstants.TYPE_ADULT_UPSEC);
+        los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);
         los.setKomoOid(koulutus.getKomoOid());
         los.setValmistavaKoulutus(koulutus.getValmistavaKoulutus() != null);
         if (koulutus.getToteutustyyppi().name().equals(ToteutustyyppiEnum.AMMATTITUTKINTO.name())) {
