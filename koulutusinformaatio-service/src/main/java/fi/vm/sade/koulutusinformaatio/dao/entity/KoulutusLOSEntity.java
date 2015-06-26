@@ -33,6 +33,8 @@ public class KoulutusLOSEntity {
     @Embedded
     private I18nTextEntity accessToFurtherStudies;
     @Embedded
+    private I18nTextEntity selectingDegreeProgram;
+    @Embedded
     private List<ContactPersonEntity> contactPersons = new ArrayList<ContactPersonEntity>();
     @Embedded
     private I18nTextEntity educationDomain;
@@ -486,6 +488,14 @@ public class KoulutusLOSEntity {
 
     public void setKoulutusPrerequisite(CodeEntity koulutusPrerequisite) {
         this.koulutusPrerequisite = koulutusPrerequisite;
+    }
+
+    public I18nTextEntity getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
+    }
+
+    public void setSelectingDegreeProgram(I18nTextEntity selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
 }

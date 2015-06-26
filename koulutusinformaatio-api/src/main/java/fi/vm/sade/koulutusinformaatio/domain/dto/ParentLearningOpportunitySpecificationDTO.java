@@ -37,6 +37,7 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
     private String structure;
     private String accessToFurtherStudies;
     private String goals;
+    private String selectingDegreeProgram;
     private String educationDomain;
     private String stydyDomain;
     private List<ParentLearningOpportunityInstanceDTO> lois = new ArrayList<ParentLearningOpportunityInstanceDTO>();
@@ -239,6 +240,14 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
 
     public void setApplicationSystems(List<ApplicationSystemDTO> applicationSystems) {
         this.applicationSystems = applicationSystems;
+    }
+
+    public String getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
+    }
+
+    public void setSelectingDegreeProgram(String selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
 }

@@ -1237,6 +1237,11 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setTargetGroup(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KOHDERYHMA)));
         }
 
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA).getTekstis().containsKey(UNDEFINED)) {
+            los.setSelectingDegreeProgram(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA)));
+        }
+
         los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));// koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
 
         // fields used to resolve available translation languages

@@ -34,6 +34,7 @@ public class KoulutusLOS extends LOS {
     private I18nText careerOpportunities;
     private I18nText targetGroup;
     private I18nText workingLifePlacement;
+    private I18nText selectingDegreeProgram;
     private String linkToCurriculum;
 
     private Code educationCode;
@@ -522,6 +523,14 @@ public class KoulutusLOS extends LOS {
 
     public void setKoulutusPrerequisite(Code koulutusPrerequisite) {
         this.koulutusPrerequisite = koulutusPrerequisite;
+    }
+
+    public I18nText getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
+    }
+
+    public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
 }

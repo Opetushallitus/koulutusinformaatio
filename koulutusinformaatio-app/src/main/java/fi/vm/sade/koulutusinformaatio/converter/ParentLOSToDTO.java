@@ -82,6 +82,10 @@ public final class ParentLOSToDTO {
 
             SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
 
+            // Koulutusohjelman valinta on aina sama tutkinnon kaikille komotoille
+            KoulutusLOS firstChild = tutkintoLOS.getChildEducations().get(0);
+            parent.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(firstChild.getSelectingDegreeProgram(), lang));
+
             for (KoulutusLOS child : tutkintoLOS.getChildEducations()) {
 
                 if (!isSamePrerequisite(prerequisite, child)) {
