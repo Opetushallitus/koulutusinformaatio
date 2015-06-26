@@ -19,15 +19,12 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.List;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import com.google.common.collect.SetMultimap;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 
@@ -117,10 +114,6 @@ public final class ParentLOSToDTO {
             }
         }
 
-        for (ApplicationOption ao : tutkintoLOS.getApplicationOptions()) {
-            parent.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang));
-        }
-
         if (tutkintoLOS.getThemes() != null) {
             parent.setThemes(CodeToDTO.convertCodesDistinct(tutkintoLOS.getThemes(), uiLang));
         }
@@ -131,6 +124,9 @@ public final class ParentLOSToDTO {
         parent.setContainsPseudoChildLOS(containsPseudoChild(tutkintoLOS.getChildren()));
 
         if (!tutkintoLOS.getChildEducations().isEmpty()) {
+
+            SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
+
             for (KoulutusLOS child : tutkintoLOS.getChildEducations()) {
 
                 if (!isSamePrerequisite(prerequisite, child)) {
@@ -142,6 +138,21 @@ public final class ParentLOSToDTO {
                 childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(child.getName(), lang));
                 childDto.setPrerequisite(CodeToDTO.convert(child.getKoulutusPrerequisite(), lang));
                 parent.getChildren().add(childDto);
+
+                if (child.getApplicationOptions() != null) {
+                    for (ApplicationOption ao : child.getApplicationOptions()) {
+                        aoByAs.put(ao.getApplicationSystem(), ao);
+                    }
+                }
+            }
+
+            for (ApplicationSystem as : aoByAs.keySet()) {
+                ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+                asDTO.setStatus(as.getStatus());
+                for (ApplicationOption ao : aoByAs.get(as)) {
+                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convertHigherEducation(ao, lang, uiLang, "fi"));
+                }
+                parent.getApplicationSystems().add(asDTO);
             }
         }
 

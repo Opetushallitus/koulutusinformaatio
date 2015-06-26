@@ -45,6 +45,7 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
     private boolean containsPseudoChildLOS = false;
     private Set<ChildLOIRefDTO> children = new HashSet<ChildLOIRefDTO>();
     private Set<ApplicationOptionDTO> applicationOptions = new HashSet<ApplicationOptionDTO>();
+    private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
 
     private String translationLanguage;
 
@@ -232,5 +233,12 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
         this.applicationOptions = applicationOptions;
     }
 
+    public List<ApplicationSystemDTO> getApplicationSystems() {
+        return applicationSystems;
+    }
+
+    public void setApplicationSystems(List<ApplicationSystemDTO> applicationSystems) {
+        this.applicationSystems = applicationSystems;
+    }
 
 }

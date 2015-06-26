@@ -258,12 +258,4 @@ public class TutkintoLOS extends LOS {
         this.childEducations = childEducations;
     }
 
-    public Set<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
-    }
-
 }
