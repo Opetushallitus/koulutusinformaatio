@@ -900,14 +900,13 @@ public class TarjontaServiceImpl implements TarjontaService {
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            LOG.debug("Cur ammatillinen tarjoaja result: " + curRes.getOid());
 
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                LOG.debug("cur ammatillinen koulutus result: " + curKoulutus.getOid());
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-                    LOG.debug("koulutus not published, discarding");
+                    LOG.debug("Provider " + curRes.getOid() + " education " + curKoulutus.getOid() + " education not published, discarding");
                     continue;
                 }
+                LOG.debug("Added ammatillinen provider " + curRes.getOid() + " education " + curKoulutus.getOid());
                 dtoList.add(curKoulutus);
             }
         }
@@ -921,43 +920,56 @@ public class TarjontaServiceImpl implements TarjontaService {
      */
 
     @Override
-    public List<KoulutusLOS> createAmmatillinenKoulutusLOS(KoulutusHakutulosV1RDTO koulutusDTO) throws KoodistoException,
-            TarjontaParseException {
+    public List<KoulutusLOS> createAmmatillinenKoulutusLOS(KoulutusHakutulosV1RDTO koulutusDTO) {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
+        try {
 
-        ArrayList<KoulutusLOS> losses = new ArrayList<KoulutusLOS>();
-        if (hasAlreadyProcessedOid(koulutusDTO.getOid())) {
-            return losses;
-        }
-        String parentoid = koulutusDTO.getParentKomoOid();
-        String providerOid = koulutusDTO.getTarjoajat().iterator().next();
-        TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(parentoid);
-        if (tutkinto == null) {
-            tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
-        }
-        List<String> siblings = koulutusDTO.getSiblingKomotos();
-        if (siblings != null) {
-            for (String oid : siblings) {
-                KoulutusLOS siblingLOS = creator.createAmmatillinenLOS(oid, true);
-                siblingLOS.setTutkinto(tutkinto);
-                losses.add(siblingLOS);
+            ArrayList<KoulutusLOS> losses = new ArrayList<KoulutusLOS>();
+            if (hasAlreadyProcessedOid(koulutusDTO.getOid())) {
+                return losses;
             }
-        }
-        KoulutusLOS koulutus = creator.createAmmatillinenLOS(koulutusDTO.getOid(), true);
-        koulutus.setTutkinto(tutkinto);
-        losses.add(koulutus);
+            String parentoid = koulutusDTO.getParentKomoOid();
+            String providerOid = koulutusDTO.getTarjoajat().iterator().next();
+            TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(parentoid);
+            if (tutkinto == null) {
+                tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
+            }
+            List<String> siblings = koulutusDTO.getSiblingKomotos();
+            if (siblings != null) {
+                for (String oid : siblings) {
+                    try {
+                        KoulutusLOS siblingLOS = creator.createAmmatillinenLOS(oid, true);
+                        siblingLOS.setTutkinto(tutkinto);
+                        losses.add(siblingLOS);
+                    } catch (TarjontaParseException e) {
+                        addProcessedOid(oid);
+                        LOG.warn("Vocational sibling to add was not valid: " + oid);
+                        // Invalid sibling should be skipped
+                    }
+                }
+            }
+            KoulutusLOS koulutus = creator.createAmmatillinenLOS(koulutusDTO.getOid(), true);
+            koulutus.setTutkinto(tutkinto);
+            losses.add(koulutus);
 
-        for (KoulutusLOS los : losses) {
-            tutkinto.getChildEducations().add(los);
-            tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
-            tutkinto.getApplicationOptions().addAll(los.getApplicationOptions());
-            los.setSiblings(losses);
-            addProcessedOid(los.getId());
+            for (KoulutusLOS los : losses) {
+                tutkinto.getChildEducations().add(los);
+                tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
+                tutkinto.getApplicationOptions().addAll(los.getApplicationOptions());
+                los.setSiblings(losses);
+                addProcessedOid(los.getId());
+            }
+            addProcessedTutkinto(tutkinto);
+            return losses;
+        } catch (KoodistoException e) {
+            LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            return new ArrayList<KoulutusLOS>();
+        } catch (TarjontaParseException e) {
+            LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            return new ArrayList<KoulutusLOS>();
         }
-        addProcessedTutkinto(tutkinto);
-        return losses;
     }
 
     @Override

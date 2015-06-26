@@ -217,11 +217,9 @@ public abstract class ObjectCreator {
     protected List<Code> createCodes(KoodiUrisV1RDTO opetuskielis) throws KoodistoException {
         List<Code> codes = new ArrayList<Code>();
         if (opetuskielis != null && opetuskielis.getMeta() != null) {
-
             for (KoodiV1RDTO curKoodi : opetuskielis.getMeta().values()) {
-                codes.add(createCode(curKoodi));
+                codes.addAll(koodistoService.search(curKoodi.getUri()));
             }
-
         }
         return codes;
     }
@@ -230,12 +228,7 @@ public abstract class ObjectCreator {
         if (koodi == null) {
             return null;
         }
-        Code code = new Code();
-        code.setDescription(getI18nTextEnriched(koodi.getMeta()));
-        code.setName(getI18nTextEnriched(koodi.getMeta()));
-        code.setUri(koodi.getUri());
-        code.setValue(koodi.getArvo());
-        return code;
+        return koodistoService.searchFirst(koodi.getUri());
     }
 
     protected I18nText getTypeText(String text, String kieliUri) {//ValintakoeV1RDTO valintakoe) {
@@ -252,7 +245,7 @@ public abstract class ObjectCreator {
         List<Code> facetPrereqs = new ArrayList<Code>();
         if (rawPrereqs != null) {
             for (Code curRawPrereq : rawPrereqs) {
-                if (curRawPrereq.getUri() != null) {
+                if (curRawPrereq != null && curRawPrereq.getUri() != null) {
                     facetPrereqs.addAll(koodistoService.searchSuperCodes(curRawPrereq.getUri(), POHJAKOULUTUSFASETTI_KOODISTO_URI));
                 }
             }

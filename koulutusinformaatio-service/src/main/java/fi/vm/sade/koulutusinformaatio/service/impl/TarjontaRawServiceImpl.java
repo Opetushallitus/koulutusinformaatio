@@ -219,7 +219,8 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType) {
         return this.v1Resource
                 .path("search")
-                .queryParam("koulutusastetyyppi", educationType)//"Korkeakoulutus")
+                .queryParam("koulutusastetyyppi", educationType)
+                .queryParam("tila", "JULKAISTU")
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });

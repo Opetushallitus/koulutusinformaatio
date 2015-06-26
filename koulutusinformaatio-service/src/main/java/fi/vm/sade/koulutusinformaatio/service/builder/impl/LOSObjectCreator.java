@@ -1242,7 +1242,7 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setSelectingDegreeProgram(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA)));
         }
 
-        los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));// koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
+        los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));
 
         // fields used to resolve available translation languages
         // content, internationalization, cooperation
@@ -1283,8 +1283,10 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
-        los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
-        los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
+        if (koulutus.getSuunniteltuKestoTyyppi() != null) {
+            los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
+            los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
+        }
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
 
@@ -1323,10 +1325,11 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setType(aoType);
             }
         }
-        los.getPrerequisites().add(createCode(koulutus.getPohjakoulutusvaatimus()));
-        if (!los.getPrerequisites().isEmpty()) {
-            los.setKoulutusPrerequisite(createCode(koulutus.getPohjakoulutusvaatimus()));
+        Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
+        if (requirementsCode != null) {
+            los.getPrerequisites().add(requirementsCode);
         }
+        los.setKoulutusPrerequisite(requirementsCode);
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
