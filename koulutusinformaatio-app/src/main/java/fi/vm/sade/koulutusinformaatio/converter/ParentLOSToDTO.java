@@ -36,51 +36,6 @@ public final class ParentLOSToDTO {
     private ParentLOSToDTO() {
     }
 
-    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS,
-                                                                    final String lang,
-                                                                    final String uiLang,
-                                                                    final String defaultLang) {
-
-        ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
-        parent.setId(parentLOS.getId());
-        parent.setName(ConverterUtil.getTextByLanguage(parentLOS.getName(), defaultLang));
-        parent.setEducationDegree(parentLOS.getEducationDegree());
-        parent.setProvider(ProviderToDTO.convert(parentLOS.getProvider(), lang, defaultLang, uiLang));
-        parent.setStructure(ConverterUtil.getTextByLanguage(parentLOS.getStructure(), lang));
-        parent.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(parentLOS.getAccessToFurtherStudies(), lang));
-        parent.setGoals(ConverterUtil.getTextByLanguage(parentLOS.getGoals(), lang));
-        parent.setEducationDomain(ConverterUtil.getTextByLanguage(parentLOS.getEducationDomain(), uiLang));
-        parent.setStydyDomain(ConverterUtil.getTextByLanguage(parentLOS.getStydyDomain(), uiLang));
-        parent.setTranslationLanguage(lang);
-
-        try {
-            ChildLOI latestLoi = parentLOS.getLatestLoi();
-            parent.setCreditValue(latestLoi.getCreditValue());
-            parent.setCreditUnit(ConverterUtil.getTextByLanguage(latestLoi.getCreditUnit(), uiLang));
-        } catch (Exception e) {
-            parent.setCreditValue(parentLOS.getCreditValue());
-            parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLOS.getCreditUnit(), uiLang));
-        }
-
-        if (parentLOS.getLois() != null) {
-            for (ParentLOI loi : parentLOS.getLois()) {
-                parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang, defaultLang));
-            }
-        }
-
-
-        if (parentLOS.getThemes() != null) {
-            parent.setThemes(CodeToDTO.convertCodesDistinct(parentLOS.getThemes(), uiLang));
-        }
-        if (parentLOS.getTopics() != null) {
-            parent.setTopics(CodeToDTO.convertAll(parentLOS.getTopics(), uiLang));
-        }
-
-        parent.setContainsPseudoChildLOS(containsPseudoChild(parentLOS.getChildren()));
-
-        return parent;
-    }
-
     public static ParentLearningOpportunitySpecificationDTO convert(final TutkintoLOS tutkintoLOS,
                                                                     final String lang,
                                                                     final String uiLang,
