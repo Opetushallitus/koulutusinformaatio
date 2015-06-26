@@ -101,7 +101,8 @@ public interface LearningOpportunityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(@PathParam("id") String id,
                                                                                   @QueryParam("lang") String lang,
-                                                                                  @QueryParam("uiLang") String uiLang);
+                                                                                  @QueryParam("uiLang") String uiLang,
+                                                                                  @QueryParam("prerequisite") String prerequisite);
 
     /**
      * Fetches a child learning opportunity that belongs to the specified parent.

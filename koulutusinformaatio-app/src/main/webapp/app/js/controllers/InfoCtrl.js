@@ -192,10 +192,14 @@
             languageCode = $location.search().descriptionLang;
         }
 
+        $routeParams.prerequisite = $routeParams.prerequisite || 'PK';
+        $scope.prerequisite = $routeParams.prerequisite;
+
         loResource.query({
             id: $routeParams.id,
             lang: languageCode,
-            loType: $routeParams.loType
+            loType: $routeParams.loType,
+            prerequisite: $routeParams.prerequisite
         }).then(function(loResult) {
             $scope.lo = loResult.lo;
             $scope.tarjontaViewUrl = Config.get('tarjontaUrl') + '/koulutus/' + $scope.lo.id;

@@ -87,7 +87,8 @@ public final class ParentLOSToDTO {
     public static ParentLearningOpportunitySpecificationDTO convert(final TutkintoLOS tutkintoLOS,
                                                                     final String lang,
                                                                     final String uiLang,
-                                                                    final String defaultLang) {
+                                                                    final String defaultLang,
+                                                                    final String prerequisite) {
 
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
         parent.setId(tutkintoLOS.getId());
@@ -131,6 +132,11 @@ public final class ParentLOSToDTO {
 
         if (!tutkintoLOS.getChildEducations().isEmpty()) {
             for (KoulutusLOS child : tutkintoLOS.getChildEducations()) {
+
+                if (!isSamePrerequisite(prerequisite, child)) {
+                    continue;
+                }
+
                 ChildLOIRefDTO childDto = new ChildLOIRefDTO();
                 childDto.setId(child.getId());
                 childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(child.getName(), lang));
@@ -140,6 +146,17 @@ public final class ParentLOSToDTO {
         }
 
         return parent;
+    }
+
+    public static boolean isSamePrerequisite(String prerequisite, KoulutusLOS child) {
+        if (prerequisite == null) {
+            return true;
+        }
+        if (child.getKoulutusPrerequisite() == null
+                || !prerequisite.equals(child.getKoulutusPrerequisite().getValue())) {
+            return false;
+        }
+        return true;
     }
 
     private static boolean containsPseudoChild(List<ChildLOS> children) {

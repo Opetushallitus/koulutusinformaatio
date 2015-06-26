@@ -252,6 +252,9 @@ service('GeneralLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageS
             if (options.lang) {
                 queryParams.lang = options.lang
             }
+            if (options.prerequisite) {
+                queryParams.prerequisite = options.prerequisite;
+            }
             
             $http.get(serviceUrl + options.id, {
                 params: queryParams

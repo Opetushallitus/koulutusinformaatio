@@ -137,11 +137,11 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang) {
+    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite) {
         try {
             ParentLearningOpportunitySpecificationDTO dto = null;
 
-            dto = learningOpportunityService.getTutkintoLearningOpportunity(id, lang, uiLang);
+            dto = learningOpportunityService.getTutkintoLearningOpportunity(id, lang, uiLang, prerequisite);
 
             return dto;
         } catch (ResourceNotFoundException e) {
