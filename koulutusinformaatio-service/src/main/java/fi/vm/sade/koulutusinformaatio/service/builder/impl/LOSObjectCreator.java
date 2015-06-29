@@ -1149,7 +1149,29 @@ public class LOSObjectCreator extends ObjectCreator {
         addKoulutus2AsteV1Fields(koulutusDTO, los);
         addKoulutusAmmatillinenPerustutkintoV1Fields(koulutusDTO, los);
         return los;
+    }
 
+    public KoulutusLOS createLukioLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+        ResultV1RDTO<KoulutusLukioV1RDTO> result = tarjontaRawService.getUpperSecondaryLearningOpportunity(oid);
+        if (result != null) {
+            KoulutusLukioV1RDTO koulutusDTO = result.getResult();
+            return createLukioLOS(koulutusDTO, checkStatus);
+        }
+        return null;
+    }
+
+    public KoulutusLOS createLukioLOS(KoulutusLukioV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
+            TarjontaParseException {
+        KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_LUKIO);
+        addKoulutus2AsteV1Fields(koulutusDTO, los);
+        addKoulutusKoulutusLukioV1Fields(koulutusDTO, los);
+        return los;
+    }
+
+    private void addKoulutusKoulutusLukioV1Fields(KoulutusLukioV1RDTO koulutusDTO, KoulutusLOS los) throws KoodistoException {
+        if (koulutusDTO.getLukiodiplomit() != null) {
+            los.setDiplomas(getI18nTextMultiple(koulutusDTO.getLukiodiplomit()));
+        }
     }
 
     private KoulutusLOS createKoulutusGenericV1LOS(KoulutusGenericV1RDTO koulutusDTO, boolean checkStatus, String edType) throws KoodistoException,
@@ -1631,5 +1653,6 @@ public class LOSObjectCreator extends ObjectCreator {
         this.cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
         this.invalidOids = new HashSet<String>();
     }
+
 
 }

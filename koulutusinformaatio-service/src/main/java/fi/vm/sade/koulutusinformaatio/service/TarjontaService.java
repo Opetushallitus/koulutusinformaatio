@@ -125,4 +125,8 @@ public interface TarjontaService {
      * Helper method to reset duplicate sibling creation in createAmmatillinenKoulutusLOS
      */
     void clearProcessedLists();
+
+    List<KoulutusHakutulosV1RDTO> findLukioKoulutusDTOs() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+
+    public KoulutusLOS createLukioKoulutusLOS(KoulutusHakutulosV1RDTO curDTO);
 }

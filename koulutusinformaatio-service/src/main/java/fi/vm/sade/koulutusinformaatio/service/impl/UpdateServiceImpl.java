@@ -108,7 +108,18 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
 
-            // TODO: lukiokoulutusten V1 indeksointi!
+            tarjontaService.clearProcessedLists();
+            List<KoulutusHakutulosV1RDTO> lukioEducations = this.tarjontaService.findLukioKoulutusDTOs();
+            LOG.info("Found lukio educations: " + lukioEducations.size());
+            for (KoulutusHakutulosV1RDTO curDTO : lukioEducations) {
+                LOG.debug("Indexing lukio education: " + curDTO.getOid());
+                KoulutusLOS los = tarjontaService.createLukioKoulutusLOS(curDTO);
+                if (los != null) {
+                    indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                    this.educationDataUpdateService.save(los);
+                }
+            }
+            LOG.info("Lukio educations saved.");
 
             tarjontaService.clearProcessedLists();
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();

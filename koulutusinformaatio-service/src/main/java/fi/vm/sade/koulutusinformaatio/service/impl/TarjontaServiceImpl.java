@@ -914,10 +914,29 @@ public class TarjontaServiceImpl implements TarjontaService {
         return dtoList;
     }
 
-    /*
-     * 
-     * ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO> koulutusRes = this.tarjontaRawService .getAmmatillinenPerustutkintoLearningOpportunity(curKoulutus.getOid()); KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO = koulutusRes.getResult();
-     */
+    @Override
+    public List<KoulutusHakutulosV1RDTO> findLukioKoulutusDTOs() throws TarjontaParseException, KoodistoException,
+            ResourceNotFoundException {
+        List<KoulutusHakutulosV1RDTO> dtoList = new ArrayList<KoulutusHakutulosV1RDTO>();
+
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
+                ToteutustyyppiEnum.LUKIOKOULUTUS.name());
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+
+            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    LOG.debug("Provider " + curRes.getOid() + " education " + curKoulutus.getOid() + " education not published, discarding");
+                    continue;
+                }
+                LOG.debug("Added lukio provider " + curRes.getOid() + " education " + curKoulutus.getOid());
+                dtoList.add(curKoulutus);
+            }
+        }
+
+        return dtoList;
+    }
 
     @Override
     public List<KoulutusLOS> createAmmatillinenKoulutusLOS(KoulutusHakutulosV1RDTO koulutusDTO) {
@@ -969,6 +988,22 @@ public class TarjontaServiceImpl implements TarjontaService {
         } catch (TarjontaParseException e) {
             LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
             return new ArrayList<KoulutusLOS>();
+        }
+    }
+
+    @Override
+    public KoulutusLOS createLukioKoulutusLOS(KoulutusHakutulosV1RDTO koulutusDTO) {
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
+        }
+        try {
+            return creator.createLukioLOS(koulutusDTO.getOid(), true);
+        } catch (KoodistoException e) {
+            LOG.warn("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            return null;
+        } catch (TarjontaParseException e) {
+            LOG.warn("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            return null;
         }
     }
 
