@@ -945,7 +945,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                         losses.add(siblingLOS);
                     } catch (TarjontaParseException e) {
                         addProcessedOid(oid);
-                        LOG.warn("Vocational sibling to add was not valid: " + oid);
+                        LOG.warn("Vocational sibling " + oid + " was not valid: " + e.getMessage());
                         // Invalid sibling should be skipped
                     }
                 }
@@ -976,6 +976,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     public void clearProcessedLists() {
         processedOids = new HashSet<String>();
         processedTutkintos = new HashMap<String, TutkintoLOS>();
+        if (creator != null) {
+            creator.clearProcessedLists();
+        }
     }
 
     public boolean hasAlreadyProcessedOid(String oid) {

@@ -69,11 +69,13 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.OppiaineV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
@@ -825,51 +827,74 @@ public class LOSObjectCreator extends ObjectCreator {
         return educationRef;
     }
 
-    private boolean fetchHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
-        ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByEducationOid(los.getId());
+    HashMap<String, ApplicationOption> cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
+    HashSet<String> invalidOids = new HashSet<String>();
 
-        if (hakukohteet == null
-                || hakukohteet.getResult() == null
-                || hakukohteet.getResult().isEmpty()) {
+    private boolean fetchHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
+
+        ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = loiCreator.tarjontaRawService.findHakukohdesByEducationOid(los.getId());
+        if (result == null
+                || result.getResult() == null
+                || result.getResult().getTulokset() == null
+                || result.getResult().getTulokset().isEmpty())
+        {
             return false;
         }
+        List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> hakukohdeTarjoajat = result.getResult().getTulokset();
 
         List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
 
-        for (NimiJaOidRDTO curHakukoh : hakukohteet.getResult()) {
-            String aoId = curHakukoh.getOid();
+        for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> curProvider : hakukohdeTarjoajat) {
+            for (HakukohdeHakutulosV1RDTO curHakukoh : curProvider.getTulokset()) {
+                String aoId = curHakukoh.getOid();
 
-            ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getV1EducationHakukohode(aoId);
-            HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
-
-            if (checkStatus
-                    && (hakukohdeDTO == null || hakukohdeDTO.getTila() == null || !hakukohdeDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString()))) {
-                continue;
-            }
-
-            ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getV1EducationHakuByOid(hakukohdeDTO.getHakuOid());
-
-            HakuV1RDTO hakuDTO = hakuRes.getResult();
-
-            if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString()))) {
-                continue;
-            }
-
-            try {
-
-                ApplicationOption ao = loiCreator.applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
-                // If fetching for preview, the status of the application option is added
-                if (!checkStatus) {
-                    ao.setStatus(hakukohdeDTO.getTila());
-                    ao.getApplicationSystem().setStatus(hakuDTO.getTila());
+                ApplicationOption cachedAo = cachedApplicationOptionResults.get(aoId);
+                if (cachedAo != null) {
+                    aos.add(cachedAo);
+                    continue;
                 }
-                if (ao.showInOpintopolku())
-                    aos.add(ao);
+                // If Haku or Hakukohde oid is already indexed as invalid, skip this AO.
+                if (invalidOids.contains(curHakukoh.getHakuOid()) || invalidOids.contains(aoId)) {
+                    continue;
+                }
 
-            } catch (Exception ex) {
-                LOG.debug("Problem fetching ao: " + ex.getMessage());
+                ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getV1EducationHakuByOid(curHakukoh.getHakuOid());
+                HakuV1RDTO hakuDTO = hakuRes.getResult();
+
+                if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString()))) {
+                    invalidOids.add(hakuDTO.getOid());
+                    continue;
+                }
+
+                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getV1EducationHakukohode(aoId);
+                HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
+
+                if (checkStatus
+                        && (hakukohdeDTO == null || hakukohdeDTO.getTila() == null || !hakukohdeDTO.getTila().toString()
+                                .equals(TarjontaTila.JULKAISTU.toString()))) {
+                    invalidOids.add(aoId);
+                    continue;
+                }
+
+                try {
+                    ApplicationOption ao = loiCreator.applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
+                    // If fetching for preview, the status of the application option is added
+                    if (!checkStatus) {
+                        ao.setStatus(hakukohdeDTO.getTila());
+                        ao.getApplicationSystem().setStatus(hakuDTO.getTila());
+                    }
+                    if (ao.showInOpintopolku()) {
+                        aos.add(ao);
+                        cachedApplicationOptionResults.put(ao.getId(), ao);
+                    } else {
+                        invalidOids.add(aoId);
+                    }
+
+                } catch (Exception ex) {
+                    LOG.debug("Problem fetching ao: " + ex.getMessage());
+                    invalidOids.add(aoId);
+                }
             }
-
         }
 
         los.setApplicationOptions(aos);
@@ -1600,6 +1625,11 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO hakuDTO, boolean shownInCalendar) throws KoodistoException {
         return this.loiCreator.applicationOptionCreator.getApplicationSystemCreator().createApplicationSystemForCalendar(hakuDTO, shownInCalendar);
+    }
+
+    public void clearProcessedLists() {
+        this.cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
+        this.invalidOids = new HashSet<String>();
     }
 
 }

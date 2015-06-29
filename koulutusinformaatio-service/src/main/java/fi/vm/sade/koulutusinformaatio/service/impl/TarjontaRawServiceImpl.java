@@ -46,6 +46,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
@@ -287,12 +288,14 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByEducationOid(
+    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(
             String oid) {
-        return v1Resource
-                .path(String.format("%s/%s", oid, "hakukohteet"))
+        return v1AOResource
+                .path("search")
+                .queryParam("koulutusOid", oid)
+                .queryParam("tila", "JULKAISTU")
                 .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {
+                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
                 });
     }
 

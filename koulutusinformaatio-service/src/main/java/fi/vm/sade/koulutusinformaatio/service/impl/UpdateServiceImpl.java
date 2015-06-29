@@ -74,7 +74,6 @@ public class UpdateServiceImpl implements UpdateService {
     private ProviderService providerService;
 
     private TransactionManager transactionManager;
-    private static final int MAX_RESULTS = 100;
     private boolean running = false;
     private long runningSince = 0;
     private LocationService locationService;
@@ -109,25 +108,28 @@ public class UpdateServiceImpl implements UpdateService {
             this.indexerService.clearProcessedLists();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-            int count = MAX_RESULTS;
-            int index = 0;
 
             // TODO: lukiokoulutusten V1 indeksointi!
 
             tarjontaService.clearProcessedLists();
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
-            LOG.debug("Found vocational educations: " + vocationalEducations.size());
+            LOG.info("Found vocational educations: " + vocationalEducations.size());
             for (KoulutusHakutulosV1RDTO curDTO : vocationalEducations) {
+                if (curDTO.getOid().equals("1.2.246.562.17.91514939619")) {
                 LOG.debug("Indexing vocational education: " + curDTO.getOid());
                 List<KoulutusLOS> losses = tarjontaService.createAmmatillinenKoulutusLOS(curDTO);
-                for (KoulutusLOS curLOS : losses) {
-                    this.educationDataUpdateService.save(curLOS);
+                if (losses != null && !losses.isEmpty()) {
+                    for (KoulutusLOS curLOS : losses) {
+                        this.educationDataUpdateService.save(curLOS);
+                    }
+                    TutkintoLOS tutkintolos = losses.get(0).getTutkinto();
+                    indexToSolr(tutkintolos, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                    this.educationDataUpdateService.save(tutkintolos);
+                    }
                 }
-                TutkintoLOS tutkintolos = losses.get(0).getTutkinto();
-                indexToSolr(tutkintolos, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(tutkintolos);
             }
             LOG.info("Vocational educations saved.");
+            tarjontaService.clearProcessedLists();
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
