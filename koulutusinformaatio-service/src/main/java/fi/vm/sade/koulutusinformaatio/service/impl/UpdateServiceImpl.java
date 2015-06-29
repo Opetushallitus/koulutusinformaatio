@@ -44,7 +44,6 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -115,7 +114,6 @@ public class UpdateServiceImpl implements UpdateService {
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
             LOG.info("Found vocational educations: " + vocationalEducations.size());
             for (KoulutusHakutulosV1RDTO curDTO : vocationalEducations) {
-                if (curDTO.getOid().equals("1.2.246.562.17.91514939619")) {
                 LOG.debug("Indexing vocational education: " + curDTO.getOid());
                 List<KoulutusLOS> losses = tarjontaService.createAmmatillinenKoulutusLOS(curDTO);
                 if (losses != null && !losses.isEmpty()) {
@@ -125,7 +123,6 @@ public class UpdateServiceImpl implements UpdateService {
                     TutkintoLOS tutkintolos = losses.get(0).getTutkinto();
                     indexToSolr(tutkintolos, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(tutkintolos);
-                    }
                 }
             }
             LOG.info("Vocational educations saved.");
