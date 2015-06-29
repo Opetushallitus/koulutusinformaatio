@@ -27,7 +27,7 @@ describe('ChildLOService', function() {
 
     it('should transform the response', function() {
         httpBackend.when('GET', '../lo/child/123?uiLang=fi').respond(200, { parent: { id: 'parent_123' } });
-        httpBackend.when('GET', '../lo/parent/parent_123?uiLang=fi').respond(200, {});
+        httpBackend.when('GET', '../lo/tutkinto/parent_123?uiLang=fi').respond(200, {});
         service.query({id: '123'}).then(function(result) {
             expect(spy).toHaveBeenCalled();
             expect(parentService.query).toHaveBeenCalled();
