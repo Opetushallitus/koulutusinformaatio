@@ -542,7 +542,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<KoulutusL
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
         } else if (los.getType().equals(TarjontaConstants.TYPE_KOULUTUS)) {
-            if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMA)) {
+            if (los.getEducationType().equals(SolrConstants.ED_TYPE_LUKIO)) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_LUKIO);
+            } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMA)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_PK_JALK);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_VALMA);
