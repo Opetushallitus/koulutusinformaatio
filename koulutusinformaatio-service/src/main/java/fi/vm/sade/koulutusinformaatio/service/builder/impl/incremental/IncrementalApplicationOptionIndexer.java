@@ -38,8 +38,6 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateServ
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
@@ -140,7 +138,7 @@ public class IncrementalApplicationOptionIndexer {
     
     public void indexAdultUpsecEdAo(String aoOid, boolean toRemove) throws Exception {
        
-        LOG.debug("Indexing adultupsec ed ao: " + aoOid);
+        LOG.debug("Indexing adultupsec ed ao: {}", aoOid);
         ResultV1RDTO<HakukohdeV1RDTO> aoRes = this.tarjontaRawService.getV1EducationHakukohode(aoOid);
         if (aoRes != null) {
             HakukohdeV1RDTO curAo = aoRes.getResult();
@@ -153,7 +151,7 @@ public class IncrementalApplicationOptionIndexer {
                             ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulOid.getOid());
                             if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
                                 if (!toRemove) {
-                                    LOG.debug("Indexing adult upsec komo: " + koulutusRes.getResult().getKomoOid());
+                                LOG.debug("Indexing adult upsec komo: {}", koulutusRes.getResult().getKomoOid());
                                     //if (koulutusRe)
                                     if (this.losIndexer.isAdultUpsecKomo(koulutusRes.getResult().getKomoOid())) {
                                         this.losIndexer.indexAdultUpsecKomo(koulutusRes.getResult().getKomoOid());
@@ -320,7 +318,7 @@ public class IncrementalApplicationOptionIndexer {
                 }
             }
         } catch (Exception ex) {
-            LOG.debug("No higher ed: " + oid);
+            LOG.debug("No higher ed: {}", oid);
         }
         return false;
     }

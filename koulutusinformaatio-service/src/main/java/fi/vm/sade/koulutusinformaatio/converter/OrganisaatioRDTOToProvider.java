@@ -135,14 +135,14 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p = new Provider();
             p.setId(o.getOid());
             p.setName(new I18nText(o.getNimi()));
-            LOG.debug("Getting postal address for organisation: " + o.getOid());
+            LOG.debug("Getting postal address for organisation: {}", o.getOid());
             p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL, ADDRESS_DATA_TYPE_FOREIGN_POSTAL));
             p.setVisitingAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT, ADDRESS_DATA_TYPE_FOREIGN_VISIT));
             p.setEmail(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_EMAIL));
             p.setFax(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_FAX));
             p.setPhone(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_PHONE));
             p.setWebPage(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_WWW));
-            LOG.debug("Setting descriptions: " + o.getOid());
+            LOG.debug("Setting descriptions: {}", o.getOid());
             p.setDescription(getDataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
             p.setHealthcare(getDataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
             p.setAccessibility(getDataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
@@ -155,7 +155,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setFinancingStudies(getDataValue(o.getMetadata(), METADATA_OPINTOJEN_RAHOITUS));
             p.setInsurances(getDataValue(o.getMetadata(), METADATA_TIETOA_VAKUUTUKSISTA));
             p.setLeisureServices(getDataValue(o.getMetadata(), METADATA_VAPAA_AJAN_PALVELUT));
-            LOG.debug("Got descriptions: " + o.getOid());
+            LOG.debug("Got descriptions: {}", o.getOid());
             p.setSocial(getSocialLinks(o.getMetadata()));
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
@@ -214,20 +214,20 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         Map<String,String> postalCodeTransls = new HashMap<String,String>();
                
         
-        LOG.debug("Getting " + addressType);
+        LOG.debug("Getting {}", addressType);
         
         for (Map<String,String> curYht : yhteystiedot) {
             if (curYht.containsKey(ADDRESS_DATA_TYPE) && (curYht.get(ADDRESS_DATA_TYPE).equals(addressType) || curYht.get(ADDRESS_DATA_TYPE).equals(foreignAddressType))) {
                 
-                LOG.debug("Yhteystieto: " + addressType);
+                LOG.debug("Yhteystieto: {}", addressType);
                 
                 String key = koodistoService.searchFirstCodeValue(curYht.get(LANG));
                 
-                LOG.debug("Lang key is: " + key);
+                LOG.debug("Lang key is: {}", key);
                 if (curYht.get(STREET_ADDRESS) != null) {
                     streetAddrTransls.put(key.toLowerCase(), curYht.get(STREET_ADDRESS));
                     
-                    LOG.debug("there is street address: " + curYht.get(STREET_ADDRESS));
+                    LOG.debug("there is street address: {}", curYht.get(STREET_ADDRESS));
                     
                 } 
                 if (curYht.get(POST_OFFICE) != null) {

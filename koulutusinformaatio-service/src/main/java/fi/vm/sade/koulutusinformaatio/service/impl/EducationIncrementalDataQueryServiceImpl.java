@@ -446,7 +446,7 @@ EducationIncrementalDataQueryService {
     }
     
     private List<String> getLearningOpportunitiesByAO(ApplicationOptionEntity aoE) {
-        LOG.debug("getting los ids for application option: " + aoE.getId());
+        LOG.debug("getting los ids for application option: {}", aoE.getId());
         List<String> loss = new ArrayList<String>();
         for (ChildLOIRefEntity childLoiE :  aoE.getChildLOIRefs()) {
             List<LOS> curLoss = this.findLearningOpportunitiesByLoiId(childLoiE.getId());
@@ -459,7 +459,7 @@ EducationIncrementalDataQueryService {
         
         List<HigherEducationLOSRefEntity> higherEdLossRefs =  aoE.getHigherEdLOSRefs();
         if (higherEdLossRefs != null) {
-            LOG.debug("Higher ed los refs: " + higherEdLossRefs.size());
+            LOG.debug("Higher ed los refs: {}", higherEdLossRefs.size());
             for (HigherEducationLOSRefEntity curLosRef : higherEdLossRefs) {
                 loss.add(curLosRef.getId());
             }
@@ -467,10 +467,10 @@ EducationIncrementalDataQueryService {
         LOG.debug("Getting special loss");
         List<Key<SpecialLearningOpportunitySpecificationEntity>> specials =  this.specialLearningOpportunitySpecificationDAO.findByAoId(aoE.getId());
         if (specials != null && !specials.isEmpty()) {
-            LOG.debug("There are specials: " + specials.size());
+            LOG.debug("There are specials: {}", specials.size());
             for (Key<SpecialLearningOpportunitySpecificationEntity> curSpec : specials) {
                 if (!loss.contains(curSpec.getId().toString())) {
-                    LOG.debug("Adding here: " + curSpec.getId());
+                    LOG.debug("Adding here: {}", curSpec.getId());
                     loss.add(curSpec.getId().toString());
                 }
             }

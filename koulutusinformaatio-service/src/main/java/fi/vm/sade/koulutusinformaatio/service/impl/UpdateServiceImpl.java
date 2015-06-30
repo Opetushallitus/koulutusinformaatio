@@ -111,8 +111,9 @@ public class UpdateServiceImpl implements UpdateService {
             tarjontaService.clearProcessedLists();
             List<KoulutusHakutulosV1RDTO> lukioEducations = this.tarjontaService.findLukioKoulutusDTOs();
             LOG.info("Found lukio educations: " + lukioEducations.size());
+            int i = 0;
             for (KoulutusHakutulosV1RDTO curDTO : lukioEducations) {
-                LOG.debug("Indexing lukio education: " + curDTO.getOid());
+                LOG.debug("{}/{} Indexing lukio education: {}", ++i, lukioEducations.size(), curDTO.getOid());
                 KoulutusLOS los = tarjontaService.createLukioKoulutusLOS(curDTO);
                 if (los != null) {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -124,8 +125,9 @@ public class UpdateServiceImpl implements UpdateService {
             tarjontaService.clearProcessedLists();
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
             LOG.info("Found vocational educations: " + vocationalEducations.size());
+            i = 0;
             for (KoulutusHakutulosV1RDTO curDTO : vocationalEducations) {
-                LOG.debug("Indexing vocational education: " + curDTO.getOid());
+                LOG.debug("{}/{} Indexing vocational education: {}", ++i, vocationalEducations.size(), curDTO.getOid());
                 List<KoulutusLOS> losses = tarjontaService.createAmmatillinenKoulutusLOS(curDTO);
                 if (losses != null && !losses.isEmpty()) {
                     for (KoulutusLOS curLOS : losses) {
@@ -139,11 +141,12 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Vocational educations saved.");
             tarjontaService.clearProcessedLists();
 
+            tarjontaService.clearProcessedLists();
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
-            LOG.debug("Found higher educations: " + higherEducations.size());
+            LOG.debug("Found higher educations: {}", higherEducations.size());
 
             for (HigherEducationLOS curLOS : higherEducations) {
-                LOG.debug("Saving highed education: " + curLOS.getId());
+                LOG.debug("Saving highed education: {}", curLOS.getId());
 
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
@@ -151,29 +154,32 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Higher educations saved.");
 
             // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
+            tarjontaService.clearProcessedLists();
             List<AdultUpperSecondaryLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
-            LOG.debug("Found adult educations: " + adultEducations.size());
+            LOG.debug("Found adult upper secondary  and base educations: {}", adultEducations.size());
 
             for (AdultUpperSecondaryLOS curLOS : adultEducations) {
-                LOG.debug("Saving adult education: " + curLOS.getId());
+                LOG.debug("Saving adult education: {}", curLOS.getId());
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Adult upper secondary and base educations saved.");
 
+            tarjontaService.clearProcessedLists();
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
-            LOG.debug("Found " + adultVocationals.size() + " adult vocational educations");
+            LOG.debug("Found adult vocational educations: {}", adultVocationals.size());
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
-                LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
+                LOG.debug("Saving adult vocational los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Adult vocational educations saved.");
 
+            tarjontaService.clearProcessedLists();
             List<KoulutusLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
-            LOG.debug("Found " + valmistavaList.size() + " valmistava educations");
+            LOG.debug("Found valmistava educations: {}", valmistavaList.size());
             for (KoulutusLOS curLOS : valmistavaList) {
-                LOG.debug("Saving valmistava los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
+                LOG.debug("Saving adult valmistava los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
@@ -198,7 +204,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
             for (CalendarApplicationSystem curAs : applicationSystems) {
-                LOG.debug("Indexing application system: " + curAs.getId());
+                LOG.debug("Indexing application system: {}", curAs.getId());
                 this.indexerService.indexASToSolr(curAs, loUpdateSolr);
             }
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
@@ -255,12 +261,12 @@ public class UpdateServiceImpl implements UpdateService {
      */
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
             HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
-        LOG.debug("organisations length: " + orgBasics.size());
+        LOG.debug("organisations length: {}", orgBasics.size());
         for (OrganisaatioPerustieto curOrg : orgBasics) {
        
-            LOG.debug("Fetching org " + curOrg.getOid());
+            LOG.debug("Fetching org {}", curOrg.getOid());
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
-                LOG.debug("Indexing organisaatio: " + curOrg.getOid());
+                LOG.debug("Indexing organisaatio: {}", curOrg.getOid());
                 Provider curProv = null;
                 try {
                     curProv = this.providerService.getByOID(curOrg.getOid());
@@ -271,7 +277,7 @@ public class UpdateServiceImpl implements UpdateService {
                 if (curProv.getOlTypeFacets() != null && !curProv.getOlTypeFacets().isEmpty()) {
                     this.educationDataUpdateService.save(curProv);
                     this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
-                    LOG.debug("Indexed and saved organisaatio: " + curOrg.getOid());
+                    LOG.debug("Indexed and saved organisaatio: {}", curOrg.getOid());
                 }
                 
             }

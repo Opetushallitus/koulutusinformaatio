@@ -33,8 +33,8 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 /**
@@ -514,7 +514,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<KoulutusL
         }
         
         String educationUri = los.getEducationCode() != null && los.getEducationCode().getUri() != null ? los.getEducationCode().getUri() : "";
-        LOG.debug("Education code: " + educationUri);
+        LOG.debug("Education code: {}", educationUri);
 
         if (educationUri.contains(SolrConstants.ED_CODE_AMM_OPETTAJA) 
                 || educationUri.contains(SolrConstants.ED_CODE_AMM_ER_OPETTAJA) || educationUri.contains(SolrConstants.ED_CODE_AMM_OPO)) {

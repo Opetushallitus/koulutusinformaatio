@@ -124,7 +124,7 @@ public class ArticleServiceImpl implements ArticleService {
             String extension, int page) {
         
         String url = String.format("%s%s/?s=%s&json=1&page=%s", this.articleHarvestUrlEn, extension, URLEncoder.encode(" "), page);
-        LOGGER.debug("Article search url: " + url);
+        LOGGER.debug("Article search url: {}", url);
         
         try { 
             URL orgUrl = new URL(url);        
@@ -138,7 +138,7 @@ public class ArticleServiceImpl implements ArticleService {
 
             return articles;
         } catch (Exception ex) {
-            LOGGER.debug("No articles for url: " + url);
+            LOGGER.debug("No articles for url: {}", url);
             ArticleResults articles = new ArticleResults();
             articles.setPosts(new ArrayList<Article>());
             articles.setCount(0);
@@ -218,7 +218,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, String extension, int page) throws IOException {
         String url = String.format("%s%s%s/?s=%s&json=1&page=%s", this.articleHarvestUrl, lang, extension, URLEncoder.encode(" "), page);
-        LOGGER.debug("Article search url: " + url);
+        LOGGER.debug("Article search url: {}", url);
         
         try { 
             URL orgUrl = new URL(url);        
@@ -231,7 +231,7 @@ public class ArticleServiceImpl implements ArticleService {
             ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
             return articles;
         } catch (Exception ex) {
-            LOGGER.debug("No articles for url: " + url);
+            LOGGER.debug("No articles for url: {}", url);
             ArticleResults articles = new ArticleResults();
             articles.setPosts(new ArrayList<Article>());
             articles.setCount(0);

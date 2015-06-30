@@ -66,15 +66,11 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     public Provider getByOID(String oid) throws KoodistoException, ResourceNotFoundException {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Fetching provider with oid " + oid);
-        }
+        LOG.debug("Fetching provider with oid {}", oid);
         
         Provider cachedProvider = providerMap.get(oid);
         if (cachedProvider != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Returning provider from cache");
-            }
+            LOG.debug("Returning provider from cache");
             return cachedProvider; 
         }
 
@@ -83,14 +79,11 @@ public class ProviderServiceImpl implements ProviderService {
         Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
         if (!validate(provider) && !Strings.isNullOrEmpty(organisaatioRDTO.getParentOid())) {
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Enriching provider " + organisaatioRDTO.getOid() + " with parent provider " + organisaatioRDTO.getParentOid());
-            }
+            LOG.debug("Enriching provider {} with parent provider {}", organisaatioRDTO.getOid(), organisaatioRDTO.getParentOid());
             
             Provider parent = getByOID(organisaatioRDTO.getParentOid());
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Got parent provider");
-            }
+            LOG.debug("Got parent provider");
+
             provider = inheritMetadata(provider, parent);
         }
         

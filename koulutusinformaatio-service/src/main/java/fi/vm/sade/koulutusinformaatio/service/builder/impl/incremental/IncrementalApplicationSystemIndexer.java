@@ -40,11 +40,11 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -59,9 +59,6 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationSystemCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
@@ -146,7 +143,7 @@ public class IncrementalApplicationSystemIndexer {
             HakuV1RDTO asDto = hakuRes.getResult();
             List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
             
-            LOG.debug("Higher education loss in application system: " + lossesInAS.size());
+            LOG.debug("Higher education loss in application system: {}", lossesInAS.size());
             
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
@@ -192,7 +189,7 @@ public class IncrementalApplicationSystemIndexer {
             HakuV1RDTO asDto = hakuRes.getResult();
             List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
             
-            LOG.debug("Higher education loss in application system: " + lossesInAS.size());
+            LOG.debug("Higher education loss in application system: {}", lossesInAS.size());
             
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
@@ -232,7 +229,7 @@ public class IncrementalApplicationSystemIndexer {
 
     private void handleAsRemovalFromHigherEdLOS(String curLosId,
             HakuV1RDTO asDto) throws Exception {
-        LOG.debug("Removing from higher ed: " + curLosId);
+        LOG.debug("Removing from higher ed: {}", curLosId);
         HigherEducationLOS curLos = null;
         try {
             curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
@@ -246,7 +243,7 @@ public class IncrementalApplicationSystemIndexer {
             boolean wasOtherAs = false;
             for (ApplicationOption curAo : curLos.getApplicationOptions()) {
                 if (!curAo.getApplicationSystem().getId().equals(asDto.getOid())) {
-                    LOG.debug("There was other application system: " + curAo.getApplicationSystem().getId());
+                    LOG.debug("There was other application system: {}", curAo.getApplicationSystem().getId());
                     wasOtherAs = true;
                     aos.add(curAo);
                 }
@@ -254,10 +251,10 @@ public class IncrementalApplicationSystemIndexer {
         
             curLos.setApplicationOptions(aos);
             if (wasOtherAs) {
-                LOG.debug("Updating higher ed los: " + curLos.getId());
+                LOG.debug("Updating higher ed los: {}", curLos.getId());
                 this.losIndexer.updateHigherEdLos(curLos);
             } else {
-                LOG.debug("Removing higher ed los: " + curLos.getId());
+                LOG.debug("Removing higher ed los: {}", curLos.getId());
                 this.losIndexer.removeHigherEd(curLos.getId(), curLos.getKomoOid());
                 LOG.debug("Higher ed los: " + curLos.getId() + " removed!");
             }

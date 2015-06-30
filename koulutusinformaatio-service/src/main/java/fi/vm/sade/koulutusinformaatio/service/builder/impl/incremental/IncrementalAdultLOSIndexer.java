@@ -84,7 +84,7 @@ public class IncrementalAdultLOSIndexer {
 
     public void indexAdultUpsecKomo(String curKomoOid) throws Exception {
 
-        LOG.debug("Indexing adult upper secondary ed komo: " + curKomoOid);
+        LOG.debug("Indexing adult upper secondary ed komo: {}", curKomoOid);
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> adultUpsecEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
         //higherEdRes.getResult().getTulokset().
@@ -105,7 +105,7 @@ public class IncrementalAdultLOSIndexer {
                             continue;
                         }
 
-                        LOG.debug("Now indexing adult upper secondary education: " + curKoul.getOid());
+                        LOG.debug("Now indexing adult upper secondary education: {}", curKoul.getOid());
 
                         AdultUpperSecondaryLOS createdLos = null;
 
@@ -135,16 +135,16 @@ public class IncrementalAdultLOSIndexer {
     }
 
     private void indexToSolr(AdultUpperSecondaryLOS curLOS) throws IOException, SolrServerException {
-        LOG.debug("Indexing adult upper secondary ed: " + curLOS.getId());
-        LOG.debug("Indexing adult upper secondary ed: " + curLOS.getShortTitle());
+        LOG.debug("Indexing adult upper secondary ed: {}", curLOS.getId());
+        LOG.debug("Indexing adult upper secondary ed: {}", curLOS.getShortTitle());
         this.indexerService.removeLos(curLOS, loHttpSolrServer);
         this.indexerService.addLearningOpportunitySpecification(curLOS, loHttpSolrServer, lopHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
 
     private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS) throws IOException, SolrServerException {
-        LOG.debug("Indexing adult vocational ed: " + curLOS.getId());
-        LOG.debug("Indexing adult vocational ed: " + curLOS.getShortTitle());
+        LOG.debug("Indexing adult vocational ed: {}", curLOS.getId());
+        LOG.debug("Indexing adult vocational ed: {}", curLOS.getShortTitle());
         this.indexerService.removeLos(curLOS, loHttpSolrServer);
         this.indexerService.addLearningOpportunitySpecification(curLOS, loHttpSolrServer, lopHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -182,7 +182,7 @@ public class IncrementalAdultLOSIndexer {
     }
 
     public void indexAdultVocationalKomoto(String curKomoOid) throws Exception {
-        LOG.debug("Indexing adult vocational ed komo: " + curKomoOid);
+        LOG.debug("Indexing adult vocational ed komo: {}", curKomoOid);
 
 
         CompetenceBasedQualificationParentLOS createdLos = null;

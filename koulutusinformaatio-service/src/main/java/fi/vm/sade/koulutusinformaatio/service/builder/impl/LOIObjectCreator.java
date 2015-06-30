@@ -233,7 +233,7 @@ public class LOIObjectCreator extends ObjectCreator {
         List<String> hakukohdeOids = Lists.transform(hakukohdeOidDTOs, new Function<OidRDTO, String>() {
             @Override
             public String apply(OidRDTO input) {
-                LOG.debug("current hakukohdeOid: " + input.getOid());
+                LOG.debug("current hakukohdeOid: {}", input.getOid());
                 return input.getOid();
             }
         });

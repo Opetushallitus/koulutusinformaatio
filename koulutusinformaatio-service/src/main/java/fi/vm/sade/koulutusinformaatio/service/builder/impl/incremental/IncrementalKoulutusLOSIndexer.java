@@ -79,7 +79,7 @@ public class IncrementalKoulutusLOSIndexer {
         }
         this.indexerService.addProcessedKomo(curKomoOid);
 
-        LOG.debug("Indexing adult upper secondary ed komo: " + curKomoOid);
+        LOG.debug("Indexing adult upper secondary ed komo: {}", curKomoOid);
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> koulutusRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
 
@@ -93,7 +93,7 @@ public class IncrementalKoulutusLOSIndexer {
                 if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
                     for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
 
-                        LOG.debug("Now indexing koulutus education: " + curKoul.getOid());
+                        LOG.debug("Now indexing koulutus education: {}", curKoul.getOid());
 
                         KoulutusLOS createdLos = null;
 
@@ -120,8 +120,8 @@ public class IncrementalKoulutusLOSIndexer {
     }
 
     private void indexToSolr(KoulutusLOS createdLos) throws IOException, SolrServerException {
-        LOG.debug("Indexing adult upper secondary ed: " + createdLos.getId());
-        LOG.debug("Indexing adult upper secondary ed: " + createdLos.getShortTitle());
+        LOG.debug("Indexing adult upper secondary ed: {}", createdLos.getId());
+        LOG.debug("Indexing adult upper secondary ed: {}", createdLos.getShortTitle());
         this.indexerService.removeLos(createdLos, loHttpSolrServer);
         this.indexerService.addLearningOpportunitySpecification(createdLos, loHttpSolrServer, lopHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -137,7 +137,7 @@ public class IncrementalKoulutusLOSIndexer {
 
 
     public void indexKoulutusKomoto(String curKomotoOid) throws Exception {
-        LOG.debug("Indexing koulutus ed komoto: " + curKomotoOid);
+        LOG.debug("Indexing koulutus ed komoto: {}", curKomotoOid);
 
         KoulutusLOS createdLos = null;
 

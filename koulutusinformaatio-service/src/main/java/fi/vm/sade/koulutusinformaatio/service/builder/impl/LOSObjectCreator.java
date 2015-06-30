@@ -598,7 +598,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         LOG.debug("Koulutusohjelma for " + koulutus.getOid() + ": " + koulutus.getKoulutusohjelma());
         los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
-        LOG.debug("Short title: " + los.getShortTitle());
+        LOG.debug("Short title: {}", los.getShortTitle());
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
         los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
@@ -891,7 +891,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     }
 
                 } catch (Exception ex) {
-                    LOG.debug("Problem fetching ao: " + ex.getMessage());
+                    LOG.debug("Problem fetching ao: {}", ex.getMessage());
                     invalidOids.add(aoId);
                 }
             }
@@ -936,7 +936,7 @@ public class LOSObjectCreator extends ObjectCreator {
         List<Code> rawTranslCodes = new ArrayList<Code>();
 
         for (String curKomotoOid : komotoOids) {
-            LOG.debug("Cur standalone competence komoto oid: " + curKomotoOid);
+            LOG.debug("Cur standalone competence komoto oid: {}", curKomotoOid);
             ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
             NayttotutkintoV1RDTO dto = res.getResult();
 
@@ -945,19 +945,19 @@ public class LOSObjectCreator extends ObjectCreator {
             if (dto == null || dto.getToteutustyyppi() == null || !isAikuAmm(dto)) {
                 LOG.debug("Unfitting komoto, continuing");
                 try {
-                    LOG.debug("Toteutustyyppi: " + dto.getToteutustyyppi().name());
+                    LOG.debug("Toteutustyyppi: {}", dto.getToteutustyyppi().name());
                 } catch (Exception ex) {
                     LOG.debug("Could not get toteutustyyppi: ");
                 }
                 continue;
             }
-            LOG.debug("Toteutustyyppi: " + dto.getToteutustyyppi().name());
+            LOG.debug("Toteutustyyppi: {}", dto.getToteutustyyppi().name());
             LOG.debug("Ok, creating it");
             try {
 
                 AdultVocationalLOS newLos = createAdultVocationalLOS(dto, checkStatus);
 
-                LOG.debug("Updating parnet los data with dto: " + dto.getOid());
+                LOG.debug("Updating parnet los data with dto: {}", dto.getOid());
 
                 updateParentLosData(los, rawTranslCodes, dto, parentKomoOid, newLos);
                 if (los.getChildren() == null) {
@@ -1068,7 +1068,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         if (dto.getHintaString() != null) {
-            LOG.debug("setting charge with los: " + los.getId() + " and dto hinta: " + dto.getHintaString());
+            LOG.debug("setting charge with los: " + los.getId() + " and dto hinta: {}", dto.getHintaString());
             los.setCharge(dto.getHintaString());
         }
         los.setChargeable(dto.getOpintojenMaksullisuus());
@@ -1085,27 +1085,27 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public KoulutusLOS createValmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        LOG.debug("Creating Valma los: " + koulutusDTO.getOid());
+        LOG.debug("Creating Valma los: {}", koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_VALMA);
     }
 
     public KoulutusLOS createValmaErLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        LOG.debug("Creating Valma Er los: " + koulutusDTO.getOid());
+        LOG.debug("Creating Valma Er los: {}", koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_VALMA_ER);
     }
 
     public KoulutusLOS createValmentavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        LOG.debug("Creating Valmentava ja kuntouttava los: " + koulutusDTO.getOid());
+        LOG.debug("Creating Valmentava ja kuntouttava los: {}", koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_VALMENTAVA);
     }
 
     public KoulutusLOS createTelmaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        LOG.debug("Creating Telma los: " + koulutusDTO.getOid());
+        LOG.debug("Creating Telma los: {}", koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_TELMA);
     }
 
     public KoulutusLOS createKansanopistoLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, TarjontaParseException {
-        LOG.debug("Creating MM kansanopisto los: " + koulutusDTO.getOid());
+        LOG.debug("Creating MM kansanopisto los: {}", koulutusDTO.getOid());
         KoulutusLOS los = createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_KANSANOPISTO);
         if ((koulutusDTO.getKoulutusohjelmanNimiKannassa() == null || koulutusDTO.getKoulutusohjelmanNimiKannassa().isEmpty())
                 && !(los.getApplicationOptions() == null || los.getApplicationOptions().isEmpty())) {
@@ -1117,12 +1117,12 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public KoulutusLOS createKymppiluokkaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        LOG.debug("Creating Kymppiluokka los: " + koulutusDTO.getOid());
+        LOG.debug("Creating Kymppiluokka los: {}", koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_TENTH_GRADE);
     }
 
     public KoulutusLOS createMMLukioonValmistavaLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, TarjontaParseException {
-        LOG.debug("Creating MM lukioon valmistava los: " + koulutusDTO.getOid());
+        LOG.debug("Creating MM lukioon valmistava los: {}", koulutusDTO.getOid());
         return createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_IMM_UPSEC);
     }
 
@@ -1385,7 +1385,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
 
-        LOG.debug("Creating adult vocational los: " + koulutus.getOid());
+        LOG.debug("Creating adult vocational los: {}", koulutus.getOid());
 
         AdultVocationalLOS los = new AdultVocationalLOS();
 

@@ -81,7 +81,7 @@ public class IncrementalHigherEducationLOSIndexer {
     
     public void indexHigherEdKomo(String curKomoOid) throws Exception {
 
-        LOG.debug("Indexing higher ed komo: " + curKomoOid);
+        LOG.debug("Indexing higher ed komo: {}", curKomoOid);
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
         //higherEdRes.getResult().getTulokset().
@@ -100,7 +100,7 @@ public class IncrementalHigherEducationLOSIndexer {
                             continue;
                         }
                         
-                        LOG.debug("Now indexing higher education: " + curKoul.getOid());
+                        LOG.debug("Now indexing higher education: {}", curKoul.getOid());
 
                         HigherEducationLOS createdLos = null;
                         try {
@@ -142,7 +142,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         List<HigherEducationLOS> orphanedChildren = getOrphanedChildren(createdLos);
 
                         for (HigherEducationLOS curOrphan : orphanedChildren) {
-                            LOG.debug("Saving orphan: " + curOrphan.getId());
+                            LOG.debug("Saving orphan: {}", curOrphan.getId());
                             this.indexToSolr(curOrphan);
                             this.dataUpdateService.updateHigherEdLos(curOrphan);
                         }
@@ -150,12 +150,12 @@ public class IncrementalHigherEducationLOSIndexer {
 
                         if (parentEds != null && !parentEds.isEmpty()) {
                             for (HigherEducationLOS curParent : parentEds) {
-                                LOG.debug("Saving parent: " + curParent.getId());
+                                LOG.debug("Saving parent: {}", curParent.getId());
                                 this.indexToSolr(curParent);
                                 this.dataUpdateService.updateHigherEdLos(curParent);
                             }
                         } else {
-                            LOG.debug("Saving actual los: " + createdLos.getId());
+                            LOG.debug("Saving actual los: {}", createdLos.getId());
                             this.indexToSolr(createdLos);
                             this.dataUpdateService.updateHigherEdLos(createdLos);
                         }
@@ -341,8 +341,8 @@ public class IncrementalHigherEducationLOSIndexer {
     }
     
     private void indexToSolr(HigherEducationLOS curLOS) throws Exception {
-        LOG.debug("Indexing higher ed: " + curLOS.getId());
-        LOG.debug("Indexing higher ed: " + curLOS.getShortTitle());
+        LOG.debug("Indexing higher ed: {}", curLOS.getId());
+        LOG.debug("Indexing higher ed: {}", curLOS.getShortTitle());
         this.indexerService.removeLos(curLOS, loHttpSolrServer);
         this.indexerService.addLearningOpportunitySpecification(curLOS, loHttpSolrServer, lopHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);

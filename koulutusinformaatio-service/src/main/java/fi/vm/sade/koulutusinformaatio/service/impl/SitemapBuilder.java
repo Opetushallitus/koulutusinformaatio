@@ -92,7 +92,7 @@ public class SitemapBuilder {
         for (int i = 0; i < sitemapCollections.length; i++) {
             //value must contains :
             if (sitemapCollections[i].indexOf(PREFIX_COLLECTION_SEPARATOR) > 0){
-                LOG.debug("Processing collection "+sitemapCollections[i]);
+                LOG.debug("Processing collection {}", sitemapCollections[i]);
                 collectionValues = sitemapCollections[i].split(PREFIX_COLLECTION_SEPARATOR);
                 idPrefix = collectionValues[0];
                 collection = collectionValues[1];
@@ -125,7 +125,7 @@ public class SitemapBuilder {
                         root.appendChild(this.createUrlElement(dom, (String)dbo.get(FIELD_ID), lastModifiedDate, idPrefix, null, properties.get(PROPERTY_BASE_URL)));
                     }
                 }
-                LOG.debug("Processed " + counterByCollection + " entities for "+idPrefix);
+                LOG.debug("Processed " + counterByCollection + " entities for {}", idPrefix);
                 counterByCollection = 0;
             }else{
                 LOG.warn("Collection name value pair is not well formed, "+sitemapCollections[i]);

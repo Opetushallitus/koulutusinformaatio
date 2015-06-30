@@ -177,14 +177,14 @@ public class IncrementalLOSIndexer {
             return;
         
         case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
-            LOG.debug("Adult upsec komo: " + koulutusDTO.getKomoOid());
+            LOG.debug("Adult upsec komo: {}", koulutusDTO.getKomoOid());
             this.indexAdultUpsecKomo(koulutusDTO.getKomoOid());
             return;
 
         case AMMATTITUTKINTO:
         case ERIKOISAMMATTITUTKINTO:
         case AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA:
-            LOG.debug("Adult vocational komo: " + koulutusDTO.getKomoOid());
+            LOG.debug("Adult vocational komo: {}", koulutusDTO.getKomoOid());
             this.indexAdultVocationalKomoto(komotoOid);
             return;
 
@@ -194,7 +194,7 @@ public class IncrementalLOSIndexer {
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
         case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-            LOG.debug("Valma/Telma koulutus: " + koulutusDTO.getKomoOid());
+            LOG.debug("Valma/Telma koulutus: {}", koulutusDTO.getKomoOid());
             this.indexValmentavaKomoto(komotoOid);
             return;
             
@@ -255,12 +255,12 @@ public class IncrementalLOSIndexer {
                              || komoRes.getResult().getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.AMMATILLINEN_PERUSKOULUTUS.name()));
         
         if (!isAdultVoc) {
-            LOG.debug("Is adult vocational komo, returning: " + isAdultVoc);
+            LOG.debug("Is adult vocational komo, returning: {}", isAdultVoc);
             return false;
         }
         
         
-        LOG.debug("Komo: " + komoRes.getResult().getKoulutusasteTyyppi().name());
+        LOG.debug("Komo: {}", komoRes.getResult().getKoulutusasteTyyppi().name());
         
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> komotoRes = this.tarjontaRawService.getHigherEducationByKomo(komoOid);
         
@@ -342,7 +342,7 @@ public class IncrementalLOSIndexer {
         boolean isLukio = komoRes != null && komoRes.getResult() != null && komoRes.getResult().getKoulutusasteTyyppi().value().equals(KoulutusasteTyyppi.LUKIOKOULUTUS.value());
 
         if (komoRes.getResult() != null && komoRes.getResult().getKoulutusasteTyyppi() != null) {
-            LOG.debug("komo koulutusaste: " + komoRes.getResult().getKoulutusasteTyyppi().name());
+            LOG.debug("komo koulutusaste: {}", komoRes.getResult().getKoulutusasteTyyppi().name());
         } else {
             LOG.debug("some wierd komo");
         }
@@ -536,7 +536,7 @@ public class IncrementalLOSIndexer {
     private void reCreateChildLOS(ChildLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
 
         ParentLOSRef parentRef = ((ChildLOS) los).getParent();
-        LOG.debug("parent to retrieve: " + parentRef.getId());
+        LOG.debug("parent to retrieve: {}", parentRef.getId());
         ParentLOS parent = (ParentLOS)(this.dataQueryService.getLos(parentRef.getId()));
         if (parent != null) {
             this.reCreateParentLOS(parent.getId().split("_")[0], parent);
@@ -547,7 +547,7 @@ public class IncrementalLOSIndexer {
     }
 
     public ParentLOS reCreateParentLOS(String parentKomoOid, ParentLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
-        LOG.debug("Recreating parent los: " + los.getId());
+        LOG.debug("Recreating parent los: {}", los.getId());
 
         this.removeParentLOS(los);
         ParentLOS parent = createParentLOS(parentKomoOid, los.getProvider().getId());
@@ -567,11 +567,11 @@ public class IncrementalLOSIndexer {
         KomoDTO parentKomo = this.tarjontaRawService.getKomo(parentKomoOid);
 
         ParentLOS parent = this.parentLosBuilder.createParentLOS(parentKomo, providerId);
-        LOG.debug("Creating child losses for parent: " + parent.getId());
+        LOG.debug("Creating child losses for parent: {}", parent.getId());
         List<ChildLOS> children = this.parentLosBuilder.createChildLoss(parentKomo, parent);
-        LOG.debug("Assembing child losses which amount to: " + children.size());
+        LOG.debug("Assembing child losses which amount to: {}", children.size());
         this.parentLosBuilder.assembleParentLos(parent, children);
-        LOG.debug("Filtering child losses which amount to: " + parent.getChildren().size());
+        LOG.debug("Filtering child losses which amount to: {}", parent.getChildren().size());
         parent = this.parentLosBuilder.filterParentLos(parent);
 
 
@@ -658,7 +658,7 @@ public class IncrementalLOSIndexer {
     }
 
     private UpperSecondaryLOS reCreateUpperSecondaryLOS(UpperSecondaryLOS los) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
-        LOG.debug("recreating upper secondary los: " + los.getId());
+        LOG.debug("recreating upper secondary los: {}", los.getId());
         this.removeUpperSecondaryLOS(los);
         KomoDTO komo = this.tarjontaRawService.getKomo(los.getId().split("_")[0]);
         return this.createUpperSecondaryLOS(komo, los.getProvider().getId());
@@ -761,9 +761,9 @@ public class IncrementalLOSIndexer {
     }
     
     public void handleParentLOSReferenceRemoval(ParentLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
-        LOG.debug("Currently in parent los reference removal, with  parent los: " + los.getId());
+        LOG.debug("Currently in parent los reference removal, with  parent los: {}", los.getId());
         String parentKomoOid = los.getId().split("_")[0];
-        LOG.debug("parent komo to handle: " + parentKomoOid);
+        LOG.debug("parent komo to handle: {}", parentKomoOid);
         this.reCreateParentLOS(parentKomoOid, los);
     }
 

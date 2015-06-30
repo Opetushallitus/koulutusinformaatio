@@ -161,7 +161,7 @@ public class SearchServiceSolrImpl implements SearchService {
     @Override
     public List<ArticleResult> searchArticleSuggestions(String filter, String lang) throws SearchException {
 
-        LOG.debug("Searching suggestions: " + filter);
+        LOG.debug("Searching suggestions: {}", filter);
 
         List<ArticleResult> articles = new ArrayList<ArticleResult>();
 
@@ -186,7 +186,7 @@ public class SearchServiceSolrImpl implements SearchService {
             throw new SearchException(SOLR_ERROR);
         }
 
-        LOG.debug("Response size: " + queryResponse.getResults().size());
+        LOG.debug("Response size: {}", queryResponse.getResults().size());
         for (SolrDocument result : queryResponse.getResults()) {
             try {
                 articles.add(createArticleSearchResult(result));
@@ -378,7 +378,7 @@ public class SearchServiceSolrImpl implements SearchService {
             Picture pict = this.educationDataQueryService.getPicture(result.getId());
             result.setThumbnailEncoded(pict.getThumbnailEncoded());
         } catch (ResourceNotFoundException ex) {
-            LOG.debug("No thumbnail for: " + result.getId());
+            LOG.debug("No thumbnail for: {}", result.getId());
         }
 
         return result;
@@ -503,7 +503,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                 String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
                                 List<String> subjects = getSubjects(doc, lang);
 
-                                LOG.debug("gathered info now creating search result: " + id);
+        LOG.debug("gathered info now creating search result: {}", id);
 
                                 LOSearchResult lo = new LOSearchResult( 
                                         id, name,
@@ -511,11 +511,11 @@ public class SearchServiceSolrImpl implements SearchService {
                                         prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
                                         credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects);
 
-                                LOG.debug("Created search result: " + id);
+        LOG.debug("Created search result: {}", id);
 
                                 updateAsStatus(lo, doc);
 
-                                LOG.debug("Updated as status: " + id);
+        LOG.debug("Updated as status: {}", id);
 
                                 return lo;
 
@@ -1067,7 +1067,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         SolrUtil.APP_STATUS_ONGOING);
                 haunTilaVals.add(facVal);
             } else if (curKey.contains(String.format("NOW TO %s])", upcomingLimit))) {
-                LOG.debug("upcoming limit: " + upcomingLimit);
+                LOG.debug("upcoming limit: {}", upcomingLimit);
                 String[] valueName = upcomingLimit.split("-");
                 String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
 
@@ -1077,7 +1077,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         SolrUtil.APP_STATUS_UPCOMING);
                 haunTilaVals.add(facVal);
             } else if (curKey.contains(String.format("%s TO %s])", upcomingLimit, upcomingLaterLimit))) {
-                LOG.debug("upcoming later limit: " + upcomingLaterLimit);
+                LOG.debug("upcoming later limit: {}", upcomingLaterLimit);
                 String[] valueName = upcomingLaterLimit.split("-");
                 String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
                 FacetValue facVal = new FacetValue(SolrUtil.APP_STATUS,
@@ -1385,7 +1385,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 CalendarApplicationSystem as = new CalendarApplicationSystem();
                 as.setId((String)(result.get(SolrUtil.LearningOpportunity.ID)));
 
-                LOG.debug("Creating applicatoin system: " + as.getId());
+                LOG.debug("Creating applicatoin system: {}", as.getId());
 
                 Map<String, String> nameTranslations = Maps.newHashMap();
                 String nameFi = (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI);

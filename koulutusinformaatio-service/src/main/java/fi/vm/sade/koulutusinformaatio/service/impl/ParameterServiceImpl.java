@@ -77,7 +77,7 @@ public class ParameterServiceImpl implements ParameterService {
             return params;
         } catch (Exception ex) {
             cache.put(oid, new ApplicationSystemParameters());
-            LOGGER.debug("Error getting parameters for haku: " + oid, ex);
+            LOGGER.debug("Error getting parameters for haku: {}", oid, ex);
         }
         return null;        
     }

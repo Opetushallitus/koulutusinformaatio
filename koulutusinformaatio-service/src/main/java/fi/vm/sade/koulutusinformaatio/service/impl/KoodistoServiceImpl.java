@@ -74,7 +74,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         if (Strings.isNullOrEmpty(koodiUri)) {
             return null;
         } else {
-            LOGGER.debug("search koodi: " + koodiUri);
+            LOGGER.debug("search koodi: {}", koodiUri);
             return convertAllToCode(searchKoodiTypes(koodiUri));
         }
     }
@@ -99,7 +99,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         if (Strings.isNullOrEmpty(koodiUri)) {
             return null;
         } else {
-            LOGGER.debug("search first koodi: " + koodiUri);
+            LOGGER.debug("search first koodi: {}", koodiUri);
             List<Code> koodis = search(koodiUri);
             if (koodis.size() < 1) {
                 LOGGER.warn("No koodis found with uri: " + koodiUri);
@@ -163,7 +163,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         if (Strings.isNullOrEmpty(koodiUri)) {
             return null;
         } else {
-            LOGGER.debug("search koodi: " + koodiUri);
+            LOGGER.debug("search koodi: {}", koodiUri);
             return convertAllToName(searchKoodiTypes(koodiUri));
         }
     }
@@ -206,7 +206,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public I18nText searchFirstName(String koodiUri) throws KoodistoException {
         if (!Strings.isNullOrEmpty(koodiUri)) {
-            LOGGER.debug("search first code: " + koodiUri);
+            LOGGER.debug("search first code: {}", koodiUri);
             List<Code> codes = search(koodiUri);
             if (codes != null && !codes.isEmpty()) {
                 return searchNames(koodiUri).get(0);
@@ -220,7 +220,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         if (Strings.isNullOrEmpty(koodiUri)) {
             return null;
         } else {
-            LOGGER.debug("search koodi: " + koodiUri);
+            LOGGER.debug("search koodi: {}", koodiUri);
             return convertAllToShortName(searchKoodiTypes(koodiUri));
         }
     }
@@ -265,7 +265,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public I18nText searchFirstShortName(String koodiUri) throws KoodistoException {
         if (!Strings.isNullOrEmpty(koodiUri)) {
-            LOGGER.debug("search first code: " + koodiUri);
+            LOGGER.debug("search first code: {}", koodiUri);
             List<Code> codes = search(koodiUri);
             if (codes != null && !codes.isEmpty()) {
                 return searchShortNames(koodiUri).get(0);

@@ -219,7 +219,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
                 try {
-                    LOG.debug("Indexing higher education: " + koulutusDTO.getOid());
+                    LOG.debug("Indexing higher education: {}", koulutusDTO.getOid());
                     HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
                     los.setStructureImage(retrieveStructureImage(curKoulutus.getOid()));
                     koulutukset.add(los);
@@ -273,7 +273,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
-                LOG.debug("Updating ao los references for ao: " + curAo.getId());
+                LOG.debug("Updating ao los references for ao: {}", curAo.getId());
                 List<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
                 if (aoLoss == null) {
                     aoLoss = new ArrayList<HigherEducationLOSRef>();
@@ -298,7 +298,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
-                LOG.debug("Updating ao los references for ao: " + curAo.getId());
+                LOG.debug("Updating ao los references for ao: {}", curAo.getId());
                 List<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
                 if (aoLoss == null) {
                     aoLoss = new ArrayList<HigherEducationLOSRef>();
@@ -413,7 +413,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
         KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
-        LOG.debug(" Koulutustila: " + koulutusDTO.getTila().toString());
+        LOG.debug(" Koulutustila: {}", koulutusDTO.getTila().toString());
         if (koulutusDTO == null || !koulutusDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
             LOG.debug("Returning null ");
             return null;
@@ -425,7 +425,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         los.setStatus(koulutusDTO.getTila().toString());
 
         if (los.getApplicationOptions() != null) {
-            LOG.debug("now creating higher edu los refs for los: " + los.getId());
+            LOG.debug("now creating higher edu los refs for los: {}", los.getId());
             for (ApplicationOption curAo : los.getApplicationOptions()) {
                 createEducationreReferencesForAo(curAo, true);
             }
@@ -486,7 +486,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 continue;
             }
 
-            LOG.debug("KOULUTUS TILA: " + koulutusDTO.getTila().name());
+            LOG.debug("KOULUTUS TILA: {}", koulutusDTO.getTila().name());
 
             if ((validating && koulutusDTO.getTila().name().equals(TarjontaTila.JULKAISTU.name())) || !validating) {
 
@@ -598,10 +598,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                     } else {
                         los = creator.createAdultBaseEducationLOS((KoulutusAikuistenPerusopetusV1RDTO) koulutusDTO, true);
                     }
-                    LOG.debug("Created los: " + los.getId());
+                    LOG.debug("Created los: {}", los.getId());
                     koulutukset.add(los);
                     updateAOLosReferences(los, aoToEducationsMap);
-                    LOG.debug("Updated aolos references for: " + los.getId());
+                    LOG.debug("Updated aolos references for: {}", los.getId());
 
                 } catch (TarjontaParseException ex) {
                     continue;
@@ -642,10 +642,10 @@ public class TarjontaServiceImpl implements TarjontaService {
         Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            LOG.debug("Cur Valmistava tarjoaja result: " + curRes.getOid());
+            LOG.debug("Cur Valmistava tarjoaja result: {}", curRes.getOid());
 
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                LOG.debug("cur Valmistava koulutus result: " + curKoulutus.getOid());
+                LOG.debug("cur Valmistava koulutus result: {}", curKoulutus.getOid());
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     LOG.debug("koulutus not published, discarding");
                     continue;
@@ -657,7 +657,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
                 try {
-                    LOG.debug("Indexing Valmistava education: " + koulutusDTO.getOid());
+                    LOG.debug("Indexing Valmistava education: {}", koulutusDTO.getOid());
                     KoulutusLOS los = null;
                     los = createKoulutusLOS(koulutusDTO, true);
                     if (los != null) {
@@ -698,10 +698,10 @@ public class TarjontaServiceImpl implements TarjontaService {
         Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            LOG.debug("Cur Adult Vocationals tarjoaja result: " + curRes.getOid());
+            LOG.debug("Cur Adult Vocationals tarjoaja result: {}", curRes.getOid());
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
 
-                LOG.debug("cur Adult Vocationals koulutus result: " + curKoulutus.getOid());
+                LOG.debug("cur Adult Vocationals koulutus result: {}", curKoulutus.getOid());
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     LOG.debug("koulutus not published, discarding");
                     continue;
@@ -712,7 +712,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     koulutukset.add(newLos);
 
                     updateAOLosReferences(newLos, aoToEducationsMap);
-                    LOG.debug("Updated aolos references for: " + newLos.getId());
+                    LOG.debug("Updated aolos references for: {}", newLos.getId());
 
                 } catch (TarjontaParseException ex) {
                     ex.printStackTrace();
@@ -746,7 +746,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(oid);
         KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
 
-        LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
+        LOG.debug("cur upsec adult education dto: {}", koulutusDTO.getOid());
         if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
             LOG.debug("Koulutus is not adult upper secondary");
             throw new TarjontaParseException("Koulutus is not adult upper secondary");
@@ -758,8 +758,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         try {
             AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, checkStatus);
             los.setStatus(koulutusDTO.getTila().toString());
-            LOG.debug("Created los: " + los.getId());
-            LOG.debug("Updated aolos references for: " + los.getId());
+            LOG.debug("Created los: {}", los.getId());
+            LOG.debug("Updated aolos references for: {}", los.getId());
             return los;
 
         } catch (TarjontaParseException ex) {
@@ -845,12 +845,12 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         List<String> hakuOids = hakuRes.getResult();
 
-        LOG.debug("Fewtching: " + hakuOids.size() + " applicatoin systems");
+        LOG.debug("Fetching: {} application systems", hakuOids.size());
 
         if (hakuOids != null) {
             for (String curOid : hakuOids) {
 
-                LOG.debug("fetching application system: " + curOid);
+                LOG.debug("fetching application system: {}", curOid);
 
                 ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(curOid);
                 HakuV1RDTO curHaku = curHakuResult.getResult();
@@ -861,7 +861,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
         }
 
-        LOG.debug("REturning " + results.size() + " results");
+        LOG.debug("REturning {} results", results.size());
 
         return results;
     }
