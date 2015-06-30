@@ -138,6 +138,8 @@ public class KoulutusLOSEntity {
     @Reference
     private List<KoulutusLOSEntity> siblings = new ArrayList<KoulutusLOSEntity>();
 
+    private boolean osaamisalaton;
+
     public String getId() {
         return id;
     }
@@ -496,6 +498,12 @@ public class KoulutusLOSEntity {
 
     public void setSelectingDegreeProgram(I18nTextEntity selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
+    }
+    public boolean isOsaamisalaton() {
+        return osaamisalaton;
+    }
+    public void setOsaamisalaton(boolean osaamisalaton) {
+        this.osaamisalaton = osaamisalaton;
     }
 
 }

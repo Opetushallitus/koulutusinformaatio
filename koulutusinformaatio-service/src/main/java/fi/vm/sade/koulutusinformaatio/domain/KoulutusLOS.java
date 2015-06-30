@@ -82,6 +82,8 @@ public class KoulutusLOS extends LOS {
     // AmmatillinenKoulutusLOSin kenttä
     private List<KoulutusLOS> siblings = new ArrayList<KoulutusLOS>();
 
+    private boolean osaamisalaton;
+
     public String getId() {
         return id;
     }
@@ -531,6 +533,14 @@ public class KoulutusLOS extends LOS {
 
     public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
+    }
+
+    public boolean isOsaamisalaton() {
+        return osaamisalaton;
+    }
+
+    public void setOsaamisalaton(boolean osaamisalaton) {
+        this.osaamisalaton = osaamisalaton;
     }
 
 }

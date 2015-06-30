@@ -162,11 +162,19 @@ public class IncrementalKoulutusLOSIndexer {
         removeTutkintoLOS(dto.getKomoOid());
         if (!loses.isEmpty()) {
             for (KoulutusLOS los : loses) {
-                LOG.debug("Updated los {}", los.getId());
-                this.dataUpdateService.updateKoulutusLos(los);
+                if (los.isOsaamisalaton()) {
+                    LOG.debug("Updated osaamisalaton los {}", los.getId());
+                    this.indexToSolr(los);
+                    this.dataUpdateService.updateKoulutusLos(los);
+                } else {
+                    LOG.debug("Updated los {}", los.getId());
+                    this.dataUpdateService.updateKoulutusLos(los);
+                }
             }
-            this.indexToSolr(loses.get(0).getTutkinto());
-            this.dataUpdateService.updateTutkintoLos(loses.get(0).getTutkinto());
+            if (loses.get(0).getTutkinto() != null) {
+                this.indexToSolr(loses.get(0).getTutkinto());
+                this.dataUpdateService.updateTutkintoLos(loses.get(0).getTutkinto());
+            }
         }
     }
 

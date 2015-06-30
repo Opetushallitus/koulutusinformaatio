@@ -951,6 +951,18 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
             String parentoid = koulutusDTO.getParentKomoOid();
             String providerOid = koulutusDTO.getTarjoajat().iterator().next();
+            KoulutusLOS koulutus = creator.createAmmatillinenLOS(koulutusDTO.getOid(), true);
+            if (koulutus.isOsaamisalaton()) {
+                TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(parentoid);
+                if (tutkinto == null) {
+                    tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
+                }
+                koulutus.setSiblings(new ArrayList<KoulutusLOS>());
+                koulutus.setTutkinto(null);
+                koulutus.setGoals(tutkinto.getGoals());
+                return new ArrayList<KoulutusLOS>(Arrays.asList(koulutus));
+            }
+
             TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(parentoid);
             if (tutkinto == null) {
                 tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
@@ -969,7 +981,6 @@ public class TarjontaServiceImpl implements TarjontaService {
                     }
                 }
             }
-            KoulutusLOS koulutus = creator.createAmmatillinenLOS(koulutusDTO.getOid(), true);
             koulutus.setTutkinto(tutkinto);
             losses.add(koulutus);
 
@@ -991,6 +1002,10 @@ public class TarjontaServiceImpl implements TarjontaService {
             LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
             return new ArrayList<KoulutusLOS>();
         }
+    }
+
+    private boolean isOsaamisalatonKoulutus(KoulutusLOS koulutus) {
+        return koulutus.getId().equals("1.2.246.562.17.26177209298");
     }
 
     @Override
