@@ -1165,6 +1165,7 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_LUKIO);
         addKoulutus2AsteV1Fields(koulutusDTO, los);
         addKoulutusKoulutusLukioV1Fields(koulutusDTO, los);
+        los.setQualifications(null); // aina ylioppilas, ei haluta näyttää kuvauksessa
         return los;
     }
 
