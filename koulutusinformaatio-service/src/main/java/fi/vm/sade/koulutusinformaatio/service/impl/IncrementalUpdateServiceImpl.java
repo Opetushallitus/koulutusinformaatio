@@ -166,12 +166,14 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             Map<String, List<String>> result = listChangedLearningOpportunities(updatePeriod);
             LOG.debug("Starting incremental update");
             if (!hasChanges(result)) {
+                LOG.debug("No incremental changes. Stopping now.");
                 isRunning = false;
                 runningSince = 0;
                 return;
             }
 
             this.indexerService.clearProcessedLists();
+            this.tarjontaService.clearProcessedLists();
             this.losIndexer.clearCreatedLOS();
             int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
             // If there are changes in komo-data, a full update is performed

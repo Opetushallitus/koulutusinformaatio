@@ -232,6 +232,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return this.v1Resource
                 .path("search")
                 .queryParam("koulutusOid", oid)
+                .queryParam("tila", "KAIKKI") // include POISTETTU
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });

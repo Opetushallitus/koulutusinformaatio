@@ -659,7 +659,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 try {
                     LOG.debug("Indexing Valmistava education: {}", koulutusDTO.getOid());
                     KoulutusLOS los = null;
-                    los = createKoulutusLOS(koulutusDTO, true);
+                    los = createValmistavaKoulutusLOS(koulutusDTO, true);
                     if (los != null) {
                         losList.add(los);
                         updateAOLosReferences(los, aoToEducationsMap);
@@ -786,12 +786,12 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+    public KoulutusLOS createValmistavaKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
         ValmistavaKoulutusV1RDTO dto = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(oid).getResult();
-        return createKoulutusLOS(dto, checkStatus);
+        return createValmistavaKoulutusLOS(dto, checkStatus);
     }
 
-    private KoulutusLOS createKoulutusLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    private KoulutusLOS createValmistavaKoulutusLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
@@ -806,9 +806,9 @@ public class TarjontaServiceImpl implements TarjontaService {
         case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
             if (koulutusDTO.getKoulutuskoodi().getVersio() == 1) {
                 los = creator.createValmentavaLOS(koulutusDTO, checkStatus);
-                break;
+            } else {
+                los = creator.createTelmaLOS(koulutusDTO, checkStatus);
             }
-            los = creator.createTelmaLOS(koulutusDTO, checkStatus);
             break;
         case PERUSOPETUKSEN_LISAOPETUS:
             los = creator.createKymppiluokkaLOS(koulutusDTO, checkStatus);
@@ -920,7 +920,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         List<KoulutusHakutulosV1RDTO> dtoList = new ArrayList<KoulutusHakutulosV1RDTO>();
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
-                ToteutustyyppiEnum.LUKIOKOULUTUS.name());
+                ToteutustyyppiEnum.LUKIOKOULUTUS.name(), ToteutustyyppiEnum.EB_RP_ISH.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
@@ -974,11 +974,13 @@ public class TarjontaServiceImpl implements TarjontaService {
             losses.add(koulutus);
 
             for (KoulutusLOS los : losses) {
-                tutkinto.getChildEducations().add(los);
-                tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
-                tutkinto.getApplicationOptions().addAll(los.getApplicationOptions());
-                los.setSiblings(losses);
-                addProcessedOid(los.getId());
+                if (los != null) {
+                    tutkinto.getChildEducations().add(los);
+                    tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
+                    tutkinto.getApplicationOptions().addAll(los.getApplicationOptions());
+                    los.setSiblings(losses);
+                    addProcessedOid(los.getId());
+                }
             }
             addProcessedTutkinto(tutkinto);
             return losses;

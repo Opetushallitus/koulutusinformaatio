@@ -211,7 +211,7 @@ public class IncrementalApplicationOptionIndexer {
                 //if komoto (loi) is in state published it needs to be added or updated
                 if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila().name())) {
                     LOG.debug("komoto to add is published");
-                    losIndexer.handleSecondaryLoiAddition(komotoDto);
+                    losIndexer.indexLoiData(komotoDto.getOid());
 
                 }
 

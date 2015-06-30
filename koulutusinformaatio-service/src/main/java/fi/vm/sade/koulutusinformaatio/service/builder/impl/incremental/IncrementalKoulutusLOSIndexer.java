@@ -16,6 +16,7 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -23,6 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
@@ -54,6 +58,8 @@ public class IncrementalKoulutusLOSIndexer {
 
     private final HttpSolrServer locationHttpSolrServer;
 
+    private EducationIncrementalDataQueryService dataQueryService;
+
     public IncrementalKoulutusLOSIndexer(TarjontaRawService tarjontaRawService, 
             TarjontaService tarjontaService,
             EducationIncrementalDataUpdateService dataUpdateService,
@@ -68,6 +74,7 @@ public class IncrementalKoulutusLOSIndexer {
         this.dataUpdateService = dataUpdateService;
         this.indexerService = indexerService;
         this.loHttpSolrServer = loHttpSolrServer;
+        this.dataQueryService = dataQueryService;
         this.lopHttpSolrServer = lopHttpSolrServer;
         this.locationHttpSolrServer = locationHttpSolrServer;
 
@@ -98,7 +105,7 @@ public class IncrementalKoulutusLOSIndexer {
                         KoulutusLOS createdLos = null;
 
                         try {
-                            createdLos = this.tarjontaService.createKoulutusLOS(curKoul.getOid(), true);
+                            createdLos = this.tarjontaService.createValmistavaKoulutusLOS(curKoul.getOid(), true);
                         } catch (TarjontaParseException tpe) {
                             createdLos = null;
                         }
@@ -119,9 +126,9 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
-    private void indexToSolr(KoulutusLOS createdLos) throws IOException, SolrServerException {
-        LOG.debug("Indexing adult upper secondary ed: {}", createdLos.getId());
-        LOG.debug("Indexing adult upper secondary ed: {}", createdLos.getShortTitle());
+    private void indexToSolr(LOS createdLos) throws IOException, SolrServerException {
+        LOG.debug("Indexing los: {}", createdLos.getId());
+        LOG.debug("Indexing los: {}", createdLos.getName().get("fi"));
         this.indexerService.removeLos(createdLos, loHttpSolrServer);
         this.indexerService.addLearningOpportunitySpecification(createdLos, loHttpSolrServer, lopHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -135,24 +142,59 @@ public class IncrementalKoulutusLOSIndexer {
         this.dataUpdateService.deleteLos(toDeleteLos);
     }
 
-
-    public void indexKoulutusKomoto(String curKomotoOid) throws Exception {
-        LOG.debug("Indexing koulutus ed komoto: {}", curKomotoOid);
-
-        KoulutusLOS createdLos = null;
-
+    public void removeTutkintoLOS(String oid) throws Exception {
         try {
-            createdLos = this.tarjontaService.createKoulutusLOS(curKomotoOid, true);
+            TutkintoLOS curLos = this.dataQueryService.getTutkinto(oid);
+            curLos.getChildEducations();
+            for (KoulutusLOS komoto : curLos.getChildEducations()) {
+                removeKoulutusLOS(komoto.getId());
+            }
+            TutkintoLOS toDeleteLos = new TutkintoLOS();
+            toDeleteLos.setId(oid);
+            this.dataUpdateService.deleteLos(toDeleteLos);
+        } catch (ResourceNotFoundException e) {
+            LOG.debug("There was no existing Tutkinto to be removed: {}", oid);
+        }
+    }
+
+    public void indexAmmatillinenKoulutusKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
+        List<KoulutusLOS> loses = tarjontaService.createAmmatillinenKoulutusLOS(dto);
+        removeTutkintoLOS(dto.getKomoOid());
+        if (!loses.isEmpty()) {
+            for (KoulutusLOS los : loses) {
+                LOG.debug("Updated los {}", los.getId());
+                this.dataUpdateService.updateKoulutusLos(los);
+            }
+            this.indexToSolr(loses.get(0).getTutkinto());
+            this.dataUpdateService.updateTutkintoLos(loses.get(0).getTutkinto());
+        }
+    }
+
+    public void indexLukioKoulutusKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
+        KoulutusLOS los = tarjontaService.createLukioKoulutusLOS(dto);
+        if (los == null) {
+            LOG.debug("Created los is to be removed");
+            removeKoulutusLOS(dto.getOid());
+        } else {
+            LOG.debug("Updated los {}", los.getId());
+            this.indexToSolr(los);
+            this.dataUpdateService.updateKoulutusLos(los);
+        }
+    }
+
+    public void indexValmistavaKoulutusKomoto(String curKomotoOid) throws Exception {
+        LOG.debug("Indexing koulutus ed komoto: {}", curKomotoOid);
+        KoulutusLOS createdLos = null;
+        try {
+            createdLos = this.tarjontaService.createValmistavaKoulutusLOS(curKomotoOid, true);
         } catch (TarjontaParseException tpe) {
             createdLos = null;
         }
-
-        LOG.debug("Created los");
-
         if (createdLos == null) {
             LOG.debug("Created los is to be removed");
             removeKoulutusLOS(curKomotoOid);
         } else {
+            LOG.debug("Updated los {}", createdLos.getId());
             this.indexToSolr(createdLos);
             this.dataUpdateService.updateKoulutusLos(createdLos);
         }

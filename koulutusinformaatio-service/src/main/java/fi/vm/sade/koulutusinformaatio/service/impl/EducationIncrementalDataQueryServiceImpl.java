@@ -491,5 +491,14 @@ EducationIncrementalDataQueryService {
         }
     }
 
+    @Override
+    public TutkintoLOS getTutkinto(String oid) throws ResourceNotFoundException {
+        TutkintoLOSEntity entity = this.tutkintoLOSDAO.get(oid);
+        if (entity != null) {
+            return modelMapper.map(entity, TutkintoLOS.class);
+        } else {
+            throw new ResourceNotFoundException(String.format("Tutkinto specification not found: %s", oid));
+        }
+    }
 
 }

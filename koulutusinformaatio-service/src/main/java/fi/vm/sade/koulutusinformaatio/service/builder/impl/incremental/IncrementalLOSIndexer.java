@@ -200,8 +200,16 @@ public class IncrementalLOSIndexer {
             
         case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA: // Ammatillinen
+            LOG.debug("Ammatillinen koulutus: {}", koulutusDTO.getOid());
+            koulutusIndexer.indexAmmatillinenKoulutusKomoto(koulutusDTO);
+            return;
+
         case LUKIOKOULUTUS: // Lukiokoulutus
         case EB_RP_ISH: // Lukiokoulutus
+            LOG.debug("Lukiokoulutus: {}", koulutusDTO.getKomoOid());
+            koulutusIndexer.indexLukioKoulutusKomoto(koulutusDTO);
+            return;
+
         case KORKEAKOULUOPINTO: // Tulossa
         case AIKUISTEN_PERUSOPETUS: // Tulossa
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS: // Poistunut
@@ -214,27 +222,10 @@ public class IncrementalLOSIndexer {
             break;
         }
         
-        
-        // TODO: Nämä liitettäväksi ylläolevaan luetteloon V1 muutosten yhteydessä
-        KomotoDTO komotoDto = null;
-        try {
-            komotoDto = this.tarjontaRawService.getKomoto(komotoOid);
-        } catch (Exception ex) {
-            return;
-        }
-        if (isSecondaryEducation(komotoDto)) {
-            if (!isLoiProperlyPublished(komotoDto)) {
-                LOG.debug(String.format("Loi need to be removed: %s", komotoOid));
-                handleLoiRemoval(komotoDto);
-            } else {
-                LOG.debug(String.format("Loi need to be indexed: %s", komotoOid));
-                handleLoiAdditionOrUpdate(komotoDto);
-            }
-        }
     }
 
     private void indexValmentavaKomoto(String komotoOid) throws Exception {
-        this.koulutusIndexer.indexKoulutusKomoto(komotoOid);
+        this.koulutusIndexer.indexValmistavaKoulutusKomoto(komotoOid);
     }
 
 
