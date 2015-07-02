@@ -1620,19 +1620,28 @@ public class LOSObjectCreator extends ObjectCreator {
         TutkintoLOS tutkintoLOS = new TutkintoLOS();
         tutkintoLOS.setType(TarjontaConstants.TYPE_PARENT);
 
-        tutkintoLOS.setStructure(getI18nText(komo.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE).getTekstis()));
+        NimiV1RDTO structure = komo.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE);
+        if (structure != null) {
+            tutkintoLOS.setStructure(getI18nText(structure.getTekstis()));
+        }
         try {
             tutkintoLOS.setProvider(providerService.getByOID(providerOid));
         } catch (Exception ex) {
             throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
         }
-        tutkintoLOS.setAccessToFurtherStudies(getI18nText(komo.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET).getTekstis()));
+        NimiV1RDTO accessToFurtherStudies = komo.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET);
+        if (accessToFurtherStudies != null) {
+            tutkintoLOS.setAccessToFurtherStudies(getI18nText(accessToFurtherStudies.getTekstis()));
+        }
         tutkintoLOS.setEducationDegree(komo.getKoulutusaste().getArvo());
 
         tutkintoLOS.setId(CreatorUtil.resolveLOSId(komo.getOid(), providerOid));
         tutkintoLOS.setName(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
         tutkintoLOS.setShortTitle(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
-        tutkintoLOS.setGoals(getI18nText(komo.getKuvausKomo().get(KomoTeksti.TAVOITTEET).getTekstis()));
+        NimiV1RDTO goals = komo.getKuvausKomo().get(KomoTeksti.TAVOITTEET);
+        if (goals != null) {
+            tutkintoLOS.setGoals(getI18nText(goals.getTekstis()));
+        }
         tutkintoLOS.setCreditValue(komo.getOpintojenLaajuusarvo().getArvo());
         tutkintoLOS.setCreditUnit(getI18nTextEnriched(komo.getOpintojenLaajuusyksikko().getMeta()));
 
