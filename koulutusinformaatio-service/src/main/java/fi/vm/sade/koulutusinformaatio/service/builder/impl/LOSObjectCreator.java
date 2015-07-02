@@ -88,6 +88,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakoulu
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
