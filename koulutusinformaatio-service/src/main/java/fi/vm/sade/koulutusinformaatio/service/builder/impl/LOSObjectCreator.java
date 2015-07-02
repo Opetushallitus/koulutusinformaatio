@@ -1167,6 +1167,10 @@ public class LOSObjectCreator extends ObjectCreator {
         addKoulutus2AsteV1Fields(koulutusDTO, los);
         addKoulutusKoulutusLukioV1Fields(koulutusDTO, los);
         los.setQualifications(null); // aina ylioppilas, ei haluta näyttää kuvauksessa
+
+        Code name = koodistoService.searchFirst(koulutusDTO.getKoulutusohjelma().getUri());
+        los.setShortTitle(name.getShortTitle()); // Otsikkoa varten tarvitaan lukiolinjan lyhytnimi
+
         return los;
     }
 
@@ -1640,7 +1644,7 @@ public class LOSObjectCreator extends ObjectCreator {
         tutkintoLOS.setName(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
         tutkintoLOS.setShortTitle(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
         NimiV1RDTO goals = komo.getKuvausKomo().get(KomoTeksti.TAVOITTEET);
-        if (goals != null) {
+        if(goals != null){
             tutkintoLOS.setGoals(getI18nText(goals.getTekstis()));
         }
         tutkintoLOS.setCreditValue(komo.getOpintojenLaajuusarvo().getArvo());

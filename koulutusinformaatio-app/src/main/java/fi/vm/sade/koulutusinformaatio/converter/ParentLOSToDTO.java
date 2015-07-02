@@ -16,14 +16,21 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
-
 import com.google.common.collect.SetMultimap;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
@@ -53,6 +60,9 @@ public final class ParentLOSToDTO {
         parent.setEducationDomain(ConverterUtil.getTextByLanguage(tutkintoLOS.getEducationDomain(), uiLang));
         parent.setStydyDomain(ConverterUtil.getTextByLanguage(tutkintoLOS.getStydyDomain(), uiLang));
         parent.setTranslationLanguage(lang);
+        ArrayList<Code> languages = new ArrayList<Code>();
+        languages.addAll(tutkintoLOS.getTeachingLanguages());
+        parent.setTeachingLanguages(CodeToDTO.convertAll(languages, lang));
 
         try {
             KoulutusLOS latestLoi = tutkintoLOS.getLatestLoi();

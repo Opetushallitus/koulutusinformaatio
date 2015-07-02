@@ -52,6 +52,7 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
 
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
+    private List<CodeDTO> teachingLanguages = new ArrayList<CodeDTO>();
 
     private List<ArticleResultDTO> edCodeSuggestions;
     private List<ArticleResultDTO> edTypeSuggestions;
@@ -248,6 +249,14 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
 
     public void setSelectingDegreeProgram(String selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
+    }
+
+    public List<CodeDTO> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<CodeDTO> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 
 }

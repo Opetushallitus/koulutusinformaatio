@@ -364,33 +364,10 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
             
             result.teachLang = [];
             // set teaching languge as the first language in array
-            for (var index in result.lois) {
-                if (result.lois.hasOwnProperty(index)) {
-                    var loi = result.lois[index];
-                    for (var asIndex in loi.applicationSystems) {
-                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                            var as = loi.applicationSystems[asIndex];
-                            for (var aoIndex in as.applicationOptions) {
-                                if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                    var ao = as.applicationOptions[aoIndex];
-
-                                    if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                                    	for (var tlIndex in ao.teachingLanguageNames) {
-                                    		var tl = ao.teachingLanguageNames[tlIndex];
-                                    		if (tl && result.teachLang.indexOf(tl) < 0) {
-												result.teachLang.push(tl);
-											}
-                                    	}
-                                    	
-                                        ao.teachLang = ao.teachingLanguages[0];
-
-                                        $rootScope.teachingLang = ao.teachLang.toLowerCase();
-                                        $rootScope.teachingLanguageNames = result.teachLang;
-                                    }
-                                }
-                            }
-                        }
-                    }
+            for (var index in result.teachingLanguages) {
+               var tl = result.teachingLanguages[index].name;
+                if(!_.contains(result.teachLang, tl)){
+                    result.teachLang.push(tl)
                 }
             }
             
