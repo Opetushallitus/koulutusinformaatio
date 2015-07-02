@@ -130,12 +130,17 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("{}/{} Indexing vocational education: {}", ++i, vocationalEducations.size(), curDTO.getOid());
                 List<KoulutusLOS> losses = tarjontaService.createAmmatillinenKoulutusLOS(curDTO);
                 if (losses != null && !losses.isEmpty()) {
+                    TutkintoLOS tutkintolos = null;
                     for (KoulutusLOS curLOS : losses) {
                         this.educationDataUpdateService.save(curLOS);
+                        if (tutkintolos == null) {
+                            tutkintolos = curLOS.getTutkinto();
+                        }
                     }
-                    TutkintoLOS tutkintolos = losses.get(0).getTutkinto();
-                    indexToSolr(tutkintolos, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                    this.educationDataUpdateService.save(tutkintolos);
+                    if (tutkintolos != null) {
+                        indexToSolr(tutkintolos, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                        this.educationDataUpdateService.save(tutkintolos);
+                    }
                 }
             }
             LOG.info("Vocational educations saved.");
