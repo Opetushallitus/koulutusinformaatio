@@ -26,7 +26,6 @@ import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
@@ -109,10 +108,6 @@ public interface EducationDataQueryService {
      * @return list of learning oppportunity search results
      */
     List<LOS> findLearningOpportunitiesByProviderId(String providerId);
-    
-    LOS getLos(String losId);
-    
-    List<LOS> findLearningOpportunitiesByLoiId(String loiId);
 
     DataStatus getLatestSuccessDataStatus();
 

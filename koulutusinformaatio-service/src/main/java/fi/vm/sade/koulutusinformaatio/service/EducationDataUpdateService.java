@@ -16,12 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.io.IOException;
-
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
@@ -36,11 +30,4 @@ public interface EducationDataUpdateService {
     void save(final DataStatus dataStatus);
     
     void save(final Provider provider);
-    
-    void deleteLos(LOS los);
-    
-    void deleteAo(ApplicationOption ao);
-
-    void clearHigherEducations(IndexerService indexerService, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException;
-
 }

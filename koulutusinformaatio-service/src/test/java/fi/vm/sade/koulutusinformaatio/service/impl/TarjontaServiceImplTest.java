@@ -16,45 +16,31 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
+import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.core.convert.ConversionService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.core.convert.ConversionService;
-
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
-import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
-import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
@@ -70,7 +56,6 @@ public class TarjontaServiceImplTest {
     ConversionService conversionService;
     KoodistoService koodistoService;
     ProviderService providerService;
-    LearningOpportunityDirector loDirector;
     TarjontaRawService tarjontaRawService;
     OrganisaatioRawService organisaatioRawService;
     TarjontaServiceImpl service;
@@ -95,14 +80,13 @@ public class TarjontaServiceImplTest {
         invalidKomo.setModuuliTyyppi("invalid");
         
         tarjontaRawService = mock(TarjontaRawService.class);
-        loDirector = mock(LearningOpportunityDirector.class);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_VOC))).thenReturn(vocationalKomo);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_UPSEC))).thenReturn(upsecKomo);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_REHAB))).thenReturn(rehabKomo);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_INVALID))).thenReturn(invalidKomo);
         
         service = new TarjontaServiceImpl(conversionService, koodistoService,
-                providerService, loDirector, tarjontaRawService, organisaatioRawService, mock(ParameterService.class));
+                providerService, tarjontaRawService, organisaatioRawService, mock(ParameterService.class));
         
         mockHigherEdRawRes();
         this.mockCalendarApplicationSystems();
@@ -194,29 +178,8 @@ public class TarjontaServiceImplTest {
         } catch (KoodistoException ex) {
             ex.printStackTrace();
         }
-        
     }
 
-	@Test
-    public void testVocationalResolveBuilder() throws TarjontaParseException, KoodistoException {
-        assertNull(service.findParentLearningOpportunity(KOMO_ID_VOC));
-    }
-
-    @Test
-    public void testUpperSecondaryResolveBuilder() throws TarjontaParseException, KoodistoException {
-        service.findParentLearningOpportunity(KOMO_ID_UPSEC);
-        verify(loDirector).constructLearningOpportunities(isA(UpperSecondaryLearningOpportunityBuilder.class));
-    }
-
-    @Test
-    public void testRehabilitatingResolveBuilder() throws TarjontaParseException, KoodistoException {
-        assertNull(service.findParentLearningOpportunity(KOMO_ID_REHAB));
-    }
-
-    @Test
-    public void testResolveBuilderInvalidEducationType() throws TarjontaParseException {
-        assertNull(service.findParentLearningOpportunity(KOMO_ID_INVALID));
-    }
     
     @Test
     public void testFindHigherEducations() throws KoodistoException, IOException, ResourceNotFoundException {

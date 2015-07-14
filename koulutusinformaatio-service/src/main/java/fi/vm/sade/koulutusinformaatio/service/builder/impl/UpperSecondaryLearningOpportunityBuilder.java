@@ -16,30 +16,24 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.List;
-
-import javax.ws.rs.WebApplicationException;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+
+import javax.ws.rs.WebApplicationException;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -47,7 +41,6 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunityBuilder<UpperSecondaryLOS> {
 
     private TarjontaRawService tarjontaRawService;
-    private ProviderService providerService;
     private LOSObjectCreator losObjectCreator;
 
     private KomoDTO komo;
@@ -62,7 +55,6 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
                                                     OrganisaatioRawService organisaatioRawService,
                                                     ParameterService parameterService) {
         this.tarjontaRawService = tarjontaRawService;
-        this.providerService = providerService;
         this.komo = komo;
         komotosByProviderId = ArrayListMultimap.create();
         this.loses = Lists.newArrayList();

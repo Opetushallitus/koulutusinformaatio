@@ -15,9 +15,14 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.mongodb.morphia.Key;
@@ -26,55 +31,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -115,8 +73,7 @@ EducationIncrementalDataQueryService {
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO,
-            LearningOpportunityProviderDAO learningOpportunityProviderDAO,
-            IndexerService indexerService) {
+            LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -133,19 +90,6 @@ EducationIncrementalDataQueryService {
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-    }
-
-    @Override
-    public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation,
-            boolean vocational, boolean nonVocational) {
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(asId, lopId, baseEducation,
-                vocational, nonVocational);
-        return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
-            @Override
-            public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
-                return modelMapper.map(applicationOptionEntity, ApplicationOption.class);
-            }
-        });
     }
 
     @Override
@@ -169,22 +113,6 @@ EducationIncrementalDataQueryService {
             return modelMapper.map(ao, ApplicationOption.class);
         } else {
             throw new ResourceNotFoundException("Application option not found: " + aoId);
-        }
-    }
-
-    @Override
-    public ChildLOS getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity childLO = getChildLO(childLoId);
-        return modelMapper.map(childLO, ChildLOS.class);
-    }
-
-    @Override
-    public DataStatus getLatestDataStatus() {
-        DataStatusEntity status = dataStatusDAO.getLatest();
-        if (status != null) {
-            return modelMapper.map(status, DataStatus.class);
-        } else {
-            return null;
         }
     }
 
@@ -214,18 +142,6 @@ EducationIncrementalDataQueryService {
     }
 
     @Override
-    public SpecialLOS getSpecialLearningOpportunity(String id) throws ResourceNotFoundException {
-        SpecialLearningOpportunitySpecificationEntity entity =
-                specialLearningOpportunitySpecificationDAO.getFromSecondary(id);
-        if (entity != null) {
-            return modelMapper.map(entity, SpecialLOS.class);
-        }
-        else {
-            throw new ResourceNotFoundException(String.format("Special learning opportunity specification not found: %s", id));
-        }
-    }
-
-    @Override
     public HigherEducationLOS getHigherEducationLearningOpportunity(String oid) throws ResourceNotFoundException {
         HigherEducationLOSEntity entity = this.higherEducationLOSDAO.get(oid);
         if (entity != null) {
@@ -244,75 +160,6 @@ EducationIncrementalDataQueryService {
         else {
             throw new ResourceNotFoundException(String.format("Learning opportunity provider not found: %s", id));
         }
-    }
-
-    @Override
-    public List<LOS> findLearningOpportunitiesByProviderId(String providerId) {
-        List<LOS> results = Lists.newArrayList();
-        List<ParentLearningOpportunitySpecificationEntity> parentEntites =
-                parentLearningOpportunitySpecificationDAO.findByProviderId(providerId);
-        List<ParentLOS> parents = Lists.transform(
-                parentEntites,
-                new Function<ParentLearningOpportunitySpecificationEntity, ParentLOS>() {
-                    @Override
-                    public ParentLOS apply(ParentLearningOpportunitySpecificationEntity input) {
-                        return modelMapper.map(input, ParentLOS.class);
-                    }
-                }
-                );
-        List<ChildLOS> children = Lists.newArrayList();
-        for (ParentLearningOpportunitySpecificationEntity parentEntity : parentEntites) {
-            children.addAll(Lists.transform(
-                    parentEntity.getChildren(),
-                    new Function<ChildLearningOpportunitySpecificationEntity, ChildLOS>() {
-                        @Override
-                        public ChildLOS apply(ChildLearningOpportunitySpecificationEntity input) {
-                            return modelMapper.map(input, ChildLOS.class);
-                        }
-                    }
-                    ));
-        }
-        List<UpperSecondaryLOS> upsecs = Lists.transform(
-                upperSecondaryLearningOpportunitySpecificationDAO.findByProviderId(providerId),
-                new Function<UpperSecondaryLearningOpportunitySpecificationEntity, UpperSecondaryLOS>() {
-                    @Override
-                    public UpperSecondaryLOS apply(UpperSecondaryLearningOpportunitySpecificationEntity input) {
-                        return modelMapper.map(input, UpperSecondaryLOS.class);
-                    }
-                }
-                );
-        List<SpecialLOS> specials = Lists.transform(
-                specialLearningOpportunitySpecificationDAO.findByProviderId(providerId),
-                new Function<SpecialLearningOpportunitySpecificationEntity, SpecialLOS>() {
-                    @Override
-                    public SpecialLOS apply(SpecialLearningOpportunitySpecificationEntity input) {
-                        return modelMapper.map(input, SpecialLOS.class);
-                    }
-                }
-                );
-
-        List<HigherEducationLOS> higherEds = Lists.transform(higherEducationLOSDAO.findByProviderId(providerId),
-                new Function<HigherEducationLOSEntity, HigherEducationLOS>() {
-            @Override
-            public HigherEducationLOS apply(HigherEducationLOSEntity input) {
-                return modelMapper.map(input, HigherEducationLOS.class);
-            }
-        });
-
-        results.addAll(parents);
-        results.addAll(children);
-        results.addAll(upsecs);
-        results.addAll(specials);
-        results.addAll(higherEds);
-        return results;
-    }
-
-    private ChildLearningOpportunitySpecificationEntity getChildLO(String childLoId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity clo = childLearningOpportunityDAO.getFromSecondary(childLoId);
-        if (clo == null) {
-            throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLoId);
-        }
-        return clo;
     }
 
     @Override

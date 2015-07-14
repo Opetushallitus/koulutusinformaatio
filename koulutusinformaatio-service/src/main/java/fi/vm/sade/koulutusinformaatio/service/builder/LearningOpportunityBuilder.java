@@ -16,23 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
-import java.util.List;
-
-import javax.ws.rs.WebApplicationException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Joiner;
-
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.WebApplicationException;
+import java.util.List;
 
 /**
  * Builds learning opportunity instances.
@@ -80,19 +75,6 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     }
 
-    protected void validateHakukohde(HakukohdeDTO hakukohde) throws TarjontaParseException {
-        if (!hakukohde.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application option " + hakukohde.getOid() + NOT_IN_STATE + TarjontaConstants.STATE_PUBLISHED);
-        }
-    }
-
-    protected void validateHaku(HakuDTO haku) throws TarjontaParseException {
-        if (!haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application system " + haku.getOid() + NOT_IN_STATE + TarjontaConstants.STATE_PUBLISHED);
-        }
-    }
-    
-    
     protected boolean isNuortenKoulutus(KomotoDTO komotoDto) {
         return (komotoDto.getKoulutuslajiUris() != null 
                 && !komotoDto.getKoulutuslajiUris().isEmpty() 

@@ -16,35 +16,21 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.BasketApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.Exam;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.dto.BasketApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -193,7 +179,8 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertNotNull(baoDTO.getApplicationDates());
         assertTrue(baoDTO.getApplicationDates().size() > 0);
     }
-    
+
+    @Test
     public void testHigherEducation() {
         ParentLOSRef parent = new ParentLOSRef();
         parent.setLosType(TarjontaConstants.TYPE_KK);
@@ -204,6 +191,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertTrue(baoDTO.isHigherEducation());
     }
 
+    @Test
     public void testUILang() {
         List<ApplicationOption> aos = Lists.newArrayList(ao);
         List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "sv");

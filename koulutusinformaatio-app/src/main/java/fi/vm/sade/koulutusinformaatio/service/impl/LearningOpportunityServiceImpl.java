@@ -16,52 +16,22 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.converter.AdultUpperSecondaryLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.AdultVocationalParentLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToBasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ChildLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
-import fi.vm.sade.koulutusinformaatio.converter.HigherEducationLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.LOSToSearchResult;
-import fi.vm.sade.koulutusinformaatio.converter.ParentLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.PictureToThumbnail;
-import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.SpecialLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.KoulutusLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.UpperSecondaryLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.converter.*;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -230,14 +200,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public List<LearningOpportunitySearchResultDTO> findLearningOpportunitiesByProviderId(String providerId, String lang) {
         List<LOS> losses = educationDataQueryService.findLearningOpportunitiesByProviderId(providerId);
         return LOSToSearchResult.convert(losses, lang);
-    }
-
-    private String resolveDefaultLanguage(final ParentLOS parentLO) {
-        if (parentLO.getTeachingLanguages() == null || parentLO.getTeachingLanguages().isEmpty()) {
-            return LANG_FI;
-        } else {
-            return parentLO.getTeachingLanguages().get(0).getValue().toLowerCase();
-        }
     }
 
     private String resolveDefaultLanguage(final ChildLOI childLOI, String lang) {

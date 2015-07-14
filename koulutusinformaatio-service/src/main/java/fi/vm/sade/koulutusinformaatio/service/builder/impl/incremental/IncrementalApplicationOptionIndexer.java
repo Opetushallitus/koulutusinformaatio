@@ -15,30 +15,14 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.solr.client.solrj.SolrServerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
-import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
@@ -46,6 +30,12 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 
@@ -122,14 +112,14 @@ public class IncrementalApplicationOptionIndexer {
         if (CreatorUtil.isSecondaryAS(asDto)) {
             LOG.debug("Indexing  secondary ao");
             if (!TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila())) {
-                removeApplicationOption(aoDto.getOid());
+//                removeApplicationOption(aoDto.getOid());
             } else {
                 try {
                     ApplicationOption ao = this.dataQueryService.getApplicationOption(aoDto.getOid());
-                    updateApplicationOption(ao, aoDto);
+//                    updateApplicationOption(ao, aoDto);
                 } catch (ResourceNotFoundException ex) {
                     LOG.debug(ex.getMessage());
-                    addApplicationOption(aoDto);
+//                    addApplicationOption(aoDto);
                 }
             }
         }
@@ -162,7 +152,7 @@ public class IncrementalApplicationOptionIndexer {
                                     if (this.losIndexer.isAdultUpsecKomo(koulutusRes.getResult().getKomoOid())) {
                                         this.losIndexer.removeAdultUpsecEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
                                     } else {
-                                        this.losIndexer.removeAdultVocationalEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
+                                        this.losIndexer.removeAdultVocationalEd(curKoulOid.getOid());
                                     }
                                 }
                             }
@@ -188,83 +178,6 @@ public class IncrementalApplicationOptionIndexer {
             }
     }
 
-    private void updateApplicationOption(ApplicationOption ao, HakukohdeV1RDTO aoDto) throws KoodistoException, TarjontaParseException, SolrServerException, IOException {
-
-        removeApplicationOption(ao.getId());
-        addApplicationOption(aoDto);
-
-
-    }
-    
-  //when adding an application option, the lois that are connected to it
-    //need to be added or updated.
-    private void addApplicationOption(HakukohdeV1RDTO aoDto) throws KoodistoException {
-
-
-        try {
-
-            List<String> koulutusOids = aoDto.getHakukohdeKoulutusOids();
-            for (String curKoulutusOid : koulutusOids) {
-
-                KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(curKoulutusOid);
-
-                //if komoto (loi) is in state published it needs to be added or updated
-                if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila().name())) {
-                    LOG.debug("komoto to add is published");
-                    losIndexer.indexLoiData(komotoDto.getOid());
-
-                }
-
-            }
-        }
-        catch (Exception ex) {
-            LOG.error(String.format("Problem indexing application option: %s. %s", aoDto.getOid(), ex.getMessage()));
-            throw new KoodistoException(ex.getMessage());
-        }
-
-    }
-    
-  //Handling removal of application option and related data
-    private void removeApplicationOption(String oid) throws KoodistoException, TarjontaParseException, SolrServerException, IOException {
-
-        LOG.debug("In remove application option");
-        try {
-
-            //Getting ao from mongo
-            ApplicationOption ao = this.dataQueryService.getApplicationOption(oid);
-
-            //Getting parent ref
-            ParentLOSRef parentRef = ao.getParent();
-
-            //If there is a parent ref, handling removal of parent data
-            if (parentRef != null && parentRef.getId() != null) {
-                LOG.debug("There is a parent ref in ao");
-                LOS los  = this.dataQueryService.getLos(parentRef.getId());
-
-                if (los != null && los instanceof ParentLOS) {
-                    LOG.debug("The referenced los is ParentLOS");
-                    this.losIndexer.handleParentLOSReferenceRemoval((ParentLOS)los);
-                } else if (los != null && los instanceof SpecialLOS) {
-                    LOG.debug("The referenced los is SpecialLOS");
-                    this.losIndexer.handleSpecialLOSReferenceRemoval((SpecialLOS)los);
-                } 
-            }
-
-
-            //If there are child loi refs, handling removal based on child references
-            if (ao.getChildLOIRefs() != null
-                    && !ao.getChildLOIRefs().isEmpty()) {
-                LOG.debug("Handling childLOIRefs for ao");
-                this.losIndexer.handleLoiRefRemoval(ao);
-            }
-
-
-            //If application option is not in mongo, nothing needs to be done    
-        } catch (ResourceNotFoundException notFoundEx) {
-            LOG.debug(notFoundEx.getMessage());
-        }
-    }
-    
     public void indexHigherEdAo(String aoOid, boolean toRemove) throws Exception {
 
         ResultV1RDTO<HakukohdeV1RDTO> aoRes = this.tarjontaRawService.getV1EducationHakukohode(aoOid);

@@ -16,16 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.ws.rs.WebApplicationException;
-
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
+import fi.vm.sade.tarjonta.service.types.TarjontaTila;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,54 +34,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.I18nPicture;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
-import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatillinenPerustutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
-import fi.vm.sade.tarjonta.service.types.TarjontaTila;
-import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -95,7 +49,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     private OrganisaatioRawService organisaatioRawService;
     private KoodistoService koodistoService;
     private ProviderService providerService;
-    private LearningOpportunityDirector loDirector;
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
     private ParameterService parameterService;
@@ -105,11 +58,10 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
-            ProviderService providerService, LearningOpportunityDirector loDirector,
-            TarjontaRawService tarjontaRawService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
+            ProviderService providerService, TarjontaRawService tarjontaRawService,
+                               OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
-        this.loDirector = loDirector;
         this.tarjontaRawService = tarjontaRawService;
         this.conversionService = conversionService;
         this.organisaatioRawService = organisaatioRawService;
@@ -117,75 +69,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     public TarjontaServiceImpl() {
-    }
-
-    @Override
-    public List<LOS> findParentLearningOpportunity(String oid) throws TarjontaParseException {
-        try {
-            KomoDTO komo = tarjontaRawService.getKomo(oid);
-            LearningOpportunityBuilder builder = resolveBuilder(komo);
-            if (builder == null) {
-                return null;
-            }
-            return loDirector.constructLearningOpportunities(builder);
-
-        } catch (KoodistoException e) {
-            LOG.error("Problem creating parent LOS: " + oid, e);
-            throw new TarjontaParseException("An error occurred while building parent LOS " + oid + " with koodisto: " + e.getMessage());
-        } catch (WebApplicationException e) {
-            throw new TarjontaParseException("An error occurred while building parent LOS " + oid
-                    + " accessing remote resource: HTTP response code: "
-                    + e.getResponse().getStatus() + ",  error message: " + e.getMessage());
-        }
-    }
-
-    private LearningOpportunityBuilder resolveBuilder(KomoDTO komo) throws KoodistoException, TarjontaParseException {
-        String educationType = komo.getKoulutusTyyppiUri();
-        if (educationType.equals(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE) &&
-                komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
-            return new UpperSecondaryLearningOpportunityBuilder(
-                    tarjontaRawService, providerService, koodistoService, komo, organisaatioRawService, parameterService);
-        }
-        else {
-            return null;
-        }
-    }
-
-    @Override
-    public List<String> listParentLearnignOpportunityOids() {
-        return listParentLearnignOpportunityOids(Integer.MAX_VALUE, 0);
-    }
-
-    @Override
-    public List<String> listParentLearnignOpportunityOids(int count, int startIndex) {
-        List<OidRDTO> oids = tarjontaRawService.listParentLearnignOpportunityOids(count, startIndex);
-        return Lists.transform(oids, new Function<OidRDTO, String>() {
-            @Override
-            public String apply(OidRDTO input) {
-                return conversionService.convert(input, String.class);
-            }
-        });
-    }
-
-    @Override
-    public List<String> getHigherEdOids() {
-        List<String> loOids = new ArrayList<String>();
-
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducations(TarjontaConstants.HIGHER_EDUCATION_TYPE);// listHigherEducation();
-        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-                    continue;
-                }
-                ResultV1RDTO<Set<String>> parentRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(curKoulutus.getKomoOid());
-                if (parentRes == null || parentRes.getResult() == null || parentRes.getResult().size() == 0) {
-                    loOids.add(curKoulutus.getOid());
-                }
-            }
-        }
-
-        return loOids;
     }
 
     @Override
@@ -284,7 +167,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 newRef.setId(los.getId());
                 newRef.setName(los.getName());
                 newRef.setPrerequisite(curAo.getPrerequisite());
-                newRef.setQualifications(((KoulutusLOS) los).getQualifications());
+                newRef.setQualifications(los.getQualifications());
                 newRef.setProvider(curAo.getProvider().getName());
                 aoLoss.add(newRef);
                 aoToEducationsMap.put(curAo.getId(), aoLoss);
@@ -318,7 +201,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         newRef.setId(los.getId());
         newRef.setName(los.getName());
         newRef.setPrerequisite(curAo.getPrerequisite());
-        // newRef.setQualifications(((CompetenceBasedQualificationParentLOS)los).getQualifications());
         newRef.setProvider(curAo.getProvider().getName());
         newRef.setFieldOfExpertise(los.getChildren().get(0).getName());
         newRef.setEducationKind(los.getEducationKind());
@@ -825,14 +707,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         return los;
     }
 
-    private KoulutusLOS createKoulutusLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException,
-            KoodistoException {
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-        return creator.createAmmatillinenLOS(koulutusDTO, checkStatus);
-    }
-
     @Override
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException {
 
@@ -1002,10 +876,6 @@ public class TarjontaServiceImpl implements TarjontaService {
             LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
             return new ArrayList<KoulutusLOS>();
         }
-    }
-
-    private boolean isOsaamisalatonKoulutus(KoulutusLOS koulutus) {
-        return koulutus.getId().equals("1.2.246.562.17.26177209298");
     }
 
     @Override

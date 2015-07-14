@@ -16,52 +16,19 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.util.List;
-
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
 public interface TarjontaService {
 
-    /**
-     * Finds a parent learning opportunity by oid.
-     *
-     *
-     * @param oid
-     * @return
-     */
-    public List<LOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException;
-
-    /**
-     * Returns a list of all parent learning opportunity oids.
-     *
-     * @return list of oids
-     */
-    public List<String> listParentLearnignOpportunityOids();
-
-    /**
-     * Returns a list of parent learning opportunity oids
-     * @param count maximum count of results
-     * @param startIndex start index of results
-     * @return list of oids
-     */
-    public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
-    
-    
     /**
      * Returns a list of root-level higher education learning opportunities.
      * The children of each learning opportunity is contained in the object.
@@ -105,8 +72,6 @@ public interface TarjontaService {
     
     public CalendarApplicationSystem createCalendarApplicationSystem(String hakuOid) throws KoodistoException;
     
-    public List<String> getHigherEdOids();
-
     List<Code> getEdBaseEducationCodes() throws KoodistoException;
 
     List<KoulutusHakutulosV1RDTO> findAmmatillinenKoulutusDTOs() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;

@@ -16,9 +16,19 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
+import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
+import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
@@ -26,38 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Strings;
-
-import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.Articled;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
-import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
-import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
-import fi.vm.sade.koulutusinformaatio.service.SearchService;
-
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -122,34 +101,6 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         }
-    }
-
-    private String getEducationCodeForParent(ParentLearningOpportunitySpecificationDTO dto) {
-        try {
-            return dto.getLois().get(0).getApplicationSystems().get(0).getApplicationOptions().get(0).getEducationCodeUri();
-        } catch (IndexOutOfBoundsException aoe) {
-            LOGGER.warn(dto.getClass().getSimpleName() + " did not have any " + ApplicationOptionDTO.class.getSimpleName() + " nested within. Contents were: " + dto.toString());
-        }
-        return null;
-    }
-
-    private String getEducationTypeForParent(ParentLearningOpportunitySpecificationDTO dto) {
-        String type = null;
-        try {
-            ApplicationOptionDTO option = dto.getLois().get(0).getApplicationSystems().get(0).getApplicationOptions().get(0);
-            if (!option.isKotitalous() && !option.isKaksoistutkinto() && option.isVocational()) {
-                type = SolrConstants.ED_TYPE_AMMATILLINEN;
-            } else if (option.isKaksoistutkinto()) {
-                type = SolrConstants.ED_TYPE_KAKSOIS;
-            } else if (option.isKotitalous()) {
-                type = SolrConstants.ED_TYPE_KOTITALOUS;
-            } else {
-                type = SolrConstants.ED_TYPE_MUU;
-            }
-        } catch (IndexOutOfBoundsException aoe) {
-            LOGGER.warn(dto.getClass().getSimpleName() + " did not have any " + ApplicationOptionDTO.class.getSimpleName() + " nested within. Contents were: " + dto.toString());
-        }
-        return type;
     }
 
     @Override

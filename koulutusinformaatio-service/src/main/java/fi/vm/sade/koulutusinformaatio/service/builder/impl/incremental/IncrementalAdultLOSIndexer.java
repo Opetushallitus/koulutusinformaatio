@@ -15,31 +15,26 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -53,7 +48,6 @@ public class IncrementalAdultLOSIndexer {
     private TarjontaRawService tarjontaRawService;
     private TarjontaService tarjontaService;
     private EducationIncrementalDataUpdateService dataUpdateService;
-    private EducationIncrementalDataQueryService dataQueryService;
     private IndexerService indexerService;
 
     private final HttpSolrServer loHttpSolrServer;
@@ -65,7 +59,6 @@ public class IncrementalAdultLOSIndexer {
     public IncrementalAdultLOSIndexer(TarjontaRawService tarjontaRawService, 
             TarjontaService tarjontaService,
             EducationIncrementalDataUpdateService dataUpdateService,
-            EducationIncrementalDataQueryService dataQueryService,
             IndexerService indexerService,
             HttpSolrServer loHttpSolrServer,
             HttpSolrServer lopHttpSolrServer,
@@ -74,7 +67,6 @@ public class IncrementalAdultLOSIndexer {
         this.tarjontaRawService = tarjontaRawService;
         this.tarjontaService = tarjontaService;
         this.dataUpdateService = dataUpdateService;
-        this.dataQueryService = dataQueryService;
         this.indexerService = indexerService;
         this.loHttpSolrServer = loHttpSolrServer;
         this.lopHttpSolrServer = lopHttpSolrServer;
