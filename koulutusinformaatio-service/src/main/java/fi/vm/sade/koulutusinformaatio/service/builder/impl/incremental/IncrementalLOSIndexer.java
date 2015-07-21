@@ -714,9 +714,13 @@ public class IncrementalLOSIndexer {
     public void removeHigherEd(String oid, String komoOid) throws Exception {
         this.higherEdLOSIndexer.removeHigherEd(oid, komoOid);        
     }
-    
+
     public void indexKoulutusKomo(String komoOid) throws Exception {
         this.koulutusIndexer.indexKoulutusKomo(komoOid);
+    }
+
+    public void indexKoulutusLos(String komotoOid) throws Exception {
+        this.koulutusIndexer.indexKoulutusLOS(komotoOid);
     }
 
     public void removeKoulutus(String oid) throws Exception {
@@ -731,11 +735,8 @@ public class IncrementalLOSIndexer {
         this.adultLosIndexer.removeAdultVocationalEd(oid);
     }
 
-
     public void indexAdultUpsecKomo(String curKomoOid) throws Exception {
-        
         this.adultLosIndexer.indexAdultUpsecKomo(curKomoOid);
-        
     }
 
 

@@ -100,7 +100,7 @@ public class PreviewServiceImpl implements PreviewService {
     @Override
     public KoulutusLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
-            KoulutusLOS los = this.tarjontaService.createValmistavaKoulutusLOS(oid, false);
+            KoulutusLOS los = this.tarjontaService.createKoulutusLOS(oid, false);
             return los;
         } catch (KoodistoException e) {
             e.printStackTrace();

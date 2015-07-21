@@ -15,28 +15,23 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 
@@ -102,27 +97,30 @@ public class IncrementalKoulutusLOSIndexer {
 
                         LOG.debug("Now indexing koulutus education: {}", curKoul.getOid());
 
-                        KoulutusLOS createdLos = null;
-
-                        try {
-                            createdLos = this.tarjontaService.createValmistavaKoulutusLOS(curKoul.getOid(), true);
-                        } catch (TarjontaParseException tpe) {
-                            createdLos = null;
-                        }
-
-                        LOG.debug("Created los");
-
-                        if (createdLos == null) {
-                            LOG.debug("Created los is to be removed");
-                            removeKoulutusLOS(curKoul.getOid());
-                            continue;
-                        } else {
-                            this.indexToSolr(createdLos);
-                            this.dataUpdateService.updateKoulutusLos(createdLos);
-                        }
+                        indexKoulutusLOS(curKoul.getOid());
                     }
                 }
             }
+        }
+    }
+
+    public void indexKoulutusLOS(String koulutusOid) throws Exception {
+        KoulutusLOS createdLos = null;
+
+        try {
+            createdLos = this.tarjontaService.createKoulutusLOS(koulutusOid, true);
+        } catch (TarjontaParseException tpe) {
+            createdLos = null;
+        }
+
+        LOG.debug("Created los");
+
+        if (createdLos == null) {
+            LOG.debug("Created los is to be removed");
+            removeKoulutusLOS(koulutusOid);
+        } else {
+            this.indexToSolr(createdLos);
+            this.dataUpdateService.updateKoulutusLos(createdLos);
         }
     }
 
@@ -194,7 +192,7 @@ public class IncrementalKoulutusLOSIndexer {
         LOG.debug("Indexing koulutus ed komoto: {}", curKomotoOid);
         KoulutusLOS createdLos = null;
         try {
-            createdLos = this.tarjontaService.createValmistavaKoulutusLOS(curKomotoOid, true);
+            createdLos = this.tarjontaService.createKoulutusLOS(curKomotoOid, true);
         } catch (TarjontaParseException tpe) {
             createdLos = null;
         }

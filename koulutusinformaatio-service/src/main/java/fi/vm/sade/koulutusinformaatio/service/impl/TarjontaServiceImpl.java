@@ -541,7 +541,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 try {
                     LOG.debug("Indexing Valmistava education: {}", koulutusDTO.getOid());
                     KoulutusLOS los = null;
-                    los = createValmistavaKoulutusLOS(koulutusDTO, true);
+                    los = createKoulutusLOS(koulutusDTO, true);
                     if (los != null) {
                         losList.add(los);
                         updateAOLosReferences(los, aoToEducationsMap);
@@ -668,17 +668,23 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createValmistavaKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException {
         KoulutusV1RDTO dto = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid).getResult();
-        return createValmistavaKoulutusLOS(dto, checkStatus);
+        return createKoulutusLOS(dto, checkStatus);
     }
 
-    private KoulutusLOS createValmistavaKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
+            case KORKEAKOULUTUS:
+                los = creator.createHigherEducationLOS((KoulutusKorkeakouluV1RDTO) koulutusDTO, checkStatus);
+                break;
+            case AMMATILLINEN_PERUSTUTKINTO:
+                los = creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
+                break;
             case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
                 los = creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
                 break;

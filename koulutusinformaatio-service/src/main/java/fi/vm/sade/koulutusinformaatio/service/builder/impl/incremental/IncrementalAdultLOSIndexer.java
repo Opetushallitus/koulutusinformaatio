@@ -176,9 +176,7 @@ public class IncrementalAdultLOSIndexer {
     public void indexAdultVocationalKomoto(String curKomoOid) throws Exception {
         LOG.debug("Indexing adult vocational ed komo: {}", curKomoOid);
 
-
         CompetenceBasedQualificationParentLOS createdLos = null;
-
 
         try {
             createdLos = this.tarjontaService.createCBQPLOS(curKomoOid, true);//createAdultUpperSecondaryLOS(curKoul.getOid(), true);//createHigherEducationLearningOpportunityTree(curKoul.getOid());
