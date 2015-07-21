@@ -80,7 +80,7 @@ public class PartialUpdateServiceImplTest {
         HakukohdeV1RDTO ao = new HakukohdeV1RDTO();
         ao.setOid(APPLICATION_OPTION_OID);
         ao.setHakuOid(APPLICATION_OID);
-        when(tarjontaService.getV1EducationHakukohode(APPLICATION_OPTION_OID)).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>(ao));
+        when(tarjontaService.getV1EducationHakukohde(APPLICATION_OPTION_OID)).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>(ao));
         when(tarjontaService.getV1EducationHakuByOid(APPLICATION_OID)).thenReturn(new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO()));
     }
     

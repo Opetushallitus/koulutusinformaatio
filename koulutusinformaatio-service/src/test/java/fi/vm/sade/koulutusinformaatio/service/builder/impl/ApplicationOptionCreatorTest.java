@@ -16,32 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -53,10 +30,19 @@ import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.RyhmaliitosV1RDTO;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
@@ -114,7 +100,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         prerequisite = new Code();
         prerequisite.setValue("prerequisite");
         prerequisite.setName(TestUtil.createI18nText("peruskoulu"));
-        when(tarjontaRawService.getKomotosByHakukohde(eq(hakukohdeOid))).thenReturn(new ArrayList<OidRDTO>());
         creator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
 
     }
@@ -139,33 +124,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         additionalInfo.put(getFiUri(), "additionalInfo");
         hakukohde.setKaytetaanHakukohdekohtaistaHakuaikaa(false);
         hakukohde.setLisatiedot(additionalInfo);
-
-        ApplicationOption ao = creator.createVocationalApplicationOption(hakukohde, null, komoto, prerequisite, educationCodeUri, "et3");
-        assertNotNull(ao);
-        assertEquals(hakukohdeOid, ao.getId());
-        assertEquals("hakukohdeName", ao.getName().getTranslations().get("fi"));
-        assertEquals("aoIdentifier", ao.getAoIdentifier());
-        assertTrue(ao.isAthleteEducation());
-        assertEquals(new Integer(10), ao.getStartingQuota());
-        assertEquals(new Integer(5), ao.getLowestAcceptedScore());
-        assertEquals(new Double(4), ao.getLowestAcceptedAverage());
-        assertEquals(hakukohde.getLiitteidenToimitusPvm(), ao.getAttachmentDeliveryDeadline());
-        assertEquals(new Integer(10), ao.getLastYearApplicantCount());
-        assertEquals("selectionCriteria", ao.getSelectionCriteria().getTranslations().get("fi"));
-        assertFalse(ao.isKaksoistutkinto());
-        assertEquals(educationCodeUri, ao.getEducationCodeUri());
-        assertNotNull(ao.getRequiredBaseEducations());
-        assertEquals(2, ao.getRequiredBaseEducations().size());
-        assertEquals("1", ao.getRequiredBaseEducations().get(0));
-        assertEquals("2", ao.getRequiredBaseEducations().get(1));
-        assertNotNull(ao.getTeachingLanguages());
-        assertEquals(1, ao.getTeachingLanguages().size());
-        assertEquals("fi", ao.getTeachingLanguages().get(0));
-        assertEquals(prerequisite.getValue(), ao.getPrerequisite().getValue());
-        assertEquals(prerequisite.getName().getTranslations().get("fi"), ao.getPrerequisite().getName().getTranslations().get("fi"));
-        assertFalse(ao.isSpecificApplicationDates());
-        assertEquals("additionalInfo", ao.getAdditionalInfo().getTranslations().get("fi"));
-        assertTrue(ao.isVocational());
 
     }
 

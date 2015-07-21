@@ -11,7 +11,7 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * European Union Public Licence for more details.
+ * European Union  Licence for more details.
  */
 
 package fi.vm.sade.koulutusinformaatio.service;
@@ -32,50 +32,31 @@ import java.util.Set;
  */
 public interface TarjontaRawService {
 
-    public KomoDTO getKomo(String oid);
+     List<OidV1RDTO> getHakukohdesByHaku(String oid);
 
-    public List<OidRDTO> getKomotosByKomo(String oid, int count, int startIndex);
+    List<OidRDTO> getHakukohdesByKomoto(String oid);
 
-    public KomotoDTO getKomoto(String oid);
-
-    public List<OidRDTO> getHakukohdesByKomoto(String oid);
-
-    public KomoDTO getKomoByKomoto(String oid);
-
-    public HakukohdeDTO getHakukohde(String oid);
-
-    public List<OidRDTO> getHakukohdesByHaku(String oid);
-
-    public List<OidRDTO> getKomotosByHakukohde(String oid);
-
-    public HakuDTO getHaku(String oid);
-
-    public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex);
+     Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod);
     
-    public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod);
+     ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType);
     
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType);
+     ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(String... educationType);
     
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(String... educationType);
+     ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid);
     
-    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid);
+     ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid);
     
-    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohode(String oid);
+     ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid);
     
-    public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid);
-    
-    public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
+     ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
 
-	public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
+	 ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
 			String komoOid);
 
-	public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
+	 ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
 			String curKomoOid);
 	
-	public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid);
-
-    ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(
-            String hakukohdeOid);
+	 ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid);
 
     ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO> getAdultBaseEducationLearningOpportunity(String oid);
 
@@ -84,7 +65,7 @@ public interface TarjontaRawService {
     ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(
             String oid);
 
-    public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
+     ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
 
     ResultV1RDTO<KoulutusV1RDTO> getV1KoulutusLearningOpportunity(String oid);
 

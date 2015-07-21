@@ -16,24 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.DisMaxParams;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -208,7 +201,7 @@ public final class SolrUtil {
                 fixed = String.format("%s%s ", fixed, curSplit);
             }
         }
-        
+
         fixed = fixed.trim();
         if (fixed.length() > 0) {
             fixed = fixed.replace("\"", "");
@@ -216,43 +209,31 @@ public final class SolrUtil {
         if (fixed.length() > 0) {
             fixed = fixed.replace("(", "");
         }
-        
+
         if (fixed.length() > 0) {
             fixed = fixed.replace(")", "");
         }
-        
+
         if (fixed.length() > 0) {
             fixed = fixed.replace(':', ' ');
         }
-        
+
         if (fixed.length() > 0) {
             fixed = fixed.replace('-', ' ');
         }
-        
+
         if (fixed.length() > 0) {
             fixed = fixed.replace(",", "");
         }
-        
-        
-        
+
+
         if (fixed.endsWith("?")) {
             fixed = fixed.substring(0, fixed.lastIndexOf('?'));
         }
-        
+
         //LOG.debug("Fixed: " + fixed);
-        
+
         return fixed;
-    }
-    
-    private static List<String> getTeachingLangs(List<String> facetFilters) {
-        List<String> teachinglangs = new ArrayList<String>();
-        for (String curFilt : facetFilters) {
-            if (curFilt.startsWith(LearningOpportunity.TEACHING_LANGUAGE)) {
-                String theLang = curFilt.substring(curFilt.length() - 2).toLowerCase();
-                teachinglangs.add(theLang);
-            }
-        }
-        return teachinglangs;
     }
 
     public static class LearningOpportunity {

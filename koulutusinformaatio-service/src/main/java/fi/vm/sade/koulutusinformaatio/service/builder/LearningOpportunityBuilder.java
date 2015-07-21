@@ -18,7 +18,6 @@ package fi.vm.sade.koulutusinformaatio.service.builder;
 
 import com.google.common.base.Joiner;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
@@ -26,7 +25,6 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.WebApplicationException;
 import java.util.List;
 
 /**
@@ -82,9 +80,6 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
                 || ((komotoDto.getKoulutuslajiUris() == null) || komotoDto.getKoulutuslajiUris().isEmpty());
     }
 
-    public abstract LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
-    public abstract LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
-    public abstract LearningOpportunityBuilder reassemble() throws TarjontaParseException, KoodistoException, WebApplicationException;
     public abstract LearningOpportunityBuilder filter();
     public abstract List<T> build();
 }

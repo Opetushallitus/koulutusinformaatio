@@ -62,10 +62,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private OrganisaatioRawService organisaatioRawService;
 
     private LOSObjectCreator losCreator;
-    private SingleParentLOSBuilder parentLosBuilder;
-    private SingleSpecialLOSBuilder specialLosBuilder;
-    private SingleUpperSecondaryLOSBuilder upperSecLosBuilder;
-    
+
     private IncrementalApplicationSystemIndexer asIndexer;
     private IncrementalApplicationOptionIndexer aoIndexer;
     private IncrementalLOSIndexer losIndexer;
@@ -107,20 +104,14 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
         this.losCreator = new LOSObjectCreator(this.koodistoService, this.tarjontaRawService, this.providerService,
                 this.organisaatioRawService, parameterService);
-        this.parentLosBuilder = new SingleParentLOSBuilder(losCreator, tarjontaRawService);
-        this.specialLosBuilder = new SingleSpecialLOSBuilder(losCreator, tarjontaRawService);
-        this.upperSecLosBuilder = new SingleUpperSecondaryLOSBuilder(losCreator, tarjontaRawService);
-        this.losIndexer = new IncrementalLOSIndexer(this.tarjontaRawService, 
+        this.losIndexer = new IncrementalLOSIndexer(this.tarjontaRawService,
                 this.tarjontaService, 
                 this.dataUpdateService,
                 this.dataQueryService,
                 this.indexerService,
                 this.loHttpSolrServer,
                 this.lopHttpSolrServer,
-                this.locationHttpSolrServer,
-                this.parentLosBuilder,
-                this.specialLosBuilder,
-                this.upperSecLosBuilder);
+                this.locationHttpSolrServer);
         this.aoIndexer = new IncrementalApplicationOptionIndexer(this.losIndexer);
         this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaRawService,
                                                                 this.tarjontaService,
@@ -158,7 +149,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
             this.indexerService.clearProcessedLists();
             this.tarjontaService.clearProcessedLists();
-            this.losIndexer.clearCreatedLOS();
             int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
             // If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
@@ -230,7 +220,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             HakukohdeV1RDTO aoDto = null;
             HakuV1RDTO asDto = null;
             try {
-                aoDto = this.tarjontaRawService.getV1EducationHakukohode(curOid).getResult();
+                aoDto = this.tarjontaRawService.getV1EducationHakukohde(curOid).getResult();
                 asDto = this.tarjontaRawService.getV1EducationHakuByOid(aoDto.getHakuOid()).getResult();
                 this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
             } catch (Exception ex) {

@@ -21,10 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -73,35 +70,6 @@ public class IncrementalKoulutusLOSIndexer {
         this.lopHttpSolrServer = lopHttpSolrServer;
         this.locationHttpSolrServer = locationHttpSolrServer;
 
-    }
-
-    public void indexKoulutusKomo(String curKomoOid) throws Exception {
-        if (this.indexerService.hasAlreadyProcessedKomo(curKomoOid)) {
-            return;
-        }
-        this.indexerService.addProcessedKomo(curKomoOid);
-
-        LOG.debug("Indexing adult upper secondary ed komo: {}", curKomoOid);
-
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> koulutusRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
-
-        if (koulutusRes != null 
-                && koulutusRes.getResult() != null 
-                && koulutusRes.getResult().getTulokset() != null 
-                && !koulutusRes.getResult().getTulokset().isEmpty()) {
-
-
-            for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> tarjResult :  koulutusRes.getResult().getTulokset()) {
-                if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
-                    for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
-
-                        LOG.debug("Now indexing koulutus education: {}", curKoul.getOid());
-
-                        indexKoulutusLOS(curKoul.getOid());
-                    }
-                }
-            }
-        }
     }
 
     public void indexKoulutusLOS(String koulutusOid) throws Exception {

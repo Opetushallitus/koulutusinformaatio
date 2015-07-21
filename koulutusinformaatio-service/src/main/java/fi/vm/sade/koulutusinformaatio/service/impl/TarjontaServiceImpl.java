@@ -358,7 +358,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private void createEducationreReferencesForAo(ApplicationOption curAo, boolean validating) throws TarjontaParseException, KoodistoException {
 
-        ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO = this.tarjontaRawService.getV1EducationHakukohode(curAo.getId());
+        ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO = this.tarjontaRawService.getV1EducationHakukohde(curAo.getId());
         HakukohdeV1RDTO hakukohdeDTO = hakukohdeResDTO.getResult();
         for (String curEduOid : hakukohdeDTO.getHakukohdeKoulutusOids()) {
 
@@ -420,10 +420,6 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
         }
         return relatives;
-    }
-
-    public LOSObjectCreator getCreator() {
-        return creator;
     }
 
     public void setCreator(LOSObjectCreator creator) {

@@ -39,7 +39,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -81,11 +80,7 @@ public class TarjontaServiceImplTest {
         invalidKomo.setModuuliTyyppi("invalid");
         
         tarjontaRawService = mock(TarjontaRawService.class);
-        when(tarjontaRawService.getKomo(eq(KOMO_ID_VOC))).thenReturn(vocationalKomo);
-        when(tarjontaRawService.getKomo(eq(KOMO_ID_UPSEC))).thenReturn(upsecKomo);
-        when(tarjontaRawService.getKomo(eq(KOMO_ID_REHAB))).thenReturn(rehabKomo);
-        when(tarjontaRawService.getKomo(eq(KOMO_ID_INVALID))).thenReturn(invalidKomo);
-        
+
         service = new TarjontaServiceImpl(conversionService, koodistoService,
                 providerService, tarjontaRawService, organisaatioRawService, mock(ParameterService.class));
         

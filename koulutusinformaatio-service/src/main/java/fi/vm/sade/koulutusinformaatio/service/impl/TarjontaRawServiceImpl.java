@@ -47,10 +47,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
 
-    private WebResource komoResource;
     private WebResource komotoResource;
-    private WebResource hakuResource;
-    private WebResource hakukohdeResource;
     private WebResource v1KoulutusResource;
     private WebResource v1AOResource;
     private WebResource v1ASResource;
@@ -69,10 +66,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         ClientConfig cc = new DefaultClientConfig();
         cc.getSingletons().add(jacksProv);
         Client clientWithJacksonSerializer = Client.create(cc);
-        komoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komo");
         komotoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komoto");
-        hakuResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "haku");
-        hakukohdeResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "hakukohde");
         v1KoulutusResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
         v1AOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
         v1ASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
@@ -84,37 +78,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public TarjontaRawServiceImpl() {
     }
 
-
-    @Override
-    public KomoDTO getKomo(String oid) {
-        return komoResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<KomoDTO>() {
-                });
-    }
-
-    @Override
-    public List<OidRDTO> getKomotosByKomo(String oid, int count, int startIndex) {
-        return komoResource
-                .path(oid)
-                .path("komoto")
-                .queryParam("count", String.valueOf(count))
-                .queryParam("startIndex", String.valueOf(startIndex))
-                .accept(JSON_UTF8)
-                .get(new GenericType<List<OidRDTO>>() {
-                });
-    }
-
-    @Override
-    public KomotoDTO getKomoto(String oid) {
-        return komotoResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<KomotoDTO>() {
-                });
-    }
-
     @Override
     public List<OidRDTO> getHakukohdesByKomoto(String oid) {
         return komotoResource
@@ -124,64 +87,15 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<List<OidRDTO>>() {
                 });
     }
-
-    @Override
-    public KomoDTO getKomoByKomoto(String oid) {
-        return komotoResource
-                .path(oid)
-                .path("komo")
-                .accept(JSON_UTF8)
-                .get(new GenericType<KomoDTO>() {
-                });
-
-    }
-
-    @Override
-    public HakukohdeDTO getHakukohde(String oid) {
-        return hakukohdeResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<HakukohdeDTO>() {
-                });
-    }
-
-    @Override
-    public List<OidRDTO> getKomotosByHakukohde(String oid) {
-        return hakukohdeResource
-                .path(oid)
-                .path("komoto")
-                .accept(JSON_UTF8)
-                .get(new GenericType<List<OidRDTO>>() {
-                });
-    }
-
-    @Override
-    public HakuDTO getHaku(String oid) {
-        return hakuResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<HakuDTO>() {
-                });
-    }
     
     @Override
-    public List<OidRDTO> getHakukohdesByHaku(String oid) {
-        return hakuResource
+    public List<OidV1RDTO> getHakukohdesByHaku(String oid) {
+        return v1ASResource
                 .path(oid)
                 .path("hakukohde")
                 .queryParam("count", String.valueOf(10000))
                 .accept(JSON_UTF8)
-                .get(new GenericType<List<OidRDTO>>() {
-                });
-    }
-
-    @Override
-    public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex) {
-        return komoResource
-                .queryParam("count", String.valueOf(count))
-                .queryParam("startIndex", String.valueOf(startIndex))
-                .accept(JSON_UTF8)
-                .get(new GenericType<List<OidRDTO>>() {
+                .get(new GenericType<List<OidV1RDTO>>() {
                 });
     }
 
@@ -218,8 +132,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
     
     @Override
-    public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(
-            String oid) {
+    public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(String oid) {
         return v1KoulutusResource
                 .path(oid)
                 .accept(JSON_UTF8)
@@ -227,8 +140,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 });
     }
                 
-    public ResultV1RDTO<KomoV1RDTO> getV1Komo(
-            String oid) {
+    public ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid) {
         return this.v1KomoResource
                 .path(oid)
                 .accept(JSON_UTF8)
@@ -237,8 +149,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(
-            String oid) {
+    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid) {
         return v1AOResource
                 .path("search")
                 .queryParam("koulutusOid", oid)
@@ -249,20 +160,11 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohode(String oid) {
+    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid) {
         return v1AOResource
                 .path(oid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
-                });
-    }
-    
-    @Override
-    public ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(String hakukohdeOid) {
-        return v1AOResource
-                .path(String.format("%s/%s", hakukohdeOid, "koulutukset")) 
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {
                 });
     }
 

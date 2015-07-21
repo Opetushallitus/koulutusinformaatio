@@ -17,7 +17,6 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -25,8 +24,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
@@ -54,372 +51,17 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private KoodistoService koodistoService;
     private ProviderService providerService;
-    private LOIObjectCreator loiCreator;
     private TarjontaRawService tarjontaRawService;
+    private ApplicationOptionCreator applicationOptionCreator;
 
     @Autowired
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
             ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         super(koodistoService);
+        applicationOptionCreator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.tarjontaRawService = tarjontaRawService;
-        this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
-
-    }
-
-    private <T extends LOS> T createLOS(Class<T> type) throws TarjontaParseException {
-        T los;
-        try {
-            los = type.newInstance();
-        } catch (InstantiationException e) {
-            throw new TarjontaParseException(String.format("Failed to instantiate new %s object: %s", type.getName(), e.getMessage()));
-        } catch (IllegalAccessException e) {
-            throw new TarjontaParseException(String.format("Failed to instantiate new %s object: %s", type.getName(), e.getMessage()));
-        }
-
-        return los;
-    }
-
-    @SuppressWarnings("rawtypes")
-    private <T extends InstantiatedLOS> T createInstantiatedLOS(Class<T> type, KomoDTO komo) throws TarjontaParseException {
-        return createLOS(type);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private <T extends BasicLOS> T createBasicLOS(Class<T> type, KomoDTO komo, String providerId) throws TarjontaParseException, KoodistoException {
-        T basicLOS = createLOS(type);
-        basicLOS.setStructure(getI18nText(komo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
-        try {
-            basicLOS.setProvider(providerService.getByOID(providerId));
-        } catch (Exception ex) {
-            throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
-        }
-        basicLOS.setAccessToFurtherStudies(getI18nText(komo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
-        basicLOS.setEducationDegree(koodistoService.searchFirstCodeValue(komo.getKoulutusAsteUri()));
-        return basicLOS;
-    }
-
-    public ParentLOS createParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException, TarjontaParseException {
-        LOG.debug("Creating provider specific parent (" + providerId + ") LOS from komo: " + parentKomo.getOid());
-
-        ParentLOS parentLOS = createBasicLOS(ParentLOS.class, parentKomo, providerId);
-        parentLOS.setType(TarjontaConstants.TYPE_PARENT);
-
-        // los info
-        parentLOS.setId(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerId));
-        Code name = koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri());
-        parentLOS.setName(name.getName());
-        parentLOS.setShortTitle(name.getShortTitle());
-        parentLOS.setGoals(getI18nText(parentKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
-        parentLOS.setCreditValue(parentKomo.getLaajuusArvo());
-        parentLOS.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
-
-        parentLOS.setEducationDomain(koodistoService.searchFirstShortName(parentKomo.getKoulutusAlaUri()));
-        parentLOS.setStydyDomain(koodistoService.searchFirstName(parentKomo.getOpintoalaUri()));
-        parentLOS.setTopics(getTopics(parentKomo.getOpintoalaUri()));
-        parentLOS.setThemes(getThemes(parentLOS));
-
-        parentLOS.setKotitalousopetus(parentKomo.getKoulutusKoodiUri() != null
-                && parentKomo.getKoulutusKoodiUri().contains(TarjontaConstants.KOTITALOUSKOODI));
-
-        List<ParentLOI> lois = Lists.newArrayList();
-
-        for (KomotoDTO komoto : parentKomotos) {
-            ParentLOI loi = new ParentLOI();
-            loi.setId(komoto.getOid());
-            loi.setSelectingDegreeProgram(getI18nText(komoto.getTekstit().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA)));
-            loi.setPrerequisite(koodistoService.searchFirst(komoto.getPohjakoulutusVaatimusUri()));
-            lois.add(loi);
-        }
-        parentLOS.setLois(lois);
-        return parentLOS;
-    }
-
-    public ChildLOS createChildLOS(KomoDTO childKomo, String childLOSId, List<KomotoDTO> childKomotos) throws KoodistoException, TarjontaParseException {
-        ChildLOS childLOS = createInstantiatedLOS(ChildLOS.class, childKomo);
-        childLOS.setType(TarjontaConstants.TYPE_CHILD);
-        childLOS.setId(childLOSId);
-        Code name = getNameFromKomotoDTOs(childKomo.getKoulutusOhjelmaKoodiUri(), childKomo.getKoulutusKoodiUri(), childKomotos);
-        if (name != null) {
-            childLOS.setName(name.getName());
-            childLOS.setShortTitle(name.getShortTitle());
-        }
-        childLOS.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
-        childLOS.setQualifications(getQualificationsFromKomotoDTOs(childKomotos));
-        childLOS.setGoals(getI18nText(childKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
-        childLOS.setPseudo(childKomo.isPseudo());
-
-        // strip version out of education code uri
-        String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
-        childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri,
-                SolrConstants.ED_TYPE_AMMATILLINEN_SHORT));
-
-        return childLOS;
-    }
-
-    // If childkomo contains mixed komotos with koulutusohjelmauri and osaamisalauri, the childkomo has only koulutusohjelmauri.
-    // Therefore we must check if any of the childkomotos have a osaamisalauri that can be used as name
-    private Code getNameFromKomotoDTOs(String komoKoulutusOhjelmakoodiUri, String komoKoulutusKoodiUri, List<KomotoDTO> childKomotos) throws KoodistoException {
-        Code name = null;
-        for (KomotoDTO koulutus : childKomotos) {
-            if (koulutus.getKoulutusohjelmaUri() != null && koulutus.getKoulutusohjelmaUri().contains("osaamisala")) {
-                if (name == null)
-                    name = koodistoService.searchFirst(koulutus.getKoulutusohjelmaUri());
-            }
-        }
-        if (name == null)
-            name = koodistoService.searchFirst(komoKoulutusOhjelmakoodiUri);
-        if (name == null)
-            name = koodistoService.searchFirst(komoKoulutusKoodiUri);
-        return name;
-    }
-
-    private List<I18nText> getQualificationsFromKomotoDTOs(List<KomotoDTO> komotoDTOs) throws KoodistoException {
-        List<I18nText> qualifications = new ArrayList<I18nText>();
-        for (String tutkintonimikeUri : getTutkintonimikeUris(komotoDTOs)) {
-            qualifications.add(koodistoService.searchFirstName(tutkintonimikeUri));
-        }
-        return qualifications;
-    }
-
-    private Set<String> getTutkintonimikeUris(List<KomotoDTO> komotoDTOs) {
-        Set<String> tutkintonimikeUris = new HashSet<String>();
-        for (KomotoDTO komotoDTO : komotoDTOs) {
-            if (CreatorUtil.komotoPublished.apply(komotoDTO)) {
-                tutkintonimikeUris.addAll(new HashSet<String>(komotoDTO.getTutkintonimikeUris()));
-            }
-        }
-        return tutkintonimikeUris;
-    }
-
-    public SpecialLOS createRehabLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
-            KomotoDTO childKomoto, String providerOid) throws KoodistoException, TarjontaParseException {
-        SpecialLOS los = createBasicLOS(SpecialLOS.class, parentKomo, providerOid);
-        if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
-            los.setType(TarjontaConstants.TYPE_REHAB);
-        } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)
-                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
-                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
-                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
-                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.KANSANOPISTO_TYPE)) {
-            los.setType(TarjontaConstants.TYPE_PREP);
-            los.setEducationTypeUri(childKomo.getKoulutusTyyppiUri());
-        } else {
-            los.setType(TarjontaConstants.TYPE_SPECIAL);
-        }
-
-        los.setId(specialLOSId);
-        String teachingLang = koodistoService.searchFirstCodeValue(childKomoto.getOpetuskieletUris().get(0)).toLowerCase();
-        if ((!los.getType().equals(TarjontaConstants.TYPE_PREP) && !los.getType().equals(TarjontaConstants.TYPE_SPECIAL))
-                || (TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri()) && childKomoto.getKoulutusohjelmanNimi() != null)) {
-            if (childKomoto.getKoulutusohjelmanNimi() != null) {
-                Map<String, String> nameTranslations = Maps.newHashMap();
-                nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
-                los.setName(new I18nText(nameTranslations));
-                los.setShortTitle(new I18nText(nameTranslations));
-            } else {
-                Code name = koodistoService.searchFirst(childKomoto.getKoulutusKoodiUri());
-                los.setName(name.getName());
-                los.setShortTitle(name.getShortTitle());
-            }
-        } else if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
-            Code name = koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri());
-            los.setName(name.getName());
-            los.setShortTitle(name.getShortTitle());
-            Code subName = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
-            los.setSubName(subName.getName());
-        }
-        los.setCreditValue(childKomoto.getLaajuusArvo());
-        los.setCreditUnit(koodistoService.searchFirstShortName(childKomoto.getLaajuusYksikkoUri()));
-        los.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
-        los.setEducationDomain(koodistoService.searchFirstShortName(parentKomo.getKoulutusAlaUri()));
-        los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
-                koodistoService.searchFirstName(parentKomo.getKoulutusKoodiUri())));
-        los.setTopics(getTopics(parentKomo.getOpintoalaUri()));
-        los.setThemes(getThemes(los));
-
-        if (childKomo.getTavoitteet() == null) {
-            los.setGoals(getI18nText(parentKomo.getTavoitteet()));
-        } else {
-            los.setGoals(getI18nText(childKomo.getTavoitteet()));
-        }
-
-        List<ChildLOI> lois = Lists.newArrayList();
-
-        // strip version out of education code uri
-        String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
-
-        if (CreatorUtil.komotoPublished.apply(childKomoto)) {
-            ChildLOI loi = loiCreator.createChildLOI(childKomoto, specialLOSId, los.getName(), educationCodeUri, resolveEducationType(los));
-            for (ApplicationOption curAo : loi.getApplicationOptions()) {
-                if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)) {
-                    curAo.setVocational(false);
-                }
-            }
-
-            if (childKomoto.getKoulutuslajiUris() != null
-                    && !childKomoto.getKoulutuslajiUris().isEmpty()
-                    && childKomoto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.AIKUISKOULUTUS)) {
-
-                loi.setTargetGroup(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.KOHDERYHMA)));
-
-            }
-
-            lois.add(loi);
-        }
-        if (!lois.isEmpty()
-                && los.getType().equals(TarjontaConstants.TYPE_PREP)
-                && (!TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri())
-                || (TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri())
-                && childKomoto.getKoulutusohjelmanNimi() == null))) {
-            createNameForLos(lois, los);
-        }
-        los.setLois(lois);
-        List<String> aoIds = new ArrayList<String>();
-        if (los.getLois() != null) {
-            for (ChildLOI curLoi : los.getLois()) {
-                if (curLoi.getApplicationOptions() != null) {
-                    for (ApplicationOption ao : curLoi.getApplicationOptions()) {
-                        if (!aoIds.contains(ao.getId())) {
-                            aoIds.add(ao.getId());
-                        }
-                    }
-                }
-            }
-        }
-        los.setAoIds(aoIds);
-        return los;
-    }
-
-    public String resolveEducationType(SpecialLOS los) {
-        if (los.getType().equals(TarjontaConstants.TYPE_REHAB)) {
-            return SolrConstants.ED_TYPE_VALMENTAVA_SHORT;
-
-        } else if (los.getType().equals(TarjontaConstants.TYPE_PREP)) {
-            if (los.getEducationTypeUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
-                return SolrConstants.ED_TYPE_VOC_PREP;
-            } else if (los.getEducationTypeUri().equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)) {
-                return SolrConstants.ED_TYPE_TENTH_GRADE;
-            } else if (los.getEducationTypeUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)) {
-                return SolrConstants.ED_TYPE_IMM_UPSEC;
-            } else if (los.getEducationTypeUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)) {
-                return SolrConstants.ED_TYPE_IMM_VOC;
-            } else if (los.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE)) {
-                return SolrConstants.ED_TYPE_KANSANOPISTO;
-            }
-        } else {
-            return SolrConstants.ED_TYPE_AMM_ER_SHORT;
-        }
-        return null;
-    }
-
-    private void createNameForLos(List<ChildLOI> lois, SpecialLOS los) {
-        ChildLOI loi = lois.get(0);
-        if (!loi.getApplicationOptions().isEmpty()) {
-            ApplicationOption ao = loi.getApplicationOptions().get(0);
-            los.setName(ao.getName());
-            los.setShortTitle(ao.getName());
-        }
-    }
-
-    public SpecialLOS createSpecialLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
-            List<KomotoDTO> childKomotos, String providerOid) throws KoodistoException, TarjontaParseException {
-        SpecialLOS los = createBasicLOS(SpecialLOS.class, parentKomo, providerOid);
-        if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
-            los.setType(TarjontaConstants.TYPE_REHAB);
-        } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
-            los.setType(TarjontaConstants.TYPE_PREP);
-        } else {
-            los.setType(TarjontaConstants.TYPE_SPECIAL);
-        }
-
-        los.setId(specialLOSId);
-
-        Code name = los.getType().equals(TarjontaConstants.TYPE_SPECIAL)
-                ? koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())
-                : koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
-
-        los.setName(name.getName());
-        los.setShortTitle(name.getShortTitle());
-        if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
-            if (childKomo.getKoulutusOhjelmaKoodiUri() == null || childKomo.getKoulutusOhjelmaKoodiUri().isEmpty()) {
-                LOG.debug("ChildKomo " + childKomo.getOid() + " contained empty koulutusOhjelmaKoodiUri. Subname not added.");
-            } else {
-                Code subName = getNameFromKomotoDTOs(childKomo.getKoulutusOhjelmaKoodiUri(), childKomo.getKoulutusKoodiUri(), childKomotos);
-                los.setSubName(subName.getName());
-            }
-        }
-        los.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
-        los.setQualifications(getQualificationsFromKomotoDTOs(childKomotos));
-        los.setEducationDomain(koodistoService.searchFirstShortName(parentKomo.getKoulutusAlaUri()));
-        los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
-                koodistoService.searchFirstName(parentKomo.getKoulutusKoodiUri())));
-        los.setTopics(getTopics(parentKomo.getOpintoalaUri()));
-        los.setThemes(getThemes(los));
-
-        if (childKomo.getTavoitteet() == null) {
-            los.setGoals(getI18nText(parentKomo.getTavoitteet()));
-        } else {
-            los.setGoals(getI18nText(childKomo.getTavoitteet()));
-        }
-
-        // strip version out of education code uri
-        String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
-        los.setLois(loiCreator.createChildLOIs(childKomotos, specialLOSId, los.getName(), educationCodeUri, this.resolveEducationType(los)));
-        List<String> aoIds = new ArrayList<String>();
-        if (los.getLois() != null) {
-            for (ChildLOI curLoi : los.getLois()) {
-                if (curLoi.getApplicationOptions() != null) {
-                    for (ApplicationOption ao : curLoi.getApplicationOptions()) {
-                        if (!aoIds.contains(ao.getId())) {
-                            aoIds.add(ao.getId());
-                        }
-                    }
-                }
-            }
-        }
-        los.setAoIds(aoIds);
-        ChildLOI latesChild = los.getLatestLoi();
-        if (latesChild != null) {
-            los.setCreditValue(latesChild.getCreditValue());
-            los.setCreditUnit(latesChild.getCreditUnit());
-        } else {
-            los.setCreditValue(parentKomo.getLaajuusArvo());
-            los.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
-        }
-        return los;
-    }
-
-    public UpperSecondaryLOS createUpperSecondaryLOS(KomoDTO komo, KomoDTO parentKomo, List<KomotoDTO> komotos,
-            String losID, String providerOid)
-            throws KoodistoException, TarjontaParseException {
-        UpperSecondaryLOS los = createBasicLOS(UpperSecondaryLOS.class, komo, providerOid);
-        los.setType(TarjontaConstants.TYPE_UPSEC);
-        los.setId(losID);
-        Code name = koodistoService.searchFirst(komo.getLukiolinjaUri());
-        los.setName(name.getName());
-        los.setShortTitle(name.getShortTitle());
-        los.setTopics(getTopics(parentKomo.getOpintoalaUri()));
-        los.setThemes(getThemes(los));
-        los.setQualification(koodistoService.searchFirstName(komo.getTutkintonimikeUri()));
-
-        I18nText creditUnit = koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri());
-        if (creditUnit != null) {
-            los.setCreditValue(parentKomo.getLaajuusArvo());
-            los.setCreditUnit(creditUnit);
-        }
-
-        Map<String, String> komoTavoitteet = komo.getTekstit().get(KomoTeksti.TAVOITTEET);
-        if (komoTavoitteet == null) {
-            los.setGoals(getI18nText(parentKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
-        } else {
-            los.setGoals(getI18nText(komoTavoitteet));
-        }
-        // strip version out of education code uri
-        String educationCodeUri = komo.getKoulutusKoodiUri().split("#")[0];
-        los.setLois(loiCreator.createUpperSecondaryLOIs(komotos, losID, los.getName(), educationCodeUri, SolrConstants.ED_TYPE_LUKIO_SHORT));
-        return los;
     }
 
     public HigherEducationLOS createHigherEducationLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus)
@@ -778,7 +420,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private boolean fetchHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
 
-        ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = loiCreator.tarjontaRawService.findHakukohdesByEducationOid(los.getId());
+        ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = tarjontaRawService.findHakukohdesByEducationOid(los.getId());
         if (result == null
                 || result.getResult() == null
                 || result.getResult().getTulokset() == null
@@ -804,7 +446,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     continue;
                 }
 
-                ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getV1EducationHakuByOid(curHakukoh.getHakuOid());
+                ResultV1RDTO<HakuV1RDTO> hakuRes = tarjontaRawService.getV1EducationHakuByOid(curHakukoh.getHakuOid());
                 HakuV1RDTO hakuDTO = hakuRes.getResult();
 
                 if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString()))) {
@@ -812,7 +454,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     continue;
                 }
 
-                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getV1EducationHakukohode(aoId);
+                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1EducationHakukohde(aoId);
                 HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
 
                 if (checkStatus
@@ -823,7 +465,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 }
 
                 try {
-                    ApplicationOption ao = loiCreator.applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
+                    ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
                     // If fetching for preview, the status of the application option is added
                     if (!checkStatus) {
                         ao.setStatus(hakukohdeDTO.getTila());
@@ -1607,7 +1249,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO hakuDTO, boolean shownInCalendar) throws KoodistoException {
-        return this.loiCreator.applicationOptionCreator.getApplicationSystemCreator().createApplicationSystemForCalendar(hakuDTO, shownInCalendar);
+        return applicationOptionCreator.getApplicationSystemCreator().createApplicationSystemForCalendar(hakuDTO, shownInCalendar);
     }
 
     public void clearProcessedLists() {

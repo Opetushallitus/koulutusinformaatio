@@ -171,7 +171,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
 
         @Override
         void update(String oid) throws Exception {
-            HakukohdeV1RDTO aoDto = tarjontaRawService.getV1EducationHakukohode(oid).getResult();
+            HakukohdeV1RDTO aoDto = tarjontaRawService.getV1EducationHakukohde(oid).getResult();
             HakuV1RDTO asDto = tarjontaRawService.getV1EducationHakuByOid(aoDto.getHakuOid()).getResult();
             aoIndexer.indexApplicationOptionData(aoDto, asDto);
         }
