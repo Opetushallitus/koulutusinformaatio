@@ -21,18 +21,17 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
+import org.codehaus.jackson.Version;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.module.SimpleModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
@@ -52,7 +51,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private WebResource komotoResource;
     private WebResource hakuResource;
     private WebResource hakukohdeResource;
-    private WebResource v1Resource;
+    private WebResource v1KoulutusResource;
     private WebResource v1AOResource;
     private WebResource v1ASResource;
     private WebResource v1StructureResource;
@@ -61,10 +60,11 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     
     
     @Autowired
-    public TarjontaRawServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl,
-            ConversionService conversionService, KoodistoService koodistoService, ProviderService providerService) {
+    public TarjontaRawServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.registerModule(new SimpleModule("koulutusDeserializer", new Version(1, 0, 0, null))
+                .addDeserializer(KoulutusV1RDTO.class, new KoulutusDeserializer()));
         JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
         ClientConfig cc = new DefaultClientConfig();
         cc.getSingletons().add(jacksProv);
@@ -73,7 +73,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         komotoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komoto");
         hakuResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "haku");
         hakukohdeResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "hakukohde");
-        v1Resource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
+        v1KoulutusResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
         v1AOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
         v1ASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
         v1StructureResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/link");
@@ -187,7 +187,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType) {
-        return this.v1Resource
+        return this.v1KoulutusResource
                 .path("search")
                 .queryParam("koulutusastetyyppi", educationType)
                 .queryParam("tila", "JULKAISTU")
@@ -198,7 +198,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> searchEducation(String oid) {
-        return this.v1Resource
+        return this.v1KoulutusResource
                 .path("search")
                 .queryParam("koulutusOid", oid)
                 .queryParam("tila", "KAIKKI") // include POISTETTU
@@ -206,32 +206,11 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
     }
-
-    
-    @Override
-    public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(
-            String oid) {
-        return v1Resource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<KoulutusKorkeakouluV1RDTO>>() {
-                });
-    }
-    
-    @Override
-    public ResultV1RDTO<KoulutusLukioV1RDTO> getUpperSecondaryLearningOpportunity(
-            String oid) {
-        return v1Resource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<KoulutusLukioV1RDTO>>() {
-                });
-    }
     
     @Override
     public ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO> getAdultBaseEducationLearningOpportunity(
             String oid) {
-        return v1Resource
+        return v1KoulutusResource
                 .path(oid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
@@ -241,7 +220,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(
             String oid) {
-        return v1Resource
+        return v1KoulutusResource
                 .path(oid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
@@ -320,7 +299,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
             String komoOid) {
-        return this.v1Resource
+        return this.v1KoulutusResource
                 .path("search")
                 .queryParam("komoOid", komoOid)
                 .accept(JSON_UTF8)
@@ -330,7 +309,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
-        return v1Resource
+        return v1KoulutusResource
                 .path(koulutusOid)
                 .path("kuva")
                 .accept(JSON_UTF8)
@@ -349,7 +328,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(
             String... educationType) {
-        WebResource call = this.v1Resource
+        WebResource call = this.v1KoulutusResource
                 .path("search");
         for (String curType : educationType) {
             call = call.queryParam("toteutustyyppi", curType);
@@ -371,29 +350,11 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<ValmistavaKoulutusV1RDTO> getValmistavaKoulutusLearningOpportunity(String oid) {
-        return v1Resource
+    public ResultV1RDTO<KoulutusV1RDTO> getV1KoulutusLearningOpportunity(String oid) {
+        return v1KoulutusResource
                 .path(oid)
                 .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<ValmistavaKoulutusV1RDTO>>() {
-                });
-    }
-
-    @Override
-    public ResultV1RDTO<KoulutusGenericV1RDTO> getV1KoulutusLearningOpportunity(String oid) {
-        return v1Resource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<KoulutusGenericV1RDTO>>() {
-                });
-    }
-
-    @Override
-    public ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO> getAmmatillinenPerustutkintoLearningOpportunity(String oid) {
-        return v1Resource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO>>() {
+                .get(new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
         });
     }
 

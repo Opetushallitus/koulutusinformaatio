@@ -58,10 +58,6 @@ public interface TarjontaRawService {
     
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(String... educationType);
     
-    public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(String oid);
-
-    public ResultV1RDTO<ValmistavaKoulutusV1RDTO> getValmistavaKoulutusLearningOpportunity(String oid);
-
     public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid);
     
     public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohode(String oid);
@@ -81,9 +77,6 @@ public interface TarjontaRawService {
     ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(
             String hakukohdeOid);
 
-    ResultV1RDTO<KoulutusLukioV1RDTO> getUpperSecondaryLearningOpportunity(
-            String oid);
-
     ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO> getAdultBaseEducationLearningOpportunity(String oid);
 
     ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid);
@@ -93,9 +86,7 @@ public interface TarjontaRawService {
 
     public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
 
-    ResultV1RDTO<KoulutusGenericV1RDTO> getV1KoulutusLearningOpportunity(String oid);
-
-    public ResultV1RDTO<KoulutusAmmatillinenPerustutkintoV1RDTO> getAmmatillinenPerustutkintoLearningOpportunity(String oid);
+    ResultV1RDTO<KoulutusV1RDTO> getV1KoulutusLearningOpportunity(String oid);
 
     ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> searchEducation(String oid);
 

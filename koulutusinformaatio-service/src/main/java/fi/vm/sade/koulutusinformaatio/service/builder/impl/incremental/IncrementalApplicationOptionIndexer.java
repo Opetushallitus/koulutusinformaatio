@@ -27,8 +27,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,13 +86,13 @@ public class IncrementalApplicationOptionIndexer {
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
         case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
+        case LUKIOKOULUTUS:
             LOG.debug("Indexing  valmistava ao");
             this.indexValmentavaEdAo(aoDto.getOid(), toRemove);
             return;
 
         case AIKUISTEN_PERUSOPETUS:
         case AMMATILLINEN_PERUSTUTKINTO:
-        case LUKIOKOULUTUS:
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
         case KORKEAKOULUOPINTO:
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS:
@@ -138,7 +137,7 @@ public class IncrementalApplicationOptionIndexer {
 
                     if (koulutusOidRes != null && koulutusOidRes.getResult() != null) {
                         for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
-                            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulOid.getOid());
+                            ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulOid.getOid());
                             if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
                                 if (!toRemove) {
                                 LOG.debug("Indexing adult upsec komo: {}", koulutusRes.getResult().getKomoOid());
@@ -189,7 +188,7 @@ public class IncrementalApplicationOptionIndexer {
 
                     if (koulutusOidRes != null && koulutusOidRes.getResult() != null) {
                         for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
-                            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulOid.getOid());
+                            ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulOid.getOid());
                             if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
                                 if (!toRemove || hasOtherAos(koulutusRes.getResult().getOid(), aoOid)) {
                                     this.losIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
@@ -247,7 +246,7 @@ public class IncrementalApplicationOptionIndexer {
 
                     if (koulutusOidRes != null && koulutusOidRes.getResult() != null) {
                         for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
-                            KoulutusGenericV1RDTO koulutus = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulOid.getOid()).getResult();
+                            KoulutusV1RDTO koulutus = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulOid.getOid()).getResult();
                             if (koulutus != null && koulutus != null && koulutus.getKomoOid() != null) {
                                 if (!toRemove || hasOtherAos(koulutus.getOid(), aoOid)) {
                                     this.losIndexer.indexKoulutusKomo(koulutus.getKomoOid());

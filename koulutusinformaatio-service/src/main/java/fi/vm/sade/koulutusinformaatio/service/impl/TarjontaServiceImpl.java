@@ -96,8 +96,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     continue;
                 }
-                ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
-                KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+                ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulutus.getOid());
+                KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
                 if (koulutusDTO == null) {
                     continue;
                 }
@@ -262,8 +262,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
-        ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
-        KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
+        KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
         if (koulutusDTO == null) {
             return null;
         }
@@ -293,8 +293,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
-        ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
-        KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
+        KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
         LOG.debug(" Koulutustila: {}", koulutusDTO.getTila().toString());
         if (koulutusDTO == null || !koulutusDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
             LOG.debug("Returning null ");
@@ -362,8 +362,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         HakukohdeV1RDTO hakukohdeDTO = hakukohdeResDTO.getResult();
         for (String curEduOid : hakukohdeDTO.getHakukohdeKoulutusOids()) {
 
-            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curEduOid);
-            KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+            ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curEduOid);
+            KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
             if (koulutusDTO == null) {
                 continue;
             }
@@ -396,8 +396,8 @@ public class TarjontaServiceImpl implements TarjontaService {
             HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
             for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
                 for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                    ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
-                    KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+                    ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulutus.getOid());
+                    KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
                     if (koulutusDTO == null) {
                         continue;
                     }
@@ -463,7 +463,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 Koulutus2AsteV1RDTO koulutusDTO = null;
 
                 if (curKoulutus.getToteutustyyppiEnum().equals(ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA)) {
-                    koulutusDTO = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid()).getResult();
+                    koulutusDTO = (Koulutus2AsteV1RDTO) this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulutus.getOid()).getResult();
                 } else {
                     koulutusDTO = this.tarjontaRawService.getAdultBaseEducationLearningOpportunity(curKoulutus.getOid()).getResult();
                 }
@@ -533,8 +533,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
 
-                ResultV1RDTO<ValmistavaKoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(curKoulutus.getOid());
-                ValmistavaKoulutusV1RDTO koulutusDTO = koulutusRes.getResult();
+                ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulutus.getOid());
+                ValmistavaKoulutusV1RDTO koulutusDTO = (ValmistavaKoulutusV1RDTO) koulutusRes.getResult();
                 if (koulutusDTO == null) {
                     continue;
                 }
@@ -625,8 +625,8 @@ public class TarjontaServiceImpl implements TarjontaService {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
 
-        ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(oid);
-        KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
+        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
+        KoulutusLukioV1RDTO koulutusDTO = (KoulutusLukioV1RDTO) koulutusRes.getResult();
 
         LOG.debug("cur upsec adult education dto: {}", koulutusDTO.getOid());
         if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
@@ -669,40 +669,43 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public KoulutusLOS createValmistavaKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException {
-        ValmistavaKoulutusV1RDTO dto = this.tarjontaRawService.getValmistavaKoulutusLearningOpportunity(oid).getResult();
+        KoulutusV1RDTO dto = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid).getResult();
         return createValmistavaKoulutusLOS(dto, checkStatus);
     }
 
-    private KoulutusLOS createValmistavaKoulutusLOS(ValmistavaKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    private KoulutusLOS createValmistavaKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
-        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
-            los = creator.createValmaErLOS(koulutusDTO, checkStatus);
-            break;
-        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
-            los = creator.createValmaLOS(koulutusDTO, checkStatus);
-            break;
-        case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
-            if (koulutusDTO.getKoulutuskoodi().getVersio() == 1) {
-                los = creator.createValmentavaLOS(koulutusDTO, checkStatus);
-            } else {
-                los = creator.createTelmaLOS(koulutusDTO, checkStatus);
-            }
-            break;
-        case PERUSOPETUKSEN_LISAOPETUS:
-            los = creator.createKymppiluokkaLOS(koulutusDTO, checkStatus);
-            break;
-        case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-            los = creator.createMMLukioonValmistavaLOS(koulutusDTO, checkStatus);
-            break;
-        case VAPAAN_SIVISTYSTYON_KOULUTUS:
-            los = creator.createKansanopistoLOS(koulutusDTO, checkStatus);
-            break;
-        default:
-            break;
+            case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
+                los = creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                break;
+            case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
+                los = creator.createValmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                break;
+            case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
+                if (koulutusDTO.getKoulutuskoodi().getVersio() == 1) {
+                    los = creator.createValmentavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                } else {
+                    los = creator.createTelmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                }
+                break;
+            case PERUSOPETUKSEN_LISAOPETUS:
+                los = creator.createKymppiluokkaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                break;
+            case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+                los = creator.createMMLukioonValmistavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                break;
+            case VAPAAN_SIVISTYSTYON_KOULUTUS:
+                los = creator.createKansanopistoLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                break;
+            case LUKIOKOULUTUS:
+                los = creator.createLukioLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
+                break;
+            default:
+                break;
         }
         return los;
     }

@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,22 +114,22 @@ public class TarjontaServiceImplTest {
     	rawRes.setResult(results);
     	when(tarjontaRawService.listEducations(TarjontaConstants.HIGHER_EDUCATION_TYPE)).thenReturn(rawRes);
     	
-    	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = new ResultV1RDTO<KoulutusKorkeakouluV1RDTO>();
+    	ResultV1RDTO<KoulutusV1RDTO> koulutusRes = new ResultV1RDTO<KoulutusV1RDTO>();
     	KoulutusKorkeakouluV1RDTO koulutus1 = new KoulutusKorkeakouluV1RDTO();
     	koulutus1.setOid(koulJulk.getOid());
     	koulutus1.setTila(TarjontaTila.JULKAISTU);
     	koulutusRes.setResult(koulutus1);
     	
     	
-    	when(tarjontaRawService.getHigherEducationLearningOpportunity(koulJulk.getOid())).thenReturn(koulutusRes);
+    	when(tarjontaRawService.getV1KoulutusLearningOpportunity(koulJulk.getOid())).thenReturn(koulutusRes);
     	
-    	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes2 = new ResultV1RDTO<KoulutusKorkeakouluV1RDTO>();
+    	ResultV1RDTO<KoulutusV1RDTO> koulutusRes2 = new ResultV1RDTO<KoulutusV1RDTO>();
     	KoulutusKorkeakouluV1RDTO koulutus2 = new KoulutusKorkeakouluV1RDTO();
     	koulutus2.setOid(koulEiJulk.getOid());
     	koulutus2.setTila(TarjontaTila.VALMIS);
     	koulutusRes2.setResult(koulutus2);
     	
-    	when(tarjontaRawService.getHigherEducationLearningOpportunity(koulEiJulk.getOid())).thenReturn(koulutusRes2);
+    	when(tarjontaRawService.getV1KoulutusLearningOpportunity(koulEiJulk.getOid())).thenReturn(koulutusRes2);
     	creator = mock(LOSObjectCreator.class);//new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
     	service.setCreator(creator);
     	

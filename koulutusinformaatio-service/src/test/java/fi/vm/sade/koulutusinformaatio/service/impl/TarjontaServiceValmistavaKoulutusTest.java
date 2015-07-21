@@ -25,6 +25,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
@@ -98,7 +99,7 @@ public class TarjontaServiceValmistavaKoulutusTest {
         when(searchResult.getTulokset()).thenReturn(Arrays.asList(providerResults));
         when(providerResults.getTulokset()).thenReturn(Arrays.asList(mockedEducationResult));
         when(mockedEducationResult.getOid()).thenReturn(CIVILIZING_OID);
-        when(rawService.getValmistavaKoulutusLearningOpportunity(CIVILIZING_OID)).thenReturn(givenValmistavaResult());
+        when(rawService.getV1KoulutusLearningOpportunity(CIVILIZING_OID)).thenReturn(givenValmistavaResult());
     }
 
     @Test(expected = KoodistoException.class)
@@ -114,7 +115,7 @@ public class TarjontaServiceValmistavaKoulutusTest {
         assertEquals(1, losses.size());
     }
 
-    private ResultV1RDTO<ValmistavaKoulutusV1RDTO> givenValmistavaResult() {
+    private ResultV1RDTO<KoulutusV1RDTO> givenValmistavaResult() {
         ValmistavaKoulutusV1RDTO result = new ValmistavaKoulutusV1RDTO();
         result.setCreated(new Date());
         result.setCreatedBy("Teppo Testaaja");
@@ -126,7 +127,7 @@ public class TarjontaServiceValmistavaKoulutusTest {
         result.setTila(TarjontaTila.JULKAISTU);
         result.setToteutustyyppi(ToteutustyyppiEnum.VAPAAN_SIVISTYSTYON_KOULUTUS);
         result.setKoulutuskoodi(new KoodiV1RDTO("uri", 1, "arvo"));
-        return new ResultV1RDTO<ValmistavaKoulutusV1RDTO>(result);
+        return new ResultV1RDTO<KoulutusV1RDTO>(result);
     }
     
     private void setCreator() throws Exception {
