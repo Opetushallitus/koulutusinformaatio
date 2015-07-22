@@ -60,7 +60,8 @@ module.exports = function(config) {
         singleRun: false,
         reporters: ['progress', 'junit', 'coverage'],
         junitReporter: {
-            outputFile: testPath + 'test_out/unit.xml'
+            //outputFile: 'test_out/unit.xml',
+	    outputDir: testPath
         },
         coverageReporter: {
             type: 'html',
