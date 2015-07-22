@@ -61,7 +61,7 @@ module.exports = function(config) {
         reporters: ['progress', 'junit', 'coverage'],
         junitReporter: {
             //outputFile: 'test_out/unit.xml',
-	    outputDir: testPath
+	    outputDir: testPath + '../../test_out'
         },
         coverageReporter: {
             type: 'html',
