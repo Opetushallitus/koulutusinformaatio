@@ -18,10 +18,13 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.*;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +34,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 
@@ -198,11 +198,19 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private void indexKomotoChanges(List<String> komotoChanges, List<String> changedHakukohdeOids) throws Exception {
         for (String curOid : komotoChanges) {
-            List<OidRDTO> aoOidDtos = null;
+            List<String> aoOids = new ArrayList<String>();
             try {
-                aoOidDtos = this.tarjontaRawService.getHakukohdesByKomoto(curOid);
+
+                List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> tulokset =
+                        tarjontaRawService.findHakukohdesByEducationOid(curOid).getResult().getTulokset();
+
+                for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> tarjoaja : tulokset) {
+                    for (HakukohdeHakutulosV1RDTO hakukohdeTulos : tarjoaja.getTulokset()) {
+                        aoOids.add(hakukohdeTulos.getOid());
+                    }
+                }
             
-                if (aoOidDtos == null || this.losIndexer.isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
+                if (!aoOids.isEmpty() || this.losIndexer.isLoiAlreadyHandled(aoOids, changedHakukohdeOids)) {
                     LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
                 } else {
                     LOG.debug("Will index changed komoto: " + curOid);

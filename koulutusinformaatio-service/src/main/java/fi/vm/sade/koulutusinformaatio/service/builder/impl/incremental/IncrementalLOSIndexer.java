@@ -17,7 +17,6 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.*;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
@@ -98,9 +97,9 @@ public class IncrementalLOSIndexer {
                 loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
 
-    public boolean isLoiAlreadyHandled(List<OidRDTO> aoOidDtos, List<String> changedHakukohdeOids) {
-        for (OidRDTO curOidDto : aoOidDtos) {
-            if (changedHakukohdeOids.contains(curOidDto.getOid())) {
+    public boolean isLoiAlreadyHandled(List<String> aoOids, List<String> changedHakukohdeOids) {
+        for (String curOid : aoOids) {
+            if (changedHakukohdeOids.contains(curOid)) {
                 return true;
             }
         }

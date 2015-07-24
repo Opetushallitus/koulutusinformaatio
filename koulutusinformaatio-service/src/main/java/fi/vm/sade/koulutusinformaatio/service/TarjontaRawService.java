@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.tarjonta.service.resources.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
 
@@ -34,8 +33,6 @@ public interface TarjontaRawService {
 
 
     ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid);
-
-    List<OidRDTO> getHakukohdesByKomoto(String oid);
 
      Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod);
     

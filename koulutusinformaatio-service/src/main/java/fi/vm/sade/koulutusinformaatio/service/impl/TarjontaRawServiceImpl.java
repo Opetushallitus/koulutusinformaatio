@@ -22,7 +22,6 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.tarjonta.service.resources.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
 import org.codehaus.jackson.Version;
@@ -68,7 +67,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         ClientConfig cc = new DefaultClientConfig();
         cc.getSingletons().add(jacksProv);
         Client clientWithJacksonSerializer = Client.create(cc);
-        komotoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komoto");
         v1KoulutusResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
         v1AOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
         v1ASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
@@ -81,16 +79,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public List<OidRDTO> getHakukohdesByKomoto(String oid) {
-        return komotoResource
-                .path(oid)
-                .path("hakukohde")
-                .accept(JSON_UTF8)
-                .get(new GenericType<List<OidRDTO>>() {
-                });
-    }
-    
-    @Override
+
     public ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid) {
         return v1ASResource
                 .path(oid)

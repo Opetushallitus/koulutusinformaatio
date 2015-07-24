@@ -15,17 +15,6 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.Date;
-
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -36,6 +25,16 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.Increment
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * @author risal1
@@ -142,7 +141,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
 
         @Override
         void update(String oid) throws Exception {
-            LOGGER.debug("Indexing + " + this.getUpdateProcessName() + ": " + oid);
+            LOGGER.debug("Indexing " + this.getUpdateProcessName() + ": " + oid);
             asIndexer.indexApplicationSystemData(oid);
         }
 
@@ -157,7 +156,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
 
         @Override
         void update(String oid) throws Exception {
-            LOGGER.debug("Indexing + " + this.getUpdateProcessName() + ": " + oid);
+            LOGGER.debug("Indexing " + this.getUpdateProcessName() + ": " + oid);
             losIndexer.indexLoiData(oid);
         }
 
