@@ -32,7 +32,8 @@ import java.util.Set;
  */
 public interface TarjontaRawService {
 
-     List<OidV1RDTO> getHakukohdesByHaku(String oid);
+
+    ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid);
 
     List<OidRDTO> getHakukohdesByKomoto(String oid);
 

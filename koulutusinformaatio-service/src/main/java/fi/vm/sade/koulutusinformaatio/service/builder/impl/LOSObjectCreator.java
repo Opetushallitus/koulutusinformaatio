@@ -725,8 +725,13 @@ public class LOSObjectCreator extends ObjectCreator {
             TarjontaParseException {
         ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         if (result != null) {
-            KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO = (KoulutusAmmatillinenPerustutkintoV1RDTO) result.getResult();
-            return createAmmatillinenLOS(koulutusDTO, checkStatus);
+            if (KoulutusAmmatillinenPerustutkintoV1RDTO.class.isAssignableFrom(result.getResult().getClass())) {
+                KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO = (KoulutusAmmatillinenPerustutkintoV1RDTO) result.getResult();
+                return createAmmatillinenLOS(koulutusDTO, checkStatus);
+            } else if (NayttotutkintoV1RDTO.class.isAssignableFrom(result.getResult().getClass())) {
+                NayttotutkintoV1RDTO koulutusDTO = (NayttotutkintoV1RDTO) result.getResult();
+                return createAdultVocationalLOS(koulutusDTO, checkStatus);
+            }
         }
         return null;
     }

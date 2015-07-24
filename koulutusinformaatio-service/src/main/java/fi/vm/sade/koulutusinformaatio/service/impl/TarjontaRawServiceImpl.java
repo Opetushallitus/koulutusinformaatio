@@ -47,6 +47,8 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
 
+    private static final int MAX_COUNT = 10000;
+
     private WebResource komotoResource;
     private WebResource v1KoulutusResource;
     private WebResource v1AOResource;
@@ -89,13 +91,13 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
     
     @Override
-    public List<OidV1RDTO> getHakukohdesByHaku(String oid) {
+    public ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid) {
         return v1ASResource
                 .path(oid)
                 .path("hakukohde")
-                .queryParam("count", String.valueOf(10000))
+                .queryParam("count", String.valueOf(MAX_COUNT))
                 .accept(JSON_UTF8)
-                .get(new GenericType<List<OidV1RDTO>>() {
+                .get(new GenericType<ResultV1RDTO<List<OidV1RDTO>>>() {
                 });
     }
 

@@ -87,6 +87,9 @@ public class IncrementalApplicationSystemIndexer {
      */
     public void indexApplicationSystemData(String asOid) throws Exception {
         HakuV1RDTO asDto = this.tarjontaRawService.getV1EducationHakuByOid(asOid).getResult();
+        if (asDto == null) {
+            throw new ResourceNotFoundException("ApplicationSystem " + asOid + " not found, aborting indexing");
+        }
         if (CreatorUtil.isSecondaryAS(asDto)) {
             indexSecondaryEducationAsData(asDto);
         } else if (CreatorUtil.isAdultUpperSecondaryAS(asDto)) {
@@ -257,7 +260,7 @@ public class IncrementalApplicationSystemIndexer {
                 handleAsChangesInSeondaryLos(curLosId, as, asDto);
             }
             if (lossesInAS.isEmpty()) {
-                List<OidV1RDTO> hakukohdeOids = this.tarjontaRawService.getHakukohdesByHaku(asDto.getOid());
+                List<OidV1RDTO> hakukohdeOids = this.tarjontaRawService.getHakukohdesByHaku(asDto.getOid()).getResult();
                 if (hakukohdeOids != null && !hakukohdeOids.isEmpty()) {
                     for (OidV1RDTO curOid : hakukohdeOids) {
                         HakukohdeV1RDTO aoDto = this.tarjontaRawService.getV1EducationHakukohde(curOid.getOid()).getResult();
