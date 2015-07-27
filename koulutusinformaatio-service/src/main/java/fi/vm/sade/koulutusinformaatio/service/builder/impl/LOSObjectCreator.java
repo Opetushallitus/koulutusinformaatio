@@ -1142,12 +1142,15 @@ public class LOSObjectCreator extends ObjectCreator {
                 && !koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET).getTekstis().containsKey(UNDEFINED)) {
             los.setGoals(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
         }
-        if (koulutus.getOpintoala() != null) {
+        if (koulutus.getAihees().getUris() != null && !koulutus.getAihees().getUris().isEmpty()) {
+            los.setTopics(createCodes(koulutus.getAihees()));
+        }
+        else if (koulutus.getOpintoala() != null) {
             los.setTopics(getTopics(koulutus.getOpintoala().getUri()));
+        }
+        if (los.getTopics() != null) {
             los.setThemes(getThemes(los));
         }
-        los.setTopics(createCodes(koulutus.getAihees()));
-        los.setThemes(getThemes(los));
     }
 
     private <S extends KoulutusGenericV1RDTO, T extends StandaloneLOS> void addStandaloneLOSFields(S koulutus, T los, boolean checkStatus, String aoType)
