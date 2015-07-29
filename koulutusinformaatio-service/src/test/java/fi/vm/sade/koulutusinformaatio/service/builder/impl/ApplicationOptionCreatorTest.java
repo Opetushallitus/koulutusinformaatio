@@ -22,7 +22,6 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
@@ -49,7 +48,6 @@ import static org.mockito.Mockito.when;
  */
 public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
-    TarjontaRawService tarjontaRawService;
     OrganisaatioRawService organisaatioRawService;
     ApplicationOptionCreator creator;
     ParameterService parameterService;
@@ -65,7 +63,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
     @Before
     public void init() throws KoodistoException {
-        tarjontaRawService = mock(TarjontaRawService.class);
         organisaatioRawService = mock(OrganisaatioRawService.class);
         parameterService = mock(ParameterService.class);
         komoto = new KomotoDTO();
@@ -100,7 +97,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         prerequisite = new Code();
         prerequisite.setValue("prerequisite");
         prerequisite.setName(TestUtil.createI18nText("peruskoulu"));
-        creator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
+        creator = new ApplicationOptionCreator(koodistoService, organisaatioRawService, parameterService);
 
     }
 

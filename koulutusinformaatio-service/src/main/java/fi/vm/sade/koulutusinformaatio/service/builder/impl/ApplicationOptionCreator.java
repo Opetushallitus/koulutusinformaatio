@@ -25,7 +25,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
 import org.slf4j.Logger;
@@ -42,17 +41,14 @@ public class ApplicationOptionCreator extends ObjectCreator {
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationOptionCreator.class);
 
     private KoodistoService koodistoService;
-    private TarjontaRawService tarjontaRawService;
     private EducationObjectCreator educationObjectCreator;
     private ApplicationSystemCreator applicationSystemCreator;
 
     protected ApplicationOptionCreator(KoodistoService koodistoService,
-                                       TarjontaRawService tarjontaRawService,
                                        OrganisaatioRawService organisaatioRawService,
                                        ParameterService parameterService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
-        this.tarjontaRawService = tarjontaRawService;
         this.educationObjectCreator = new EducationObjectCreator(koodistoService, organisaatioRawService);
         this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService, parameterService);
     }

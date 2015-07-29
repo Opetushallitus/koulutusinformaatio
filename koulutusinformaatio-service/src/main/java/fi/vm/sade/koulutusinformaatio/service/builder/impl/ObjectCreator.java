@@ -16,25 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.base.Strings;
-
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
+
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -113,24 +105,6 @@ public abstract class ObjectCreator {
         return translUris;
     }
 
-
-    protected I18nText getI18nTextEnriched(List<TekstiRDTO> nimi) {
-        if (nimi != null && !nimi.isEmpty()) {
-            Map<String, String> translations = new HashMap<String, String>();
-            for (TekstiRDTO curTeksti : nimi) {
-                if (!Strings.isNullOrEmpty(curTeksti.getArvo()) && !Strings.isNullOrEmpty(curTeksti.getTeksti())) {
-                    String teksti = curTeksti.getTeksti() != null ? curTeksti.getTeksti() : "";
-                    translations.put(curTeksti.getArvo().toLowerCase(), teksti);
-                }
-            }
-            I18nText i18nText = new I18nText();
-            i18nText.setTranslations(translations);
-            return i18nText;
-        }
-        return null;
-    }
-
-
     protected I18nText getI18nTextEnriched(Map<String, KoodiV1RDTO> meta) throws KoodistoException {
         if (meta != null && !meta.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();
@@ -196,22 +170,6 @@ public abstract class ObjectCreator {
 
         }
         return opetusmuodot;
-    }
-
-    protected I18nText getI18nTextEnrichedFirst(KoodiUrisV1RDTO tutkintonimikes) throws KoodistoException {
-        if (tutkintonimikes != null 
-                && tutkintonimikes.getUris() != null 
-                && !tutkintonimikes.getUris().keySet().isEmpty()) {
-            Iterator<Map.Entry<String, KoodiV1RDTO>> i = tutkintonimikes.getMeta().entrySet().iterator();
-            if (i.hasNext()) {
-                Map.Entry<String, KoodiV1RDTO> entry = i.next();
-                if (entry.getValue() != null && entry.getValue().getMeta() != null) {
-                    return this.getI18nTextEnriched(entry.getValue().getMeta());
-                }
-            }
-        }
-
-        return null;
     }
 
     protected List<Code> createCodes(KoodiUrisV1RDTO opetuskielis) throws KoodistoException {

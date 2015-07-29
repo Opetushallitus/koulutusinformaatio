@@ -31,7 +31,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.convert.ConversionService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,13 +46,8 @@ import static org.mockito.Mockito.when;
  */
 public class TarjontaServiceImplTest {
 
-    private static final String KOMO_ID_VOC = "vocationalKomoId";
-    private static final String KOMO_ID_UPSEC = "upsecKomoId";
-    private static final String KOMO_ID_REHAB = "rehabKomoId";
-    private static final String KOMO_ID_INVALID = "invalid";
     private static final String CALENDAR_APPLICATION_SYSTEM_OID = "as1.1.1.1.oid";
 
-    ConversionService conversionService;
     KoodistoService koodistoService;
     ProviderService providerService;
     TarjontaRawService tarjontaRawService;
@@ -81,7 +75,7 @@ public class TarjontaServiceImplTest {
         
         tarjontaRawService = mock(TarjontaRawService.class);
 
-        service = new TarjontaServiceImpl(conversionService, koodistoService,
+        service = new TarjontaServiceImpl(koodistoService,
                 providerService, tarjontaRawService, organisaatioRawService, mock(ParameterService.class));
         
         mockHigherEdRawRes();

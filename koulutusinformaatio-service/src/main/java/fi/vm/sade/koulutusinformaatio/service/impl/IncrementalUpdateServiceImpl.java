@@ -17,7 +17,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.*;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
@@ -34,7 +33,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 
@@ -55,13 +57,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private EducationIncrementalDataQueryService dataQueryService;
     //private EducationDataQueryService prodDataQueryService;
     private EducationIncrementalDataUpdateService dataUpdateService;
-    private KoodistoService koodistoService;
-    private ProviderService providerService;
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
-    private OrganisaatioRawService organisaatioRawService;
-
-    private LOSObjectCreator losCreator;
 
     private IncrementalApplicationSystemIndexer asIndexer;
     private IncrementalApplicationOptionIndexer aoIndexer;
@@ -82,10 +79,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             EducationIncrementalDataQueryService dataQueryService,
             EducationIncrementalDataUpdateService dataUpdateService,
             KoodistoService koodistoService,
-            ProviderService providerService,
             TarjontaService tarjontaService,
             IndexerService indexerService,
-            OrganisaatioRawService organisaatioRawService,
             ParameterService parameterService,
             @Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasSolrServer,
             @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
@@ -93,17 +88,12 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         this.tarjontaRawService = tarjontaRawService;
         this.dataQueryService = dataQueryService;
         this.dataUpdateService = dataUpdateService;
-        this.koodistoService = koodistoService;
-        this.providerService = providerService;
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
-        this.organisaatioRawService = organisaatioRawService;
         this.loHttpSolrServer = loAliasSolrServer;
         this.lopHttpSolrServer = lopAliasSolrServer;
         this.locationHttpSolrServer = locationAliasSolrServer;
 
-        this.losCreator = new LOSObjectCreator(this.koodistoService, this.tarjontaRawService, this.providerService,
-                this.organisaatioRawService, parameterService);
         this.losIndexer = new IncrementalLOSIndexer(this.tarjontaRawService,
                 this.tarjontaService, 
                 this.dataUpdateService,
@@ -116,7 +106,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaRawService,
                                                                 this.tarjontaService,
                                                                 this.dataQueryService, 
-                                                                this.koodistoService, 
+                                                                koodistoService,
                                                                 parameterService,
                                                                 this.losIndexer,
                                                                 this.indexerService,
@@ -147,7 +137,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 return;
             }
 
-            this.indexerService.clearProcessedLists();
             this.tarjontaService.clearProcessedLists();
             int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
             // If there are changes in komo-data, a full update is performed

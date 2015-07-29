@@ -16,17 +16,19 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -42,42 +44,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
-import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.Facet;
-import fi.vm.sade.koulutusinformaatio.domain.FacetValue;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.ProviderResult;
-import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ApplicationSystemQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ArticleQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.AutocompleteQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityByProviderQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderNameFirstCharactersQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderTypeQuery;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
@@ -655,56 +626,6 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         return null;
-    }
-
-    @Override
-    public List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId, String lang) throws SearchException {
-        List<LOSearchResult> resultList = Lists.newArrayList();
-        SolrQuery query = new LearningOpportunityByProviderQuery(lopId);
-        QueryResponse response = null;
-        try {
-            response = loHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
-        }
-
-        for (SolrDocument doc : response.getResults()) {
-            String parentId = doc.get(LearningOpportunity.PARENT_ID) != null ? doc.get(LearningOpportunity.PARENT_ID).toString() : null;
-            String losId = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : null;
-            String id = doc.get(LearningOpportunity.LOS_ID) != null
-                    ? doc.get(LearningOpportunity.LOS_ID).toString() : doc.get(LearningOpportunity.ID).toString();
-                    String prerequisiteText = doc.get(LearningOpportunity.PREREQUISITE) != null
-                            ? doc.get(LearningOpportunity.PREREQUISITE).toString() : null;
-                            String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
-                                    ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
-                                    String credits = getCredits(doc, lang);
-                                    List<String> lopNames = getLopNames(doc, lang);
-                                    String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
-                                            ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
-                                            String edDegree = getEdDegree(doc, lang);
-                                            String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null
-                                                    ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
-                                                    String name = getName(doc, lang);
-                                                    String homeplace = getHomeplace(doc, lang);
-                                                    String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? doc.get(LearningOpportunity.CHILD_NAME).toString() : null;
-                                                    List<String> lopIds = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>)(doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
-                                                    List<String> subjects = getSubjects(doc, lang);
-
-                                                    LOSearchResult lo = null;
-                                                    try {
-                                                        lo = new LOSearchResult(
-                                                                id, name,
-                                                                lopIds, lopNames, prerequisiteText,
-                                                                prerequisiteCodeText, parentId, losId, doc.get(LearningOpportunity.TYPE).toString(),
-                                                                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects);
-
-                                                        updateAsStatus(lo, doc);
-                                                    } catch (Exception e) {
-                                                        continue;
-                                                    }
-                                                    resultList.add(lo);
-        }
-        return resultList;
     }
 
     private void addArticleFacetsToResult(LOSearchResultList searchResultList,

@@ -16,16 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
@@ -33,7 +23,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
@@ -45,6 +34,15 @@ import fi.vm.sade.koulutusinformaatio.domain.CodeUriAndVersion;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author Mikko Majapuro
@@ -52,10 +50,10 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 @Service
 public class KoodistoServiceImpl implements KoodistoService {
 
-    public static Map<String,List<KoodiType>> koodisByKoodistoMap = new HashMap<String,List<KoodiType>>();
+    public static Map<String, List<KoodiType>> koodisByKoodistoMap = new HashMap<String,List<KoodiType>>();
     public static Map<String, List<KoodiType>> koodiTypeMap = new HashMap<String,List<KoodiType>>();
-    public static Map<String,List<KoodiType>> subkoodisMap = new HashMap<String,List<KoodiType>>();
-    public static Map<String,List<KoodiType>> superkoodisMap = new HashMap<String,List<KoodiType>>();
+    public static Map<String, List<KoodiType>> subkoodisMap = new HashMap<String,List<KoodiType>>();
+    public static Map<String, List<KoodiType>> superkoodisMap = new HashMap<String,List<KoodiType>>();
     
     
     private final KoodistoClient koodiService;

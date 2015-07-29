@@ -15,12 +15,13 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -29,30 +30,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Article;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.ArticleService;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.LocationService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 
 
@@ -104,7 +86,6 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Starting full education data update");
             running = true;
             runningSince = System.currentTimeMillis();
-            this.indexerService.clearProcessedLists();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
 

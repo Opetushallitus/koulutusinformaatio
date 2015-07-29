@@ -16,18 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.util.List;
-
-import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+
+import java.util.List;
 
 public interface SearchService {
 
@@ -44,8 +37,6 @@ public interface SearchService {
                                                    boolean upcomingLater,
                                                    int start, int rows, String sort, String order, 
                                                    String lopFilter, String educationCodeFilter, List<String> excludes, SearchType searchType) throws SearchException;
-
-    List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId, String lang) throws SearchException;
 
     List<Location> searchLocations(final String term, final String lang) throws SearchException;
     List<Location> getLocations(List<String> codes, final String lang) throws SearchException;

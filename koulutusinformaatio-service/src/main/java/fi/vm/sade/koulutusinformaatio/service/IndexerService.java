@@ -16,20 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
-import fi.vm.sade.koulutusinformaatio.domain.Article;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 
 public interface IndexerService {
@@ -100,9 +94,4 @@ public interface IndexerService {
             Set<String> nonVocationalAsIds,
             Set<String> providerAsIds) throws SolrServerException, IOException;
 
-    boolean hasAlreadyProcessedKomo(String komoOid);
-
-    void clearProcessedLists();
-
-    void addProcessedKomo(String komoOid);
 }

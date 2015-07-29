@@ -47,16 +47,15 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
 
     private static final int MAX_COUNT = 10000;
+//    private static final int MAX_COUNT = 100;
 
-    private WebResource komotoResource;
     private WebResource v1KoulutusResource;
     private WebResource v1AOResource;
     private WebResource v1ASResource;
     private WebResource v1StructureResource;
     private WebResource v1KomoResource;
     private WebResource lastModifiedResource;
-    
-    
+
     @Autowired
     public TarjontaRawServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl) {
         ObjectMapper mapper = new ObjectMapper();
@@ -81,133 +80,197 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
 
     public ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid) {
-        return v1ASResource
-                .path(oid)
-                .path("hakukohde")
-                .queryParam("count", String.valueOf(MAX_COUNT))
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<List<OidV1RDTO>>>() {
+        return (ResultV1RDTO<List<OidV1RDTO>>) getWithRetries(v1ASResource
+                        .path(oid)
+                        .path("hakukohde")
+                        .queryParam("count", String.valueOf(MAX_COUNT)),
+                new GenericType<ResultV1RDTO<List<OidV1RDTO>>>() {
                 });
+//        return v1ASResource
+//                .path(oid)
+//                .path("hakukohde")
+//                .queryParam("count", String.valueOf(MAX_COUNT))
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<List<OidV1RDTO>>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType) {
-        return this.v1KoulutusResource
-                .path("search")
-                .queryParam("koulutusastetyyppi", educationType)
-                .queryParam("tila", "JULKAISTU")
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
+                        .path("search")
+                        .queryParam("koulutusastetyyppi", educationType)
+                        .queryParam("tila", "JULKAISTU"),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
+//        return this.v1KoulutusResource
+//                .path("search")
+//                .queryParam("koulutusastetyyppi", educationType)
+//                .queryParam("tila", "JULKAISTU")
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> searchEducation(String oid) {
-        return this.v1KoulutusResource
-                .path("search")
-                .queryParam("koulutusOid", oid)
-                .queryParam("tila", "KAIKKI") // include POISTETTU
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
+                        .path("search")
+                        .queryParam("koulutusOid", oid)
+                        .queryParam("tila", "KAIKKI"),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
+//        return this.v1KoulutusResource
+//                .path("search")
+//                .queryParam("koulutusOid", oid)
+//                .queryParam("tila", "KAIKKI") // include POISTETTU
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+//                });
     }
     
     @Override
     public ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO> getAdultBaseEducationLearningOpportunity(
             String oid) {
-        return v1KoulutusResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
+        return (ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>) getWithRetries(v1KoulutusResource
+                        .path(oid),
+                new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
                 });
+//        return v1KoulutusResource
+//                .path(oid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
+//                });
     }
     
     @Override
     public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(String oid) {
-        return v1KoulutusResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
+        return (ResultV1RDTO<AmmattitutkintoV1RDTO>) getWithRetries(v1KoulutusResource
+                        .path(oid),
+                new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
                 });
+//        return v1KoulutusResource
+//                .path(oid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
+//                });
     }
                 
     public ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid) {
-        return this.v1KomoResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
+        return (ResultV1RDTO<KomoV1RDTO>) getWithRetries(v1KomoResource
+                        .path(oid),
+                new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
                 });
+//        return this.v1KomoResource
+//                .path(oid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid) {
-        return v1AOResource
-                .path("search")
-                .queryParam("koulutusOid", oid)
-                .queryParam("tila", "JULKAISTU")
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+        return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
+                        .path("search")
+                        .queryParam("koulutusOid", oid)
+                        .queryParam("tila", "JULKAISTU"),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
                 });
+//        return v1AOResource
+//                .path("search")
+//                .queryParam("koulutusOid", oid)
+//                .queryParam("tila", "JULKAISTU")
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid) {
-        return v1AOResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
+        return (ResultV1RDTO<HakukohdeV1RDTO>) getWithRetries(v1AOResource
+                        .path(oid),
+                new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
                 });
+
+//        return v1AOResource
+//                .path(oid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
-        return v1ASResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
+        return (ResultV1RDTO<HakuV1RDTO>) getWithRetries(v1ASResource
+                        .path(oid),
+                new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
                 });
+//        return v1ASResource
+//                .path(oid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(
             String parentOid) {
-        return this.v1StructureResource
-                .path(parentOid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<Set<String>>>() {
+        return (ResultV1RDTO<Set<String>>) getWithRetries(v1StructureResource
+                        .path(parentOid),
+                new GenericType<ResultV1RDTO<Set<String>>>() {
                 });
+//        return this.v1StructureResource
+//                .path(parentOid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<Set<String>>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
             String childKomoOid) {
-        return this.v1StructureResource
-                .path(childKomoOid)
-                .path("parents")
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<Set<String>>>() {
+        return (ResultV1RDTO<Set<String>>) getWithRetries(v1StructureResource
+                        .path(childKomoOid)
+                        .path("parents"),
+                new GenericType<ResultV1RDTO<Set<String>>>() {
                 });
+//        return this.v1StructureResource
+//                .path(childKomoOid)
+//                .path("parents")
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<Set<String>>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
             String komoOid) {
-        return this.v1KoulutusResource
-                .path("search")
-                .queryParam("komoOid", komoOid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
+                        .path("search")
+                        .queryParam("komoOid", komoOid),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
+//        return this.v1KoulutusResource
+//                .path("search")
+//                .queryParam("komoOid", komoOid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+//                });
     }
 
     @Override
     public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
-        return v1KoulutusResource
-                .path(koulutusOid)
-                .path("kuva")
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
+        return (ResultV1RDTO<List<KuvaV1RDTO>>) getWithRetries(v1KoulutusResource
+                        .path(koulutusOid)
+                        .path("kuva"),
+                new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
                 });
+//        return v1KoulutusResource
+//                .path(koulutusOid)
+//                .path("kuva")
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
+//                });
     }
 
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
@@ -227,28 +290,56 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
             call = call.queryParam("toteutustyyppi", curType);
         }
         call.queryParam("tila", "JULKAISTU");
-        return call
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(call,
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
     }
 
     @Override
     public ResultV1RDTO<List<String>> searchHakus(String hakutapa) {
-        return v1ASResource
-                .queryParam("HAKUTAPA", hakutapa)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<List<String>>>() {    
+//        return v1ASResource
+//                .queryParam("HAKUTAPA", hakutapa)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<List<String>>>() {
+//                });
+
+        return (ResultV1RDTO<List<String>>) getWithRetries(v1ASResource
+                        .queryParam("HAKUTAPA", hakutapa),
+                new GenericType<ResultV1RDTO<List<String>>>() {
                 });
     }
 
+    private Object getWithRetries(WebResource resource, GenericType type) {
+        int retries = 2;
+        while (--retries > 0) {
+            try {
+                return resource
+                        .accept(JSON_UTF8)
+                        .get(type);
+            } catch (Exception e) {
+                e.printStackTrace();
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        return resource
+                .accept(JSON_UTF8)
+                .get(type);
+    }
     @Override
     public ResultV1RDTO<KoulutusV1RDTO> getV1KoulutusLearningOpportunity(String oid) {
-        return v1KoulutusResource
-                .path(oid)
-                .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
-        });
+        return (ResultV1RDTO<KoulutusV1RDTO>) getWithRetries(v1KoulutusResource
+                .path(oid),
+                new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
+                });
+//        return v1KoulutusResource
+//                .path(oid)
+//                .accept(JSON_UTF8)
+//                .get(new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
+//                });
     }
 
 }

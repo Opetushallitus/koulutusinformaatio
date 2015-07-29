@@ -93,7 +93,7 @@ public class IncrementalLOSIndexer {
                 this.loHttpSolrServer, 
                 this.lopHttpSolrServer, 
                 this.locationHttpSolrServer);  
-        this.koulutusIndexer = new IncrementalKoulutusLOSIndexer(tarjontaRawService, tarjontaService, dataUpdateService, dataQueryService, indexerService,
+        this.koulutusIndexer = new IncrementalKoulutusLOSIndexer(tarjontaService, dataUpdateService, dataQueryService, indexerService,
                 loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
 

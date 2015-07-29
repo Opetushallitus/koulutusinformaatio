@@ -58,7 +58,7 @@ public class LOSObjectCreator extends ObjectCreator {
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
             ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         super(koodistoService);
-        applicationOptionCreator = new ApplicationOptionCreator(koodistoService, tarjontaRawService, organisaatioRawService, parameterService);
+        applicationOptionCreator = new ApplicationOptionCreator(koodistoService, organisaatioRawService, parameterService);
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.tarjontaRawService = tarjontaRawService;

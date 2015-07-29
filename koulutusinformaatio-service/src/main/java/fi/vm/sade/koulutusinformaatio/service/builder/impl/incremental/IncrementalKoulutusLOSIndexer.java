@@ -39,7 +39,6 @@ public class IncrementalKoulutusLOSIndexer {
 
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalKoulutusLOSIndexer.class);
 
-    private TarjontaRawService tarjontaRawService;
     private TarjontaService tarjontaService;
     private EducationIncrementalDataUpdateService dataUpdateService;
     private IndexerService indexerService;
@@ -52,8 +51,7 @@ public class IncrementalKoulutusLOSIndexer {
 
     private EducationIncrementalDataQueryService dataQueryService;
 
-    public IncrementalKoulutusLOSIndexer(TarjontaRawService tarjontaRawService, 
-            TarjontaService tarjontaService,
+    public IncrementalKoulutusLOSIndexer(TarjontaService tarjontaService,
             EducationIncrementalDataUpdateService dataUpdateService,
             EducationIncrementalDataQueryService dataQueryService,
             IndexerService indexerService,
@@ -61,7 +59,6 @@ public class IncrementalKoulutusLOSIndexer {
             HttpSolrServer lopHttpSolrServer,
             HttpSolrServer locationHttpSolrServer) {
 
-        this.tarjontaRawService = tarjontaRawService;
         this.tarjontaService = tarjontaService;
         this.dataUpdateService = dataUpdateService;
         this.indexerService = indexerService;

@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -45,7 +44,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     public static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
 
-    private ConversionService conversionService;
     private OrganisaatioRawService organisaatioRawService;
     private KoodistoService koodistoService;
     private ProviderService providerService;
@@ -57,13 +55,12 @@ public class TarjontaServiceImpl implements TarjontaService {
     private HashMap<String, TutkintoLOS> processedTutkintos = new HashMap<String, TutkintoLOS>();
 
     @Autowired
-    public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
+    public TarjontaServiceImpl(KoodistoService koodistoService,
             ProviderService providerService, TarjontaRawService tarjontaRawService,
                                OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.tarjontaRawService = tarjontaRawService;
-        this.conversionService = conversionService;
         this.organisaatioRawService = organisaatioRawService;
         this.parameterService = parameterService;
     }
