@@ -236,61 +236,18 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Override
     public List<LOS> findLearningOpportunitiesByProviderId(String providerId) {
         List<LOS> results = Lists.newArrayList();
-        List<ParentLearningOpportunitySpecificationEntity> parentEntites =
-                parentLearningOpportunitySpecificationDAO.findByProviderId(providerId);
-        List<ParentLOS> parents = Lists.transform(
-                parentEntites,
-                new Function<ParentLearningOpportunitySpecificationEntity, ParentLOS>() {
-                    @Override
-                    public ParentLOS apply(ParentLearningOpportunitySpecificationEntity input) {
-                        return modelMapper.map(input, ParentLOS.class);
-                    }
-                }
-                );
-        List<ChildLOS> children = Lists.newArrayList();
-        for (ParentLearningOpportunitySpecificationEntity parentEntity : parentEntites) {
-            children.addAll(Lists.transform(
-                    parentEntity.getChildren(),
-                    new Function<ChildLearningOpportunitySpecificationEntity, ChildLOS>() {
-                        @Override
-                        public ChildLOS apply(ChildLearningOpportunitySpecificationEntity input) {
-                            return modelMapper.map(input, ChildLOS.class);
-                        }
-                    }
-                    ));
-        }
-        List<UpperSecondaryLOS> upsecs = Lists.transform(
-                upperSecondaryLearningOpportunitySpecificationDAO.findByProviderId(providerId),
-                new Function<UpperSecondaryLearningOpportunitySpecificationEntity, UpperSecondaryLOS>() {
-                    @Override
-                    public UpperSecondaryLOS apply(UpperSecondaryLearningOpportunitySpecificationEntity input) {
-                        return modelMapper.map(input, UpperSecondaryLOS.class);
-                    }
-                }
-                );
-        List<SpecialLOS> specials = Lists.transform(
-                specialLearningOpportunitySpecificationDAO.findByProviderId(providerId),
-                new Function<SpecialLearningOpportunitySpecificationEntity, SpecialLOS>() {
-                    @Override
-                    public SpecialLOS apply(SpecialLearningOpportunitySpecificationEntity input) {
-                        return modelMapper.map(input, SpecialLOS.class);
-                    }
-                }
-                );
 
-        List<HigherEducationLOS> higherEds = Lists.transform(higherEducationLOSDAO.findByProviderId(providerId),
-                new Function<HigherEducationLOSEntity, HigherEducationLOS>() {
+        List<KoulutusLOSEntity> entities = koulutusLOSDAO.findByProviderId(providerId);
+        List<KoulutusLOS> losses = Lists.transform(entities,
+                new Function<KoulutusLOSEntity, KoulutusLOS>() {
                     @Override
-                    public HigherEducationLOS apply(HigherEducationLOSEntity input) {
-                        return modelMapper.map(input, HigherEducationLOS.class);
+                    public KoulutusLOS apply(KoulutusLOSEntity input) {
+                        return modelMapper.map(input, KoulutusLOS.class);
                     }
-                });
+                }
+        );
+        results.addAll(losses);
 
-        results.addAll(parents);
-        results.addAll(children);
-        results.addAll(upsecs);
-        results.addAll(specials);
-        results.addAll(higherEds);
         return results;
     }
 

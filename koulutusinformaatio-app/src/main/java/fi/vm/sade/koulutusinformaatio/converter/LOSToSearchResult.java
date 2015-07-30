@@ -16,19 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.List;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -48,7 +42,12 @@ public final class LOSToSearchResult {
 
     private static LearningOpportunitySearchResultDTO convert(LOS los, String lang) {
         LearningOpportunitySearchResultDTO dto = new LearningOpportunitySearchResultDTO();
-        if (los instanceof ParentLOS) {
+        if (los instanceof KoulutusLOS) {
+            dto.setId(los.getId());
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
+                    los.getName(), lang));
+            dto.setType(TarjontaConstants.TYPE_KOULUTUS);
+        } else if (los instanceof ParentLOS) {
             dto.setId(((ParentLOS) los).getId());
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
                 ((ParentLOS) los).getName(), lang));
