@@ -87,10 +87,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     @Override
     public void save(LOS learningOpportunitySpecification) {
-        if (learningOpportunitySpecification instanceof ParentLOS) {
-            save((ParentLOS) learningOpportunitySpecification);
-        }
-        else if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
+        if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
             save((UpperSecondaryLOS) learningOpportunitySpecification);
         }
         else if (learningOpportunitySpecification instanceof SpecialLOS) {
@@ -171,36 +168,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
             upperSecondaryLOSDAO.save(entity);
-        }
-    }
-
-    private void save(final ParentLOS parentLOS) {
-        if (parentLOS != null) {
-            
-            try {
-                Provider existingProv = this.getProvider(parentLOS.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                for (String curAsId : existingProv.getApplicationSystemIds()) {
-                    if (!parentLOS.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                        parentLOS.getProvider().getApplicationSystemIds().add(curAsId);
-                    }
-                }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.debug("No existing provider");
-            }
-            
-            ParentLearningOpportunitySpecificationEntity plos =
-                    modelMapper.map(parentLOS, ParentLearningOpportunitySpecificationEntity.class);
-            save(plos.getProvider());
-
-            if (plos.getChildren() != null) {
-                for (ChildLearningOpportunitySpecificationEntity cLO : plos.getChildren()) {
-                    save(cLO);
-                }
-            }
-
-            parentLOSDAO.save(plos);
         }
     }
 
@@ -292,13 +259,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     @Override
     public void deleteLos(LOS los) {
         
-        if (los instanceof ParentLOS) {
-            
-            for (ChildLOS curChild : ((ParentLOS) los).getChildren()) {
-                this.childLODAO.deleteById(curChild.getId());
-            }
-            this.parentLOSDAO.deleteById(los.getId());
-        } else if (los instanceof ChildLOS) {
+        if (los instanceof ChildLOS) {
             this.childLODAO.deleteById(los.getId());
         } else if (los instanceof SpecialLOS) {
             this.specialLOSDAO.deleteById(los.getId());

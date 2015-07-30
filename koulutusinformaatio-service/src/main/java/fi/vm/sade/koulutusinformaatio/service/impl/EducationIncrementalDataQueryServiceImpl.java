@@ -165,10 +165,6 @@ EducationIncrementalDataQueryService {
     @Override
     public LOS getLos(String losId) {
 
-        ParentLearningOpportunitySpecificationEntity losE = this.parentLearningOpportunitySpecificationDAO.get(losId);
-        if (losE != null) {
-            return modelMapper.map(losE, ParentLOS.class);
-        }
         ChildLearningOpportunitySpecificationEntity childE = this.childLearningOpportunityDAO.get(losId);
         if (childE != null) {
             return modelMapper.map(childE, ChildLOS.class);

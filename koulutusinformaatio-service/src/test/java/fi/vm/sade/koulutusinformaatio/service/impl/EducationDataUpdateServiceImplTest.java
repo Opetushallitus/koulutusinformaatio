@@ -56,42 +56,6 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     }
 
     @Test
-    public void testSaveParentLearningOpportunity() {
-        List<ApplicationOption> applicationOptions = Lists.newArrayList();
-        Provider lop = new Provider();
-        lop.setId("6.7.8");
-        ApplicationOption ao = new ApplicationOption();
-        ao.setId("3.3.3");
-        ao.setProvider(lop);
-        applicationOptions.add(ao);
-        ParentLOS plo = new ParentLOS();
-        plo.setProvider(lop);
-        plo.setId("1.2.3");
-
-        ParentLOI parentLOI = new ParentLOI();
-        parentLOI.setId("2345");
-        parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu"),
-                TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
-        parentLOI.setApplicationOptions(applicationOptions);
-
-        ChildLOS clo = new ChildLOS();
-        clo.setId("5.7.9");
-        ChildLOI cloi = new ChildLOI();
-        cloi.setId("9.8.7");
-        cloi.setApplicationOptions(Lists.newArrayList(ao));
-        clo.setLois(Lists.newArrayList(cloi));
-
-        plo.setChildren(Lists.newArrayList(clo));
-
-        plo.setLois(Lists.newArrayList(parentLOI));
-
-        service.save(plo);
-        verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));
-        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
-        verify(learningOpportunityProviderDAO, times(2)).save(any(LearningOpportunityProviderEntity.class));
-    }
-
-    @Test
     public void testSaveUpperSecondaryLOS() {
         ApplicationOption ao = new ApplicationOption();
         ao.setId("aoid");

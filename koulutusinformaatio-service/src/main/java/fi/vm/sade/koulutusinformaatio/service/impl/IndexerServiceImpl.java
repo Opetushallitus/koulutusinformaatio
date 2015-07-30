@@ -114,25 +114,8 @@ public class IndexerServiceImpl implements IndexerService {
         Set<String> requiredBaseEducations = Sets.newHashSet();
         Set<String> vocationalAsIds = Sets.newHashSet();
         Set<String> nonVocationalAsIds = Sets.newHashSet();
-        // Adding parent los (vocational learning opportunity)
-        if (los instanceof ParentLOS) {
-            ParentLOS parent = (ParentLOS) los;
-            provider = parent.getProvider();
-            for (ChildLOS childLOS : parent.getChildren()) {
-                for (ChildLOI childLOI : childLOS.getLois()) {
-                    for (ApplicationOption ao : childLOI.getApplicationOptions()) {
-                        providerAsIds.add(ao.getApplicationSystem().getId());
-                        requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
-                        if (ao.isVocational()) {
-                            vocationalAsIds.add(ao.getApplicationSystem().getId());
-                        } else {
-                            nonVocationalAsIds.add(ao.getApplicationSystem().getId());
-                        }
-                    }
-                }
-            }
-            // Adding Tutkinto (replaces the old V0 ParentLOS)
-        } else if (los instanceof TutkintoLOS) {
+        // Adding Tutkinto (replaces the old V0 ParentLOS)
+        if (los instanceof TutkintoLOS) {
             TutkintoLOS tutkinto = (TutkintoLOS) los;
             provider = tutkinto.getProvider();
             for (KoulutusLOS childLOS : tutkinto.getChildEducations()) {
@@ -573,23 +556,7 @@ public class IndexerServiceImpl implements IndexerService {
     public void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer)
             throws IOException, SolrServerException {
         
-        if (curLos instanceof ParentLOS) {
-            ParentLOS parent = (ParentLOS)curLos;
-            Map<String,String> prerequisitesMap = new HashMap<String,String>();
-            for (ChildLOS childLOS : parent.getChildren()) {
-                for (ChildLOI childLOI : childLOS.getLois()) {
-                    String prereq = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) 
-                            ? SolrConstants.PK 
-                                    : childLOI.getPrerequisite().getValue();
-                    prerequisitesMap.put(prereq, prereq);
-                }
-            }
-
-            for (String curPrereq : prerequisitesMap.values()) {
-                //docs.add(createParentDoc(parent, curPrereq));
-                loHttpSolrServer.deleteById(String.format("%s#%s", curLos.getId(), curPrereq));
-            }
-        } else if (curLos instanceof SpecialLOS){
+        if (curLos instanceof SpecialLOS){
             for (ChildLOI curChild : ((SpecialLOS) curLos).getLois()) { 
                 loHttpSolrServer.deleteById(curChild.getId());
             }

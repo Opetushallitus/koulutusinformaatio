@@ -42,39 +42,20 @@ public final class LOSToSearchResult {
 
     private static LearningOpportunitySearchResultDTO convert(LOS los, String lang) {
         LearningOpportunitySearchResultDTO dto = new LearningOpportunitySearchResultDTO();
+        dto.setId(los.getId());
+        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
         if (los instanceof KoulutusLOS) {
-            dto.setId(los.getId());
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
-                    los.getName(), lang));
             dto.setType(TarjontaConstants.TYPE_KOULUTUS);
-        } else if (los instanceof ParentLOS) {
-            dto.setId(((ParentLOS) los).getId());
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
-                ((ParentLOS) los).getName(), lang));
-            dto.setType(TarjontaConstants.TYPE_PARENT.toLowerCase());
-        }
-        else if (los instanceof ChildLOS) {
-            dto.setId(((ChildLOS) los).getId());
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
-                    ((ChildLOS) los).getName(), lang));
+        } else if (los instanceof ChildLOS) {
             dto.setType(TarjontaConstants.TYPE_CHILD.toLowerCase());
         }
         else if (los instanceof UpperSecondaryLOS) {
-            dto.setId(((UpperSecondaryLOS) los).getId());
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
-                    ((UpperSecondaryLOS) los).getName(), lang));
             dto.setType(TarjontaConstants.TYPE_UPSEC.toLowerCase());
         }
         else if (los instanceof SpecialLOS) {
-            dto.setId(((SpecialLOS) los).getId());
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
-                    ((SpecialLOS) los).getName(), lang));
             dto.setType(TarjontaConstants.TYPE_SPECIAL.toLowerCase());
         }
         else {
-            dto.setId(((HigherEducationLOS) los).getId());
-            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
-                    ((HigherEducationLOS) los).getName(), lang));
             dto.setType(TarjontaConstants.TYPE_KK);
         }
         return dto;

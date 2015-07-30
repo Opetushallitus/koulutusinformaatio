@@ -78,10 +78,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 
     @Override
     public void save(LOS learningOpportunitySpecification) {
-        if (learningOpportunitySpecification instanceof ParentLOS) {
-            save((ParentLOS) learningOpportunitySpecification);
-        }
-        else if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
+        if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
             save((UpperSecondaryLOS) learningOpportunitySpecification);
         }
         else if (learningOpportunitySpecification instanceof SpecialLOS) {
@@ -225,39 +222,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                 }
             }
             upperSecondaryLOSTransactionDAO.save(entity);
-        }
-    }
-
-    private void save(final ParentLOS parentLOS) {
-        if (parentLOS != null) {
-            ParentLearningOpportunitySpecificationEntity plos =
-                    modelMapper.map(parentLOS, ParentLearningOpportunitySpecificationEntity.class);
-            save(plos.getProvider());
-            
-            for (LearningOpportunityProviderEntity addProv : plos.getAdditionalProviders()) {
-                save(addProv);
-            }
-
-            if (plos.getChildren() != null) {
-                for (ChildLearningOpportunitySpecificationEntity cLO : plos.getChildren()) {
-                    save(cLO);
-                }
-            }
-
-            parentLOSTransactionDAO.save(plos);
-        }
-    }
-
-    private void save(final ChildLearningOpportunitySpecificationEntity childLearningOpportunity) {
-        if (childLearningOpportunity != null) {
-            for (ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance : childLearningOpportunity.getLois()) {
-                if (childLearningOpportunityInstance.getApplicationOptions() != null) {
-                    for (ApplicationOptionEntity ao : childLearningOpportunityInstance.getApplicationOptions()) {
-                        save(ao);
-                    }
-                }
-            }
-            childLOTransactionDAO.save(childLearningOpportunity);
         }
     }
 

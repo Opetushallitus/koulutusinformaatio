@@ -16,14 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -34,36 +30,17 @@ import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.MockitoAnnotations.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
-import com.google.common.collect.Lists;
+import java.io.IOException;
+import java.util.*;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.util.TestUtil;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -140,40 +117,8 @@ public class IndexerServiceImplTest {
         parentDoc2.setField("asStart_0", applicationOptionApplicationPeriodStarts);
         parentDoc2.setField("asEnd_0", applicationOptionApplicationPeriodEnds);
         parentDocs.add(parentDoc2);
-        when(conversionService.convert(any(ParentLOS.class), eq(List.class))).thenReturn(parentDocs);
         
         indexerServiceImpl = new IndexerServiceImpl(conversionService, loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer);
-    }
-
-    @Test
-    public void testAddParentLOS() throws Exception {
-        ParentLOS p = createParentLOS();
-        indexerServiceImpl.addLearningOpportunitySpecification(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
-        verify(loUpdateHttpSolrServer).add(argThat(TestUtil.isListOfTwoELements()));
-        verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
-    }
-
-    @Test
-    public void testAOSpecificApplicationDates() throws Exception {
-        ParentLOS p = createParentLOSWithApplicationOptionSpecificDates();
-        indexerServiceImpl.addLearningOpportunitySpecification(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
-        verify(loUpdateHttpSolrServer).add(argThat(new ArgumentMatcher<List<SolrInputDocument>>() {
-            @Override
-            public boolean matches(Object list) {
-                if (list == null) return false;
-                if (((List) list).size() != 2) return false;
-                for (SolrInputDocument doc : (List<SolrInputDocument>) list) {
-                    if (doc.get("parentId") != null) {
-                        Date start = (Date) doc.get("asStart_0").getValue();
-                        Date end = (Date) doc.get("asEnd_0").getValue();
-                        return start.equals(applicationOptionApplicationPeriodStarts) &&
-                                end.equals(applicationOptionApplicationPeriodEnds);
-                    }
-                }
-                return false;
-            }
-        }));
-        verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
     }
 
     @Test
@@ -238,49 +183,6 @@ public class IndexerServiceImplTest {
         indexerServiceImpl.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
     }
 
-    private ParentLOS createParentLOS() {
-        ParentLOS p = new ParentLOS();
-        p.setId("parent_id");
-        p.setName(TestUtil.createI18nText("Parent LOS name fi", "Parent LOS name sv", "Parent LOS name en"));
-        Provider provider = new Provider();
-        provider.setId("123");
-        provider.setName(TestUtil.createI18nText("LOP name fi", "LOP name sv", "LOP name en"));
-        Address address = new Address();
-        address.setPostOffice(TestUtil.createI18nText("Helsinki"));
-        provider.setVisitingAddress(address);
-        provider.setDescription(TestUtil.createI18nText("LOP description fi", "LOP description sv", "LOP description en"));
-        provider.setHomePlace(TestUtil.createI18nText("homeplace fi", "homeplace sv", "homeplace en"));
-        p.setProvider(provider);
-        p.setStructure(TestUtil.createI18nText("Parent LOS structure diagram fi", "Parent LOS structure diagram sv", "Parent LOS structure diagram en"));
-        p.setGoals(TestUtil.createI18nText("Parent LOS goals fi", "Parent LOS goals sv", "Parent LOS goals en"));
-
-        ParentLOI parentLOI1 = new ParentLOI();
-        ApplicationOption ao1 = givenApplicationOption();
-        ApplicationSystem as1 = new ApplicationSystem();
-        as1.setId("AS1_id");
-        as1.setName(TestUtil.createI18nText("AS name fi", "AS name sv", "AS name en"));
-        Calendar endCal = Calendar.getInstance();
-        endCal.roll(Calendar.YEAR, 1);
-        DateRange dr = new DateRange(applicationSystemStarts, applicationSystemEnds);
-        as1.setApplicationDates(Lists.newArrayList(dr));
-        ao1.setApplicationSystem(as1);
-        parentLOI1.setApplicationOptions(Lists.newArrayList(ao1));
-        p.setLois(Lists.newArrayList(parentLOI1));
-
-        ChildLOS childLOS1 = new ChildLOS();
-        childLOS1.setId("childLOS1_id");
-        childLOS1.setName(TestUtil.createI18nText("child los name fi", "child los name sv", "child los name en"));
-        childLOS1.setShortTitle(TestUtil.createI18nText("child los name short fi", "child los name short sv", "child los name short en"));
-        childLOS1.setQualification(TestUtil.createI18nText("Qualification fi", "Qualification sv", "Qualification en"));
-        childLOS1.setGoals(TestUtil.createI18nText("Degree goal fi", "Degree goal sv", "Degree goal en"));
-
-        ChildLOI childLOI1 = givenChildLOI(ao1);
-        childLOS1.setLois(Lists.newArrayList(childLOI1));
-
-        p.setChildren(Lists.newArrayList(childLOS1));
-        return p;
-    }
-
     private ApplicationOption givenApplicationOption() {
         ApplicationOption ao1 = new ApplicationOption();
         ao1.setId("AO1_id");
@@ -308,21 +210,5 @@ public class IndexerServiceImplTest {
         return childLOI1;
     }
 
-    private ParentLOS createParentLOSWithApplicationOptionSpecificDates() {
-        ParentLOS p = createParentLOS();
-        p.getChildren().get(0).getLois().get(0).getApplicationOptions().get(0).setSpecificApplicationDates(true);
-        p.getChildren().get(0).getLois().get(0).getApplicationOptions().get(0).
-                setApplicationStartDate(applicationOptionApplicationPeriodStarts);
-        p.getChildren().get(0).getLois().get(0).getApplicationOptions().get(0).
-                setApplicationEndDate(applicationOptionApplicationPeriodEnds);
-        return p;
-    }
-
-    class IsParentLOS extends ArgumentMatcher<OrganisaatioRDTO> {
-        @Override
-        public boolean matches(Object o) {
-            return o != null && o instanceof ParentLOS;
-        }
-    }
 
 }
