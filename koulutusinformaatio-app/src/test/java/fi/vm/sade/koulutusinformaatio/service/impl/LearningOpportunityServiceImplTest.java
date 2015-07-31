@@ -47,7 +47,6 @@ public class LearningOpportunityServiceImplTest {
 
     private LearningOpportunityService learningOpportunityService;
     private EducationDataQueryService educationDataQueryService;
-    private ParentLOI parentLOI;
     private ChildLOS childLOS;
     private ChildLOI childLOI;
     private ApplicationOption applicationOption;
@@ -72,13 +71,6 @@ public class LearningOpportunityServiceImplTest {
                 parentProvider, new Date(), 100, 25, 6, 77, childLOIRefs, "32",
                 prerequisite);
         List<ApplicationOption> aos = Lists.newArrayList(applicationOption);
-
-        parentLOI = new ParentLOI();
-        parentLOI.setId("2345");
-        parentLOI.setPrerequisite(prerequisite);
-        parentLOI.setSelectingDegreeProgram(createI18Text("Valintaperustekuvaus"));
-        parentLOI.setApplicationOptions(aos);
-        parentLOI.setChildRefs(childLOIRefs);
 
         childLOS = new ChildLOS();
         childLOS.setId("lo123");

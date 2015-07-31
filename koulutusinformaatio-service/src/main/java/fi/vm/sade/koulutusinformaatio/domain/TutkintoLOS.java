@@ -16,15 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 public class TutkintoLOS extends LOS {
 
@@ -48,7 +43,6 @@ public class TutkintoLOS extends LOS {
     private String creditValue; // laajuus arvo, 120
     private I18nText creditUnit; // laajuus yksikkö op
 
-    private List<ParentLOI> lois;
     private List<ChildLOS> children;
 
     private List<KoulutusLOS> childEducations = new ArrayList<KoulutusLOS>();
@@ -61,14 +55,6 @@ public class TutkintoLOS extends LOS {
     private boolean kotitalousopetus;
 
     private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
-
-    public List<ParentLOI> getLois() {
-        return lois;
-    }
-
-    public void setLois(List<ParentLOI> lois) {
-        this.lois = lois;
-    }
 
     public List<ChildLOS> getChildren() {
         return children;

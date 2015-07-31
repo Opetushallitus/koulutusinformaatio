@@ -15,32 +15,18 @@
  */
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
 import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * 
@@ -87,7 +73,6 @@ public class TutkintoLOSToSolrInputDocumentTest {
         los.setCreditUnit(TestUtil.createI18nText("ov fi", "ov sv", "ov en"));
         los.setGoals(TestUtil.createI18nText("Goals fi", "Goals sv", "Goals en"));
 
-        ParentLOI parentLoi = new ParentLOI();
         ApplicationSystem as = new ApplicationSystem();
         as.setName(TestUtil.createI18nText("Haku fi", "Haku sv", "Haku en"));
         Date asStart = new Date();
@@ -100,8 +85,6 @@ public class TutkintoLOSToSolrInputDocumentTest {
         ao.setSpecificApplicationDates(false);
         ao.setApplicationSystem(as);
         ao.setKaksoistutkinto(false);
-        parentLoi.setApplicationOptions(Arrays.asList(ao));
-        los.setLois(Arrays.asList(parentLoi));
 
         List<Code> topics = new ArrayList<Code>();
         Code topic1 = new Code();

@@ -16,24 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.SetMultimap;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -71,12 +64,6 @@ public final class ParentLOSToDTO {
         } catch (Exception e) {
             parent.setCreditValue(tutkintoLOS.getCreditValue());
             parent.setCreditUnit(ConverterUtil.getTextByLanguage(tutkintoLOS.getCreditUnit(), uiLang));
-        }
-
-        if (tutkintoLOS.getLois() != null) {
-            for (ParentLOI loi : tutkintoLOS.getLois()) {
-                parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang, defaultLang));
-            }
         }
 
         if (tutkintoLOS.getThemes() != null) {
