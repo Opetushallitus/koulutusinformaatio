@@ -16,10 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
@@ -31,28 +36,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author Mikko Majapuro
@@ -74,7 +60,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private final String locationCoreName;
     
     private HttpSolrServer adminHttpSolrServer;
-    private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
     private ChildLearningOpportunityDAO childLOTransactionDAO;
@@ -88,7 +73,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private KoulutusLOSDAO koulutusLOSTransactionDAO;
     private TutkintoLOSDAO tutkintoLOSTransactionDAO;
 
-    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
@@ -131,7 +115,6 @@ public class TransactionManagerImpl implements TransactionManager {
             @Value("${solr.learningopportunity.update.url}") String learningopportunityUpdateCoreName,
             @Value("${solr.location.url}") String locationCoreName,
             @Value("${solr.location.update.url}") String locationUpdateCoreName,
-            ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
             ApplicationOptionDAO applicationOptionTransactionDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
             ChildLearningOpportunityDAO childLOTransactionDAO,
@@ -144,7 +127,6 @@ public class TransactionManagerImpl implements TransactionManager {
             TutkintoLOSDAO tutkintoLOSTransactionDAO,
             SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             DataStatusDAO dataStatusTransactionDAO,
-            ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
             ApplicationOptionDAO applicationOptionDAO,
             ChildLearningOpportunityDAO childLearningOpportunityDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
@@ -171,7 +153,6 @@ public class TransactionManagerImpl implements TransactionManager {
         this.locationCoreName = locationCoreName;
         this.locationUpdateCoreName = locationUpdateCoreName;
         this.adminHttpSolrServer = adminHttpSolrServer;
-        this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
         this.childLOTransactionDAO = childLOTransactionDAO;
@@ -183,7 +164,6 @@ public class TransactionManagerImpl implements TransactionManager {
         this.koulutusLOSTransactionDAO = koulutusLOSTransactionDAO;
         this.tutkintoLOSTransactionDAO = tutkintoLOSTransactionDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
-        this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
@@ -275,7 +255,6 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     private void dropTransactionDbCollections() {
-        parentLOSTransactionDAO.getCollection().drop();
         applicationOptionTransactionDAO.getCollection().drop();
         learningOpportunityProviderTransactionDAO.getCollection().drop();
         childLOTransactionDAO.getCollection().drop();
@@ -291,7 +270,6 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     private void dropDbCollections() {
-        parentLearningOpportunitySpecificationDAO.getCollection().drop();
         applicationOptionDAO.getCollection().drop();
         childLearningOpportunityDAO.getCollection().drop();
         dataStatusDAO.getCollection().drop();

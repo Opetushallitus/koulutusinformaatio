@@ -16,36 +16,19 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.google.common.collect.Lists;
+import com.mongodb.DBCollection;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-import com.mongodb.DBCollection;
-
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
@@ -105,18 +88,6 @@ public class AbstractEducationServiceTest {
         when(dao.get(NOTFOUND)).thenReturn(null);
         when(dao.getFromSecondary(NOTFOUND)).thenReturn(null);
         return dao;
-    }
-
-    protected ParentLearningOpportunitySpecificationDAO mockParentDAO() {
-        ParentLearningOpportunitySpecificationDAO parentDAO = mock(ParentLearningOpportunitySpecificationDAO.class);
-        DBCollection ploCollection = mock(DBCollection.class);
-        ParentLearningOpportunitySpecificationEntity plo = new ParentLearningOpportunitySpecificationEntity();
-        String ploOid = "1.2.3";
-        plo.setId(ploOid);
-        when(parentDAO.getCollection()).thenReturn(ploCollection);
-        when(parentDAO.get(eq("1.2.3"))).thenReturn(plo);
-        when(parentDAO.getFromSecondary(eq("1.2.3"))).thenReturn(plo);
-        return parentDAO;
     }
 
     protected ApplicationOptionDAO mockApplicationOptionDAO() {

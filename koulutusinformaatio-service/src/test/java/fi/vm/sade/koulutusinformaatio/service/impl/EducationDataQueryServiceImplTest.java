@@ -40,7 +40,6 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
 
 
     private EducationDataQueryServiceImpl service;
-    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
@@ -70,10 +69,8 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         koulutusDAO = mock(KoulutusLOSDAO.class);
         tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
-        parentLearningOpportunitySpecificationDAO = mock(ParentLearningOpportunitySpecificationDAO.class);
-        service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
-                applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
-                dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
+        service = new EducationDataQueryServiceImpl(applicationOptionDAO, modelMapper,
+                childLearningOpportunityDAO, dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
                 specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, koulutusDAO, tutkintoDAO, providerDAO);
     }
     

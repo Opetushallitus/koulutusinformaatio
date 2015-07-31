@@ -37,7 +37,6 @@ import java.util.List;
 @Service
 public class EducationDataQueryServiceImpl implements EducationDataQueryService {
 
-    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private DataStatusDAO dataStatusDAO;
@@ -53,8 +52,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
-    public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
-            ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
+    public EducationDataQueryServiceImpl(ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
             ChildLearningOpportunityDAO childLearningOpportunityDAO,
             DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
@@ -65,7 +63,6 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
-        this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;

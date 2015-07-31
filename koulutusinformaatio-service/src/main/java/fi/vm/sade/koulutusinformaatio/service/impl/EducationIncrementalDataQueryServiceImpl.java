@@ -45,7 +45,6 @@ EducationIncrementalDataQueryService {
     
     public static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataQueryServiceImpl.class);
 
-    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private DataStatusDAO dataStatusDAO;
@@ -62,8 +61,7 @@ EducationIncrementalDataQueryService {
 
 
     @Autowired
-    public EducationIncrementalDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
-            ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
+    public EducationIncrementalDataQueryServiceImpl(ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
             ChildLearningOpportunityDAO childLearningOpportunityDAO,
             DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
@@ -74,7 +72,6 @@ EducationIncrementalDataQueryService {
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
-        this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;

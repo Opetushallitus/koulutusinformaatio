@@ -32,10 +32,8 @@ import org.springframework.stereotype.Service;
 public class EducationDataUpdateServiceImpl implements EducationDataUpdateService {
 
     private ModelMapper modelMapper;
-    private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
-    private ChildLearningOpportunityDAO childLOTransactionDAO;
     private PictureDAO pictureTransactionDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private DataStatusDAO dataStatusDAO;
@@ -47,10 +45,9 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
 
     @Autowired
-    public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
+    public EducationDataUpdateServiceImpl(ModelMapper modelMapper,
             ApplicationOptionDAO applicationOptionTransactionDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
-            ChildLearningOpportunityDAO childLOTransactionDAO,
             PictureDAO pictureTransactionDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
@@ -60,10 +57,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             TutkintoLOSDAO tutkintoLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO) {
         this.modelMapper = modelMapper;
-        this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
-        this.childLOTransactionDAO = childLOTransactionDAO;
         this.pictureTransactionDAO = pictureTransactionDAO;
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.dataStatusDAO = dataStatusDAO;

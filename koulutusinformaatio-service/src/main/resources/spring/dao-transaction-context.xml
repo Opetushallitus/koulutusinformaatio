@@ -48,15 +48,6 @@
         <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
-    <bean id="parentLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="primaryTransactionDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryTransactionDatastore"/>
-        </constructor-arg>
-    </bean>
-
     <bean id="applicationOptionTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
         <constructor-arg>
             <ref bean="primaryTransactionDatastore"/>

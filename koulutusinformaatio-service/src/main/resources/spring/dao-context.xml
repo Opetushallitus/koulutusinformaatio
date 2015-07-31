@@ -58,15 +58,6 @@
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
 
-    <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="primaryDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryDatastore"/>
-        </constructor-arg>
-    </bean>
-
     <bean id="applicationOptionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
         <constructor-arg>
             <ref bean="primaryDatastore"/>

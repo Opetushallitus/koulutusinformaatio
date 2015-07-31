@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 public class EducationDataUpdateServiceImplTest extends AbstractEducationServiceTest {
 
     private EducationDataUpdateServiceImpl service;
-    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
@@ -37,7 +36,6 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     @Before
     public void setUp() {
         ModelMapper modelMapper = new ModelMapper();
-        parentLearningOpportunitySpecificationDAO = mockParentDAO();
         applicationOptionDAO = mockApplicationOptionDAO();
         learningOpportunityProviderDAO = mockProviderDAO();
         childLearningOpportunityDAO = mockChildDAO();
@@ -50,9 +48,9 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         koulutusDAO = mock(KoulutusLOSDAO.class);
         tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
-        service = new EducationDataUpdateServiceImpl(modelMapper, parentLearningOpportunitySpecificationDAO, applicationOptionDAO,
-                learningOpportunityProviderDAO, childLearningOpportunityDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, koulutusDAO, tutkintoDAO, adultVocDAO);
+        service = new EducationDataUpdateServiceImpl(modelMapper, applicationOptionDAO, learningOpportunityProviderDAO,
+                pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO, specialLearningOpportunitySpecificationDAO,
+                higherEdDAO, adultUpsecDAO, koulutusDAO, tutkintoDAO, adultVocDAO);
     }
 
     @Test

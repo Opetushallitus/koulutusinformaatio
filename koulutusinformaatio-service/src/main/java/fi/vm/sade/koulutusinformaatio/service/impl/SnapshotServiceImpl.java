@@ -16,9 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.IOException;
-import java.util.List;
-
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
+import fi.vm.sade.koulutusinformaatio.util.StreamReaderHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +29,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
-import fi.vm.sade.koulutusinformaatio.util.StreamReaderHelper;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -57,7 +50,6 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String QUERY_PARAM_LANG = "descriptionLang";
 
     private SpecialLearningOpportunitySpecificationDAO specialDAO;
-    private ParentLearningOpportunitySpecificationDAO parentDAO;
     private ChildLearningOpportunityDAO childDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO;
     private HigherEducationLOSDAO higheredDAO;
@@ -71,8 +63,6 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Autowired
     public SnapshotServiceImpl(@Qualifier("specialLearningOpportunitySpecificationDAO")
                                SpecialLearningOpportunitySpecificationDAO specialDAO,
-                               @Qualifier("parentLearningOpportunitySpecificationDAO")
-                               ParentLearningOpportunitySpecificationDAO parentDAO,
                                @Qualifier("childLearningOpportunityDAO") ChildLearningOpportunityDAO childDAO,
                                @Qualifier("upperSecondaryLearningOpportunitySpecificationDAO")
                                UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO,
@@ -84,7 +74,6 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
                                @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl) {
         this.specialDAO = specialDAO;
-        this.parentDAO = parentDAO;
         this.childDAO = childDAO;
         this.upsecDAO = upsecDAO;
         this.higheredDAO = higheredDAO;
@@ -101,8 +90,6 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.info("Rendering html snapshots");
         prerender(TYPE_SPECIAL, specialDAO.findIds());
         LOG.debug("Special LOs rendered");
-        prerender(TYPE_PARENT, parentDAO.findIds());
-        LOG.debug("Parent LOs rendered");
         prerender(TYPE_CHILD, childDAO.findIds());
         LOG.debug("Child LOs rendered");
         prerender(TYPE_UPSEC, upsecDAO.findIds());

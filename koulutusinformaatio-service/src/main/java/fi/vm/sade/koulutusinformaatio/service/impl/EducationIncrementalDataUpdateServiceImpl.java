@@ -41,7 +41,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     public static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataUpdateServiceImpl.class);
     
     private ModelMapper modelMapper;
-    private ParentLearningOpportunitySpecificationDAO parentLOSDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityDAO childLODAO;
@@ -56,7 +55,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private TutkintoLOSDAO tutkintoLOSDAO;
 
     @Autowired
-    public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
+    public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper,
             ApplicationOptionDAO applicationOptionDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             ChildLearningOpportunityDAO childLearningOpportunityDAO,
@@ -69,7 +68,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO) {
         this.modelMapper = modelMapper;
-        this.parentLOSDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.childLODAO = childLearningOpportunityDAO;
