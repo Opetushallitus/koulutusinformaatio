@@ -676,6 +676,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 los = creator.createHigherEducationLOS((KoulutusKorkeakouluV1RDTO) koulutusDTO, checkStatus);
                 break;
             case AMMATILLINEN_PERUSTUTKINTO:
+            case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
                 los = creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
                 break;
             case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
