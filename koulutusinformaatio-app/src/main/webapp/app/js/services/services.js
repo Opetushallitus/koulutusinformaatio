@@ -370,6 +370,11 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
                     result.teachLang.push(tl)
                 }
             }
+
+            _.each(result.applicationSystems, function(as) {
+                as.isLisahaku = UtilityService.isLisahaku(as);
+            });
+            
         }
     }
 }]).
