@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
 import org.slf4j.Logger;
@@ -104,6 +105,15 @@ public class ApplicationOptionCreator extends ObjectCreator {
             baseEducations.add(code.getUri());
         }
         baseEducations.addAll(hakukohde.getHakukelpoisuusvaatimusUris());
+        if (los.getKoulutusPrerequisite() != null) {
+            List<Code> subCodes = koodistoService.searchSubCodes(
+                    los.getKoulutusPrerequisite().getUri(),
+                    TarjontaConstants.BASE_EDUCATION_KOODISTO_URI
+            );
+            for (Code subCode : subCodes) {
+                baseEducations.add(subCode.getValue());
+            }
+        }
         ao.setRequiredBaseEducations(baseEducations);
 
         los.getPrerequisites().addAll(koodistoService.searchMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
