@@ -246,7 +246,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
 
-        boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
+        boolean existsValidHakukohde = fetchAndCreateHakukohdeData(los, checkStatus);
 
         // If we are not fetching for preview, an exception is thrown if no valid application options exist
         if (checkStatus && !existsValidHakukohde) {
@@ -418,7 +418,7 @@ public class LOSObjectCreator extends ObjectCreator {
     HashMap<String, ApplicationOption> cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
     HashSet<String> invalidOids = new HashSet<String>();
 
-    private boolean fetchHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
+    private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
 
         ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = tarjontaRawService.findHakukohdesByEducationOid(los.getId());
         if (result == null
@@ -954,8 +954,19 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
 
+        Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
+        if (requirementsCode != null) {
+            los.getPrerequisites().add(requirementsCode);
+        }
+        los.setKoulutusPrerequisite(requirementsCode);
+        List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
+        los.setFacetPrerequisites(facetPrequisites);
+        los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
+        los.setLinkToCurriculum(koulutus.getLinkkiOpetussuunnitelmaan());
+        los.setOsaamisalaton(koulutus.getKoulutusohjelma().getUri() == null);
+
         // THIS ACTUALLY CREATES THE HAKUKOHDE!!!
-        boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
+        boolean existsValidHakukohde = fetchAndCreateHakukohdeData(los, checkStatus);
 
         // If we are not fetching for preview, an exception is thrown if no valid application options exist
         if (checkStatus && !existsValidHakukohde) {
@@ -970,16 +981,6 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setType(aoType);
             }
         }
-        Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
-        if (requirementsCode != null) {
-            los.getPrerequisites().add(requirementsCode);
-        }
-        los.setKoulutusPrerequisite(requirementsCode);
-        List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
-        los.setFacetPrerequisites(facetPrequisites);
-        los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
-        los.setLinkToCurriculum(koulutus.getLinkkiOpetussuunnitelmaan());
-        los.setOsaamisalaton(koulutus.getKoulutusohjelma().getUri() == null);
     }
 
     public AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
@@ -1180,7 +1181,7 @@ public class LOSObjectCreator extends ObjectCreator {
             throw new KoodistoException("Problem reading jarjestava organisaatio: " + ex.getMessage());
         }
 
-        boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
+        boolean existsValidHakukohde = fetchAndCreateHakukohdeData(los, checkStatus);
 
         // If we are not fetching for preview, an exception is thrown if no valid application options exist
         if (checkStatus && !existsValidHakukohde) {
