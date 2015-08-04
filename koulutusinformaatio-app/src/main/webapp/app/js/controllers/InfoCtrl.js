@@ -295,8 +295,8 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
         // vocational education needs prerequisite checking...
         var addVocationalEdToBasket = function(aoId) {
             var basketType = ApplicationBasketService.getType();
-            if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
-                ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
+            if (!basketType || $scope.prerequisite == basketType) {
+                ApplicationBasketService.addItem(aoId, $scope.prerequisite);
             } else {
                 $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
                 $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#!/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";

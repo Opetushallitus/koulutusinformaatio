@@ -1,11 +1,24 @@
-<td colspan="2">
+<td>
     <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
-    <a href="#!/koulutus/{{item.parent.id}}">{{item.name}}</a>, 
+    <a href="#!/koulutus/{{item.parent.id}}">{{item.name}}</a>
+    <div><em data-ng-if="!item.kotitalous" data-ki-i18n="{{item.educationTypeUri}}"></em></div>
     <div class="inside">
-        <div>
+        <span data-ng-if="!item.kotitalous && item.qualification">{{item.qualification}}</span>
+        <div data-ng-if="!item.prerequisite">
             <span data-ki-i18n="appbasket:no-prerequisite-requirement"></span>
         </div>
+        <div data-ng-if="item.prerequisite">
+            <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span> <span>{{item.prerequisite.description}}</span>
+        </div>
     </div>
+</td>
+
+<td data-ng-if="item.vocational">
+    <h4>{{item.name}}</h4>
+    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
+    <ul data-ng-if="!item.pseudo" class="inside">
+        <li data-ng-repeat="child in item.children"><a href="#!/koulutus/{{child.id}}?prerequisite={{item.prerequisite.value}}">{{child.name}}</a></li>
+    </ul>
 </td>
 
 <td>

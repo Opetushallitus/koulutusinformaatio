@@ -870,6 +870,27 @@ public class TarjontaServiceImpl implements TarjontaService {
                     addProcessedOid(los.getId());
                 }
             }
+
+            for (ApplicationOption ao : tutkinto.getApplicationOptions()) {
+                ao.setChildLOIRefs(new ArrayList<ChildLOIRef>());
+                for (KoulutusLOS los : tutkinto.getChildEducations()) {
+                    if (!ao.getKomotoOids().contains(los.getId())) {
+                        continue;
+                    }
+
+                    ChildLOIRef childLoi = new ChildLOIRef();
+                    childLoi.setId(los.getId());
+                    childLoi.setPrerequisite(los.getKoulutusPrerequisite());
+                    childLoi.setName(los.getName());
+                    if (los.getQualifications() != null && !los.getQualifications().isEmpty()) {
+                        childLoi.setQualification(los.getQualifications().iterator().next());
+                    }
+                    childLoi.setQualifications(los.getQualifications());
+
+                    ao.getChildLOIRefs().add(childLoi);
+                }
+            }
+
             addProcessedTutkinto(tutkinto);
             return losses;
         } catch (KoodistoException e) {

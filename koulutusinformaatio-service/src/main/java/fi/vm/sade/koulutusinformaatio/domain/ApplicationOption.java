@@ -89,6 +89,7 @@ public class ApplicationOption {
     private I18nText startingQuotaDescription;
     // Tällä AOlla ei ole osaamisalaa
     private boolean isPseudo;
+    private List<String> komotoOids = new ArrayList<String>();
 
 
     public String getId() {
@@ -521,4 +522,13 @@ public class ApplicationOption {
     public void setApplicationOffice(ApplicationOffice applicationOffice) {
         this.applicationOffice = applicationOffice;
     }
+
+    public List<String> getKomotoOids() {
+        return komotoOids;
+    }
+
+    public void setKomotoOids(List<String> komotoOids) {
+        this.komotoOids = komotoOids;
+    }
+
 }

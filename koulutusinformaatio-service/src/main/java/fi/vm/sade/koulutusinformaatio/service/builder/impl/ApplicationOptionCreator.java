@@ -182,6 +182,12 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setAdditionalInfo(getI18nText(hakukohde.getLisatiedot()));
         
         ao.setApplicationOffice(getApplicationOffice(hakukohde.getYhteystiedot()));
+
+        ao.getKomotoOids().addAll(hakukohde.getHakukohdeKoulutusOids());
+
+        if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
+            ao.setEducationTypeUri(SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
+        }
         
         return ao;
     }
