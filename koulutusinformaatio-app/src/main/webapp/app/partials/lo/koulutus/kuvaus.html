@@ -31,6 +31,10 @@
 					data-ng-repeat="fot in lo.formOfTeaching"> <strong>{{fot}}</strong><span
 						data-ng-show="!$last">,</span>
 				</span></li>
+				<li data-ng-if="lo.koulutusPrerequisite">
+					<span data-ki-i18n="prerequisite-education" data-show-colon="true"></span>
+					<strong>{{lo.koulutusPrerequisite.name}}</strong>
+				</li>
 			</ul>
 		</div>
 	</div>
