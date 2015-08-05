@@ -14,4 +14,7 @@
     <li data-ng-repeat="losref in ao.higherEdLOSRefs">
         <a href="#!/korkeakoulu/{{losref.id}}">{{losref.name}}</a>
     </li>
+    <li data-ng-repeat="child in ao.childRefs" data-ng-if="child.name && child.qualification">
+        <a href="#!/koulutus/{{child.id}}?prerequisite={{child.prerequisite.value}}">{{child.name}}</a>
+    </li>
 </ul>

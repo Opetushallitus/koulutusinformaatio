@@ -12,6 +12,6 @@
 </ul>
 <ul data-ng-if="!lo.containsPseudoChildLOS" class="inside">
     <li data-ng-repeat="child in ao.childRefs">
-        <a data-ng-if="child.name && child.qualification" href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{prerequisite.value}}">{{child.name}}</a>
+        <a data-ng-if="child.name && child.qualification" href="#!/koulutus/{{child.id}}?prerequisite={{prerequisite}}">{{child.name}}</a>
     </li>
 </ul>
