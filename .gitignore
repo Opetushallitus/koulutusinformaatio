@@ -5,3 +5,4 @@ target/
 .project
 .settings/
 *.DS_Store
+koulutusinformaatio-app/src/test_out/
