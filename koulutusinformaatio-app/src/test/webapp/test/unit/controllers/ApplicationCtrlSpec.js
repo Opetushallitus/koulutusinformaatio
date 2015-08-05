@@ -45,10 +45,12 @@ describe('ApplicationCtrl', function() {
 
     it('should not add vocational education with different prerequisite to basket', function() {
         scope.loType = lotypes.KOULUTUSOHJELMA;
+        scope.prerequisite = 'PK';
         scope.selectedLOI = createLOIWithPrerequisite('PK')
         scope.addToBasket('ko_ao_pk_id');
         expect(scope.isItemAddedToBasket('ko_ao_pk_id')).toBeTruthy();
 
+        scope.prerequisite = 'YO';
         scope.selectedLOI = createLOIWithPrerequisite('YO');
         scope.addToBasket('ko_ao_yo_id');
         expect(scope.isItemAddedToBasket('ko_ao_yo_id')).toBeFalsy();
