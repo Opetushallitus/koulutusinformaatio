@@ -57,7 +57,8 @@ public class TutkintoLOSEntity {
 
     @Reference
     private List<KoulutusLOSEntity> childEducations = new ArrayList<KoulutusLOSEntity>();
-
+    @Reference
+    private List<ApplicationOptionEntity> applicationOptions;
     @Embedded
     private I18nTextEntity educationDomain;
     @Embedded
@@ -232,6 +233,15 @@ public class TutkintoLOSEntity {
 
     public void setEducationCode(CodeEntity educationCode) {
         this.educationCode = educationCode;
+    }
+
+    public List<ApplicationOptionEntity> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(
+            List<ApplicationOptionEntity> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
 }
