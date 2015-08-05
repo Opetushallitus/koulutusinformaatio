@@ -47,6 +47,7 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
     private Set<ChildLOIRefDTO> children = new HashSet<ChildLOIRefDTO>();
     private Set<ApplicationOptionDTO> applicationOptions = new HashSet<ApplicationOptionDTO>();
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
+    private String koulutuskoodi;
 
     private String translationLanguage;
 
@@ -257,6 +258,14 @@ public class ParentLearningOpportunitySpecificationDTO implements Articled {
 
     public void setTeachingLanguages(List<CodeDTO> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public String getKoulutuskoodi() {
+        return koulutuskoodi;
+    }
+
+    public void setKoulutuskoodi(String koulutuskoodi) {
+        this.koulutuskoodi = koulutuskoodi;
     }
 
 }

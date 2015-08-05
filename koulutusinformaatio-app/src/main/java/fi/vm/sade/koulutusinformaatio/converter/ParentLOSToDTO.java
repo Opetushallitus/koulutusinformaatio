@@ -56,6 +56,9 @@ public final class ParentLOSToDTO {
         ArrayList<Code> languages = new ArrayList<Code>();
         languages.addAll(tutkintoLOS.getTeachingLanguages());
         parent.setTeachingLanguages(CodeToDTO.convertAll(languages, lang));
+        if (tutkintoLOS.getEducationCode() != null) {
+            parent.setKoulutuskoodi(tutkintoLOS.getEducationCode().getUri());
+        }
 
         try {
             KoulutusLOS latestLoi = tutkintoLOS.getLatestLoi();

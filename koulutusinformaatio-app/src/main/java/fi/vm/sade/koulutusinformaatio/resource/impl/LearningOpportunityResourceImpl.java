@@ -18,8 +18,10 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Strings;
 import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -97,9 +99,13 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
             dto = learningOpportunityService.getTutkintoLearningOpportunity(id, lang, uiLang, prerequisite);
 
+            setArticles(uiLang, dto, dto.getKoulutuskoodi(), SolrUtil.SolrConstants.ED_TYPE_AMMATILLINEN);
+
             return dto;
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
+        } catch (SearchException ex) {
+            throw KIExceptionHandler.resolveException(ex);
         }
     }
 
@@ -143,17 +149,26 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     public StandaloneLOSDTO getKoulutusLearningOpportunity(
             String id, String lang, String uiLang) {
         try {
+
+            KoulutusLOSDTO dto;
+
             if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                return learningOpportunityService.getKoulutusLearningOpportunity(id);
+                dto = learningOpportunityService.getKoulutusLearningOpportunity(id);
             }
             else if (Strings.isNullOrEmpty(lang)) {
-                return learningOpportunityService.getKoulutusLearningOpportunity(id, uiLang.toLowerCase());
+                dto = learningOpportunityService.getKoulutusLearningOpportunity(id, uiLang.toLowerCase());
             }
             else {
-                return learningOpportunityService.getKoulutusLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
+                dto = learningOpportunityService.getKoulutusLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
+
+            setArticles(uiLang, dto, dto.getKoulutuskoodi(), dto.getEducationType());
+
+            return dto;
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
+        } catch (SearchException ex) {
+            throw KIExceptionHandler.resolveException(ex);
         }
     }
 

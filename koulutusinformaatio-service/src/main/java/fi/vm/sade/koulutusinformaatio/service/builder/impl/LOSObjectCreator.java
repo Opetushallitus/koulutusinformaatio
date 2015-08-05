@@ -1247,6 +1247,7 @@ public class LOSObjectCreator extends ObjectCreator {
         tutkintoLOS.setStydyDomain(getI18nTextEnriched(komo.getOpintoala().getMeta()));
         tutkintoLOS.setTopics(getTopics(komo.getOpintoala().getUri()));
         tutkintoLOS.setThemes(getThemes(tutkintoLOS));
+        tutkintoLOS.setEducationCode(createCode(komo.getKoulutuskoodi()));
 
         tutkintoLOS.setKotitalousopetus(komo.getKoulutuskoodi() != null
                 && komo.getKoulutuskoodi().getArvo().contains(TarjontaConstants.KOTITALOUSKOODI));

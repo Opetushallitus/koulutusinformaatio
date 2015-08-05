@@ -43,6 +43,8 @@ public class TutkintoLOS extends LOS {
     private String creditValue; // laajuus arvo, 120
     private I18nText creditUnit; // laajuus yksikkö op
 
+    private Code educationCode;
+
     private List<ChildLOS> children;
 
     private List<KoulutusLOS> childEducations = new ArrayList<KoulutusLOS>();
@@ -250,6 +252,14 @@ public class TutkintoLOS extends LOS {
 
     public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public Code getEducationCode() {
+        return educationCode;
+    }
+
+    public void setEducationCode(Code educationCode) {
+        this.educationCode = educationCode;
     }
 
 }

@@ -65,6 +65,9 @@ public class TutkintoLOSEntity {
 
     @Embedded
     private List<CodeEntity> teachingLanguages;
+
+    @Embedded
+    private CodeEntity educationCode;
     
     private boolean kotitalousopetus;
 
@@ -221,6 +224,14 @@ public class TutkintoLOSEntity {
 
     public void setKotitalousopetus(boolean kotitalousopetus) {
         this.kotitalousopetus = kotitalousopetus;
+    }
+
+    public CodeEntity getEducationCode() {
+        return educationCode;
+    }
+
+    public void setEducationCode(CodeEntity educationCode) {
+        this.educationCode = educationCode;
     }
 
 }
