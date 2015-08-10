@@ -34,6 +34,7 @@ public class DataStatusEntity {
     private Date lastUpdateFinished = new Date();
     private long lastUpdateDuration;
     private String lastUpdateOutcome;
+    private long progressCounter;
 
     public DataStatusEntity() {}
 
@@ -72,5 +73,13 @@ public class DataStatusEntity {
 
     public void setLastUpdateOutcome(String lastUpdateOutcome) {
         this.lastUpdateOutcome = lastUpdateOutcome;
+    }
+
+    public long getProgressCounter() {
+        return progressCounter;
+    }
+
+    public void setProgressCounter(long progressCounter) {
+        this.progressCounter = progressCounter;
     }
 }

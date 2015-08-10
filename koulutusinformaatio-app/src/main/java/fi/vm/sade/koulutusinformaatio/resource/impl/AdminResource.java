@@ -176,6 +176,16 @@ public class AdminResource {
         if (succStatus != null) {
             dto.setLastSuccessfulFinished(succStatus.getLastUpdateFinished());
             dto.setLastSuccessfulFinishedStr(succStatus.getLastUpdateFinished().toString());
+            long successmillis = status.getLastUpdateDuration();
+            dto.setLastSuccessfulDurationStr(String.format("%d hours, %d minutes", successmillis / 3600000, successmillis / 60000 % 60));
+            if (updateService.isRunning()) {
+                String setFullUpdateProgressStr = succStatus.getProgressCounter() > 0 ? updateService.getProgressCounter() * 100
+                        / succStatus.getProgressCounter() + " %"
+                        : "No prior data stored";
+                dto.setFullUpdateProgressStr(setFullUpdateProgressStr);
+            } else {
+                dto.setFullUpdateProgressStr("Full update not running");
+            }
         }
         
         

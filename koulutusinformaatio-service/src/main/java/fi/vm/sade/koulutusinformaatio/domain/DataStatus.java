@@ -26,14 +26,19 @@ public class DataStatus {
     private Date lastUpdateFinished;
     private long lastUpdateDuration;
     private String lastUpdateOutcome;
+    private long progressCounter;
 
-    public DataStatus() {
-    }
-
-    public DataStatus(Date lastUpdateFinished, long lastUpdateDuration, String lastUpdateOutcome) {
+    public DataStatus() {}
+    
+    public DataStatus(Date lastUpdateFinished, long lastUpdateDuration, String lastUpdateOutcome, long progressCounter) {
         this.lastUpdateFinished = lastUpdateFinished;
         this.lastUpdateDuration = lastUpdateDuration;
         this.lastUpdateOutcome = lastUpdateOutcome;
+        this.progressCounter = progressCounter;
+    }
+
+    public DataStatus(Date lastUpdateFinished, long lastUpdateDuration, String lastUpdateOutcome) {
+        this(lastUpdateFinished, lastUpdateDuration, lastUpdateOutcome, 0);
     }
 
     public Date getLastUpdateFinished() {
@@ -58,5 +63,13 @@ public class DataStatus {
 
     public void setLastUpdateOutcome(String lastUpdateOutcome) {
         this.lastUpdateOutcome = lastUpdateOutcome;
+    }
+
+    public long getProgressCounter() {
+        return progressCounter;
+    }
+
+    public void setProgressCounter(long progressCounter) {
+        this.progressCounter = progressCounter;
     }
 }

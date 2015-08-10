@@ -15,13 +15,12 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.*;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -30,11 +29,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.ArticleService;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.LocationService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 
 
 
@@ -58,6 +76,7 @@ public class UpdateServiceImpl implements UpdateService {
     private boolean running = false;
     private long runningSince = 0;
     private LocationService locationService;
+    private long progressCounter;
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
@@ -80,6 +99,7 @@ public class UpdateServiceImpl implements UpdateService {
         HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
+        progressCounter = 0;
 
         try {
 
@@ -100,6 +120,7 @@ public class UpdateServiceImpl implements UpdateService {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(los);
                 }
+                progressCounter++;
             }
             LOG.info("Lukio educations saved.");
 
@@ -123,6 +144,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(tutkintolos);
                     }
                 }
+                progressCounter++;
             }
             LOG.info("Vocational educations saved.");
             tarjontaService.clearProcessedLists();
@@ -136,6 +158,7 @@ public class UpdateServiceImpl implements UpdateService {
 
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
+                progressCounter++;
             }
             LOG.info("Higher educations saved.");
 
@@ -148,6 +171,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult education: {}", curLOS.getId());
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
+                progressCounter++;
             }
             LOG.info("Adult upper secondary and base educations saved.");
 
@@ -158,6 +182,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult vocational los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
+                progressCounter++;
             }
             LOG.info("Adult vocational educations saved.");
 
@@ -168,6 +193,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult valmistava los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
+                progressCounter++;
             }
             LOG.info("Valmistava educations saved.");
 
@@ -192,11 +218,13 @@ public class UpdateServiceImpl implements UpdateService {
             for (CalendarApplicationSystem curAs : applicationSystems) {
                 LOG.debug("Indexing application system: {}", curAs.getId());
                 this.indexerService.indexASToSolr(curAs, loUpdateSolr);
+                progressCounter++;
             }
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.info("Application systems indexed");
 
             List<Article> articles = this.articleService.fetchArticles();
+            progressCounter += articles.size();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.info("Articles indexed to solr");
@@ -205,7 +233,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.debug("Transaction completed");
-            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS", progressCounter));
 
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
@@ -217,6 +245,10 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = 0;
         }
 
+    }
+
+    public long getProgressCounter() {
+        return progressCounter;
     }
 
     /*
@@ -267,6 +299,7 @@ public class UpdateServiceImpl implements UpdateService {
                 }
                 
             }
+            progressCounter++;
         }
     }
 

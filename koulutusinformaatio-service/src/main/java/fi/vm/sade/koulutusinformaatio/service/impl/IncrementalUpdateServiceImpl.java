@@ -172,7 +172,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug("Committing to solr");
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             LOG.debug("Saving successful status");
-            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS-INCREMENTAL"));
             LOG.info(String.format("Incremental indexing finished. Indexed %s komos, %s hakus, %s hakukohdes and %s koulutus", komoCount, hakuCount,
                     hakukohdeCount, koulutusCount));
 

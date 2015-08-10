@@ -35,4 +35,8 @@ public interface UpdateService extends RunningService {
      */
     public void updateArticles() throws Exception;
     
+    /**
+     * Returns long which represents progress of full indexing
+     */
+    public long getProgressCounter();
 }

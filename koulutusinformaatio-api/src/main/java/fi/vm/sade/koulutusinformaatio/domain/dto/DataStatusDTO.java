@@ -39,6 +39,8 @@ public class DataStatusDTO {
     private String lastTextVersionUpdateFinished;
     private Date lastSuccessfulFinished;
     private String lastSuccessfulFinishedStr;
+    private String lastSuccessfulDurationStr;
+    private String fullUpdateProgressStr;
 
     public Date getLastUpdateFinished() {
         return lastUpdateFinished;
@@ -142,5 +144,21 @@ public class DataStatusDTO {
 
     public void setLastSuccessfulFinishedStr(String lastSuccessfulFinishedStr) {
         this.lastSuccessfulFinishedStr = lastSuccessfulFinishedStr;
+    }
+
+    public String getLastSuccessfulDurationStr() {
+        return lastSuccessfulDurationStr;
+    }
+
+    public void setLastSuccessfulDurationStr(String lastSuccessfulDurationStr) {
+        this.lastSuccessfulDurationStr = lastSuccessfulDurationStr;
+    }
+
+    public String getFullUpdateProgressStr() {
+        return fullUpdateProgressStr;
+    }
+
+    public void setFullUpdateProgressStr(String fullUpdateProgressStr) {
+        this.fullUpdateProgressStr = fullUpdateProgressStr;
     }
 }
