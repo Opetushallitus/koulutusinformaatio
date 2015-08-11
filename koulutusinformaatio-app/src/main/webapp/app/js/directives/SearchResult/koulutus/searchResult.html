@@ -5,6 +5,10 @@
             <h2 data-ng-if="lo.educationDegreeCode != 'koulutusasteoph2002_31'" title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
             <h2 data-ng-if="lo.educationDegreeCode == 'koulutusasteoph2002_31'" title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.lopNames[0]}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
 
+            <span data-ng-show="lo.prerequisite">
+                <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
+                <span>{{lo.prerequisite}}</span><br />
+            </span>
             <div data-ng-repeat="lopName in lo.lopNames">
             	<span>{{lopName}}</span><br/>
             </div>

@@ -135,6 +135,9 @@ public class UpdateServiceImpl implements UpdateService {
                     TutkintoLOS tutkintolos = null;
                     for (KoulutusLOS curLOS : losses) {
                         this.educationDataUpdateService.save(curLOS);
+                        if (curLOS.getTutkinto() == null) {
+                            indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                        }
                         if (tutkintolos == null) {
                             tutkintolos = curLOS.getTutkinto();
                         }
