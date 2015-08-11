@@ -75,9 +75,14 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<KoulutusL
 
         if (los.getFacetPrerequisites() != null && !los.getFacetPrerequisites().isEmpty()) {
             for (Code curPrereq : los.getFacetPrerequisites()) {
-                doc.addField(LearningOpportunity.PREREQUISITES, curPrereq.getValue());                
+                doc.addField(LearningOpportunity.PREREQUISITES, curPrereq.getValue());
             }
-            doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, los.getFacetPrerequisites().get(0).getValue());            
+
+            Code prerequisiteCode = los.getKoulutusPrerequisite() == null ? los.getFacetPrerequisites().get(0) : los.getKoulutusPrerequisite();
+            doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                    los.getTeachingLanguages(), prerequisiteCode.getName().getTranslations()
+                    ));
+            doc.setField(LearningOpportunity.PREREQUISITE_CODE, prerequisiteCode.getValue());
         }
 
         if (los.getCreditValue() != null && los.getCreditUnit() != null && los.getCreditUnit().getTranslations() != null
