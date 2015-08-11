@@ -176,7 +176,7 @@ public class AdminResource {
         if (succStatus != null) {
             dto.setLastSuccessfulFinished(succStatus.getLastUpdateFinished());
             dto.setLastSuccessfulFinishedStr(succStatus.getLastUpdateFinished().toString());
-            long successmillis = status.getLastUpdateDuration();
+            long successmillis = succStatus.getLastUpdateDuration();
             dto.setLastSuccessfulDurationStr(String.format("%d hours, %d minutes", successmillis / 3600000, successmillis / 60000 % 60));
             if (updateService.isRunning()) {
                 String setFullUpdateProgressStr = succStatus.getProgressCounter() > 0 ? updateService.getProgressCounter() * 100
