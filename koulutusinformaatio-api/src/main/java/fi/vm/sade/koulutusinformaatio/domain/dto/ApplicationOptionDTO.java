@@ -32,6 +32,7 @@ public class ApplicationOptionDTO {
     private String name;
     private String aoIdentifier;
     private Integer startingQuota;
+    private Integer firstTimerStartingQuota;
     private String startingQuotaDescription;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -105,6 +106,14 @@ public class ApplicationOptionDTO {
 
     public void setStartingQuota(Integer startingQuota) {
         this.startingQuota = startingQuota;
+    }
+
+    public Integer getFirstTimerStartingQuota() {
+        return firstTimerStartingQuota;
+    }
+
+    public void setFirstTimerStartingQuota(Integer firstTimerStartingQuota) {
+        this.firstTimerStartingQuota = firstTimerStartingQuota;
     }
 
     public Integer getLowestAcceptedScore() {

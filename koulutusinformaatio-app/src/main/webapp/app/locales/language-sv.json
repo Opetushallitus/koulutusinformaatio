@@ -79,6 +79,7 @@
     "lowest-acceptable-average": "lägsta godkända medeltal",
     "lowest-acceptable-average-description": "Av läroanstalten fastställd lägsta godkända medeltalsgräns. Sökande med lägre medeltal kan inte bli antagna till utbildningen. Medeltalet för antagning av studerande varierar årligen och kan vara högre.",
     "starting-quota": "Antal nybörjarplatser",
+    "starting-quota-first-timer": "Number of study places for first time applicants",
 
     "goals-of-education": "Mål",
     "selection-of-degree-program": "Val av utbildningsprogram",

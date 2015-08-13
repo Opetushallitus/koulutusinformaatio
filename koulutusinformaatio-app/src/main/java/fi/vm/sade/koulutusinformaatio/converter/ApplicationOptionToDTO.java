@@ -50,6 +50,7 @@ public final class ApplicationOptionToDTO {
                 dto.setStartingQuotaDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getStartingQuotaDescription(), uiLang));
             }
             dto.setStartingQuota(applicationOption.getStartingQuota());
+            dto.setFirstTimerStartingQuota(applicationOption.getFirstTimerStartingQuota());
             dto.setSora(applicationOption.isSora());
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());

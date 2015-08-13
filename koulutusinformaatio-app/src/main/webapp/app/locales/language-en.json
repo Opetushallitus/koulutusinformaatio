@@ -79,6 +79,7 @@
     "lowest-acceptable-average": "Minimum grade point average required for admittance",
     "lowest-acceptable-average-description": "The minimum grade point average is set by the educational institution. Applicants whose grade point average is lower than this will not be admitted to the study programme. The grade point average required for admittance varies from year to year and may be higher.",
     "starting-quota": "Number of study places",
+    "starting-quota-first-timer": "Number of study places for first time applicants",
 
     "goals-of-education": "Study objectives",
     "selection-of-degree-program": "Study programme selection",

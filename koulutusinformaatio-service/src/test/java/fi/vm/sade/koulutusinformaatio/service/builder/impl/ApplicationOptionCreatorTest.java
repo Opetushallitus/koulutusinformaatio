@@ -168,6 +168,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         assertEquals("hakukohdeName", ao.getName().getTranslations().get("fi"));
         assertFalse(ao.isAthleteEducation());
         assertEquals(new Integer(10), ao.getStartingQuota());
+        assertEquals(new Integer(5), ao.getFirstTimerStartingQuota());
         assertEquals(new Integer(5), ao.getLowestAcceptedScore());
         assertEquals(new Double(4), ao.getLowestAcceptedAverage());
         assertEquals(hakukohde.getLiitteidenToimitusPvm(), ao.getAttachmentDeliveryDeadline());
@@ -385,6 +386,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         hakukohde.setOid(hakukohdeOid);
         hakukohde.setHakukohteenNimiUri(hakukohdeNameUri);
         hakukohde.setAloituspaikatLkm(10);
+        hakukohde.setEnsikertalaistenAloituspaikat(5);
         hakukohde.setAlinValintaPistemaara(5);
         hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
         hakukohde.setLiitteidenToimitusPvm(new Date());

@@ -48,6 +48,7 @@ public class ApplicationOptionEntity {
     @Embedded
     private List<HigherEducationLOSRefEntity> higherEdLOSRefs = new ArrayList<HigherEducationLOSRefEntity>();
     private Integer startingQuota;
+    private Integer firstTimerStartingQuota;
     @Embedded
     private I18nTextEntity startingQuotaDescription;
     private Integer lowestAcceptedScore;
@@ -167,6 +168,14 @@ public class ApplicationOptionEntity {
 
     public void setStartingQuota(Integer startingQuota) {
         this.startingQuota = startingQuota;
+    }
+
+    public Integer getFirstTimerStartingQuota() {
+        return firstTimerStartingQuota;
+    }
+
+    public void setFirstTimerStartingQuota(Integer firstTimerStartingQuota) {
+        this.firstTimerStartingQuota = firstTimerStartingQuota;
     }
 
     public Integer getLowestAcceptedScore() {

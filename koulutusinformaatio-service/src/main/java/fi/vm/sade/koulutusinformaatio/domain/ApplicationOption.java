@@ -39,6 +39,7 @@ public class ApplicationOption {
     private ApplicationOffice applicationOffice;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
+    private Integer firstTimerStartingQuota;
     // "alinValintaPistemaara" : 0,
     private Integer lowestAcceptedScore;
     // "alinHyvaksyttavaKeskiarvo" : 0.0,
@@ -154,6 +155,14 @@ public class ApplicationOption {
 
     public void setStartingQuota(Integer startingQuota) {
         this.startingQuota = startingQuota;
+    }
+
+    public Integer getFirstTimerStartingQuota() {
+        return firstTimerStartingQuota;
+    }
+
+    public void setFirstTimerStartingQuota(Integer firstTimerStartingQuota) {
+        this.firstTimerStartingQuota = firstTimerStartingQuota;
     }
 
     public Integer getLowestAcceptedScore() {
