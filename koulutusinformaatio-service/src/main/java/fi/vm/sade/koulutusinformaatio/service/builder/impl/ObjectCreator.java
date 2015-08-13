@@ -16,7 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.base.Strings;
+
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -25,8 +34,6 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
-
-import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -45,7 +52,7 @@ public abstract class ObjectCreator {
         this.koodistoService = koodistoService;
     }
 
-   protected I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
+    protected I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
         if (texts != null && !texts.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();
             Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();
@@ -56,11 +63,23 @@ public abstract class ObjectCreator {
                     translations.put(key.toLowerCase(), entry.getValue());
                 }
             }
-            I18nText i18nText = new I18nText();
-            i18nText.setTranslations(translations);
-            return i18nText;
+            return new I18nText(translations);
         }
         return null;
+    }
+
+    protected I18nText mergeI18nTexts(final I18nText t1, final I18nText t2) throws KoodistoException {
+        if (t1 == null && t2 == null) {
+            return null;
+        }
+        Map<String, String> translations = new HashMap<String, String>();
+        if (t1 != null && t1.getTranslations() != null) {
+            translations.putAll(t1.getTranslations());
+        }
+        if (t2 != null && t2.getTranslations() != null) {
+            translations.putAll(t2.getTranslations());
+        }
+        return new I18nText(translations);
     }
 
     protected I18nText getI18nTextEnriched(NimiV1RDTO rawMaterial) throws KoodistoException {

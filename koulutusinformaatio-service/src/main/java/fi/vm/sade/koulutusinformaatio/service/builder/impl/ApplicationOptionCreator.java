@@ -16,22 +16,39 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -161,24 +178,44 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setApplicationPeriodName(super.getI18nText(aoHakuaika.getNimet()));
         }
 
-        ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohde.getLiitteidenToimitusOsoite()));
+        ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohde.getLiitteidenToimitusOsoite(), null));
 
-        List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
+        HashMap<String, ApplicationOptionAttachment> attachments = new HashMap<String, ApplicationOptionAttachment>();
         if (hakukohde.getHakukohteenLiitteet() != null && !hakukohde.getHakukohteenLiitteet().isEmpty()) {
             for (HakukohdeLiiteV1RDTO liite : hakukohde.getHakukohteenLiitteet()) {
 
-                ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
-                attach.setDueDate(liite.getToimitettavaMennessa());
-                attach.setUsedInApplicationForm(liite.isKaytetaanHakulomakkeella());
-                //attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
-                attach.setType(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()));
-                attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
-                attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite()));
-                attach.setEmailAddr(liite.getSahkoinenToimitusOsoite());
-                attachments.add(attach);
+                if (attachments.containsKey(liite.getOid())) { // merge existing attachments
+                    ApplicationOptionAttachment attach = attachments.get(liite.getOid());
+
+                    attach.setType(mergeI18nTexts(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
+                    attach.setDescreption(mergeI18nTexts(getI18nText(liite.getLiitteenKuvaukset()), attach.getDescreption()));
+
+                    Address a1 = attach.getAddress();
+                    Address a2 = educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri());
+
+                    Address addr = new Address();
+                    addr.setPostalCode(mergeI18nTexts(a1.getPostalCode(), a2.getPostalCode()));
+                    addr.setPostOffice(mergeI18nTexts(a1.getPostOffice(), a2.getPostOffice()));
+                    addr.setSecondForeignAddr(mergeI18nTexts(a1.getSecondForeignAddr(), a2.getSecondForeignAddr()));
+                    addr.setStreetAddress(mergeI18nTexts(a1.getStreetAddress(), a1.getStreetAddress()));
+                    attach.setAddress(addr);
+
+                    attachments.put(liite.getOid(), attach);
+                } else { // create new attachment
+                    ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
+
+                    attach.setDueDate(liite.getToimitettavaMennessa());
+                    attach.setUsedInApplicationForm(liite.isKaytetaanHakulomakkeella());
+                    attach.setType(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()));
+                    attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
+                    attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri()));
+                    attach.setEmailAddr(liite.getSahkoinenToimitusOsoite());
+
+                    attachments.put(liite.getOid(), attach);
+                }
             }
         }
-        ao.setAttachments(attachments);
+        ao.setAttachments(new ArrayList<ApplicationOptionAttachment>(attachments.values()));
         ao.setAdditionalInfo(getI18nText(hakukohde.getLisatiedot()));
         
         ao.setApplicationOffice(getApplicationOffice(hakukohde.getYhteystiedot()));

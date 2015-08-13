@@ -22,10 +22,6 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -36,18 +32,13 @@ import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdditionalProof;
 import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
-import fi.vm.sade.koulutusinformaatio.domain.Exam;
-import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.ScoreLimit;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeLiiteDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeAjankohtaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoePisterajaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeRDTO;
 
@@ -78,56 +69,33 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
     }
 
     @Test
-    public void testCreateVocationalExams() throws KoodistoException {
-        ValintakoeRDTO examDTO = new ValintakoeRDTO();
-        examDTO.setTyyppiUri(examTypeUri);
-        Map<String, String> description = Maps.newHashMap();
-        description.put(getFiUri(), "examdescription");
-        examDTO.setKuvaus(description);
-        ValintakoeAjankohtaRDTO eventDTO = new ValintakoeAjankohtaRDTO();
-        OsoiteRDTO addressDTO = new OsoiteRDTO();
-        addressDTO.setPostinumero(postCodeUri);
-        addressDTO.setPostitoimipaikka("postoffice");
-        addressDTO.setOsoiterivi1("streetaddress");
-        eventDTO.setOsoite(addressDTO);
-        eventDTO.setLisatiedot("eventinfo");
-        Date starts = new Date();
-        Date ends = new Date();
-        eventDTO.setAlkaa(starts);
-        eventDTO.setLoppuu(ends);
-        examDTO.setValintakoeAjankohtas(Lists.newArrayList(eventDTO));
-
-        List<Exam> exams = creator.createVocationalExams(Lists.newArrayList(examDTO));
-        assertNotNull(exams);
-        assertEquals(1, exams.size());
-        Exam exam = exams.get(0);
-        assertNotNull(exam);
-        assertEquals(examType.getTranslations().get(getFi()), exam.getType().getTranslations().get(getFi()));
-        assertEquals("examdescription", exam.getDescription().getTranslations().get(getFi()));
-        assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
-        ExamEvent event  = exam.getExamEvents().get(0);
-        Address address = event.getAddress();
-        assertEquals(postCode, address.getPostalCode().get("fi"));
-        assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
-        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
-        assertEquals("eventinfo", event.getDescription());
-        assertEquals(starts, event.getStart());
-        assertEquals(ends, event.getEnd());
-    }
-
-    @Test
     public void testCreateAddress() throws KoodistoException {
         OsoiteRDTO addressDTO = new OsoiteRDTO();
         addressDTO.setPostinumero(postCodeUri);
         addressDTO.setPostitoimipaikka("postoffice");
         addressDTO.setOsoiterivi1("streetaddress");
         addressDTO.setOsoiterivi2("streetaddress2");
-        Address address = creator.createAddress(addressDTO);
+        Address address = creator.createAddress(addressDTO, "kieli_fi");
         assertNotNull(address);
         assertEquals(postCode, address.getPostalCode().get("fi"));
         assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
         assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("streetaddress2", address.getSecondForeignAddr().getTranslations().get("fi"));
+    }
+
+    @Test
+    public void testCreateAddressSve() throws KoodistoException {
+        OsoiteRDTO addressDTO = new OsoiteRDTO();
+        addressDTO.setPostinumero(postCodeUri);
+        addressDTO.setPostitoimipaikka("postoffice");
+        addressDTO.setOsoiterivi1("streetaddress");
+        addressDTO.setOsoiterivi2("streetaddress2");
+        Address address = creator.createAddress(addressDTO, "kieli_sv");
+        assertNotNull(address);
+        assertEquals(postCode, address.getPostalCode().get("sv"));
+        assertEquals("postoffice", address.getPostOffice().getTranslations().get("sv"));
+        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("sv"));
+        assertEquals("streetaddress2", address.getSecondForeignAddr().getTranslations().get("sv"));
     }
 
     @Test
@@ -174,130 +142,5 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         examDTO.setValintakoePisterajas(Lists.newArrayList(scoreLimitDTO));
         ScoreLimit scoreLimit = creator.resolvePointLimit(examDTO, "Lisapisteet");
         assertNull(scoreLimit);
-    }
-
-    @Test
-    public void testCreateUpperSecondaryExams() throws KoodistoException {
-        ValintakoeRDTO examDTO = new ValintakoeRDTO();
-        examDTO.setTyyppiUri(examTypeUri);
-        Map<String, String> description = Maps.newHashMap();
-        description.put(getFiUri(), "examdescription");
-        examDTO.setKuvaus(description);
-        ValintakoeAjankohtaRDTO eventDTO = new ValintakoeAjankohtaRDTO();
-        OsoiteRDTO addressDTO = new OsoiteRDTO();
-        addressDTO.setPostinumero(postCodeUri);
-        addressDTO.setPostitoimipaikka("postoffice");
-        addressDTO.setOsoiterivi1("streetaddress");
-        eventDTO.setOsoite(addressDTO);
-        eventDTO.setLisatiedot("eventinfo");
-        Date starts = new Date();
-        Date ends = new Date();
-        eventDTO.setAlkaa(starts);
-        eventDTO.setLoppuu(ends);
-        examDTO.setValintakoeAjankohtas(Lists.newArrayList(eventDTO));
-        examDTO.setValintakoePisterajas(new ArrayList<ValintakoePisterajaRDTO>());
-
-        List<Exam> exams = creator.createUpperSecondaryExams(Lists.newArrayList(examDTO));
-        assertNotNull(exams);
-        assertEquals(1, exams.size());
-        Exam exam = exams.get(0);
-        assertNotNull(exam);
-        assertEquals("examdescription", exam.getDescription().getTranslations().get(getFi()));
-        assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
-        ExamEvent event  = exam.getExamEvents().get(0);
-        Address address = event.getAddress();
-        assertEquals(postCode, address.getPostalCode().get("fi"));
-        assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
-        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
-        assertEquals("eventinfo", event.getDescription());
-        assertEquals(starts, event.getStart());
-        assertEquals(ends, event.getEnd());
-    }
-
-
-    @Test
-    public void testCreateUpperSecondaryExamsOnlyDescriptionSet() throws KoodistoException {
-        ValintakoeRDTO eventsNull = new ValintakoeRDTO();
-        eventsNull.setKuvaus(new HashMap<String, String>());
-        ValintakoeRDTO eventEmpty = new ValintakoeRDTO();
-        eventEmpty.setKuvaus(new HashMap<String, String>());
-        eventEmpty.setValintakoeAjankohtas(new ArrayList<ValintakoeAjankohtaRDTO>());
-        List<ValintakoeRDTO> examDTOs = Lists.newArrayList(eventEmpty, eventsNull);
-        List<Exam> exams = creator.createUpperSecondaryExams(examDTOs);
-        assertNotNull(exams);
-        assertEquals(0, exams.size());
-    }
-
-    @Test
-    public void testCreateUpperSecondaryExamsInvalid() throws KoodistoException {
-        ValintakoeRDTO descriptionNull = new ValintakoeRDTO();
-        List<ValintakoeRDTO> examDTOs = Lists.newArrayList(descriptionNull);
-        List<Exam> exams = creator.createUpperSecondaryExams(examDTOs);
-        assertNotNull(exams);
-        assertEquals(0, exams.size());
-    }
-
-    @Test
-    public void testCreateUpperSecondaryExamsNull() throws KoodistoException {
-        List<Exam> exams = creator.createUpperSecondaryExams(null);
-        assertNull(exams);
-    }
-
-    @Test
-    public void testCreateHigherEducationExams() throws KoodistoException {
-        ValintakoeRDTO examDTO = new ValintakoeRDTO();
-        examDTO.setTyyppiUri(examTypeUri);
-        Map<String, String> description = Maps.newHashMap();
-        description.put(getFiUri(), "examdescription");
-        examDTO.setKuvaus(description);
-        ValintakoeAjankohtaRDTO eventDTO = new ValintakoeAjankohtaRDTO();
-        OsoiteRDTO addressDTO = new OsoiteRDTO();
-        addressDTO.setPostinumero(postCodeUri);
-        addressDTO.setPostitoimipaikka("postoffice");
-        addressDTO.setOsoiterivi1("streetaddress");
-        eventDTO.setOsoite(addressDTO);
-        eventDTO.setLisatiedot("eventinfo");
-        Date starts = new Date();
-        Date ends = new Date();
-        eventDTO.setAlkaa(starts);
-        eventDTO.setLoppuu(ends);
-        examDTO.setValintakoeAjankohtas(Lists.newArrayList(eventDTO));
-
-        List<Exam> exams = creator.createVocationalExams(Lists.newArrayList(examDTO));
-        assertNotNull(exams);
-        assertEquals(1, exams.size());
-        Exam exam = exams.get(0);
-        assertNotNull(exam);
-        assertEquals(examType.getTranslations().get(getFi()), exam.getType().getTranslations().get(getFi()));
-        assertEquals("examdescription", exam.getDescription().getTranslations().get(getFi()));
-        assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
-        ExamEvent event  = exam.getExamEvents().get(0);
-        Address address = event.getAddress();
-        assertEquals(postCode, address.getPostalCode().get("fi"));
-        assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
-        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
-        assertEquals("eventinfo", event.getDescription());
-        assertEquals(starts, event.getStart());
-        assertEquals(ends, event.getEnd());
-    }
-
-    @Test
-    public void testCreateApplicationOptionAttachments() throws KoodistoException {
-        HakukohdeLiiteDTO attachmentDTO = new HakukohdeLiiteDTO();
-        Date due = new Date();
-        attachmentDTO.setErapaiva(due);
-        attachmentDTO.setLiitteenTyyppiUri(attachmentTypeUri);
-        Map<String, String> descritpionMap = Maps.newHashMap();
-        descritpionMap.put(getFiUri(), "description");
-        attachmentDTO.setKuvaus(descritpionMap);
-
-        List<ApplicationOptionAttachment> attachments = creator.createApplicationOptionAttachments(Lists.newArrayList(attachmentDTO));
-        assertNotNull(attachments);
-        assertEquals(1, attachments.size());
-        ApplicationOptionAttachment attachment = attachments.get(0);
-        assertNotNull(attachment);
-        assertEquals(due, attachment.getDueDate());
-        assertEquals(attachmentTypeFi, attachment.getType().getTranslations().get(getFi()));
-        assertEquals("description", attachment.getDescreption().getTranslations().get(getFi()));
     }
 }

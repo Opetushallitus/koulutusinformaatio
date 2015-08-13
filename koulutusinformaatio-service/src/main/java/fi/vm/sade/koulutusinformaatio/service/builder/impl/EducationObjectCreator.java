@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdditionalProof;
 import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Exam;
 import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
@@ -39,7 +38,6 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeLiiteDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeAjankohtaRDTO;
@@ -62,65 +60,6 @@ public class EducationObjectCreator extends ObjectCreator {
         this.organisaatioRawService = organisaatioRawService;
     }
 
-    public List<Exam> createVocationalExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
-        if (valintakoes != null) {
-            List<Exam> exams = Lists.newArrayList();
-            for (ValintakoeRDTO valintakoe : valintakoes) {
-                Exam exam = new Exam();
-                exam.setType(koodistoService.searchFirstName(valintakoe.getTyyppiUri()));
-                exam.setDescription(getI18nText(valintakoe.getKuvaus()));
-                List<ExamEvent> examEvents = Lists.newArrayList();
-
-                for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
-                    ExamEvent examEvent = new ExamEvent();
-                    examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
-                    examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
-                    examEvent.setStart(valintakoeAjankohta.getAlkaa());
-                    examEvent.setEnd(valintakoeAjankohta.getLoppuu());
-                    examEvent.setTimeIncluded(valintakoeAjankohta.isKellonaikaKaytossa());
-                    examEvents.add(examEvent);
-                }
-                exam.setExamEvents(examEvents);
-                exams.add(exam);
-            }
-            return exams;
-        } else {
-            return null;
-        }
-    }
-
-    public List<Exam> createUpperSecondaryExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
-        if (valintakoes != null) {
-            List<Exam> exams = Lists.newArrayList();
-            for (ValintakoeRDTO valintakoe : valintakoes) {
-                if (valintakoe.getKuvaus() != null && !valintakoe.getKuvaus().isEmpty()) {
-                    Exam exam = new Exam();
-                    exam.setDescription(getI18nText(valintakoe.getKuvaus()));
-                    List<ExamEvent> examEvents = Lists.newArrayList();
-
-                    if(valintakoe.getValintakoeAjankohtas() != null){
-                        for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
-                            ExamEvent examEvent = new ExamEvent();
-                            examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
-                            examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
-                            examEvent.setStart(valintakoeAjankohta.getAlkaa());
-                            examEvent.setEnd(valintakoeAjankohta.getLoppuu());
-                            examEvent.setTimeIncluded(valintakoeAjankohta.isKellonaikaKaytossa());
-                            examEvents.add(examEvent);
-                        }
-                    }
-                    exam.setExamEvents(examEvents);
-                    exam.setScoreLimit(resolvePointLimit(valintakoe, "Paasykoe"));
-                    exams.add(exam);
-                }
-            }
-
-            return exams;
-        }
-        else {
-            return null;
-        }
-    }
 
     public AdditionalProof createAdditionalProof(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
         if (valintakoes != null) {
@@ -147,8 +86,14 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
 
-    public Address createAddress(OsoiteRDTO osoite) throws KoodistoException {
+    public Address createAddress(OsoiteRDTO osoite, String kieliUri) throws KoodistoException {
         if (osoite != null) {
+            String lang;
+            if (kieliUri != null && kieliUri.contains("kieli_")) {
+                lang = kieliUri.substring(kieliUri.length() - 2);
+            } else {
+                lang = "fi";
+            }
             Address attachmentDeliveryAddress = new Address();
 
             Map<String,String> streetAddrTransls = new HashMap<String,String>();
@@ -157,21 +102,21 @@ public class EducationObjectCreator extends ObjectCreator {
             Map<String,String> postalCodeTransls = new HashMap<String,String>();
 
             if (osoite.getOsoiterivi1() != null) {
-                streetAddrTransls.put("fi", osoite.getOsoiterivi1());
+                streetAddrTransls.put(lang, osoite.getOsoiterivi1());
                 attachmentDeliveryAddress.setStreetAddress(new I18nText(streetAddrTransls));
             }
             if (osoite.getOsoiterivi2() != null) {
-                streetAddrTransls2.put("fi", osoite.getOsoiterivi2());
+                streetAddrTransls2.put(lang, osoite.getOsoiterivi2());
                 attachmentDeliveryAddress.setSecondForeignAddr(new I18nText(streetAddrTransls2));
             }
             if (osoite.getPostitoimipaikka() != null) {
-                postOfficeTransls.put("fi", osoite.getPostitoimipaikka());
+                postOfficeTransls.put(lang, osoite.getPostitoimipaikka());
                 attachmentDeliveryAddress.setPostOffice(new I18nText(postOfficeTransls));
             }
             if (osoite.getPostinumero() != null) {
                 String postalCode = koodistoService.searchFirstCodeValue(osoite.getPostinumero());
                 if (postalCode != null) {
-                    postalCodeTransls.put("fi", postalCode);
+                    postalCodeTransls.put(lang, postalCode);
                     attachmentDeliveryAddress.setPostalCode(new I18nText(postalCodeTransls));
                 }
             }
@@ -204,7 +149,7 @@ public class EducationObjectCreator extends ObjectCreator {
 
                         for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
                             ExamEvent examEvent = new ExamEvent();
-                            examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
+                            examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite(), valintakoe.getKieliUri()));
                             examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
                             examEvent.setStart(valintakoeAjankohta.getAlkaa());
                             examEvent.setEnd(valintakoeAjankohta.getLoppuu());
@@ -219,24 +164,6 @@ public class EducationObjectCreator extends ObjectCreator {
             return exams;
         }
         return null;
-    }
-
-    public List<ApplicationOptionAttachment> createApplicationOptionAttachments(List<HakukohdeLiiteDTO> hakukohdeLiiteDTOs) throws KoodistoException {
-        if (hakukohdeLiiteDTOs != null) {
-            List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
-            for (HakukohdeLiiteDTO liite : hakukohdeLiiteDTOs) {
-                ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
-                attach.setDueDate(liite.getErapaiva());
-                attach.setType(koodistoService.searchFirstName(liite.getLiitteenTyyppiUri()));
-                attach.setDescreption(getI18nText(liite.getKuvaus()));
-                attach.setAddress(createAddress(liite.getToimitusosoite()));
-                attach.setEmailAddr(liite.getSahkoinenToimitusosoite());
-                attachments.add(attach);
-            }
-            return attachments;
-        } else {
-            return null;
-        }
     }
 
     private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {

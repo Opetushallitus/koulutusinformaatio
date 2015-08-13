@@ -16,9 +16,37 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -31,17 +59,9 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.RyhmaliitosV1RDTO;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.*;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
@@ -180,6 +200,38 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     }
 
     @Test
+    public void testCreateV1EducationApplicationOptionWithAttachment() throws Exception {
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        
+        ObjectMapper mapper = new ObjectMapper();
+        HakukohdeLiiteV1RDTO liite1 = mapper.readValue(
+                new File("src/test/java/fi/vm/sade/koulutusinformaatio/service/builder/impl/HakukohdeV1RDTOLiite1.json"), HakukohdeLiiteV1RDTO.class);
+        HakukohdeLiiteV1RDTO liite2 = mapper.readValue(
+                new File("src/test/java/fi/vm/sade/koulutusinformaatio/service/builder/impl/HakukohdeV1RDTOLiite2.json"), HakukohdeLiiteV1RDTO.class);
+        hakukohde.getHakukohteenLiitteet().add(liite1);
+        hakukohde.getHakukohteenLiitteet().add(liite2);
+
+        KoulutusLOS los = new KoulutusLOS();
+        los.setProvider(new Provider());
+        Code educationCode = new Code();
+        educationCode.setUri(educationCodeUri);
+        los.setEducationCode(educationCode);
+        Code fi = new Code();
+        fi.setValue("fi");
+        los.setTeachingLanguages(Arrays.asList(fi));
+
+        HakuV1RDTO haku = new HakuV1RDTO();
+        haku.setOid("4.3.2.1");
+        haku.setHakutapaUri("dummyhaku");
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(los, hakukohde, haku);
+        assertNotNull(ao);
+
+        assertEquals(1, ao.getAttachments().size());
+        assertEquals(2, ao.getAttachments().get(0).getDescreption().getTranslations().size());
+    }
+
+    @Test
     public void isVisibleWhenHakuRunning() throws Exception {
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
         KoulutusLOS los = getKoulutusLOS();
@@ -264,6 +316,37 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
         assertFalse(ao.showInOpintopolku());
     }
+    
+    @Test
+    public void testMergeI18nTexts() throws Exception {
+        I18nText t1 = new I18nText();
+        t1.setTranslations(new HashMap<String, String>());
+        t1.getTranslations().put("fi", "fiValue");
+        I18nText t2 = new I18nText();
+        t2.setTranslations(new HashMap<String, String>());
+        t2.getTranslations().put("sv", "svValue");
+
+        I18nText result = creator.mergeI18nTexts(t1, t2);
+        assertNotNull(result);
+        assertEquals("fiValue", result.getTranslations().get("fi"));
+        assertEquals("svValue", result.getTranslations().get("sv"));
+    }
+
+    @Test
+    public void testMergeI18nTextsNullTranslation() throws Exception {
+        I18nText t1 = new I18nText();
+        t1.setTranslations(new HashMap<String, String>());
+        t1.getTranslations().put("fi", "fiValue");
+        I18nText t2 = null;
+
+        I18nText result = creator.mergeI18nTexts(t1, t2);
+        assertNotNull(result);
+        assertEquals("fiValue", result.getTranslations().get("fi"));
+        assertNull(result.getTranslations().get("sv"));
+
+        I18nText result2 = creator.mergeI18nTexts(null, null);
+        assertNull(result2);
+    }
 
     private Date getRelativeDateFromNow(int months) {
         Calendar calendar = Calendar.getInstance();
@@ -340,5 +423,4 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
         return hakukohde;
     }
-
 }

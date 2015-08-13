@@ -35,10 +35,13 @@ public abstract class KoodistoAwareTest {
     protected KoodistoService koodistoService;
 
     private static final String FI_URI = "fiUri";
+    private static final String FI_KOODIURI = "kieli_fi";
     private static final String FI = "fi";
     private static final String SV_URI = "svUri";
+    private static final String SV_KOODIURI = "kieli_sv";
     private static final String SV = "sv";
     private static final String EN_URI = "enUri";
+    private static final String EN_KOODIURI = "kieli_en";
     private static final String EN = "en";
     @Before
     public void setupKoodisto() throws KoodistoException {
@@ -46,6 +49,9 @@ public abstract class KoodistoAwareTest {
         when(koodistoService.searchFirstCodeValue(FI_URI)).thenReturn(FI);
         when(koodistoService.searchFirstCodeValue(SV_URI)).thenReturn(SV);
         when(koodistoService.searchFirstCodeValue(EN_URI)).thenReturn(EN);
+        when(koodistoService.searchFirstCodeValue(FI_KOODIURI)).thenReturn(FI);
+        when(koodistoService.searchFirstCodeValue(SV_KOODIURI)).thenReturn(SV);
+        when(koodistoService.searchFirstCodeValue(EN_KOODIURI)).thenReturn(EN);
 
     }
 

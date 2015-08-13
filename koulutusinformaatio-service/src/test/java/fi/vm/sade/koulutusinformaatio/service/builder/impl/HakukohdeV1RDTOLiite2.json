@@ -1,0 +1,21 @@
+{
+    "oid": "2351787",
+    "version": 0,
+    "kieliUri": "kieli_sv",
+    "kieliNimi": "ruotsi",
+    "liitteenNimi": "Yrkesinriktad grundexamen",
+    "jarjestys": 1,
+    "kaytetaanHakulomakkeella": false,
+    "liitteenKuvaukset": {
+        "kieli_sv": "<p><span lang=\"SV\">Sökande som inte har studentexamen, men har avlagt en yrkesinriktad grundexamen som omfattar minst tre år eller motsvarande tidigare studier, sådan yrkesinriktad grundexamen, yrkesexamen, specialyrkesexamen eller motsvarande tidigare examen som avses i lagen om yrkesinriktad vuxenutbildning (631/1998) ska skicka bestyrkta betygskopior till Aalto universitets ansökningsservice.</span></p> <p><span lang=\"SV\">Sökande som avlägger examen våren 2015, senast 30.5.2015, bör bifoga intyg utfärdat av skolan över att sista studieterminen för examen pågår. Intyget skickas till Aalto universitets ansökningsservice. Bestyrkt kopia av det slutliga examensbetyget ska skickas till det universitet där man har fått en studieplats.</span></p>"
+    },
+    "toimitettavaMennessa": 1461412829288,
+    "liitteenToimitusOsoite": {
+        "version": 0,
+        "osoiterivi1": "PB 11110",
+        "postinumero": "posti_00076",
+        "postinumeroArvo": "00076",
+        "postitoimipaikka": "AALTO"
+    },
+    "sahkoinenToimitusOsoite": "ansokningsservice@aalto.fi"
+}

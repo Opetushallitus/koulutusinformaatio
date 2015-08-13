@@ -1,0 +1,21 @@
+{
+    "oid": "2351787",
+    "version": 0,
+    "kieliUri": "kieli_fi",
+    "kieliNimi": "suomi",
+    "liitteenNimi": "Ylioppilastutkintotodistuksen kopio",
+    "jarjestys": 0,
+    "kaytetaanHakulomakkeella": false,
+    "liitteenKuvaukset": {
+        "kieli_fi": "<p>Vuonna 1989 tai aikaisemmin ylioppilastutkinnon suorittaneet toimittavat ylioppilastutkintotodistuksen kopion  Aalto-yliopiston hakijapalveluihin. </p> <p>Yliopistot saavat tiedot vuonna 1990 ja sen jälkeen suoritetuista ylioppilastutkinnoista suoraan ylioppilastutkintolautakunnan rekisteristä. <b>Vuonna 1990 tai sen jälkeen ylioppilaaksi kirjoittaneiden ei tarvitse toimittaa yliopistoon todistuskopioita.</b></p>"
+    },
+    "toimitettavaMennessa": 1461412805417,
+    "liitteenToimitusOsoite": {
+        "version": 0,
+        "osoiterivi1": "PL 11110",
+        "postinumero": "posti_00076",
+        "postinumeroArvo": "00076",
+        "postitoimipaikka": "AALTO"
+    },
+    "sahkoinenToimitusOsoite": "hakijapalvelut@aalto.fi"
+}
