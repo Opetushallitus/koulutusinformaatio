@@ -16,15 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
@@ -36,9 +31,28 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
+import com.mongodb.MongoClient;
+
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
+import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
+import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
+import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 
 /**
  * @author Mikko Majapuro
@@ -222,9 +236,12 @@ public class TransactionManagerImpl implements TransactionManager {
 
             BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
             dropDbCollections();
-            mongo.getDB("admin").command(cmd);
+            CommandResult result = mongo.getDB("admin").command(cmd);
+            if (!result.ok()) {
+                LOG.error("Collection copy failed, transactiondb left intact: " + result.getErrorMessage());
+                throw new KICommitException("Collection copy failed: " + result.getErrorMessage());
+            }
             dropTransactionDbCollections();
-            
             this.koodistoService.clearCache();
             this.providerService.clearCache();
             this.parameterService.clearCache();
