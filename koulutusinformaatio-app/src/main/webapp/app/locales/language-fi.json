@@ -79,7 +79,8 @@
     "lowest-acceptable-average": "alin hyväksyttävä keskiarvo",
     "lowest-acceptable-average-description": "Oppilaitoksen asettama keskiarvoraja jonka alittaneita hakijoita ei valita koulutukseen. Opiskelijaksi ottamisen keskiarvo vaihtelee vuosittain ja voi olla korkeampi.",
     "starting-quota": "Opiskelupaikkoja",
-    "starting-quota-first-timer": "Ensikertalaisten kiintiö",
+    "starting-quota-first-timer-1": "(joista ",
+    "starting-quota-first-timer-2": " varattu ensikertalaisille)",
 
     "goals-of-education": "Tavoite",
     "selection-of-degree-program": "Osaamisalan valinta",

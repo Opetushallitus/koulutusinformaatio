@@ -2,17 +2,15 @@
     <li>
         <h2>{{ao.name}}</h2>
     </li>
-    <li data-ng-if="ao.startingQuotaDescription" class="text-muted">
-    	<span data-ki-i18n="starting-quota" data-show-colon="true"></span>
-    	<span>{{ao.startingQuotaDescription}}</span>
-    </li>
-    <li class="text-muted" data-ng-if="!ao.startingQuotaDescription && ao.startingQuota > 0">
-        <span data-ki-i18n="starting-quota" data-show-colon="true"></span>
+    <li class="text-muted" data-ng-if="ao.startingQuota > 0">
+        <span data-ki-i18n="starting-quota"></span>
         <span>{{ao.startingQuota}}</span>
+        <span data-ng-if="ao.firstTimerStartingQuota > 0">
+            <span data-ki-i18n="starting-quota-first-timer-1"></span>
+            <span>{{ao.firstTimerStartingQuota}}</span>
+            <span data-ki-i18n="starting-quota-first-timer-2"></span>
+        </span>
     </li>
-    <li class="text-muted" data-ng-if="ao.firstTimerStartingQuota > 0">
-        <span data-ki-i18n="starting-quota-first-timer" data-show-colon="true"></span>
-        <span>{{ao.firstTimerStartingQuota}}</span>
     </li>
     <li class="text-muted">
     	<div data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-label="application-period" data-period-name="ao.applicationPeriodName"></div>
