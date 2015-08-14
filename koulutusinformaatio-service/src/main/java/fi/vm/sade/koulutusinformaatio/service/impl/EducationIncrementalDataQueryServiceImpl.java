@@ -262,7 +262,7 @@ EducationIncrementalDataQueryService {
     @Override
     public DataStatus getLatestSuccessDataStatus() {
 
-        DataStatusEntity dataStatusE = this.dataStatusDAO.getLatestSuccess();
+        DataStatusEntity dataStatusE = this.dataStatusDAO.getLatestSuccessOrIncremental();
         if (dataStatusE != null) {
             return modelMapper.map(dataStatusE, DataStatus.class);
         } else {
