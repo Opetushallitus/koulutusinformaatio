@@ -160,6 +160,12 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public DataStatusDTO dataStatus() {
         DataStatus status = learningOpportunityService.getLastDataStatus();
+        if (status == null) {
+            DataStatusDTO dto = new DataStatusDTO();
+            dto.setRunning(true);
+            dto.setLastSuccessfulFinishedStr("Finalizing indexing.");
+            return dto;
+        }
         DataStatusDTO dto = new DataStatusDTO();
         dto.setLastUpdateFinished(status.getLastUpdateFinished());
         dto.setLastUpdateFinishedStr(status.getLastUpdateFinished().toString());
