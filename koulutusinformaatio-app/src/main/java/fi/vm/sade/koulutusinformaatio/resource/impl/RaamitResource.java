@@ -32,7 +32,7 @@ public class RaamitResource {
                 .append("    if(!raamit) {\n")
                 .append("        raamit = document.createElement(\"script\")\n")
                 .append("        raamit.id = \"apply-raamit\"\n")
-                .append("        raamit.src = \"").append(raamitLocation).append("/oppija-raamit/apply-raamit.js\"\n")
+                .append("        raamit.src = \"/oppija-raamit/apply-raamit.js\"\n")
                 .append("        document.getElementsByTagName(\"head\")[0].appendChild(raamit)")
                 .append("    }\n")
                 .append("}\n");
