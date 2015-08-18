@@ -12,7 +12,19 @@
 "use strict";
 
 var ApplicationSystemCalendar = (function() {
-
+    
+    var getLanguageFromHost = function(){
+        var x = window.location.host.split('.')
+        if (x.length < 2)
+            return 'fi'
+        switch (x[x.length - 2]) {
+            case 'opintopolku': return 'fi'
+            case 'studieinfo': return 'sv'
+            case 'studyinfo': return 'en'
+            default: return 'fi'
+        }
+    }
+    
     var o = {},
         calendar,
         panel,
@@ -35,7 +47,10 @@ var ApplicationSystemCalendar = (function() {
 
         // override default options with param opts
         $.extend(true, o, defaultOptions, options);
-
+        o.lang = getLanguageFromHost();
+          
+        
+        
         // intitalize language
         ki.i18n.init(o.lang);
 
