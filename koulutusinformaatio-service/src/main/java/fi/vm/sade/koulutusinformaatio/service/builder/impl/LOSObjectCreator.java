@@ -788,7 +788,9 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_AMMATILLINEN);
         addKoulutus2AsteV1Fields(koulutusDTO, los);
         addKoulutusAmmatillinenPerustutkintoV1Fields(koulutusDTO, los);
-        los.setAccessToFurtherStudies(null); // Ammatillisilla koulutuksilla jatko-opinnot näytetään tutkinnon sivulla
+        if (!los.isOsaamisalaton()) {
+            los.setAccessToFurtherStudies(null); // Ammatillisilla koulutuksilla jatko-opinnot näytetään tutkinnon sivulla
+        }
         return los;
     }
 
