@@ -181,11 +181,11 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohde.getLiitteidenToimitusOsoite(), null));
 
-        HashMap<String, ApplicationOptionAttachment> attachments = new HashMap<String, ApplicationOptionAttachment>();
+        HashMap<Integer, ApplicationOptionAttachment> attachments = new HashMap<Integer, ApplicationOptionAttachment>();
         if (hakukohde.getHakukohteenLiitteet() != null && !hakukohde.getHakukohteenLiitteet().isEmpty()) {
             for (HakukohdeLiiteV1RDTO liite : hakukohde.getHakukohteenLiitteet()) {
 
-                if (attachments.containsKey(liite.getOid())) { // merge existing attachments
+                if (liite.getJarjestys() != null && attachments.containsKey(liite.getJarjestys())) { // merge existing attachments
                     ApplicationOptionAttachment attach = attachments.get(liite.getOid());
 
                     attach.setType(mergeI18nTexts(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
@@ -201,7 +201,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     addr.setStreetAddress(mergeI18nTexts(a1.getStreetAddress(), a1.getStreetAddress()));
                     attach.setAddress(addr);
 
-                    attachments.put(liite.getOid(), attach);
+                    attachments.put(liite.getJarjestys(), attach);
                 } else { // create new attachment
                     ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
 
@@ -212,7 +212,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri()));
                     attach.setEmailAddr(liite.getSahkoinenToimitusOsoite());
 
-                    attachments.put(liite.getOid(), attach);
+                    attachments.put(liite.getJarjestys(), attach);
                 }
             }
         }
