@@ -37,7 +37,7 @@ var ApplicationSystemCalendar = (function() {
         $.extend(true, o, defaultOptions, options);
 
         // intitalize language
-        ki.i18n.init(o.lang);
+        ki.i18n.init();
 
         // create container for calendar
         calendar = $(o.selector)
@@ -333,8 +333,16 @@ ki.i18n = (function() {
         }
     },
 
-    init = function(lang) {
-        this.lang = lang;
+    init = function() {
+        var x = window.location.host.split('.')
+        if (x.length < 2)
+            this.lang = 'fi'
+        switch (x[x.length - 2]) {
+            case 'opintopolku': this.lang = 'fi'
+            case 'studieinfo': this.lang = 'sv'
+            case 'studyinfo': this.lang = 'en'
+            default: this.lang = 'fi'
+        }
     },
 
     translate = function(key) {
