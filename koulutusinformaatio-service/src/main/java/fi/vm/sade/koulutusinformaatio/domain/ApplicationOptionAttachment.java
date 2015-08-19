@@ -27,7 +27,7 @@ public class ApplicationOptionAttachment {
     private I18nText type;
     private I18nText descreption;
     private Address address;
-    private String emailAddr;
+    private I18nText emailAddr;
     private boolean usedInApplicationForm = true;
 
     public Date getDueDate() {
@@ -62,11 +62,11 @@ public class ApplicationOptionAttachment {
         this.address = address;
     }
 
-    public void setEmailAddr(String sahkoinenToimitusosoite) {
+    public void setEmailAddr(I18nText sahkoinenToimitusosoite) {
         this.emailAddr = sahkoinenToimitusosoite;
     }
 
-    public String getEmailAddr() {
+    public I18nText getEmailAddr() {
         return emailAddr;
     }
     

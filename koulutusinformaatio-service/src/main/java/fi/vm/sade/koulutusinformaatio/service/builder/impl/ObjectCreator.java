@@ -208,7 +208,7 @@ public abstract class ObjectCreator {
         return koodistoService.searchFirst(koodi.getUri());
     }
 
-    protected I18nText getTypeText(String text, String kieliUri) {//ValintakoeV1RDTO valintakoe) {
+    protected I18nText getI18nText(String text, String kieliUri) {
         I18nText type = new I18nText();
         Map<String, String> translations = new HashMap<String,String>();
         String lang = kieliUri.substring(kieliUri.length() - 2);

@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
@@ -81,48 +80,6 @@ public class ApplicationOptionAttachmentToDTOTest {
     @Test
     public void testConvertAllNull() {
         assertNull(ApplicationOptionAttachmentToDTO.convertAll(null, "", false));
-    }
-    
-    @Test
-    public void testHigherEdConvertAll() {
-        List<ApplicationOptionAttachment> aoas = Lists.newArrayList(
-                createAttachment("fi"),
-                createAttachment("sv"),
-                createAttachment("fi")
-        );
-        
-        List<ApplicationOptionAttachmentDTO> dtos = ApplicationOptionAttachmentToDTO.convertAllHigherEducation(aoas, "fi");
-        
-        assertNotNull(dtos);
-        assertEquals(2, dtos.size());
-    }
-    
-    @Test
-    public void testHigherEdConvertAllWithFiFallback() {
-        List<ApplicationOptionAttachment> aoas = Lists.newArrayList(
-                createAttachment("sv"),
-                createAttachment("fi"),
-                createAttachment("fi")
-        );
-        
-        List<ApplicationOptionAttachmentDTO> dtos = ApplicationOptionAttachmentToDTO.convertAllHigherEducation(aoas, "en");
-        
-        assertNotNull(dtos);
-        assertEquals(2, dtos.size());
-    }
-    
-    @Test
-    public void testHigherEdConvertAllWithFallback() {
-        List<ApplicationOptionAttachment> aoas = Lists.newArrayList(
-                createAttachment("en"),
-                createAttachment("de"),
-                createAttachment("en")
-        );
-        
-        List<ApplicationOptionAttachmentDTO> dtos = ApplicationOptionAttachmentToDTO.convertAllHigherEducation(aoas, "sv");
-        
-        assertNotNull(dtos);
-        assertTrue(dtos.size() > 0);
     }
     
     private ApplicationOptionAttachment createAttachment(String lang) {

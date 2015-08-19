@@ -188,8 +188,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 if (liite.getJarjestys() != null && attachments.containsKey(liite.getJarjestys())) { // merge existing attachments
                     ApplicationOptionAttachment attach = attachments.get(liite.getJarjestys());
 
-                    attach.setType(mergeI18nTexts(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
+                    attach.setType(mergeI18nTexts(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
                     attach.setDescreption(mergeI18nTexts(getI18nText(liite.getLiitteenKuvaukset()), attach.getDescreption()));
+                    attach.setEmailAddr(mergeI18nTexts(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()), attach.getEmailAddr()));
 
                     Address a1 = attach.getAddress();
                     Address a2 = educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri());
@@ -207,10 +208,11 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
                     attach.setDueDate(liite.getToimitettavaMennessa());
                     attach.setUsedInApplicationForm(liite.isKaytetaanHakulomakkeella());
-                    attach.setType(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()));
+                    attach.setType(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()));
                     attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
                     attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri()));
-                    attach.setEmailAddr(liite.getSahkoinenToimitusOsoite());
+
+                    attach.setEmailAddr(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()));
 
                     attachments.put(liite.getJarjestys(), attach);
                 }

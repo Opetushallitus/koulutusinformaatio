@@ -120,7 +120,6 @@ public final class ApplicationOptionToDTO {
         dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));
         dto.setAdditionalInfo(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getAdditionalInfo(), lang));
         dto.setExams(ExamToDTO.convertAllHigherEducation(applicationOption.getExams(), lang));
-        dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAllHigherEducation(applicationOption.getAttachments(), lang));
         return dto;
     }
 

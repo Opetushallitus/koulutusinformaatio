@@ -139,7 +139,7 @@ public class EducationObjectCreator extends ObjectCreator {
                         Code type = koodistoService.searchFirst(valintakoe.getValintakoetyyppi());
                         exam.setType(type.getName());
                     } else {
-                        exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
+                        exam.setType(getI18nText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
                     }
                     exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();

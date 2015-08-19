@@ -36,8 +36,8 @@ public class ApplicationOptionAttachmentEntity {
     private I18nText descreption;
     @Embedded
     private Address address;
-    
-    private String emailAddr;
+    @Embedded
+    private I18nText emailAddr;
     
     private boolean usedInApplicationForm = true;
 
@@ -73,11 +73,11 @@ public class ApplicationOptionAttachmentEntity {
         this.address = address;
     }
 
-    public String getEmailAddr() {
+    public I18nText getEmailAddr() {
         return emailAddr;
     }
 
-    public void setEmailAddr(String emailAddr) {
+    public void setEmailAddr(I18nText emailAddr) {
         this.emailAddr = emailAddr;
     }
 

@@ -30,8 +30,6 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
  */
 public final class ApplicationOptionAttachmentToDTO {
     
-    private static final String FALLBACK_LANG_DEFAULT = "fi";
-
     private ApplicationOptionAttachmentToDTO() {
     }
 
@@ -43,7 +41,7 @@ public final class ApplicationOptionAttachmentToDTO {
             dto.setUsedInApplicationForm(aoa.isUsedInApplicationForm());
             dto.setDescreption(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getDescreption(), lang));
             dto.setAddress(AddressToDTO.convert(aoa.getAddress(), lang));
-            dto.setEmailAddr(aoa.getEmailAddr());
+            dto.setEmailAddr(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getEmailAddr(), lang));
             return dto;
         }
         return null;
@@ -51,13 +49,11 @@ public final class ApplicationOptionAttachmentToDTO {
 
     public static List<ApplicationOptionAttachmentDTO> convertAll(final List<ApplicationOptionAttachment> aoas, final String lang, boolean isVaadinAo) {
         if (aoas != null && !aoas.isEmpty() && lang != null && !lang.isEmpty()) {
-            String keyLang = lang.toLowerCase();
             List<ApplicationOptionAttachmentDTO> aoaDTOs = new ArrayList<ApplicationOptionAttachmentDTO>();
             for (ApplicationOptionAttachment curAttachment : aoas) {
                 
                 if (curAttachment != null 
-                        && curAttachment.getType() != null 
-                        && curAttachment.getType().getTranslations().containsKey(keyLang)) {
+                        && curAttachment.getType() != null) {
                     aoaDTOs.add(convert(curAttachment, lang));
                 } else if (curAttachment != null && (curAttachment.getType() == null || isVaadinAo)) {
                     
@@ -78,56 +74,4 @@ public final class ApplicationOptionAttachmentToDTO {
         return null;
     }
     
-    public static List<ApplicationOptionAttachmentDTO> convertAllHigherEducation(final List<ApplicationOptionAttachment> aoas, final String lang) {
-        if (aoas == null || aoas.isEmpty()) {
-            return null;
-        }
-        else {
-            
-            // get attachemnts with requested language
-            List<ApplicationOptionAttachmentDTO> convertedAttachments = getApplicationOptionsByLang(aoas, lang);
-            if (convertedAttachments == null || convertedAttachments.isEmpty() ) {
-                // fallback to language fi
-                convertedAttachments = getApplicationOptionsByLang(aoas, FALLBACK_LANG_DEFAULT);
-                if (convertedAttachments == null || convertedAttachments.isEmpty() ) {
-                    // fallback to any existing language
-                    convertedAttachments = getApplicationOptionsByLang(aoas, aoas.get(0).getType().getTranslations().keySet().iterator().next());
-                }
-            }
-            
-            return !convertedAttachments.isEmpty() ? convertedAttachments : null;
-        }
-    }
-    
-    /**
-     * Returns attachemnts with specified language 
-     * 
-     * @param aoas
-     * @param lang
-     * @return
-     */
-    private static List<ApplicationOptionAttachmentDTO> getApplicationOptionsByLang(final List<ApplicationOptionAttachment> aoas, final String lang) {
-        if (aoas == null) {
-            return null;
-        } else {
-
-            List<ApplicationOptionAttachmentDTO> convertedAttachments = new ArrayList<ApplicationOptionAttachmentDTO>();
-            String keyLang = lang.toLowerCase();
-            
-            for (ApplicationOptionAttachment curAttachment : aoas) {
-                ApplicationOptionAttachmentDTO attachment = null;
-                if (curAttachment != null
-                        && curAttachment.getType() != null
-                        && curAttachment.getType().getTranslations().containsKey(keyLang) ) {
-                    attachment = convert(curAttachment, lang);
-                }
-                
-                if (attachment != null) {
-                    convertedAttachments.add(attachment);
-                }
-            }
-            
-            return convertedAttachments;
-        }
-    }
 }
