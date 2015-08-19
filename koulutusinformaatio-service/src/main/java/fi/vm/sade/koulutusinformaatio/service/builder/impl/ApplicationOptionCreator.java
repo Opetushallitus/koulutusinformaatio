@@ -186,7 +186,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             for (HakukohdeLiiteV1RDTO liite : hakukohde.getHakukohteenLiitteet()) {
 
                 if (liite.getJarjestys() != null && attachments.containsKey(liite.getJarjestys())) { // merge existing attachments
-                    ApplicationOptionAttachment attach = attachments.get(liite.getOid());
+                    ApplicationOptionAttachment attach = attachments.get(liite.getJarjestys());
 
                     attach.setType(mergeI18nTexts(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
                     attach.setDescreption(mergeI18nTexts(getI18nText(liite.getLiitteenKuvaukset()), attach.getDescreption()));
