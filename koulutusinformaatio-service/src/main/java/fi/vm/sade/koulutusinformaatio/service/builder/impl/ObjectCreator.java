@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.base.Strings;
 
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -209,6 +211,8 @@ public abstract class ObjectCreator {
     }
 
     protected I18nText getI18nText(String text, String kieliUri) {
+        if (StringUtils.isEmpty(text) || StringUtils.isEmpty(kieliUri))
+            return null;
         I18nText type = new I18nText();
         Map<String, String> translations = new HashMap<String,String>();
         String lang = kieliUri.substring(kieliUri.length() - 2);
