@@ -24,24 +24,47 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
  */
 public final class AddressToDTO {
 
+    private static final String FALLBACK_LANG = "fi";
+
     private AddressToDTO() {
     }
 
     public static AddressDTO convert(final Address address, String lang) {
-        if (address != null) {
-            AddressDTO addrs = new AddressDTO();
-            addrs.setStreetAddress(ConverterUtil.getTextByLanguageUseFallbackLang(address.getStreetAddress(), lang));
-            addrs.setStreetAddress2(ConverterUtil.getTextByLanguageUseFallbackLang(address.getSecondForeignAddr(), lang));
-            if (!("en".equalsIgnoreCase(lang) 
-                    && address.getStreetAddress() != null 
-                    && address.getStreetAddress().getTranslations() != null 
-                    && address.getStreetAddress().getTranslations().containsKey(lang))) {
-                addrs.setPostalCode(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostalCode(), lang));
-                addrs.setPostOffice(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostOffice(), lang));
-            }
-            return addrs;
-        } else {
-            return null;
-        }
+        AddressDTO addrs = getAddressByLang(address, lang);
+        if (addrs == null)
+            addrs = getAddressByLang(address, FALLBACK_LANG);
+        if (addrs == null)
+            addrs = getAddressByLang(address, getAnyLanguageCode(address));
+
+        return addrs;
     }
+
+    private static AddressDTO getAddressByLang(Address address, String lang) {
+        if (addressContainsLang(address, lang)) {
+            AddressDTO addr = new AddressDTO();
+            addr.setStreetAddress(ConverterUtil.getTextByLanguage(address.getStreetAddress(), lang));
+            addr.setStreetAddress2(ConverterUtil.getTextByLanguage(address.getSecondForeignAddr(), lang));
+            addr.setPostalCode(ConverterUtil.getTextByLanguage(address.getPostalCode(), lang));
+            addr.setPostOffice(ConverterUtil.getTextByLanguage(address.getPostOffice(), lang));
+            return addr;
+        }
+        return null;
+    }
+
+    private static boolean addressContainsLang(Address address, String lang) {
+        return address != null && (
+                address.getPostalCode() != null && address.getPostalCode().getTranslations().containsKey(lang)
+                        || address.getPostOffice() != null && address.getPostOffice().getTranslations().containsKey(lang)
+                        || address.getSecondForeignAddr() != null && address.getSecondForeignAddr().getTranslations().containsKey(lang)
+                        || address.getStreetAddress() != null && address.getStreetAddress().getTranslations().containsKey(lang));
+    }
+
+    private static String getAnyLanguageCode(Address address) {
+        if (address != null && address.getStreetAddress() != null && address.getStreetAddress().getTranslations() != null
+                && !address.getStreetAddress().getTranslations().isEmpty()) {
+            return address.getStreetAddress().getTranslations().keySet().iterator().next();
+        }
+        return null;
+    }
+
 }

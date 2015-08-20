@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
@@ -68,6 +69,9 @@ public class ApplicationOptionToDTOTest {
         ao.setApplicationSystem(new ApplicationSystem());
         ao.setAthleteEducation(false);
         ao.setAttachmentDeliveryAddress(new Address());
+        Map<String, String> translation = new HashMap<String, String>();
+        translation.put("fi", "addrss");
+        ao.getAttachmentDeliveryAddress().setStreetAddress(new I18nText(translation));
         attachmentsDue = new Date();
         ao.setAttachmentDeliveryDeadline(attachmentsDue);
         ao.setAttachments(new ArrayList<ApplicationOptionAttachment>());
@@ -111,8 +115,8 @@ public class ApplicationOptionToDTOTest {
         assertNotNull(dto.getAdditionalProof());
         assertEquals("aoIdentifier", dto.getAoIdentifier());
         assertFalse(dto.isAthleteEducation());
-        assertNotNull(dto.getAttachmentDeliveryAddress());
         assertEquals(attachmentsDue, dto.getAttachmentDeliveryDeadline());
+        assertNotNull(dto.getAttachmentDeliveryAddress());
         //assertNotNull(dto.getAttachments());
         assertEquals(Integer.valueOf(10), dto.getLastYearApplicantCount());
         assertEquals(Double.valueOf(5.0), dto.getLowestAcceptedAverage());

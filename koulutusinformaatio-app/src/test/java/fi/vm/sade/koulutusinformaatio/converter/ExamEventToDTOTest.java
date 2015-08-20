@@ -21,7 +21,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ExamEventDTO;
 
 /**
@@ -47,6 +50,9 @@ public class ExamEventToDTOTest {
         examEvent.setStart(start);
         examEvent.setEnd(end);
         examEvent.setAddress(new Address());
+        Map<String, String> translation = new HashMap<String, String>();
+        translation.put("fi", "addrss");
+        examEvent.getAddress().setStreetAddress(new I18nText(translation ));
         examEvent.setDescription("description");
     }
 

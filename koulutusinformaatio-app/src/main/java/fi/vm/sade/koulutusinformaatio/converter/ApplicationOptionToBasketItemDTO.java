@@ -75,7 +75,7 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setLosRefs(HigherEducationLOSRefToDTO.convert(ao.getHigherEdLOSRefs(), lang));
                 aoDTO.setChildren(ChildLOIRefToDTO.convert(ao.getChildLOIRefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
-                aoDTO.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(ao.getAttachments(), lang, aoDTO.getLosRefs().isEmpty()));
+                aoDTO.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(ao.getAttachments(), lang));
                 aoDTO.setExams(ExamToDTO.convertAll(ao.getExams(), lang));
                 aoDTO.setAoIdentifier(ao.getAoIdentifier());
                 aoDTO.setKaksoistutkinto(ao.isKaksoistutkinto());

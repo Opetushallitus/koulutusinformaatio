@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +46,9 @@ public class ApplicationOptionAttachmentToDTOTest {
         Date due = new Date();
         aoa.setDueDate(due);
         aoa.setAddress(new Address());
+        Map<String, String> translations = new HashMap<String, String>();
+        translations.put("fi", "address");
+        aoa.getAddress().setStreetAddress(new I18nText(translations ));
         Map<String, String> descriptionTranslations = Maps.newHashMap();
         descriptionTranslations.put("fi", "description");
         aoa.setDescreption(new I18nText(descriptionTranslations));
@@ -56,6 +60,10 @@ public class ApplicationOptionAttachmentToDTOTest {
         assertNotNull(dto);
         assertEquals(due, dto.getDueDate());
         assertNotNull(dto.getAddress());
+        assertNull(dto.getAddress().getPostalCode());
+        assertNull(dto.getAddress().getPostOffice());
+        assertNull(dto.getAddress().getStreetAddress2());
+        assertEquals("address", dto.getAddress().getStreetAddress());
         assertEquals("description", dto.getDescreption());
         assertEquals("attachmentType", dto.getType());
     }
@@ -72,14 +80,17 @@ public class ApplicationOptionAttachmentToDTOTest {
                 new ApplicationOptionAttachment(),
                 new ApplicationOptionAttachment()
         );
-        List<ApplicationOptionAttachmentDTO> dtos = ApplicationOptionAttachmentToDTO.convertAll(aoas, "fi", false);
+        aoas.get(0).setType(new I18nText());
+        aoas.get(1).setType(new I18nText());
+        aoas.get(2).setType(new I18nText());
+        List<ApplicationOptionAttachmentDTO> dtos = ApplicationOptionAttachmentToDTO.convertAll(aoas, "fi");
         assertNotNull(dtos);
         assertEquals(3, dtos.size());
     }
     
     @Test
     public void testConvertAllNull() {
-        assertNull(ApplicationOptionAttachmentToDTO.convertAll(null, "", false));
+        assertNull(ApplicationOptionAttachmentToDTO.convertAll(null, ""));
     }
     
     private ApplicationOptionAttachment createAttachment(String lang) {

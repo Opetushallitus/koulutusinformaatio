@@ -209,6 +209,8 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
                 new File("src/test/java/fi/vm/sade/koulutusinformaatio/service/builder/impl/HakukohdeV1RDTOLiite1.json"), HakukohdeLiiteV1RDTO.class);
         HakukohdeLiiteV1RDTO liite2 = mapper.readValue(
                 new File("src/test/java/fi/vm/sade/koulutusinformaatio/service/builder/impl/HakukohdeV1RDTOLiite2.json"), HakukohdeLiiteV1RDTO.class);
+        liite1.setJarjestys(1);
+        liite2.setJarjestys(1);
         hakukohde.getHakukohteenLiitteet().add(liite1);
         hakukohde.getHakukohteenLiitteet().add(liite2);
 
