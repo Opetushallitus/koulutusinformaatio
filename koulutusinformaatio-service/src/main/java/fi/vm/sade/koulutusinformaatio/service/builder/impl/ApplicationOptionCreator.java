@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -188,7 +189,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 if (liite.getJarjestys() != null && attachments.containsKey(liite.getJarjestys())) { // merge existing attachments
                     ApplicationOptionAttachment attach = attachments.get(liite.getJarjestys());
 
-                    attach.setType(mergeI18nTexts(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
+                    if (!StringUtils.isEmpty(liite.getLiitteenNimi()))
+                        attach.setType(mergeI18nTexts(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
                     attach.setDescreption(mergeI18nTexts(getI18nText(liite.getLiitteenKuvaukset()), attach.getDescreption()));
                     attach.setEmailAddr(mergeI18nTexts(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()), attach.getEmailAddr()));
 
@@ -206,9 +208,13 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 } else { // create new attachment
                     ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
 
+                    if (!StringUtils.isEmpty(liite.getLiitteenNimi())) {
+                        attach.setType(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()));
+                    } else {
+                        attach.setType(koodistoService.searchFirstName(liite.getLiitteenTyyppi()));
+                    }
                     attach.setDueDate(liite.getToimitettavaMennessa());
                     attach.setUsedInApplicationForm(liite.isKaytetaanHakulomakkeella());
-                    attach.setType(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()));
                     attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
                     attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri()));
 
