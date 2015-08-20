@@ -16,14 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.ws.rs.core.MediaType;
+
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -33,10 +31,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.OidV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -86,13 +99,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .queryParam("count", String.valueOf(MAX_COUNT)),
                 new GenericType<ResultV1RDTO<List<OidV1RDTO>>>() {
                 });
-//        return v1ASResource
-//                .path(oid)
-//                .path("hakukohde")
-//                .queryParam("count", String.valueOf(MAX_COUNT))
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<List<OidV1RDTO>>>() {
-//                });
     }
 
     @Override
@@ -103,13 +109,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .queryParam("tila", "JULKAISTU"),
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
-//        return this.v1KoulutusResource
-//                .path("search")
-//                .queryParam("koulutusastetyyppi", educationType)
-//                .queryParam("tila", "JULKAISTU")
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-//                });
     }
 
     @Override
@@ -120,13 +119,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .queryParam("tila", "KAIKKI"),
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
-//        return this.v1KoulutusResource
-//                .path("search")
-//                .queryParam("koulutusOid", oid)
-//                .queryParam("tila", "KAIKKI") // include POISTETTU
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-//                });
     }
     
     @Override
@@ -136,11 +128,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path(oid),
                 new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
                 });
-//        return v1KoulutusResource
-//                .path(oid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
-//                });
     }
     
     @Override
@@ -149,11 +136,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path(oid),
                 new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
                 });
-//        return v1KoulutusResource
-//                .path(oid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
-//                });
     }
                 
     public ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid) {
@@ -161,11 +143,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path(oid),
                 new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
                 });
-//        return this.v1KomoResource
-//                .path(oid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
-//                });
     }
 
     @Override
@@ -176,13 +153,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .queryParam("tila", "JULKAISTU"),
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
                 });
-//        return v1AOResource
-//                .path("search")
-//                .queryParam("koulutusOid", oid)
-//                .queryParam("tila", "JULKAISTU")
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
-//                });
     }
 
     @Override
@@ -191,12 +161,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path(oid),
                 new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
                 });
-
-//        return v1AOResource
-//                .path(oid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
-//                });
     }
 
     @Override
@@ -205,11 +169,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path(oid),
                 new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
                 });
-//        return v1ASResource
-//                .path(oid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
-//                });
     }
 
     @Override
@@ -219,11 +178,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path(parentOid),
                 new GenericType<ResultV1RDTO<Set<String>>>() {
                 });
-//        return this.v1StructureResource
-//                .path(parentOid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<Set<String>>>() {
-//                });
     }
 
     @Override
@@ -234,12 +188,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path("parents"),
                 new GenericType<ResultV1RDTO<Set<String>>>() {
                 });
-//        return this.v1StructureResource
-//                .path(childKomoOid)
-//                .path("parents")
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<Set<String>>>() {
-//                });
     }
 
     @Override
@@ -250,12 +198,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .queryParam("komoOid", komoOid),
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
-//        return this.v1KoulutusResource
-//                .path("search")
-//                .queryParam("komoOid", komoOid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-//                });
     }
 
     @Override
@@ -265,12 +207,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .path("kuva"),
                 new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
                 });
-//        return v1KoulutusResource
-//                .path(koulutusOid)
-//                .path("kuva")
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
-//                });
     }
 
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
@@ -297,12 +233,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<List<String>> searchHakus(String hakutapa) {
-//        return v1ASResource
-//                .queryParam("HAKUTAPA", hakutapa)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<List<String>>>() {
-//                });
-
         return (ResultV1RDTO<List<String>>) getWithRetries(v1ASResource
                         .queryParam("HAKUTAPA", hakutapa),
                 new GenericType<ResultV1RDTO<List<String>>>() {
@@ -335,11 +265,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .path(oid),
                 new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
                 });
-//        return v1KoulutusResource
-//                .path(oid)
-//                .accept(JSON_UTF8)
-//                .get(new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
-//                });
     }
 
 }
