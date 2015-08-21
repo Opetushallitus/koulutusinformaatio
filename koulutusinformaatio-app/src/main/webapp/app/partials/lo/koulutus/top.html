@@ -5,16 +5,20 @@
     <div data-ng-repeat="parent in lo.parents">
     	<span>
     		<a data-ng-href="#!/korkeakoulu/{{parent.id}}">{{parent.name}}</a>
-    		<!-- PREVIEW -->
-    		<span data-ng-if="lo.preview" data-ki-preview-status-label="parent.status" data-lang="virkailijaLang"></span>
-    		<!-- END PREVIEW -->
+            <!-- PREVIEW -->
+            <span data-ng-if="lo.preview" data-ki-preview-status-label="parent.status" data-lang="virkailijaLang"></span>
+            <!-- END PREVIEW -->
     	</span>
     </div>
 
     <div data-ng-if="lo.parentLos">
         <div data-ng-if="!(lo.qualifications.length == 1)">{{lo.educationDomain}}</div>
         <div data-ng-if="lo.qualifications.length == 1">{{lo.educationDomain}}, {{lo.qualifications[0]}}</span></div>
-        <a href="#!/tutkinto/{{lo.parentLos.id}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{lo.parentLos.name}}</a>
+
+        <a data-ng-if="!lo.preview" href="#!/tutkinto/{{lo.parentLos.id}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{lo.parentLos.name}}</a>
+        <!-- PREVIEW -->
+        <a data-ng-if="lo.preview">{{lo.parentLos.name}}</a>
+        <!-- END PREVIEW -->
     </div>
 
     <h1 data-ng-if="lo.educationDegree != 'koulutusasteoph2002_31'" class="inline">{{lo.name}}<span data-ng-show="lo.creditValue">, {{lo.creditValue}} {{lo.creditUnit}}</span></h1>
@@ -27,6 +31,9 @@
     </div>
     <!-- END PREVIEW -->
 
+    <!-- PREVIEW -->
+    <div data-ng-if="lo.preview && lo.educationType == 'et01.03.01'" data-ki-i18n="esikatselu-sisaruslista-placeholder" data-lang="{{virkailijaLang}}"></div>
+    <!-- END PREVIEW -->
     <div data-ki-sibling-ribbon data-siblings="lo.siblings" template="siblingsNew" class="ribbon"></div>
     <div data-ki-child-ribbon data-children="lo.children" data-lang="virkailijaLang" type="loType" class="ribbon"></div>
 </section>

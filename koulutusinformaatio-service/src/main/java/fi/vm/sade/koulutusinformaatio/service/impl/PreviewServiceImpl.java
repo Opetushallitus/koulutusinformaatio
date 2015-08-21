@@ -18,10 +18,12 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -101,6 +103,11 @@ public class PreviewServiceImpl implements PreviewService {
     public KoulutusLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
             KoulutusLOS los = this.tarjontaService.createKoulutusLOS(oid, false);
+            if (los.getEducationType().equals(SolrConstants.ED_TYPE_AMMATILLINEN)) {
+                TutkintoLOS tutkinto = new TutkintoLOS();
+                tutkinto.setName(los.getEducationCode().getName());
+                los.setTutkinto(tutkinto);
+            }
             return los;
         } catch (KoodistoException e) {
             e.printStackTrace();
