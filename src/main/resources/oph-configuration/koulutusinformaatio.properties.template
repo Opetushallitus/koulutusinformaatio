@@ -25,6 +25,9 @@ server.name={{ansible_hostname}}
 solr.base.url={{solr_base_url}}
 # Workaround, user.home propertyn pitäisi tulla systeemistä kuten muissakin, mutta ei toimi tässä palvelussa 
 user.home=/data00/oph/koulutusinformaatio
+#TODO: tähän sellainen kätevä conffattu sähköpostilista
+invalid.koulutus.report.recipient=petteri.turtiainen@cybercom.com
+
 
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
@@ -124,3 +127,5 @@ user.webservice.url.backend=https\://${host.virkailija}/authentication-service/s
 web.url.cas=https\://${host.cas}/cas
 
 oppija-raamit.url={{oppija_raamit_url}}
+
+smtp.host=mta.i.ware.fi

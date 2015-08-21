@@ -16,16 +16,26 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +87,15 @@ public class UpdateServiceImpl implements UpdateService {
     private long runningSince = 0;
     private LocationService locationService;
     private long progressCounter;
+
+    @Value("${invalid.koulutus.report.recipient}")
+    private String RECIPIENT;
+
+    @Value("${smtp.host}")
+    private String SMTP_HOST;
+
+    @Value("${host.oppija}")
+    private String ENVIRONMENT;
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
@@ -243,6 +262,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.error("Education data update failed ", e);
             this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
+            sendMailOnException(e);
         } finally {
             running = false;
             runningSince = 0;
@@ -363,9 +383,30 @@ public class UpdateServiceImpl implements UpdateService {
             running = false;
             runningSince = 0;
         }
-
-
     }
 
+    private void sendMailOnException(Exception exception) {
+        String subject = "Koulutusinformaation indeksointi epäonnistui: " + ENVIRONMENT;
+        String body = "Koulutusinformaation indeksointi epäonnistui ympäristössä " + ENVIRONMENT + "\nVirhe:\n\n";
+        StringWriter sw = new StringWriter();
+        exception.printStackTrace(new PrintWriter(sw));
+        body += sw.toString();
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", SMTP_HOST);
+        Session session = Session.getDefaultInstance(props, null);
+
+        try {
+            Message msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress("admin@oph.fi", "admin@oph.fi"));
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(RECIPIENT, RECIPIENT));
+            msg.setSubject(subject);
+            msg.setText(body);
+            Transport.send(msg);
+            LOG.info("Error mail successfully sent");
+        } catch (Exception e) {
+            LOG.error("Failed to send error mail.", e);
+        }
+    }
 }
 

@@ -186,7 +186,11 @@
             <version>${flapdoodle.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
