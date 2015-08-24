@@ -88,13 +88,13 @@ public class UpdateServiceImpl implements UpdateService {
     private LocationService locationService;
     private long progressCounter;
 
-    @Value("${invalid.koulutus.report.recipient}")
-    private String RECIPIENT;
+    @Value("${koulutusinformaatio.error.report.recipients}")
+    private String RECIPIENTS;
 
-    @Value("${smtp.host}")
+    @Value("${smtp.host:mta.i.ware.fi}")
     private String SMTP_HOST;
 
-    @Value("${host.oppija}")
+    @Value("${host.oppija:localhost}")
     private String ENVIRONMENT;
 
     @Autowired
@@ -399,7 +399,7 @@ public class UpdateServiceImpl implements UpdateService {
         try {
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress("admin@oph.fi", "admin@oph.fi"));
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(RECIPIENT, RECIPIENT));
+            msg.addRecipients(Message.RecipientType.TO, InternetAddress.parse(RECIPIENTS));
             msg.setSubject(subject);
             msg.setText(body);
             Transport.send(msg);

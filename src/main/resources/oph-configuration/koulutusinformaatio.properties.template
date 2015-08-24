@@ -25,8 +25,7 @@ server.name={{ansible_hostname}}
 solr.base.url={{solr_base_url}}
 # Workaround, user.home propertyn pitäisi tulla systeemistä kuten muissakin, mutta ei toimi tässä palvelussa 
 user.home=/data00/oph/koulutusinformaatio
-#TODO: tähän sellainen kätevä conffattu sähköpostilista
-invalid.koulutus.report.recipient=petteri.turtiainen@cybercom.com
+koulutusinformaatio.error.report.recipients={{koulutusinformaatio_error_report_recipients}}
 
 
 # Oletusarvoja
