@@ -28,7 +28,8 @@ public class Article {
     private String title;
     private String url;
     private String content;
-    private List<ArticleAttachment> attachments;
+    @JsonProperty("thumbnail_images")
+    private ThumbnailImages thumbnailImages;
     private String excerpt;
     private String id;
     private List<ArticleTag> tags;
@@ -58,11 +59,13 @@ public class Article {
     public void setContent(String content) {
         this.content = content;
     }
-    public List<ArticleAttachment> getAttachments() {
-        return attachments;
+
+    public ThumbnailImages getThumbnailImages() {
+        return thumbnailImages;
     }
-    public void setAttachments(List<ArticleAttachment> attachments) {
-        this.attachments = attachments;
+
+    public void setThumbnailImages(ThumbnailImages thumbnails) {
+        this.thumbnailImages = thumbnails;
     }
     public String getExcerpt() {
         return excerpt;

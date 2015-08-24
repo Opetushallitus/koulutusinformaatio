@@ -39,8 +39,8 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
         doc.addField(LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase());
         doc.addField(LearningOpportunity.ARTICLE_URL, article.getUrl());
         
-        if (article.getAttachments() != null && !article.getAttachments().isEmpty()) {
-            doc.addField(LearningOpportunity.ARTICLE_PICTURE, article.getAttachments().get(0).getUrl());
+        if (article.getThumbnailImages() != null && article.getThumbnailImages().getThumbnail() != null) {
+            doc.addField(LearningOpportunity.ARTICLE_PICTURE, article.getThumbnailImages().getThumbnail().getUrl());
         }
         
         doc.addField(LearningOpportunity.ARTICLE_EXCERPT, article.getExcerpt());

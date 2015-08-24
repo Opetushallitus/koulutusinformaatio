@@ -15,7 +15,7 @@
  */
 package fi.vm.sade.koulutusinformaatio.domain;
 
-public class ArticleAttachment {
+public class ThumbnailImage {
     
     private String url;
 
