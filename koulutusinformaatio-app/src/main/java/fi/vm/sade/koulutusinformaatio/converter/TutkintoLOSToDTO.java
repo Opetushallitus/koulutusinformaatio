@@ -16,24 +16,30 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.SetMultimap;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Mikko Majapuro
  */
-public final class ParentLOSToDTO {
+public final class TutkintoLOSToDTO {
 
-    private ParentLOSToDTO() {
+    private TutkintoLOSToDTO() {
     }
 
     public static ParentLearningOpportunitySpecificationDTO convert(final TutkintoLOS tutkintoLOS,
@@ -44,7 +50,7 @@ public final class ParentLOSToDTO {
 
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
         parent.setId(tutkintoLOS.getId());
-        parent.setName(ConverterUtil.getTextByLanguage(tutkintoLOS.getName(), defaultLang));
+        parent.setName(ConverterUtil.getTextByLanguage(tutkintoLOS.getName(), lang));
         parent.setEducationDegree(tutkintoLOS.getEducationDegree());
         parent.setProvider(ProviderToDTO.convert(tutkintoLOS.getProvider(), lang, defaultLang, uiLang));
         parent.setStructure(ConverterUtil.getTextByLanguage(tutkintoLOS.getStructure(), lang));

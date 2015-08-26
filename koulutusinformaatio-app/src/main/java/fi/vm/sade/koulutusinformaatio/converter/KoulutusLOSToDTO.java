@@ -105,7 +105,7 @@ public class KoulutusLOSToDTO {
             for (KoulutusLOS sibling : los.getSiblings()) {
 
                 if (los.getKoulutusPrerequisite() != null
-                    && !ParentLOSToDTO.isSamePrerequisite(los.getKoulutusPrerequisite().getValue(), sibling)
+                    && !TutkintoLOSToDTO.isSamePrerequisite(los.getKoulutusPrerequisite().getValue(), sibling)
                 ) {
                     continue;
                 }

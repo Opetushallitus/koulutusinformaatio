@@ -58,7 +58,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         if (lang == null) {
             lang = uiLang;
         }
-        return ParentLOSToDTO.convert(tutkintoLOS, lang, uiLang, LANG_FI, prerequisite);
+        return TutkintoLOSToDTO.convert(tutkintoLOS, lang, uiLang, LANG_FI, prerequisite);
     }
 
     @Override
