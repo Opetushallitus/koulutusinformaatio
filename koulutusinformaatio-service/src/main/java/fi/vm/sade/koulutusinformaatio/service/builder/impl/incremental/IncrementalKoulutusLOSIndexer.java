@@ -15,20 +15,24 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 
 /**
  * 
@@ -125,18 +129,15 @@ public class IncrementalKoulutusLOSIndexer {
         removeTutkintoLOS(dto.getKomoOid());
         if (!loses.isEmpty()) {
             for (KoulutusLOS los : loses) {
-                if (los.isOsaamisalaton()) {
+                this.dataUpdateService.updateKoulutusLos(los);
+                if (los.getTutkinto() == null) {
+                    indexToSolr(los);
                     LOG.debug("Updated osaamisalaton los {}", los.getId());
-                    this.indexToSolr(los);
-                    this.dataUpdateService.updateKoulutusLos(los);
                 } else {
+                    indexToSolr(los.getTutkinto());
+                    dataUpdateService.save(los.getTutkinto());
                     LOG.debug("Updated los {}", los.getId());
-                    this.dataUpdateService.updateKoulutusLos(los);
                 }
-            }
-            if (loses.get(0).getTutkinto() != null) {
-                this.indexToSolr(loses.get(0).getTutkinto());
-                this.dataUpdateService.updateTutkintoLos(loses.get(0).getTutkinto());
             }
         }
     }
