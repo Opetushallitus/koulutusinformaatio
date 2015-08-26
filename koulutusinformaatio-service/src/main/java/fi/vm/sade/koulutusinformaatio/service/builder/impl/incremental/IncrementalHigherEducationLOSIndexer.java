@@ -35,7 +35,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 /**
  * 
@@ -96,7 +96,7 @@ public class IncrementalHigherEducationLOSIndexer {
                 if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
                     for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
                         
-                        if (!curKoul.getKoulutusasteTyyppi().equals(KoulutusasteTyyppi.KORKEAKOULUTUS)) {
+                        if (!curKoul.getToteutustyyppiEnum().equals(ToteutustyyppiEnum.KORKEAKOULUTUS)) {
                             continue;
                         }
                         
