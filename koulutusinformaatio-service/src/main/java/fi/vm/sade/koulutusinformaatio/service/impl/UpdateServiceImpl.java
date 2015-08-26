@@ -154,9 +154,10 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(curLOS);
                         if (curLOS.getTutkinto() == null) {
                             indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                        } else {
+                            indexToSolr(curLOS.getTutkinto(), loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                            this.educationDataUpdateService.save(curLOS.getTutkinto());
                         }
-                        indexToSolr(curLOS.getTutkinto(), loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                        this.educationDataUpdateService.save(curLOS.getTutkinto());
                     }
                 }
                 progressCounter++;
