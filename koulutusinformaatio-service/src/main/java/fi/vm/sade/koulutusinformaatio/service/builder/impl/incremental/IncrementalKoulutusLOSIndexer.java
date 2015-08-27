@@ -135,7 +135,7 @@ public class IncrementalKoulutusLOSIndexer {
                     LOG.debug("Updated osaamisalaton los {}", los.getId());
                 } else {
                     indexToSolr(los.getTutkinto());
-                    dataUpdateService.save(los.getTutkinto());
+                    dataUpdateService.updateTutkintoLos(los.getTutkinto());
                     LOG.debug("Updated los {}", los.getId());
                 }
             }
