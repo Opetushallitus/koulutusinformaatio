@@ -63,8 +63,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             }
         }
         for (Code curPrereq : prerequisitesMap.values()) {
-            if (SolrConstants.PK.equalsIgnoreCase(curPrereq.getValue()) || SolrConstants.YO.equalsIgnoreCase(curPrereq.getValue()))
-                docs.add(createTutkintoDoc(tutkinto, curPrereq));
+            docs.add(createTutkintoDoc(tutkinto, curPrereq));
         }
 
         return docs;
