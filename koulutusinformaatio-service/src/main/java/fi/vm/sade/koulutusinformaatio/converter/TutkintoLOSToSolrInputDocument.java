@@ -56,15 +56,12 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         Map<String,Code> prerequisitesMap = new HashMap<String,Code>();
         for (KoulutusLOS koulutus : tutkinto.getChildEducations()) {
             for (Code prereq : koulutus.getPrerequisites()) {
-                String prereqStr = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(prereq.getValue())
-                        ? SolrConstants.PK
-                        : prereq.getValue();
+                String prereqStr = prereq.getValue();
                 prerequisitesMap.put(prereqStr, prereq);
             }
         }
         for (Code curPrereq : prerequisitesMap.values()) {
-            if (SolrConstants.PK.equalsIgnoreCase(curPrereq.getValue()) || SolrConstants.YO.equalsIgnoreCase(curPrereq.getValue()))
-                docs.add(createTutkintoDoc(tutkinto, curPrereq));
+            docs.add(createTutkintoDoc(tutkinto, curPrereq));
         }
 
         return docs;
@@ -76,7 +73,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         String prereqVal = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(prerequisite.getValue())
                 ? SolrConstants.PK : prerequisite.getValue();
         doc.addField(LearningOpportunity.TYPE, tutkinto.getType());
-        doc.addField(LearningOpportunity.ID, String.format("%s#%s", tutkinto.getId(), prereqVal));
+        doc.addField(LearningOpportunity.ID, String.format("%s#%s", tutkinto.getId(), prerequisite.getValue()));
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         
         doc.addField(LearningOpportunity.PREREQUISITES, prereqVal);
