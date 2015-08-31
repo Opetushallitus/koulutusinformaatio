@@ -304,6 +304,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
+                los.getPrerequisites().addAll(koodistoService.searchMultiple(ao.getRequiredBaseEducations()));
                 ao.setParent(createParentLosRef(los));
                 ao.setType(TarjontaConstants.TYPE_KK);
             }
@@ -785,7 +786,13 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public KoulutusLOS createAmmatillinenLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
             TarjontaParseException {
-        KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_AMMATILLINEN);
+        
+        String edType = SolrConstants.ED_TYPE_AMMATILLINEN;
+        if (koulutusDTO.getKoulutustyyppi().getUri().contains("koulutustyyppi_4")) {
+            edType = SolrConstants.ED_TYPE_AMM_ER;
+        }
+        
+        KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, edType);
         addKoulutus2AsteV1Fields(koulutusDTO, los);
         addKoulutusAmmatillinenPerustutkintoV1Fields(koulutusDTO, los);
         if (!los.isOsaamisalaton()) {
@@ -1301,9 +1308,6 @@ public class LOSObjectCreator extends ObjectCreator {
         tutkintoLOS.setTopics(getTopics(komo.getOpintoala().getUri()));
         tutkintoLOS.setThemes(getThemes(tutkintoLOS));
         tutkintoLOS.setEducationCode(createCode(komo.getKoulutuskoodi()));
-
-        tutkintoLOS.setKotitalousopetus(komo.getKoulutuskoodi() != null
-                && komo.getKoulutuskoodi().getArvo().contains(TarjontaConstants.KOTITALOUSKOODI));
 
         return tutkintoLOS;
     }

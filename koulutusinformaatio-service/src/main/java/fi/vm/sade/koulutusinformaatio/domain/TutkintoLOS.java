@@ -16,10 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 public class TutkintoLOS extends LOS {
 
@@ -54,8 +59,6 @@ public class TutkintoLOS extends LOS {
 
     private Set<Code> teachingLanguages = new HashSet<Code>();
 
-    private boolean kotitalousopetus;
-
     private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
 
     public List<ChildLOS> getChildren() {
@@ -88,14 +91,6 @@ public class TutkintoLOS extends LOS {
 
     public void setTeachingLanguages(Set<Code> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
-    }
-
-    public boolean isKotitalousopetus() {
-        return kotitalousopetus;
-    }
-
-    public void setKotitalousopetus(boolean kotitalousopetus) {
-        this.kotitalousopetus = kotitalousopetus;
     }
 
     public String getId() {

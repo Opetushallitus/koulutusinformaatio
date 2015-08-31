@@ -356,12 +356,12 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 doc.addField(LearningOpportunity.TEACHING_LANGUAGE, teachingLang);
                 usedVals.add(teachingLang);
             }
-            if (!tutkinto.isKotitalousopetus()
-                    && !usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
-                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+            if (!usedVals.contains(koulutus.getEducationType())) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, koulutus.getEducationType());
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
-                usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
+                usedVals.add(koulutus.getEducationType());
             }
+
             boolean isKaksoistutkinto = false;
             for (ApplicationOption ao : koulutus.getApplicationOptions()) {
                 if (ao.isKaksoistutkinto()) {
@@ -369,18 +369,11 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 }
             }
 
-            if (!tutkinto.isKotitalousopetus()
-                    && SolrConstants.PK.equalsIgnoreCase(prerequisite)
+            if (SolrConstants.PK.equalsIgnoreCase(prerequisite)
                     && isKaksoistutkinto
                     && !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
                 usedVals.add(SolrConstants.ED_TYPE_KAKSOIS);
-            }
-            if (tutkinto.isKotitalousopetus() && !usedVals.contains(SolrConstants.ED_TYPE_MUU)) {
-                usedVals.add(SolrConstants.ED_TYPE_MUU);
-                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
-                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KOTITALOUS);
-                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KOTITALOUS_DISPLAY);
             }
 
             for (Code prereq : koulutus.getPrerequisites()) {
