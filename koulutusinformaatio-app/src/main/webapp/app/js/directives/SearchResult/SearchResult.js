@@ -127,12 +127,12 @@ directive('extendedSearchresultData',
                 }
 
                 LOService.query({id: $scope.lo.id}).then(function(result) {
-                    if ($scope.lo.prerequisiteCode) {
-                        for(var i = 0; i < result.lo.lois.length; i++) {
+                    if ($scope.lo.prerequisiteCode && result.lo.children) {
+                        for(var i = 0; i < result.lo.children.length; i++) {
                             // filter out unnecessary lois by prerequisite
-                            var loi = result.lo.lois[i];
+                            var loi = result.lo.children[i];
                             if ($scope.lo.prerequisiteCode != loi.prerequisite.value) {
-                                result.lo.lois.splice(i, 1);
+                                result.lo.children.splice(i, 1);
                             }
                         }
                     }
