@@ -1267,13 +1267,13 @@ public class LOSObjectCreator extends ObjectCreator {
 
     }
 
-    public TutkintoLOS createTutkintoLOS(String komoOid, String providerOid) throws KoodistoException, TarjontaParseException {
+    public TutkintoLOS createTutkintoLOS(String komoOid, String providerOid, String year, String season) throws KoodistoException, TarjontaParseException {
         ResultV1RDTO<KomoV1RDTO> v1KomoRaw = tarjontaRawService.getV1Komo(komoOid);
         KomoV1RDTO komo = v1KomoRaw.getResult();
-        return createTutkintoLOS(komo, providerOid);
+        return createTutkintoLOS(komo, providerOid, year, season);
     }
 
-    public TutkintoLOS createTutkintoLOS(KomoV1RDTO komo, String providerOid) throws KoodistoException, TarjontaParseException {
+    public TutkintoLOS createTutkintoLOS(KomoV1RDTO komo, String providerOid, String year, String season) throws KoodistoException, TarjontaParseException {
         LOG.debug("Creating provider specific parent (" + providerOid + ") LOS from komo: " + komo.getOid());
         TutkintoLOS tutkintoLOS = new TutkintoLOS();
         tutkintoLOS.setType(TarjontaConstants.TYPE_PARENT);
@@ -1293,7 +1293,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         tutkintoLOS.setEducationDegree(komo.getKoulutusaste().getArvo());
 
-        tutkintoLOS.setId(CreatorUtil.resolveLOSId(komo.getOid(), providerOid));
+        tutkintoLOS.setId(CreatorUtil.resolveLOSId(komo.getOid(), providerOid, year, season));
         tutkintoLOS.setName(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
         tutkintoLOS.setShortTitle(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
         NimiV1RDTO goals = komo.getKuvausKomo().get(KomoTeksti.TAVOITTEET);

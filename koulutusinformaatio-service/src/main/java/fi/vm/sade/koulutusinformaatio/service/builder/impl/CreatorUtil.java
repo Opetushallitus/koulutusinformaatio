@@ -22,7 +22,6 @@ import com.google.common.base.Predicate;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
@@ -97,8 +96,9 @@ public final class CreatorUtil {
         }
     };
 
-    protected static String resolveLOSId(String komoId, String providerId) {
-        return Joiner.on("_").join(komoId, providerId);
+    protected static String resolveLOSId(String komoId, String providerId, String year, String season) {
+        return Joiner.on("_").join(komoId, providerId, year, season);
+
     }
     
     public static boolean isSecondaryAS(HakuV1RDTO asDto) {
