@@ -869,9 +869,10 @@ public class TarjontaServiceImpl implements TarjontaService {
             String parentoid = koulutusDTO.getParentKomoOid();
             String providerOid = koulutusDTO.getTarjoajat().iterator().next();
             KoulutusLOS koulutus = creator.createAmmatillinenLOS(koulutusDTO.getOid(), true);
-            TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(Joiner.on("_").join(parentoid, providerOid));
+            TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(Joiner.on("_").join(parentoid, providerOid, koulutus.getStartYear(),
+                    koulutus.getStartSeason().get("fi")));
             if (tutkinto == null) {
-                tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
+                tutkinto = creator.createTutkintoLOS(parentoid, providerOid, "" + koulutus.getStartYear(), koulutus.getStartSeason().get("fi"));
             }
             if (koulutus.isOsaamisalaton()) {
                 koulutus.setSiblings(new ArrayList<KoulutusLOS>());
