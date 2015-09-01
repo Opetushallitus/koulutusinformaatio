@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Joiner;
+
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
@@ -867,28 +869,22 @@ public class TarjontaServiceImpl implements TarjontaService {
             String parentoid = koulutusDTO.getParentKomoOid();
             String providerOid = koulutusDTO.getTarjoajat().iterator().next();
             KoulutusLOS koulutus = creator.createAmmatillinenLOS(koulutusDTO.getOid(), true);
+            TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(Joiner.on("_").join(parentoid, providerOid));
+            if (tutkinto == null) {
+                tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
+            }
             if (koulutus.isOsaamisalaton()) {
-                TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(parentoid);
-                if (tutkinto == null) {
-                    tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
-                }
                 koulutus.setSiblings(new ArrayList<KoulutusLOS>());
                 koulutus.setTutkinto(null);
                 koulutus.setGoals(tutkinto.getGoals());
                 return new ArrayList<KoulutusLOS>(Arrays.asList(koulutus));
             }
 
-            TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(parentoid);
-            if (tutkinto == null) {
-                tutkinto = creator.createTutkintoLOS(parentoid, providerOid);
-            }
             List<String> siblings = koulutusDTO.getSiblingKomotos();
             if (siblings != null) {
                 for (String oid : siblings) {
                     try {
-                        KoulutusLOS siblingLOS = creator.createAmmatillinenLOS(oid, true);
-                        siblingLOS.setTutkinto(tutkinto);
-                        losses.add(siblingLOS);
+                        losses.add(creator.createAmmatillinenLOS(oid, true));
                     } catch (TarjontaParseException e) {
                         addProcessedOid(oid);
                         LOG.warn("Vocational sibling " + oid + " was not valid: " + e.getMessage());
@@ -896,17 +892,18 @@ public class TarjontaServiceImpl implements TarjontaService {
                     }
                 }
             }
-            koulutus.setTutkinto(tutkinto);
             losses.add(koulutus);
 
             for (KoulutusLOS los : losses) {
-                if (los != null) {
-                    tutkinto.getChildEducations().add(los);
-                    tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
-                    tutkinto.getApplicationOptions().addAll(los.getApplicationOptions());
-                    los.setSiblings(losses);
-                    addProcessedOid(los.getId());
-                }
+                tutkinto.getChildEducations().add(los);
+                tutkinto.getTeachingLanguages().addAll(los.getTeachingLanguages());
+                tutkinto.getApplicationOptions().addAll(los.getApplicationOptions());
+            }
+
+            for (KoulutusLOS los : losses) {
+                los.setSiblings(losses);
+                los.setTutkinto(tutkinto);
+                addProcessedOid(los.getId());
             }
 
             for (ApplicationOption ao : tutkinto.getApplicationOptions()) {
