@@ -16,15 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import java.util.List;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.params.DisMaxParams;
 
-import java.util.List;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 
 /**
  * Solr query for querying learning opportunity providers.
@@ -125,7 +127,9 @@ public class ProviderQuery extends SolrQuery {
         if ("*".equals(q)) {
             return Joiner.on(":").join(resolveNameField(lang, false), q);
         } else {
-            return String.format("%s OR %s OR %s", Joiner.on(":").join(resolveNameField("fi", false), ClientUtils.escapeQueryChars(q)), Joiner.on(":").join(resolveNameField("sv", false), ClientUtils.escapeQueryChars(q)), Joiner.on(":").join(resolveNameField("en", false), ClientUtils.escapeQueryChars(q)));
+            return String.format("%s OR %s OR %s", Joiner.on(":").join(resolveNameField("fi", false), ClientUtils.escapeQueryChars(q) + '*'),
+                    Joiner.on(":").join(resolveNameField("sv", false), ClientUtils.escapeQueryChars(q) + '*'),
+                    Joiner.on(":").join(resolveNameField("en", false), ClientUtils.escapeQueryChars(q) + '*'));
         }
     }
 
