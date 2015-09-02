@@ -2,10 +2,12 @@
     <div class="row row-xs-height">
         <div class="col-xs-10 col-xs-height">
             <h2 title="{{locales.openEducation}}">
-                <a href="{{lo.linkHref}}"><span>{{lo.name}}</span><span data-ng-if="lo.prerequisiteCode == 'ER'" data-ki-i18n="title-as-special-needs-education"></span><span>, {{lo.credits}}</a></span>
+                <a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a>
             </h2>
             <div data-ng-show="!lo.educationType">
-            <span class="italic" data-ki-i18n="et3"></span><br />
+                <span class="italic" data-ng-if="lo.prerequisiteCode != 'ER'" data-ki-i18n="et3"></span>
+                <span class="italic" data-ng-if="lo.prerequisiteCode == 'ER'" data-ki-i18n="et4"></span>
+                <br />
             </div>
             <span data-ng-show="lo.prerequisite">
                 <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>

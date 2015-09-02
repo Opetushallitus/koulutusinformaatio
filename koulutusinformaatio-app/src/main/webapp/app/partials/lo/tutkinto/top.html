@@ -4,9 +4,7 @@
             <h4>{{provider.name}}</h4>
             <span>{{lo.educationDomain}}<span data-ng-show="lo.qualification">, {{lo.qualification}}</span></span>
         </div>
-        <h1 data-ng-if="!lo.containsPseudoChildLOS">{{lo.name}}
-            <span data-ng-if="prerequisite == 'ER'" data-ki-i18n="title-as-special-needs-education"></span><span data-ng-show="lo.creditValue">, {{lo.creditValue}} {{lo.creditUnit}}</span>
-        </h1>
+        <h1 data-ng-if="!lo.containsPseudoChildLOS">{{lo.name}}<span data-ng-show="lo.creditValue">, {{lo.creditValue}} {{lo.creditUnit}}</span></h1>
         <h1 data-ng-if="lo.containsPseudoChildLOS">{{lo.name}}<span data-ng-show="lo.creditValue">, {{pseudoChild.creditValue}} {{pseudoChild.creditUnit}}</span></h1>
         <div data-ki-child-ribbon data-children="lo.children" type="loType" class="ribbon"></div>
     </div>
