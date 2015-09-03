@@ -272,7 +272,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
             /*
              * if (koulutus.getOpetusTarjoajat() != null) {
-             *
+             * 
              * }
              */
 
@@ -468,7 +468,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
 
-        ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = tarjontaRawService.findHakukohdesByEducationOid(los.getId());
+        ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = tarjontaRawService.findHakukohdesByEducationOid(los.getId(), checkStatus);
         if (result == null
                 || result.getResult() == null
                 || result.getResult().getTulokset() == null
@@ -786,12 +786,12 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public KoulutusLOS createAmmatillinenLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
             TarjontaParseException {
-        
+
         String edType = SolrConstants.ED_TYPE_AMMATILLINEN;
         if (koulutusDTO.getKoulutustyyppi().getUri().contains("koulutustyyppi_4")) {
             edType = SolrConstants.ED_TYPE_AMM_ER;
         }
-        
+
         KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, edType);
         addKoulutus2AsteV1Fields(koulutusDTO, los);
         addKoulutusAmmatillinenPerustutkintoV1Fields(koulutusDTO, los);
@@ -1292,7 +1292,7 @@ public class LOSObjectCreator extends ObjectCreator {
         tutkintoLOS.setName(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
         tutkintoLOS.setShortTitle(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
         NimiV1RDTO goals = komo.getKuvausKomo().get(KomoTeksti.TAVOITTEET);
-        if(goals != null){
+        if (goals != null) {
             tutkintoLOS.setGoals(getI18nText(goals.getTekstis()));
         }
         tutkintoLOS.setCreditValue(komo.getOpintojenLaajuusarvo().getArvo());
@@ -1315,6 +1315,5 @@ public class LOSObjectCreator extends ObjectCreator {
         this.cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
         this.invalidOids = new HashSet<String>();
     }
-
 
 }

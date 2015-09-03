@@ -146,13 +146,21 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid) {
-        return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
-                        .path("search")
-                        .queryParam("koulutusOid", oid)
-                        .queryParam("tila", "JULKAISTU"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
-                });
+    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid, boolean onlyPublished) {
+        if (onlyPublished) {
+            return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
+                    .path("search")
+                    .queryParam("koulutusOid", oid)
+                    .queryParam("tila", "JULKAISTU"),
+                    new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                    });
+        } else {
+            return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
+                    .path("search")
+                    .queryParam("koulutusOid", oid),
+                    new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                    });
+        }
     }
 
     @Override

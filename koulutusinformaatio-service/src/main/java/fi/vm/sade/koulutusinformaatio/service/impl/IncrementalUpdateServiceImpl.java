@@ -15,15 +15,12 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.service.*;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +30,22 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 
 
 
@@ -191,7 +199,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             try {
 
                 List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> tulokset =
-                        tarjontaRawService.findHakukohdesByEducationOid(curOid).getResult().getTulokset();
+                        tarjontaRawService.findHakukohdesByEducationOid(curOid, false).getResult().getTulokset();
 
                 for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> tarjoaja : tulokset) {
                     for (HakukohdeHakutulosV1RDTO hakukohdeTulos : tarjoaja.getTulokset()) {
