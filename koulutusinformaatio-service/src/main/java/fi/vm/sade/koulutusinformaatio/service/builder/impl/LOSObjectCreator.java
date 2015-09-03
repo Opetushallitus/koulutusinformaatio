@@ -877,14 +877,9 @@ public class LOSObjectCreator extends ObjectCreator {
         if (los.getTopics() != null) {
             los.setThemes(getThemes(los));
         }
-
-        los.setTopics(createCodes(koulutus.getAihees()));
-        los.setThemes(getThemes(los));
-
         if (koulutus.getAmmattinimikkeet() != null) {
             los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
         }
-
     }
 
     private <S extends KoulutusAmmatillinenPerustutkintoV1RDTO, T extends KoulutusLOS> void addKoulutusAmmatillinenPerustutkintoV1Fields(S koulutus, T los)

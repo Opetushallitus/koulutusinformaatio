@@ -28,8 +28,8 @@ public abstract class LOS {
     private I18nText shortTitle;
     private I18nText goals;
     private String type;
-    private List<Code> topics;
-    private List<Code> themes;
+    private List<Code> topics; // aiheet
+    private List<Code> themes; // teemat
     private List<I18nText> professionalTitles;
 
     public String getId() {
