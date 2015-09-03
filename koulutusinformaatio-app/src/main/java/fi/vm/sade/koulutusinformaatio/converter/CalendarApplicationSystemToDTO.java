@@ -44,6 +44,7 @@ public final class CalendarApplicationSystemToDTO {
             calendarAS.setId(applicationSystem.getId());
             calendarAS.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationSystem.getName(), lang));
             calendarAS.setAsOngoing(ConverterUtil.isCalendarApplicationsystemOngoing(applicationSystem.getApplicationPeriods()));
+            calendarAS.setVarsinainenHaku(applicationSystem.isVarsinainenHaku());
             calendarAS.setApplicationPeriods(convertApplicationPeriods(applicationSystem.getApplicationPeriods(), lang));
             return calendarAS;
         } else {

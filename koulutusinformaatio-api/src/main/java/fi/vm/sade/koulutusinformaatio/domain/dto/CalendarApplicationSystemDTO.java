@@ -30,6 +30,7 @@ public class CalendarApplicationSystemDTO {
     private String id;
     private String name;
     private boolean asOngoing;
+    private boolean varsinainenHaku;
     List<ApplicationPeriodDTO> applicationPeriods = new ArrayList<ApplicationPeriodDTO>();
     
     public String getId() {
@@ -55,6 +56,14 @@ public class CalendarApplicationSystemDTO {
     }
     public void setAsOngoing(boolean asOngoing) {
         this.asOngoing = asOngoing;
+    }
+
+    public boolean isVarsinainenHaku() {
+        return varsinainenHaku;
+    }
+
+    public void setVarsinainenHaku(boolean varsinainenHaku) {
+        this.varsinainenHaku = varsinainenHaku;
     }
     
     

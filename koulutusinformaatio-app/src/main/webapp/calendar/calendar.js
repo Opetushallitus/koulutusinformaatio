@@ -28,6 +28,8 @@ var ApplicationSystemCalendar = (function() {
     var o = {},
         calendar,
         panel,
+        countLisahaut = 0,
+        
 
     calendar = function(options) {
 
@@ -114,6 +116,7 @@ var ApplicationSystemCalendar = (function() {
 
     createCalendar = function(obj) {
         _.each(obj, function(monthobj, index) {
+            countLisahaut = 0;
             var list = $('<ul class="list-unstyled"></ul>');
             var month;
 
@@ -129,10 +132,8 @@ var ApplicationSystemCalendar = (function() {
                 var itemStartDate = ki.Utils.getAsStartDate(item) < now ? now : ki.Utils.getAsStartDate(item);
                 month = new Date( itemStartDate ).getMonth();
             });
-
             panel.append( createPanel(ki.i18n.t('month-' + month), list, 'month_' + index) );
         });
-
         calendar.append(panel);
         calendar.show();
     },
@@ -160,6 +161,11 @@ var ApplicationSystemCalendar = (function() {
 
         panel = $(panel);
         panel.find('.panel-body').append(content);
+        if(countLisahaut > 0){
+            panel.find('.panel-body')
+            .append('<a class="showLisahautLink" href="javascript:void(0);" onclick="ki.Utils.showLisahaut();">'
+                    +ki.i18n.t('show-lisahaut')+' ('+countLisahaut+')</a>')
+        }
         return panel;
     },
 
@@ -183,9 +189,14 @@ var ApplicationSystemCalendar = (function() {
         buttonCol.append(createApplicationFormButton(item));
         buttonRow.append(buttonCol);
 
+        listItem.addClass(item.varsinainenHaku ? 'varsinainenHaku' : 'notVarsinainenHaku');
         listItem.append(row);
         listItem.append(buttonRow);
 
+        if(!item.varsinainenHaku){
+            countLisahaut++;
+            listItem.hide();
+        }
         return listItem;
     },
 
@@ -223,7 +234,6 @@ var ApplicationSystemCalendar = (function() {
 
         return form;
     };
-
     
     return {
         calendar: calendar
@@ -288,7 +298,8 @@ ki.i18n = (function() {
             'month-10': 'Marraskuu',
             'month-11': 'Joulukuu',
             'time-abbrv': 'klo',
-            'fill-in-form': 'Täytä hakulomake'
+            'fill-in-form': 'Täytä hakulomake',
+            'show-lisahaut': 'Näytä myös lisähaut'
         },
         sv: {
             'month-0-abbrv': 'Jan',
@@ -316,7 +327,8 @@ ki.i18n = (function() {
             'month-10': 'November',
             'month-11': 'December',
             'time-abbrv': 'kl',
-            'fill-in-form': 'Fyll i ansökan'
+            'fill-in-form': 'Fyll i ansökan',
+            'show-lisahaut': 'Visa även tilläggsansökningarna'
         },
         en: {
             'month-0-abbrv': 'Jan',
@@ -344,7 +356,8 @@ ki.i18n = (function() {
             'month-10': 'November',
             'month-11': 'December',
             'time-abbrv': 'at',
-            'fill-in-form': 'Fill in application'
+            'fill-in-form': 'Fill in application',
+            'show-lisahaut': 'Show also additional admissions'
         }
     },
 
@@ -421,6 +434,11 @@ ki.Utils = (function() {
         } else {
             return number;
         }
+    },
+    
+    showLisahaut = function(item) {
+        $('.notVarsinainenHaku').show();
+        $('.showLisahautLink').hide();
     };
 
     return {
@@ -428,6 +446,7 @@ ki.Utils = (function() {
         getAsStartDate: getAsStartDate,
         getApplicationSystemName: getApplicationSystemName,
         getTimestamp: getTimestamp,
-        padWithZero: padWithZero
+        padWithZero: padWithZero,
+        showLisahaut: showLisahaut
     };
 }());

@@ -30,6 +30,7 @@ public class CalendarApplicationSystem {
     private List<ApplicationPeriod> applicationPeriods = new ArrayList<ApplicationPeriod>();
     private String targetGroupCode;
     private boolean shownInCalendar;
+    private boolean VarsinainenHaku;
     
     public String getId() {
         return id;
@@ -61,6 +62,12 @@ public class CalendarApplicationSystem {
     }
     public boolean isShownInCalendar() {
         return shownInCalendar;
+    }
+    public boolean isVarsinainenHaku() {
+        return VarsinainenHaku;
+    }
+    public void setVarsinainenHaku(boolean varsinainenHaku) {
+        VarsinainenHaku = varsinainenHaku;
     }
 
 }

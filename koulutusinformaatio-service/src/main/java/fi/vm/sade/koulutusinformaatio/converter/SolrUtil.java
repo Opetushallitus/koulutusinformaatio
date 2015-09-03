@@ -16,17 +16,23 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.DisMaxParams;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 /**
  * @author Hannu Lyytikainen
@@ -381,6 +387,7 @@ public final class SolrUtil {
         
         // Application system fields
         public static final String AS_TARGET_GROUP_CODE = "targetGroupCode_ffm";
+        public static final String AS_IS_VARSINAINEN = "isVarsinainen_ffm";
     }
 
     public static class LocationFields {
