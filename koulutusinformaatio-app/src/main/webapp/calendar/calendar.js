@@ -357,7 +357,7 @@ ki.i18n = (function() {
             'month-11': 'December',
             'time-abbrv': 'at',
             'fill-in-form': 'Fill in application',
-            'show-lisahaut': 'Show also additional admissions'
+            'show-lisahaut': 'Show also additional applications'
         }
     },
 
