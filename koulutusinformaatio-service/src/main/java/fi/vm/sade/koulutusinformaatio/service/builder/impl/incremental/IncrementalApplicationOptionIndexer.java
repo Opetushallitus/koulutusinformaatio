@@ -15,13 +15,13 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 
 /**
  *
@@ -41,14 +41,8 @@ public class IncrementalApplicationOptionIndexer {
     }
 
     public void indexApplicationOptionData(HakukohdeV1RDTO aoDto, HakuV1RDTO asDto) throws Exception {
-        boolean toRemove = !TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila());
-
         for (String koulutusOid : aoDto.getHakukohdeKoulutusOids()) {
-            if (!toRemove) {
-                losIndexer.indexKoulutusLos(koulutusOid);
-            } else {
-                losIndexer.removeKoulutus(koulutusOid);
-            }
+            losIndexer.indexKoulutusLos(koulutusOid);
         }
     }
 }
