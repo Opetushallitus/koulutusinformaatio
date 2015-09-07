@@ -28,8 +28,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 
@@ -38,6 +36,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
  */
 public class ApplicationSystemCreator extends ObjectCreator {
 
+    private static final String VARSINAINEN_HAKU = "hakutyyppi_01";
     private ParameterService parameterService;
 
     public ApplicationSystemCreator(KoodistoService koodistoService, ParameterService parameterService) {
@@ -101,6 +100,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
         as.setId(haku.getOid());
         as.setName(getI18nText(haku.getNimi()));
         as.setShownInCalendar(shownInCalendar);
+        as.setVarsinainenHaku(haku.getHakutyyppiUri().contains(VARSINAINEN_HAKU));
 
         as.setTargetGroupCode(koodistoService.searchFirstCodeValue( haku.getKohdejoukkoUri() ));
         if (haku.getHakuaikas() != null) {
