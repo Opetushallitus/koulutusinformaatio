@@ -44,7 +44,7 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
         query.field("applicationSystem.id").equal(asId);
         query.field("provider").equal(new Key<LearningOpportunityProviderEntity>(LearningOpportunityProviderEntity.class, lopId));
         if (!Strings.isNullOrEmpty(baseEducation)) {
-            query.field("requiredBaseEducations").contains(baseEducation);
+            query.field("requiredBaseEducations").equal(baseEducation);
         }
         if (!vocational) {
             query.field("vocational").equal(false);
@@ -77,7 +77,7 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
         query.field("applicationSystem.id").equal(asId);
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
         if (!Strings.isNullOrEmpty(baseEducation)) {
-            query.field("requiredBaseEducations").contains(baseEducation);
+            query.field("requiredBaseEducations").equal(baseEducation);
         }
         if (!vocational) {
             query.field("vocational").equal(false);

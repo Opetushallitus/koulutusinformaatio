@@ -36,8 +36,8 @@ public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportun
 
     public List<Key<SpecialLearningOpportunitySpecificationEntity>> findByAoId(
             String id) {
-        
-        Query<SpecialLearningOpportunitySpecificationEntity> q = this.ds.createQuery(SpecialLearningOpportunitySpecificationEntity.class).field("aoIds").contains(id);
+
+        Query<SpecialLearningOpportunitySpecificationEntity> q = this.ds.createQuery(SpecialLearningOpportunitySpecificationEntity.class).field("aoIds").equal(id);
         return find(q).asKeyList();
         
     }
