@@ -85,7 +85,7 @@ public class UpdateServiceImpl implements UpdateService {
     private boolean running = false;
     private long runningSince = 0;
     private LocationService locationService;
-    private long progressCounter;
+    private long fullIndexingStartTime;
 
     @Value("${koulutusinformaatio.error.report.recipients}")
     private String RECIPIENTS;
@@ -117,7 +117,7 @@ public class UpdateServiceImpl implements UpdateService {
         HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
-        progressCounter = 0;
+        fullIndexingStartTime = System.currentTimeMillis();
 
         try {
 
@@ -138,7 +138,6 @@ public class UpdateServiceImpl implements UpdateService {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(los);
                 }
-                progressCounter++;
             }
             LOG.info("Lukio educations saved.");
 
@@ -160,7 +159,6 @@ public class UpdateServiceImpl implements UpdateService {
                         }
                     }
                 }
-                progressCounter++;
             }
             LOG.info("Vocational educations saved.");
             tarjontaService.clearProcessedLists();
@@ -174,7 +172,6 @@ public class UpdateServiceImpl implements UpdateService {
 
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
-                progressCounter++;
             }
             LOG.info("Higher educations saved.");
 
@@ -187,7 +184,6 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult education: {}", curLOS.getId());
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
-                progressCounter++;
             }
             LOG.info("Adult upper secondary and base educations saved.");
 
@@ -198,7 +194,6 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult vocational los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
-                progressCounter++;
             }
             LOG.info("Adult vocational educations saved.");
 
@@ -209,7 +204,6 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult valmistava los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
-                progressCounter++;
             }
             LOG.info("Valmistava educations saved.");
 
@@ -234,13 +228,11 @@ public class UpdateServiceImpl implements UpdateService {
             for (CalendarApplicationSystem curAs : applicationSystems) {
                 LOG.debug("Indexing application system: {}", curAs.getId());
                 this.indexerService.indexASToSolr(curAs, loUpdateSolr);
-                progressCounter++;
             }
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.info("Application systems indexed");
 
             List<Article> articles = this.articleService.fetchArticles();
-            progressCounter += articles.size();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.info("Articles indexed to solr");
@@ -249,7 +241,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.debug("Transaction completed");
-            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS", progressCounter));
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS", getProgressCounter()));
 
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
@@ -265,7 +257,7 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     public long getProgressCounter() {
-        return progressCounter;
+        return System.currentTimeMillis() - fullIndexingStartTime;
     }
 
     /*
@@ -316,7 +308,6 @@ public class UpdateServiceImpl implements UpdateService {
                 }
                 
             }
-            progressCounter++;
         }
     }
 
