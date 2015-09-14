@@ -40,6 +40,7 @@ public interface LearningOpportunityProviderResource {
 
     public static final String BASE_EDUCATION = "baseEducation";
     public static final String VOCATIONAL = "vocational";
+    public static final String ONGOING = "ongoing";
     public static final String NON_VOCATIONAL = "nonVocational";
     public static final String ASID = "asId";
     public static final String TERM = "term";
@@ -74,6 +75,7 @@ public interface LearningOpportunityProviderResource {
                                                  @DefaultValue(value = "0") @QueryParam("start") int start,
                                                  @DefaultValue(value = "50") @QueryParam("rows") int rows,
                                                  @DefaultValue(LANG_FI) @QueryParam(LANG) String lang,
+                                                 @DefaultValue("false") @QueryParam(ONGOING) boolean ongoing,
                                                  @QueryParam("type") String type);
 
     @GET

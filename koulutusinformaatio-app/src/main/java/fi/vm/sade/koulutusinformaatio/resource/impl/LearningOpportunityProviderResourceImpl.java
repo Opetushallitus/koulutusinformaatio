@@ -16,29 +16,36 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -51,14 +58,14 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     @Autowired
     public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper,
-                                                   LearningOpportunityService learningOpportunityService) {
+            LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
         this.learningOpportunityService = learningOpportunityService;
     }
 
     @Override
     public List<ProviderSearchResultDTO> searchProviders(String term, String asId, List<String> baseEducations, boolean vocational,
-                                                      boolean nonVocational, int start, int rows, final String lang, final String type) {
+            boolean nonVocational, int start, int rows, final String lang, boolean ongoing, final String type) {
         List<Provider> learningOpportunityProviders = null;
         try {
             String key = null;
@@ -74,17 +81,20 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             }
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducations, vocational,
                     nonVocational, start, rows, lang, false, type);
+            if (ongoing) {
+                learningOpportunityProviders = filterProvidersWithoutOngoingEducation(learningOpportunityProviders, asId, lang);
+            }
             List<ProviderSearchResultDTO> result = Lists.newArrayList(
-                                                    Lists.transform(learningOpportunityProviders, 
-                                                                    new Function<Provider, ProviderSearchResultDTO>() {
-                @Override
-                public ProviderSearchResultDTO apply(Provider lop) {
-                    ProviderSearchResultDTO result = new ProviderSearchResultDTO();
-                    result.setId(lop.getId());
-                    result.setName(ConverterUtil.getTextByLanguageUseFallbackLang(lop.getName(), lang));
-                    return result;
-                }
-            }));
+                    Lists.transform(learningOpportunityProviders,
+                            new Function<Provider, ProviderSearchResultDTO>() {
+                                @Override
+                                public ProviderSearchResultDTO apply(Provider lop) {
+                                    ProviderSearchResultDTO result = new ProviderSearchResultDTO();
+                                    result.setId(lop.getId());
+                                    result.setName(ConverterUtil.getTextByLanguageUseFallbackLang(lop.getName(), lang));
+                                    return result;
+                                }
+                            }));
 
             Collections.sort(result, new ProviderSearchResultComparator());
             return result;
@@ -92,6 +102,28 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             throw KIExceptionHandler.resolveException(e);
         }
 
+    }
+
+    private List<Provider> filterProvidersWithoutOngoingEducation(List<Provider> learningOpportunityProviders, String asId, String lang)
+            throws SearchException {
+        List<Provider> result = new ArrayList<Provider>();
+
+        List<String> facetFilters = new ArrayList<String>();
+        facetFilters.add("asFacet_ffm:" + asId);
+
+        LOSearchResultList loSearchResult = searchService.searchLearningOpportunities("*", null, null, facetFilters, new ArrayList<String>(),
+                new ArrayList<String>(), lang, true, false, false, 0, 9999999, null, null, null, null, null, SearchType.LO);
+
+        HashSet<String> ongoingProviderIDs = new HashSet<String>();
+        for (LOSearchResult lo : loSearchResult.getResults()) {
+            ongoingProviderIDs.addAll(lo.getLopIds());
+        }
+        for (Provider p : learningOpportunityProviders) {
+            if (ongoingProviderIDs.contains(p.getId())) {
+                result.add(p);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -102,7 +134,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             throw KIExceptionHandler.resolveException(e);
         }
     }
-    
+
     @Override
     public PictureDTO getProviderThumbnail(String lopId) {
         try {
