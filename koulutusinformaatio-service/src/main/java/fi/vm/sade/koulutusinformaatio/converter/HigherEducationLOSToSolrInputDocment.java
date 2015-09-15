@@ -67,6 +67,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<KoulutusL
         Provider provider = los.getProvider();
         doc.addField(LearningOpportunity.ID, los.getId());
         doc.addField(LearningOpportunity.LOS_ID, los.getId());
+        for (ApplicationOption ao : los.getApplicationOptions()) {
+            doc.addField(LearningOpportunity.AS_ID, ao.getApplicationSystem().getId());
+        }
 
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         for (Provider curProv : los.getAdditionalProviders()) {

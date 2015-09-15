@@ -66,6 +66,9 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.addField(SolrUtil.LearningOpportunity.ID, childLOI.getId());
         doc.addField(SolrUtil.LearningOpportunity.LOS_ID, specialLOS.getId());
         doc.addField(SolrUtil.LearningOpportunity.LOP_ID, provider.getId());
+        for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+            doc.addField(LearningOpportunity.AS_ID, ao.getApplicationSystem().getId());
+        }
         
         if (specialLOS.getEducationTypeUri() != null 
                 && specialLOS.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE) && !childLOI.getPrerequisite().getValue().equals(PK_YO)) {

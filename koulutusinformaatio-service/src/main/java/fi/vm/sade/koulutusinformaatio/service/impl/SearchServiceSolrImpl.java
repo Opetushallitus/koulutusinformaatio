@@ -228,7 +228,7 @@ public class SearchServiceSolrImpl implements SearchService {
             List<String> providerFilters,
             String lang, boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
-            String lopFilter, String educationCodeFilter, List<String> excludes, SearchType searchType) throws SearchException {
+            String lopFilter, String educationCodeFilter, List<String> excludes, String asId, SearchType searchType) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         String fixed = SolrUtil.fixString(trimmed);
@@ -244,7 +244,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         lang, ongoing, upcoming, 
                         upcomingLater, 
                         start, rows, sort, order,
-                        lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit, asId);
             } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
                 query = new ArticleQuery(fixed, lang,  
                         start, rows, sort, order,
@@ -311,13 +311,13 @@ public class SearchServiceSolrImpl implements SearchService {
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater,
-                        lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList, upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList, upcomingLimit, upcomingLaterLimit, asId);
             } else if (SearchType.ARTICLE.equals(searchType)) {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater, 
-                        lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList, upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList, upcomingLimit, upcomingLaterLimit, asId);
             } else if (SearchType.PROVIDER.equals(searchType)) {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater, 
-                        lopFilter, educationCodeFilter, excludes, SearchType.PROVIDER, searchResultList, upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, SearchType.PROVIDER, searchResultList, upcomingLimit, upcomingLaterLimit, asId);
             }
 
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount() + searchResultList.getOrgCount());
@@ -388,7 +388,7 @@ public class SearchServiceSolrImpl implements SearchService {
             List<String> facetFilters, List<String> articleFilters, List<String> providerFilters,
             boolean ongoing, boolean upcoming, boolean upcomingLater,
             String lopFilter, String educationCodeFilter, List<String> excludes, SearchType searchType, LOSearchResultList searchResultList,
-            String upcomingLimit, String upcomingLaterLimit) throws SearchException {
+            String upcomingLimit, String upcomingLaterLimit, String asId) throws SearchException {
 
         SolrQuery query = null;
 
@@ -397,7 +397,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     cities, facetFilters, 
                     lang, ongoing, upcoming, upcomingLater, 
                     start, 0, sort, order,
-                    lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit);
+                    lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit, asId);
             try {
                 QueryResponse response = loHttpSolrServer.query(query);
                 setResultCount(searchResultList, response, SearchType.LO);
@@ -423,7 +423,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         cities, facetFilters, 
                         lang, ongoing, upcoming, upcomingLater, 
                         start, 0, sort, order,
-                        lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit);
+                        lopFilter, educationCodeFilter, excludes, upcomingLimit, upcomingLaterLimit, asId);
             } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
                 query = new ArticleQuery(term, lang,  
                         start, 0, sort, order,

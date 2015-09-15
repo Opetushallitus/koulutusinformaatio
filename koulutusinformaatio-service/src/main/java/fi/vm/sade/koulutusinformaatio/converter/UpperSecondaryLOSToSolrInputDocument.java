@@ -36,7 +36,6 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 /**
  * @author Hannu Lyytikainen
@@ -131,6 +130,9 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         doc.addField(LearningOpportunity.ID, los.getId());//loi.getId());
         doc.addField(LearningOpportunity.LOS_ID, los.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
+        for (ApplicationOption ao : loi.getApplicationOptions()) {
+            doc.addField(LearningOpportunity.AS_ID, ao.getApplicationSystem().getId());
+        }
 
         doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(loi.getPrerequisite().getValue()) 
                 ? SolrConstants.PK : loi.getPrerequisite().getValue());

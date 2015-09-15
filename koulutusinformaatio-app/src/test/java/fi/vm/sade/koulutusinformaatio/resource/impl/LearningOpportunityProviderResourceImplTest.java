@@ -92,8 +92,8 @@ public class LearningOpportunityProviderResourceImplTest {
         results.add(los);
         educations.setResults(results);
 
-        when(searchService.searchLearningOpportunities("*", null, null, Arrays.asList("asFacet_ffm:asID"), new ArrayList<String>(),
-                new ArrayList<String>(), "fi", true, false, false, 0, 9999999, null, null, null, null, null, SearchType.LO))
+        when(searchService.searchLearningOpportunities("*", null, null, new ArrayList<String>(), new ArrayList<String>(),
+                new ArrayList<String>(), "fi", true, false, false, 0, 9999999, null, null, null, null, null, "asID", SearchType.LO))
                 .thenReturn(educations);
 
         PictureDTO pict = new PictureDTO();

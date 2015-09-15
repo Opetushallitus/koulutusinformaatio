@@ -55,7 +55,8 @@ public class LearningOpportunityQueryTest {
     
     @Test
     public void testQueryTeachLangNone() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START,
+                ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE, null);
         assertNotNull(q);
         assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -71,7 +72,8 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangFi() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING,  UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER,
+                START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE, null);
         assertNotNull(q);
         assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -88,7 +90,8 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangSv() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER,
+                START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE, null);
         assertNotNull(q);
         assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -104,7 +107,8 @@ public class LearningOpportunityQueryTest {
     
     @Test
     public void testQueryFieldsTeachLangOther() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER,
+                START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE, null);
         assertNotNull(q);
         assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();

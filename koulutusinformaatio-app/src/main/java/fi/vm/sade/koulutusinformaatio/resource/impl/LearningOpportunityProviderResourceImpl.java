@@ -108,11 +108,8 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             throws SearchException {
         List<Provider> result = new ArrayList<Provider>();
 
-        List<String> facetFilters = new ArrayList<String>();
-        facetFilters.add("asFacet_ffm:" + asId);
-
-        LOSearchResultList loSearchResult = searchService.searchLearningOpportunities("*", null, null, facetFilters, new ArrayList<String>(),
-                new ArrayList<String>(), lang, true, false, false, 0, 9999999, null, null, null, null, null, SearchType.LO);
+        LOSearchResultList loSearchResult = searchService.searchLearningOpportunities("*", null, null, new ArrayList<String>(), new ArrayList<String>(),
+                new ArrayList<String>(), lang, true, false, false, 0, 9999999, null, null, null, null, null, asId, SearchType.LO);
 
         HashSet<String> ongoingProviderIDs = new HashSet<String>();
         for (LOSearchResult lo : loSearchResult.getResults()) {

@@ -16,21 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import com.google.common.base.Strings;
-import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.*;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
-import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
-import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
-import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
@@ -38,7 +25,35 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.google.common.base.Strings;
+
+import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.Articled;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
+import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
 
 /**
  * @author Hannu Lyytikainen
@@ -80,12 +95,13 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                                                             String lopFilter,
                                                             String educationCodeFilter,
                                                             List<String> excludes,
+                                                            String asId,
                                                             SearchType searchType) {
         try {
             sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(text, prerequisite,
                     cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order,
-                    lopFilter, educationCodeFilter, excludes, searchType);
+                    lopFilter, educationCodeFilter, excludes, asId, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);

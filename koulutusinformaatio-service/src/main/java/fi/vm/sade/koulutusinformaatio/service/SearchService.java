@@ -16,11 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-
-import java.util.List;
 
 public interface SearchService {
 
@@ -31,12 +37,12 @@ public interface SearchService {
     List<Provider> searchLearningOpportunityProviders(final String term, String lang, boolean prefix, String type) throws SearchException;
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
-                                                   List<String> cities, List<String> facetFilters, 
-                                                   List<String> articleFilters, List<String> providerFilters,
-                                                   String lang, boolean ongoing, boolean upcoming, 
-                                                   boolean upcomingLater,
-                                                   int start, int rows, String sort, String order, 
-                                                   String lopFilter, String educationCodeFilter, List<String> excludes, SearchType searchType) throws SearchException;
+            List<String> cities, List<String> facetFilters,
+            List<String> articleFilters, List<String> providerFilters,
+            String lang, boolean ongoing, boolean upcoming,
+            boolean upcomingLater,
+            int start, int rows, String sort, String order,
+            String lopFilter, String educationCodeFilter, List<String> excludes, String asId, SearchType searchType) throws SearchException;
 
     List<Location> searchLocations(final String term, final String lang) throws SearchException;
     List<Location> getLocations(List<String> codes, final String lang) throws SearchException;

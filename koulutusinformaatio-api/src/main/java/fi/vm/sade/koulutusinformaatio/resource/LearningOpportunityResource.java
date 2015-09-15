@@ -74,6 +74,7 @@ public interface LearningOpportunityResource {
                                                              @QueryParam("lopFilter") String lopFilter,
                                                              @QueryParam("educationCodeFilter") String educationCodeFilter,
                                                              @QueryParam("excludes") List<String> excludes,
+                                                             @QueryParam("asId") final String asId,
                                                              @QueryParam("searchType") SearchType searchType);
 
     @GET

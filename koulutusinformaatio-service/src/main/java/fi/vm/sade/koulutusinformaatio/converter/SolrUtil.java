@@ -287,6 +287,7 @@ public final class SolrUtil {
         public static final String AO_NAME_EN = "aoName_en";
         public static final String PREREQUISITES = "prerequisites";
         public static final String LOS_ID = "losId";
+        public static final String AS_ID = "asId";
         public static final String PARENT_ID = "parentId";
         public static final String PREREQUISITE = "prerequisite";
         public static final String PREREQUISITE_CODE = "prerequisiteCode";

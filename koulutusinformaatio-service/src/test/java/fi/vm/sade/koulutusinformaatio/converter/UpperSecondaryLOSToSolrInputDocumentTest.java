@@ -95,6 +95,7 @@ public class UpperSecondaryLOSToSolrInputDocumentTest {
 		upsecLoi.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
 		
 		ApplicationSystem as = new ApplicationSystem();
+        as.setId("asId");
 		as.setName(TestUtil.createI18nText("Haku fi", "Haku sv", "Haku en"));
 		Date asStart = new Date();
 		Date asEnd = new Date();
@@ -150,7 +151,8 @@ public class UpperSecondaryLOSToSolrInputDocumentTest {
 		List<SolrInputDocument> docs = converter.convert(los);
 		assertEquals(7, docs.size());
 		SolrInputDocument doc = docs.get(0);
-		assertEquals(los.getId(), doc.get(LearningOpportunity.ID).getValue().toString());
+        assertEquals(los.getId(), doc.get(LearningOpportunity.ID).getValue().toString());
+        assertEquals("asId", doc.get(LearningOpportunity.AS_ID).getValue().toString());
 		assertEquals(los.getId(), doc.get(LearningOpportunity.LOS_ID).getValue().toString());
 		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
 		assertEquals(los.getCreditValue() + " " + los.getCreditUnit().getTranslations().get("fi"), doc.get(LearningOpportunity.CREDITS).getValue().toString());

@@ -26,12 +26,15 @@ public class LearningOpportunityQuery extends SolrQuery {
             List<String> cities, List<String> facetFilters, String lang, 
             boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
-            String lopFilter, String educationCodeFilter, List<String> excludes, String upcomingDate, String upcomingLaterDate) {
+            String lopFilter, String educationCodeFilter, List<String> excludes, String upcomingDate, String upcomingLaterDate, String asId) {
         super(term);
         LOG.debug(String.format("Query term: (%s)", term));
         
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
+        }
+        if (asId != null) {
+            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.AS_ID, asId));
         }
         this.setStart(start);
         this.setRows(rows);
