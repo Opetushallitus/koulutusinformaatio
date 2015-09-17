@@ -48,7 +48,7 @@ import fi.vm.sade.koulutusinformaatio.util.TestUtil;
  */
 public class HigherEducationLOSToSolrInputDocmentTest {
 	
-    private HigherEducationLOSToSolrInputDocment converter = new HigherEducationLOSToSolrInputDocment(); 
+    private KoulutusLOSToSolrInputDocment converter = new KoulutusLOSToSolrInputDocment(); 
     
 
 	@Test

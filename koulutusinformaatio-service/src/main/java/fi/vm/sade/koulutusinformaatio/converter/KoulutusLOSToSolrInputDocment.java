@@ -41,9 +41,9 @@ import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
  * 
  * @author Markus
  */
-public class HigherEducationLOSToSolrInputDocment implements Converter<KoulutusLOS, List<SolrInputDocument>> {
+public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, List<SolrInputDocument>> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HigherEducationLOSToSolrInputDocment.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KoulutusLOSToSolrInputDocment.class);
     
     @Override
     public List<SolrInputDocument> convert(KoulutusLOS los) {
