@@ -41,6 +41,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 
@@ -52,6 +53,7 @@ public class LearningOpportunityProviderResourceImplTest {
     
     private SearchService searchService;
     private LearningOpportunityService learningOpportunityService;
+    private KoodistoService koodistoService;
     LearningOpportunityProviderResource providerResource;
 
     @Before
@@ -59,6 +61,7 @@ public class LearningOpportunityProviderResourceImplTest {
         
         searchService = mock(SearchService.class);
         learningOpportunityService = mock(LearningOpportunityService.class);
+        koodistoService = mock(KoodistoService.class);
         
         List<Provider> providers = new ArrayList<Provider>();
         
@@ -106,7 +109,7 @@ public class LearningOpportunityProviderResourceImplTest {
         
         when(learningOpportunityService.getProvider("prov111", "fi")).thenReturn(dto);
         
-        providerResource = new LearningOpportunityProviderResourceImpl(searchService, null, learningOpportunityService);
+        providerResource = new LearningOpportunityProviderResourceImpl(searchService, null, learningOpportunityService, koodistoService);
         
     }
     

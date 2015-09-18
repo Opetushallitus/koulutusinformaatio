@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
@@ -44,6 +47,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 
@@ -55,12 +59,15 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     private SearchService searchService;
     private LearningOpportunityService learningOpportunityService;
+    private KoodistoService koodistoService;
+    public static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityProviderResourceImpl.class);
 
     @Autowired
     public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper,
-            LearningOpportunityService learningOpportunityService) {
+            LearningOpportunityService learningOpportunityService, KoodistoService koodistoService) {
         this.searchService = searchService;
         this.learningOpportunityService = learningOpportunityService;
+        this.koodistoService = koodistoService;
     }
 
     @Override
@@ -82,7 +89,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducations, vocational,
                     nonVocational, start, rows, lang, false, type);
             if (ongoing) {
-                learningOpportunityProviders = filterProvidersWithoutOngoingEducation(learningOpportunityProviders, asId, lang);
+                learningOpportunityProviders = filterProvidersWithoutOngoingEducation(learningOpportunityProviders, asId, baseEducations, lang);
             }
             List<ProviderSearchResultDTO> result = Lists.newArrayList(
                     Lists.transform(learningOpportunityProviders,
@@ -104,11 +111,32 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     }
 
-    private List<Provider> filterProvidersWithoutOngoingEducation(List<Provider> learningOpportunityProviders, String asId, String lang)
-            throws SearchException {
+    private List<Provider> filterProvidersWithoutOngoingEducation(List<Provider> learningOpportunityProviders, String asId, List<String> baseEducations,
+            String lang) throws SearchException {
         List<Provider> result = new ArrayList<Provider>();
+        HashSet<String> pohjakoulutuvaatimus = new HashSet<String>();
+        for (String be : baseEducations) {
+            try {
+                List<Code> codeElements = koodistoService.searchSuperCodes("pohjakoulutustoinenaste_" + be, "pohjakoulutusvaatimustoinenaste");
+                for (Code code : codeElements) {
+                    pohjakoulutuvaatimus.add(code.getValue());
+                }
+            } catch (Exception e) {
+                LOG.warn("Failed to fetch super codes for base education code " + be);
+            }
+        }
 
-        LOSearchResultList loSearchResult = searchService.searchLearningOpportunities("*", null, null, new ArrayList<String>(), new ArrayList<String>(),
+        // Lisätään PK tai YO rajain tai null, jos molemmat halutaan
+        boolean pk = pohjakoulutuvaatimus.contains("PK");
+        boolean yo = pohjakoulutuvaatimus.contains("YO");
+        String be = null;
+        if (!pk && yo) {
+            be = "YO";
+        } else if (pk && !yo) {
+            be = "PK";
+        }
+
+        LOSearchResultList loSearchResult = searchService.searchLearningOpportunities("*", be, null, new ArrayList<String>(), new ArrayList<String>(),
                 new ArrayList<String>(), lang, true, false, false, 0, 9999999, null, null, null, null, null, asId, SearchType.LO);
 
         HashSet<String> ongoingProviderIDs = new HashSet<String>();
