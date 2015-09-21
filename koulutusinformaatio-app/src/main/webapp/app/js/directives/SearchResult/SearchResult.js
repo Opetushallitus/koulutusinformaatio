@@ -217,6 +217,7 @@ directive('srExtendedOptions', ['TranslationService','Config', function (Transla
                 hakupaattynyt: TranslationService.getTranslation('application-system-active-past'),
                 externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form')
             } 
+            $scope.date = new Date().getTime();
         }
     };
 }]).

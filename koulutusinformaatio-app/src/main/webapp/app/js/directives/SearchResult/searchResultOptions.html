@@ -31,7 +31,7 @@
             </form>
         </div>
     
-        <div data-ng-if="!applicationsystem.isLisahaku">
+        <div data-ng-if="!applicationsystem.isLisahaku && applicationoption.applicationEndDate > date">
             <div data-sr-application-basket data-ng-switch="isItemAddedToBasket(applicationoption.id)" class="pull-left" aria-live="polite" role="status">
                 <span data-ng-switch-when="true">
                     <span data-ki-i18n="popover-title-success"></span><br/>
