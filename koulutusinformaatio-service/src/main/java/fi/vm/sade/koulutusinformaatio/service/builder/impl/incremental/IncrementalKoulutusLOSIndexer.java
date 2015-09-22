@@ -16,7 +16,10 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -33,6 +36,7 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateServ
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 /**
  * 
@@ -125,19 +129,37 @@ public class IncrementalKoulutusLOSIndexer {
     }
 
     public void indexAmmatillinenKoulutusKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
-        List<KoulutusLOS> loses = tarjontaService.createAmmatillinenKoulutusLOS(dto);
+        ToteutustyyppiEnum toteutusTyyppi = dto.getToteutustyyppiEnum();
+        String tarjoaja = dto.getTarjoajat().get(0);
+        String koulutusKoodi = dto.getKoulutuskoodi().split("#")[0];
+        List<KoulutusHakutulosV1RDTO> dtosToBeUpdated = tarjontaService.findKoulutus(toteutusTyyppi.name(), tarjoaja, koulutusKoodi);
+        List<KoulutusLOS> losses = new ArrayList<KoulutusLOS>();
+        for (KoulutusHakutulosV1RDTO koulutusHakutulosV1RDTO : dtosToBeUpdated) {
+            List<KoulutusLOS> result = tarjontaService.createAmmatillinenKoulutusLOS(koulutusHakutulosV1RDTO);
+            losses.addAll(result);
+        }
+
+        // KILL ALL STUFF!
         removeTutkintoLOS(dto.getKomoOid());
-        if (!loses.isEmpty()) {
-            for (KoulutusLOS los : loses) {
-                this.dataUpdateService.updateKoulutusLos(los);
-                if (los.getTutkinto() == null) {
-                    indexToSolr(los);
-                    LOG.debug("Updated osaamisalaton los {}", los.getId());
-                } else {
-                    indexToSolr(los.getTutkinto());
-                    dataUpdateService.updateTutkintoLos(los.getTutkinto());
-                    LOG.debug("Updated los {}", los.getId());
-                }
+        
+        Set<String> tutkintoOidsToBeRemoved = new HashSet<String>();
+        Set<String> koulutusOidsToBeRemoved = new HashSet<String>();
+        List<KoulutusLOS> lossesToBeRemoved = dataQueryService.getKoulutusLos(toteutusTyyppi, tarjoaja, koulutusKoodi);
+        for (KoulutusLOS los : lossesToBeRemoved) {
+            koulutusOidsToBeRemoved.add(los.getId());
+            if (los.getTutkinto() != null)
+                tutkintoOidsToBeRemoved.add(los.getTutkinto().getId());
+        }
+
+        for (KoulutusLOS los : losses) {
+            this.dataUpdateService.updateKoulutusLos(los);
+            if (los.getTutkinto() == null) {
+                indexToSolr(los);
+                LOG.debug("Updated osaamisalaton los {}", los.getId());
+            } else {
+                indexToSolr(los.getTutkinto());
+                dataUpdateService.updateTutkintoLos(los.getTutkinto());
+                LOG.debug("Updated los {}", los.getId());
             }
         }
     }

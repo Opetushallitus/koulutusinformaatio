@@ -854,6 +854,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private <S extends KoulutusV1RDTO, T extends LOS> void addKoulutusV1Fields(S koulutus, T los) throws KoodistoException, TarjontaParseException {
         los.setId(koulutus.getOid());
+        los.setToteutustyyppi(koulutus.getToteutustyyppi());
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
         los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
         if (los.getName() == null) {

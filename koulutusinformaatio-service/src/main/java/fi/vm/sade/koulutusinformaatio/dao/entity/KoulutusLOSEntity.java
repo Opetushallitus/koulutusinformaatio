@@ -10,6 +10,7 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 /**
  *
  * @author Markus
@@ -139,6 +140,8 @@ public class KoulutusLOSEntity {
     private List<KoulutusLOSEntity> siblings = new ArrayList<KoulutusLOSEntity>();
 
     private boolean osaamisalaton;
+
+    private ToteutustyyppiEnum toteutustyyppi;
 
     public String getId() {
         return id;
@@ -504,6 +507,14 @@ public class KoulutusLOSEntity {
     }
     public void setOsaamisalaton(boolean osaamisalaton) {
         this.osaamisalaton = osaamisalaton;
+    }
+
+    public ToteutustyyppiEnum getToteutustyyppi() {
+        return toteutustyyppi;
+    }
+
+    public void setToteutustyyppi(ToteutustyyppiEnum toteutustyyppi) {
+        this.toteutustyyppi = toteutustyyppi;
     }
 
 }

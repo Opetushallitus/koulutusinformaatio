@@ -16,13 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-
-import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -94,4 +101,8 @@ public interface TarjontaService {
     List<KoulutusHakutulosV1RDTO> findLukioKoulutusDTOs() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
     public KoulutusLOS createLukioKoulutusLOS(KoulutusHakutulosV1RDTO curDTO);
+
+    List<KoulutusHakutulosV1RDTO> findKoulutus(String toteutusTyyppi, String providerOid, String koulutusKoodi) throws TarjontaParseException,
+            KoodistoException, ResourceNotFoundException;
+
 }

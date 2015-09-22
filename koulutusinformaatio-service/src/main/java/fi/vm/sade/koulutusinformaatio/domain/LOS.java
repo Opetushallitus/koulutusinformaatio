@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.List;
 
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -31,6 +33,7 @@ public abstract class LOS {
     private List<Code> topics; // aiheet
     private List<Code> themes; // teemat
     private List<I18nText> professionalTitles;
+    private ToteutustyyppiEnum toteutustyyppi;
 
     public String getId() {
         return id;
@@ -96,5 +99,13 @@ public abstract class LOS {
 
     public void setProfessionalTitles(List<I18nText> professionalTitles) {
         this.professionalTitles = professionalTitles;
+    }
+
+    public ToteutustyyppiEnum getToteutustyyppi() {
+        return toteutustyyppi;
+    }
+
+    public void setToteutustyyppi(ToteutustyyppiEnum toteutustyyppi) {
+        this.toteutustyyppi = toteutustyyppi;
     }
 }
