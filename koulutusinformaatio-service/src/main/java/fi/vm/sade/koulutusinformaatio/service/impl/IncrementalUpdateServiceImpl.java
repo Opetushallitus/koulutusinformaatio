@@ -60,48 +60,50 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalUpdateServiceImpl.class);
 
+    @Autowired
     private TarjontaRawService tarjontaRawService;
 
+    @Autowired
     private EducationIncrementalDataQueryService dataQueryService;
     //private EducationDataQueryService prodDataQueryService;
+
+    @Autowired
     private EducationIncrementalDataUpdateService dataUpdateService;
+
+    @Autowired
     private TarjontaService tarjontaService;
+
+    @Autowired
     private IndexerService indexerService;
+
+    @Autowired
+    private ParameterService parameterService;
 
     private IncrementalApplicationSystemIndexer asIndexer;
     private IncrementalApplicationOptionIndexer aoIndexer;
     private IncrementalLOSIndexer losIndexer;
 
     // solr client for learning opportunity index
-    private final HttpSolrServer loHttpSolrServer;
-    // solr client for learning opportunity provider index
-    private final HttpSolrServer lopHttpSolrServer;
+    @Autowired
+    @Qualifier("loAliasSolrServer")
+    private HttpSolrServer loHttpSolrServer;
 
-    private final HttpSolrServer locationHttpSolrServer;
+    // solr client for learning opportunity provider index
+    @Autowired
+    @Qualifier("lopAliasSolrServer")
+    private HttpSolrServer lopHttpSolrServer;
+
+    @Autowired
+    private KoodistoService koodistoService;
+
+    @Autowired
+    @Qualifier("locationAliasSolrServer")
+    private HttpSolrServer locationHttpSolrServer;
     
     private boolean isRunning = false;
     private long runningSince = 0;
 
-    @Autowired
-    public IncrementalUpdateServiceImpl(TarjontaRawService tarjontaRawService, 
-            EducationIncrementalDataQueryService dataQueryService,
-            EducationIncrementalDataUpdateService dataUpdateService,
-            KoodistoService koodistoService,
-            TarjontaService tarjontaService,
-            IndexerService indexerService,
-            ParameterService parameterService,
-            @Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasSolrServer,
-            @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
-            @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer) {
-        this.tarjontaRawService = tarjontaRawService;
-        this.dataQueryService = dataQueryService;
-        this.dataUpdateService = dataUpdateService;
-        this.tarjontaService = tarjontaService;
-        this.indexerService = indexerService;
-        this.loHttpSolrServer = loAliasSolrServer;
-        this.lopHttpSolrServer = lopAliasSolrServer;
-        this.locationHttpSolrServer = locationAliasSolrServer;
-
+    public IncrementalUpdateServiceImpl() {
         this.losIndexer = new IncrementalLOSIndexer(this.tarjontaRawService,
                 this.tarjontaService, 
                 this.dataUpdateService,
@@ -114,8 +116,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaRawService,
                                                                 this.tarjontaService,
                                                                 this.dataQueryService, 
-                                                                koodistoService,
-                                                                parameterService,
+                                                                this.koodistoService,
+                                                                this.parameterService,
                                                                 this.losIndexer,
                                                                 this.indexerService,
                                                                 this.loHttpSolrServer,

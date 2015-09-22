@@ -1,0 +1,554 @@
+{
+  "result":{
+    "tulokset":[
+      {
+        "oid":"1.2.246.562.10.34581043303",
+        "version":0,
+        "nimi":{
+          "fi":"Omnian ammattiopisto, Suomenoja"
+        },
+        "tulokset":[
+          {
+            "oid":"1.2.246.562.5.2013091809415086131880",
+            "nimi":{
+              "fi":"Autokorinkorjauksen koulutusohjelma, autokorinkorjaaja",
+              "sv":"Utbildningsprogrammet för bilplåtslagare, bilplåtslagare",
+              "en":"Autokorinkorjauksen koulutusohjelma, autokorinkorjaaja"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2014,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"YO",
+              "sv":"ST",
+              "en":"YO"
+            },
+            "koulutuskoodi":"koulutus_351301#1",
+            "koulutuksenAlkamisPvmMin":1407358800000,
+            "koulutuksenAlkamisPvmMax":1407358800000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010192712756820",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.5.99815571841",
+            "nimi":{
+              "fi":"Autotekniikan koulutusohjelma, ajoneuvoasentaja",
+              "sv":"Utbildningsprogrammet för bilteknik, fordonsmekaniker",
+              "en":"Autotekniikan koulutusohjelma, ajoneuvoasentaja"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2014,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"PK",
+              "sv":"GR",
+              "en":"PK"
+            },
+            "koulutuskoodi":"koulutus_351301#1",
+            "koulutuksenAlkamisPvmMin":1407358800000,
+            "koulutuksenAlkamisPvmMax":1407358800000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185764933625",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.5.2013091113280179685530",
+            "nimi":{
+              "fi":"Automyynnin koulutusohjelma, automyyjä",
+              "sv":"Utbildningsprogrammet för bilförsäljning, bilförsäljare",
+              "en":"Automyynnin koulutusohjelma, automyyjä"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2014,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"PK",
+              "sv":"GR",
+              "en":"PK"
+            },
+            "koulutuskoodi":"koulutus_351301#1",
+            "koulutuksenAlkamisPvmMin":1407358800000,
+            "koulutuksenAlkamisPvmMax":1407358800000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185238089698",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.5.655132987310",
+            "nimi":{
+              "fi":"Autokorinkorjauksen koulutusohjelma, autokorinkorjaaja",
+              "sv":"Utbildningsprogrammet för bilplåtslagare, bilplåtslagare",
+              "en":"Autokorinkorjauksen koulutusohjelma, autokorinkorjaaja"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2014,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"PK",
+              "sv":"GR",
+              "en":"PK"
+            },
+            "koulutuskoodi":"koulutus_351301#1",
+            "koulutuksenAlkamisPvmMin":1407358800000,
+            "koulutuksenAlkamisPvmMax":1407358800000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010192712756820",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.5.2013091113453780514434",
+            "nimi":{
+              "fi":"Automyynnin koulutusohjelma, automyyjä",
+              "sv":"Utbildningsprogrammet för bilförsäljning, bilförsäljare",
+              "en":"Automyynnin koulutusohjelma, automyyjä"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2014,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"YO",
+              "sv":"ST",
+              "en":"YO"
+            },
+            "koulutuskoodi":"koulutus_351301#1",
+            "koulutuksenAlkamisPvmMin":1407358800000,
+            "koulutuksenAlkamisPvmMax":1407358800000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185238089698",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.5.2013082716090499956704",
+            "nimi":{
+              "fi":"Autotekniikan koulutusohjelma, ajoneuvoasentaja",
+              "sv":"Utbildningsprogrammet för bilteknik, fordonsmekaniker",
+              "en":"Autotekniikan koulutusohjelma, ajoneuvoasentaja"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2014,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"YO",
+              "sv":"ST",
+              "en":"YO"
+            },
+            "koulutuskoodi":"koulutus_351301#1",
+            "koulutuksenAlkamisPvmMin":1407358800000,
+            "koulutuksenAlkamisPvmMax":1407358800000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185764933625",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.17.33543254867",
+            "nimi":{
+              "fi":"Autotekniikan osaamisala",
+              "sv":"Kompetensområdet för bilteknik",
+              "en":"Autotekniikan osaamisala"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2015,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"PK",
+              "sv":"GR",
+              "en":"PK"
+            },
+            "koulutuskoodi":"koulutus_351301#2",
+            "koulutuksenAlkamisPvmMin":1439240400000,
+            "koulutuksenAlkamisPvmMax":1439240400000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185764933625",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "siblingKomotos":[
+              "1.2.246.562.17.20886863347",
+              "1.2.246.562.17.269013769010",
+              "1.2.246.562.17.17338268075",
+              "1.2.246.562.17.65338707238",
+              "1.2.246.562.17.18192814632"
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.17.20886863347",
+            "nimi":{
+              "fi":"Autotekniikan osaamisala",
+              "sv":"Kompetensområdet för bilteknik",
+              "en":"Autotekniikan osaamisala"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2015,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"YO",
+              "sv":"ST",
+              "en":"YO"
+            },
+            "koulutuskoodi":"koulutus_351301#2",
+            "koulutuksenAlkamisPvmMin":1439240400000,
+            "koulutuksenAlkamisPvmMax":1439240400000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185764933625",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "siblingKomotos":[
+              "1.2.246.562.17.269013769010",
+              "1.2.246.562.17.17338268075",
+              "1.2.246.562.17.65338707238",
+              "1.2.246.562.17.33543254867",
+              "1.2.246.562.17.18192814632"
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.17.269013769010",
+            "nimi":{
+              "fi":"Autokorinkorjauksen osaamisala",
+              "sv":"Kompetensområdet för bilplåtslagning",
+              "en":"Autokorinkorjauksen osaamisala"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2015,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"YO",
+              "sv":"ST",
+              "en":"YO"
+            },
+            "koulutuskoodi":"koulutus_351301#2",
+            "koulutuksenAlkamisPvmMin":1439240400000,
+            "koulutuksenAlkamisPvmMax":1439240400000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010192712756820",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "siblingKomotos":[
+              "1.2.246.562.17.20886863347",
+              "1.2.246.562.17.17338268075",
+              "1.2.246.562.17.65338707238",
+              "1.2.246.562.17.33543254867",
+              "1.2.246.562.17.18192814632"
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.17.17338268075",
+            "nimi":{
+              "fi":"Autokorinkorjauksen osaamisala",
+              "sv":"Kompetensområdet för bilplåtslagning",
+              "en":"Autokorinkorjauksen osaamisala"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2015,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"PK",
+              "sv":"GR",
+              "en":"PK"
+            },
+            "koulutuskoodi":"koulutus_351301#2",
+            "koulutuksenAlkamisPvmMin":1439240400000,
+            "koulutuksenAlkamisPvmMax":1439240400000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010192712756820",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "siblingKomotos":[
+              "1.2.246.562.17.20886863347",
+              "1.2.246.562.17.269013769010",
+              "1.2.246.562.17.65338707238",
+              "1.2.246.562.17.33543254867",
+              "1.2.246.562.17.18192814632"
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.17.65338707238",
+            "nimi":{
+              "fi":"Automyynnin osaamisala",
+              "sv":"Kompetensområdet för bilförsäljning",
+              "en":"Automyynnin osaamisala"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2015,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"PK",
+              "sv":"GR",
+              "en":"PK"
+            },
+            "koulutuskoodi":"koulutus_351301#2",
+            "koulutuksenAlkamisPvmMin":1439240400000,
+            "koulutuksenAlkamisPvmMax":1439240400000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185238089698",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "siblingKomotos":[
+              "1.2.246.562.17.20886863347",
+              "1.2.246.562.17.269013769010",
+              "1.2.246.562.17.17338268075",
+              "1.2.246.562.17.33543254867",
+              "1.2.246.562.17.18192814632"
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.17.18192814632",
+            "nimi":{
+              "fi":"Automyynnin osaamisala",
+              "sv":"Kompetensområdet för bilförsäljning",
+              "en":"Automyynnin osaamisala"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "kausiUri":"kausi_s#1",
+            "vuosi":2015,
+            "koulutuslajiUri":"koulutuslaji_n",
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "pohjakoulutusvaatimus":{
+              "fi":"YO",
+              "sv":"ST",
+              "en":"YO"
+            },
+            "koulutuskoodi":"koulutus_351301#2",
+            "koulutuksenAlkamisPvmMin":1439240400000,
+            "koulutuksenAlkamisPvmMax":1439240400000,
+            "tarjoajat":[
+              "1.2.246.562.10.34581043303"
+            ],
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "komoOid":"1.2.246.562.5.2013061010185238089698",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
+            "siblingKomotos":[
+              "1.2.246.562.17.20886863347",
+              "1.2.246.562.17.269013769010",
+              "1.2.246.562.17.17338268075",
+              "1.2.246.562.17.65338707238",
+              "1.2.246.562.17.33543254867"
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          }
+        ]
+      }
+    ],
+    "tuloksia":12
+  },
+  "accessRights":{
+
+  },
+  "status":"OK"
+}

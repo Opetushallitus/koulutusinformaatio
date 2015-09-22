@@ -17,14 +17,30 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mockito="http://www.mockito.org/spring/mockito"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.mockito.org/spring/mockito https://bitbucket.org/kubek2k/springockito/raw/tip/springockito/src/main/resources/spring/mockito.xsd"
        >
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties"
             ignore-resource-not-found="true"/>
+
+    <bean id="incrementalUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl" />
+
+    <bean id="tarjontaRawService" class="fi.vm.sade.koulutusinformaatio.integrationtest.TarjontaRawServiceMock"/>
+    <mockito:mock id="dataQueryService" class="fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService"/>
+    <mockito:mock id="dataUpdateService" class="fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService"/>
+    <mockito:mock id="tarjontaService" class="fi.vm.sade.koulutusinformaatio.service.TarjontaService"/>
+    <mockito:mock id="indexerService" class="fi.vm.sade.koulutusinformaatio.service.IndexerService"/>
+    <mockito:mock id="parameterService" class="fi.vm.sade.koulutusinformaatio.service.ParameterService"/>
+    <mockito:mock id="loHttpSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
+    <mockito:mock id="loAliasSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
+    <mockito:mock id="locationAliasSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
+    <mockito:mock id="lopAliasSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
+    <mockito:mock id="koodistoService" class="fi.vm.sade.koulutusinformaatio.service.KoodistoService"/>
 
     <bean id="mongodFactory" class="de.flapdoodle.embed.mongo.tests.MongodForTestsFactory" destroy-method="shutdown"/>
     <bean id="mongo" class="com.mongodb.MongoClient" factory-bean="mongodFactory" factory-method="newMongo"/>
