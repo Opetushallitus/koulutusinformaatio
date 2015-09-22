@@ -77,4 +77,6 @@ public interface TarjontaRawService {
 
     ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> searchEducation(String oid);
 
+    ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType, String providerOid, String KoulutusKoodi);
+
 }

@@ -96,7 +96,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Autowired
     public TarjontaServiceImpl(KoodistoService koodistoService,
             ProviderService providerService, TarjontaRawService tarjontaRawService,
-                               OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
+            OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.tarjontaRawService = tarjontaRawService;
@@ -706,46 +706,47 @@ public class TarjontaServiceImpl implements TarjontaService {
         return createKoulutusLOS(dto, checkStatus);
     }
 
-    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
+    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException,
+            ResourceNotFoundException {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
         }
         KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
-            case KORKEAKOULUTUS:
-                los = creator.createHigherEducationLOS((KoulutusKorkeakouluV1RDTO) koulutusDTO, checkStatus);
-                break;
-            case AMMATILLINEN_PERUSTUTKINTO:
-            case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
-                los = creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
-                break;
-            case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
-                los = creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-                break;
-            case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
-                los = creator.createValmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-                break;
-            case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
-                if (koulutusDTO.getKoulutuskoodi().getVersio() == 1) {
-                    los = creator.createValmentavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-                } else {
-                    los = creator.createTelmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-                }
-                break;
-            case PERUSOPETUKSEN_LISAOPETUS:
-                los = creator.createKymppiluokkaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-                break;
-            case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-                los = creator.createMMLukioonValmistavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-                break;
-            case VAPAAN_SIVISTYSTYON_KOULUTUS:
-                los = creator.createKansanopistoLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-                break;
-            case LUKIOKOULUTUS:
-                los = creator.createLukioLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
-                break;
-            default:
-                break;
+        case KORKEAKOULUTUS:
+            los = creator.createHigherEducationLOS((KoulutusKorkeakouluV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case AMMATILLINEN_PERUSTUTKINTO:
+        case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
+            los = creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
+            los = creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
+            los = creator.createValmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
+            if (koulutusDTO.getKoulutuskoodi().getVersio() == 1) {
+                los = creator.createValmentavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+            } else {
+                los = creator.createTelmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+            }
+            break;
+        case PERUSOPETUKSEN_LISAOPETUS:
+            los = creator.createKymppiluokkaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
+            los = creator.createMMLukioonValmistavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case VAPAAN_SIVISTYSTYON_KOULUTUS:
+            los = creator.createKansanopistoLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case LUKIOKOULUTUS:
+            los = creator.createLukioLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
+            break;
+        default:
+            break;
         }
         return los;
     }
@@ -815,19 +816,29 @@ public class TarjontaServiceImpl implements TarjontaService {
                 ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO.name(),
                 ToteutustyyppiEnum.AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-                    LOG.debug("Provider " + curRes.getOid() + " education " + curKoulutus.getOid() + " education not published, discarding");
-                    continue;
-                }
                 LOG.debug("Added ammatillinen provider " + curRes.getOid() + " education " + curKoulutus.getOid());
                 dtoList.add(curKoulutus);
             }
         }
+        return dtoList;
+    }
 
+    @Override
+    public List<KoulutusHakutulosV1RDTO> findKoulutus(String toteutusTyyppi, String providerOid, String koulutusKoodi)
+            throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
+        List<KoulutusHakutulosV1RDTO> dtoList = new ArrayList<KoulutusHakutulosV1RDTO>();
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducations(toteutusTyyppi, providerOid, koulutusKoodi);
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+            if (providerOid.equals(curRes.getOid())) {
+                for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                    LOG.debug("Added ammatillinen provider " + curRes.getOid() + " education " + curKoulutus.getOid());
+                    dtoList.add(curKoulutus);
+                }
+            }
+        }
         return dtoList;
     }
 

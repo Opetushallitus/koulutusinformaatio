@@ -4,17 +4,17 @@ import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 public interface EducationIncrementalDataQueryService {
 
@@ -52,6 +52,8 @@ public interface EducationIncrementalDataQueryService {
     Provider getProvider(final String id) throws ResourceNotFoundException;
 
     LOS getLos(String losId);
+
+    List<KoulutusLOS> getKoulutusLos(ToteutustyyppiEnum toteutustyyppi, String tarjoaja, String koulutusKoodi) throws ResourceNotFoundException;
     
     List<LOS> findLearningOpportunitiesByLoiId(String loiId);
     
@@ -62,5 +64,6 @@ public interface EducationIncrementalDataQueryService {
     AdultUpperSecondaryLOS getAdultUpsecLearningOpportunity(String curLosId) throws ResourceNotFoundException;
 
     TutkintoLOS getTutkinto(String oid) throws ResourceNotFoundException;
+
 
 }

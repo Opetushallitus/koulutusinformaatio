@@ -240,6 +240,18 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String toteutusTyyppi, String providerOid, String koulutusKoodi) {
+        WebResource call = this.v1KoulutusResource.path("search")
+                .queryParam("toteutustyyppi", toteutusTyyppi)
+                .queryParam("organisationOid", providerOid)
+                .queryParam("koulutuskoodi", koulutusKoodi)
+                .queryParam("tila", "JULKAISTU");
+        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(call,
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                });
+    }
+
+    @Override
     public ResultV1RDTO<List<String>> searchHakus(String hakutapa) {
         return (ResultV1RDTO<List<String>>) getWithRetries(v1ASResource
                         .queryParam("HAKUTAPA", hakutapa),
