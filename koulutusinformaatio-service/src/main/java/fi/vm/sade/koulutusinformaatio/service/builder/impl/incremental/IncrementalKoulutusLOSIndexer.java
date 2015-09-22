@@ -139,8 +139,6 @@ public class IncrementalKoulutusLOSIndexer {
             losses.addAll(result);
         }
 
-        // KILL ALL STUFF!
-        removeTutkintoLOS(dto.getKomoOid());
         
         Set<String> tutkintoOidsToBeRemoved = new HashSet<String>();
         Set<String> koulutusOidsToBeRemoved = new HashSet<String>();
@@ -149,6 +147,13 @@ public class IncrementalKoulutusLOSIndexer {
             koulutusOidsToBeRemoved.add(los.getId());
             if (los.getTutkinto() != null)
                 tutkintoOidsToBeRemoved.add(los.getTutkinto().getId());
+        }
+
+        for (String oid : koulutusOidsToBeRemoved) {
+            removeKoulutusLOS(oid);
+        }
+        for (String oid : tutkintoOidsToBeRemoved) {
+            removeTutkintoLOS(oid);
         }
 
         for (KoulutusLOS los : losses) {
