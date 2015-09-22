@@ -16,27 +16,31 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mongodb.morphia.Key;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.mongodb.WriteResult;
+
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mikko Majapuro
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-public class IncrementalDAOTest {
+public class KoulutusLOSDAOTest {
 
     @Autowired
     private KoulutusLOSDAO koulutusLOSDAO;
@@ -44,8 +48,9 @@ public class IncrementalDAOTest {
     @Autowired
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
-    private KoulutusLOSEntity saveTestKoulutus(String providerOid, String educationCode, ToteutustyyppiEnum toteutustyyppi) {
+    private Key<KoulutusLOSEntity> saveTestKoulutus(String id, String providerOid, String educationCode, ToteutustyyppiEnum toteutustyyppi) {
         KoulutusLOSEntity los = new KoulutusLOSEntity();
+        los.setId(id);
 
         LearningOpportunityProviderEntity provider = new LearningOpportunityProviderEntity();
         provider.setId(providerOid);
@@ -57,22 +62,20 @@ public class IncrementalDAOTest {
         los.setEducationCode(code);
         los.setToteutustyyppi(toteutustyyppi);
 
-        koulutusLOSDAO.getDatastore().save(los);
-
-        return los;
+        return koulutusLOSDAO.getDatastore().save(los);
     }
 
     @Test
     public void testGetKoulutusLos() throws ResourceNotFoundException {
         // Educations that we want to find
-        saveTestKoulutus("tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
-        saveTestKoulutus("tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
-        saveTestKoulutus("tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
+        saveTestKoulutus("0", "tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
+        saveTestKoulutus("1", "tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
+        saveTestKoulutus("2", "tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
 
         // Educations that we don't want to find
-        saveTestKoulutus("tarjoaja2", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
-        saveTestKoulutus("tarjoaja1", "koodi_2", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
-        saveTestKoulutus("tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA);
+        saveTestKoulutus("3", "tarjoaja2", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
+        saveTestKoulutus("4", "tarjoaja1", "koodi_2", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
+        saveTestKoulutus("5", "tarjoaja1", "koodi_1", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA);
 
         List<KoulutusLOSEntity> losses = koulutusLOSDAO.getKoulutusLos(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO, "tarjoaja1", "koodi_1");
 
@@ -82,4 +85,19 @@ public class IncrementalDAOTest {
         assertEquals("koodi_1", firstLos.getEducationCode().getUri());
         assertEquals(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO, firstLos.getToteutustyyppi());
     }
+
+    @Test
+    public void testDeleteKoulutus() {
+        WriteResult result = koulutusLOSDAO.deleteById("nonexistentkoulutusoid");
+        assertEquals("Non existent oid was deleted", 0, result.getLastError().get("n"));
+
+        long count = koulutusLOSDAO.count();
+        Key<KoulutusLOSEntity> saved = saveTestKoulutus("6", "tarjoaja", "koodi_2", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
+        WriteResult result2 = koulutusLOSDAO.deleteById((String) saved.getId());
+        assertEquals("Koulutus was not deleted", 1, result2.getLastError().get("n"));
+        long count2 = koulutusLOSDAO.count();
+
+        assertEquals("Delete did not succeed", count, count2);
+    }
+
 }
