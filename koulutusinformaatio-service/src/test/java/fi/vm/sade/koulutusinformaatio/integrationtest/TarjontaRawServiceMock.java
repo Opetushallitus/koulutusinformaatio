@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.integrationtest;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
@@ -19,6 +20,8 @@ import java.util.Set;
 public class TarjontaRawServiceMock implements TarjontaRawService {
 
     ObjectMapper mapper = new ObjectMapper();
+
+    private static final String JSON_MAPPING_FAILED = "JSON mapping failed";
 
     @Override
     public ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid) {
@@ -42,8 +45,13 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid, boolean onlyPublished) {
-        ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> res = getJson(ResultV1RDTO.class, "findHakukohdesByEducationOid", oid, Boolean.toString(onlyPublished));
-        return res;
+        String json = getJson("findHakukohdesByEducationOid", oid, Boolean.toString(onlyPublished));
+        try {
+            return mapper.readValue(json, new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>(){});
+        }
+        catch (Exception e) {
+            throw new Error(JSON_MAPPING_FAILED);
+        }
     }
 
     @Override
@@ -111,16 +119,25 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         return getJson(ResultV1RDTO.class, "listEducations", educationType, providerOid, koulutusKoodi);
     }
 
-    private <T> T getJson(Class<T> toClass, String ...params) {
+    private String getJson(String ...params) {
         String filename = Joiner.on("__").join(params);
         String path = "koulutusinformaatio-service/src/test/resources/tarjontaJsonResponses/" + filename + ".json";
         try {
             byte[] encoded = Files.readAllBytes(Paths.get(path));
-            String json = new String(encoded, StandardCharsets.UTF_8);
+            return new String(encoded, StandardCharsets.UTF_8);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Reading JSON file failed");
+        }
+    }
+
+    private <T> T getJson(Class<T> toClass, String ...params) {
+        String json = getJson(params);
+        try {
             return mapper.readValue(json, toClass);
         }
         catch (JsonMappingException e) {
-            throw new RuntimeException("JSON mapping failed");
+            throw new RuntimeException(JSON_MAPPING_FAILED);
         }
         catch (JsonParseException e) {
             throw new RuntimeException("JSON parsing failed");
