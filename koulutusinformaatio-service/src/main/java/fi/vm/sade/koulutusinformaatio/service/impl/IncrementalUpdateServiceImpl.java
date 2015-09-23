@@ -209,7 +209,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                     }
                 }
             
-                if (!aoOids.isEmpty() || this.losIndexer.isLoiAlreadyHandled(aoOids, changedHakukohdeOids)) {
+                if (this.losIndexer.isLoiAlreadyHandled(aoOids, changedHakukohdeOids)) {
                     LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
                 } else {
                     LOG.debug("Will index changed komoto: " + curOid);
