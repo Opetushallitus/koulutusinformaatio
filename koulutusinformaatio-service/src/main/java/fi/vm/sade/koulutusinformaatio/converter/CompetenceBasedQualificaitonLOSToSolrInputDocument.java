@@ -19,11 +19,11 @@ import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentL
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 
-public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Converter<CompetenceBasedQualificationParentLOS, List<SolrInputDocument>>{
+public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Converter<CompetenceBasedQualificationParentLOS, List<SolrInputDocument>> {
 
     @Override
     public List<SolrInputDocument> convert(CompetenceBasedQualificationParentLOS los) {
-        
+
         List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
         docs.add(createParentDoc(los));
@@ -122,10 +122,11 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                     doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
                     doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
                     doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
-                    
+
                     if (curAs.isShownAsFacet()) {
                         doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
                     }
+                    doc.addField(LearningOpportunity.AS_ID, curAs.getId());
                 }
             }
             for (I18nText i18n : curChild.getQualifications()) {
@@ -138,7 +139,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                 }
             }
         }
-        
+
         SolrUtil.addApplicationDates(doc, applicationOptions);
 
         Date earliest = null;

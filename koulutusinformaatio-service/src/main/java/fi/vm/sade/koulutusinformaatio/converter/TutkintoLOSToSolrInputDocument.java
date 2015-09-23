@@ -188,6 +188,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                             if (curAs.isShownAsFacet()) {
                                 doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
                             }
+                            doc.addField(LearningOpportunity.AS_ID, curAs.getId());
                         }
                         if (ao.getName() != null) {
                             aoNameFi = String.format("%s %s", aoNameFi, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
