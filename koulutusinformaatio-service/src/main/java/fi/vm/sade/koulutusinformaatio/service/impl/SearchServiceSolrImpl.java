@@ -489,34 +489,34 @@ public class SearchServiceSolrImpl implements SearchService {
         String prerequisiteText = getPrerequisiteText(doc, lang);
         String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
                 ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
-                String credits = getCredits(doc, lang);
-                List<String> lopNames = getLopNames(doc, lang);
-                String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
-                        ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
-                        String edDegree = getEdDegree(doc, lang);
-                        String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null
-                                ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
-                                String name = getName(doc, lang);
-                                String homeplace = getHomeplace(doc, lang);
-                                List<String> lopId = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>)(doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
-                                String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
-                                List<String> subjects = getSubjects(doc, lang);
+        String credits = getCredits(doc, lang);
+        List<String> lopNames = getLopNames(doc, lang);
+        String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
+                ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
+        String edDegree = getEdDegree(doc, lang);
+        String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null
+                ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
+        String name = getName(doc, lang);
+        String homeplace = getHomeplace(doc, lang);
+        List<String> lopId = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>) (doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
+        String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
+        List<String> subjects = getSubjects(doc, lang);
 
         LOG.debug("gathered info now creating search result: {}", id);
 
-                                LOSearchResult lo = new LOSearchResult( 
-                                        id, name,
-                                        lopId, lopNames, prerequisiteText,
-                                        prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                                        credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects);
+        LOSearchResult lo = new LOSearchResult(
+                id, name,
+                lopId, lopNames, prerequisiteText,
+                prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
+                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects);
 
         LOG.debug("Created search result: {}", id);
 
-                                updateAsStatus(lo, doc);
+        updateAsStatus(lo, doc);
 
         LOG.debug("Updated as status: {}", id);
 
-                                return lo;
+        return lo;
 
     }
 
