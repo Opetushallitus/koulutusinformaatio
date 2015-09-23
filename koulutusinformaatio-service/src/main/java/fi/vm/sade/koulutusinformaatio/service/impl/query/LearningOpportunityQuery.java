@@ -89,47 +89,41 @@ public class LearningOpportunityQuery extends SolrQuery {
     }
 
     private void setApplicationStatusFilters(boolean ongoing, boolean upcoming, boolean upcomingLater, String upcomingLimit, String upcomingLaterLimit) {
-            StringBuilder ongoingFQ = new StringBuilder();
-        if (ongoing) {
-            for (int i = 0; i < SolrUtil.AS_COUNT; i++) {
-                ongoingFQ.append(String.format("(asStart_%d:[* TO NOW] AND asEnd_%d:[NOW TO *])", i, i));
-                ongoingFQ.append(String.format("OR (asStart_%d:[* TO NOW] AND -asEnd_%d:[* TO *])", i, i)); // jatkuvalla haulla ei välttämättä ole päättymisaikaa
-                if (i != SolrUtil.AS_COUNT - 1) {
-                    ongoingFQ.append(" OR ");
-                }
+        StringBuilder ongoingFQ = new StringBuilder();
+        for (int i = 0; i < SolrUtil.AS_COUNT; i++) {
+            ongoingFQ.append(String.format("(asStart_%d:[* TO NOW] AND asEnd_%d:[NOW TO *])", i, i));
+            ongoingFQ.append(String.format("OR (asStart_%d:[* TO NOW] AND -asEnd_%d:[* TO *])", i, i)); // jatkuvalla haulla ei välttämättä ole päättymisaikaa
+            if (i != SolrUtil.AS_COUNT - 1) {
+                ongoingFQ.append(" OR ");
             }
-            this.addFilterQuery(ongoingFQ.toString());
         }
-        
         StringBuilder upcomingFQ = new StringBuilder();
         for (int i = 0; i < SolrUtil.AS_COUNT; i++) {
             upcomingFQ.append(String.format("(asStart_%d:[NOW TO %s])", i, upcomingLimit));
-            if (i != SolrUtil.AS_COUNT-1) {
+            if (i != SolrUtil.AS_COUNT - 1) {
                 upcomingFQ.append(" OR ");
             }
         }
-        if (upcoming) {
-            this.addFilterQuery(upcomingFQ.toString());
-        }
-        
-        
-        
+
         StringBuilder upcomingLaterFQ = new StringBuilder();
         for (int i = 0; i < SolrUtil.AS_COUNT; i++) {
             upcomingLaterFQ.append(String.format("(asStart_%d:[%s TO %s])", i, upcomingLimit, upcomingLaterLimit));
-            if (i != SolrUtil.AS_COUNT-1) {
+            if (i != SolrUtil.AS_COUNT - 1) {
                 upcomingLaterFQ.append(" OR ");
             }
         }
-        
-        if (upcomingLater) {
+
+        if (ongoing)
+            this.addFilterQuery(ongoingFQ.toString());
+        if (upcoming)
+            this.addFilterQuery(upcomingFQ.toString());
+        if (upcomingLater)
             this.addFilterQuery(upcomingLaterFQ.toString());
-        }
-        
+
         this.addFacetQuery(ongoingFQ.toString());
         this.addFacetQuery(upcomingFQ.toString());
         this.addFacetQuery(upcomingLaterFQ.toString());
-        
+
     }
 
     private void addFacetsToQuery(List<String> facetFilters) {
