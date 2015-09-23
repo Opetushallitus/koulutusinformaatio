@@ -29,8 +29,8 @@
             ignore-resource-not-found="true"/>
 
     <bean id="incrementalUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl" />
-
     <bean id="tarjontaRawService" class="fi.vm.sade.koulutusinformaatio.integrationtest.TarjontaRawServiceMock"/>
+    
     <mockito:mock id="dataQueryService" class="fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService"/>
     <mockito:mock id="dataUpdateService" class="fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService"/>
     <mockito:mock id="tarjontaService" class="fi.vm.sade.koulutusinformaatio.service.TarjontaService"/>
