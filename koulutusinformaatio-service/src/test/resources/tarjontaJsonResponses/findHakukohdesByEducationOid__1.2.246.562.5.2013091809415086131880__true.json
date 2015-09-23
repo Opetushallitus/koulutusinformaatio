@@ -1,0 +1,95 @@
+{
+  "result":{
+    "tulokset":[
+      {
+        "oid":"1.2.246.562.10.34581043303",
+        "version":0,
+        "nimi":{
+          "fi":"Omnian ammattiopisto, Suomenoja"
+        },
+        "tulokset":[
+          {
+            "oid":"1.2.246.562.14.2013091113460959988123",
+            "nimi":{
+              "fi":"Autoalan perustutkinto, yo",
+              "sv":"Grundexamen inom bilbranschen, st",
+              "en":"Autoalan perustutkinto, yo"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "vuosi":2014,
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "hakutapa":{
+              "fi":"Yhteishaku",
+              "sv":"Gemensam ansökan",
+              "en":"Yhteishaku"
+            },
+            "hakuaikaRyhma":"(2014-02-24 08:00 - 2014-03-14 15:00)",
+            "aloituspaikat":5,
+            "hakuOid":"1.2.246.562.5.2013080813081926341927",
+            "ryhmaliitokset":[
+
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          },
+          {
+            "oid":"1.2.246.562.20.735158293210",
+            "nimi":{
+              "fi":"Autoalan perustutkinto, yo",
+              "sv":"Grundexamen inom bilbranschen, st",
+              "en":"Autoalan perustutkinto, yo"
+            },
+            "kausi":{
+              "fi":"Syksy",
+              "sv":"Höst",
+              "en":"Autumn"
+            },
+            "vuosi":2014,
+            "tila":"JULKAISTU",
+            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
+            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
+            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
+            "opetuskielet":[
+              "kieli_fi"
+            ],
+            "hakutapa":{
+              "fi":"Yhteishaku",
+              "sv":"Gemensam ansökan",
+              "en":"Yhteishaku"
+            },
+            "hakuaikaString":"2014-08-01 16:00 - 2014-09-05 16:00",
+            "hakuaikaRyhma":"(2014-06-16 00:01 - 2014-12-31 23:59)",
+            "aloituspaikat":2,
+            "hakuOid":"1.2.246.562.29.32820950486",
+            "ryhmaliitokset":[
+
+            ],
+            "koulutuslaji":{
+              "fi":"Nuorten koulutus",
+              "sv":"Utbildning för unga",
+              "en":"Education and training for young"
+            }
+          }
+        ]
+      }
+    ],
+    "tuloksia":2
+  },
+  "accessRights":{
+
+  },
+  "status":"OK"
+}
