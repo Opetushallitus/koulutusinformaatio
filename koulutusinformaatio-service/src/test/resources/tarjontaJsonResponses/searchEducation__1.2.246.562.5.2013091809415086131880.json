@@ -48,52 +48,11 @@
               "sv":"Utbildning för unga",
               "en":"Education and training for young"
             }
-          },
-          {
-            "oid":"1.2.246.562.5.99815571841",
-            "nimi":{
-              "fi":"Autotekniikan koulutusohjelma, ajoneuvoasentaja",
-              "sv":"Utbildningsprogrammet för bilteknik, fordonsmekaniker",
-              "en":"Autotekniikan koulutusohjelma, ajoneuvoasentaja"
-            },
-            "kausi":{
-              "fi":"Syksy",
-              "sv":"Höst",
-              "en":"Autumn"
-            },
-            "kausiUri":"kausi_s#1",
-            "vuosi":2014,
-            "koulutuslajiUri":"koulutuslaji_n",
-            "tila":"JULKAISTU",
-            "koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS",
-            "toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO",
-            "pohjakoulutusvaatimus":{
-              "fi":"PK",
-              "sv":"GR",
-              "en":"PK"
-            },
-            "koulutuskoodi":"koulutus_351301#1",
-            "koulutuksenAlkamisPvmMin":1407358800000,
-            "koulutuksenAlkamisPvmMax":1407358800000,
-            "tarjoajat":[
-              "1.2.246.562.10.34581043303"
-            ],
-            "koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA",
-            "komoOid":"1.2.246.562.5.2013061010185764933625",
-            "opetuskielet":[
-              "kieli_fi"
-            ],
-            "parentKomoOid":"1.2.246.562.5.2013061010185205079841",
-            "koulutuslaji":{
-              "fi":"Nuorten koulutus",
-              "sv":"Utbildning för unga",
-              "en":"Education and training for young"
-            }
           }
         ]
       }
     ],
-    "tuloksia":12
+    "tuloksia":1
   },
   "accessRights":{
 

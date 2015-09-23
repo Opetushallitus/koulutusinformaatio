@@ -1,0 +1,67 @@
+{ "accessRights" : {  },
+  "result" : { "tulokset" : [ { "nimi" : { "fi" : "Omnian ammattiopisto, Suomenoja" },
+    "oid" : "1.2.246.562.10.34581043303",
+    "tulokset" : [ { "aloituspaikat" : 1,
+      "hakuOid" : "1.2.246.562.29.32820950486",
+      "hakuaikaRyhma" : "(2014-06-16 00:01 - 2014-12-31 23:59)",
+      "hakuaikaString" : "2014-08-29 08:36 - 2014-09-05 16:00",
+      "hakutapa" : { "en" : "Yhteishaku",
+        "fi" : "Yhteishaku",
+        "sv" : "Gemensam ansökan"
+      },
+      "kausi" : { "en" : "Autumn",
+        "fi" : "Syksy",
+        "sv" : "Höst"
+      },
+      "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+      "koulutuslaji" : { "en" : "Education and training for young",
+        "fi" : "Nuorten koulutus",
+        "sv" : "Utbildning för unga"
+      },
+      "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+      "nimi" : { "en" : "Autoalan perustutkinto, pk",
+        "fi" : "Autoalan perustutkinto, pk",
+        "sv" : "Grundexamen inom bilbranschen, gr"
+      },
+      "oid" : "1.2.246.562.20.20854428529",
+      "opetuskielet" : [ "kieli_fi" ],
+      "ryhmaliitokset" : [  ],
+      "tila" : "JULKAISTU",
+      "toteutustyyppiEnum" : "AMMATILLINEN_PERUSTUTKINTO",
+      "vuosi" : 2014
+    },
+      { "aloituspaikat" : 70,
+        "hakuOid" : "1.2.246.562.5.2013080813081926341927",
+        "hakuaikaRyhma" : "(2014-02-24 08:00 - 2014-03-14 15:00)",
+        "hakutapa" : { "en" : "Yhteishaku",
+          "fi" : "Yhteishaku",
+          "sv" : "Gemensam ansökan"
+        },
+        "kausi" : { "en" : "Autumn",
+          "fi" : "Syksy",
+          "sv" : "Höst"
+        },
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "koulutuslaji" : { "en" : "Education and training for young",
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga"
+        },
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "nimi" : { "en" : "Autoalan perustutkinto, pk",
+          "fi" : "Autoalan perustutkinto, pk",
+          "sv" : "Grundexamen inom bilbranschen, gr"
+        },
+        "oid" : "1.2.246.562.14.2013091113401218722773",
+        "opetuskielet" : [ "kieli_fi" ],
+        "ryhmaliitokset" : [  ],
+        "tila" : "JULKAISTU",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSTUTKINTO",
+        "vuosi" : 2014
+      }
+    ],
+    "version" : 0
+  } ],
+    "tuloksia" : 2
+  },
+  "status" : "OK"
+}

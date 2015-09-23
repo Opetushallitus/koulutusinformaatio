@@ -30,17 +30,21 @@
 
     <bean id="incrementalUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl" />
     <bean id="tarjontaRawService" class="fi.vm.sade.koulutusinformaatio.integrationtest.TarjontaRawServiceMock"/>
-    
+    <bean id="tarjontaService" class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl"/>
+    <bean id="koodistoService" class="fi.vm.sade.koulutusinformaatio.integrationtest.KoodistoServiceMock"/>
+    <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.integrationtest.ProviderServiceMock"/>
+    <bean id="dataUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataUpdateServiceImpl"/>
+
     <mockito:mock id="dataQueryService" class="fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService"/>
-    <mockito:mock id="dataUpdateService" class="fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService"/>
-    <mockito:mock id="tarjontaService" class="fi.vm.sade.koulutusinformaatio.service.TarjontaService"/>
+    <mockito:mock id="organisaatioRawService" class="fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService"/>
     <mockito:mock id="indexerService" class="fi.vm.sade.koulutusinformaatio.service.IndexerService"/>
     <mockito:mock id="parameterService" class="fi.vm.sade.koulutusinformaatio.service.ParameterService"/>
     <mockito:mock id="loHttpSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
     <mockito:mock id="loAliasSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
     <mockito:mock id="locationAliasSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
     <mockito:mock id="lopAliasSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
-    <mockito:mock id="koodistoService" class="fi.vm.sade.koulutusinformaatio.service.KoodistoService"/>
+    <mockito:mock id="pictureDAO" class="fi.vm.sade.koulutusinformaatio.dao.PictureDAO"/>
+    <mockito:mock id="dataStatusDAO" class="fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO"/>
 
     <bean id="mongodFactory" class="de.flapdoodle.embed.mongo.tests.MongodForTestsFactory" destroy-method="shutdown"/>
     <bean id="mongo" class="com.mongodb.MongoClient" factory-bean="mongodFactory" factory-method="newMongo"/>
@@ -121,7 +125,34 @@
             <ref bean="secondaryDatastore"/>
         </constructor-arg>
     </bean>
-    
+
+    <bean id="adultUpperSecondaryLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="adultVocationalLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="tutkintoLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
+    </bean>
+
     <bean id="higherEducationLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO">
         <constructor-arg>
             <ref bean="mongo"/>
