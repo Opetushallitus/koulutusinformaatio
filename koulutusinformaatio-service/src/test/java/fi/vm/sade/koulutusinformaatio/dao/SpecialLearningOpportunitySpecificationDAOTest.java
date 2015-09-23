@@ -35,6 +35,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.integrationtest.TestHelper;
 
 /**
  * @author Hannu Lyytikainen
@@ -52,11 +53,12 @@ public class SpecialLearningOpportunitySpecificationDAOTest {
     @Autowired
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
+    @Autowired
+    private TestHelper testHelper;
+
     @After
     public void removeTestData() {
-        specialDAO.getCollection().drop();
-        providerDAO.getCollection().drop();
-        applicationOptionDAO.getCollection().drop();
+        testHelper.removeTestData();
     }
 
     @Test

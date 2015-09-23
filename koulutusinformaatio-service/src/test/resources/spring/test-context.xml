@@ -164,4 +164,5 @@
     </bean>
 
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
+    <bean id="testHelper" class="fi.vm.sade.koulutusinformaatio.integrationtest.TestHelper"/>
 </beans>

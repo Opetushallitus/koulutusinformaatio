@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.integrationtest.TestHelper;
 
 /**
  * 
@@ -52,11 +53,12 @@ public class HigherEducationLOSDAOTest {
     @Autowired
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
+    @Autowired
+    private TestHelper testHelper;
+
     @After
     public void removeTestData() {
-        higherEducationDAO.getCollection().drop();
-        providerDAO.getCollection().drop();
-        applicationOptionDAO.getCollection().drop();
+        testHelper.removeTestData();
     }
 
     @Test

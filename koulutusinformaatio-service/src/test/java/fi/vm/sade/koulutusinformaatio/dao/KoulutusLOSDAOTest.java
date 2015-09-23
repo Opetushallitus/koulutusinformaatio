@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mongodb.morphia.Key;
@@ -33,6 +34,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.integrationtest.TestHelper;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 /**
@@ -47,6 +49,14 @@ public class KoulutusLOSDAOTest {
 
     @Autowired
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
+
+    @Autowired
+    private TestHelper testHelper;
+
+    @After
+    public void removeTestData() {
+        testHelper.removeTestData();
+    }
 
     private Key<KoulutusLOSEntity> saveTestKoulutus(String id, String providerOid, String educationCode, ToteutustyyppiEnum toteutustyyppi) {
         KoulutusLOSEntity los = new KoulutusLOSEntity();
