@@ -35,6 +35,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationSystemEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.integrationtest.TestHelper;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
 /**
@@ -49,10 +50,12 @@ public class ApplicationOptionDAOTest {
     @Autowired
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
+    @Autowired
+    private TestHelper testHelper;
+
     @After
     public void removeTestData() {
-        applicationOptionDAO.getCollection().drop();
-        learningOpportunityProviderDAO.getCollection().drop();
+        testHelper.removeTestData();
     }
 
     @Test

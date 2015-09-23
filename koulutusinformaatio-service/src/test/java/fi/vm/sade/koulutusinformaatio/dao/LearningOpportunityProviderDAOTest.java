@@ -30,6 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.integrationtest.TestHelper;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
 /**
@@ -42,9 +43,12 @@ public class LearningOpportunityProviderDAOTest {
     @Autowired
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
+    @Autowired
+    private TestHelper testHelper;
+
     @After
     public void removeTestData() {
-        learningOpportunityProviderDAO.getCollection().drop();
+        testHelper.removeTestData();
     }
 
     @Test
