@@ -30,6 +30,7 @@
 
     <bean id="incrementalUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl" />
     <bean id="tarjontaRawService" class="fi.vm.sade.koulutusinformaatio.integrationtest.TarjontaRawServiceMock"/>
+    <bean id="tarjontaRawServiceImpl" class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaRawServiceImpl"/>
     <bean id="tarjontaService" class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl"/>
     <bean id="koodistoService" class="fi.vm.sade.koulutusinformaatio.integrationtest.KoodistoServiceMock"/>
     <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.integrationtest.ProviderServiceMock"/>
