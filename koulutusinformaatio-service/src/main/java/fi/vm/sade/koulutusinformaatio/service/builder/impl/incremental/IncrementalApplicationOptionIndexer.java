@@ -42,7 +42,7 @@ public class IncrementalApplicationOptionIndexer {
 
     public void indexApplicationOptionData(HakukohdeV1RDTO aoDto, HakuV1RDTO asDto) throws Exception {
         for (String koulutusOid : aoDto.getHakukohdeKoulutusOids()) {
-            losIndexer.indexKoulutusLos(koulutusOid);
+            losIndexer.indexLoiData(koulutusOid);
         }
     }
 }

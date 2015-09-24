@@ -138,7 +138,6 @@ public class IncrementalKoulutusLOSIndexer {
             List<KoulutusLOS> result = tarjontaService.createAmmatillinenKoulutusLOS(koulutusHakutulosV1RDTO);
             losses.addAll(result);
         }
-
         
         Set<String> tutkintoOidsToBeRemoved = new HashSet<String>();
         Set<String> koulutusOidsToBeRemoved = new HashSet<String>();
@@ -149,11 +148,11 @@ public class IncrementalKoulutusLOSIndexer {
                 tutkintoOidsToBeRemoved.add(los.getTutkinto().getId());
         }
 
-        for (String oid : koulutusOidsToBeRemoved) {
-            removeKoulutusLOS(oid);
-        }
         for (String oid : tutkintoOidsToBeRemoved) {
             removeTutkintoLOS(oid);
+        }
+        for (String oid : koulutusOidsToBeRemoved) {
+            removeKoulutusLOS(oid);
         }
 
         for (KoulutusLOS los : losses) {
