@@ -22,6 +22,8 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     ObjectMapper mapper = new ObjectMapper();
 
+    private String testCase = "";
+
     private static final String JSON_MAPPING_FAILED = "JSON mapping failed";
 
     public TarjontaRawServiceMock() {
@@ -162,7 +164,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     private String getJson(String ...params) {
         String filename = Joiner.on("__").join(params);
-        String path = "src/test/resources/tarjontaJsonResponses/" + filename + ".json";
+        String path = "src/test/resources/tarjontaJsonResponses/" + testCase + "/" + filename + ".json";
         try {
             byte[] encoded = Files.readAllBytes(Paths.get(path));
             return new String(encoded, StandardCharsets.UTF_8);
@@ -186,6 +188,10 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         catch (IOException e) {
             throw new RuntimeException("JSON does not exist!");
         }
+    }
+
+    public void setTestCase(String testCase) {
+        this.testCase = testCase;
     }
 
 }
