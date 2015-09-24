@@ -32,7 +32,6 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
@@ -41,7 +40,6 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
@@ -582,22 +580,17 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer)
-            throws IOException, SolrServerException {
-        
-        if (curLos instanceof SpecialLOS){
-            for (ChildLOI curChild : ((SpecialLOS) curLos).getLois()) { 
+    public void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException {
+        if (curLos instanceof SpecialLOS) {
+            for (ChildLOI curChild : ((SpecialLOS) curLos).getLois()) {
                 loHttpSolrServer.deleteById(curChild.getId());
             }
-        } else if (curLos instanceof UpperSecondaryLOS) {
-            
-            loHttpSolrServer.deleteById(curLos.getId());
-
-        } else if ((curLos instanceof HigherEducationLOS) 
-                    || (curLos instanceof AdultUpperSecondaryLOS)
-                    || (curLos instanceof CompetenceBasedQualificationParentLOS)) {
-            loHttpSolrServer.deleteById(curLos.getId());
-        } 
+        }
+        loHttpSolrServer.deleteById(curLos.getId());
+        if (curLos instanceof TutkintoLOS) {
+            loHttpSolrServer.deleteById(curLos.getId() + "#PK");
+            loHttpSolrServer.deleteById(curLos.getId() + "#YO");
+        }
     }
 
     @Override

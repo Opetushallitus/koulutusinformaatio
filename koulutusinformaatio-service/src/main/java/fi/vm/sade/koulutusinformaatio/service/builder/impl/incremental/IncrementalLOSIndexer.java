@@ -283,7 +283,6 @@ public class IncrementalLOSIndexer {
     }
 
     public void indexKoulutusLos(String komotoOid) throws Exception {
-        this.koulutusIndexer.indexKoulutusLOS(komotoOid);
         indexLoiData(komotoOid);
     }
 
