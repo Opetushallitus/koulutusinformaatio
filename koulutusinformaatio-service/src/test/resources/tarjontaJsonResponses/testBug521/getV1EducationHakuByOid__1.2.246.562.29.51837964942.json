@@ -1,0 +1,92 @@
+{
+    "params": null,
+    "status": "OK",
+    "result": 
+    {
+        "created": null,
+        "createdBy": null,
+        "modified": 1418043288531,
+        "modifiedBy": "1.2.246.562.24.66330222835",
+        "oid": "1.2.246.562.29.51837964942",
+        "version": null,
+        "hakukausiUri": "kausi_k#1",
+        "hakukausiVuosi": 2015,
+        "hakutapaUri": "hakutapa_02#1",
+        "hakulomakeUri": null,
+        "hakutyyppiUri": "hakutyyppi_01#1",
+        "kohdejoukkoUri": "haunkohdejoukko_10#1",
+        "koulutuksenAlkamisVuosi": 2015,
+        "koulutuksenAlkamiskausiUri": "kausi_s#1",
+        "tila": "JULKAISTU",
+        "ylioppilastutkintoAntaaHakukelpoisuuden": false,
+        "hakukohdeOidsYlioppilastutkintoAntaaHakukelpoisuuden": 
+        [
+            
+        ],
+
+        "sijoittelu": false,
+        "jarjestelmanHakulomake": false,
+        "hakuaikas": 
+        [
+            {
+                "hakuaikaId": "1445065",
+                "alkuPvm": 1424757647505,
+                "loppuPvm": 1428843628758,
+                "nimet": 
+                {
+                    "kieli_sv": "",
+                    "kieli_en": "",
+                    "kieli_fi": ""
+                }
+            }
+        ],
+
+        "hakukohdeOids": 
+        [
+            "1.2.246.562.20.96267839536"
+        ],
+
+        "haunTunniste": null,
+        "nimi": 
+        {
+            "kieli_sv": "",
+            "kieli_en": "",
+            "kieli_fi": "Aikuiskoulutus"
+        },
+
+        "koodiMeta": null,
+        "maxHakukohdes": 0,
+        "organisaatioOids": 
+        [
+            "1.2.246.562.10.10779357598"
+        ],
+
+        "tarjoajaOids": 
+        [
+            "1.2.246.562.10.10779357598"
+        ],
+
+        "usePriority": false,
+        "parentHakuOid": null,
+        "sisaltyvatHaut": 
+        [
+            
+        ],
+
+        "organisaatioryhmat": 
+        [
+            
+        ],
+
+        "koulutusmoduuliTyyppi": null,
+        "opintopolunNayttaminenLoppuu": null
+    },
+
+    "errors": null,
+    "accessRights": 
+    {
+        "update": false,
+        "delete": false,
+        "create": false
+    }
+}
