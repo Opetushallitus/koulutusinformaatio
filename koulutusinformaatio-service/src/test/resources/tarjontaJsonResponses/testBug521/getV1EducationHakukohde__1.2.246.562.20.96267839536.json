@@ -1,0 +1,246 @@
+{
+    "params": null,
+    "status": "OK",
+    "result": 
+    {
+        "created": null,
+        "createdBy": null,
+        "modified": 1425301696575,
+        "modifiedBy": "1.2.246.562.24.66330222835",
+        "oid": "1.2.246.562.20.96267839536",
+        "version": 9,
+        "hakukohteenNimi": null,
+        "hakukohteenNimiUri": "aikuhakukohteet_1624#2",
+        "hakukohteenNimet": 
+        {
+            "kieli_sv": "Kompetensområde för produktplanering och -tillverkning",
+            "kieli_fi": "Tuotteen suunnittelun ja valmistuksen osaamisala"
+        },
+
+        "tarjoajaNimet": 
+        {
+            "fi": "Ikaalisten käsi- ja taideteollisuusoppilaitos"
+        },
+
+        "koulutusmoduuliToteutusTarjoajatiedot": 
+        {
+            "1.2.246.562.17.25124155778": 
+            {
+                "tarjoajaOids": 
+                [
+                    "1.2.246.562.10.10779357598"
+                ]
+            }
+        },
+
+        "tarjoajaOids": 
+        [
+            "1.2.246.562.10.10779357598"
+        ],
+
+        "hakuOid": "1.2.246.562.29.51837964942",
+        "hakuaikaId": "1445065",
+        "hakukelpoisuusvaatimusUris": 
+        [
+            
+        ],
+
+        "hakukohdeKoulutusOids": 
+        [
+            "1.2.246.562.17.25124155778"
+        ],
+
+        "hakuaikaAlkuPvm": null,
+        "hakuaikaLoppuPvm": null,
+        "alinHyvaksyttavaKeskiarvo": 0.0,
+        "alinValintaPistemaara": 0,
+        "ylinValintapistemaara": 0,
+        "aloituspaikatLkm": 46,
+        "edellisenVuodenHakijatLkm": 0,
+        "valintojenAloituspaikatLkm": 0,
+        "sahkoinenToimitusOsoite": null,
+        "soraKuvausKoodiUri": null,
+        "tila": "JULKAISTU",
+        "valintaperustekuvausKoodiUri": null,
+        "liitteidenToimitusPvm": null,
+        "ulkoinenTunniste": null,
+        "koulutusAsteTyyppi": "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutusTyyppi": "AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA",
+        "koulutusmoduuliTyyppi": "TUTKINTO_OHJELMA",
+        "koulutuslaji": "A",
+        "lisatiedot": 
+        {
+            "kieli_sv": "",
+            "kieli_en": "",
+            "kieli_fi": "<p>Tietoja hakemisesta löytyy oppilaitoksen kotisivuilta osoitteesta www.sasky.fi.</p>\n<p>Aloituspaikkoja on asesepäntyön ammattialalla 14, tekstiilin ammattialalla 16 ja soitinrakennuksen (kitaranrakennus) ammattialalla 16.</p>"
+        },
+
+        "valintaperusteKuvaukset": 
+        {
+            "kieli_fi": "<p>Asesepänalan valintakokeeseen kuuluu psykologin haastattelu.</p> <p>Kitaranrakennuksen valintakokeeseen kuuluu soittokoe.</p> <p>Kaikkien ammattialojen valintakokeeseen kuuluu haastattelu ja ammattialakohtaisia tehtäviä.</p>"
+        },
+
+        "soraKuvaukset": null,
+        "hakukelpoisuusVaatimusKuvaukset": 
+        {
+            
+        },
+
+        "aloituspaikatKuvaukset": null,
+        "kaytetaanJarjestelmanValintaPalvelua": true,
+        "kaytetaanHaunPaattymisenAikaa": false,
+        "kaytetaanHakukohdekohtaistaHakuaikaa": false,
+        "hakukohteenLiitteet": 
+        [
+            
+        ],
+
+        "yhteystiedot": 
+        [
+            
+        ],
+
+        "liitteidenToimitusOsoite": null,
+        "valintakokeet": 
+        [
+            {
+                "created": null,
+                "createdBy": null,
+                "modified": null,
+                "modifiedBy": null,
+                "oid": "1833904",
+                "version": 0,
+                "hakukohdeOid": null,
+                "kieliUri": "kieli_fi",
+                "kieliNimi": "suomi",
+                "valintakoeNimi": "valintakoe",
+                "valintakoetyyppi": null,
+                "valintakokeenKuvaus": 
+                {
+                    "uri": "kieli_fi",
+                    "nimi": "suomi",
+                    "monikielisetNimet": 
+                    [
+                        {
+                            "kieli": "EN",
+                            "nimi": "Finnish"
+                        },
+
+                        {
+                            "kieli": "FI",
+                            "nimi": "suomi"
+                        },
+
+                        {
+                            "kieli": "SV",
+                            "nimi": "finska"
+                        }
+                    ],
+
+                    "arvo": "FI",
+                    "versio": 1,
+                    "teksti": "<p>Asesepänalan valintakokeeseen kuuluu psykologin haastattelu.</p> <p>Kitaranrakennuksen valintakokeeseen kuuluu soittokoe.</p> <p>Kaikkien ammattialojen valintakokeeseen kuuluu haastattelu ja ammattialakohtaisia tehtäviä.</p>"
+                },
+
+                "valintakoeAjankohtas": 
+                [
+                    {
+                        "created": null,
+                        "createdBy": null,
+                        "modified": null,
+                        "modifiedBy": null,
+                        "oid": "1833905",
+                        "version": 0,
+                        "kellonaikaKaytossa": false,
+                        "lisatiedot": "",
+                        "alkaa": 1431000361671,
+                        "loppuu": 1431000361671,
+                        "osoite": 
+                        {
+                            "created": null,
+                            "createdBy": null,
+                            "modified": null,
+                            "modifiedBy": null,
+                            "oid": null,
+                            "version": 0,
+                            "osoiterivi1": "Eino Salmelaisen katu 20",
+                            "osoiterivi2": null,
+                            "postinumero": "posti_39500",
+                            "postinumeroArvo": "39500",
+                            "postitoimipaikka": "IKAALINEN"
+                        }
+                    }
+                ],
+
+                "pisterajat": 
+                [
+                    
+                ],
+
+                "kuvaukset": 
+                {
+                    
+                },
+
+                "lisanaytot": 
+                {
+                    
+                }
+            }
+        ],
+
+        "valintaPerusteKuvausTunniste": null,
+        "kaksoisTutkinto": false,
+        "soraKuvausTunniste": null,
+        "opetusKielet": 
+        [
+            "kieli_fi"
+        ],
+
+        "valintaPerusteKuvausKielet": 
+        [
+            
+        ],
+
+        "soraKuvausKielet": 
+        [
+            
+        ],
+
+        "painotettavatOppiaineet": 
+        [
+            
+        ],
+
+        "hakuMenettelyKuvaukset": 
+        {
+            
+        },
+
+        "peruutusEhdotKuvaukset": 
+        {
+            
+        },
+
+        "ryhmaliitokset": 
+        [
+            
+        ],
+
+        "organisaatioRyhmaOids": 
+        [
+            
+        ],
+
+        "ylioppilastutkintoAntaaHakukelpoisuuden": false,
+        "kelaLinjaKoodi": null,
+        "kelaLinjaTarkenne": null,
+        "ensikertalaistenAloituspaikat": null
+    },
+
+    "errors": null,
+    "accessRights": 
+    {
+        
+    }
+}

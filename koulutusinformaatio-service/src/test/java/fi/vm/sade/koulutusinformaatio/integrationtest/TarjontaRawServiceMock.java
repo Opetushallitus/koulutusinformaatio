@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -47,7 +48,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -57,12 +58,12 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(String... educationType) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -83,70 +84,86 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid) {
-        String json = getJsonPath("getV1EducationHakukohde", oid);
+        File jsonFile = new File(getJsonPath("getV1EducationHakukohde", oid));
         try {
-            return mapper.readValue(json, new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>(){});
+            return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>() {});
+        } catch (Exception e) {
+            try {
+                ResultV1RDTO<HakukohdeV1RDTO> realResult = tarjontaRawServiceImpl.getV1EducationHakukohde(oid);
+                mapper.writeValue(jsonFile, realResult);
+                return realResult;
+            } catch (IOException e1) {
+                throw new Error(JSON_MAPPING_FAILED);
+            }
         }
-        catch (Exception e) {
-            throw new Error(JSON_MAPPING_FAILED);
-        }
+
     }
 
     @Override
     public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
-        String json = getJsonPath("getV1EducationHakuByOid", oid);
+        File jsonFile = new File(getJsonPath("getV1EducationHakuByOid", oid));
         try {
-            return mapper.readValue(json, new TypeReference<ResultV1RDTO<HakuV1RDTO>>(){});
-        }
-        catch (Exception e) {
-            throw new Error(JSON_MAPPING_FAILED);
+            return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakuV1RDTO>>() {});
+        } catch (Exception e) {
+            try {
+                ResultV1RDTO<HakuV1RDTO> realResult = tarjontaRawServiceImpl.getV1EducationHakuByOid(oid);
+                mapper.writeValue(jsonFile, realResult);
+                return realResult;
+            } catch (IOException e1) {
+                throw new Error(JSON_MAPPING_FAILED);
+            }
         }
     }
 
     @Override
     public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(String komoOid) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(String curKomoOid) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO> getAdultBaseEducationLearningOpportunity(String oid) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid) {
-        String json = getJsonPath("getV1Komo", oid);
+        File jsonFile = new File(getJsonPath("getV1Komo", oid));
         try {
-            return mapper.readValue(json, new TypeReference<ResultV1RDTO<KomoV1RDTO>>(){});
-        }
-        catch (Exception e) {
-            throw new Error(JSON_MAPPING_FAILED);
+            return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<KomoV1RDTO>>() {});
+        } catch (Exception e) {
+            try {
+                ResultV1RDTO<KomoV1RDTO> realResult = tarjontaRawServiceImpl.getV1Komo(oid);
+                mapper.writeValue(jsonFile, realResult);
+                return realResult;
+            } catch (IOException e1) {
+                throw new Error(JSON_MAPPING_FAILED);
+            }
         }
     }
 
     @Override
     public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(String oid) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override

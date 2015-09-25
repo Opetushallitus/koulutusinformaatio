@@ -20,6 +20,9 @@ public class KoodistoServiceMock implements KoodistoService {
 
     @Override
     public List<Code> searchMultiple(List<String> koodiUris) throws KoodistoException {
+        if (koodiUris == null || koodiUris.isEmpty()) {
+            return Lists.newArrayList();
+        }
         return Lists.newArrayList(getSampleCode(koodiUris.get(0)));
     }
 

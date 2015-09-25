@@ -35,8 +35,8 @@
     <bean id="koodistoService" class="fi.vm.sade.koulutusinformaatio.integrationtest.KoodistoServiceMock"/>
     <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.integrationtest.ProviderServiceMock"/>
     <bean id="dataUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataUpdateServiceImpl"/>
+    <bean id="dataQueryService" class="fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataQueryServiceImpl"/>
 
-    <mockito:mock id="dataQueryService" class="fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService"/>
     <mockito:mock id="organisaatioRawService" class="fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService"/>
     <mockito:mock id="indexerService" class="fi.vm.sade.koulutusinformaatio.service.IndexerService"/>
     <mockito:mock id="parameterService" class="fi.vm.sade.koulutusinformaatio.service.ParameterService"/>
