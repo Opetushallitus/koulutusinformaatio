@@ -33,14 +33,12 @@ import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 
 /**
  * @author Mikko Majapuro
  */
 public final class TutkintoLOSToDTO {
-
-    private TutkintoLOSToDTO() {
-    }
 
     public static ParentLearningOpportunitySpecificationDTO convert(final TutkintoLOS tutkintoLOS,
                                                                     final String lang,
@@ -120,6 +118,9 @@ public final class TutkintoLOSToDTO {
                 parent.getApplicationSystems().add(asDTO);
             }
         }
+
+        if (parent.getChildren().isEmpty())
+            throw new KIConversionException("Tutkinnolla ei ole koulutuksia pohjakoulutuksella " + prerequisite);
 
         return parent;
     }
