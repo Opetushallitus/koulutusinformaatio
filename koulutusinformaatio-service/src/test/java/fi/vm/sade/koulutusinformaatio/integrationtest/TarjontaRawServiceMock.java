@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Joiner;
 
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
@@ -35,6 +36,9 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     ObjectMapper mapper = new ObjectMapper();
 
+    // Devaukseen: Aseta true, kun haluat hakea QAn tarjonnasta dataa testejä varten.
+    boolean fetchFromTarjonta = false;
+
     @Autowired
     TarjontaRawServiceImpl tarjontaRawServiceImpl;
 
@@ -44,6 +48,8 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     public TarjontaRawServiceMock() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
     }
 
     @Override
@@ -72,6 +78,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>(){});
         } catch (Exception e) {
+            checkIfFetchingIsAllowed();
             try {
                 ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> realResult = tarjontaRawServiceImpl.findHakukohdesByEducationOid(oid, onlyPublished);
                 mapper.writeValue(jsonFile, realResult);
@@ -88,6 +95,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>() {});
         } catch (Exception e) {
+            checkIfFetchingIsAllowed();
             try {
                 ResultV1RDTO<HakukohdeV1RDTO> realResult = tarjontaRawServiceImpl.getV1EducationHakukohde(oid);
                 mapper.writeValue(jsonFile, realResult);
@@ -105,6 +113,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakuV1RDTO>>() {});
         } catch (Exception e) {
+            checkIfFetchingIsAllowed();
             try {
                 ResultV1RDTO<HakuV1RDTO> realResult = tarjontaRawServiceImpl.getV1EducationHakuByOid(oid);
                 mapper.writeValue(jsonFile, realResult);
@@ -146,6 +155,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<KomoV1RDTO>>() {});
         } catch (Exception e) {
+            checkIfFetchingIsAllowed();
             try {
                 ResultV1RDTO<KomoV1RDTO> realResult = tarjontaRawServiceImpl.getV1Komo(oid);
                 mapper.writeValue(jsonFile, realResult);
@@ -172,6 +182,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<KoulutusV1RDTO>>(){});
         } catch (Exception e) {
+            checkIfFetchingIsAllowed();
             try {
                 ResultV1RDTO<KoulutusV1RDTO> realResult = tarjontaRawServiceImpl.getV1KoulutusLearningOpportunity(oid);
                 mapper.writeValue(jsonFile, realResult);
@@ -188,6 +199,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>(){});
         } catch (Exception e) {
+            checkIfFetchingIsAllowed();
             try {
                 ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> realResult = tarjontaRawServiceImpl.searchEducation(oid);
                 mapper.writeValue(jsonFile, realResult);
@@ -204,6 +216,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {});
         } catch (Exception e) {
+            checkIfFetchingIsAllowed();
             try {
                 ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> realResult = tarjontaRawServiceImpl.listEducations(educationType, providerOid,
                         koulutusKoodi);
@@ -212,6 +225,12 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
             } catch (IOException e1) {
                 throw new Error(JSON_MAPPING_FAILED);
             }
+        }
+    }
+
+    private void checkIfFetchingIsAllowed() {
+        if (!fetchFromTarjonta) {
+            throw new Error(JSON_MAPPING_FAILED);
         }
     }
 
