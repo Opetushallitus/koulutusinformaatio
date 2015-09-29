@@ -2,7 +2,7 @@
   "devDependencies": {
     "karma": "^0.10.2",
     "karma-jasmine": "~0.1.0",
-    "karma-junit-reporter": "^0.3.2",
+    "karma-junit-reporter": "0.3.3",
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "karma-phantomjs-launcher": "~0.1",
     "karma-coverage": "~0.1",
