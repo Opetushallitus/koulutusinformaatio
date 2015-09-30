@@ -71,4 +71,9 @@ public class I18nText {
     public void put(String key, String value) {
         this.translations.put(key, value);
     }
+
+    @Override
+    public String toString() {
+        return translations.toString();
+    }
 }
