@@ -199,7 +199,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     addr.setPostalCode(mergeI18nTexts(a1.getPostalCode(), a2.getPostalCode()));
                     addr.setPostOffice(mergeI18nTexts(a1.getPostOffice(), a2.getPostOffice()));
                     addr.setSecondForeignAddr(mergeI18nTexts(a1.getSecondForeignAddr(), a2.getSecondForeignAddr()));
-                    addr.setStreetAddress(mergeI18nTexts(a1.getStreetAddress(), a1.getStreetAddress()));
+                    addr.setStreetAddress(mergeI18nTexts(a1.getStreetAddress(), a2.getStreetAddress()));
                     attach.setAddress(addr);
 
                     attachments.put(liite.getJarjestys(), attach);

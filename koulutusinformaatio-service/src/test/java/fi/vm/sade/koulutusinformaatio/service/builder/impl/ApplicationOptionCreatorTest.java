@@ -41,6 +41,7 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -57,6 +58,7 @@ import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
@@ -100,6 +102,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
                 eq(TarjontaConstants.APPLICATION_OPTIONS_KOODISTO_URI)))
                 .thenReturn(Lists.newArrayList(aoIdentifierCode));
 
+        when(koodistoService.searchFirstCodeValue(eq("postinumero"))).thenReturn("postinumero");
 
         Code baseEducation1 = new Code();
         baseEducation1.setValue("1");
@@ -349,6 +352,56 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
         I18nText result2 = creator.mergeI18nTexts(null, null);
         assertNull(result2);
+    }
+
+    @Test
+    public void testBug535() throws Exception {
+        KoulutusLOS koulutus = getKoulutusLOS();
+        Date hakuaikaStart = getRelativeDateFromNow(-12);
+        Date hakuaikaEnd = getRelativeDateFromNow(12);
+        HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+        List<HakukohdeLiiteV1RDTO> liitteet = hakukohde.getHakukohteenLiitteet();
+        HakukohdeLiiteV1RDTO liiteFi = createLiite("3203625", 0, "kieli_fi", "liitteenNimi", "liitteenKuvaukset", "osoiterivi1", "postinumero", "postinumeroArvo",
+                "postitoimipaikka");
+        HakukohdeLiiteV1RDTO liiteEn = createLiite("3203628", 0, "kieli_en", "liitteenNimiEn", "liitteenKuvauksetEn", "osoiterivi1En", "postinumero",
+                "postinumeroArvo", "postitoimipaikka");
+        liitteet.add(liiteFi);
+        liitteet.add(liiteEn);
+        hakukohde.setHakukohteenLiitteet(liitteet);
+        ApplicationOption ao = creator.createV1EducationApplicationOption(koulutus, hakukohde, haku);
+
+        assertNotNull(ao);
+
+        assertEquals(1, ao.getAttachments().size());
+        Address address = ao.getAttachments().get(0).getAddress();
+
+        assertEquals("osoiterivi1", address.getStreetAddress().get("fi"));
+        assertEquals("osoiterivi1En", address.getStreetAddress().get("en"));
+        assertNull(address.getSecondForeignAddr());
+        assertEquals("postinumero", address.getPostalCode().get("fi"));
+        assertEquals("postinumero", address.getPostalCode().get("en"));
+        assertEquals("postitoimipaikka", address.getPostOffice().get("fi"));
+        assertEquals("postitoimipaikka", address.getPostOffice().get("en"));
+    }
+
+    private HakukohdeLiiteV1RDTO createLiite(String oid, Integer jarjestys, String kieli, String liitteenNimi, String liitteenKuvaus, String osoiterivi1,
+            String postinumero, String postinumeroArvo, String postitoimipaikka) {
+        HakukohdeLiiteV1RDTO liite = new HakukohdeLiiteV1RDTO();
+        liite.setOid(oid);
+        liite.setJarjestys(jarjestys);
+        liite.setKieliUri(kieli);
+        liite.setLiitteenNimi(liitteenNimi);
+        Map<String, String> kuvausMap = new HashMap<String, String>();
+        kuvausMap.put(kieli, liitteenKuvaus);
+        liite.setLiitteenKuvaukset(kuvausMap);
+        OsoiteRDTO osoite = new OsoiteRDTO();
+        osoite.setOsoiterivi1(osoiterivi1);
+        osoite.setPostinumero(postinumero);
+        osoite.setPostinumeroArvo(postinumeroArvo);
+        osoite.setPostitoimipaikka(postitoimipaikka);
+        liite.setLiitteenToimitusOsoite(osoite);
+        return liite;
     }
 
     private Date getRelativeDateFromNow(int months) {
