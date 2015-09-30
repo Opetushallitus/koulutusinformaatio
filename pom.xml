@@ -262,7 +262,7 @@
                         <configuration>
                             <target>
                                 <echo file="target/${project.build.finalName}/buildversion.txt">
-									artifactId=${artifactId}
+									artifactId=${project.artifactId}
 									version=${project.version}
 									buildNumber=${build}
 									branchName=${branch}
