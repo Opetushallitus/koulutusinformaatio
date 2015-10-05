@@ -1,0 +1,77 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.95593644479",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Kiljavan opisto, Nurmijärvi"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.70012100114",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Erä- ja luonto-oppaan ammattitutkinto",
+          "sv" : "Yrkesexamen för vildmarks- och naturguide",
+          "en" : "Erä- ja luonto-oppaan ammattitutkinto"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2016,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "AMMATTITUTKINTO",
+        "toteutustyyppiEnum" : "AMMATTITUTKINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Jatkuva haku",
+          "sv" : "Fortgående ansökan",
+          "en" : "Jatkuva haku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "Eräopas 2015 (2015-09-14 07:00 - 2016-05-20 07:00)",
+        "aloituspaikat" : 0,
+        "hakuOid" : "1.2.246.562.29.20318405766",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Aikuiskoulutus",
+          "sv" : "Vuxenutbildning",
+          "en" : "Adult education and training"
+        }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "accessRights" : { },
+  "errors" : null
+}

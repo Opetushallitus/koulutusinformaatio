@@ -1,0 +1,1296 @@
+{
+  "result" : {
+    "created" : null,
+	"toteutustyyppi": "AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA",
+    "createdBy" : null,
+    "modified" : 1391692813081,
+    "modifiedBy" : "1.2.246.562.24.33788837119",
+    "oid" : "1.2.246.562.5.2014020610503240287115",
+    "version" : 1,
+    "koulutuskoodi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutus_381113",
+      "versio" : 1,
+      "arvo" : "381113",
+      "nimi" : "Kotityö- ja puhdistuspalvelujen perustutkinto",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Grundexamen i hemarbets- och rengöringsservice",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Household and Cleaning Ser, VQ",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Kotityö- ja puhdistuspalvelujen perustutkinto",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusaste" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusasteoph2002_32",
+      "versio" : 1,
+      "arvo" : "32",
+      "nimi" : "Ammatillinen koulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yrkesutbildning",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Vocational education and training",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Ammatillinen koulutus",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusalaoph2002_8",
+      "versio" : 1,
+      "arvo" : "8",
+      "nimi" : "Matkailu-, ravitsemis- ja talousala",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Turism-, kosthålls- och ekonomibranschen",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Tourism, Catering and Domestic Services",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Matkailu-, ravitsemis- ja talousala",
+          "meta" : null
+        }
+      }
+    },
+    "opintoala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintoalaoph2002_804",
+      "versio" : 1,
+      "arvo" : "804",
+      "nimi" : "Kotitalous- ja kuluttajapalvelut",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Huslig ekonomi och konsumentservice",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Domestic and consumer services",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Kotitalous- ja kuluttajapalvelut",
+          "meta" : null
+        }
+      }
+    },
+    "tutkinto" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "eqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "eqf_4",
+      "versio" : 1,
+      "arvo" : "4",
+      "nimi" : "Taso 4",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Nivå 4",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Level 4",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Taso 4",
+          "meta" : null
+        }
+      }
+    },
+    "nqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "opintojenLaajuusyksikko" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintojenlaajuusyksikko_1",
+      "versio" : 1,
+      "arvo" : "1",
+      "nimi" : "opintoviikkoa",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "studieveckor",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "study weeks",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "opintoviikkoa",
+          "meta" : null
+        }
+      }
+    },
+    "koulutustyyppi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutustyyppi_4",
+      "versio" : 2,
+      "arvo" : "4",
+      "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
+          "meta" : null
+        }
+      }
+    },
+    "ohjelmas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "moduulityyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+    "komoOid" : "1.2.246.562.5.2013061010193469822276",
+    "komotoOid" : null,
+    "organisaatio" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.23856923257",
+      "version" : null,
+      "nimi" : "Validia Ammattiopisto, Järvenpää",
+      "nimet" : [ ]
+    },
+    "koulutusohjelma" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusohjelmaamm_1653",
+      "versio" : 1,
+      "arvo" : "1653",
+      "nimi" : "Kotityöpalvelujen koulutusohjelma, kodinhuoltaja",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Utbildningsprogram för hemarbetsservice, hemvårdare",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Kotityöpalvelujen koulutusohjelma, kodinhuoltaja",
+          "meta" : null
+        }
+      },
+      "tekstis" : { }
+    },
+    "tunniste" : null,
+    "hakijalleNaytettavaTunniste" : null,
+    "tila" : "JULKAISTU",
+    "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+    "kuvausKomo" : {
+      "JATKOOPINTO_MAHDOLLISUUDET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>Yrkesinriktade grundexamina samt yrkes- och specialyrkesexamina ger allmän behörighet för fortsatta studier vid yrkeshögskolor och universitet.</p>",
+          "kieli_fi" : "<p>Ammatillisista perustutkinnoista sekä ammatti- ja erikoisammattitutkinnoista saa yleisen jatko-opintokelpoisuuden ammattikorkeakouluihin ja yliopistoihin. </p>"
+        }
+      },
+      "TAVOITTEET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>De som har avlagt grundexamen i hemarbets- och rengöringsservice är uppmärksamma och flexibla och de respekterar olikheter och jobbar på ett kundorienterat sätt. De planerar, utvärderar och utvecklar sitt arbete och sin service enligt kvalitetskraven. De arbetar utgående från kunderna och kulturen och vet vilken betydelse renlighet och näring har för hälsan. De agerar ansvarsfullt och ekonomiskt och arbetar utifrån ett hållbart verksamhetssätt. Den som har avlagt grundexamen i hemarbets- och rengöringsservice har utöver basfärdigheter i branschen även ett specialiserat kunnande i hemarbets- eller rengöringsservice.</p>",
+          "kieli_fi" : "<p>Kotityö- ja puhdistuspalvelujen perustutkinnon suorittanut on hienotunteinen, erilaisuutta kunnioittava sekä asiakaspalveluhenkinen ja joustava. Hän suunnittelee, arvioi ja kehittää omaa työtään ja palveluita laatuvaatimusten mukaan. Hän toimii asiakkaiden ja kulttuurin mukaisesti ja tietää puhtauden ja ravitsemuksen merkityksen terveydelle. Hän toimii vastuullisesti, kannattavasti ja kestävän toimintatavan mukaisesti. Kotityö- ja puhdistuspalvelujen perustutkinnon suorittaneella on alan perusvalmiuksien lisäksi valintojen mukaan erikoistunut osaaminen kotityöpalvelujen tai puhdistuspalvelujen työtehtävissä.</p>"
+        }
+      },
+      "KOULUTUKSEN_RAKENNE" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>Examensdelarna måltids- och kaffebjudningsservice och underhållsstädning är obligatoriska för alla examinander. I utbildningsprogrammet för hemarbetsservice ingår dessutom assisterande av klienter, grundstädning och klädvårdsservice i hemmet och kostservice i hemmet. Examensdelarna grundstädning  och lokalservice  är obligatoriska för de som avlägger utbildningsprogrammet för rengöringsservice. Utöver dessa obligatoriska yrkesinriktade examensdelar ska examinanderna avlägga valfria yrkesinriktade examensdelar som fördjupar kompetensen inom den valda yrkesinriktningen.</p>",
+          "kieli_fi" : "<p>Tutkinnon kaikille pakolliset tutkinnon osat ovat ateria- ja kahvituspalvelut ja ylläpitosiivous. Kotityöpalvelujen osaamisalalla  suoritetaan lisäksi osat asiakkaiden avustaminen, kodin perussiivous ja tekstiilihuoltopalvelut  ja kotiruokapalvelut. Puhdistuspalvelujen osaamisalalla suoritetaan lisäksi osat perussiivous  ja toimitilapalvelut. Lisäksi suoritetaan valinnaisia tutkinnon osia, jotka tukevat ammatillista suuntautumista.</p>"
+        }
+      }
+    },
+    "kuvausKomoto" : {
+      "KANSAINVALISTYMINEN" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      },
+      "SISALTO" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      },
+      "SIJOITTUMINEN_TYOELAMAAN" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      },
+      "YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      },
+      "KOULUTUSOHJELMAN_VALINTA" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      },
+      "KUVAILEVAT_TIEDOT" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      }
+    },
+    "suunniteltuKestoArvo" : "3",
+    "suunniteltuKestoTyyppi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "suunniteltukesto_01",
+      "versio" : 1,
+      "arvo" : "01",
+      "nimi" : "vuotta",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "år",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "years",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "vuotta",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuksenAlkamiskausi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "kausi_s",
+      "versio" : 1,
+      "arvo" : "S",
+      "nimi" : "Syksy",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Höst",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Autumn",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Syksy",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuksenAlkamisvuosi" : 2014,
+    "koulutuksenAlkamisPvms" : [ 1407272400000 ],
+    "opetuskielis" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "kieli_fi" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "kieli_fi",
+          "versio" : 1,
+          "arvo" : "FI",
+          "nimi" : "suomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "finska",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Finnish",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "suomi",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "kieli_fi" : 1
+      }
+    },
+    "opetusmuodos" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "opetusmuotokk_1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetusmuotokk_1",
+          "versio" : 1,
+          "arvo" : "1",
+          "nimi" : "Ohjattu opiskelu",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Handledda studier",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Supervised learning",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ohjattu opiskelu",
+              "meta" : null
+            }
+          }
+        },
+        "opetusmuoto_l" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetusmuoto_l",
+          "versio" : 1,
+          "arvo" : "L",
+          "nimi" : "Lähiopetus",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Närundervisning",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Contact teaching",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Lähiopetus",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "opetusmuotokk_1" : 1,
+        "opetusmuoto_l" : 1
+      }
+    },
+    "opetusAikas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "opetusaikakk_1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetusaikakk_1",
+          "versio" : 1,
+          "arvo" : "1",
+          "nimi" : "Päiväopetus",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Dagundervisning",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Day time teaching",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Päiväopetus",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "opetusaikakk_1" : 1
+      }
+    },
+    "opetusPaikkas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "opetuspaikkakk_1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetuspaikkakk_1",
+          "versio" : 1,
+          "arvo" : "1",
+          "nimi" : "Lähiopetus",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Närundervisning",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Contact teaching",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Lähiopetus",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "opetuspaikkakk_1" : 1
+      }
+    },
+    "opintojenLaajuusarvo" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintojenlaajuus_120",
+      "versio" : 1,
+      "arvo" : "120",
+      "nimi" : "120",
+      "meta" : {
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "120",
+          "meta" : null
+        }
+      }
+    },
+    "opetusJarjestajat" : [ ],
+    "opetusTarjoajat" : [ "1.2.246.562.10.23856923257" ],
+    "ammattinimikkeet" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "aihees" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "parents" : [ "1.2.246.562.5.2013061010190957797211" ],
+    "children" : [ ],
+    "hintaString" : null,
+    "hinta" : null,
+    "opintojenMaksullisuus" : false,
+    "isAvoimenYliopistonKoulutus" : false,
+    "oppiaineet" : [ ],
+    "opintopolkuAlkamiskausi" : null,
+    "extraParams" : { },
+    "sisaltyvatKoulutuskoodit" : null,
+    "yhteyshenkilos" : [ {
+      "henkiloOid" : null,
+      "etunimet" : "Opintotoimisto",
+      "sukunimi" : "",
+      "titteli" : null,
+      "sahkoposti" : "opintotoimisto@ijkk.fi",
+      "puhelin" : "09 292 011",
+      "kielet" : [ ],
+      "henkiloTyyppi" : "YHTEYSHENKILO"
+    } ],
+    "pohjakoulutusvaatimus" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "pohjakoulutusvaatimustoinenaste_er",
+      "versio" : 1,
+      "arvo" : "ER",
+      "nimi" : "Yksilöllistetty perusopetus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Individualiserad lärokurs inom den grundläggande utbildningen",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yksilöllistetty perusopetus",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuslaji" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutuslaji_n",
+      "versio" : 1,
+      "arvo" : "N",
+      "nimi" : "Nuorten koulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Utbildning för unga",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Education and training for young",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Nuorten koulutus",
+          "meta" : null
+        }
+      }
+    },
+    "linkkiOpetussuunnitelmaan" : null,
+    "kielivalikoima" : null,
+    "tutkintonimike" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "tutkintonimikkeet_10149",
+      "versio" : 1,
+      "arvo" : "10149",
+      "nimi" : "Kodinhuoltaja",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Hemvårdare",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Kodinhuoltaja",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuksenTavoitteet" : {
+      "kieli_sv" : "<p>Hemvårdare som avlagt kompetensområdet för hemarbetsservice utför kostservice, städnings- och textilvårdsuppgifter i klienternas hem, i servicehem och i hemliknande institutioner, assisterar klienten i dagliga aktiviteter samt sköter ärenden. Hemvårdarna kan även ha specialkunnande i att instruera klienten i användning av olika tekniska apparater och tjänster i hemmet, i att assistera i skötsel av små sällskapsdjur eller i skötsel av hemmets krukväxter och gårdsplanen/terrassen. Hemvårdarna agerar klientinriktat och producerar tjänster individuellt till olika klienter och så att hemmets värden respekteras. De utför hemarbetsservice kvalitativt och bidrar på det sättet med sin egen verksamhet till att sådana tjänster i ökande utsträckning efterfrågas och uppskattas. </p> <p>Arbetsplatser: klienternas hem, servicehem och hemliknande institutioner som erbjuder kostservice samt städnings-, textilvårds- och assistanstjänster för klienterna.</p>",
+      "kieli_fi" : "<p>Kotityöpalvelujen osaamisalan suorittanut kodinhuoltaja tekee asiakkaiden kodeissa, palvelukodeissa ja kodinomaisissa laitoksissa ateriapalveluja, siivous- ja tekstiilienhuoltotehtäviä, asiakkaan avustamista päivittäisissä toiminnoissa sekä asiointipalveluja. Kodinhuoltajalla voi olla erityisosaamista myös asiakkaan opastamiseen erilaisten kodin teknisten laitteiden ja palvelujen käytössä, pienlemmikkieläinten hoidossa avustamisessa tai kodin huonekasvien ja pihan/parvekkeen hoidossa. Kodinhuoltaja toimii asiakaslähtöisesti ja tuottaa yksilöllisesti ja kodin arvoja kunnioittaen palveluja erilaisille asiakkaille. Hän tekee kotityöpalveluja laadukkaasti ja lisää siten omalla toiminnallaan niiden kysyntää ja arvostusta.</p> <p>Työpaikat: Asiakkaiden kodit, palvelukodit ja kodinomaiset laitokset, joissa asiakkaille tuotetaan ateria-, siivous-, tekstiilienhuoltoja avustuspalveluja.</p> "
+    },
+    "tutkintonimikes" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "tutkintonimikkeet_10149" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "tutkintonimikkeet_10149",
+          "versio" : 1,
+          "arvo" : "10149",
+          "nimi" : "Kodinhuoltaja",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Hemvårdare",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Kodinhuoltaja",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "tutkintonimikkeet_10149" : 1
+      }
+    },
+    "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS"
+  },
+  "params" : null,
+  "status" : "OK",
+  "errors" : null,
+  "accessRights" : { }
+}

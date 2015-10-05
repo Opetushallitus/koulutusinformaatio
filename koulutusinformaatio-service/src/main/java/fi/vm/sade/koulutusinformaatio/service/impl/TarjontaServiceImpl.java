@@ -30,7 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -55,6 +58,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
+import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
@@ -988,5 +992,41 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     public void addProcessedTutkinto(TutkintoLOS tutkinto) {
         processedTutkintos.put(tutkinto.getId(), tutkinto);
+    }
+
+    @Override
+    public Set<String> findKoulutusOidsByHaku(String asOid) {
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = tarjontaRawService.getV1KoulutusByAsId(asOid);
+        if (rawRes == null
+                || rawRes.getResult() == null
+                || rawRes.getResult().getTulokset() == null
+                || rawRes.getResult().getTulokset().isEmpty()
+                || rawRes.getResult().getTulokset().get(0) == null) {
+            return Sets.newHashSet();
+        }
+        return FluentIterable.from(rawRes.getResult().getTulokset().get(0).getTulokset())
+                .transform(new Function<KoulutusHakutulosV1RDTO, String>() {
+                    @Override
+                    public String apply(KoulutusHakutulosV1RDTO input) {
+                        return input.getOid();
+                    }
+                }).toSet();
+    }
+
+    @Override
+    public Set<String> findKoulutusOidsByAo(String aoOid) {
+        ResultV1RDTO<List<NimiJaOidRDTO>> rawRes = tarjontaRawService.getV1KoulutusByAoId(aoOid);
+        if (rawRes == null
+                || rawRes.getResult() == null
+                || rawRes.getResult().isEmpty()) {
+            return Sets.newHashSet();
+        }
+        return FluentIterable.from(rawRes.getResult())
+                .transform(new Function<NimiJaOidRDTO, String>() {
+                    @Override
+                    public String apply(NimiJaOidRDTO input) {
+                        return input.getOid();
+                    }
+                }).toSet();
     }
 }

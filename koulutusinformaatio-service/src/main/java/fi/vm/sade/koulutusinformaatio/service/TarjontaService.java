@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import java.util.List;
+import java.util.Set;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -104,5 +105,9 @@ public interface TarjontaService {
 
     List<KoulutusHakutulosV1RDTO> findKoulutus(String toteutusTyyppi, String providerOid, String koulutusKoodi) throws TarjontaParseException,
             KoodistoException, ResourceNotFoundException;
+
+    public Set<String> findKoulutusOidsByHaku(String asOid);
+
+    public Set<String> findKoulutusOidsByAo(String aoOid);
 
 }

@@ -38,6 +38,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
@@ -287,4 +288,20 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 });
     }
 
+    @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getV1KoulutusByAsId(String asOid) {
+        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
+                .path("search")
+                .queryParam("haku", asOid)
+                .queryParam("tila", "JULKAISTU"),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {});
+    }
+
+    @Override
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getV1KoulutusByAoId(String aoOid) {
+        return (ResultV1RDTO<List<NimiJaOidRDTO>>) getWithRetries(v1AOResource
+                .path(aoOid)
+                .path("koulutukset"),
+                new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {});
+    }
 }

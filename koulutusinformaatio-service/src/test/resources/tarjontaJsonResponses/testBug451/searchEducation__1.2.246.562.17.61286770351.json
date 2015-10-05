@@ -1,0 +1,70 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.23856923257",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Validia Ammattiopisto, Järvenpää"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.17.61286770351",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Kotityöpalvelujen osaamisala",
+          "sv" : "Kompetensområde för hemarbetsservice",
+          "en" : "Kotityöpalvelujen osaamisala"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : "kausi_s#1",
+        "vuosi" : 2015,
+        "koulutuslajiUri" : "koulutuslaji_n",
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA",
+        "pohjakoulutusvaatimus" : {
+          "fi" : "ER",
+          "sv" : "SP",
+          "en" : "ER"
+        },
+        "koulutuskoodi" : "koulutus_381113#1",
+        "koulutuksenAlkamisPvmMin" : 1439326800000,
+        "koulutuksenAlkamisPvmMax" : 1439326800000,
+        "tarjoajat" : [ "1.2.246.562.10.23856923257" ],
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : "1.2.246.562.5.2013061010193469822276",
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : "1.2.246.562.5.2013061010190957797211",
+        "siblingKomotos" : [ "1.2.246.562.17.26073764842" ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "accessRights" : { },
+  "errors" : null
+}

@@ -105,7 +105,7 @@ public class IncrementalKoulutusLOSIndexer {
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
 
-    public void removeKoulutusLOS(String oid)  throws Exception {
+    public void removeKoulutusLOS(String oid) throws Exception {
         loHttpSolrServer.deleteById(oid);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
         KoulutusLOS toDeleteLos = new KoulutusLOS();
@@ -138,14 +138,16 @@ public class IncrementalKoulutusLOSIndexer {
             List<KoulutusLOS> result = tarjontaService.createAmmatillinenKoulutusLOS(koulutusHakutulosV1RDTO);
             losses.addAll(result);
         }
-        
+
         Set<String> tutkintoOidsToBeRemoved = new HashSet<String>();
         Set<String> koulutusOidsToBeRemoved = new HashSet<String>();
         List<KoulutusLOS> lossesToBeRemoved = dataQueryService.getKoulutusLos(toteutusTyyppi, tarjoaja, koulutusKoodi);
         for (KoulutusLOS los : lossesToBeRemoved) {
-            koulutusOidsToBeRemoved.add(los.getId());
-            if (los.getTutkinto() != null)
+            if (los.getTutkinto() != null) {
                 tutkintoOidsToBeRemoved.add(los.getTutkinto().getId());
+            } else {
+                koulutusOidsToBeRemoved.add(los.getId());
+            }
         }
         for (String oid : tutkintoOidsToBeRemoved) {
             removeTutkintoLOS(oid);

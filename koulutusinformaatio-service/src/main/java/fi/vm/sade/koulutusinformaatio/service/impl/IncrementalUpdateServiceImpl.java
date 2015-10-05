@@ -15,11 +15,11 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
@@ -42,10 +44,6 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 
 
 
@@ -155,28 +153,28 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 komoCount = result.get("koulutusmoduuli").size();
             }
 
-            // If changes in haku objects indexing them
+            Set<String> affectedKoulutusOids = Sets.newHashSet();
             if (result.containsKey("haku") && !result.get("haku").isEmpty()) {
                 LOG.info("Haku changes: " + result.get("haku"));
-                indexHakuChanges(result.get("haku"));
-                hakuCount = result.get("haku").size();
+                for (String asOid : result.get("haku")) {
+                    affectedKoulutusOids.addAll(tarjontaService.findKoulutusOidsByHaku(asOid));
+                    asIndexer.indexApplicationSystemForCalendar(asOid);
+                }
             }
-
-            List<String> changedHakukohdeOids = new ArrayList<String>();
-            // If changes in hakukohde, indexing them
             if (result.containsKey("hakukohde") && !result.get("hakukohde").isEmpty()) {
-                changedHakukohdeOids = result.get("hakukohde");
-                LOG.info("Hakukohde changes: " + changedHakukohdeOids);
-                indexHakukohdeChanges(result.get("hakukohde"));
-                hakukohdeCount = result.get("hakukohde").size();
+                LOG.info("Hakukohde changes: " + result.get("hakukohde"));
+                for (String aoOid : result.get("hakukohde")) {
+                    affectedKoulutusOids.addAll(tarjontaService.findKoulutusOidsByAo(aoOid));
+                }
             }
-
-            // If changes in koulutusmoduuliToteutus, indexing them
             if (result.containsKey("koulutusmoduuliToteutus") && !result.get("koulutusmoduuliToteutus").isEmpty()) {
                 LOG.info("Changed komotos: " + result.get("koulutusmoduuliToteutus"));
-                indexKomotoChanges(result.get("koulutusmoduuliToteutus"), changedHakukohdeOids);
-                koulutusCount = result.get("koulutusmoduuliToteutus").size();
+                affectedKoulutusOids.addAll(result.get("koulutusmoduuliToteutus"));
             }
+
+            LOG.info("Incremental indexing will be run for {} koulutus.", affectedKoulutusOids.size());
+            if (!affectedKoulutusOids.isEmpty())
+                indexKomotoChanges(affectedKoulutusOids);
 
             LOG.debug("Committing to solr");
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -194,58 +192,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    private void indexKomotoChanges(List<String> komotoChanges, List<String> changedHakukohdeOids) throws Exception {
+    private void indexKomotoChanges(Set<String> komotoChanges) throws Exception {
         for (String curOid : komotoChanges) {
-            List<String> aoOids = new ArrayList<String>();
             try {
-
-                List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> tulokset =
-                        tarjontaRawService.findHakukohdesByEducationOid(curOid, false).getResult().getTulokset();
-
-                for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> tarjoaja : tulokset) {
-                    for (HakukohdeHakutulosV1RDTO hakukohdeTulos : tarjoaja.getTulokset()) {
-                        aoOids.add(hakukohdeTulos.getOid());
-                    }
-                }
-            
-                if (this.losIndexer.isLoiAlreadyHandled(aoOids, changedHakukohdeOids)) {
-                    LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
-                } else {
-                    LOG.debug("Will index changed komoto: " + curOid);
-                    this.losIndexer.indexLoiData(curOid);
-                }
+                LOG.debug("Will index changed komoto: " + curOid);
+                this.losIndexer.indexLoiData(curOid);
             } catch (Exception ex) {
                 LOG.warn("problem indexing komoto: " + curOid, ex);
             }
         }
-    }
-
-    private void indexHakukohdeChanges(List<String> hakukohdeChanges) throws Exception {
-        for (String curOid : hakukohdeChanges) {
-            LOG.debug("Changed hakukohde: " + curOid);
-            HakukohdeV1RDTO aoDto = null;
-            HakuV1RDTO asDto = null;
-            try {
-                aoDto = this.tarjontaRawService.getV1EducationHakukohde(curOid).getResult();
-                asDto = this.tarjontaRawService.getV1EducationHakuByOid(aoDto.getHakuOid()).getResult();
-                this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
-            } catch (Exception ex) {
-                LOG.warn("Problem indexing hakukohde: " + curOid, ex);
-            } 
-
-        }
-    }
-
-    private void indexHakuChanges(List<String> hakuChanges) throws Exception {
-        for (String curOid : hakuChanges) {
-            try {
-                LOG.debug("Changed haku: " + curOid);
-                this.asIndexer.indexApplicationSystemData(curOid);
-            } catch (Exception ex) {
-                LOG.warn("Error indexing application system: " + curOid, ex);
-            }
-        }
-        
     }
 
     private void indexKomoChanges(List<String> komoChanges) throws Exception {

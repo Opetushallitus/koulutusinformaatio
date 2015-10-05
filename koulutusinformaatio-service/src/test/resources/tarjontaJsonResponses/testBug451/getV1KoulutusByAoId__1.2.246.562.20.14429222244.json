@@ -1,0 +1,23 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : [ {
+    "nimi" : {
+      "fi" : "Puhdistuspalvelujen osaamisala",
+      "sv" : "Kompetensområde för rengöringsservice",
+      "en" : "Puhdistuspalvelujen osaamisala"
+    },
+    "oid" : "1.2.246.562.17.26073764842",
+    "relatedOid" : null
+  }, {
+    "nimi" : {
+      "fi" : "Kotityöpalvelujen osaamisala",
+      "sv" : "Kompetensområde för hemarbetsservice",
+      "en" : "Kotityöpalvelujen osaamisala"
+    },
+    "oid" : "1.2.246.562.17.61286770351",
+    "relatedOid" : null
+  } ],
+  "accessRights" : { },
+  "errors" : null
+}

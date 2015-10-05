@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.LogManager;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
@@ -25,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
@@ -59,6 +62,9 @@ public class IncrementalIndexerTest {
 
     @Autowired
     private DataStatusDAO dataStatusDAO;
+
+    @Autowired
+    private AdultVocationalLOSDAO adultVocationalLOSDAO;
 
     @After
     public void removeTestData() {
@@ -106,7 +112,7 @@ public class IncrementalIndexerTest {
             child.setSiblings(children1);
         }
         tutkinto1.setChildEducations(children1);
-        
+
         TutkintoLOSEntity tutkinto2 = new TutkintoLOSEntity();
         tutkinto2.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2016_Kevät");
         tutkinto2.setProvider(provider);
@@ -122,7 +128,7 @@ public class IncrementalIndexerTest {
 
         tutkintoLOSDAO.save(tutkinto1);
         tutkintoLOSDAO.save(tutkinto2);
-        
+
         learningOpportunityProviderDAO.save(provider);
 
         for (KoulutusLOSEntity los : tutkinto1.getChildEducations()) {
@@ -176,6 +182,52 @@ public class IncrementalIndexerTest {
         }
     }
 
+    @Test
+    public void testBug451() throws Exception {
+        tarjontaRawServiceMock.setTestCase("testBug451");
+
+        assertEquals(0, tutkintoLOSDAO.count());
+        assertEquals(0, koulutusLOSDAO.count());
+        assertEquals(0, applicationOptionDAO.count());
+        assertEquals(0, adultVocationalLOSDAO.count());
+
+        // Run incremental indexing
+        incrementalUpdateService.updateChangedEducationData();
+
+        List<TutkintoLOSEntity> tutkintos = tutkintoLOSDAO.find().asList();
+        List<KoulutusLOSEntity> losses = koulutusLOSDAO.find().asList();
+        List<CompetenceBasedQualificationParentLOSEntity> adultLosses = adultVocationalLOSDAO.find().asList();
+        List<ApplicationOptionEntity> aos = applicationOptionDAO.find().asList();
+
+        List<String> allowedTutkintoIDs = Lists.newArrayList(
+                "1.2.246.562.5.2013061010190957797211_1.2.246.562.10.23856923257_2015_Syksy");
+        assertEquals(allowedTutkintoIDs.size(), tutkintos.size());
+
+        List<String> allowedKoulutusIDs = Lists.newArrayList(
+                "1.2.246.562.17.61286770351",
+                "1.2.246.562.17.26073764842");
+        assertEquals(allowedKoulutusIDs.size(), losses.size());
+        assertEquals(1, adultLosses.size());
+        List<String> allowedAoIDs = Lists.newArrayList(
+                "1.2.246.562.20.14429222244",
+                "1.2.246.562.20.70012100114");
+        assertEquals(allowedAoIDs.size(), aos.size());
+
+        for (TutkintoLOSEntity tutkinto : tutkintos) {
+            validateTutkinto(tutkinto, allowedTutkintoIDs);
+        }
+
+        for (KoulutusLOSEntity koulutus : losses) {
+            validateKoulutus(koulutus, allowedKoulutusIDs);
+        }
+
+        for (ApplicationOptionEntity ao : aos) {
+            validateAo(ao, allowedAoIDs);
+        }
+        assertEquals("1.2.246.562.17.79497399471", adultLosses.get(0).getId());
+
+    }
+
     private void validateTutkinto(TutkintoLOSEntity tutkinto, List<String> allowedTutkinToIDs) {
         assertTrue("Tutkinto " + tutkinto.getId() + " has no application options.", tutkinto.getApplicationOptions().size() > 0);
         assertTrue("Tutkinto " + tutkinto.getId() + " has no koulutus.", tutkinto.getChildEducations().size() > 0);
@@ -206,4 +258,3 @@ public class IncrementalIndexerTest {
     }
 
 }
-

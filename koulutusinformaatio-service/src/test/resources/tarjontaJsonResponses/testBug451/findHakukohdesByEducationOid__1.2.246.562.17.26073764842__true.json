@@ -1,0 +1,77 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.23856923257",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Validia Ammattiopisto, Järvenpää"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.14429222244",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Kotityö- ja puhdistuspalvelujen perustutkinto, er",
+          "sv" : "Grundexamen i hemarbets- och rengöringsservice, sp",
+          "en" : "Kotityö- ja puhdistuspalvelujen perustutkinto, er"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2015,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Yhteishaku",
+          "sv" : "Gemensam ansökan",
+          "en" : "Yhteishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "(2015-04-14 08:00 - 2015-04-29 15:00)",
+        "aloituspaikat" : 30,
+        "hakuOid" : "1.2.246.562.29.61316288341",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "accessRights" : { },
+  "errors" : null
+}

@@ -1,0 +1,161 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1428654002248,
+    "modifiedBy" : "1.2.246.562.24.33788837119",
+    "oid" : "1.2.246.562.20.14429222244",
+    "version" : 8,
+    "hakukohteenNimi" : null,
+    "hakukohteenNimiUri" : "hakukohteet_512#2",
+    "hakukohteenNimet" : {
+      "kieli_sv" : "Grundexamen i hemarbets- och rengöringsservice, sp",
+      "kieli_fi" : "Kotityö- ja puhdistuspalvelujen perustutkinto, er"
+    },
+    "tarjoajaNimet" : {
+      "fi" : "Validia Ammattiopisto, Järvenpää"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+      "1.2.246.562.17.26073764842" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.23856923257" ]
+      },
+      "1.2.246.562.17.61286770351" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.23856923257" ]
+      }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.23856923257" ],
+    "hakuOid" : "1.2.246.562.29.61316288341",
+    "hakuaikaId" : "1603611",
+    "hakukelpoisuusvaatimusUris" : [ ],
+    "opintoOikeusUris" : [ ],
+    "hakukohdeKoulutusOids" : [ "1.2.246.562.17.61286770351", "1.2.246.562.17.26073764842" ],
+    "hakuaikaAlkuPvm" : null,
+    "hakuaikaLoppuPvm" : null,
+    "alinHyvaksyttavaKeskiarvo" : 0.0,
+    "alinValintaPistemaara" : 0,
+    "ylinValintapistemaara" : 0,
+    "aloituspaikatLkm" : 30,
+    "edellisenVuodenHakijatLkm" : 0,
+    "valintojenAloituspaikatLkm" : 30,
+    "sahkoinenToimitusOsoite" : null,
+    "soraKuvausKoodiUri" : null,
+    "tila" : "JULKAISTU",
+    "valintaperustekuvausKoodiUri" : null,
+    "liitteidenToimitusPvm" : null,
+    "ulkoinenTunniste" : "-3636753433731428961",
+    "koulutusAsteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+    "toteutusTyyppi" : "AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA",
+    "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+    "koulutuslaji" : "N",
+    "lisatiedot" : {
+      "kieli_fi" : ""
+    },
+    "valintaperusteKuvaukset" : null,
+    "soraKuvaukset" : null,
+    "hakukelpoisuusVaatimusKuvaukset" : { },
+    "aloituspaikatKuvaukset" : null,
+    "kaytetaanJarjestelmanValintaPalvelua" : true,
+    "kaytetaanHaunPaattymisenAikaa" : false,
+    "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+    "hakukohteenLiitteet" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1989179",
+      "version" : 0,
+      "hakukohdeOid" : null,
+      "kieliUri" : "kieli_fi",
+      "kieliNimi" : "suomi",
+      "liitteenNimi" : "",
+      "liitteenTyyppi" : "liitetyypitamm_3#1",
+      "jarjestys" : 0,
+      "kaytetaanHakulomakkeella" : true,
+      "liitteenKuvaukset" : {
+        "kieli_fi" : "<p>Hakemisen perusteena olevien liitteiden tulee olla <b>4.5. klo 15:00</b>  toimitettuna perille oppilaitokseen.</p> <p>Liitteitä ovat:</p> <ul> <li>todistusjäljennökset: peruskoulun päättötodistus sekä muut koulu- ja opiskelutodistukset</li> <li>HOJKS aikaisemmasta oppilaitoksesta (henkilökohtainen opetuksen järjestämistä koskeva suunnitelma)</li> <li>koulutukseen hakeutumista varten laadittu lääkärin B-lausunto tai muu vastaava selvitys erityisen tuen tarpeesta. Lääkärin B-lausunto ei ole tarpeen, mikäli erityisopetuksen peruste ei ole terveydellinen</li> </ul>"
+      },
+      "toimitettavaMennessa" : 1430740818191,
+      "liitteenToimitusOsoite" : {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : null,
+        "version" : 0,
+        "osoiterivi1" : "PL 46",
+        "osoiterivi2" : null,
+        "postinumero" : "posti_04401",
+        "postinumeroArvo" : "04401",
+        "postitoimipaikka" : "JÄRVENPÄÄ"
+      },
+      "sahkoinenToimitusOsoite" : null
+    } ],
+    "yhteystiedot" : [ ],
+    "liitteidenToimitusOsoite" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : null,
+      "version" : 0,
+      "osoiterivi1" : "PL 46",
+      "osoiterivi2" : null,
+      "postinumero" : "posti_04401",
+      "postinumeroArvo" : "04401",
+      "postitoimipaikka" : "JÄRVENPÄÄ"
+    },
+    "valintakokeet" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1989184",
+      "version" : 0,
+      "hakukohdeOid" : null,
+      "kieliUri" : "kieli_fi",
+      "kieliNimi" : "suomi",
+      "valintakoeNimi" : null,
+      "valintakoetyyppi" : "valintakokeentyyppi_6#1",
+      "valintakokeenKuvaus" : {
+        "uri" : "kieli_fi",
+        "nimi" : "suomi",
+        "monikielisetNimet" : [ {
+          "kieli" : "EN",
+          "nimi" : "Finnish"
+        }, {
+          "kieli" : "FI",
+          "nimi" : "suomi"
+        }, {
+          "kieli" : "SV",
+          "nimi" : "finska"
+        } ],
+        "arvo" : "FI",
+        "versio" : 1,
+        "teksti" : "<p>Hakukelpoiset hakijat kutsutaan haastatteluihin.</p>"
+      },
+      "valintakoeAjankohtas" : [ ],
+      "pisterajat" : [ ],
+      "kuvaukset" : { },
+      "lisanaytot" : { }
+    } ],
+    "valintaPerusteKuvausTunniste" : null,
+    "kaksoisTutkinto" : false,
+    "soraKuvausTunniste" : null,
+    "opetusKielet" : [ "kieli_fi" ],
+    "valintaPerusteKuvausKielet" : [ ],
+    "soraKuvausKielet" : [ ],
+    "painotettavatOppiaineet" : [ ],
+    "hakuMenettelyKuvaukset" : { },
+    "peruutusEhdotKuvaukset" : { },
+    "ryhmaliitokset" : [ ],
+    "organisaatioRyhmaOids" : [ ],
+    "ylioppilastutkintoAntaaHakukelpoisuuden" : false,
+    "kelaLinjaKoodi" : null,
+    "kelaLinjaTarkenne" : null,
+    "ensikertalaistenAloituspaikat" : null
+  },
+  "accessRights" : { },
+  "errors" : null
+}

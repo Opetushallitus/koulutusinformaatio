@@ -1,0 +1,16 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ ],
+    "tuloksia" : 0
+  },
+  "accessRights" : { },
+  "errors" : null
+}

@@ -1,0 +1,964 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1439901396424,
+    "modifiedBy" : null,
+    "oid" : "1.2.246.562.5.2013061010190957797211",
+    "version" : 109,
+    "koulutuskoodi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutus_381113",
+      "versio" : 1,
+      "arvo" : "381113",
+      "nimi" : "Kotityö- ja puhdistuspalvelujen perustutkinto",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Grundexamen i hemarbets- och rengöringsservice",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Household and Cleaning Ser, VQ",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Kotityö- ja puhdistuspalvelujen perustutkinto",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusaste" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusasteoph2002_32",
+      "versio" : 1,
+      "arvo" : "32",
+      "nimi" : "Ammatillinen koulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yrkesutbildning",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Vocational education and training",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Ammatillinen koulutus",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusalaoph2002_8",
+      "versio" : 1,
+      "arvo" : "8",
+      "nimi" : "Matkailu-, ravitsemis- ja talousala",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Turism-, kosthålls- och ekonomibranschen",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Tourism, Catering and Domestic Services",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Matkailu-, ravitsemis- ja talousala",
+          "meta" : null
+        }
+      }
+    },
+    "opintoala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintoalaoph2002_804",
+      "versio" : 1,
+      "arvo" : "804",
+      "nimi" : "Kotitalous- ja kuluttajapalvelut",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Huslig ekonomi och konsumentservice",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Domestic and consumer services",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Kotitalous- ja kuluttajapalvelut",
+          "meta" : null
+        }
+      }
+    },
+    "tutkinto" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "eqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "nqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "opintojenLaajuusyksikko" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintojenlaajuusyksikko_1",
+      "versio" : 1,
+      "arvo" : "1",
+      "nimi" : "opintoviikkoa",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "studieveckor",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "study weeks",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "opintoviikkoa",
+          "meta" : null
+        }
+      }
+    },
+    "koulutustyyppi" : null,
+    "ohjelmas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "komoOid" : "1.2.246.562.5.2013061010190957797211",
+    "organisaatio" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : null,
+      "version" : null,
+      "nimi" : null,
+      "nimet" : [ ]
+    },
+    "tunniste" : null,
+    "nimi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "tekstis" : { }
+    },
+    "tila" : "JULKAISTU",
+    "koulutusmoduuliTyyppi" : "TUTKINTO",
+    "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+    "kuvausKomo" : {
+      "KOULUTUKSEN_RAKENNE" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>Examensdelarna måltids- och kaffebjudningsservice och underhållsstädning är obligatoriska för alla examinander. I utbildningsprogrammet för hemarbetsservice ingår dessutom assisterande av klienter, grundstädning och klädvårdsservice i hemmet och kostservice i hemmet. Examensdelarna grundstädning  och lokalservice  är obligatoriska för de som avlägger utbildningsprogrammet för rengöringsservice. Utöver dessa obligatoriska yrkesinriktade examensdelar ska examinanderna avlägga valfria yrkesinriktade examensdelar som fördjupar kompetensen inom den valda yrkesinriktningen.</p>",
+          "kieli_fi" : "<p>Tutkinnon kaikille pakolliset tutkinnon osat ovat ateria- ja kahvituspalvelut ja ylläpitosiivous. Kotityöpalvelujen osaamisalalla  suoritetaan lisäksi osat asiakkaiden avustaminen, kodin perussiivous ja tekstiilihuoltopalvelut  ja kotiruokapalvelut. Puhdistuspalvelujen osaamisalalla suoritetaan lisäksi osat perussiivous  ja toimitilapalvelut. Lisäksi suoritetaan valinnaisia tutkinnon osia, jotka tukevat ammatillista suuntautumista.</p>"
+        }
+      },
+      "JATKOOPINTO_MAHDOLLISUUDET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>Yrkesinriktade grundexamina samt yrkes- och specialyrkesexamina ger allmän behörighet för fortsatta studier vid yrkeshögskolor och universitet.</p>",
+          "kieli_fi" : "<p>Ammatillisista perustutkinnoista sekä ammatti- ja erikoisammattitutkinnoista saa yleisen jatko-opintokelpoisuuden ammattikorkeakouluihin ja yliopistoihin. </p>"
+        }
+      },
+      "TAVOITTEET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>De som har avlagt grundexamen i hemarbets- och rengöringsservice är uppmärksamma och flexibla och de respekterar olikheter och jobbar på ett kundorienterat sätt. De planerar, utvärderar och utvecklar sitt arbete och sin service enligt kvalitetskraven. De arbetar utgående från kunderna och kulturen och vet vilken betydelse renlighet och näring har för hälsan. De agerar ansvarsfullt och ekonomiskt och arbetar utifrån ett hållbart verksamhetssätt. Den som har avlagt grundexamen i hemarbets- och rengöringsservice har utöver basfärdigheter i branschen även ett specialiserat kunnande i hemarbets- eller rengöringsservice.</p>",
+          "kieli_fi" : "<p>Kotityö- ja puhdistuspalvelujen perustutkinnon suorittanut on hienotunteinen, erilaisuutta kunnioittava sekä asiakaspalveluhenkinen ja joustava. Hän suunnittelee, arvioi ja kehittää omaa työtään ja palveluita laatuvaatimusten mukaan. Hän toimii asiakkaiden ja kulttuurin mukaisesti ja tietää puhtauden ja ravitsemuksen merkityksen terveydelle. Hän toimii vastuullisesti, kannattavasti ja kestävän toimintatavan mukaisesti. Kotityö- ja puhdistuspalvelujen perustutkinnon suorittaneella on alan perusvalmiuksien lisäksi valintojen mukaan erikoistunut osaaminen kotityöpalvelujen tai puhdistuspalvelujen työtehtävissä.</p>"
+        }
+      }
+    },
+    "suunniteltuKestoArvo" : null,
+    "suunniteltuKestoTyyppi" : null,
+    "oppilaitostyyppis" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "oppilaitostyyppi_21" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "oppilaitostyyppi_21",
+          "versio" : 1,
+          "arvo" : "21",
+          "nimi" : "Ammatilliset oppilaitokset",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Yrkesläroanstalter",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Vocational institutions",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatilliset oppilaitokset",
+              "meta" : null
+            }
+          }
+        },
+        "oppilaitostyyppi_61" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "oppilaitostyyppi_61",
+          "versio" : 1,
+          "arvo" : "61",
+          "nimi" : "Musiikkioppilaitokset",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Musikläroanstalter",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Music institutes",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Musiikkioppilaitokset",
+              "meta" : null
+            }
+          }
+        },
+        "oppilaitostyyppi_24" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "oppilaitostyyppi_24",
+          "versio" : 1,
+          "arvo" : "24",
+          "nimi" : "Ammatilliset aikuiskoulutuskeskukset",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Yrkesutbildningscentrer för vuxna",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Vocational adult education centres",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatilliset aikuiskoulutuskeskukset",
+              "meta" : null
+            }
+          }
+        },
+        "oppilaitostyyppi_23" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "oppilaitostyyppi_23",
+          "versio" : 1,
+          "arvo" : "23",
+          "nimi" : "Ammatilliset erikoisoppilaitokset",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Särskilda yrkesläroanstalter",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Specialised vocational education and training institutions",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatilliset erikoisoppilaitokset",
+              "meta" : null
+            }
+          }
+        },
+        "oppilaitostyyppi_22" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "oppilaitostyyppi_22",
+          "versio" : 1,
+          "arvo" : "22",
+          "nimi" : "Ammatilliset erityisoppilaitokset",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Specialyrkesläroanstalter",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Vocational special education institutions",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatilliset erityisoppilaitokset",
+              "meta" : null
+            }
+          }
+        },
+        "oppilaitostyyppi_62" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "oppilaitostyyppi_62",
+          "versio" : 1,
+          "arvo" : "62",
+          "nimi" : "Liikunnan koulutuskeskukset",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Idrottsutbildningscentrer",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Sports institutes",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Liikunnan koulutuskeskukset",
+              "meta" : null
+            }
+          }
+        },
+        "oppilaitostyyppi_63" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "oppilaitostyyppi_63",
+          "versio" : 1,
+          "arvo" : "63",
+          "nimi" : "Kansanopistot",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Folkhögskolor",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Folk high schools",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Kansanopistot",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "oppilaitostyyppi_21" : 1,
+        "oppilaitostyyppi_61" : 1,
+        "oppilaitostyyppi_24" : 1,
+        "oppilaitostyyppi_23" : 1,
+        "oppilaitostyyppi_22" : 1,
+        "oppilaitostyyppi_62" : 1,
+        "oppilaitostyyppi_63" : 1
+      }
+    },
+    "tutkintonimikes" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "opintojenLaajuusarvo" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintojenlaajuus_120",
+      "versio" : 1,
+      "arvo" : "120",
+      "nimi" : "120",
+      "meta" : {
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "120",
+          "meta" : null
+        }
+      }
+    },
+    "koulutustyyppis" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "koulutustyyppi_13" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "koulutustyyppi_13",
+          "versio" : -1,
+          "arvo" : "13",
+          "nimi" : "Ammatillinen perustutkinto näyttötutkintona",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatillinen perustutkinto näyttötutkintona",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatillinen perustutkinto näyttötutkintona",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatillinen perustutkinto näyttötutkintona",
+              "meta" : null
+            }
+          }
+        },
+        "koulutustyyppi_1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "koulutustyyppi_1",
+          "versio" : -1,
+          "arvo" : "1",
+          "nimi" : "Ammatillinen perustutkinto",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "yrkesinriktad grundexamen",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatillinen perustutkinto",
+              "meta" : null
+            }
+          }
+        },
+        "koulutustyyppi_4" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "koulutustyyppi_4",
+          "versio" : -1,
+          "arvo" : "4",
+          "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "koulutustyyppi_13" : -1,
+        "koulutustyyppi_1" : -1,
+        "koulutustyyppi_4" : -1
+      }
+    },
+    "lukiolinja" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "osaamisala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "koulutusohjelma" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    }
+  },
+  "accessRights" : { },
+  "errors" : null
+}

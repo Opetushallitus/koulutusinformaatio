@@ -1,0 +1,77 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.23856923257",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Validia Ammattiopisto, Järvenpää"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.14.2014020610490531889589",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Kotityö- ja puhdistuspalvelujen perustutkinto, er",
+          "sv" : "Grundexamen i hemarbets- och rengöringsservice, sp",
+          "en" : "Kotityö- ja puhdistuspalvelujen perustutkinto, er"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2014,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Erillishaku",
+          "sv" : "Separata antagningar",
+          "en" : "Erillishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : "2014-02-06 10:48 - 2014-03-14 10:48",
+        "hakuaikaRyhma" : "(2014-01-01 10:37 - 2014-05-30 10:37)",
+        "aloituspaikat" : 10,
+        "hakuOid" : "1.2.246.562.5.2013112910452702965370",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "accessRights" : { },
+  "errors" : null
+}

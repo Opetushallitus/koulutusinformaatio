@@ -1,0 +1,1475 @@
+{
+  "result" : {
+    "created" : null,
+	"toteutustyyppi": "AMMATTITUTKINTO",
+    "createdBy" : null,
+    "modified" : 1435130621746,
+    "modifiedBy" : "1.2.246.562.24.91960554883",
+    "oid" : "1.2.246.562.17.79497399471",
+    "version" : 8,
+    "koulutuskoodi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutus_364904",
+      "versio" : 4,
+      "arvo" : "364904",
+      "nimi" : "Erä- ja luonto-oppaan ammattitutkinto",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yrkesexamen för vildmarks- och naturguide",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Hiking, Nature Guide Serv., FQ",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Erä- ja luonto-oppaan ammattitutkinto",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusaste" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusasteoph2002_32",
+      "versio" : 1,
+      "arvo" : "32",
+      "nimi" : "Ammatillinen koulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yrkesutbildning",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Vocational education and training",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Ammatillinen koulutus",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusalaoph2002_6",
+      "versio" : 1,
+      "arvo" : "6",
+      "nimi" : "Luonnonvara- ja ympäristöala",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Naturbruk och miljöområdet",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Natural Resources and the Environment",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Luonnonvara- ja ympäristöala",
+          "meta" : null
+        }
+      }
+    },
+    "opintoala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintoalaoph2002_605",
+      "versio" : 1,
+      "arvo" : "605",
+      "nimi" : "Luonto- ja ympäristöala",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Natur- och miljöområdet",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Nature and the environment",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Luonto- ja ympäristöala",
+          "meta" : null
+        }
+      }
+    },
+    "tutkinto" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "tutkinto_xx",
+      "versio" : 1,
+      "arvo" : "XX",
+      "nimi" : "------------------",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "------------------",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "------------------",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "------------------",
+          "meta" : null
+        }
+      }
+    },
+    "eqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "eqf_4",
+      "versio" : 1,
+      "arvo" : "4",
+      "nimi" : "Taso 4",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Nivå 4",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Level 4",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Taso 4",
+          "meta" : null
+        }
+      }
+    },
+    "nqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "opintojenLaajuusyksikko" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "koulutustyyppi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutustyyppi_11",
+      "versio" : 1,
+      "arvo" : "11",
+      "nimi" : "Ammattitutkinto",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yrkesexamen",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Ammattitutkinto",
+          "meta" : null
+        }
+      }
+    },
+    "ohjelmas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "moduulityyppi" : "ERIKOISAMMATTITUTKINTO",
+    "komoOid" : "1.2.246.562.13.10829719011",
+    "komotoOid" : null,
+    "organisaatio" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.95593644479",
+      "version" : null,
+      "nimi" : "Kiljavan opisto, Nurmijärvi",
+      "nimet" : [ ]
+    },
+    "koulutusohjelma" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "tekstis" : { }
+    },
+    "tunniste" : "Erä- ja luonto-oppaan ammattitutkinto",
+    "hakijalleNaytettavaTunniste" : null,
+    "tila" : "JULKAISTU",
+    "koulutusmoduuliTyyppi" : "TUTKINTO",
+    "kuvausKomo" : {
+      "JATKOOPINTO_MAHDOLLISUUDET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>Examen ger tillträde till högskolestudier.</p>",
+          "kieli_fi" : "<p>Tutkinto tuottaa kelpoisuuden korkeakouluopintoihin.</p>"
+        }
+      },
+      "TAVOITTEET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>Den som avlagt examen<br />- kan fungera i olika slag av situationer med olika slag av kunder och kundgrupper<br />- är kapabel att på ett naturligt sätt kombinera guidningen med kundsituationerna och programservicen<br />- har tillräckliga språkkunskaper och kommunikationsfärdigheter för att klara interaktionen med olika slag av kunder<br />- har för yrket tillräckliga kunskaper om Finlands natur, organismarter, geografi, historia, näringsliv och kultur<br />- har speciellt väl satt sig in i förhållandena i det område och på den ort där han/hon arbetar som guide<br />- är kapabel att planera och genomföra olika slag av utflykter i terrängen under alla årstider och alla tider av dygnet och i alla väderleksförhållanden<br />- behärskar vildmarksfärdigheter och vildmarkstraditioner samt känner till livsmedelslagstiftningen<br />- kan tillreda vildmarkskost</p> <p>De som har avlagt denna examen kan arbeta t.ex. i företag som erbjuder programservice eller som självständiga företagare.</p>",
+          "kieli_fi" : "<p>Tutkinnon suorittanut<br />- osaa opastaa, ohjata ja organisoida erilaisia ryhmiä turvallisesti ja laadukkaasti kesä- ja talviolosuhteissa<br />- hallitsee maastossa tarvittavat erätaidot: suunnistuksen, tulenteon, ruoanlaiton ja yöpymisen valmistelun<br />- osaa valita itselleen ja ryhmälle oikeat välineet ja varusteet sekä huoltaa ne<br />- osaa laatia turvallisuussuunnitelmat ja huolehtia ryhmän turvallisuudesta kaikissa olosuhteissa tai olosuhteiden muuttuessa<br />- osaa toimia ryhmän oppaana ja johtajana<br />- osaa soveltaa luontotuntemustaan ja ympäristötietouttaan kertoessaan paikallisesta luonnosta<br />- osaa tuotteistaa ja hinnoitella palvelunsa<br />- ottaa huomioon asiakasryhmän toiveet, kulttuuritaustan ja perinteet<br />- osaa toimia kestävän kehityksen mukaisesti<br />- noudattaa alan sopimuksista ja säännöksistä<br />- toimii yhteistyössä muiden matkailu-alan toimijoiden kanssa <br />- hallitsee valitsemiensa tutkinnon osien mukaisen erikoistuneen osaamisen</p> <p>Tutkinnon suorittaja voi työskennellä erä- ja luonto-ohjelmien ohjaajana sekä retkien ja vaellusten vetäjänä muun muassa matkailu-, virkistys- ja hyvinvointipalveluja tarjoavissa organisaatioissa.</p>"
+        }
+      },
+      "KOULUTUKSEN_RAKENNE" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>För att få ett examensbetyg ska examinanderna avlägga en obligatorisk och minst fyra valfria examensdelar. Den obligatoriska examensdelen för alla examinander är Vildmarks- och naturguidning.<br />De valfria examensdelarna, av vilka minst fyra ska väljas, är <br />-Guidning i olika friluftsgrenar<br />-Programtjänster med användning av djur<br />-Motoriserade programtjänster i naturförhållanden<br />-Vildmarks- och naturguide som företagare<br />-Guidning som bygger på naturkännedom<br />-Vildmarks- och terrängbespisning<br />-Naturguidning som bygger på kultur och vildmarkstradition<br />-Naturguidning som bygger på en specialkompetens<br />-Tematiska guidetjänster i naturförhållanden<br />-Naturguidning för specialgrupper<br />-Jaktguidning<br />-Naturguidning för internationella kunder<br />-En examensdel ur en annan grund-, yrkes- eller specialyrkesexamen.</p>",
+          "kieli_fi" : "<p>Tutkinnon suorittajalle pakollinen tutkinnon osa on erä- ja luonto-opastaminen. Lisäksi on suoritettava vähintään neljä tutkinnon osaa seuraavista: luonnossa liikkumisen opastaminen, eläinohjelmapalveluiden järjestäminen, motorisoitujen luonto-ohjelmapalveluiden järjestäminen, erä- ja luonto-opasyrittäjänä toimiminen, luonnontuntemukseen perustuva opastaminen, erä- ja maastoruokapalveluiden järjestäminen, kulttuuriin ja eräperinteeseen perustuva luonto-opastaminen, erityisosaamiseen perustuva luonto-opastaminen, teemallisten luonto-opaspalveluiden järjestäminen, erityisryhmien opastaminen luonnossa, metsästysoppaana toimiminen, kansainvälisten asiakkaiden opastaminen luonnossa, tutkinnon osa muusta perus-, ammatti- tai erikoisammattitutkinnosta.</p>"
+        }
+      }
+    },
+    "kuvausKomoto" : {
+      "OSAAMISALAN_VALINTA" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : "<p>Kaikille pakollinen tutkinnon osa on</p> <ul> <li>Erä- ja luonto-opastaminen.</li> </ul> <p>Valinnaiset tutkinnon osat, joista on valittava vähintään 4 osaa, ovat</p> <ul> <li>Luonnossa liikkumisen opastaminen</li> </ul> <ul> <li>Erä- ja luonto-opasyrittäjänä toimiminen</li> </ul> <ul> <li>Luonnontuntemukseen perustuva opastaminen</li> </ul> <ul> <li>Erä- ja maastoruokapalveluiden järjestäminen</li> </ul> <ul> <li>Kulttuuriin ja eräperinteeseen perustuva luonto-opastaminen</li> </ul> <ul> <li>Erityisosaamiseen perustuva luonto-opastaminen</li> </ul> <ul> <li>Teemallisten luonto-opaspalveluiden järjestäminen</li> </ul> <ul> <li>Erityisryhmien opastaminen luonnossa</li> </ul> <ul> <li>Kansainvälisten asiakkaiden opastaminen luonnossa</li> </ul>"
+        }
+      },
+      "SIJOITTUMINEN_TYOELAMAAN" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : "<p>Koulutus on tarkoitettu niille, jotka haluavat kehittää tietojaan ja taitojaan luonnossa liikkumisesta ja saada mahdollisesti uuden ammatin. Koulutus sopii myös täydennyskoulutukseksi esim. matkailuyrittäjille ja liikunta- ja nuoriso-ohjaajille.</p>"
+        }
+      },
+      "YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      },
+      "MAKSULLISUUS" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      },
+      "NAYTTOTUTKINNON_SUORITTAMINEN" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : ""
+        }
+      }
+    },
+    "suunniteltuKestoArvo" : null,
+    "suunniteltuKestoTyyppi" : null,
+    "koulutuksenAlkamiskausi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "kausi_s",
+      "versio" : 1,
+      "arvo" : "S",
+      "nimi" : "Syksy",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Höst",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Autumn",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Syksy",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuksenAlkamisvuosi" : 2016,
+    "koulutuksenAlkamisPvms" : [ 1469998800000 ],
+    "opetuskielis" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "kieli_fi" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "kieli_fi",
+          "versio" : 1,
+          "arvo" : "FI",
+          "nimi" : "suomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "finska",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Finnish",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "suomi",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "kieli_fi" : 1
+      }
+    },
+    "opetusmuodos" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "opetusAikas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "opetusPaikkas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "opintojenLaajuusarvo" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "opetusJarjestajat" : [ ],
+    "opetusTarjoajat" : [ "1.2.246.562.10.95593644479" ],
+    "ammattinimikkeet" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "ammattiluokitus_90680" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "ammattiluokitus_90680",
+          "versio" : 1,
+          "arvo" : "90680",
+          "nimi" : "Luonnonsuojelualueen tms. vartija",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Naturskyddsområdesvakt",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Luonnonsuojelualueen tms. vartija",
+              "meta" : null
+            }
+          }
+        },
+        "ammattiluokitus_27" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "ammattiluokitus_27",
+          "versio" : 1,
+          "arvo" : "27",
+          "nimi" : "Matkailuala",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Arbete inom turism",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Matkailuala",
+              "meta" : null
+            }
+          }
+        },
+        "ammattiluokitus_42110-1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "ammattiluokitus_42110-1",
+          "versio" : 1,
+          "arvo" : "42110",
+          "nimi" : "Erävalvoja",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Vildmarksövervakare",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Erävalvoja",
+              "meta" : null
+            }
+          }
+        },
+        "ammattiluokitus_97" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "ammattiluokitus_97",
+          "versio" : 1,
+          "arvo" : "97",
+          "nimi" : "Matkailupalvelu",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Turistnäringen",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Matkailupalvelu",
+              "meta" : null
+            }
+          }
+        },
+        "ammattiluokitus_27320" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "ammattiluokitus_27320",
+          "versio" : 1,
+          "arvo" : "27320",
+          "nimi" : "Eräopas",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Vildmarksguide",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Eräopas",
+              "meta" : null
+            }
+          }
+        },
+        "ammattiluokitus_27230" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "ammattiluokitus_27230",
+          "versio" : 1,
+          "arvo" : "27230",
+          "nimi" : "Matkailupalvelujen tuottaja",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Producent av resetjänster",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Matkailupalvelujen tuottaja",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "ammattiluokitus_90680" : 1,
+        "ammattiluokitus_27" : 1,
+        "ammattiluokitus_42110-1" : 1,
+        "ammattiluokitus_97" : 1,
+        "ammattiluokitus_27320" : 1,
+        "ammattiluokitus_27230" : 1
+      }
+    },
+    "aihees" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "parents" : [ ],
+    "children" : [ ],
+    "hintaString" : "",
+    "hinta" : null,
+    "opintojenMaksullisuus" : false,
+    "isAvoimenYliopistonKoulutus" : false,
+    "oppiaineet" : [ ],
+    "opintopolkuAlkamiskausi" : null,
+    "extraParams" : { },
+    "sisaltyvatKoulutuskoodit" : null,
+    "yhteyshenkilos" : [ {
+      "henkiloOid" : null,
+      "etunimet" : "Jouni",
+      "sukunimi" : "Hämäläinen",
+      "titteli" : "kouluttaja",
+      "sahkoposti" : "jouni.hamalainen@kio.fi",
+      "puhelin" : "09276251",
+      "kielet" : [ ],
+      "henkiloTyyppi" : "YHTEYSHENKILO"
+    } ],
+    "tutkintonimike" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "tutkintonimikkeet_00000",
+      "versio" : 1,
+      "arvo" : "00000",
+      "nimi" : "------",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "------",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "------",
+          "meta" : null
+        }
+      }
+    },
+    "linkkiOpetussuunnitelmaan" : null,
+    "koulutuslaji" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutuslaji_a",
+      "versio" : 1,
+      "arvo" : "A",
+      "nimi" : "Aikuiskoulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Vuxenutbildning",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Adult education and training",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Aikuiskoulutus",
+          "meta" : null
+        }
+      }
+    },
+    "jarjestavaOrganisaatio" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.95593644479",
+      "version" : null,
+      "nimi" : "Kiljavan opisto, Nurmijärvi",
+      "nimet" : [ ]
+    },
+    "valmistavaKoulutus" : {
+      "kuvaus" : {
+        "KANSAINVALISTYMINEN" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : null,
+          "meta" : {
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : null,
+              "meta" : null
+            }
+          },
+          "tekstis" : {
+            "kieli_fi" : ""
+          }
+        },
+        "SISALTO" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : null,
+          "meta" : {
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : null,
+              "meta" : null
+            }
+          },
+          "tekstis" : {
+            "kieli_fi" : "<p><b>Kenelle</b><br />Koulutus on tarkoitettu niille, jotka haluavat kehittää tietojaan ja taitojaan luonnossa liikkumisesta ja saada mahdollisesti uuden ammatin. Koulutus sopii myös täydennyskoulutukseksi esim. matkailuyrittäjille ja liikunta- ja nuoriso-ohjaajille.</p> <p><b>Tavoite</b><br />Opiskelijat saavat valmiudet toimia oppaina retkillä sekä erilaisissa elämys- ja luontotapahtumissa. Tavoitteena on antaa opiskelijalle sellaiset tiedot/taidot, että hänellä on valmiudet suorittaa erä- ja luonto-oppaan ammattitutkinto.<br /><b><br />Koulutus</b><br />Koulutus on päivä-/monimuotokoulutusta sekä osittain myös itseopiskelua. Opiskelua on pääsääntöisesti maanantai – perjantai klo 8.30 – 16.30. Opiskelu sisältää luentoja ja ryhmätöitä mutta suurin osa opiskelusta tapahtuu ulkona käytännönläheisesti opiskellen. Kurssin aikana teemme runsaasti 1-3 yön retkiä sekä lisäksi tehdään joitakin pidempiä vaelluksia Suomessa. Opiskelijalla tulee olla omat retkeilyvälineet. Opiskelijan kanssa laaditaan yhdessä HOPS (henkilökohtainen opintosuunnitelma) sekä HENSU (henkilökohtainen näyttösuunnitelma). Opistollamme suoritettavat näytöt on mahdollista valita seuraavista.</p> <p>Katso tarkemmin Kiljavan opiston nettisivuilta www.kio.fi</p> <p> </p>"
+          }
+        },
+        "KOHDERYHMA" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : null,
+          "meta" : {
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : null,
+              "meta" : null
+            }
+          },
+          "tekstis" : {
+            "kieli_fi" : ""
+          }
+        },
+        "OPISKELUN_HENKILOKOHTAISTAMINEN" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : null,
+          "meta" : {
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : null,
+              "meta" : null
+            }
+          },
+          "tekstis" : {
+            "kieli_fi" : ""
+          }
+        }
+      },
+      "suunniteltuKestoArvo" : "11",
+      "suunniteltuKestoTyyppi" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : "suunniteltukesto_02",
+        "versio" : 1,
+        "arvo" : "02",
+        "nimi" : "kuukautta",
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : "Månader",
+            "meta" : null
+          },
+          "kieli_en" : {
+            "kieliUri" : "kieli_en",
+            "kieliVersio" : 1,
+            "kieliArvo" : "EN",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : "months",
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : "kuukautta",
+            "meta" : null
+          }
+        }
+      },
+      "hintaString" : "",
+      "hinta" : 950.0,
+      "opintojenMaksullisuus" : false,
+      "linkkiOpetussuunnitelmaan" : "http://www.kiljavanranta.fi/eraopas/",
+      "opetusmuodos" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "opetusmuotokk_3" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "opetusmuotokk_3",
+            "versio" : 1,
+            "arvo" : "3",
+            "nimi" : "Monimuoto-opetus",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Flerformsundervisning",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Blended learning",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Monimuoto-opetus",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "opetusmuotokk_3" : 1
+        }
+      },
+      "opetusAikas" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "opetusaikakk_1" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "opetusaikakk_1",
+            "versio" : 1,
+            "arvo" : "1",
+            "nimi" : "Päiväopetus",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Dagundervisning",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Day time teaching",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Päiväopetus",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "opetusaikakk_1" : 1
+        }
+      },
+      "opetusPaikkas" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "opetuspaikkakk_1" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "opetuspaikkakk_1",
+            "versio" : 1,
+            "arvo" : "1",
+            "nimi" : "Lähiopetus",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Närundervisning",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Contact teaching",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Lähiopetus",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "opetuspaikkakk_1" : 1
+        }
+      },
+      "yhteyshenkilos" : [ ]
+    },
+    "tarkenne" : "Erä- ja luonto-oppaan ammattitutkinto",
+    "koulutusasteTyyppi" : "ERIKOISAMMATTITUTKINTO"
+  },
+  "params" : null,
+  "status" : "OK",
+  "errors" : null,
+  "accessRights" : { }
+}

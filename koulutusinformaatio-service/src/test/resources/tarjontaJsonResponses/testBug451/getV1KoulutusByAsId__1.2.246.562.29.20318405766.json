@@ -1,0 +1,53 @@
+{
+"result": {
+"tulokset": [
+{
+"oid": "1.2.246.562.10.95593644479",
+"version": 0,
+"nimi": {
+"fi": "Kiljavan opisto, Nurmijärvi"
+},
+"tulokset": [
+{
+"oid": "1.2.246.562.17.79497399471",
+"nimi": {
+"fi": "Erä- ja luonto-oppaan ammattitutkinto",
+"sv": "Yrkesexamen för vildmarks- och naturguide",
+"en": "Hiking, Nature Guide Serv., FQ"
+},
+"kausi": {
+"fi": "Syksy",
+"sv": "Höst",
+"en": "Autumn"
+},
+"kausiUri": "kausi_s#1",
+"vuosi": 2016,
+"koulutuslajiUri": "koulutuslaji_a",
+"tila": "JULKAISTU",
+"koulutusasteTyyppi": "AMMATTITUTKINTO",
+"toteutustyyppiEnum": "AMMATTITUTKINTO",
+"koulutuskoodi": "koulutus_364904#4",
+"koulutuksenAlkamisPvmMin": 1469998800000,
+"koulutuksenAlkamisPvmMax": 1469998800000,
+"tarjoajat": [
+"1.2.246.562.10.95593644479"
+],
+"koulutusmoduuliTyyppi": "TUTKINTO",
+"komoOid": "1.2.246.562.13.10829719011",
+"opetuskielet": [
+"kieli_fi"
+],
+"koulutuslaji": {
+"fi": "Aikuiskoulutus",
+"sv": "Vuxenutbildning",
+"en": "Adult education and training"
+}
+}
+]
+}
+],
+"tuloksia": 1
+},
+"accessRights": {},
+"status": "OK"
+}

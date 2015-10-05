@@ -125,6 +125,10 @@ public class IncrementalApplicationSystemIndexer {
         } else {
             indexHigherEducationAsData(asOid);
         }
+        indexApplicationSystemForCalendar(asOid);
+    }
+
+    public void indexApplicationSystemForCalendar(String asOid) throws KoodistoException, SolrServerException, IOException {
         CalendarApplicationSystem calAS = this.tarjontaService.createCalendarApplicationSystem(asOid);
         loHttpSolrServer.deleteById(asOid);
         if (calAS != null) {

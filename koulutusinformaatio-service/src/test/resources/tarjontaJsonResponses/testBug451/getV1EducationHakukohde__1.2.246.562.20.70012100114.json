@@ -1,0 +1,83 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1418194143128,
+    "modifiedBy" : "1.2.246.562.24.91960554883",
+    "oid" : "1.2.246.562.20.70012100114",
+    "version" : 2,
+    "hakukohteenNimi" : null,
+    "hakukohteenNimiUri" : "aikuhakukohteet_4300#1",
+    "hakukohteenNimet" : {
+      "kieli_sv" : "Yrkesexamen för vildmarks- och naturguide",
+      "kieli_fi" : "Erä- ja luonto-oppaan ammattitutkinto"
+    },
+    "tarjoajaNimet" : {
+      "fi" : "Kiljavan opisto, Nurmijärvi"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+      "1.2.246.562.17.79497399471" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.95593644479" ]
+      }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.95593644479" ],
+    "hakuOid" : "1.2.246.562.29.20318405766",
+    "hakuaikaId" : "887784",
+    "hakukelpoisuusvaatimusUris" : [ ],
+    "opintoOikeusUris" : [ ],
+    "hakukohdeKoulutusOids" : [ "1.2.246.562.17.79497399471" ],
+    "hakuaikaAlkuPvm" : null,
+    "hakuaikaLoppuPvm" : null,
+    "alinHyvaksyttavaKeskiarvo" : 0.0,
+    "alinValintaPistemaara" : 0,
+    "ylinValintapistemaara" : 0,
+    "aloituspaikatLkm" : 0,
+    "edellisenVuodenHakijatLkm" : 0,
+    "valintojenAloituspaikatLkm" : 0,
+    "sahkoinenToimitusOsoite" : null,
+    "soraKuvausKoodiUri" : null,
+    "tila" : "JULKAISTU",
+    "valintaperustekuvausKoodiUri" : null,
+    "liitteidenToimitusPvm" : null,
+    "ulkoinenTunniste" : null,
+    "koulutusAsteTyyppi" : "AMMATTITUTKINTO",
+    "toteutusTyyppi" : "AMMATTITUTKINTO",
+    "koulutusmoduuliTyyppi" : "TUTKINTO",
+    "koulutuslaji" : "A",
+    "lisatiedot" : {
+      "kieli_sv" : "",
+      "kieli_en" : "",
+      "kieli_fi" : ""
+    },
+    "valintaperusteKuvaukset" : null,
+    "soraKuvaukset" : null,
+    "hakukelpoisuusVaatimusKuvaukset" : { },
+    "aloituspaikatKuvaukset" : null,
+    "kaytetaanJarjestelmanValintaPalvelua" : true,
+    "kaytetaanHaunPaattymisenAikaa" : false,
+    "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+    "hakukohteenLiitteet" : [ ],
+    "yhteystiedot" : [ ],
+    "liitteidenToimitusOsoite" : null,
+    "valintakokeet" : [ ],
+    "valintaPerusteKuvausTunniste" : null,
+    "kaksoisTutkinto" : false,
+    "soraKuvausTunniste" : null,
+    "opetusKielet" : [ "kieli_fi" ],
+    "valintaPerusteKuvausKielet" : [ ],
+    "soraKuvausKielet" : [ ],
+    "painotettavatOppiaineet" : [ ],
+    "hakuMenettelyKuvaukset" : { },
+    "peruutusEhdotKuvaukset" : { },
+    "ryhmaliitokset" : [ ],
+    "organisaatioRyhmaOids" : [ ],
+    "ylioppilastutkintoAntaaHakukelpoisuuden" : false,
+    "kelaLinjaKoodi" : null,
+    "kelaLinjaTarkenne" : null,
+    "ensikertalaistenAloituspaikat" : null
+  },
+  "accessRights" : { },
+  "errors" : null
+}

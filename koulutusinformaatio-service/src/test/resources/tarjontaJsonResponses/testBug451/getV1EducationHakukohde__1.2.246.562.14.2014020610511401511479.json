@@ -1,0 +1,95 @@
+{
+  "params" : null,
+  "status" : "OK",
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1391692813081,
+    "modifiedBy" : "1.2.246.562.24.33788837119",
+    "oid" : "1.2.246.562.14.2014020610511401511479",
+    "version" : 1,
+    "hakukohteenNimi" : "Kotityö- ja puhdistuspalvelujen perustutkinto, er, Kevät 2014, valmis",
+    "hakukohteenNimiUri" : "hakukohteet_512#1",
+    "hakukohteenNimet" : {
+      "kieli_sv" : "Grundexamen i hemarbets- och rengöringsservice, sp",
+      "kieli_fi" : "Kotityö- ja puhdistuspalvelujen perustutkinto, er"
+    },
+    "tarjoajaNimet" : {
+      "fi" : "Validia Ammattiopisto, Järvenpää"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+      "1.2.246.562.5.2014020610503240287115" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.23856923257" ]
+      }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.23856923257" ],
+    "hakuOid" : "1.2.246.562.5.2013112910452702965370",
+    "hakuaikaId" : "164630",
+    "hakukelpoisuusvaatimusUris" : [ ],
+    "opintoOikeusUris" : [ ],
+    "hakukohdeKoulutusOids" : [ "1.2.246.562.5.2014020610503240287115" ],
+    "hakuaikaAlkuPvm" : 1391676656407,
+    "hakuaikaLoppuPvm" : 1394787059567,
+    "alinHyvaksyttavaKeskiarvo" : 0.0,
+    "alinValintaPistemaara" : 0,
+    "ylinValintapistemaara" : 0,
+    "aloituspaikatLkm" : 10,
+    "edellisenVuodenHakijatLkm" : 0,
+    "valintojenAloituspaikatLkm" : 10,
+    "sahkoinenToimitusOsoite" : "",
+    "soraKuvausKoodiUri" : null,
+    "tila" : "JULKAISTU",
+    "valintaperustekuvausKoodiUri" : null,
+    "liitteidenToimitusPvm" : null,
+    "ulkoinenTunniste" : null,
+    "koulutusAsteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+    "toteutusTyyppi" : "AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA",
+    "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+    "koulutuslaji" : "N",
+    "lisatiedot" : {
+      "kieli_fi" : "<p>Järvenpään koulutuskeskukseen on suora haku omalla hakulomakkeella. Emme ole mukana yhteisvalinnassa. Hakuaika elokuussa 2014 alkaviin koulutuksiin päättyy 14.3.2014 klo 16.15, jolloin hakemusten tulee olla perillä koulutuskeskuksessa.</p>"
+    },
+    "valintaperusteKuvaukset" : {
+      "kieli_fi" : ""
+    },
+    "soraKuvaukset" : null,
+    "hakukelpoisuusVaatimusKuvaukset" : { },
+    "aloituspaikatKuvaukset" : null,
+    "kaytetaanJarjestelmanValintaPalvelua" : false,
+    "kaytetaanHaunPaattymisenAikaa" : false,
+    "kaytetaanHakukohdekohtaistaHakuaikaa" : true,
+    "hakukohteenLiitteet" : [ ],
+    "yhteystiedot" : [ ],
+    "liitteidenToimitusOsoite" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : null,
+      "version" : 0,
+      "osoiterivi1" : "PL 46",
+      "osoiterivi2" : null,
+      "postinumero" : "posti_04401",
+      "postinumeroArvo" : "04401",
+      "postitoimipaikka" : "JÄRVENPÄÄ"
+    },
+    "valintakokeet" : [ ],
+    "valintaPerusteKuvausTunniste" : null,
+    "kaksoisTutkinto" : false,
+    "soraKuvausTunniste" : null,
+    "opetusKielet" : [ "kieli_fi" ],
+    "valintaPerusteKuvausKielet" : [ ],
+    "soraKuvausKielet" : [ ],
+    "painotettavatOppiaineet" : [ ],
+    "hakuMenettelyKuvaukset" : { },
+    "peruutusEhdotKuvaukset" : { },
+    "ryhmaliitokset" : [ ],
+    "organisaatioRyhmaOids" : [ ],
+    "ylioppilastutkintoAntaaHakukelpoisuuden" : false,
+    "kelaLinjaKoodi" : null,
+    "kelaLinjaTarkenne" : null,
+    "ensikertalaistenAloituspaikat" : null
+  },
+  "accessRights" : { },
+  "errors" : null
+}

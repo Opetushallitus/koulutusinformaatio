@@ -19,6 +19,7 @@ import com.google.common.base.Joiner;
 
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.impl.TarjontaRawServiceImpl;
+import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
@@ -167,7 +168,19 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(String oid) {
-        throw new NotImplementedException();
+        File jsonFile = new File(getJsonPath("getAdultVocationalLearningOpportunity", oid));
+        try {
+            return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {});
+        } catch (Exception e) {
+            checkIfFetchingIsAllowed();
+            try {
+                ResultV1RDTO<AmmattitutkintoV1RDTO> realResult = tarjontaRawServiceImpl.getAdultVocationalLearningOpportunity(oid);
+                mapper.writeValue(jsonFile, realResult);
+                return realResult;
+            } catch (IOException e1) {
+                throw new Error(JSON_MAPPING_FAILED);
+            }
+        }
     }
 
     @Override
@@ -254,6 +267,40 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     public void setTestCase(String testCase) {
         this.testCase = testCase;
+    }
+
+    @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getV1KoulutusByAsId(String asOid) {
+        File jsonFile = new File(getJsonPath("getV1KoulutusByAsId", asOid));
+        try {
+            return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {});
+        } catch (Exception e) {
+            checkIfFetchingIsAllowed();
+            try {
+                ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> realResult = tarjontaRawServiceImpl.getV1KoulutusByAsId(asOid);
+                mapper.writeValue(jsonFile, realResult);
+                return realResult;
+            } catch (IOException e1) {
+                throw new Error(JSON_MAPPING_FAILED);
+            }
+        }
+    }
+
+    @Override
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getV1KoulutusByAoId(String aoOid) {
+        File jsonFile = new File(getJsonPath("getV1KoulutusByAoId", aoOid));
+        try {
+            return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<List<NimiJaOidRDTO>>>() {});
+        } catch (Exception e) {
+            checkIfFetchingIsAllowed();
+            try {
+                ResultV1RDTO<List<NimiJaOidRDTO>> realResult = tarjontaRawServiceImpl.getV1KoulutusByAoId(aoOid);
+                mapper.writeValue(jsonFile, realResult);
+                return realResult;
+            } catch (IOException e1) {
+                throw new Error(JSON_MAPPING_FAILED);
+            }
+        }
     }
 
 }
