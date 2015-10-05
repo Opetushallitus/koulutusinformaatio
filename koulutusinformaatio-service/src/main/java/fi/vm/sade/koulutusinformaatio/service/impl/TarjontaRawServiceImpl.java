@@ -292,7 +292,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getV1KoulutusByAsId(String asOid) {
         return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
                 .path("search")
-                .queryParam("haku", asOid)
+                .queryParam("hakuOid", asOid)
                 .queryParam("tila", "JULKAISTU"),
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {});
     }
