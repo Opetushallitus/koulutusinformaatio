@@ -119,21 +119,22 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     }
 
     @Override
-    public void save(LOS learningOpportunitySpecification) {
-        if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
-            save((UpperSecondaryLOS) learningOpportunitySpecification);
+    public void save(LOS los) {
+        LOG.info("Saved {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
+        if (los instanceof UpperSecondaryLOS) {
+            save((UpperSecondaryLOS) los);
         }
-        else if (learningOpportunitySpecification instanceof SpecialLOS) {
-            save((SpecialLOS) learningOpportunitySpecification);
+        else if (los instanceof SpecialLOS) {
+            save((SpecialLOS) los);
         } 
-        else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
-            this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
+        else if (los instanceof HigherEducationLOS) {
+            this.saveHigherEducationLOS((HigherEducationLOS) los);
         } 
-        else if (learningOpportunitySpecification instanceof KoulutusLOS) {
-            this.updateKoulutusLos((KoulutusLOS) learningOpportunitySpecification);
+        else if (los instanceof KoulutusLOS) {
+            this.updateKoulutusLos((KoulutusLOS) los);
         } 
-        else if (learningOpportunitySpecification instanceof TutkintoLOS) {
-            this.updateTutkintoLos((TutkintoLOS) learningOpportunitySpecification);
+        else if (los instanceof TutkintoLOS) {
+            this.updateTutkintoLos((TutkintoLOS) los);
         }
     }
 
@@ -219,6 +220,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     private void save(final ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {
+            LOG.info("Saved hakukohde: {}", applicationOption.getId());
             save(applicationOption.getProvider());
             applicationOptionDAO.save(applicationOption);
         }
@@ -278,7 +280,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     @Override
     public void deleteLos(LOS los) {
-        
+        LOG.info("Deleted {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
         if (los instanceof ChildLOS) {
             this.childLODAO.deleteById(los.getId());
         } else if (los instanceof SpecialLOS) {
@@ -301,6 +303,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     @Override
     public void deleteAo(ApplicationOption ao) {
+        LOG.info("Deleted hakukohde: {}", ao.getId());
         this.applicationOptionDAO.deleteById(ao.getId());
     }
 
@@ -359,6 +362,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
 
+            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.higherEducationLOSDAO.deleteById(plos.getId());
             this.higherEducationLOSDAO.save(plos);
         }
@@ -406,6 +410,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
 
+            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.adultUpperSecondaryLOSDAO.deleteById(plos.getId());
             this.adultUpperSecondaryLOSDAO.save(plos);
         }
@@ -454,6 +459,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
 
+            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.adultVocationalLOSDAO.deleteById(plos.getId());
             this.adultVocationalLOSDAO.save(plos);
         }
@@ -517,6 +523,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                     save(ao);
                 }
             }
+            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.koulutusLOSDAO.deleteById(plos.getId());
             this.koulutusLOSDAO.save(plos);
         }
@@ -544,8 +551,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
 
-            // TODO save childeducaions?
-
+            LOG.info("Updated {} tutkinto: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.tutkintoLOSDAO.deleteById(plos.getId());
             this.tutkintoLOSDAO.save(plos);
         }

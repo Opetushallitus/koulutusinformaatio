@@ -137,42 +137,43 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             runningSince = System.currentTimeMillis();
             isRunning = true;
             Map<String, List<String>> result = listChangedLearningOpportunities(updatePeriod);
-            LOG.debug("Starting incremental update");
             if (!hasChanges(result)) {
                 LOG.debug("No incremental changes. Stopping now.");
                 isRunning = false;
                 runningSince = 0;
                 return;
             }
+            LOG.info("Starting incremental update:");
 
             this.tarjontaService.clearProcessedLists();
             int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
             // If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
-                LOG.info(String.format("Komos changed. Update period was: %s", updatePeriod));
+                LOG.info(String.format("Update period was: %s", updatePeriod));
+                LOG.info(String.format("Komos changed: " + result.get("koulutusmoduuli")));
                 indexKomoChanges(result.get("koulutusmoduuli"));
                 komoCount = result.get("koulutusmoduuli").size();
             }
 
             // If changes in haku objects indexing them
-            if (result.containsKey("haku")) {
-                LOG.debug("Haku changes: " + result.get("haku").size());
+            if (result.containsKey("haku") && !result.get("haku").isEmpty()) {
+                LOG.info("Haku changes: " + result.get("haku"));
                 indexHakuChanges(result.get("haku"));
                 hakuCount = result.get("haku").size();
             }
 
             List<String> changedHakukohdeOids = new ArrayList<String>();
             // If changes in hakukohde, indexing them
-            if (result.containsKey("hakukohde")) {
+            if (result.containsKey("hakukohde") && !result.get("hakukohde").isEmpty()) {
                 changedHakukohdeOids = result.get("hakukohde");
-                LOG.debug("Hakukohde changes: " + changedHakukohdeOids.size());
+                LOG.info("Hakukohde changes: " + changedHakukohdeOids);
                 indexHakukohdeChanges(result.get("hakukohde"));
                 hakukohdeCount = result.get("hakukohde").size();
             }
 
             // If changes in koulutusmoduuliToteutus, indexing them
-            if (result.containsKey("koulutusmoduuliToteutus")) {
-                LOG.debug("Changed komotos: " + result.get("koulutusmoduuliToteutus").size());
+            if (result.containsKey("koulutusmoduuliToteutus") && !result.get("koulutusmoduuliToteutus").isEmpty()) {
+                LOG.info("Changed komotos: " + result.get("koulutusmoduuliToteutus"));
                 indexKomotoChanges(result.get("koulutusmoduuliToteutus"), changedHakukohdeOids);
                 koulutusCount = result.get("koulutusmoduuliToteutus").size();
             }

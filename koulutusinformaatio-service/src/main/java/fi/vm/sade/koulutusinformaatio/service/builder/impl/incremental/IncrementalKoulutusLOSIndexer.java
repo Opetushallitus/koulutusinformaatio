@@ -147,7 +147,6 @@ public class IncrementalKoulutusLOSIndexer {
             if (los.getTutkinto() != null)
                 tutkintoOidsToBeRemoved.add(los.getTutkinto().getId());
         }
-
         for (String oid : tutkintoOidsToBeRemoved) {
             removeTutkintoLOS(oid);
         }
@@ -159,11 +158,9 @@ public class IncrementalKoulutusLOSIndexer {
             this.dataUpdateService.updateKoulutusLos(los);
             if (los.getTutkinto() == null) {
                 indexToSolr(los);
-                LOG.debug("Updated osaamisalaton los {}", los.getId());
             } else {
                 indexToSolr(los.getTutkinto());
                 dataUpdateService.updateTutkintoLos(los.getTutkinto());
-                LOG.debug("Updated los {}", los.getId());
             }
         }
     }
@@ -171,10 +168,8 @@ public class IncrementalKoulutusLOSIndexer {
     public void indexLukioKoulutusKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
         KoulutusLOS los = tarjontaService.createLukioKoulutusLOS(dto);
         if (los == null) {
-            LOG.debug("Created los is to be removed");
             removeKoulutusLOS(dto.getOid());
         } else {
-            LOG.debug("Updated los {}", los.getId());
             this.indexToSolr(los);
             this.dataUpdateService.updateKoulutusLos(los);
         }
@@ -189,10 +184,8 @@ public class IncrementalKoulutusLOSIndexer {
             createdLos = null;
         }
         if (createdLos == null) {
-            LOG.debug("Created los is to be removed");
             removeKoulutusLOS(curKomotoOid);
         } else {
-            LOG.debug("Updated los {}", createdLos.getId());
             this.indexToSolr(createdLos);
             this.dataUpdateService.updateKoulutusLos(createdLos);
         }
