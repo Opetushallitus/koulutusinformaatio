@@ -38,4 +38,12 @@ public class I18nTextEntity {
     public void setTranslations(Map<String, String> translations) {
         this.translations = translations;
     }
+
+    @Override
+    public String toString() {
+        String value = "";
+        if (translations != null && !translations.isEmpty())
+            value = translations.get("kieli_fi") != null ? translations.get("kieli_fi") : translations.values().iterator().next();
+        return value;
+    }
 }

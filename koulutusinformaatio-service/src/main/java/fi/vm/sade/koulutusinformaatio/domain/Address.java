@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import com.google.common.base.Objects;
 /**
  * @author Mikko Majapuro
  */
@@ -56,5 +57,14 @@ public class Address {
 
     public void setSecondForeignAddr(I18nText secondForeignAddr) {
         this.secondForeignAddr = secondForeignAddr;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("streetAddress", streetAddress)
+                .add("secondForeignAddr", secondForeignAddr)
+                .add("postalCode", postalCode)
+                .add("postOffice", postOffice).toString();
     }
 }

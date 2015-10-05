@@ -25,6 +25,8 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import com.google.common.base.Objects;
+
 /**
  * @author Mikko Majapuro
  */
@@ -461,5 +463,10 @@ public class ApplicationOptionEntity {
 
     public void setApplicationOffice(ApplicationOfficeEntity applicationOffice) {
         this.applicationOffice = applicationOffice;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("oid", id).add("name", name).toString();
     }
 }
