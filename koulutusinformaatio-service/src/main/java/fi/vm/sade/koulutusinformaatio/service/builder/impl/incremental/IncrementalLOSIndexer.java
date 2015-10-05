@@ -144,19 +144,19 @@ public class IncrementalLOSIndexer {
             if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
                 this.higherEdLOSIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
             }
-            return;
+            break;
         
         case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
             LOG.debug("Adult upsec komo: {}", koulutusDTO.getKomoOid());
             this.indexAdultUpsecKomo(koulutusDTO.getKomoOid());
-            return;
+            break;
 
         case AMMATTITUTKINTO:
         case ERIKOISAMMATTITUTKINTO:
         case AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA:
             LOG.debug("Adult vocational komo: {}", koulutusDTO.getKomoOid());
             this.indexAdultVocationalKomoto(komotoOid);
-            return;
+            break;
 
         case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
         case PERUSOPETUKSEN_LISAOPETUS:
@@ -166,19 +166,19 @@ public class IncrementalLOSIndexer {
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
             LOG.debug("Valma/Telma koulutus: {}", koulutusDTO.getKomoOid());
             this.indexValmentavaKomoto(komotoOid);
-            return;
+            break;
             
         case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA: // Ammatillinen
             LOG.debug("Ammatillinen koulutus: {}", koulutusDTO.getOid());
             koulutusIndexer.indexAmmatillinenKoulutusKomoto(koulutusDTO);
-            return;
+            break;
 
         case LUKIOKOULUTUS: // Lukiokoulutus
         case EB_RP_ISH: // Lukiokoulutus
             LOG.debug("Lukiokoulutus: {}", koulutusDTO.getKomoOid());
             koulutusIndexer.indexLukioKoulutusKomoto(koulutusDTO);
-            return;
+            break;
 
         case KORKEAKOULUOPINTO: // Tulossa
         case AIKUISTEN_PERUSOPETUS: // Tulossa
