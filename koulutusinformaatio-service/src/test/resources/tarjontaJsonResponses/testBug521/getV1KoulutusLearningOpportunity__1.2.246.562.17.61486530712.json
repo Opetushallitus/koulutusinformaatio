@@ -1,14 +1,13 @@
 {
-  "status" : "OK",
   "params" : null,
   "result" : {
     "created" : null,
-    "toteutustyyppi": "AMMATILLINEN_PERUSTUTKINTO",
+    "toteutustyyppi" : "AMMATILLINEN_PERUSTUTKINTO",
     "createdBy" : null,
-    "modified" : 1443432794799,
+    "modified" : 1443520243393,
     "modifiedBy" : "1.2.246.562.24.00000000001",
     "oid" : "1.2.246.562.17.61486530712",
-    "version" : 30,
+    "version" : 32,
     "koulutuskoodi" : {
       "kieliUri" : null,
       "kieliVersio" : null,
@@ -396,6 +395,7 @@
       "tekstis" : { }
     },
     "tunniste" : null,
+    "hakijalleNaytettavaTunniste" : null,
     "tila" : "JULKAISTU",
     "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
     "kuvausKomo" : {
@@ -449,44 +449,6 @@
           "kieli_fi" : "<p>Tutkinnon kaikille pakolliset tutkinnon osat ovat asiakaslähtöinen valmistaminen ja kulttuurilähtöinen valmistaminen. Tuotteen suunnittelun ja valmistuksen osaamisalalla suoritetaan lisäksi tutkinnon osat tuotteen suunnittelu  ja tuotteen valmistaminen. Ympäristön suunnittelu ja rakentamisen osaamisalalla suoritetaan tutkinnon osat toteuttamisen suunnittelu  ja palvelun toteuttaminen. Lisäksi suoritetaan valinnaisia omaa ammatillista suuntautumista tukevia tutkinnon osia.</p>"
         }
       },
-      "JATKOOPINTO_MAHDOLLISUUDET" : {
-        "kieliUri" : null,
-        "kieliVersio" : null,
-        "kieliArvo" : null,
-        "kieliKaannos" : null,
-        "uri" : null,
-        "versio" : null,
-        "arvo" : null,
-        "nimi" : null,
-        "meta" : {
-          "kieli_sv" : {
-            "kieliUri" : "kieli_sv",
-            "kieliVersio" : 1,
-            "kieliArvo" : "SV",
-            "kieliKaannos" : null,
-            "uri" : null,
-            "versio" : null,
-            "arvo" : null,
-            "nimi" : null,
-            "meta" : null
-          },
-          "kieli_fi" : {
-            "kieliUri" : "kieli_fi",
-            "kieliVersio" : 1,
-            "kieliArvo" : "FI",
-            "kieliKaannos" : null,
-            "uri" : null,
-            "versio" : null,
-            "arvo" : null,
-            "nimi" : null,
-            "meta" : null
-          }
-        },
-        "tekstis" : {
-          "kieli_sv" : "<p>Yrkesinriktade grundexamina samt yrkes- och specialyrkesexamina ger allmän behörighet för fortsatta studier vid yrkeshögskolor och universitet.</p>",
-          "kieli_fi" : "<p>Ammatillisista perustutkinnoista sekä ammatti- ja erikoisammattitutkinnoista saa yleisen jatko-opintokelpoisuuden ammattikorkeakouluihin ja yliopistoihin. </p>"
-        }
-      },
       "TAVOITTEET" : {
         "kieliUri" : null,
         "kieliVersio" : null,
@@ -536,61 +498,47 @@
           "kieli_en" : "<p>Artisans who have completed the Vocational Qualification in Crafts and Design may work as employees, independent entrepreneurs or self-employed people. Enterprises are small or operate in subcontracting, producing various products from utility articles to services and works of art. Typical work assignments include making, planning and designing, repairing and restoring high-quality craft products as well as guidance, service and sales work. Possible occupational fields include conservation, ceramics, bookbinding, stonemasonry, goldsmithing, glass production, set construction, metalwork, gunsmithing, woodwork, restoration, Sami crafts, interior design, instrument making, textiles, clothing, boat-building and upholstery.</p>  <p>Those who have qualified as Artisans are versatile, co-operative, quality-conscious, service-oriented and enterprising. They know how to plan their work and understand and implement plans relating to their occupational field. They are proactive and development-oriented. They are able to prepare cost and materials estimates. They work to uphold and develop Finnish culture.</p>  <p>Artisans who have completed the Study Programme/Competence Area in Product Design and Manufacture are able to act creatively and co-operatively. They know materials and working methods relevant to the work assignments of their chosen occupational field. They are able to commercialise and market, develop and share their own competence.</p>  <p>Artisans who have completed the Study Programme/Competence Area in Environmental Design and Construction know how to prepare and use reports and designs based on practices in place in their occupational field. They operate in an interactive, customer-focused and style- and quality-conscious manner, improving built-up environments. They are co-operative and capable of networking. They know how to commercialise and market their services.</p>",
           "kieli_fi" : "<p>Käsi- taideteollisuusalan perustutkinnon suorittaneella artesaanilla on ammatilliset perusvalmiudet ammattialansa eri tehtäviin sekä jatko-opintoihin. Lisäksi hänellä on erikoistuneempi osaaminen yhdellä ammattialalla kuten esimerkiksi entisöinti-, keramiikka-, kirjansidonta-, kivi-, kultaseppä-, lasi-, lavasterakennus-, metalli-, aseseppä-, puu-, restaurointi-, saamenkäsityö-, sisustus-, soitinrakennus-, tekstiili-, vaatetus-, veneenrakennus- ja verhoiluala. Perustutkinnossa on kaksi  osaamisalaa: tuotteen suunnittelun ja valmistuksen osaamisala ja ympäristön suunnittelun ja rakentamisen osaamisala.</p>"
         }
+      },
+      "JATKOOPINTO_MAHDOLLISUUDET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : "kieli_sv",
+            "kieliVersio" : 1,
+            "kieliArvo" : "SV",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_sv" : "<p>Yrkesinriktade grundexamina samt yrkes- och specialyrkesexamina ger allmän behörighet för fortsatta studier vid yrkeshögskolor och universitet.</p>",
+          "kieli_fi" : "<p>Ammatillisista perustutkinnoista sekä ammatti- ja erikoisammattitutkinnoista saa yleisen jatko-opintokelpoisuuden ammattikorkeakouluihin ja yliopistoihin. </p>"
+        }
       }
     },
     "kuvausKomoto" : {
-      "SIJOITTUMINEN_TYOELAMAAN" : {
-        "kieliUri" : null,
-        "kieliVersio" : null,
-        "kieliArvo" : null,
-        "kieliKaannos" : null,
-        "uri" : null,
-        "versio" : null,
-        "arvo" : null,
-        "nimi" : null,
-        "meta" : {
-          "kieli_fi" : {
-            "kieliUri" : "kieli_fi",
-            "kieliVersio" : 1,
-            "kieliArvo" : "FI",
-            "kieliKaannos" : null,
-            "uri" : null,
-            "versio" : null,
-            "arvo" : null,
-            "nimi" : null,
-            "meta" : null
-          }
-        },
-        "tekstis" : {
-          "kieli_fi" : "<p>Koulutuksesta valmistutaan mm soitinmyyjän, soitinhuoltajan ja soitinrakentajan tehtäviin.</p>"
-        }
-      },
-      "SISALTO" : {
-        "kieliUri" : null,
-        "kieliVersio" : null,
-        "kieliArvo" : null,
-        "kieliKaannos" : null,
-        "uri" : null,
-        "versio" : null,
-        "arvo" : null,
-        "nimi" : null,
-        "meta" : {
-          "kieli_fi" : {
-            "kieliUri" : "kieli_fi",
-            "kieliVersio" : 1,
-            "kieliArvo" : "FI",
-            "kieliKaannos" : null,
-            "uri" : null,
-            "versio" : null,
-            "arvo" : null,
-            "nimi" : null,
-            "meta" : null
-          }
-        },
-        "tekstis" : {
-          "kieli_fi" : "<p>Harmonikanrakennuksessa perehdytään eri harmonikkamallien rakentamiseen ja huoltamiseen, kor-</p> <p>jaamiseen ja virittämiseen.</p>"
-        }
-      },
       "YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA" : {
         "kieliUri" : null,
         "kieliVersio" : null,
@@ -617,7 +565,7 @@
           "kieli_fi" : ""
         }
       },
-      "KOHDERYHMA" : {
+      "KANSAINVALISTYMINEN" : {
         "kieliUri" : null,
         "kieliVersio" : null,
         "kieliArvo" : null,
@@ -669,7 +617,7 @@
           "kieli_fi" : "<p>Opiskelijat valitaan suoraan koulutusohjelmaan sisältyville ammattialoille.</p>"
         }
       },
-      "KANSAINVALISTYMINEN" : {
+      "KUVAILEVAT_TIEDOT" : {
         "kieliUri" : null,
         "kieliVersio" : null,
         "kieliArvo" : null,
@@ -695,7 +643,33 @@
           "kieli_fi" : ""
         }
       },
-      "KUVAILEVAT_TIEDOT" : {
+      "SISALTO" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : "<p>Harmonikanrakennuksessa perehdytään eri harmonikkamallien rakentamiseen ja huoltamiseen, kor-</p> <p>jaamiseen ja virittämiseen.</p>"
+        }
+      },
+      "KOHDERYHMA" : {
         "kieliUri" : null,
         "kieliVersio" : null,
         "kieliArvo" : null,
@@ -719,6 +693,32 @@
         },
         "tekstis" : {
           "kieli_fi" : ""
+        }
+      },
+      "SIJOITTUMINEN_TYOELAMAAN" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : "<p>Koulutuksesta valmistutaan mm soitinmyyjän, soitinhuoltajan ja soitinrakentajan tehtäviin.</p>"
         }
       }
     },
@@ -1285,6 +1285,7 @@
     },
     "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS"
   },
+  "status" : "OK",
   "accessRights" : { },
   "errors" : null
 }

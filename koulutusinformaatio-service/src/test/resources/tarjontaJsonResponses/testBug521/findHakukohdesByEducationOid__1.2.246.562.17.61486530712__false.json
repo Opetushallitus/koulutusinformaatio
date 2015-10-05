@@ -1,1 +1,177 @@
-{"params":null,"result":{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":null,"version":null,"tulokset":[{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.10.10779357598","version":0,"nimi":{"fi":"Ikaalisten käsi- ja taideteollisuusoppilaitos"},"tulokset":[{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.20.66062901419","version":null,"nimi":{"fi":"Soitinrakennusala, yo (Käsi- ja taideteollisuusalan perustutkinto)","sv":"Instrumentbyggnad, st (Grundexamen inom hantverk och konstindustri)","en":"Soitinrakennusala, yo (Käsi- ja taideteollisuusalan perustutkinto)"},"kausi":{"fi":"Kevät","sv":"Vår","en":"Spring"},"kausiUri":null,"vuosi":2016,"koulutuslajiUri":null,"tila":"KOPIOITU","koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS","toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO","pohjakoulutusvaatimus":null,"koulutuskoodi":null,"koulutuksenAlkamisPvmMin":null,"koulutuksenAlkamisPvmMax":null,"tarjoajat":null,"koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA","komoOid":null,"opetuskielet":["kieli_fi"],"koulutuksenTarjoajaKomoto":null,"parentKomoOid":null,"siblingKomotos":null,"hakutapa":{"fi":"Yhteishaku","sv":"Gemensam ansökan","en":"Yhteishaku"},"aloituspaikatKuvaukset":null,"hakuaikaString":null,"hakuaikaRyhma":"(2015-09-01 08:00 - 2015-10-01 15:00)","aloituspaikat":4,"hakuOid":"1.2.246.562.29.80306203979","ryhmaliitokset":[],"koulutuslaji":{"fi":"Nuorten koulutus","sv":"Utbildning för unga","en":"Education and training for young"}},{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.20.91411040081","version":null,"nimi":{"fi":"Mallinrakennus, yo (Käsi- ja taideteollisuusalan perustutkinto)","sv":"Modellbygge, st (Grundexamen inom hantverk och konstindustri)","en":"Mallinrakennus, yo (Käsi- ja taideteollisuusalan perustutkinto)"},"kausi":{"fi":"Kevät","sv":"Vår","en":"Spring"},"kausiUri":null,"vuosi":2016,"koulutuslajiUri":null,"tila":"KOPIOITU","koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS","toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO","pohjakoulutusvaatimus":null,"koulutuskoodi":null,"koulutuksenAlkamisPvmMin":null,"koulutuksenAlkamisPvmMax":null,"tarjoajat":null,"koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA","komoOid":null,"opetuskielet":["kieli_fi"],"koulutuksenTarjoajaKomoto":null,"parentKomoOid":null,"siblingKomotos":null,"hakutapa":{"fi":"Yhteishaku","sv":"Gemensam ansökan","en":"Yhteishaku"},"aloituspaikatKuvaukset":null,"hakuaikaString":null,"hakuaikaRyhma":"(2015-09-01 08:00 - 2015-10-01 15:00)","aloituspaikat":4,"hakuOid":"1.2.246.562.29.80306203979","ryhmaliitokset":[],"koulutuslaji":{"fi":"Nuorten koulutus","sv":"Utbildning för unga","en":"Education and training for young"}},{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.20.72559091441","version":null,"nimi":{"fi":"Lasiala, yo (Käsi- ja taideteollisuusalan perustutkinto)","sv":"Glas, st (Grundexamen inom hantverk och konstindustri)","en":"Lasiala, yo (Käsi- ja taideteollisuusalan perustutkinto)"},"kausi":{"fi":"Kevät","sv":"Vår","en":"Spring"},"kausiUri":null,"vuosi":2016,"koulutuslajiUri":null,"tila":"JULKAISTU","koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS","toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO","pohjakoulutusvaatimus":null,"koulutuskoodi":null,"koulutuksenAlkamisPvmMin":null,"koulutuksenAlkamisPvmMax":null,"tarjoajat":null,"koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA","komoOid":null,"opetuskielet":["kieli_fi"],"koulutuksenTarjoajaKomoto":null,"parentKomoOid":null,"siblingKomotos":null,"hakutapa":{"fi":"Yhteishaku","sv":"Gemensam ansökan","en":"Yhteishaku"},"aloituspaikatKuvaukset":null,"hakuaikaString":null,"hakuaikaRyhma":"(2015-09-01 08:00 - 2015-10-01 15:00)","aloituspaikat":7,"hakuOid":"1.2.246.562.29.80306203979","ryhmaliitokset":[],"koulutuslaji":{"fi":"Nuorten koulutus","sv":"Utbildning för unga","en":"Education and training for young"}}]}],"tuloksia":3},"status":"OK","errors":null,"accessRights":{}}
+{
+  "params" : null,
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.10779357598",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Ikaalisten käsi- ja taideteollisuusoppilaitos"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.72559091441",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Lasiala, yo (Käsi- ja taideteollisuusalan perustutkinto)",
+          "sv" : "Glas, st (Grundexamen inom hantverk och konstindustri)",
+          "en" : "Lasiala, yo (Käsi- ja taideteollisuusalan perustutkinto)"
+        },
+        "kausi" : {
+          "fi" : "Kevät",
+          "sv" : "Vår",
+          "en" : "Spring"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2016,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSTUTKINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Yhteishaku",
+          "sv" : "Gemensam ansökan",
+          "en" : "Yhteishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "(2015-09-01 08:00 - 2015-10-01 15:00)",
+        "aloituspaikat" : 7,
+        "hakuOid" : "1.2.246.562.29.80306203979",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      }, {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.66062901419",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Soitinrakennusala, yo (Käsi- ja taideteollisuusalan perustutkinto)",
+          "sv" : "Instrumentbyggnad, st (Grundexamen inom hantverk och konstindustri)",
+          "en" : "Soitinrakennusala, yo (Käsi- ja taideteollisuusalan perustutkinto)"
+        },
+        "kausi" : {
+          "fi" : "Kevät",
+          "sv" : "Vår",
+          "en" : "Spring"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2016,
+        "koulutuslajiUri" : null,
+        "tila" : "KOPIOITU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSTUTKINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Yhteishaku",
+          "sv" : "Gemensam ansökan",
+          "en" : "Yhteishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "(2015-09-01 08:00 - 2015-10-01 15:00)",
+        "aloituspaikat" : 4,
+        "hakuOid" : "1.2.246.562.29.80306203979",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      }, {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.91411040081",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Mallinrakennus, yo (Käsi- ja taideteollisuusalan perustutkinto)",
+          "sv" : "Modellbygge, st (Grundexamen inom hantverk och konstindustri)",
+          "en" : "Mallinrakennus, yo (Käsi- ja taideteollisuusalan perustutkinto)"
+        },
+        "kausi" : {
+          "fi" : "Kevät",
+          "sv" : "Vår",
+          "en" : "Spring"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2016,
+        "koulutuslajiUri" : null,
+        "tila" : "KOPIOITU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSTUTKINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Yhteishaku",
+          "sv" : "Gemensam ansökan",
+          "en" : "Yhteishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "(2015-09-01 08:00 - 2015-10-01 15:00)",
+        "aloituspaikat" : 4,
+        "hakuOid" : "1.2.246.562.29.80306203979",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      } ]
+    } ],
+    "tuloksia" : 3
+  },
+  "status" : "OK",
+  "accessRights" : { },
+  "errors" : null
+}

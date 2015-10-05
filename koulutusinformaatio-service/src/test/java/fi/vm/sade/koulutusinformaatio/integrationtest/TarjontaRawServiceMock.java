@@ -49,7 +49,6 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
     public TarjontaRawServiceMock() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-        mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
 
     @Override
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
-        return getJson(Map.class, "listModifiedLearningOpportunities", Long.toString(updatePeriod));
+        return getJson(Map.class, "listModifiedLearningOpportunities");
     }
 
     @Override

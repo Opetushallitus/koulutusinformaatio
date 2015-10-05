@@ -1,1 +1,77 @@
-{"params":null,"status":"OK","result":{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":null,"version":null,"tulokset":[{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.10.10779357598","version":0,"nimi":{"fi":"Ikaalisten käsi- ja taideteollisuusoppilaitos"},"tulokset":[{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.20.52393151668","version":null,"nimi":{"fi":"Soitinrakennusala, pk (Käsi- ja taideteollisuusalan perustutkinto)","sv":"Instrumentbyggnad, gr (Grundexamen inom hantverk och konstindustri)","en":"Soitinrakennusala, pk (Käsi- ja taideteollisuusalan perustutkinto)"},"kausi":{"fi":"Syksy","sv":"Höst","en":"Autumn"},"kausiUri":null,"vuosi":2015,"koulutuslajiUri":null,"tila":"JULKAISTU","koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS","toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO","pohjakoulutusvaatimus":null,"koulutuskoodi":null,"koulutuksenAlkamisPvmMin":null,"koulutuksenAlkamisPvmMax":null,"tarjoajat":null,"koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA","komoOid":null,"opetuskielet":["kieli_fi"],"koulutuksenTarjoajaKomoto":null,"parentKomoOid":null,"siblingKomotos":null,"hakutapa":{"fi":"Yhteishaku","sv":"Gemensam ansökan","en":"Yhteishaku"},"aloituspaikatKuvaukset":null,"hakuaikaString":null,"hakuaikaRyhma":"(2015-02-24 08:00 - 2015-03-17 15:00)","aloituspaikat":2,"hakuOid":"1.2.246.562.29.90697286251","ryhmaliitokset":[],"koulutuslaji":{"fi":"Nuorten koulutus","sv":"Utbildning för unga","en":"Education and training for young"}}]}],"tuloksia":1},"errors":null,"accessRights":{}}
+{
+  "params" : null,
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.10779357598",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Ikaalisten käsi- ja taideteollisuusoppilaitos"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.52393151668",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Soitinrakennusala, pk (Käsi- ja taideteollisuusalan perustutkinto)",
+          "sv" : "Instrumentbyggnad, gr (Grundexamen inom hantverk och konstindustri)",
+          "en" : "Soitinrakennusala, pk (Käsi- ja taideteollisuusalan perustutkinto)"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2015,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSTUTKINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Yhteishaku",
+          "sv" : "Gemensam ansökan",
+          "en" : "Yhteishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "(2015-02-24 08:00 - 2015-03-17 15:00)",
+        "aloituspaikat" : 2,
+        "hakuOid" : "1.2.246.562.29.90697286251",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "status" : "OK",
+  "accessRights" : { },
+  "errors" : null
+}

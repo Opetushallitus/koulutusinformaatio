@@ -1,0 +1,187 @@
+{
+  "params" : null,
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1443520676725,
+    "modifiedBy" : "1.2.246.562.24.00000000001",
+    "oid" : "1.2.246.562.20.72559091441",
+    "version" : 11,
+    "hakukohteenNimi" : null,
+    "hakukohteenNimiUri" : "hakukohteet_383#2",
+    "hakukohteenNimet" : {
+      "kieli_sv" : "Glas, st (Grundexamen inom hantverk och konstindustri)",
+      "kieli_fi" : "Lasiala, yo (Käsi- ja taideteollisuusalan perustutkinto)"
+    },
+    "tarjoajaNimet" : {
+      "fi" : "Ikaalisten käsi- ja taideteollisuusoppilaitos"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+      "1.2.246.562.17.61486530712" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.10779357598" ]
+      }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.10779357598" ],
+    "hakuOid" : "1.2.246.562.29.80306203979",
+    "hakuaikaId" : "2399308",
+    "hakukelpoisuusvaatimusUris" : [ "hakukelpoisuusvaatimusta_3" ],
+    "opintoOikeusUris" : [ ],
+    "hakukohdeKoulutusOids" : [ "1.2.246.562.17.61486530712" ],
+    "hakuaikaAlkuPvm" : null,
+    "hakuaikaLoppuPvm" : null,
+    "alinHyvaksyttavaKeskiarvo" : 0.0,
+    "alinValintaPistemaara" : 0,
+    "ylinValintapistemaara" : 0,
+    "aloituspaikatLkm" : 7,
+    "edellisenVuodenHakijatLkm" : 0,
+    "valintojenAloituspaikatLkm" : 7,
+    "sahkoinenToimitusOsoite" : null,
+    "soraKuvausKoodiUri" : null,
+    "tila" : "JULKAISTU",
+    "valintaperustekuvausKoodiUri" : "valintaperustekuvausryhma_9#1",
+    "liitteidenToimitusPvm" : null,
+    "ulkoinenTunniste" : null,
+    "koulutusAsteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+    "toteutusTyyppi" : "AMMATILLINEN_PERUSTUTKINTO",
+    "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+    "koulutuslaji" : "N",
+    "lisatiedot" : {
+      "kieli_sv" : "",
+      "kieli_en" : "",
+      "kieli_fi" : ""
+    },
+    "valintaperusteKuvaukset" : { },
+    "soraKuvaukset" : null,
+    "hakukelpoisuusVaatimusKuvaukset" : {
+      "kieli_sv" : "Om du har slutfört gymnasiets lärokurs kan du söka till gymnasiebaserade yrkesinriktade grundexamina. Om du har avlagt din examen utomlands eller avbrutit läroplikten kan du söka till gymnasiebaserad yrkesutbildning genom ansökan enligt prövning. Utbildningsanordnaren bedömer då skilt ditt utbildningsbehov och förutsättningar att klara av studierna. Om du har avlagt en yrkesinriktad grundexamen, någon annan yrkesexamen eller en högskoleexamen kan du inte söka till yrkesinriktad grundexamen i andra stadiets gemensamma ansökan.",
+      "kieli_fi" : "Lukiopohjaiseen ammatilliseen perustutkintoon voivat hakea lukion oppimäärän suorittaneet. Ulkomailla tutkintonsa suorittaneet voivat hakea lukiopohjaiseen ammatilliseen koulutukseen harkintaan perustuvan haun kautta. Tällöin koulutuksen järjestäjä arvioi erikseen hakijan koulutustarpeen ja edellytykset suoriutua opinnoista.  Ammatillisen perustutkinnon, muun ammatillisen tutkinnon tai korkeakoulututkinnon suorittaneet eivät voi hakea ammatilliseen koulutukseen toisen asteen yhteishaussa."
+    },
+    "aloituspaikatKuvaukset" : null,
+    "kaytetaanJarjestelmanValintaPalvelua" : true,
+    "kaytetaanHaunPaattymisenAikaa" : false,
+    "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+    "hakukohteenLiitteet" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "2935066",
+      "version" : 0,
+      "hakukohdeOid" : null,
+      "kieliUri" : "kieli_fi",
+      "kieliNimi" : "suomi",
+      "liitteenNimi" : "",
+      "liitteenTyyppi" : "liitetyypitamm_2#1",
+      "jarjestys" : 0,
+      "kaytetaanHakulomakkeella" : true,
+      "liitteenKuvaukset" : {
+        "kieli_fi" : "<p>Ennakkotehtävä palautetaan haastattelun yhteydessä.</p>"
+      },
+      "toimitettavaMennessa" : 1446217200000,
+      "liitteenToimitusOsoite" : {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : null,
+        "version" : 0,
+        "osoiterivi1" : "Eino Salmelaisen katu 20",
+        "osoiterivi2" : null,
+        "postinumero" : "posti_39500",
+        "postinumeroArvo" : "39500",
+        "postitoimipaikka" : "IKAALINEN"
+      },
+      "sahkoinenToimitusOsoite" : null
+    } ],
+    "yhteystiedot" : [ ],
+    "liitteidenToimitusOsoite" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : null,
+      "version" : 0,
+      "osoiterivi1" : "Eino Salmelaisen katu 20",
+      "osoiterivi2" : null,
+      "postinumero" : "posti_39500",
+      "postinumeroArvo" : "39500",
+      "postitoimipaikka" : "IKAALINEN"
+    },
+    "valintakokeet" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "2935073",
+      "version" : 0,
+      "hakukohdeOid" : null,
+      "kieliUri" : "kieli_fi",
+      "kieliNimi" : "suomi",
+      "valintakoeNimi" : null,
+      "valintakoetyyppi" : "valintakokeentyyppi_1#1",
+      "valintakokeenKuvaus" : {
+        "uri" : "kieli_fi",
+        "nimi" : "suomi",
+        "monikielisetNimet" : [ {
+          "kieli" : "EN",
+          "nimi" : "Finnish"
+        }, {
+          "kieli" : "FI",
+          "nimi" : "suomi"
+        }, {
+          "kieli" : "SV",
+          "nimi" : "finska"
+        } ],
+        "arvo" : "FI",
+        "versio" : 1,
+        "teksti" : "<p>Valintakokeeseen kuuluu ennakkotehtävä, haastattelu, yhteiset ja ammattialakohtaiset tehtävät.</p>"
+      },
+      "valintakoeAjankohtas" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "2935074",
+        "version" : 0,
+        "kellonaikaKaytossa" : true,
+        "lisatiedot" : "",
+        "osoite" : {
+          "created" : null,
+          "createdBy" : null,
+          "modified" : null,
+          "modifiedBy" : null,
+          "oid" : null,
+          "version" : 0,
+          "osoiterivi1" : "Eino Salmelaisen katu 20",
+          "osoiterivi2" : null,
+          "postinumero" : "posti_39500",
+          "postinumeroArvo" : "39500",
+          "postitoimipaikka" : "IKAALINEN"
+        },
+        "alkaa" : 1446192000000,
+        "loppuu" : 1446217200000
+      } ],
+      "pisterajat" : [ ],
+      "kuvaukset" : { },
+      "lisanaytot" : { }
+    } ],
+    "valintaPerusteKuvausTunniste" : null,
+    "kaksoisTutkinto" : false,
+    "soraKuvausTunniste" : null,
+    "opetusKielet" : [ "kieli_fi" ],
+    "valintaPerusteKuvausKielet" : [ ],
+    "soraKuvausKielet" : [ ],
+    "painotettavatOppiaineet" : [ ],
+    "hakuMenettelyKuvaukset" : { },
+    "peruutusEhdotKuvaukset" : { },
+    "ryhmaliitokset" : [ ],
+    "organisaatioRyhmaOids" : [ ],
+    "ylioppilastutkintoAntaaHakukelpoisuuden" : false,
+    "kelaLinjaKoodi" : null,
+    "kelaLinjaTarkenne" : null,
+    "ensikertalaistenAloituspaikat" : null
+  },
+  "status" : "OK",
+  "accessRights" : { },
+  "errors" : null
+}

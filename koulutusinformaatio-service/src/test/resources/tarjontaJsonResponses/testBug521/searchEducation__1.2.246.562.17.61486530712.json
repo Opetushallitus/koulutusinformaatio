@@ -1,1 +1,70 @@
-{"params":null,"result":{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":null,"version":null,"tulokset":[{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.10.10779357598","version":0,"nimi":{"fi":"Ikaalisten käsi- ja taideteollisuusoppilaitos"},"tulokset":[{"created":null,"createdBy":null,"modified":null,"modifiedBy":null,"oid":"1.2.246.562.17.61486530712","version":null,"nimi":{"fi":"Tuotteen suunnittelun ja valmistuksen osaamisala","sv":"Kompetensområdet för produktplanering och -tillverkning","en":"Tuotteen suunnittelun ja valmistuksen osaamisala"},"kausi":{"fi":"Kevät","sv":"Vår","en":"Spring"},"kausiUri":"kausi_k#1","vuosi":2016,"koulutuslajiUri":"koulutuslaji_n","tila":"JULKAISTU","koulutusasteTyyppi":"AMMATILLINEN_PERUSKOULUTUS","toteutustyyppiEnum":"AMMATILLINEN_PERUSTUTKINTO","pohjakoulutusvaatimus":{"fi":"YO","sv":"ST","en":"YO"},"koulutuskoodi":"koulutus_321101#4","koulutuksenAlkamisPvmMin":1451858400000,"koulutuksenAlkamisPvmMax":1451858400000,"tarjoajat":["1.2.246.562.10.10779357598"],"koulutusmoduuliTyyppi":"TUTKINTO_OHJELMA","komoOid":"1.2.246.562.5.2013061010184205750200","opetuskielet":["kieli_fi"],"koulutuksenTarjoajaKomoto":null,"parentKomoOid":"1.2.246.562.5.2013061010184190024479","siblingKomotos":["1.2.246.562.17.64285210601"],"koulutuslaji":{"fi":"Nuorten koulutus","sv":"Utbildning för unga","en":"Education and training for young"}}]}],"tuloksia":1},"status":"OK","errors":null,"accessRights":{}}
+{
+  "params" : null,
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.10779357598",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Ikaalisten käsi- ja taideteollisuusoppilaitos"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.17.61486530712",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Tuotteen suunnittelun ja valmistuksen osaamisala",
+          "sv" : "Kompetensområdet för produktplanering och -tillverkning",
+          "en" : "Tuotteen suunnittelun ja valmistuksen osaamisala"
+        },
+        "kausi" : {
+          "fi" : "Kevät",
+          "sv" : "Vår",
+          "en" : "Spring"
+        },
+        "kausiUri" : "kausi_k#1",
+        "vuosi" : 2016,
+        "koulutuslajiUri" : "koulutuslaji_n",
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "AMMATILLINEN_PERUSKOULUTUS",
+        "toteutustyyppiEnum" : "AMMATILLINEN_PERUSTUTKINTO",
+        "pohjakoulutusvaatimus" : {
+          "fi" : "YO",
+          "sv" : "ST",
+          "en" : "YO"
+        },
+        "koulutuskoodi" : "koulutus_321101#4",
+        "koulutuksenAlkamisPvmMin" : 1451858400000,
+        "koulutuksenAlkamisPvmMax" : 1451858400000,
+        "tarjoajat" : [ "1.2.246.562.10.10779357598" ],
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : "1.2.246.562.5.2013061010184205750200",
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : "1.2.246.562.5.2013061010184190024479",
+        "siblingKomotos" : [ "1.2.246.562.17.64285210601" ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "status" : "OK",
+  "accessRights" : { },
+  "errors" : null
+}
