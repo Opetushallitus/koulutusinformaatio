@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Sets;
+
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
@@ -156,13 +158,15 @@ public class IncrementalKoulutusLOSIndexer {
             removeKoulutusLOS(oid);
         }
 
+        Set<String> updatedTutkintos = Sets.newHashSet();
         for (KoulutusLOS los : losses) {
             this.dataUpdateService.updateKoulutusLos(los);
             if (los.getTutkinto() == null) {
                 indexToSolr(los);
-            } else {
+            } else if (!updatedTutkintos.contains(los.getTutkinto().getId())) {
                 indexToSolr(los.getTutkinto());
                 dataUpdateService.updateTutkintoLos(los.getTutkinto());
+                updatedTutkintos.add(los.getTutkinto().getId());
             }
         }
     }

@@ -220,7 +220,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     private void save(final ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {
-            LOG.info("Saved hakukohde: {}", applicationOption.getId());
+            LOG.debug("Saved hakukohde: {}", applicationOption.getId());
             save(applicationOption.getProvider());
             applicationOptionDAO.save(applicationOption);
         }
@@ -485,7 +485,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             throw new ResourceNotFoundException(String.format("ApplicationOption not found: %s", aoId));
         }
     }
-    
+
     private Provider getProvider(String id) throws ResourceNotFoundException {
         LearningOpportunityProviderEntity entity = learningOpportunityProviderDAO.get(id);
         if (entity != null) {
@@ -517,7 +517,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
-            
+
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
                     this.applicationOptionDAO.deleteById(ao.getId());
