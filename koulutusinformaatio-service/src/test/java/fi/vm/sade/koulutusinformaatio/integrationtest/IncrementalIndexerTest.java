@@ -3,24 +3,29 @@ package fi.vm.sade.koulutusinformaatio.integrationtest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
@@ -52,9 +57,21 @@ public class IncrementalIndexerTest {
     @Autowired
     private TarjontaRawServiceMock tarjontaRawServiceMock;
 
+    @Autowired
+    private DataStatusDAO dataStatusDAO;
+
     @After
     public void removeTestData() {
         testHelper.removeTestData();
+    }
+
+    @Before
+    public void init() {
+        DataStatusEntity dataStatus = new DataStatusEntity();
+        dataStatus.setLastUpdateDuration(10);
+        dataStatus.setLastUpdateFinished(new Date(1000));
+        dataStatus.setLastUpdateOutcome("SUCCESS");
+        when(dataStatusDAO.getLatestSuccessOrIncremental()).thenReturn(dataStatus);
     }
 
     @Test
@@ -79,16 +96,29 @@ public class IncrementalIndexerTest {
         TutkintoLOSEntity tutkinto1 = new TutkintoLOSEntity();
         tutkinto1.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy");
         tutkinto1.setProvider(provider);
-        tutkinto1.getChildEducations().add(getkoulutusLosEntity("1.2.246.562.17.61512976061", tutkinto1, "koulutus_321101", provider));
-        tutkinto1.getChildEducations().add(getkoulutusLosEntity("1.2.246.562.17.27586825005", tutkinto1, "koulutus_321101", provider));
-        tutkinto1.getChildEducations().add(getkoulutusLosEntity("1.2.246.562.17.165818280810", tutkinto1, "koulutus_321101", provider));
-        tutkinto1.getChildEducations().add(getkoulutusLosEntity("1.2.246.562.17.25298814663", tutkinto1, "koulutus_321101", provider));
+        List<KoulutusLOSEntity> children1 = Lists.newArrayList(
+                getkoulutusLosEntity("1.2.246.562.17.61512976061", tutkinto1, "koulutus_321101", provider),
+                getkoulutusLosEntity("1.2.246.562.17.27586825005", tutkinto1, "koulutus_321101", provider),
+                getkoulutusLosEntity("1.2.246.562.17.165818280810", tutkinto1, "koulutus_321101", provider),
+                getkoulutusLosEntity("1.2.246.562.17.25298814663", tutkinto1, "koulutus_321101", provider)
+                );
+        for (KoulutusLOSEntity child : children1) {
+            child.setSiblings(children1);
+        }
+        tutkinto1.setChildEducations(children1);
         
         TutkintoLOSEntity tutkinto2 = new TutkintoLOSEntity();
         tutkinto2.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2016_Kevät");
         tutkinto2.setProvider(provider);
-        tutkinto2.getChildEducations().add(getkoulutusLosEntity("1.2.246.562.17.61486530712", tutkinto2, "koulutus_321101", provider));
-        tutkinto2.getChildEducations().add(getkoulutusLosEntity("1.2.246.562.17.64285210601", tutkinto2, "koulutus_321101", provider));
+
+        List<KoulutusLOSEntity> children2 = Lists.newArrayList(
+                getkoulutusLosEntity("1.2.246.562.17.61486530712", tutkinto2, "koulutus_321101", provider), // <--- tämä palautuu las modified vastauksessa
+                getkoulutusLosEntity("1.2.246.562.17.64285210601", tutkinto2, "koulutus_321101", provider) // <--- peruttu
+                );
+        for (KoulutusLOSEntity child : children2) {
+            child.setSiblings(children2);
+        }
+        tutkinto2.setChildEducations(children2);
 
         tutkintoLOSDAO.save(tutkinto1);
         tutkintoLOSDAO.save(tutkinto2);
@@ -106,6 +136,7 @@ public class IncrementalIndexerTest {
         assertEquals(6, koulutusLOSDAO.count());
         assertEquals(0, applicationOptionDAO.count());
 
+        // Run incremental indexing
         incrementalUpdateService.updateChangedEducationData();
 
         List<TutkintoLOSEntity> tutkintos = tutkintoLOSDAO.find().asList();
@@ -115,45 +146,51 @@ public class IncrementalIndexerTest {
         assertEquals(6, losses.size());
         assertEquals(6, aos.size());
 
-        Set<String> usedAoOids = new HashSet<String>();
-        Set<String> usedKoulutusOids = new HashSet<String>();
-
+        List<String> allowedTutkintoIDs = Lists.newArrayList(
+                "1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy",
+                "1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2016_Kevät");
         for (TutkintoLOSEntity tutkinto : tutkintos) {
-            validateTutkinto(tutkinto);
-            for (KoulutusLOSEntity koulutus : tutkinto.getChildEducations()) {
-                usedKoulutusOids.add(koulutus.getId());
-            }
-            for (ApplicationOptionEntity ao : tutkinto.getApplicationOptions()) {
-                usedAoOids.add(ao.getId());
-            }
+            validateTutkinto(tutkinto, allowedTutkintoIDs);
         }
+
+        List<String> allowedKoulutusIDs = Lists.newArrayList(
+                "1.2.246.562.17.61512976061",
+                "1.2.246.562.17.27586825005",
+                "1.2.246.562.17.165818280810",
+                "1.2.246.562.17.25298814663",
+                "1.2.246.562.17.61486530712",
+                "1.2.246.562.17.25124155778");
         for (KoulutusLOSEntity koulutus : losses) {
-            validateKoulutus(koulutus);
-            usedKoulutusOids.remove(koulutus.getId());
-            for (ApplicationOptionEntity ao : koulutus.getApplicationOptions()) {
-                usedAoOids.add(ao.getId());
-            }
+            validateKoulutus(koulutus, allowedKoulutusIDs);
         }
+
+        List<String> allowedAoIDs = Lists.newArrayList(
+                "1.2.246.562.20.10843418954",
+                "1.2.246.562.20.26949381318",
+                "1.2.246.562.20.52393151668",
+                "1.2.246.562.20.72559091441",
+                "1.2.246.562.20.90183207456",
+                "1.2.246.562.20.96267839536");
         for (ApplicationOptionEntity ao : aos) {
-            validateAo(ao);
-            usedAoOids.remove(ao.getId());
+            validateAo(ao, allowedAoIDs);
         }
-        assertEquals("There were orphaned koulutus: " + usedKoulutusOids, 0, usedKoulutusOids.size());
-        assertEquals("There were orphaned aos: " + usedAoOids, 0, usedAoOids.size());
     }
 
-    private void validateTutkinto(TutkintoLOSEntity tutkinto) {
+    private void validateTutkinto(TutkintoLOSEntity tutkinto, List<String> allowedTutkinToIDs) {
         assertTrue("Tutkinto " + tutkinto.getId() + " has no application options.", tutkinto.getApplicationOptions().size() > 0);
         assertTrue("Tutkinto " + tutkinto.getId() + " has no koulutus.", tutkinto.getChildEducations().size() > 0);
+        assertTrue("Unknown tutkinto indexed " + tutkinto.getId(), allowedTutkinToIDs.contains(tutkinto.getId()));
     }
 
-    private void validateKoulutus(KoulutusLOSEntity koulutus) {
+    private void validateKoulutus(KoulutusLOSEntity koulutus, List<String> allowedKoulutusIDs) {
         assertTrue("Koulutus " + koulutus.getId() + " has no application options.", koulutus.getApplicationOptions().size() > 0);
         assertNotNull("Koulutus " + koulutus.getId() + " has no tutkinto.", koulutus.getTutkinto());
+        assertTrue("Unknown koulutus indexed " + koulutus.getId(), allowedKoulutusIDs.contains(koulutus.getId()));
     }
 
-    private void validateAo(ApplicationOptionEntity ao) {
+    private void validateAo(ApplicationOptionEntity ao, List<String> allowedAoIDs) {
         assertNotNull(ao.getApplicationSystem());
+        assertTrue("Unknown hakukohde indexed " + ao.getId(), allowedAoIDs.contains(ao.getId()));
     }
 
     private KoulutusLOSEntity getkoulutusLosEntity(String oid, TutkintoLOSEntity tutkinto, String koulutuskoodi, LearningOpportunityProviderEntity provider) {
