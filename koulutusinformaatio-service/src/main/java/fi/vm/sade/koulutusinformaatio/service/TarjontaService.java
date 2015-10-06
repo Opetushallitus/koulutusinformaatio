@@ -99,6 +99,10 @@ public interface TarjontaService {
      */
     void clearProcessedLists();
 
+    boolean hasAlreadyProcessedOid(String oid);
+
+    void addProcessedOid(String komoOid);
+
     List<KoulutusHakutulosV1RDTO> findLukioKoulutusDTOs() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
     public KoulutusLOS createLukioKoulutusLOS(KoulutusHakutulosV1RDTO curDTO);

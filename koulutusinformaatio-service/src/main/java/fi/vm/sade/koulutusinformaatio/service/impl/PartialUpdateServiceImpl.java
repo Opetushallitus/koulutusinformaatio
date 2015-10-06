@@ -31,6 +31,7 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateServ
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
@@ -61,7 +62,10 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     
     @Autowired
     private TarjontaRawService tarjontaRawService;
-    
+
+    @Autowired
+    private TarjontaService tarjontaService;
+
     @Autowired
     private IndexerService indexerService;
     
@@ -108,6 +112,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
 
     private void runUpdate(String oid, Updater updater) throws Exception {
         LOGGER.info(String.format("Running partial indexing for %s with oid: %s.", updater.getUpdateProcessName(), oid));
+        tarjontaService.clearProcessedLists();
         updater.update(oid);
         LOGGER.debug("Committing to solr");
         indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -115,6 +120,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS-PARTIAL"));
         LOGGER.info(String.format("Partial indexing finished for %s with oid: %s. Indexing took %s", updater.getUpdateProcessName(),
                 oid, System.currentTimeMillis() - runningSince));
+        tarjontaService.clearProcessedLists();
     }
 
     private void startRunning() {

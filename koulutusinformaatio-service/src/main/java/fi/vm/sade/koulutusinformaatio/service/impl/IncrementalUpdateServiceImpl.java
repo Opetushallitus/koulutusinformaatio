@@ -144,13 +144,11 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.info("Starting incremental update:");
 
             this.tarjontaService.clearProcessedLists();
-            int komoCount = 0, hakuCount = 0, hakukohdeCount = 0, koulutusCount = 0;
             // If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
                 LOG.info(String.format("Update period was: %s", updatePeriod));
                 LOG.info(String.format("Komos changed: " + result.get("koulutusmoduuli")));
                 indexKomoChanges(result.get("koulutusmoduuli"));
-                komoCount = result.get("koulutusmoduuli").size();
             }
 
             Set<String> affectedKoulutusOids = Sets.newHashSet();
@@ -187,6 +185,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.error("Education data update failed ", e);
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
         } finally {
+            this.tarjontaService.clearProcessedLists();
             this.isRunning = false;
             this.runningSince = 0;
         }
@@ -195,8 +194,12 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void indexKomotoChanges(Set<String> komotoChanges) throws Exception {
         for (String curOid : komotoChanges) {
             try {
-                LOG.debug("Will index changed komoto: " + curOid);
-                this.losIndexer.indexLoiData(curOid);
+                if (!tarjontaService.hasAlreadyProcessedOid(curOid)) {
+                    LOG.debug("Will index changed komoto: " + curOid);
+                    this.losIndexer.indexLoiData(curOid);
+                } else {
+                    LOG.debug("Koulutus {} already indexed, skipping.", curOid);
+                }
             } catch (Exception ex) {
                 LOG.warn("problem indexing komoto: " + curOid, ex);
             }

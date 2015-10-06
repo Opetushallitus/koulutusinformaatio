@@ -119,7 +119,6 @@ public class IncrementalLOSIndexer {
 
     //Indexes changed loi data
     public void indexLoiData(String komotoOid) throws Exception {
-        tarjontaService.clearProcessedLists();
 
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> dto = this.tarjontaRawService.searchEducation(komotoOid);
@@ -191,8 +190,6 @@ public class IncrementalLOSIndexer {
         default:
             break;
         }
-        tarjontaService.clearProcessedLists();
-
     }
 
     private void indexValmentavaKomoto(String komotoOid) throws Exception {

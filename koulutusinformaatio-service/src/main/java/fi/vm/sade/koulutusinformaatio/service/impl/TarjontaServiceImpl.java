@@ -946,9 +946,11 @@ public class TarjontaServiceImpl implements TarjontaService {
             return losses;
         } catch (KoodistoException e) {
             LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            addProcessedOid(koulutusDTO.getOid());
             return new ArrayList<KoulutusLOS>();
         } catch (TarjontaParseException e) {
             LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            addProcessedOid(koulutusDTO.getOid());
             return new ArrayList<KoulutusLOS>();
         }
     }
@@ -978,10 +980,12 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
     }
 
+    @Override
     public boolean hasAlreadyProcessedOid(String oid) {
         return processedOids.contains(oid);
     }
 
+    @Override
     public void addProcessedOid(String komoOid) {
         processedOids.add(komoOid);
     }
@@ -1000,15 +1004,18 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (rawRes == null
                 || rawRes.getResult() == null
                 || rawRes.getResult().getTulokset() == null
-                || rawRes.getResult().getTulokset().isEmpty()
-                || rawRes.getResult().getTulokset().get(0) == null) {
+                || rawRes.getResult().getTulokset().isEmpty()) {
             return Sets.newHashSet();
         }
-        return FluentIterable.from(rawRes.getResult().getTulokset().get(0).getTulokset())
-                .transform(new Function<KoulutusHakutulosV1RDTO, String>() {
-                    @Override
-                    public String apply(KoulutusHakutulosV1RDTO input) {
-                        return input.getOid();
+        return FluentIterable.from(rawRes.getResult().getTulokset())
+                .transformAndConcat(new Function<TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>, Set<String>>() {
+                    public Set<String> apply(TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> input) {
+                        return FluentIterable.from(input.getTulokset())
+                                .transform(new Function<KoulutusHakutulosV1RDTO, String>() {
+                                    public String apply(KoulutusHakutulosV1RDTO input) {
+                                        return input.getOid();
+                                    }
+                                }).toSet();
                     }
                 }).toSet();
     }

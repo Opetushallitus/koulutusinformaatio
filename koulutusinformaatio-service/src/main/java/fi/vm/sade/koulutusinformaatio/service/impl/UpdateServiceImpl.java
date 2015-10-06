@@ -126,8 +126,8 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = System.currentTimeMillis();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-
             tarjontaService.clearProcessedLists();
+
             List<KoulutusHakutulosV1RDTO> lukioEducations = this.tarjontaService.findLukioKoulutusDTOs();
             LOG.info("Found lukio educations: " + lukioEducations.size());
             int i = 0;
@@ -140,8 +140,8 @@ public class UpdateServiceImpl implements UpdateService {
                 }
             }
             LOG.info("Lukio educations saved.");
-
             tarjontaService.clearProcessedLists();
+
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
             LOG.info("Found vocational educations: " + vocationalEducations.size());
             i = 0;
@@ -163,9 +163,8 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Vocational educations saved.");
             tarjontaService.clearProcessedLists();
 
-            tarjontaService.clearProcessedLists();
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
-            LOG.debug("Found higher educations: {}", higherEducations.size());
+            LOG.info("Found higher educations: {}", higherEducations.size());
 
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("Saving highed education: {}", curLOS.getId());
@@ -174,11 +173,11 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Higher educations saved.");
+            tarjontaService.clearProcessedLists();
 
             // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
-            tarjontaService.clearProcessedLists();
             List<AdultUpperSecondaryLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
-            LOG.debug("Found adult upper secondary  and base educations: {}", adultEducations.size());
+            LOG.info("Found adult upper secondary  and base educations: {}", adultEducations.size());
 
             for (AdultUpperSecondaryLOS curLOS : adultEducations) {
                 LOG.debug("Saving adult education: {}", curLOS.getId());
@@ -187,9 +186,8 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Adult upper secondary and base educations saved.");
 
-            tarjontaService.clearProcessedLists();
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
-            LOG.debug("Found adult vocational educations: {}", adultVocationals.size());
+            LOG.info("Found adult vocational educations: {}", adultVocationals.size());
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
                 LOG.debug("Saving adult vocational los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -197,9 +195,8 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Adult vocational educations saved.");
 
-            tarjontaService.clearProcessedLists();
             List<KoulutusLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
-            LOG.debug("Found valmistava educations: {}", valmistavaList.size());
+            LOG.info("Found valmistava educations: {}", valmistavaList.size());
             for (KoulutusLOS curLOS : valmistavaList) {
                 LOG.debug("Saving adult valmistava los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -250,6 +247,7 @@ public class UpdateServiceImpl implements UpdateService {
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
             sendMailOnException(e);
         } finally {
+            tarjontaService.clearProcessedLists();
             running = false;
             runningSince = 0;
         }

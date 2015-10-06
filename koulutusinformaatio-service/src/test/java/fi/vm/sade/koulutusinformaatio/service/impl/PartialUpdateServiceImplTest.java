@@ -1,5 +1,12 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,19 +21,13 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateServ
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PartialUpdateServiceImplTest {
@@ -57,7 +58,10 @@ public class PartialUpdateServiceImplTest {
     private IndexerService indexerService;
     
     @Mock
-    private TarjontaRawService tarjontaService;
+    private TarjontaRawService tarjontaRawService;
+
+    @Mock
+    private TarjontaService tarjontaService;
     
     @InjectMocks
     private PartialUpdateService service = new PartialUpdateServiceImpl();
@@ -80,8 +84,8 @@ public class PartialUpdateServiceImplTest {
         HakukohdeV1RDTO ao = new HakukohdeV1RDTO();
         ao.setOid(APPLICATION_OPTION_OID);
         ao.setHakuOid(APPLICATION_OID);
-        when(tarjontaService.getV1EducationHakukohde(APPLICATION_OPTION_OID)).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>(ao));
-        when(tarjontaService.getV1EducationHakuByOid(APPLICATION_OID)).thenReturn(new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO()));
+        when(tarjontaRawService.getV1EducationHakukohde(APPLICATION_OPTION_OID)).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>(ao));
+        when(tarjontaRawService.getV1EducationHakuByOid(APPLICATION_OID)).thenReturn(new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO()));
     }
     
     @Test

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -56,7 +58,6 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationSystemCreator;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
@@ -114,16 +115,12 @@ public class IncrementalApplicationSystemIndexer {
      * Main method for indexing data based on application system changes
      */
     public void indexApplicationSystemData(String asOid) throws Exception {
-        HakuV1RDTO asDto = this.tarjontaRawService.getV1EducationHakuByOid(asOid).getResult();
-        if (asDto == null) {
-            throw new ResourceNotFoundException("ApplicationSystem " + asOid + " not found, aborting indexing");
-        }
-        if (CreatorUtil.isSecondaryAS(asDto)) {
-            indexSecondaryEducationAsData(asDto);
-        } else if (CreatorUtil.isAdultUpperSecondaryAS(asDto)) {
-            indexAdultUpsecAsData(asOid);
-        } else {
-            indexHigherEducationAsData(asOid);
+        Set<String> koulutusToBeUpdated = Sets.newHashSet();
+        koulutusToBeUpdated.addAll(tarjontaService.findKoulutusOidsByHaku(asOid)); // julkaistu koulutus tarjonnasta
+        koulutusToBeUpdated.addAll(dataQueryService.getLearningOpportunityIdsByAS(asOid)); // jo valmiiksi indeksoitu koulutus
+
+        for (String string : koulutusToBeUpdated) {
+            losIndexer.indexKoulutusLos(string);
         }
         indexApplicationSystemForCalendar(asOid);
     }
