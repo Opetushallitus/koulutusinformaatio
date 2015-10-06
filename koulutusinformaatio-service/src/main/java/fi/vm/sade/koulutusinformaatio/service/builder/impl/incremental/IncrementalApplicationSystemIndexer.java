@@ -120,6 +120,7 @@ public class IncrementalApplicationSystemIndexer {
         koulutusToBeUpdated.addAll(dataQueryService.getLearningOpportunityIdsByAS(asOid)); // jo valmiiksi indeksoitu koulutus
 
         for (String string : koulutusToBeUpdated) {
+            if (!tarjontaService.hasAlreadyProcessedOid(string))
             losIndexer.indexKoulutusLos(string);
         }
         indexApplicationSystemForCalendar(asOid);

@@ -108,7 +108,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 this.loHttpSolrServer,
                 this.lopHttpSolrServer,
                 this.locationHttpSolrServer);
-        this.aoIndexer = new IncrementalApplicationOptionIndexer(this.losIndexer);
+        this.aoIndexer = new IncrementalApplicationOptionIndexer(this.losIndexer, tarjontaService);
         this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaRawService,
                                                                 this.tarjontaService,
                                                                 this.dataQueryService, 

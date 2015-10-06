@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 
@@ -35,14 +36,18 @@ public class IncrementalApplicationOptionIndexer {
 
     private IncrementalLOSIndexer losIndexer;
 
+    private TarjontaService tarjontaService;
+
     @Autowired
-    public IncrementalApplicationOptionIndexer(IncrementalLOSIndexer losIndexer) {
+    public IncrementalApplicationOptionIndexer(IncrementalLOSIndexer losIndexer, TarjontaService tarjontaService) {
         this.losIndexer = losIndexer;
+        this.tarjontaService = tarjontaService;
     }
 
     public void indexApplicationOptionData(HakukohdeV1RDTO aoDto, HakuV1RDTO asDto) throws Exception {
         for (String koulutusOid : aoDto.getHakukohdeKoulutusOids()) {
-            losIndexer.indexLoiData(koulutusOid);
+            if (!tarjontaService.hasAlreadyProcessedOid(koulutusOid))
+                losIndexer.indexLoiData(koulutusOid);
         }
     }
 }

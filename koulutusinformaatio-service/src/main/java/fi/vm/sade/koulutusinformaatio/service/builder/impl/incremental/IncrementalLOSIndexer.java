@@ -280,7 +280,8 @@ public class IncrementalLOSIndexer {
     }
 
     public void indexKoulutusLos(String komotoOid) throws Exception {
-        indexLoiData(komotoOid);
+        if (!tarjontaService.hasAlreadyProcessedOid(komotoOid))
+            indexLoiData(komotoOid);
     }
 
     public void removeKoulutus(String oid) throws Exception {
