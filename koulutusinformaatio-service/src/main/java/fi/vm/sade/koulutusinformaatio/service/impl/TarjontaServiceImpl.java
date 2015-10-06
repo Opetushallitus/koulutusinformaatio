@@ -900,7 +900,12 @@ public class TarjontaServiceImpl implements TarjontaService {
             if (siblings != null) {
                 for (String oid : siblings) {
                     try {
-                        losses.add(creator.createAmmatillinenLOS(oid, true));
+                        KoulutusLOS siblingLos = creator.createAmmatillinenLOS(oid, true);
+                        if (siblingLos != null) {
+                            losses.add(siblingLos);
+                        } else {
+                            addProcessedOid(oid);
+                        }
                     } catch (TarjontaParseException e) {
                         addProcessedOid(oid);
                         LOG.warn("Vocational sibling " + oid + " was not valid: " + e.getMessage());

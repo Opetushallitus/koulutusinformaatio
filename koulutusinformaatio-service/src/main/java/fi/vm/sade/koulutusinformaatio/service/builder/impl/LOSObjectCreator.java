@@ -772,7 +772,7 @@ public class LOSObjectCreator extends ObjectCreator {
     public KoulutusLOS createAmmatillinenLOS(String oid, boolean checkStatus) throws KoodistoException,
             TarjontaParseException {
         ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
-        if (result != null) {
+        if (result != null && result.getResult() != null && result.getResult().getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
             if (KoulutusAmmatillinenPerustutkintoV1RDTO.class.isAssignableFrom(result.getResult().getClass())) {
                 KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO = (KoulutusAmmatillinenPerustutkintoV1RDTO) result.getResult();
                 return createAmmatillinenLOS(koulutusDTO, checkStatus);
