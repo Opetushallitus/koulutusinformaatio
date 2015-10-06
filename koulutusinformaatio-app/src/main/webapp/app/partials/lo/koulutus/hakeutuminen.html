@@ -16,17 +16,26 @@
             <div class="margin-vertical-default">
                 <span>{{as.name}}</span> (<span data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-period-name="ao.applicationPeriodName"></span>)
             </div>
-
-            <div data-ki-collapse-text-block data-content="ao.selectionCriteria" data-title="selection-criteria"></div>
-            <div data-ki-collapse-text-block data-title="eligibility-description" data-content="ao.eligibilityDescription"></div>
-            <div data-ki-collapse-block data-title="entrance-exam" data-content="ao.exams">
+            <div data-title="selection-criteria" data-ki-collapse-text-block data-content="ao.selectionCriteria"></div>
+            <div data-title="emphasized-subjects" data-ki-collapse-block data-content="ao.emphasizedSubjects">
+                <div data-ki-emphasized-subjects></div>
+            </div>
+            <div data-title="average-limit" data-ki-collapse-block data-content="ao.lowestAcceptedAverage">
+                <div data-ki-average-limit></div>
+            </div>
+            <div data-title="eligibility-description" data-ki-collapse-text-block data-content="ao.eligibilityDescription"></div>
+            <div data-title="entrance-exam"data-ki-collapse-block data-content="ao.exams">
                 <div data-ki-exams></div>
             </div>
-            <div data-ki-collapse-block data-title="required-attachments" data-content="ao.attachments">
+            <div data-title="additional-proof" data-ki-collapse-block data-content="ao.additionalProof">
+                <div data-ki-additional-proof></div>
+            </div>
+            <div data-ki-scores data-score-element="ao.overallScoreLimit" data-typename="'overall'"></div>
+            <div data-title="required-attachments" data-ki-collapse-block data-content="ao.attachments">
                 <div data-ki-attachments></div>
             </div>
-            <div data-ki-collapse-text-block data-title="sora" data-content="ao.soraDescription"></div>
-            <div data-ki-collapse-text-block data-title="further-application-info" data-content="ao.additionalInfo"></div>
+            <div data-title="sora" data-ki-collapse-text-block data-content="ao.soraDescription"></div>
+            <div data-title="further-application-info" data-ki-collapse-text-block data-content="ao.additionalInfo"></div>
             <hr/>
         </div>
     </div>
