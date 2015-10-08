@@ -83,13 +83,9 @@ public final class ExamToDTO {
     
     private static List<ExamDTO> convertHigherEdExamsByLang(String lang, final List<Exam> exams) {
         List<ExamDTO> convertedExams = new ArrayList<ExamDTO>();
-        String keyLang = lang.toLowerCase();
-        
         for (Exam curExam : exams) {
             ExamDTO exam = null;
-            if (curExam != null 
-                    && curExam.getType() != null 
-                    && curExam.getType().getTranslations().containsKey(keyLang)) {
+            if (curExam != null) {
                 exam = convert(curExam, lang);
             }
             if (exam != null) {
