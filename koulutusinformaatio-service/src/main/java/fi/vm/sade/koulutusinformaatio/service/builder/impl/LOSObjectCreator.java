@@ -820,6 +820,9 @@ public class LOSObjectCreator extends ObjectCreator {
         Code name = koodistoService.searchFirst(koulutusDTO.getKoulutusohjelma().getUri());
         los.setShortTitle(name.getShortTitle()); // Otsikkoa varten tarvitaan lukiolinjan lyhytnimi
 
+        for (ApplicationOption ao : los.getApplicationOptions()) {
+            ao.setSelectionCriteria(null); // Lukioiden hakukohteilla näytetään valintaperusteet hakukelpoisuustiedon sijaan.
+        }
         return los;
     }
 
