@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.junit.Before;
@@ -39,8 +40,8 @@ import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoePisterajaRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoePisterajaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -100,31 +101,31 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
 
     @Test
     public void testCreateAdditionalProof() throws KoodistoException {
-        ValintakoeRDTO examDTO = new ValintakoeRDTO();
+        ValintakoeV1RDTO examDTO = new ValintakoeV1RDTO();
         Map<String, String> additionalProofMap = Maps.newHashMap();
         additionalProofMap.put(getFiUri(), "additionalproof");
         examDTO.setLisanaytot(additionalProofMap);
-        ValintakoePisterajaRDTO scoreLimitDTO = new ValintakoePisterajaRDTO();
-        scoreLimitDTO.setAlinPistemaara(10.0);
-        scoreLimitDTO.setAlinHyvaksyttyPistemaara(11.0);
-        scoreLimitDTO.setYlinPistemaara(12.0);
-        scoreLimitDTO.setTyyppi("Lisapisteet");
-        examDTO.setValintakoePisterajas(Lists.newArrayList(scoreLimitDTO));
+        ValintakoePisterajaV1RDTO scoreLimitDTO = new ValintakoePisterajaV1RDTO();
+        scoreLimitDTO.setAlinPistemaara(new BigDecimal(10.0));
+        scoreLimitDTO.setAlinHyvaksyttyPistemaara(new BigDecimal(11.0));
+        scoreLimitDTO.setYlinPistemaara(new BigDecimal(12.0));
+        scoreLimitDTO.setPisterajatyyppi("Lisapisteet");
+        examDTO.setPisterajat(Lists.newArrayList(scoreLimitDTO));
 
-        AdditionalProof ap = creator.createAdditionalProof(Lists. newArrayList(examDTO));
+        AdditionalProof ap = creator.createAdditionalProof(Lists.newArrayList(examDTO));
         assertNotNull(ap);
         assertEquals("additionalproof", ap.getDescreption().getTranslations().get(getFi()));
     }
 
     @Test
     public void testResolvePointLimit() {
-        ValintakoeRDTO examDTO = new ValintakoeRDTO();
-        ValintakoePisterajaRDTO scoreLimitDTO = new ValintakoePisterajaRDTO();
-        scoreLimitDTO.setAlinPistemaara(10.0);
-        scoreLimitDTO.setAlinHyvaksyttyPistemaara(11.0);
-        scoreLimitDTO.setYlinPistemaara(12.0);
-        scoreLimitDTO.setTyyppi("Lisapisteet");
-        examDTO.setValintakoePisterajas(Lists.newArrayList(scoreLimitDTO));
+        ValintakoeV1RDTO examDTO = new ValintakoeV1RDTO();
+        ValintakoePisterajaV1RDTO scoreLimitDTO = new ValintakoePisterajaV1RDTO();
+        scoreLimitDTO.setAlinPistemaara(new BigDecimal(10.0));
+        scoreLimitDTO.setAlinHyvaksyttyPistemaara(new BigDecimal(11.0));
+        scoreLimitDTO.setYlinPistemaara(new BigDecimal(12.0));
+        scoreLimitDTO.setPisterajatyyppi("Lisapisteet");
+        examDTO.setPisterajat(Lists.newArrayList(scoreLimitDTO));
 
         ScoreLimit scoreLimit = creator.resolvePointLimit(examDTO, "Lisapisteet");
         assertNotNull(scoreLimit);
@@ -136,10 +137,10 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
 
     @Test
     public void testResolvePointLimitInvalidType() {
-        ValintakoeRDTO examDTO = new ValintakoeRDTO();
-        ValintakoePisterajaRDTO scoreLimitDTO = new ValintakoePisterajaRDTO();
-        scoreLimitDTO.setTyyppi("invalid");
-        examDTO.setValintakoePisterajas(Lists.newArrayList(scoreLimitDTO));
+        ValintakoeV1RDTO examDTO = new ValintakoeV1RDTO();
+        ValintakoePisterajaV1RDTO scoreLimitDTO = new ValintakoePisterajaV1RDTO();
+        scoreLimitDTO.setPisterajatyyppi("invalid");
+        examDTO.setPisterajat(Lists.newArrayList(scoreLimitDTO));
         ScoreLimit scoreLimit = creator.resolvePointLimit(examDTO, "Lisapisteet");
         assertNull(scoreLimit);
     }

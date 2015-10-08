@@ -41,9 +41,8 @@ import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeAjankohtaRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoePisterajaRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.RyhmaliitosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoePisterajaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 
 /**
@@ -61,10 +60,10 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
 
-    public AdditionalProof createAdditionalProof(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
+    public AdditionalProof createAdditionalProof(List<ValintakoeV1RDTO> valintakoes) throws KoodistoException {
         if (valintakoes != null) {
             AdditionalProof additionalProof = new AdditionalProof();
-            for (ValintakoeRDTO valintakoe : valintakoes) {
+            for (ValintakoeV1RDTO valintakoe : valintakoes) {
                 if (valintakoe.getLisanaytot() != null) {
                     additionalProof.setDescreption(getI18nText(valintakoe.getLisanaytot()));
                     additionalProof.setScoreLimit(resolvePointLimit(valintakoe, "Lisapisteet"));
@@ -75,11 +74,11 @@ public class EducationObjectCreator extends ObjectCreator {
         return null;
     }
 
-    public ScoreLimit resolvePointLimit(ValintakoeRDTO valintakoe, String type) {
-        for (ValintakoePisterajaRDTO valintakoePisteraja : valintakoe.getValintakoePisterajas()) {
-            if (valintakoePisteraja.getTyyppi().equals(type)) {
-                return new ScoreLimit(valintakoePisteraja.getAlinPistemaara(),
-                        valintakoePisteraja.getAlinHyvaksyttyPistemaara(), valintakoePisteraja.getYlinPistemaara());
+    public ScoreLimit resolvePointLimit(ValintakoeV1RDTO valintakoe, String type) {
+        for (ValintakoePisterajaV1RDTO valintakoePisteraja : valintakoe.getPisterajat()) {
+            if (valintakoePisteraja.getPisterajatyyppi().equals(type)) {
+                return new ScoreLimit(valintakoePisteraja.getAlinPistemaara().doubleValue(),
+                        valintakoePisteraja.getAlinHyvaksyttyPistemaara().doubleValue(), valintakoePisteraja.getYlinPistemaara().doubleValue());
             }
         }
         return null;
@@ -126,22 +125,24 @@ public class EducationObjectCreator extends ObjectCreator {
         }
     }
 
-    public List<Exam> createHigherEducationExams(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
+    public List<Exam> createEducationExams(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
         if (valintakokeet != null && !valintakokeet.isEmpty()) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
-                if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null
-                        && (valintakoe.getValintakoeNimi() != null || valintakoe.getValintakoetyyppi() != null)
-                        && valintakoe.getKieliUri() != null) {
+                if (valintakoe != null) {
                     Exam exam = new Exam();
 
                     if (valintakoe.getValintakoetyyppi() != null) {
                         Code type = koodistoService.searchFirst(valintakoe.getValintakoetyyppi());
                         exam.setType(type.getName());
-                    } else {
+                    } else if (valintakoe.getValintakoeNimi() != null && valintakoe.getKieliUri() != null) {
                         exam.setType(getI18nText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
                     }
-                    exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
+                    if (valintakoe.getValintakokeenKuvaus() != null) {
+                        exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
+                    } else if (valintakoe.getKuvaukset() != null) {
+                        exam.setDescription(new I18nText(valintakoe.getKuvaukset()));
+                    }
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
                     if (valintakoe.getValintakoeAjankohtas() != null
@@ -158,7 +159,8 @@ public class EducationObjectCreator extends ObjectCreator {
                         }
                     }
                     exam.setExamEvents(examEvents);
-                    exams.add(exam);
+                    if (exam.getType() != null || !examEvents.isEmpty())
+                        exams.add(exam);
                 }
             }
             return exams;
