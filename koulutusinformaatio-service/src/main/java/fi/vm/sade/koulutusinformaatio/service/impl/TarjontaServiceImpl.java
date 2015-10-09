@@ -881,7 +881,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             if (hasAlreadyProcessedOid(koulutusDTO.getOid())) {
                 return losses;
             }
-            String parentoid = koulutusDTO.getParentKomoOid();
+            String parentoid = koulutusDTO.getParentKomoOid() != null ? koulutusDTO.getParentKomoOid() : koulutusDTO.getKomoOid();
             String providerOid = koulutusDTO.getTarjoajat().iterator().next();
             KoulutusLOS koulutus = creator.createAmmatillinenLOS(koulutusDTO.getOid(), true);
             if (koulutus == null) {
