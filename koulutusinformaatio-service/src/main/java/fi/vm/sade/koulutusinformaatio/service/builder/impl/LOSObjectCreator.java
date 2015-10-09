@@ -821,7 +821,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setShortTitle(name.getShortTitle()); // Otsikkoa varten tarvitaan lukiolinjan lyhytnimi
 
         for (ApplicationOption ao : los.getApplicationOptions()) {
-            ao.setSelectionCriteria(null); // Lukioiden hakukohteilla näytetään valintaperusteet hakukelpoisuustiedon sijaan.
+            ao.setEligibilityDescription(null); // Lukioiden hakukohteilla näytetään valintaperusteet (SelectionCriteria) hakukelpoisuustiedon sijaan.
         }
         return los;
     }
