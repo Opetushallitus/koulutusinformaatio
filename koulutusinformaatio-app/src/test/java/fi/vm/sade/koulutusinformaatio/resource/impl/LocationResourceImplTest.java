@@ -2,7 +2,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -82,7 +82,7 @@ public class LocationResourceImplTest {
         loc4.setParent("code_uusimaa");
         municipalities.add(loc4);
         
-        when(searchService.getChildLocations(anyList(), anyString())).thenReturn(municipalities);
+        when(searchService.getChildLocations(anyListOf(String.class), anyString())).thenReturn(municipalities);
         
         when(searchService.searchLocations(anyString(), anyString())).thenReturn(municipalities);
         
@@ -111,10 +111,10 @@ public class LocationResourceImplTest {
     
     @Test
     public void testSearchLocations() {
-    	List<LocationDTO> locs = resource.searchLocations("termi", "fi");
-    	assertEquals(2, locs.size());
-    	assertEquals(locs.get(0).getName(), municipalities.get(0).getName());
-    	assertEquals(locs.get(0).getCode(), municipalities.get(0).getCode());
+        List<LocationDTO> locs = resource.searchLocations("termi", "fi");
+        assertEquals(2, locs.size());
+        assertEquals(locs.get(0).getName(), municipalities.get(0).getName());
+        assertEquals(locs.get(0).getCode(), municipalities.get(0).getCode());
     }
     
 }

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -67,8 +67,10 @@ public class LearningOpportunityResourceImplTest {
                         eq(new ArrayList<String>()), eq(new ArrayList<String>()), eq("fi"), eq(false), eq(false), eq(false), eq(0), eq(30), eq("0"), eq("asc"),
                         eq(""), eq(""), eq(new ArrayList<String>()), anyString(), eq(SearchType.LO))).thenReturn(resultList);
         when(
-                searchService.searchLearningOpportunities(eq(INVALID_TERM), anyString(), anyList(), anyList(), anyList(), anyList(), anyString(), anyBoolean(),
-                        anyBoolean(), anyBoolean(), anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString(), anyList(), anyString(),
+                searchService.searchLearningOpportunities(eq(INVALID_TERM), anyString(), anyListOf(String.class), anyListOf(String.class),
+                        anyListOf(String.class), anyListOf(String.class), anyString(), anyBoolean(),
+                        anyBoolean(), anyBoolean(), anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString(), anyListOf(String.class),
+                        anyString(),
                         eq(SearchType.LO)))
                 .thenThrow(SearchException.class);
 
@@ -155,8 +157,8 @@ public class LearningOpportunityResourceImplTest {
     
     @Test
     public void testGetHigherEducationLearningOpportunity() {
-    	HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);
-    	assertEquals("1.2.3.34", dto.getId());
+        HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);
+        assertEquals("1.2.3.34", dto.getId());
     }
     
     /**
@@ -171,20 +173,20 @@ public class LearningOpportunityResourceImplTest {
     
     @Test
     public void testPreviewLearningOpportunity() {
-    	HigherEducationLOSDTO dto = (HigherEducationLOSDTO)(resource.previewLearningOpportunity("1.2.3.34", "fi", "fi", "korkeakoulu"));
-    	assertEquals("1.2.3.34", dto.getId());
+        HigherEducationLOSDTO dto = (HigherEducationLOSDTO)(resource.previewLearningOpportunity("1.2.3.34", "fi", "fi", "korkeakoulu"));
+        assertEquals("1.2.3.34", dto.getId());
     }
     
     @Test
     public void testGetSpecialLearningOpportunity() {
-    	SpecialLearningOpportunitySpecificationDTO specialLos = resource.getSpecialLearningOpportunity("specialLosId", null, null);
-    	assertEquals("specialLosId", specialLos.getId());
+        SpecialLearningOpportunitySpecificationDTO specialLos = resource.getSpecialLearningOpportunity("specialLosId", null, null);
+        assertEquals("specialLosId", specialLos.getId());
     }
     
     @Test
     public void testGetUpperSecondaryLearningOpportunity() {
-    	UpperSecondaryLearningOpportunitySpecificationDTO upperSecLos = resource.getUpperSecondaryLearningOpportunity("upperSecLosId", null, null);
-    	assertEquals("upperSecLosId", upperSecLos.getId());
+        UpperSecondaryLearningOpportunitySpecificationDTO upperSecLos = resource.getUpperSecondaryLearningOpportunity("upperSecLosId", null, null);
+        assertEquals("upperSecLosId", upperSecLos.getId());
     }
 
 }

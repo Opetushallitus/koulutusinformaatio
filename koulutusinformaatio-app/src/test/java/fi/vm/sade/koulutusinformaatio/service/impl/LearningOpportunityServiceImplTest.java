@@ -16,28 +16,59 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.modelmapper.ModelMapper;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+
+import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.Exam;
+import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityInstanceDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
-import org.junit.Before;
-import org.junit.Test;
-import org.modelmapper.ModelMapper;
-
-import java.util.*;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 /**
@@ -133,7 +164,7 @@ public class LearningOpportunityServiceImplTest {
         
         when(educationDataQueryService.getHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
         when(previewService.previewHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
-        when(educationDataQueryService.getApplicationOptions(anyList())).thenReturn(aos);
+        when(educationDataQueryService.getApplicationOptions(anyListOf(String.class))).thenReturn(aos);
         when(educationDataQueryService.findApplicationOptions("as123", "", "", true, true)).thenReturn(aos);
         
         List<LOS> losses = new ArrayList<LOS>();
@@ -232,9 +263,9 @@ public class LearningOpportunityServiceImplTest {
     
     @Test
     public void testetHigherEducationLearningOpportunity() throws ResourceNotFoundException {
-    	HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He");
-    	assertEquals("1.3.2.4He", losDto.getId());
-    	assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
+        HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He");
+        assertEquals("1.3.2.4He", losDto.getId());
+        assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
     }
     
     /**
@@ -254,26 +285,26 @@ public class LearningOpportunityServiceImplTest {
     
     @Test
     public void testetHigherEducationLearningOpportunitySv() throws ResourceNotFoundException {
-    	HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "sv", "sv");
-    	assertEquals("1.3.2.4He", losDto.getId());
-    	assertEquals("opintoviikkoa sv", losDto.getCreditUnit());
+        HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "sv", "sv");
+        assertEquals("1.3.2.4He", losDto.getId());
+        assertEquals("opintoviikkoa sv", losDto.getCreditUnit());
     }
     
     @Test
     public void testetHigherEducationLearningOpportunityEn() throws ResourceNotFoundException {
-    	HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "en", "en");
-    	assertEquals("1.3.2.4He", losDto.getId());
-    	assertEquals("opintoviikkoa en", losDto.getCreditUnit());
+        HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "en", "en");
+        assertEquals("1.3.2.4He", losDto.getId());
+        assertEquals("opintoviikkoa en", losDto.getCreditUnit());
     }
     
     
     
     @Test
     public void testPreviewLearningOpportunity() throws ResourceNotFoundException {
-    	HigherEducationLOSDTO losDto = learningOpportunityService.previewHigherEdLearningOpportunity("1.3.2.4He", "fi", "fi");
-    	assertEquals("1.3.2.4He", losDto.getId());
-    	assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
-    	
+        HigherEducationLOSDTO losDto = learningOpportunityService.previewHigherEdLearningOpportunity("1.3.2.4He", "fi", "fi");
+        assertEquals("1.3.2.4He", losDto.getId());
+        assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
+        
     }
     
 

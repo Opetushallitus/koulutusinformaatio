@@ -16,10 +16,21 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -30,17 +41,20 @@ import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations.Mock;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
-import java.io.IOException;
-import java.util.*;
+import com.google.common.collect.Lists;
 
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.*;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
 /**
  * @author Hannu Lyytikainen
@@ -65,17 +79,13 @@ public class IndexerServiceImplTest {
 
     private IndexerServiceImpl indexerServiceImpl;
 
-    private Date applicationSystemStarts;
-    private Date applicationSystemEnds;
     private Date applicationOptionApplicationPeriodStarts;
     private Date applicationOptionApplicationPeriodEnds;
 
     @Before
     public void init() throws SolrServerException {
-        applicationSystemStarts = new Date();
         Calendar endCal = Calendar.getInstance();
         endCal.roll(Calendar.YEAR, 1);
-        applicationSystemEnds = endCal.getTime();
         Calendar aoStartCal = Calendar.getInstance();
         aoStartCal.roll(Calendar.MONTH, 1);
         aoStartCal.set(Calendar.DATE, 10);

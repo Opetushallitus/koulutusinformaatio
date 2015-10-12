@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,31 +37,31 @@ import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
  */
 public class BasketResourceImplTest {
 
-	private LearningOpportunityService learningOpportunityService;
-	private BasketResourceImpl resource;
-	BasketItemDTO item;
-	
-	@Before
-	public void setUp() throws InvalidParametersException {
-		
-		learningOpportunityService = mock(LearningOpportunityService.class);
-		List<BasketItemDTO> basketItems = new ArrayList<BasketItemDTO>();
-		item = new BasketItemDTO();
-		item.setApplicationSystemId("asId");
-		item.setMaxApplicationOptions(3);
-		basketItems.add(item);
-		
-		when(learningOpportunityService.getBasketItems(anyList(), anyString())).thenReturn(basketItems);
-		
-		resource = new BasketResourceImpl(learningOpportunityService);
-	}
-	
-	@Test
-	public void testGetBasketItems() {
-		List<BasketItemDTO> basketItems = resource.getBasketItems(new ArrayList<String>(), "");
-		assertEquals(item.getApplicationSystemId(), basketItems.get(0).getApplicationSystemId());
-		assertEquals(item.getMaxApplicationOptions(), basketItems.get(0).getMaxApplicationOptions());
-	}
-	
+    private LearningOpportunityService learningOpportunityService;
+    private BasketResourceImpl resource;
+    BasketItemDTO item;
+    
+    @Before
+    public void setUp() throws InvalidParametersException {
+        
+        learningOpportunityService = mock(LearningOpportunityService.class);
+        List<BasketItemDTO> basketItems = new ArrayList<BasketItemDTO>();
+        item = new BasketItemDTO();
+        item.setApplicationSystemId("asId");
+        item.setMaxApplicationOptions(3);
+        basketItems.add(item);
+        
+        when(learningOpportunityService.getBasketItems(anyListOf(String.class), anyString())).thenReturn(basketItems);
+        
+        resource = new BasketResourceImpl(learningOpportunityService);
+    }
+    
+    @Test
+    public void testGetBasketItems() {
+        List<BasketItemDTO> basketItems = resource.getBasketItems(new ArrayList<String>(), "");
+        assertEquals(item.getApplicationSystemId(), basketItems.get(0).getApplicationSystemId());
+        assertEquals(item.getMaxApplicationOptions(), basketItems.get(0).getMaxApplicationOptions());
+    }
+    
 
 }

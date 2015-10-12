@@ -94,8 +94,8 @@ public class DirectoryResourceTest {
         Response response = resource.getProvidersWithFirstLetter("fi", "A", "10", null);
         assertNotNull(response);
         Viewable view = ((Viewable) response.getEntity());
-        Map<String, Object> model = (HashMap) view.getModel();
-        List<ProviderSearchResultDTO> providers = (List) model.get("providers");
+        Map<String, Object> model = (HashMap<String, Object>) view.getModel();
+        List<ProviderSearchResultDTO> providers = (List<ProviderSearchResultDTO>) model.get("providers");
         assertNotNull(providers);
         assertEquals(2, providers.size());
         assertEquals("1.2.3", providers.get(0).getId());
@@ -120,7 +120,7 @@ public class DirectoryResourceTest {
     public void testGetLearningOpportunities() {
         Viewable view = resource.getLearningOpportunities("fi", "4.5.6");
         assertNotNull(view);
-        Map<String, Object> model = (HashMap)view.getModel();
+        Map<String, Object> model = (HashMap<String, Object>)view.getModel();
         assertNotNull(model);
         assertNotNull(model.get("alphabets"));
         String providerName = (String) model.get("provider");
