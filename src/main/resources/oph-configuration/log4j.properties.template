@@ -31,3 +31,5 @@ log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.UpdateServiceImpl=INFO
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl=INFO
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.PartialUpdateServiceImpl=INFO
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataUpdateServiceImpl=INFO
+log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataUpdateServiceImpl=INFO
+log4j.logger.fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester=DEBUG

@@ -81,4 +81,6 @@ public interface TarjontaRawService {
 
     ResultV1RDTO<List<NimiJaOidRDTO>> getV1KoulutusByAoId(String aoOid);
 
+    ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdes();
+
 }

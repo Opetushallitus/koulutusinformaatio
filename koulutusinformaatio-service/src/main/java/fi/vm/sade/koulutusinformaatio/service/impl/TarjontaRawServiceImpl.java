@@ -59,9 +59,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
 
-    private static final int MAX_COUNT = 10000;
-//    private static final int MAX_COUNT = 100;
-
     private WebResource v1KoulutusResource;
     private WebResource v1AOResource;
     private WebResource v1ASResource;
@@ -281,5 +278,13 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .path(aoOid)
                 .path("koulutukset"),
                 new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {});
+    }
+
+    @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdes() {
+        return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
+                .path("search")
+                .queryParam("tila", "JULKAISTU"),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {});
     }
 }

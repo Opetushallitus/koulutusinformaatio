@@ -41,6 +41,7 @@ import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
+import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
 
 /**
  * @author Hannu Lyytikainen
@@ -56,6 +57,7 @@ public class AdminResource {
     private ModelMapper modelMapper;
     private SEOService seoService;
     private RunningServiceChecker runningServiceChecker;
+    private HakukohdeTester hakukohdeTester;
 
     @Autowired
     public AdminResource(UpdateService updateService,
@@ -63,7 +65,8 @@ public class AdminResource {
                          ModelMapper modelMapper, SEOService seoService,
                          IncrementalUpdateService incrementalUpdateService,
                          PartialUpdateService partialUpdateService,
-                         RunningServiceChecker runningServiceChecker) {
+                         RunningServiceChecker runningServiceChecker,
+                         HakukohdeTester hakukohdeTester) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.modelMapper = modelMapper;
@@ -72,6 +75,7 @@ public class AdminResource {
         this.partialUpdateService = partialUpdateService;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         this.runningServiceChecker = runningServiceChecker;
+        this.hakukohdeTester = hakukohdeTester;
     }
 
     @GET
@@ -207,4 +211,11 @@ public class AdminResource {
         return Response.seeOther(new URI("admin/status")).build();
     }
     
+    @GET
+    @Path("/test")
+    public Response test() throws URISyntaxException {
+        hakukohdeTester.testHakukohteet();
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+
 }

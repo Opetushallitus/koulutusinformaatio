@@ -1,5 +1,12 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Date;
 
 import org.junit.Before;
@@ -18,13 +25,7 @@ import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminResourceTest {
@@ -49,6 +50,9 @@ public class AdminResourceTest {
     
     @Mock
     private SEOService seoService;
+
+    @Mock
+    private HakukohdeTester hakukohdeTester;
     
     private AdminResource adminResource;
     
@@ -58,7 +62,7 @@ public class AdminResourceTest {
         when(learningOpportunityService.getLastDataStatus()).thenReturn(new DataStatus(new Date(), 5l, 
                 "SUCCESS"));
         adminResource = new AdminResource(updateService, learningOpportunityService, modelMapper, 
-                seoService, incrementalUpdateService, partialUpdateService, checker);
+                seoService, incrementalUpdateService, partialUpdateService, checker, hakukohdeTester);
     }
     
     @Test

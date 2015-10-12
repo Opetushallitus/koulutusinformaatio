@@ -293,4 +293,9 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
         }
     }
 
+    @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdes() {
+        throw new NotImplementedException();
+    }
+
 }
