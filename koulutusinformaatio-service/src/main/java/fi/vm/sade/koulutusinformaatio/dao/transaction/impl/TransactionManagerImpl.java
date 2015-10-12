@@ -16,11 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -60,7 +58,7 @@ import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 @Service
 public class TransactionManagerImpl implements TransactionManager {
     
-    public static final Logger LOG = LoggerFactory.getLogger(TransactionManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TransactionManagerImpl.class);
     private static final int ERROR_STATUS = 400;
 
     private MongoClient mongo;
@@ -354,23 +352,4 @@ public class TransactionManagerImpl implements TransactionManager {
     private String getCollectionName(HttpSolrServer solrServer) {
         return solrServer.getBaseURL().substring(solrServer.getBaseURL().lastIndexOf('/') + 1);
     }
-
-    @Override
-    public void beginIncrementalTransaction()
-            throws IOException, SolrServerException {
-        
-        dropTransactionDbCollections();
-        
-        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", dbName).append("todb", this.transactionDbName);
-        mongo.getDB("admin").command(cmd);
-    }
-
-    @Override
-    public void rollbackIncrementalTransaction() throws KICommitException {
-        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
-        dropDbCollections();
-        mongo.getDB("admin").command(cmd);
-        dropTransactionDbCollections();
-    }
-
 }

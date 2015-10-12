@@ -139,20 +139,6 @@ public class KoodistoServiceImplTest {
     }
 
     @Test
-    public void testSearchNamesMultiple() throws KoodistoException {
-        List<String> uris = Lists.newArrayList("test_1234", "test_1234");
-        List<I18nText> result = koodistoService.searchNamesMultiple(uris);
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertNotNull(result.get(0).getTranslations());
-        assertEquals("nimi_fi", result.get(0).getTranslations().get("fi"));
-        assertEquals("nimi_sv", result.get(0).getTranslations().get("sv"));
-        assertNotNull(result.get(1).getTranslations());
-        assertEquals("nimi_fi", result.get(1).getTranslations().get("fi"));
-        assertEquals("nimi_sv", result.get(1).getTranslations().get("sv"));
-    }
-
-    @Test
     public void testSearch() throws KoodistoException {
         List<Code> result = koodistoService.search("test_1234#1");
         assertNotNull(result);

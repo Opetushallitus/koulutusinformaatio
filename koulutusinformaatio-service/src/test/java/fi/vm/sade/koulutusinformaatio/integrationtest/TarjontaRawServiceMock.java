@@ -25,7 +25,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.OidV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
@@ -53,19 +52,10 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid) {
-        throw new NotImplementedException();
-    }
-
-    @Override
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
         return getJson(Map.class, "listModifiedLearningOpportunities");
     }
 
-    @Override
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType) {
-        throw new NotImplementedException();
-    }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(String... educationType) {

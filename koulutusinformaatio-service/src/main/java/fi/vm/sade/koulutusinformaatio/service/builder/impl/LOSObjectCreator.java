@@ -463,8 +463,8 @@ public class LOSObjectCreator extends ObjectCreator {
         return educationRef;
     }
 
-    HashMap<String, ApplicationOption> cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
-    HashSet<String> invalidOids = new HashSet<String>();
+    private HashMap<String, ApplicationOption> cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
+    private HashSet<String> invalidOids = new HashSet<String>();
 
     private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
 
@@ -1042,7 +1042,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
     }
 
-    public AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    private AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
 
         LOG.debug("Creating adult vocational los: {}", koulutus.getOid());
 
@@ -1272,7 +1272,7 @@ public class LOSObjectCreator extends ObjectCreator {
         return createTutkintoLOS(komo, providerOid, year, season);
     }
 
-    public TutkintoLOS createTutkintoLOS(KomoV1RDTO komo, String providerOid, String year, String season) throws KoodistoException, TarjontaParseException {
+    private TutkintoLOS createTutkintoLOS(KomoV1RDTO komo, String providerOid, String year, String season) throws KoodistoException, TarjontaParseException {
         LOG.debug("Creating provider specific parent (" + providerOid + ") LOS from komo: " + komo.getOid());
         TutkintoLOS tutkintoLOS = new TutkintoLOS();
         tutkintoLOS.setType(TarjontaConstants.TYPE_PARENT);

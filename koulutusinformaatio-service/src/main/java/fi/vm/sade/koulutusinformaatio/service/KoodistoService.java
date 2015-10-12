@@ -62,23 +62,6 @@ public interface KoodistoService {
     List<I18nText> searchNames(final String koodiUri) throws KoodistoException;
 
     /**
-     * Search codes from koodisto by koodisto uri
-     * @param koodistoUri koodisto uri
-     * @param version version number of koodisto
-     * @return list of codes
-     * @throws KoodistoException
-     */
-    List<I18nText> searchNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException;
-
-    /**
-     * Search codes from koodisto service by given uris.
-     * @param koodiUri list of koodi uris
-     * @return list of Code objects
-     * @throws KoodistoException
-     */
-    List<I18nText> searchNamesMultiple(final List<String> koodiUri) throws KoodistoException;
-
-    /**
      * Search codes from koodisto service by given uri, returns the first search result
      * @param koodiUri koodi uri
      * @return Code object
@@ -87,46 +70,12 @@ public interface KoodistoService {
     I18nText searchFirstName(final String koodiUri) throws KoodistoException;
 
     /**
-     * Search codes from koodisto service by given uri.
-     * @param koodiUri koodi uri
-     * @return list of Code objects
-     * @throws KoodistoException
-     */
-    List<I18nText> searchShortNames(final String koodiUri) throws KoodistoException;
-
-    /**
-     * Search codes from koodisto by koodisto uri
-     * @param koodistoUri koodisto uri
-     * @param version version number of koodisto
-     * @return list of codes
-     * @throws KoodistoException
-     */
-    List<I18nText> searchShortNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException;
-
-    /**
-     * Search codes from koodisto service by given uris.
-     * @param koodiUri list of koodi uris
-     * @return list of Code objects
-     * @throws KoodistoException
-     */
-    List<I18nText> searchShortNamesMultiple(final List<String> koodiUri) throws KoodistoException;
-
-    /**
-     * Search codes from koodisto service by given uri, returns the first search result
-     * @param koodiUri koodi uri
-     * @return Code object
-     * @throws KoodistoException
-     */
-    I18nText searchFirstShortName(final String koodiUri) throws KoodistoException;
-    /**
      * Search codes from koodisto service by given uri, returns the first search result value
      * @param koodiUri
      * @return
      * @throws KoodistoException
      */
     String searchFirstCodeValue(final String koodiUri) throws KoodistoException;
-
-    List<String> searchCodeValuesMultiple(final List<String> koodiUri) throws KoodistoException;
 
     /**
      * Searches for codes that are included in the code that corresponds to the uri and version

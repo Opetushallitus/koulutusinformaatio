@@ -49,7 +49,7 @@ import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 @Service
 public class ProviderServiceImpl implements ProviderService {
 
-    public static final Logger LOG = LoggerFactory.getLogger(ProviderServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProviderServiceImpl.class);
 
     private ConversionService conversionService;
     private final OrganisaatioRawService organisaatioRawService;

@@ -47,7 +47,7 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
  */
 public class IncrementalKoulutusLOSIndexer {
 
-    public static final Logger LOG = LoggerFactory.getLogger(IncrementalKoulutusLOSIndexer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalKoulutusLOSIndexer.class);
 
     private TarjontaService tarjontaService;
     private EducationIncrementalDataUpdateService dataUpdateService;
@@ -79,26 +79,6 @@ public class IncrementalKoulutusLOSIndexer {
 
     }
 
-    public void indexKoulutusLOS(String koulutusOid) throws Exception {
-        KoulutusLOS createdLos = null;
-
-        try {
-            createdLos = this.tarjontaService.createKoulutusLOS(koulutusOid, true);
-        } catch (TarjontaParseException tpe) {
-            createdLos = null;
-        }
-
-        LOG.debug("Created los");
-
-        if (createdLos == null) {
-            LOG.debug("Created los is to be removed");
-            removeKoulutusLOS(koulutusOid);
-        } else {
-            this.indexToSolr(createdLos);
-            this.dataUpdateService.updateKoulutusLos(createdLos);
-        }
-    }
-
     private void indexToSolr(LOS createdLos) throws IOException, SolrServerException {
         LOG.debug("Indexing los: {}", createdLos.getId());
         LOG.debug("Indexing los: {}", createdLos.getName().get("fi"));
@@ -107,7 +87,7 @@ public class IncrementalKoulutusLOSIndexer {
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
 
-    public void removeKoulutusLOS(String oid) throws Exception {
+    private void removeKoulutusLOS(String oid) throws Exception {
         loHttpSolrServer.deleteById(oid);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
         KoulutusLOS toDeleteLos = new KoulutusLOS();
@@ -115,7 +95,7 @@ public class IncrementalKoulutusLOSIndexer {
         this.dataUpdateService.deleteLos(toDeleteLos);
     }
 
-    public void removeTutkintoLOS(String oid) throws Exception {
+    private void removeTutkintoLOS(String oid) throws Exception {
         try {
             TutkintoLOS curLos = this.dataQueryService.getTutkinto(oid);
             curLos.getChildEducations();

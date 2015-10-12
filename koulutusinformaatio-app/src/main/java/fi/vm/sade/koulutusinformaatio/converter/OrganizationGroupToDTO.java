@@ -11,7 +11,7 @@ public class OrganizationGroupToDTO {
     private OrganizationGroupToDTO() {
     }
 
-    public static OrganizationGroupDTO convert(OrganizationGroup organizationGroup) {
+    private static OrganizationGroupDTO convert(OrganizationGroup organizationGroup) {
         OrganizationGroupDTO dto = new OrganizationGroupDTO();
         dto.setOid(organizationGroup.getOid());
         dto.setUsageGroups(organizationGroup.getUsageGroups());

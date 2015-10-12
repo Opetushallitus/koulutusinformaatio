@@ -40,7 +40,6 @@ import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
-import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
@@ -67,22 +66,6 @@ public class TarjontaServiceImplTest {
 
     @Before
     public void setup() {
-        KomoDTO vocationalKomo = new KomoDTO();
-        vocationalKomo.setKoulutusTyyppiUri(TarjontaConstants.VOCATIONAL_EDUCATION_TYPE);
-        vocationalKomo.setModuuliTyyppi(TarjontaConstants.MODULE_TYPE_PARENT);
-
-        KomoDTO upsecKomo = new KomoDTO();
-        upsecKomo.setKoulutusTyyppiUri(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
-        upsecKomo.setModuuliTyyppi(TarjontaConstants.MODULE_TYPE_CHILD);
-
-        KomoDTO rehabKomo = new KomoDTO();
-        rehabKomo.setKoulutusTyyppiUri(TarjontaConstants.REHABILITATING_EDUCATION_TYPE);
-        rehabKomo.setModuuliTyyppi(TarjontaConstants.MODULE_TYPE_CHILD);
-
-        KomoDTO invalidKomo = new KomoDTO();
-        invalidKomo.setKoulutusTyyppiUri("invalid");
-        invalidKomo.setModuuliTyyppi("invalid");
-        
         tarjontaRawService = mock(TarjontaRawService.class);
 
         service = new TarjontaServiceImpl(koodistoService,

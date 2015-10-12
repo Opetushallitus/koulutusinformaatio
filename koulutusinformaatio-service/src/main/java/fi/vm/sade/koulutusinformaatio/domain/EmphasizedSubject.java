@@ -8,11 +8,6 @@ public class EmphasizedSubject {
     private String value;
     private I18nText subject;
 
-    public EmphasizedSubject(I18nText subject, String value) {
-        this.subject = subject;
-        this.value = value;
-    }
-
     public EmphasizedSubject() {
     }
 

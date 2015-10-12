@@ -15,8 +15,6 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +29,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
  */
 @Component
 public class IncrementalApplicationOptionIndexer {
-
-    public static final Logger LOG = LoggerFactory.getLogger(IncrementalApplicationOptionIndexer.class);
 
     private IncrementalLOSIndexer losIndexer;
 

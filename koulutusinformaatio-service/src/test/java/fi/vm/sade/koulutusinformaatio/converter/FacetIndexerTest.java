@@ -117,15 +117,6 @@ public class FacetIndexerTest {
     }
     
     @Test
-    public void testCreateChildLOIFacetDocs() {
-        ChildLOI loi = new ChildLOI();
-        loi.setTeachingLanguages(Arrays.asList(lang));
-        loi.setPrerequisite(prerequisite);
-        List<SolrInputDocument> docs = indexer.createFacetDocs(loi);
-        assertEquals(2, docs.size());
-    }
-    
-    @Test
     public void testCreateHigherEducationFacetDocs() {
         HigherEducationLOS los = new HigherEducationLOS();
         los.setTeachingLanguages(Arrays.asList(lang));

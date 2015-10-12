@@ -66,39 +66,10 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
         return aos;
     }
 
-    public Query<ApplicationOptionEntity> createSecondaryQuery() {
+    private Query<ApplicationOptionEntity> createSecondaryQuery() {
         return getSecondaryDatastore().createQuery(entityClazz);
     }
 
-
-    public List<ApplicationOptionEntity> find(final String asId, final String lopId, final String baseEducation,
-            boolean vocational, boolean nonVocational) {
-        Query<ApplicationOptionEntity> query = createQuery();
-        query.field("applicationSystem.id").equal(asId);
-        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
-        if (!Strings.isNullOrEmpty(baseEducation)) {
-            query.field("requiredBaseEducations").equal(baseEducation);
-        }
-        if (!vocational) {
-            query.field("vocational").equal(false);
-        }
-        if (!nonVocational) {
-            query.field("vocational").equal(true);
-        }
-        return find(query).asList();
-    }
-
-    public List<ApplicationOptionEntity> find(final List<String> aoIds) {
-        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
-        for (String curId : aoIds) {
-            ApplicationOptionEntity curAo = getDatastore().get(ApplicationOptionEntity.class, curId);
-            if (curAo != null) {
-                aos.add(curAo);
-            }
-        }
-        return aos;
-    }
-    
     public List<Key<ApplicationOptionEntity>> findByAS(final String asId) {
         Query<ApplicationOptionEntity> query= createQuery();
         query.field("applicationSystem.id").equal(asId);

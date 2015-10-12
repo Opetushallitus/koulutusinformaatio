@@ -37,7 +37,7 @@ public final class UpperSecondaryLOIToDTO {
     private UpperSecondaryLOIToDTO() {
     }
 
-    public static UpperSecondaryLearningOpportunityInstanceDTO convert(UpperSecondaryLOI loi, String lang, String uiLang, String defaultLang) {
+    private static UpperSecondaryLearningOpportunityInstanceDTO convert(UpperSecondaryLOI loi, String lang, String uiLang, String defaultLang) {
         UpperSecondaryLearningOpportunityInstanceDTO dto =
                 new UpperSecondaryLearningOpportunityInstanceDTO();
 

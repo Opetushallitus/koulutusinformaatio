@@ -19,7 +19,7 @@ public class LearningOpportunityQuery extends SolrQuery {
 
     private static final long serialVersionUID = -4340177833703968140L;
     
-    public static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityQuery.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityQuery.class);
 
 
     public LearningOpportunityQuery(String term, String prerequisite,

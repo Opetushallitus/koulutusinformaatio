@@ -36,7 +36,7 @@ import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 @Component
 public class Scheduler {
 
-    public static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private SEOService seoService;

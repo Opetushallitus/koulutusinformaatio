@@ -97,10 +97,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         when(koodistoService.searchFirstCodeValue(eq(hakukohdeNameUri))).thenReturn(aoIdentifierAthlete);
         Code aoIdentifierCode = new Code();
         aoIdentifierCode.setValue(aoIdentifierAthlete);
-        when(koodistoService.searchSuperCodes(
-                eq(TarjontaConstants.ATHLETE_EDUCATION_KOODISTO_URI),
-                eq(TarjontaConstants.APPLICATION_OPTIONS_KOODISTO_URI)))
-                .thenReturn(Lists.newArrayList(aoIdentifierCode));
 
         when(koodistoService.searchFirstCodeValue(eq("postinumero"))).thenReturn("postinumero");
 
@@ -115,7 +111,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
                 .thenReturn(Lists.newArrayList(baseEducation1, baseEducation2));
 
         komoto.setOpetuskieletUris(Lists.newArrayList("fiUri"));
-        when(koodistoService.searchCodeValuesMultiple(komoto.getOpetuskieletUris())).thenReturn(Lists.newArrayList("fi"));
 
         prerequisite = new Code();
         prerequisite.setValue("prerequisite");

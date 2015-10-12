@@ -73,7 +73,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 @Service
 public class UpdateServiceImpl implements UpdateService {
 
-    public static final Logger LOG = LoggerFactory.getLogger(UpdateServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateServiceImpl.class);
 
     private TarjontaService tarjontaService;
     private IndexerService indexerService;

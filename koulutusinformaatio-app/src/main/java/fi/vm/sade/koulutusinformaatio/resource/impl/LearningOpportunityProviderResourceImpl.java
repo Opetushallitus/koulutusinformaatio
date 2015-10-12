@@ -60,7 +60,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
     private SearchService searchService;
     private LearningOpportunityService learningOpportunityService;
     private KoodistoService koodistoService;
-    public static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityProviderResourceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityProviderResourceImpl.class);
 
     @Autowired
     public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper,

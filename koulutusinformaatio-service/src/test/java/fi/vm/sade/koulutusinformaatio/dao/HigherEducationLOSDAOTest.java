@@ -111,39 +111,4 @@ public class HigherEducationLOSDAOTest {
         HigherEducationLOSEntity entity = higherEducationDAO.get("invalid");
         assertNull(entity);
     }
-
-    @Test
-    public void testFindByProviderId() {
-        String providerId = "providerdi";
-        LearningOpportunityProviderEntity provider= new LearningOpportunityProviderEntity();
-        provider.setId(providerId);
-        HigherEducationLOSEntity entity = new HigherEducationLOSEntity();
-        entity.setId("parentId");
-        entity.setProvider(provider);
-        learningOpportunityProviderDAO.save(provider);
-        higherEducationDAO.save(entity);
-        List<HigherEducationLOSEntity> fromDB =
-                higherEducationDAO.findByProviderId(providerId);
-        assertNotNull(fromDB);
-        assertEquals(1, fromDB.size());
-        assertEquals(entity.getId(), fromDB.get(0).getId());
-
-    }
-
-    @Test
-    public void testFindByProviderIdNotFound() {
-        String providerId = "providerdi";
-        LearningOpportunityProviderEntity provider= new LearningOpportunityProviderEntity();
-        provider.setId(providerId);
-        HigherEducationLOSEntity entity = new HigherEducationLOSEntity();
-        entity.setId("parentId");
-        entity.setProvider(provider);
-        learningOpportunityProviderDAO.save(provider);
-        higherEducationDAO.save(entity);
-        List<HigherEducationLOSEntity> fromDB =
-                higherEducationDAO.findByProviderId("invalid");
-        assertNotNull(fromDB);
-        assertEquals(0, fromDB.size());
-    }
-
 }

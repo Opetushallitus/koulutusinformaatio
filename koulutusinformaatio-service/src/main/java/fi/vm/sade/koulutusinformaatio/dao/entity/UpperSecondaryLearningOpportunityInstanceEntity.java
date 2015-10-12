@@ -52,9 +52,9 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
     @Embedded
     private I18nTextEntity content;
     @Embedded
-    private List<ContactPersonEntity> contactPersons = new ArrayList();
+    private List<ContactPersonEntity> contactPersons = new ArrayList<ContactPersonEntity>();
     @Embedded
-    private List<I18nTextEntity> diplomas = new ArrayList();
+    private List<I18nTextEntity> diplomas = new ArrayList<I18nTextEntity>();
     private String plannedDuration;
     @Embedded
     private I18nTextEntity plannedDurationUnit;

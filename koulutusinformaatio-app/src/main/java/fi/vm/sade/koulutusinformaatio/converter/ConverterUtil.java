@@ -108,7 +108,7 @@ public final class ConverterUtil {
         return false;
     }
 
-    public static boolean isOngoingDTO(List<DateRangeDTO> dateRanges) {
+    private static boolean isOngoingDTO(List<DateRangeDTO> dateRanges) {
         for (DateRangeDTO dr : dateRanges) {
             if (isOngoingDTO(dr)) {
                 return true;
@@ -131,7 +131,7 @@ public final class ConverterUtil {
         }
     }
 
-    public static boolean isOngoingDTO(DateRangeDTO dateRange) {
+    private static boolean isOngoingDTO(DateRangeDTO dateRange) {
         Date now = new Date();
         if (dateRange != null ) {
             if (dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {

@@ -32,7 +32,7 @@ public final class LanguageSelectionToDTO {
     private LanguageSelectionToDTO() {
     }
 
-    public static LanguageSelectionDTO convert(LanguageSelection ls, String lang) {
+    private static LanguageSelectionDTO convert(LanguageSelection ls, String lang) {
         if (ls != null) {
             LanguageSelectionDTO dto = new LanguageSelectionDTO();
             dto.setSubjectCode(ls.getSubjectCode());

@@ -15,16 +15,9 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.reflect.TypeToken;
-import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.*;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.mongodb.morphia.Key;
@@ -33,8 +26,47 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.reflect.TypeToken;
+
+import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
+import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
+import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
+import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 /**
  * 
@@ -45,7 +77,7 @@ import java.util.List;
 public class EducationIncrementalDataQueryServiceImpl implements
 EducationIncrementalDataQueryService {
     
-    public static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataQueryServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataQueryServiceImpl.class);
 
     private ApplicationOptionDAO applicationOptionDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
@@ -89,76 +121,6 @@ EducationIncrementalDataQueryService {
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-    }
-
-    @Override
-    public List<ApplicationOption> getApplicationOptions(List<String> aoIds) throws InvalidParametersException {
-        if (aoIds == null || aoIds.isEmpty()) {
-            throw new InvalidParametersException("Application option IDs required");
-        }
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(aoIds);
-        return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
-            @Override
-            public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
-                return modelMapper.map(applicationOptionEntity, ApplicationOption.class);
-            }
-        });
-    }
-
-    @Override
-    public ApplicationOption getApplicationOption(String aoId) throws ResourceNotFoundException {
-        ApplicationOptionEntity ao = applicationOptionDAO.get(aoId);
-        if (ao != null) {
-            return modelMapper.map(ao, ApplicationOption.class);
-        } else {
-            throw new ResourceNotFoundException("Application option not found: " + aoId);
-        }
-    }
-
-    @Override
-    public Picture getPicture(String id) throws ResourceNotFoundException {
-        PictureEntity picture = pictureDAO.getFromSecondary(id);
-        if (picture != null) {
-            return modelMapper.map(picture, Picture.class);
-        } else {
-            throw new ResourceNotFoundException("Picture not found: " + id);
-        }
-    }
-
-    @Override
-    public UpperSecondaryLOS getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
-
-        UpperSecondaryLearningOpportunitySpecificationEntity entity =
-                upperSecondaryLearningOpportunitySpecificationDAO.getFromSecondary(id);
-
-
-        if (entity != null) {
-            return modelMapper.map(entity, UpperSecondaryLOS.class);
-        }
-        else {
-            throw new ResourceNotFoundException(String.format("Upper secondary learning opportunity specification not found: %s", id));
-        }
-    }
-
-    @Override
-    public HigherEducationLOS getHigherEducationLearningOpportunity(String oid) throws ResourceNotFoundException {
-        HigherEducationLOSEntity entity = this.higherEducationLOSDAO.get(oid);
-        if (entity != null) {
-            return modelMapper.map(entity, HigherEducationLOS.class);
-        } else {
-            throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
-        }
-    }
-
-    @Override
-    public Provider getProvider(String id) throws ResourceNotFoundException {
-        LearningOpportunityProviderEntity entity = learningOpportunityProviderDAO.get(id);
-        if (entity != null) {
-            return modelMapper.map(entity, Provider.class);
-        }
-        else {
-            throw new ResourceNotFoundException(String.format("Learning opportunity provider not found: %s", id));
-        }
     }
 
     @Override
@@ -320,17 +282,6 @@ EducationIncrementalDataQueryService {
         
         LOG.debug("returning: " + loss.size() + " los ids.");
         return loss;
-    }
-
-    @Override
-    public AdultUpperSecondaryLOS getAdultUpsecLearningOpportunity(
-            String oid) throws ResourceNotFoundException {
-        AdultUpperSecondaryLOSEntity entity = this.adultUpperSecondaryLOSDAO.get(oid);
-        if (entity != null) {
-            return modelMapper.map(entity, AdultUpperSecondaryLOS.class);
-        } else {
-            throw new ResourceNotFoundException(String.format("Adult Upper Secondary specification not found: %s", oid));
-        }
     }
 
     @Override

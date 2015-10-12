@@ -95,7 +95,7 @@ public final class SolrUtil {
     private SolrUtil() {
     }
 
-    public static final String FALLBACK_LANG = "fi";
+    private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_FACET = "FASETTI";
     public static final String TYPE_ORGANISATION = "ORGANISAATIO";
     
@@ -257,7 +257,7 @@ public final class SolrUtil {
         public static final String FORM_OF_TEACHING = "formOfTeaching_ffm"; //The education type of the learning opportunity
         public static final String TIME_OF_TEACHING = "timeOfTeaching_ffm"; //The education type of the learning opportunity
         public static final String FORM_OF_STUDY = "formOfStudy_ffm"; //The education type of the learning opportunity
-        public static final String KIND_OF_EDUCATION = "kindOfEducation_ffm"; //The education type of the learning opportunity
+        private static final String KIND_OF_EDUCATION = "kindOfEducation_ffm"; //The education type of the learning opportunity
         public static final String LOP_ID = "lopId";
         public static final String NAME = "name";
         public static final String NAME_FI = "name_fi";
@@ -359,7 +359,6 @@ public final class SolrUtil {
         public static final String NAME_FI_SORT = "name_fi_ssort";
         public static final String NAME_SV_SORT = "name_sv_ssort";
         public static final String NAME_EN_SORT = "name_en_ssort";
-        public static final String DURATION_SORT = "duration_isort";
 
         //Fields for autocomplete
         public static final String NAME_AUTO = "name_auto";
@@ -367,24 +366,24 @@ public final class SolrUtil {
         
         
         //Text search fields
-        public static final String TEXT_FI = "text_fi";
-        public static final String TEXT_SV = "text_sv";
-        public static final String TEXT_EN = "text_en";
-        public static final String TEXT_FI_WHOLE = "text_fi_whole";
-        public static final String TEXT_SV_WHOLE = "text_sv_whole";
-        public static final String TEXT_EN_WHOLE = "text_en_whole";
-        public static final String TEXT_BOOST_FI = "textBoost_fi^10.0";
-        public static final String TEXT_BOOST_SV = "textBoost_sv^10.0";
-        public static final String TEXT_BOOST_EN = "textBoost_en^10.0";
-        public static final String TEXT_BOOST_FI_WHOLE = "textBoost_fi_whole^10.0";
-        public static final String TEXT_BOOST_SV_WHOLE = "textBoost_sv_whole^10.0";
-        public static final String TEXT_BOOST_EN_WHOLE = "textBoost_en_whole^10.0";
-        public static final String AS_NAMES = "asNames";
-        public static final String LOP_NAMES = "lopNames";
+        private static final String TEXT_FI = "text_fi";
+        private static final String TEXT_SV = "text_sv";
+        private static final String TEXT_EN = "text_en";
+        private static final String TEXT_FI_WHOLE = "text_fi_whole";
+        private static final String TEXT_SV_WHOLE = "text_sv_whole";
+        private static final String TEXT_EN_WHOLE = "text_en_whole";
+        private static final String TEXT_BOOST_FI = "textBoost_fi^10.0";
+        private static final String TEXT_BOOST_SV = "textBoost_sv^10.0";
+        private static final String TEXT_BOOST_EN = "textBoost_en^10.0";
+        private static final String TEXT_BOOST_FI_WHOLE = "textBoost_fi_whole^10.0";
+        private static final String TEXT_BOOST_SV_WHOLE = "textBoost_sv_whole^10.0";
+        private static final String TEXT_BOOST_EN_WHOLE = "textBoost_en_whole^10.0";
+        private static final String AS_NAMES = "asNames";
+        private static final String LOP_NAMES = "lopNames";
         
-        public static final String NAME_AUTO_FI = "name_auto_fi";
-        public static final String NAME_AUTO_SV = "name_auto_sv";
-        public static final String NAME_AUTO_EN = "name_auto_en";
+        private static final String NAME_AUTO_FI = "name_auto_fi";
+        private static final String NAME_AUTO_SV = "name_auto_sv";
+        private static final String NAME_AUTO_EN = "name_auto_en";
         
         // Application system fields
         public static final String AS_TARGET_GROUP_CODE = "targetGroupCode_ffm";
@@ -448,10 +447,7 @@ public final class SolrUtil {
         public static final String ED_TYPE_AMM_TUTK = "et01.03.03";
         public static final String ED_TYPE_AMM_TUTK_ER = "et01.03.04";
         
-        public static final String ED_TYPE_LUKIO_SHORT = "et1";
         public static final String ED_TYPE_AMMATILLINEN_SHORT = "et3";
-        public static final String ED_TYPE_AMM_ER_SHORT = "et4";
-        public static final String ED_TYPE_VALMENTAVA_SHORT = "et5";
 
         public static final String ED_TYPE_AMKS = "et01.04";
         public static final String ED_TYPE_AMK = "et01.04.01";
@@ -469,9 +465,7 @@ public final class SolrUtil {
         public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
         public static final String ED_TYPE_AIKUISTEN_PERUSOPETUS = "et02.03";
-        public static final String ED_TYPE_KOTITALOUS = "et02.015";
         public static final String ED_TYPE_AMM_OPETTAJA = "et02.11";
-        public static final String ED_TYPE_KOTITALOUS_DISPLAY = "kotitalous";
         public static final String ED_TYPE_ERITYIS_JA_VALMENTAVA = "et02.12";
         public static final String ED_TYPE_VALMA = "et02.01.06";
         public static final String ED_TYPE_VALMA_ER = "et02.12.02";
@@ -486,8 +480,6 @@ public final class SolrUtil {
         public static final String TYPE_FACET = "FASETTI";
         public static final String TYPE_ARTICLE = "ARTIKKELI";
         public static final String TYPE_APPLICATION_SYSTEM = "HAKU";
-        public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
-        public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
         public static final String PK = "pk";
         public static final String YO = "yo";
         public static final String DISTRICT_UNKNOWN = "99";

@@ -33,7 +33,7 @@ public final class ProviderToSearchResult {
     private ProviderToSearchResult() {
     }
 
-    public static ProviderSearchResultDTO convert(final Provider p, final String lang) {
+    private static ProviderSearchResultDTO convert(final Provider p, final String lang) {
         if (p != null) {
             ProviderSearchResultDTO result = new ProviderSearchResultDTO();
             result.setId(p.getId());

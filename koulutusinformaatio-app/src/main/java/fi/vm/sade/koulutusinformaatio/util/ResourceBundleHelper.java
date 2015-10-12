@@ -32,7 +32,7 @@ public class ResourceBundleHelper {
     private static final String EN = "en";
     private static final String BUNDLE_NAME = "messages";
 
-    Map<String, ResourceBundle> resourceBundles;
+    private Map<String, ResourceBundle> resourceBundles;
 
     public ResourceBundleHelper() {
         resourceBundles = Maps.newHashMap();

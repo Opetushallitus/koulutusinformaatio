@@ -111,10 +111,10 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String DATA_TYPE_EMAIL = "email";
     private static final String DATA_TYPE_WWW = "www";
     
-    public static final String CODE_MUNICIPALITY = "kunta";
-    public static final String CODE_DISTRICT = "maakunta";
+    private static final String CODE_MUNICIPALITY = "kunta";
+    private static final String CODE_DISTRICT = "maakunta";
 
-    KoodistoService koodistoService;
+    private KoodistoService koodistoService;
 
     public OrganisaatioRDTOToProvider(KoodistoService koodistoService) {
         this.koodistoService = koodistoService;

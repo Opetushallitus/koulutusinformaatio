@@ -1,17 +1,19 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 
 public interface EducationIncrementalDataUpdateService {
     
-    void save(final LOS learningOpportunitySpecification);
-
     void save(final DataStatus dataStatus);
     
     void deleteLos(LOS los);
     
-    void deleteAo(ApplicationOption ao);
-
     void updateHigherEdLos(HigherEducationLOS curParent);
 
     void updateAdultUpsecLos(AdultUpperSecondaryLOS createdLos);

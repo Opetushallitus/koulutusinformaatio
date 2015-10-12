@@ -181,19 +181,6 @@ public class FacetIndexer {
     /*
      * Creates the solr docs needed in facet search.
      */
-    public List<SolrInputDocument> createFacetDocs(ChildLOI childLOI) {
-        List<SolrInputDocument> docs = Lists.newArrayList();
-        SolrUtil.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);
-        SolrUtil.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
-
-
-
-        return docs;
-    }
-
-    /*
-     * Creates the solr docs needed in facet search.
-     */
     public List<SolrInputDocument> createFacetDocs(ChildLOI childLOI, SpecialLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         SolrUtil.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);

@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class Facet {
 
-    List<FacetValue> facetValues;
+    private List<FacetValue> facetValues;
     
     public List<FacetValue> getFacetValues() {
         return facetValues;

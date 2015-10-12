@@ -45,7 +45,7 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 public class IncrementalHigherEducationLOSIndexer {
 
 
-    public static final Logger LOG = LoggerFactory.getLogger(IncrementalHigherEducationLOSIndexer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalHigherEducationLOSIndexer.class);
     
     private TarjontaRawService tarjontaRawService;
     private TarjontaService tarjontaService;
@@ -167,20 +167,8 @@ public class IncrementalHigherEducationLOSIndexer {
 
         }   
     }
-    
 
-    public void updateHigherEdLos(HigherEducationLOS los) throws Exception {
-        
-        this.removeHigherEd(los.getId(), los.getKomoOid());
-        this.indexerService.removeLos(los, loHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        this.dataUpdateService.save(los);
-        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        
-    }
-    
-    public void removeHigherEd(String educationOid, String curKomoOid) throws Exception {
+    private void removeHigherEd(String educationOid, String curKomoOid) throws Exception {
 
 
         LOS existingLos = this.dataQueryService.getLos(educationOid);

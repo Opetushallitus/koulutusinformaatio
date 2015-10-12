@@ -44,7 +44,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.OidV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
@@ -89,27 +88,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     public TarjontaRawServiceImpl() {
-    }
-
-    @Override
-
-    public ResultV1RDTO<List<OidV1RDTO>> getHakukohdesByHaku(String oid) {
-        return (ResultV1RDTO<List<OidV1RDTO>>) getWithRetries(v1ASResource
-                        .path(oid)
-                        .path("hakukohde")
-                        .queryParam("count", String.valueOf(MAX_COUNT)),
-                new GenericType<ResultV1RDTO<List<OidV1RDTO>>>() {
-                });
-    }
-
-    @Override
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType) {
-        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
-                        .path("search")
-                        .queryParam("koulutusastetyyppi", educationType)
-                        .queryParam("tila", "JULKAISTU"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-                });
     }
 
     @Override

@@ -81,11 +81,10 @@ import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderTypeQuery;
 @Component
 public class SearchServiceSolrImpl implements SearchService {
 
-    public static final Logger LOG = LoggerFactory.getLogger(SearchServiceSolrImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SearchServiceSolrImpl.class);
 
-    public static final String ID = "AOId";
-    public static final String AS_START_DATE_PREFIX = "asStart_";
-    public static final String AS_END_DATE_PREFIX = "asEnd_";
+    private static final String AS_START_DATE_PREFIX = "asStart_";
+    private static final String AS_END_DATE_PREFIX = "asEnd_";
     private static final String DISTRICT = "maakunta";
     private static final String SOLR_ERROR = "Solr search error occured.";
     private static final String S_FNAME = "%s_fname";

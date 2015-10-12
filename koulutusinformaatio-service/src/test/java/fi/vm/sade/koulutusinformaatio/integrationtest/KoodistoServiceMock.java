@@ -1,13 +1,13 @@
 package fi.vm.sade.koulutusinformaatio.integrationtest;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-
-import java.util.List;
 
 /**
  * Created by alexis on 23.9.2015.
@@ -42,47 +42,12 @@ public class KoodistoServiceMock implements KoodistoService {
     }
 
     @Override
-    public List<I18nText> searchNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
-        return Lists.newArrayList(getSampleCode(koodistoUri).getName());
-    }
-
-    @Override
-    public List<I18nText> searchNamesMultiple(List<String> koodiUri) throws KoodistoException {
-        return Lists.newArrayList(getSampleCode(koodiUri.get(0)).getName());
-    }
-
-    @Override
     public I18nText searchFirstName(String koodiUri) throws KoodistoException {
         return getSampleCode(koodiUri).getName();
     }
 
     @Override
-    public List<I18nText> searchShortNames(String koodiUri) throws KoodistoException {
-        return Lists.newArrayList(getSampleCode(koodiUri).getName());
-    }
-
-    @Override
-    public List<I18nText> searchShortNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
-        return Lists.newArrayList(getSampleCode(koodistoUri).getName());
-    }
-
-    @Override
-    public List<I18nText> searchShortNamesMultiple(List<String> koodiUri) throws KoodistoException {
-        return Lists.newArrayList(getSampleCode(koodiUri.get(0)).getName());
-    }
-
-    @Override
-    public I18nText searchFirstShortName(String koodiUri) throws KoodistoException {
-        return getSampleCode(koodiUri).getName();
-    }
-
-    @Override
     public String searchFirstCodeValue(String koodiUri) throws KoodistoException {
-        return koodiUri;
-    }
-
-    @Override
-    public List<String> searchCodeValuesMultiple(List<String> koodiUri) throws KoodistoException {
         return koodiUri;
     }
 

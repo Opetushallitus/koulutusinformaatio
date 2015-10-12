@@ -85,7 +85,7 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 @Profile("default")
 public class TarjontaServiceImpl implements TarjontaService {
 
-    public static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
 
     private OrganisaatioRawService organisaatioRawService;
     private KoodistoService koodistoService;

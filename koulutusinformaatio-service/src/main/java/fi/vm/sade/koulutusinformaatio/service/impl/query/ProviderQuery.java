@@ -35,22 +35,8 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
  */
 public class ProviderQuery extends SolrQuery {
     
-    public static final List<String> FIELDS_SV = Lists.newArrayList(
-            LearningOpportunity.NAME_SV
-    );
-    
-    public static final List<String> FIELDS_FI = Lists.newArrayList(
-            LearningOpportunity.NAME_FI
-    );
-    
-    public static final List<String> FIELDS_EN = Lists.newArrayList(
+    private static final List<String> FIELDS = Lists.newArrayList(
             LearningOpportunity.NAME_EN
-    );
-    
-    public static final List<String> FIELDS = Lists.newArrayList(
-            LearningOpportunity.NAME_EN/*,
-            LearningOpportunity.NAME_SV,
-            LearningOpportunity.NAME_FI*/
     );
 
     private final static String BASE_EDUCATIONS = "requiredBaseEducations";

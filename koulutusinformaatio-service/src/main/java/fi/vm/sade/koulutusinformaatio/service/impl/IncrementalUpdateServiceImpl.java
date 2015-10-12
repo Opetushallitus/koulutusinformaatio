@@ -41,7 +41,6 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 
@@ -56,7 +55,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.Increment
 @Profile("default")
 public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
-    public static final Logger LOG = LoggerFactory.getLogger(IncrementalUpdateServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalUpdateServiceImpl.class);
 
     private TarjontaRawService tarjontaRawService;
 
@@ -67,7 +66,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private IndexerService indexerService;
 
     private IncrementalApplicationSystemIndexer asIndexer;
-    private IncrementalApplicationOptionIndexer aoIndexer;
     private IncrementalLOSIndexer losIndexer;
 
     // solr client for learning opportunity index
@@ -108,12 +106,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 this.loHttpSolrServer,
                 this.lopHttpSolrServer,
                 this.locationHttpSolrServer);
-        this.aoIndexer = new IncrementalApplicationOptionIndexer(this.losIndexer, tarjontaService);
-        this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaRawService,
-                                                                this.tarjontaService,
+        this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaService,
                                                                 this.dataQueryService, 
-                                                                koodistoService,
-                                                                parameterService,
                                                                 this.losIndexer,
                                                                 this.indexerService,
                                                                 this.loHttpSolrServer,

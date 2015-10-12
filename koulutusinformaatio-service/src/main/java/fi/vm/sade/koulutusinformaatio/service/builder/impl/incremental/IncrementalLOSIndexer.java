@@ -15,23 +15,12 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -52,7 +41,7 @@ import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
 @Component
 public class IncrementalLOSIndexer {
     
-    public static final Logger LOG = LoggerFactory.getLogger(IncrementalLOSIndexer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalLOSIndexer.class);
     
     private TarjontaRawService tarjontaRawService;
     private TarjontaService tarjontaService;
@@ -108,15 +97,6 @@ public class IncrementalLOSIndexer {
                 loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
 
-    public boolean isLoiAlreadyHandled(List<String> aoOids, List<String> changedHakukohdeOids) {
-        for (String curOid : aoOids) {
-            if (changedHakukohdeOids.contains(curOid)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     //Indexes changed loi data
     public void indexLoiData(String komotoOid) throws Exception {
 
@@ -154,7 +134,7 @@ public class IncrementalLOSIndexer {
         case ERIKOISAMMATTITUTKINTO:
         case AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA:
             LOG.debug("Adult vocational komo: {}", koulutusDTO.getKomoOid());
-            this.indexAdultVocationalKomoto(komotoOid);
+            this.adultLosIndexer.indexAdultVocationalKomoto(komotoOid);
             break;
 
         case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
@@ -164,7 +144,7 @@ public class IncrementalLOSIndexer {
         case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
             LOG.debug("Valma/Telma koulutus: {}", koulutusDTO.getKomoOid());
-            this.indexValmentavaKomoto(komotoOid);
+            this.koulutusIndexer.indexValmistavaKoulutusKomoto(komotoOid);
             break;
             
         case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
@@ -192,15 +172,6 @@ public class IncrementalLOSIndexer {
         }
     }
 
-    private void indexValmentavaKomoto(String komotoOid) throws Exception {
-        this.koulutusIndexer.indexValmistavaKoulutusKomoto(komotoOid);
-    }
-
-
-    public void indexAdultVocationalKomoto(String komotoOid) throws Exception {
-        this.adultLosIndexer.indexAdultVocationalKomoto(komotoOid);
-    }
-
     public boolean isHigherEdKomo(String komoOid) {
         //this.tarjontaRawService.getHigherEducationByKomo(curKomoOid)
         //KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
@@ -211,72 +182,8 @@ public class IncrementalLOSIndexer {
         //return komo != null && komo.getKoulutustyyppi() != null && komo.getKoulutustyyppi().equals("KORKEAKOULUTUS");
     }
 
-    public void removeSpecialLOS(SpecialLOS los) throws IOException, SolrServerException {
-        this.deleteSpecialLosRecursively(los);
-        this.indexerService.removeLos(los, loHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-    }
-
-    public void updateSpecialLos(SpecialLOS los) throws IOException, SolrServerException  {
-        this.deleteSpecialLosRecursively(los);
-        this.indexerService.removeLos(los, loHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        this.dataUpdateService.save(los);
-        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-    }
-
-    public void updateUpsecLos(UpperSecondaryLOS los) throws IOException, SolrServerException  {
-        this.deleteUpperSecondaryLosRecursive(los);
-        this.indexerService.removeLos(los, loHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        this.dataUpdateService.save(los);
-        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-    }
-
-
-    public void updateHigherEdLos(HigherEducationLOS curLos) throws Exception {
-        
-        this.higherEdLOSIndexer.updateHigherEdLos(curLos);
-        
-    }
-    
-    public void updateAdultUpsecLos(AdultUpperSecondaryLOS curLos) throws Exception {
-        this.adultLosIndexer.updateAdultUpsecLos(curLos);
-    }
-
-    public void removeUpperSecondaryLOS(UpperSecondaryLOS los) throws IOException, SolrServerException {
-        this.deleteUpperSecondaryLosRecursive(los);
-        this.indexerService.removeLos(los, loHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-    }
-
-    private void deleteUpperSecondaryLosRecursive(UpperSecondaryLOS los) {
-        this.dataUpdateService.deleteLos(los);
-        for (UpperSecondaryLOI curLoi : los.getLois()) {
-            for (ApplicationOption curAo : curLoi.getApplicationOptions()) {
-                this.dataUpdateService.deleteAo(curAo);
-            }
-        }
-
-    }
-
-    private void deleteSpecialLosRecursively(SpecialLOS los) {
-        this.dataUpdateService.deleteLos(los);
-        for (ChildLOI curChildLoi : los.getLois()) {
-            for (ApplicationOption curAo :curChildLoi.getApplicationOptions()) {
-                this.dataUpdateService.deleteAo(curAo);
-            }
-        }
-    }
-
     public void indexHigherEdKomo(String komoOid) throws Exception {
         this.higherEdLOSIndexer.indexHigherEdKomo(komoOid);
-    }
-
-    public void removeHigherEd(String oid, String komoOid) throws Exception {
-        this.higherEdLOSIndexer.removeHigherEd(oid, komoOid);        
     }
 
     public void indexKoulutusLos(String komotoOid) throws Exception {
@@ -284,11 +191,7 @@ public class IncrementalLOSIndexer {
             indexLoiData(komotoOid);
     }
 
-    public void removeKoulutus(String oid) throws Exception {
-        this.koulutusIndexer.removeKoulutusLOS(oid);        
-    }
-
-    public void indexAdultUpsecKomo(String curKomoOid) throws Exception {
+    private void indexAdultUpsecKomo(String curKomoOid) throws Exception {
         this.adultLosIndexer.indexAdultUpsecKomo(curKomoOid);
     }
 

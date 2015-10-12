@@ -16,19 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.sun.jersey.api.view.Viewable;
-import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityProviderService;
-import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
-import fi.vm.sade.koulutusinformaatio.util.ResourceBundleHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -38,10 +29,22 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.sun.jersey.api.view.Viewable;
+
+import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityProviderService;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.util.ResourceBundleHelper;
 
 /**
  * Handles directory calls that lists provider and learning opportunity links
@@ -53,10 +56,10 @@ import java.util.Map;
 @Path("/{lang}/hakemisto")
 public class DirectoryResource {
 
-    @Context
+    private @Context
     UriInfo uri;
 
-    public static final String CHARSET_UTF_8 = ";charset=UTF-8";
+    private static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final List<String> alphabets = Lists.newArrayList(
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Å", "Ä", "Ö");
 

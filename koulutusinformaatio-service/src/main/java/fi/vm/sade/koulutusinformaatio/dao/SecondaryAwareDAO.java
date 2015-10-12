@@ -24,7 +24,7 @@ import org.mongodb.morphia.dao.BasicDAO;
  */
 public abstract class SecondaryAwareDAO<T, K> extends BasicDAO<T, K> {
 
-    protected Datastore secondaryDatastore;
+    private Datastore secondaryDatastore;
 
     protected SecondaryAwareDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
         super(primaryDatastore);

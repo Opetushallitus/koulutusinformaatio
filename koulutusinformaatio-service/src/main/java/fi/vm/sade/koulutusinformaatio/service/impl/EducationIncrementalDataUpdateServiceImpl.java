@@ -36,7 +36,6 @@ import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
@@ -44,12 +43,8 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunityInstanceEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -71,10 +66,9 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateServ
 @Service
 public class EducationIncrementalDataUpdateServiceImpl implements
         EducationIncrementalDataUpdateService {
-    
-    
-    public static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataUpdateServiceImpl.class);
-    
+
+    private static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataUpdateServiceImpl.class);
+
     private ModelMapper modelMapper;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
@@ -109,7 +103,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLOSDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.dataStatusDAO = dataStatusDAO;
-        this.specialLOSDAO = specialLearningOpportunitySpecificationDAO; 
+        this.specialLOSDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
@@ -119,89 +113,9 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     }
 
     @Override
-    public void save(LOS los) {
-        LOG.info("Saved {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
-        if (los instanceof UpperSecondaryLOS) {
-            save((UpperSecondaryLOS) los);
-        }
-        else if (los instanceof SpecialLOS) {
-            save((SpecialLOS) los);
-        } 
-        else if (los instanceof HigherEducationLOS) {
-            this.saveHigherEducationLOS((HigherEducationLOS) los);
-        } 
-        else if (los instanceof KoulutusLOS) {
-            this.updateKoulutusLos((KoulutusLOS) los);
-        } 
-        else if (los instanceof TutkintoLOS) {
-            this.updateTutkintoLos((TutkintoLOS) los);
-        }
-    }
-
-    @Override
     public void save(DataStatus dataStatus) {
         if (dataStatus != null) {
             dataStatusDAO.save(modelMapper.map(dataStatus, DataStatusEntity.class));
-        }
-    }
-
-    private void save(SpecialLOS specialLOS) {
-        if (specialLOS != null) {
-            
-            try {
-                Provider existingProv = this.getProvider(specialLOS.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                    for (String curAsId : existingProv.getApplicationSystemIds()) {
-                        if (!specialLOS.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                            specialLOS.getProvider().getApplicationSystemIds().add(curAsId);
-                        }
-                    }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.debug("No existing provider");
-            }
-            
-            SpecialLearningOpportunitySpecificationEntity entity =
-                    modelMapper.map(specialLOS, SpecialLearningOpportunitySpecificationEntity.class);
-
-            save(entity.getProvider());
-
-            for (ChildLearningOpportunityInstanceEntity loi : entity.getLois()) {
-                for (ApplicationOptionEntity ao : loi.getApplicationOptions()) {
-                    save(ao);
-                }
-            }
-            specialLOSDAO.save(entity);
-        }
-    }
-
-    private void save(UpperSecondaryLOS upperSecondaryLOS) {
-        if (upperSecondaryLOS != null) {
-            
-            try {
-                Provider existingProv = this.getProvider(upperSecondaryLOS.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                for (String curAsId : existingProv.getApplicationSystemIds()) {
-                    if (!upperSecondaryLOS.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                        upperSecondaryLOS.getProvider().getApplicationSystemIds().add(curAsId);
-                    }
-                }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.debug("No existing provider");
-            }
-            
-            UpperSecondaryLearningOpportunitySpecificationEntity entity =
-                    modelMapper.map(upperSecondaryLOS, UpperSecondaryLearningOpportunitySpecificationEntity.class);
-
-            save(entity.getProvider());
-
-            for (UpperSecondaryLearningOpportunityInstanceEntity loi : entity.getLois()) {
-                for (ApplicationOptionEntity ao : loi.getApplicationOptions()) {
-                    save(ao);
-                }
-            }
-            upperSecondaryLOSDAO.save(entity);
         }
     }
 
@@ -232,52 +146,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         }
     }
 
-    private void saveHigherEducationLOS(HigherEducationLOS los) {
-
-        if (los != null) {
-
-            for (HigherEducationLOS curChild : los.getChildren()) {
-                saveHigherEducationLOS(curChild);
-            }
-            
-            try {
-                Provider existingProv = this.getProvider(los.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                for (String curAsId : existingProv.getApplicationSystemIds()) {
-                    if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                        los.getProvider().getApplicationSystemIds().add(curAsId);
-                    }
-                }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.debug("No existing provider");
-            }
-            
-            HigherEducationLOSEntity plos =
-                    modelMapper.map(los, HigherEducationLOSEntity.class);
-
-            save(plos.getProvider());
-            
-            
-            if (plos.getStructureImage() != null 
-                    && plos.getStructureImage().getPictureTranslations() != null 
-                    && plos.getStructureImage().getPictureTranslations() != null) {
-                for (PictureEntity curPict : plos.getStructureImage().getPictureTranslations().values()) {
-                    save(curPict);
-                }
-            }
-
-
-            if (plos.getApplicationOptions() != null) {
-                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-                    save(ao);
-                }
-            }
-
-            this.higherEducationLOSDAO.save(plos);
-        }
-    }
-
     @Override
     public void deleteLos(LOS los) {
         String type = los.getToteutustyyppi() != null ? los.getToteutustyyppi().name() : los.getType();
@@ -299,13 +167,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         } else if (los instanceof TutkintoLOS) {
             this.tutkintoLOSDAO.deleteById(los.getId());
         }
-        
-    }
 
-    @Override
-    public void deleteAo(ApplicationOption ao) {
-        LOG.info("Deleted hakukohde: {}", ao.getId());
-        this.applicationOptionDAO.deleteById(ao.getId());
     }
 
     @Override
@@ -315,49 +177,46 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             for (HigherEducationLOS curChild : los.getChildren()) {
                 updateHigherEdLos(curChild);
             }
-            
+
             try {
                 Provider existingProv = this.getProvider(los.getProvider().getId());
                 if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                for (String curAsId : existingProv.getApplicationSystemIds()) {
-                    if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                        los.getProvider().getApplicationSystemIds().add(curAsId);
+                    for (String curAsId : existingProv.getApplicationSystemIds()) {
+                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
+                            los.getProvider().getApplicationSystemIds().add(curAsId);
+                        }
                     }
-                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.warn("Problem updating provider's application system references");
             }
-            
+
             HigherEducationLOSEntity plos =
                     modelMapper.map(los, HigherEducationLOSEntity.class);
 
             //this.learningOpportunityProviderDAO.get(id)
-            
+
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
-            
-            
-            if (plos.getStructureImage() != null 
-                    && plos.getStructureImage().getPictureTranslations() != null 
+
+            if (plos.getStructureImage() != null
+                    && plos.getStructureImage().getPictureTranslations() != null
                     && plos.getStructureImage().getPictureTranslations() != null) {
                 for (PictureEntity curPict : plos.getStructureImage().getPictureTranslations().values()) {
                     save(curPict);
                 }
             }
 
-
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-                    
+
                     try {
                         ApplicationOptionEntity exAo = this.getAo(ao.getId());
                         updateLosRefs(ao, exAo, plos.getId());
                     } catch (ResourceNotFoundException ex) {
                         LOG.debug("No existing ao");
                     }
-                    
-                    
+
                     this.applicationOptionDAO.deleteById(ao.getId());
                     save(ao);
                 }
@@ -367,22 +226,22 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.higherEducationLOSDAO.deleteById(plos.getId());
             this.higherEducationLOSDAO.save(plos);
         }
-        
+
     }
 
     @Override
     public void updateAdultUpsecLos(AdultUpperSecondaryLOS los) {
-        
+
         if (los != null) {
-            
+
             try {
                 Provider existingProv = this.getProvider(los.getProvider().getId());
                 if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                for (String curAsId : existingProv.getApplicationSystemIds()) {
-                    if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                        los.getProvider().getApplicationSystemIds().add(curAsId);
+                    for (String curAsId : existingProv.getApplicationSystemIds()) {
+                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
+                            los.getProvider().getApplicationSystemIds().add(curAsId);
+                        }
                     }
-                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.warn("Problem updating provider's application system references");
@@ -394,18 +253,16 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
 
-
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-                    
+
                     try {
                         ApplicationOptionEntity exAo = this.getAo(ao.getId());
                         updateLosRefs(ao, exAo, plos.getId());
                     } catch (ResourceNotFoundException ex) {
                         LOG.debug("No existing ao");
                     }
-                    
-                    
+
                     this.applicationOptionDAO.deleteById(ao.getId());
                     save(ao);
                 }
@@ -415,24 +272,23 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.adultUpperSecondaryLOSDAO.deleteById(plos.getId());
             this.adultUpperSecondaryLOSDAO.save(plos);
         }
-        
-        
+
     }
-    
+
     @Override
     public void updateAdultVocationalLos(
             CompetenceBasedQualificationParentLOS los) {
-        
+
         if (los != null) {
-            
+
             try {
                 Provider existingProv = this.getProvider(los.getProvider().getId());
                 if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                for (String curAsId : existingProv.getApplicationSystemIds()) {
-                    if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                        los.getProvider().getApplicationSystemIds().add(curAsId);
+                    for (String curAsId : existingProv.getApplicationSystemIds()) {
+                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
+                            los.getProvider().getApplicationSystemIds().add(curAsId);
+                        }
                     }
-                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.warn("Problem updating provider's application system references");
@@ -444,17 +300,16 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
 
-
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-                    
+
                     try {
                         ApplicationOptionEntity exAo = this.getAo(ao.getId());
                         updateLosRefs(ao, exAo, plos.getId());
                     } catch (ResourceNotFoundException ex) {
                         LOG.debug("No existing ao");
                     }
-                    
+
                     this.applicationOptionDAO.deleteById(ao.getId());
                     save(ao);
                 }
@@ -465,18 +320,18 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.adultVocationalLOSDAO.save(plos);
         }
     }
-    
+
     private void updateLosRefs(ApplicationOptionEntity ao, ApplicationOptionEntity existingAo, String curLosId) {
         for (HigherEducationLOSRefEntity curRef : existingAo.getHigherEdLOSRefs()) {
-            if (this.adultVocationalLOSDAO.get(curRef.getId()) != null 
+            if (this.adultVocationalLOSDAO.get(curRef.getId()) != null
                     && !curRef.getId().equals(curLosId)) {
-                
+
                 ao.getHigherEdLOSRefs().add(curRef);
-                
+
             }
         }
     }
-    
+
     private ApplicationOptionEntity getAo(String aoId) throws ResourceNotFoundException {
         ApplicationOptionEntity aoE = this.applicationOptionDAO.get(aoId);
         if (aoE != null) {

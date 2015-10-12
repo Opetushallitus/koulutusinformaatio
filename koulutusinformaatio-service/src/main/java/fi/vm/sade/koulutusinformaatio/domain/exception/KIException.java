@@ -23,10 +23,6 @@ package fi.vm.sade.koulutusinformaatio.domain.exception;
  */
 public class KIException extends Exception {
 
-    public KIException(Exception e) {
-        super(e);
-    }
-
     public KIException(String s) {
         super(s);
     }

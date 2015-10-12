@@ -50,7 +50,7 @@ public class SitemapBuilder {
     public final static String PROPERTY_COLLECTIONS = "sitemap.collections";
     public final static String PROPERTY_BASE_URL = "baseurl";
     private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
-    public static final Logger LOG = LoggerFactory.getLogger(SitemapBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SitemapBuilder.class);
     private static final DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
     private static DocumentBuilder builder;
     static {
@@ -187,23 +187,23 @@ public class SitemapBuilder {
         return e;
     }
     
-    public static final String ELEMENT_URLSET = "urlset";
-    public static final String ELEMENT_URL = "url";
-    public static final String ELEMENT_LASTMOD = "lastmod";
-    public static final String ELEMENT_PRIORITY = "priority";
-    public static final String ELEMENT_LOC = "loc";
-    public static final String ELEMENT_CHANGEFREQ = "changefreq";
-    public static final String CHANGEFREQ_VALUE = "weekly";
-    public static final String PRIORITY_VALUE = "0.5";
-    public static final String CHAR_SLASH = "/";
-    public static final String FIELD_ID = "_id";
-    public static final String TEACHING_LANGUAGES = "teachingLanguages";
-    public static final String ATTRIBUTE_XMLNS = "xmlns";
-    public static final String NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9";
-    public static final String COLLECTION_SEPARATOR = ",";
-    public static final String PREFIX_COLLECTION_SEPARATOR = ":";
-    public static final String RESTICTION_CONTAINS = "+";
-    public static final String QUERY_EXISTS = "$exists";
-    public static final String QUERY_PARAM_LANG = "descriptionLang";
-    public static final String ID_PREFIX_HIGHERED = "korkeakoulu";
+    private static final String ELEMENT_URLSET = "urlset";
+    private static final String ELEMENT_URL = "url";
+    private static final String ELEMENT_LASTMOD = "lastmod";
+    private static final String ELEMENT_PRIORITY = "priority";
+    private static final String ELEMENT_LOC = "loc";
+    private static final String ELEMENT_CHANGEFREQ = "changefreq";
+    private static final String CHANGEFREQ_VALUE = "weekly";
+    private static final String PRIORITY_VALUE = "0.5";
+    private static final String CHAR_SLASH = "/";
+    private static final String FIELD_ID = "_id";
+    private static final String TEACHING_LANGUAGES = "teachingLanguages";
+    private static final String ATTRIBUTE_XMLNS = "xmlns";
+    private static final String NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9";
+    private static final String COLLECTION_SEPARATOR = ",";
+    private static final String PREFIX_COLLECTION_SEPARATOR = ":";
+    private static final String RESTICTION_CONTAINS = "+";
+    private static final String QUERY_EXISTS = "$exists";
+    private static final String QUERY_PARAM_LANG = "descriptionLang";
+    private static final String ID_PREFIX_HIGHERED = "korkeakoulu";
 }

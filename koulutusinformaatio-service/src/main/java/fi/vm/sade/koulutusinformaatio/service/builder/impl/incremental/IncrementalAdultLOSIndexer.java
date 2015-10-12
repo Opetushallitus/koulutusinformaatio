@@ -15,26 +15,30 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 
@@ -43,7 +47,7 @@ import java.util.List;
  */
 public class IncrementalAdultLOSIndexer {
 
-    public static final Logger LOG = LoggerFactory.getLogger(IncrementalAdultLOSIndexer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalAdultLOSIndexer.class);
 
     private TarjontaRawService tarjontaRawService;
     private TarjontaService tarjontaService;
@@ -142,7 +146,7 @@ public class IncrementalAdultLOSIndexer {
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
 
-    public void removeAdultUpsecEd(String oid, String curKomoOid)  throws Exception {
+    private void removeAdultUpsecEd(String oid, String curKomoOid) throws Exception {
         
         loHttpSolrServer.deleteById(oid);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -153,23 +157,12 @@ public class IncrementalAdultLOSIndexer {
     }
 
 
-    public void removeAdultVocationalEd(String oid) throws Exception {
+    private void removeAdultVocationalEd(String oid) throws Exception {
         loHttpSolrServer.deleteById(oid);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
         CompetenceBasedQualificationParentLOS toDeleteLos = new CompetenceBasedQualificationParentLOS();
         toDeleteLos.setId(oid);
         this.dataUpdateService.deleteLos(toDeleteLos);
-
-    }
-
-    public void updateAdultUpsecLos(AdultUpperSecondaryLOS los) throws Exception {
-
-        this.removeAdultUpsecEd(los.getId(), los.getKomoOid());
-        this.indexerService.removeLos(los, loHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        this.dataUpdateService.save(los);
-        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
 
     }
 

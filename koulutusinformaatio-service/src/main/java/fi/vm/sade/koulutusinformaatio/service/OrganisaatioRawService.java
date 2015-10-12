@@ -20,8 +20,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
-import java.util.List;
-
 /**
  * Can be used to access organisaatio APIs. Returns raw organisaatio DTO objects as they are
  * returned from API.
@@ -36,16 +34,6 @@ public interface OrganisaatioRawService {
      * @throws ResourceNotFoundException
      */
     public OrganisaatioRDTO getOrganisaatio(String oid) throws ResourceNotFoundException;
-    
-    /**
-     * Fetches the child organizations of the parent organization, the oid of which is given as 
-     * parameter from Organization service.
-     * 
-     * @param parentOid The parent organizatio Oid
-     * @return A list of child organizations.
-     * @throws ResourceNotFoundException
-     */
-    public List<OrganisaatioRDTO> getChildren(String parentOid) throws ResourceNotFoundException;
     
     /**
      * Fetches organizations of given organisaatioType from organisaatio service.

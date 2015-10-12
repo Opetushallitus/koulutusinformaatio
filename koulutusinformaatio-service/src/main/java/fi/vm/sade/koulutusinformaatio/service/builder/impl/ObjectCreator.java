@@ -42,9 +42,9 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
  */
 public abstract class ObjectCreator {
 
-    protected static final String AIHEET_KOODISTO_URI = "aiheet";
-    protected static final String TEEMAT_KOODISTO_URI = "teemat";
-    protected static final String POHJAKOULUTUSFASETTI_KOODISTO_URI = "pohjakoulutusfasetti";
+    private static final String AIHEET_KOODISTO_URI = "aiheet";
+    private static final String TEEMAT_KOODISTO_URI = "teemat";
+    private static final String POHJAKOULUTUSFASETTI_KOODISTO_URI = "pohjakoulutusfasetti";
 
 
 

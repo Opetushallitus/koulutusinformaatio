@@ -1,15 +1,11 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.ws.rs.core.MediaType;
+
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,11 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 @Service
 public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
@@ -51,21 +53,6 @@ public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
             e.printStackTrace();
             throw new ResourceNotFoundException("Organization "+oid+" not found: "+e.getMessage());
         }
-    }
-
-    @Override
-    public List<OrganisaatioRDTO> getChildren(String parentOid) throws ResourceNotFoundException{
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
-        ClientConfig cc = new DefaultClientConfig();
-        cc.getSingletons().add(jacksProv);
-        Client clientWithJacksonSerializer = Client.create(cc);
-
-        WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/%s/children?includeImage=true", this.organisaatioResourceUrl, parentOid));
-        return orgRes.accept(JSON_UTF8)
-                .get(new GenericType<List<OrganisaatioRDTO>>() {
-                });
     }
 
     @Override
