@@ -91,6 +91,7 @@ public class ApplicationOption {
     // Tällä AOlla ei ole osaamisalaa
     private boolean isPseudo;
     private List<String> komotoOids = new ArrayList<String>();
+    private boolean paid;
 
 
     public String getId() {
@@ -528,6 +529,14 @@ public class ApplicationOption {
 
     public void setKomotoOids(List<String> komotoOids) {
         this.komotoOids = komotoOids;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
 }

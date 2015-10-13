@@ -75,6 +75,7 @@ public class ApplicationOptionDTO {
     private boolean isKotitalous;
     private String hakuaikaId;
     private List<OrganizationGroupDTO> organizationGroups;
+    private boolean paid;
 
     public String getId() {
         return id;
@@ -441,6 +442,14 @@ public class ApplicationOptionDTO {
 
     public void setApplicationOffice(ApplicationOfficeDTO applicationOffice) {
         this.applicationOffice = applicationOffice;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
 }

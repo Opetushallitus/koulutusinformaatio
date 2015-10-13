@@ -11,15 +11,8 @@
             </button>
 
             <!-- linkki ulkoiseen hakulomakkeeseen -->
-            <div data-ng-if="as.applicationFormLink">
-                <a data-ng-if="ao.canBeApplied" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
-                    <i class="kicon-link-ext-alt"></i>
-                    <span data-ki-i18n="apply-button-label"></span>
-                </a>
-                <span data-ng-if="!ao.canBeApplied" class="text-muted">
-                    <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
-                </span>
-            </div>
+            <div data-ng-include="'partials/lo/common/externalApplicationFormLink.html'"></div>
+
         </div>
     </div>
 </div>

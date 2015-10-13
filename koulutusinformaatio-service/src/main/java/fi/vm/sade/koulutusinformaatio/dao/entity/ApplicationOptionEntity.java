@@ -102,6 +102,7 @@ public class ApplicationOptionEntity {
     @Embedded
     private List<OrganizationGroupEntity> organizationGroups;
     private boolean isPseudo;
+    private boolean paid;
 
 
     public ApplicationOptionEntity() {
@@ -468,5 +469,13 @@ public class ApplicationOptionEntity {
     @Override
     public String toString() {
         return Objects.toStringHelper(this).add("oid", id).add("name", name).toString();
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 }

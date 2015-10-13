@@ -48,16 +48,8 @@
                     </button>
 
                     <!-- linkki ulkoiseen hakulomakkeeseen -->
-                    <div data-ng-if="as.applicationFormLink" class="pull-right margin-left-default">
-                        <a data-ng-if="!isApplicationSystemDisabled(as)" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank" class="last text-muted">
-                            <i class="kicon-link-ext-alt"></i>
-                            <span data-ki-i18n="apply-button-label"></span>
-                        </a>
-                        <span data-ng-if="isApplicationSystemDisabled(as)">
-                            <i class="kicon-link-ext-alt"></i>
-                            <span data-ki-i18n="apply-button-label"></span>
-                        </span>
-                    </div>
+                    <div data-ng-include="'partials/lo/common/externalApplicationFormLink.html'"></div>
+
                     <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="pull-right hide-in-print"></a>
                 </div>
             </div>
