@@ -235,6 +235,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setEducationTypeUri(SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
         }
         
+        ao.setPaid(haku.isMaksumuuriKaytossa());
+
         return ao;
     }
 

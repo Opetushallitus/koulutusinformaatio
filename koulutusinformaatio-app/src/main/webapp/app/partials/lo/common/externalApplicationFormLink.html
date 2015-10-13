@@ -1,0 +1,13 @@
+<div data-ng-if="as.applicationFormLink || ao.isPaid">
+    <span data-ng-if="ao.canBeApplied">
+        <a data-ng-if="ao.isPaid" data-ng-href="/hakuperusteet/ao/{{ao.id}}" title="{{locales.externalApplicationForm}}" target="_blank">
+            <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        </a>
+        <a data-ng-if="!ao.isPaid" data-ng-href="{{as.applicationFormLink}}" title="{{locales.externalApplicationForm}}" target="_blank">
+            <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        </a>
+    </span>
+    <span data-ng-if="!ao.canBeApplied" class="text-disabled">
+        <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+    </span>
+</div>
