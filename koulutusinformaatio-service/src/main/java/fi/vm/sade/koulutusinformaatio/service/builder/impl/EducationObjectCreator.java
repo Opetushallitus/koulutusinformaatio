@@ -77,8 +77,8 @@ public class EducationObjectCreator extends ObjectCreator {
     public ScoreLimit resolvePointLimit(ValintakoeV1RDTO valintakoe, String type) {
         for (ValintakoePisterajaV1RDTO valintakoePisteraja : valintakoe.getPisterajat()) {
             if (valintakoePisteraja.getPisterajatyyppi().equals(type)) {
-                return new ScoreLimit(valintakoePisteraja.getAlinPistemaara().doubleValue(),
-                        valintakoePisteraja.getAlinHyvaksyttyPistemaara().doubleValue(), valintakoePisteraja.getYlinPistemaara().doubleValue());
+                return new ScoreLimit(valintakoePisteraja.getAlinPistemaara(),
+                        valintakoePisteraja.getAlinHyvaksyttyPistemaara(), valintakoePisteraja.getYlinPistemaara());
             }
         }
         return null;

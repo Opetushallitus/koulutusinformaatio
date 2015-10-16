@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.math.BigDecimal;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -25,10 +27,13 @@ public class ScoreLimit {
     private double lowestAcceptedScore;
     private double highestScore;
 
-    public ScoreLimit(double lowestScore, double lowestAcceptedScore, double highestScore) {
-        this.lowestScore = lowestScore;
-        this.lowestAcceptedScore = lowestAcceptedScore;
-        this.highestScore = highestScore;
+    /**
+     * Null safe constructor
+     * */
+    public ScoreLimit(BigDecimal alinPistemaara, BigDecimal alinHyvaksyttyPistemaara, BigDecimal ylinPistemaara) {
+        this.lowestScore = alinPistemaara != null ? alinPistemaara.doubleValue() : 0;
+        this.lowestAcceptedScore = alinHyvaksyttyPistemaara != null ? alinHyvaksyttyPistemaara.doubleValue() : 0;
+        this.highestScore = ylinPistemaara != null ? ylinPistemaara.doubleValue() : 0;
     }
 
     public ScoreLimit() {
