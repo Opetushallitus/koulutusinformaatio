@@ -524,6 +524,13 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
         String educationUri = los.getEducationCode() != null && los.getEducationCode().getUri() != null ? los.getEducationCode().getUri() : "";
         LOG.debug("Education code: {}", educationUri);
 
+        for (ApplicationOption ao : los.getApplicationOptions()) {
+            if (ao.isKaksoistutkinto()) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+                break;
+            }
+        }
+
         if (educationUri.contains(SolrConstants.ED_CODE_AMM_OPETTAJA) 
                 || educationUri.contains(SolrConstants.ED_CODE_AMM_ER_OPETTAJA) || educationUri.contains(SolrConstants.ED_CODE_AMM_OPO)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
