@@ -44,8 +44,8 @@ public class KoulutusLOS extends LOS {
     private List<Code> teachingLanguages;
 
     private Provider provider;
-    private List<Provider> additionalProviders = new ArrayList<Provider>();
-    private List<ApplicationOption> applicationOptions;
+    private List<Provider> additionalProviders = Lists.newArrayList();
+    private List<ApplicationOption> applicationOptions = Lists.newArrayList();
 
     private String komoOid;
 

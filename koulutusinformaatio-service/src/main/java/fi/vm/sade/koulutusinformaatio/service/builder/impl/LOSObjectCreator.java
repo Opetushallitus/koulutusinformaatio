@@ -481,7 +481,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> hakukohdeTarjoajat = result.getResult().getTulokset();
 
-        List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
+        List<ApplicationOption> aos = Lists.newArrayList();
 
         for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> curProvider : hakukohdeTarjoajat) {
             for (HakukohdeHakutulosV1RDTO curHakukoh : curProvider.getTulokset()) {

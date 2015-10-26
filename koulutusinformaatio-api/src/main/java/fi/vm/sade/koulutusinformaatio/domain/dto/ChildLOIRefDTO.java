@@ -29,6 +29,7 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
     private String id;
     private String losId;
     private String name;
+    private String type;
     private String qualification;
     private List<String> qualifications;
     private CodeDTO prerequisite;
@@ -96,6 +97,14 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

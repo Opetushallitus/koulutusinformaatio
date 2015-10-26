@@ -44,7 +44,7 @@ service('AutocompleteService', ['$http', '$timeout', '$q', 'LanguageService', fu
 
             $http.get('../lo/autocomplete', {
                 params: {
-                	term: queryParam,
+                    term: queryParam,
                     lang: LanguageService.getLanguage()
                 }
             }).
@@ -99,7 +99,7 @@ service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', 
 
             var params = '?lang=' + LanguageService.getLanguage();
             for (var i = 0; i < districtVal.length; i++) {
-            	params += '&districts=' + districtVal[i].code;
+                params += '&districts=' + districtVal[i].code;
             }
             
             $http.get('../location/child-locations' + params, {}).
@@ -303,31 +303,31 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             }).
             
             success(function(result) {
-            	if (options.loType == 'ammatillinenaikuiskoulutus') {
-            		AdultVocationalTransformer.transform(result, options.id);
-            	} else {
-            		HigherEducationTransformer.transform(result);
-            	}
-            	result.preview = true;
-            	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit?' + Date.now();
-            	if (result.children) {
-            		for (var i = 0; i < result.children.length; ++i) {
-            			result.children[i].preview = true;
-            		} 
-            	}
-            	if (result.applicationSystems) {
-            		for (var i = 0; i < result.applicationSystems.length; ++i) {
-            			var as = result.applicationSystems[i];
-            			as.preview = true;
-            			if (as.applicationOptions) {
-            				for (var j = 0; j < as.applicationOptions.length; ++j) {
-            					var ao = as.applicationOptions[j];
-            					ao.preview = true;
-            					ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit?' + Date.now();
-            				}
-            			}
-            		} 
-            	}
+                if (options.loType == 'ammatillinenaikuiskoulutus') {
+                    AdultVocationalTransformer.transform(result, options.id);
+                } else {
+                    HigherEducationTransformer.transform(result);
+                }
+                result.preview = true;
+                result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit?' + Date.now();
+                if (result.children) {
+                    for (var i = 0; i < result.children.length; ++i) {
+                        result.children[i].preview = true;
+                    } 
+                }
+                if (result.applicationSystems) {
+                    for (var i = 0; i < result.applicationSystems.length; ++i) {
+                        var as = result.applicationSystems[i];
+                        as.preview = true;
+                        if (as.applicationOptions) {
+                            for (var j = 0; j < as.applicationOptions.length; ++j) {
+                                var ao = as.applicationOptions[j];
+                                ao.preview = true;
+                                ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit?' + Date.now();
+                            }
+                        }
+                    } 
+                }
                 var loResult = {
                     lo: result,
                     provider: result.provider
@@ -384,111 +384,119 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', 'Utili
  */
 service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', 'UtilityService', function(KiSorter, $rootScope, $filter, LanguageService, _, UtilityService) {
 
-	return {
-		transform: function(result) {
+    return {
+        transform: function(result) {
 
-			if (result && result.translationLanguage) {
-				$rootScope.translationLanguage = result.translationLanguage;
-			}
+            if(result.parentLos){
+                if(result.parentLos.type == 'TUTKINTO'){
+                    result.parentLos.url = '#!/tutkinto/' + result.parentLos.id;
+                } else if (result.parentLos.type == 'KOULUTUS') {
+                    result.parentLos.url = '#!/koulutus/' + result.parentLos.id;
+                }
+            }
+            
+            if (result && result.translationLanguage) {
+                $rootScope.translationLanguage = result.translationLanguage;
+            }
 
-			if (result && result.availableTranslationLanguages) {
+            if (result && result.availableTranslationLanguages) {
                 result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
-			}
+            }
 
-			if (result.startDate) {
-				var startDate = new Date(result.startDate);
-				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-			}
+            if (result.startDate) {
+                var startDate = new Date(result.startDate);
+                result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+            }
             for (var dateIndex in result.startDates) {
                 var date = $filter('date')(result.startDates[dateIndex], 'd.M.yyyy');
                 result.startDates[dateIndex] = date;
             }
-			if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
-				result.polytechnic = true;
-			}
-			result.teachingLanguage = _.first(result.teachingLanguages);
+            if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
+                result.polytechnic = true;
+            }
+            result.teachingLanguage = _.first(result.teachingLanguages);
 
-			if (result.themes != undefined && result.themes != null) {
-				var distinctMap = {};
-				var distinctArray = [];
-				for (var i=0; i < result.themes.length;i++) {
-					var theme = result.themes[i];
-					if (distinctMap[theme.uri] == undefined) {
-						distinctMap[theme.uri] = theme;
-						distinctArray.push(theme);
-					}
-				}
-				result.themes = distinctArray;
-			}
-			
-			result.applicationOffices = [];
-			if (result.provider.applicationOffice) {
-				result.provider.applicationOffice.providerName = result.provider.name;
-				result.applicationOffices.push(result.provider.applicationOffice);
-			}
-			for (var curProvIndex in result.additionalProviders) {
-				if (result.additionalProviders.hasOwnProperty(curProvIndex)) {
-					var curProvider = result.additionalProviders[curProvIndex];
-					var curApplicationOffice = curProvider.applicationOffice
-					if (curApplicationOffice) {
-						curApplicationOffice.providerName = curProvider.name;
-						result.applicationOffices.push(curApplicationOffice);
-					}
-				}
-			}
-			
-			result.multipleProviders = result.applicationOffices.length > 1;
+            if (result.themes != undefined && result.themes != null) {
+                var distinctMap = {};
+                var distinctArray = [];
+                for (var i=0; i < result.themes.length;i++) {
+                    var theme = result.themes[i];
+                    if (distinctMap[theme.uri] == undefined) {
+                        distinctMap[theme.uri] = theme;
+                        distinctArray.push(theme);
+                    }
+                }
+                result.themes = distinctArray;
+            }
+            
+            result.applicationOffices = [];
+            if (result.provider.applicationOffice) {
+                result.provider.applicationOffice.providerName = result.provider.name;
+                result.applicationOffices.push(result.provider.applicationOffice);
+            }
+            for (var curProvIndex in result.additionalProviders) {
+                if (result.additionalProviders.hasOwnProperty(curProvIndex)) {
+                    var curProvider = result.additionalProviders[curProvIndex];
+                    var curApplicationOffice = curProvider.applicationOffice
+                    if (curApplicationOffice) {
+                        curApplicationOffice.providerName = curProvider.name;
+                        result.applicationOffices.push(curApplicationOffice);
+                    }
+                }
+            }
+            
+            result.multipleProviders = result.applicationOffices.length > 1;
 
-			for (var asIndex in result.applicationSystems) {
-				if (result.applicationSystems.hasOwnProperty(asIndex)) {
-					var as = result.applicationSystems[asIndex];
-					for (var aoIndex in as.applicationOptions) {
-						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-							var ao = as.applicationOptions[aoIndex];
+            for (var asIndex in result.applicationSystems) {
+                if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                    var as = result.applicationSystems[asIndex];
+                    for (var aoIndex in as.applicationOptions) {
+                        if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                            var ao = as.applicationOptions[aoIndex];
 
-							if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-								ao.teachLang = ao.teachingLanguages[0];
+                            if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                                ao.teachLang = ao.teachingLanguages[0];
 
-								$rootScope.teachingLang = LanguageService.getLanguage();//ao.teachLang.toLowerCase();
-							}
-						}
-					}
-				}
-			}
+                                $rootScope.teachingLang = LanguageService.getLanguage();//ao.teachLang.toLowerCase();
+                            }
+                        }
+                    }
+                }
+            }
 
             // sort exams by start date
-			for (var asIndex in result.applicationSystems) {
-				if (result.applicationSystems.hasOwnProperty(asIndex)) {
-					var as = result.applicationSystems[asIndex];
-					for (var aoIndex in as.applicationOptions) {
-						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-							var ao = as.applicationOptions[aoIndex];
-							for (var exam in ao.exams) {
-								if (ao.exams.hasOwnProperty(exam)) {
-									if (ao.exams[exam].examEvents) {
-										ao.exams[exam].examEvents.sort(function(a, b) {
-											return a.start - b.start;
-										});
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+            for (var asIndex in result.applicationSystems) {
+                if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                    var as = result.applicationSystems[asIndex];
+                    for (var aoIndex in as.applicationOptions) {
+                        if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                            var ao = as.applicationOptions[aoIndex];
+                            for (var exam in ao.exams) {
+                                if (ao.exams.hasOwnProperty(exam)) {
+                                    if (ao.exams[exam].examEvents) {
+                                        ao.exams[exam].examEvents.sort(function(a, b) {
+                                            return a.start - b.start;
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-			// sort application systems
+            // sort application systems
             KiSorter.sortApplicationSystems(result.applicationSystems);
 
-			// check if application system is of type Lisähaku
-			for (var asIndex in result.applicationSystems) {
-				if (result.applicationSystems.hasOwnProperty(asIndex)) {
-					var as = result.applicationSystems[asIndex];
+            // check if application system is of type Lisähaku
+            for (var asIndex in result.applicationSystems) {
+                if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                    var as = result.applicationSystems[asIndex];
                     as.isLisahaku = UtilityService.isLisahaku(as);
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 }]).
 
 /**
@@ -496,127 +504,127 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
  */
 service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', 'UtilityService', function(KiSorter, $rootScope, $filter, LanguageService, _, UtilityService) {
 
-	return {
-		transform: function(result, loId) {
+    return {
+        transform: function(result, loId) {
 
-			if (result && result.translationLanguage) {
-				$rootScope.translationLanguage = result.translationLanguage;
-			}
+            if (result && result.translationLanguage) {
+                $rootScope.translationLanguage = result.translationLanguage;
+            }
 
-			if (result && result.availableTranslationLanguages) {
+            if (result && result.availableTranslationLanguages) {
                 result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
-			}
+            }
 
-			if (result.startDate) {
-				var startDate = new Date(result.startDate);
-				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-			}
-			if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
-				result.polytechnic = true;
-			}
-			result.teachingLanguage = _.first(result.teachingLanguages);
+            if (result.startDate) {
+                var startDate = new Date(result.startDate);
+                result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+            }
+            if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
+                result.polytechnic = true;
+            }
+            result.teachingLanguage = _.first(result.teachingLanguages);
 
-			if (result.themes != undefined && result.themes != null) {
-				var distinctMap = {};
-				var distinctArray = [];
-				for (var i=0; i < result.themes.length;i++) {
-					var theme = result.themes[i];
-					if (distinctMap[theme.uri] == undefined) {
-						distinctMap[theme.uri] = theme;
-						distinctArray.push(theme);
-					}
-				}
-				result.themes = distinctArray;
-			}
-			
-			
+            if (result.themes != undefined && result.themes != null) {
+                var distinctMap = {};
+                var distinctArray = [];
+                for (var i=0; i < result.themes.length;i++) {
+                    var theme = result.themes[i];
+                    if (distinctMap[theme.uri] == undefined) {
+                        distinctMap[theme.uri] = theme;
+                        distinctArray.push(theme);
+                    }
+                }
+                result.themes = distinctArray;
+            }
+            
+            
 
-			for (var asIndex in result.applicationSystems) {
-				if (result.applicationSystems.hasOwnProperty(asIndex)) {
-					var as = result.applicationSystems[asIndex];
-					for (var aoIndex in as.applicationOptions) {
-						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-							var ao = as.applicationOptions[aoIndex];
+            for (var asIndex in result.applicationSystems) {
+                if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                    var as = result.applicationSystems[asIndex];
+                    for (var aoIndex in as.applicationOptions) {
+                        if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                            var ao = as.applicationOptions[aoIndex];
 
-							if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-								ao.teachLang = ao.teachingLanguages[0];
+                            if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                                ao.teachLang = ao.teachingLanguages[0];
 
-								$rootScope.teachingLang = LanguageService.getLanguage();//ao.teachLang.toLowerCase();
-							}
-						}
-					}
-				}
-			}
+                                $rootScope.teachingLang = LanguageService.getLanguage();//ao.teachLang.toLowerCase();
+                            }
+                        }
+                    }
+                }
+            }
 
-			for (var asIndex in result.applicationSystems) {
-				if (result.applicationSystems.hasOwnProperty(asIndex)) {
-					var as = result.applicationSystems[asIndex];
-					for (var aoIndex in as.applicationOptions) {
-						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-							var ao = as.applicationOptions[aoIndex];
-							for (var exam in ao.exams) {
-								if (ao.exams.hasOwnProperty(exam)) {
-									if (ao.exams[exam].examEvents) {
-										ao.exams[exam].examEvents.sort(function(a, b) {
-											return a.start - b.start;
-										});
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+            for (var asIndex in result.applicationSystems) {
+                if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                    var as = result.applicationSystems[asIndex];
+                    for (var aoIndex in as.applicationOptions) {
+                        if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                            var ao = as.applicationOptions[aoIndex];
+                            for (var exam in ao.exams) {
+                                if (ao.exams.hasOwnProperty(exam)) {
+                                    if (ao.exams[exam].examEvents) {
+                                        ao.exams[exam].examEvents.sort(function(a, b) {
+                                            return a.start - b.start;
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-			// sort application systems
-			KiSorter.sortApplicationSystems(result.applicationSystems);
+            // sort application systems
+            KiSorter.sortApplicationSystems(result.applicationSystems);
 
-			// check if application system is of type Lisähaku
-			for (var asIndex in result.applicationSystems) {
-				if (result.applicationSystems.hasOwnProperty(asIndex)) {
-					var as = result.applicationSystems[asIndex];
+            // check if application system is of type Lisähaku
+            for (var asIndex in result.applicationSystems) {
+                if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                    var as = result.applicationSystems[asIndex];
                     as.isLisahaku = UtilityService.isLisahaku(as);
-				}
-			}
-			
-			result.hasSelectedChild = false;
-			result.isStandalone = false;
-			if (result.children != null && result.children.length == 1) {
-				result.isStandalone = true;
-				result.selectedChild = result.children[0];
-				if (result.selectedChild.startDate) {
-					var startDate = new Date(result.selectedChild.startDate);
-					result.selectedChild.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-				}
-				result.hasSelectedChild = true;
-			} else {
-				result.parentId = result.id;
-				angular.forEach(result.children, function(child, childKey) {
-					if (child.startDate) {
-						var startDate = new Date(child.startDate);
-						child.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-					}
-					if (child.id == loId) {
-						result.selectedChild = child;
-						result.hasSelectedChild = true;
-					}
-				});
-				
-			}
-			
-			if (result.selectedChild && result.selectedChild.contactPersons != null) {
-				angular.forEach(result.selectedChild.contactPersons, function(person, key) {
-					person.isNayttotutkinto = true;
-				});
-			}
-			
-			if (!result.hasSelectedChild && result.children != null && result.children.length > 1) {
-				result.id = result.children[0].id;
-			} else {
-				result.id = loId;
-			}
-		}
-	}
+                }
+            }
+            
+            result.hasSelectedChild = false;
+            result.isStandalone = false;
+            if (result.children != null && result.children.length == 1) {
+                result.isStandalone = true;
+                result.selectedChild = result.children[0];
+                if (result.selectedChild.startDate) {
+                    var startDate = new Date(result.selectedChild.startDate);
+                    result.selectedChild.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                }
+                result.hasSelectedChild = true;
+            } else {
+                result.parentId = result.id;
+                angular.forEach(result.children, function(child, childKey) {
+                    if (child.startDate) {
+                        var startDate = new Date(child.startDate);
+                        child.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                    }
+                    if (child.id == loId) {
+                        result.selectedChild = child;
+                        result.hasSelectedChild = true;
+                    }
+                });
+                
+            }
+            
+            if (result.selectedChild && result.selectedChild.contactPersons != null) {
+                angular.forEach(result.selectedChild.contactPersons, function(person, key) {
+                    person.isNayttotutkinto = true;
+                });
+            }
+            
+            if (!result.hasSelectedChild && result.children != null && result.children.length > 1) {
+                result.id = result.children[0].id;
+            } else {
+                result.id = loId;
+            }
+        }
+    }
 }]).
 
 /**
@@ -641,7 +649,7 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '$fil
                     
                     // get target group from loi
                     if (loi.targetGroup) {
-                    	result.targetGroup = loi.targetGroup;
+                        result.targetGroup = loi.targetGroup;
                     } 
                 }
             } 
@@ -652,8 +660,8 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '$fil
                     var loi = result.lois[loiIndex];
 
                     if (loi.startDate) {
-                    	var startDate = new Date(loi.startDate);
-                    	loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                        var startDate = new Date(loi.startDate);
+                        loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
                     }
                     for (var dateIndex in loi.startDates) {
                         var date = $filter('date')(loi.startDates[dateIndex], 'd.M.yyyy');
@@ -811,133 +819,133 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '$fil
 }]).
 
 service('SearchResultFacetTransformer', ['UtilityService', '$filter', function(UtilityService, $filter) {
-	
-	var getFacetValById = function(valueId, givenVals) {
-    	
-    	var selectedEdTypeFacetVal = undefined;
-    	var edTypeFacetVals = [];
-    	edTypeFacetVals = edTypeFacetVals.concat(givenVals);
-    	
-    	while (edTypeFacetVals != null && edTypeFacetVals.length > 0) {
-			
-			var currentValue = edTypeFacetVals.shift();
-			
-			if (currentValue != null && currentValue.valueId == valueId) {
-				selectedEdTypeFacetVal = currentValue;
-			}
-			
-			if (currentValue != null && selectedEdTypeFacetVal == undefined) {
-				edTypeFacetVals = edTypeFacetVals.concat(currentValue.childValues);
-			}
-		}
-    	return selectedEdTypeFacetVal;
+    
+    var getFacetValById = function(valueId, givenVals) {
+        
+        var selectedEdTypeFacetVal = undefined;
+        var edTypeFacetVals = [];
+        edTypeFacetVals = edTypeFacetVals.concat(givenVals);
+        
+        while (edTypeFacetVals != null && edTypeFacetVals.length > 0) {
+            
+            var currentValue = edTypeFacetVals.shift();
+            
+            if (currentValue != null && currentValue.valueId == valueId) {
+                selectedEdTypeFacetVal = currentValue;
+            }
+            
+            if (currentValue != null && selectedEdTypeFacetVal == undefined) {
+                edTypeFacetVals = edTypeFacetVals.concat(currentValue.childValues);
+            }
+        }
+        return selectedEdTypeFacetVal;
     };
     
-	return {
-    	
+    return {
+        
         transform: function(result, facetFilters) {
 
-        	var loResult = result;
-        	
-        	var wasEducationType = false;
-        	var educationtypeSelection = undefined;
-        	var wasTheme = false;
-        	var wasTopic = false;
-        	var themeTopicSelection = undefined;
-        	
-        	angular.forEach(facetFilters, function(value, index) {
-        		var curVal = value.split(':')[1];
-        		var curField = value.split(':')[0];
-        		if ((curField == 'educationType_ffm')) {
-        			
-        			wasEducationType = true;
-        			
-        			educationtypeSelection = curVal;
-        		} else if (curField == 'theme_ffm') {
-        			wasTheme = true;
-        			themeTopicSelection = curVal;
-        		} else if (curField == 'topic_ffm') {
-        			wasTopic = true;
-        			themeTopicSelection = curVal;
-        		}
-        	});
-        	
-        	
-        	if (wasTheme) {
-        		var selectedThemeFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
-        		topicFacetValues = [];
-    			topicFacetValues.push(selectedThemeFacetVal);
-    			
-    			loResult.topicFacetValues = topicFacetValues;
-        	} else if (wasTopic) {
-        		var selectedTopicFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
-        		var parentThemeVal = getFacetValById(selectedTopicFacetVal.parentId, loResult.topicFacet.facetValues);
-        		parentThemeVal.childValues = [];
-        		parentThemeVal.childValues.push(selectedTopicFacetVal);
-        		
-        		topicFacetValues = [];
-    			topicFacetValues.push(parentThemeVal);
-    			
-    			loResult.topicFacetValues = topicFacetValues;
-        	} else {
-        		angular.forEach(loResult.topicFacet.facetValues, function(value, index) {
+            var loResult = result;
+            
+            var wasEducationType = false;
+            var educationtypeSelection = undefined;
+            var wasTheme = false;
+            var wasTopic = false;
+            var themeTopicSelection = undefined;
+            
+            angular.forEach(facetFilters, function(value, index) {
+                var curVal = value.split(':')[1];
+                var curField = value.split(':')[0];
+                if ((curField == 'educationType_ffm')) {
+                    
+                    wasEducationType = true;
+                    
+                    educationtypeSelection = curVal;
+                } else if (curField == 'theme_ffm') {
+                    wasTheme = true;
+                    themeTopicSelection = curVal;
+                } else if (curField == 'topic_ffm') {
+                    wasTopic = true;
+                    themeTopicSelection = curVal;
+                }
+            });
+            
+            
+            if (wasTheme) {
+                var selectedThemeFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
+                topicFacetValues = [];
+                topicFacetValues.push(selectedThemeFacetVal);
+                
+                loResult.topicFacetValues = topicFacetValues;
+            } else if (wasTopic) {
+                var selectedTopicFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
+                var parentThemeVal = getFacetValById(selectedTopicFacetVal.parentId, loResult.topicFacet.facetValues);
+                parentThemeVal.childValues = [];
+                parentThemeVal.childValues.push(selectedTopicFacetVal);
+                
+                topicFacetValues = [];
+                topicFacetValues.push(parentThemeVal);
+                
+                loResult.topicFacetValues = topicFacetValues;
+            } else {
+                angular.forEach(loResult.topicFacet.facetValues, function(value, index) {
                     if(value.childValues && value.childValues.length > 0){
                         value.containsChildren = true;
                     }
                     value.childValues = [];
                 });
-        		
-        		loResult.topicFacetValues = loResult.topicFacet.facetValues;
-        	}
-        	
-        	if (wasEducationType) {
-        		
-        		var selectedEdTypeFacetVal = getFacetValById(educationtypeSelection, loResult.edTypeFacet.facetValues);  
-        		if (selectedEdTypeFacetVal != undefined) {
-        			
-        			angular.forEach(selectedEdTypeFacetVal.childValues, function(value, index) {
-        			    if(value.childValues && value.childValues.length > 0){
-        			        value.containsChildren = true;
-        			    }
-        				value.childValues = [];
-        			});
-        			
-        			var parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
-        			
-        			while (parent != undefined && parent != null) {
-        				parent.childValues = [];
-    					parent.childValues.push(selectedEdTypeFacetVal);
-        				selectedEdTypeFacetVal = parent;
-        				parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
-        			}
-        			
-        			edTypeFacetValues = [];
-        			edTypeFacetValues.push(selectedEdTypeFacetVal);
-        			
-        			loResult.edTypeFacetValues = edTypeFacetValues;
-        		} else {
-        			angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
+                
+                loResult.topicFacetValues = loResult.topicFacet.facetValues;
+            }
+            
+            if (wasEducationType) {
+                
+                var selectedEdTypeFacetVal = getFacetValById(educationtypeSelection, loResult.edTypeFacet.facetValues);  
+                if (selectedEdTypeFacetVal != undefined) {
+                    
+                    angular.forEach(selectedEdTypeFacetVal.childValues, function(value, index) {
                         if(value.childValues && value.childValues.length > 0){
                             value.containsChildren = true;
                         }
                         value.childValues = [];
                     });
-            		
-            		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
-        		}
-        	} else {
-        		angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
+                    
+                    var parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
+                    
+                    while (parent != undefined && parent != null) {
+                        parent.childValues = [];
+                        parent.childValues.push(selectedEdTypeFacetVal);
+                        selectedEdTypeFacetVal = parent;
+                        parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
+                    }
+                    
+                    edTypeFacetValues = [];
+                    edTypeFacetValues.push(selectedEdTypeFacetVal);
+                    
+                    loResult.edTypeFacetValues = edTypeFacetValues;
+                } else {
+                    angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
+                        if(value.childValues && value.childValues.length > 0){
+                            value.containsChildren = true;
+                        }
+                        value.childValues = [];
+                    });
+                    
+                    loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
+                }
+            } else {
+                angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
                     if(value.childValues && value.childValues.length > 0){
                         value.containsChildren = true;
                     }
                     value.childValues = [];
                 });
-        		
-        		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
-        	}
-        	
-        	return loResult;
-        	
+                
+                loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
+            }
+            
+            return loResult;
+            
         }
     }
 }]).
@@ -1455,19 +1463,19 @@ service('FilterService', [
         },
         
         getFacetFilters: function() {
-        	if (filters.facetFilters != undefined && (typeof filters.facetFilters == 'string' || filters.facetFilters instanceof String)) {
-        		filters.facetFilters = filters.facetFilters.split(',');
-        		return filters.facetFilters;
-        	}
-        	return filters.facetFilters;
+            if (filters.facetFilters != undefined && (typeof filters.facetFilters == 'string' || filters.facetFilters instanceof String)) {
+                filters.facetFilters = filters.facetFilters.split(',');
+                return filters.facetFilters;
+            }
+            return filters.facetFilters;
         },
         
         getArticleFacetFilters: function() {
-        	if (filters.articleFacetFilters != undefined && (typeof filters.articleFacetFilters == 'string' || filters.articleFacetFilters instanceof String)) {
-        		filters.articleFacetFilters = filters.articleFacetFilters.split(',');
-        		return filters.articleFacetFilters;
-        	}
-        	return filters.articleFacetFilters;
+            if (filters.articleFacetFilters != undefined && (typeof filters.articleFacetFilters == 'string' || filters.articleFacetFilters instanceof String)) {
+                filters.articleFacetFilters = filters.articleFacetFilters.split(',');
+                return filters.articleFacetFilters;
+            }
+            return filters.articleFacetFilters;
         },
 
         getOrganisationFacetFilters: function() {
@@ -1479,22 +1487,22 @@ service('FilterService', [
         },
         
         getLopFilter: function() {
-        	return filters.lopFilter;
+            return filters.lopFilter;
         },
         
         getEducationCodeFilter: function() {
-        	return filters.educationCodeFilter;
+            return filters.educationCodeFilter;
         },
         
         getExcludes: function() {
-        	if (filters.excludes != undefined && (typeof filters.excludes == 'string' || filters.excludes instanceof String)) {
-        		filters.excludes = filters.excludes.split('|');
-        	}
-        	return filters.excludes;
+            if (filters.excludes != undefined && (typeof filters.excludes == 'string' || filters.excludes instanceof String)) {
+                filters.excludes = filters.excludes.split('|');
+            }
+            return filters.excludes;
         },
         
         getLangCleared: function() {
-        	return filters.langCleared;
+            return filters.langCleared;
         },
 
         getItemsPerPage: function() {

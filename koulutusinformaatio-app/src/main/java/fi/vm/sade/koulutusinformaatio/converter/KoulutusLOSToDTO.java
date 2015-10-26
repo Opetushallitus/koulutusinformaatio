@@ -118,6 +118,7 @@ public class KoulutusLOSToDTO {
                 siblingDto.setId(sibling.getId());
                 siblingDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(sibling.getName(), lang));
                 siblingDto.setActive(los.getId().equals(sibling.getId()));
+                siblingDto.setType(sibling.getType());
                 siblings.add(siblingDto);
             }
             dto.setSiblings(siblings);
@@ -129,6 +130,7 @@ public class KoulutusLOSToDTO {
 
             parentLos.setId(tutkintoLOS.getId());
             parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(tutkintoLOS.getName(), lang));
+            parentLos.setType(tutkintoLOS.getType());
             dto.setParentLos(parentLos);
         }
 
@@ -137,6 +139,7 @@ public class KoulutusLOSToDTO {
             ParentLOSRefDTO parentLos = new ParentLOSRefDTO();
             parentLos.setId(opintokokonaisuus.getId());
             parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(opintokokonaisuus.getName(), lang));
+            parentLos.setType(opintokokonaisuus.getType());
             dto.setParentLos(parentLos);
         }
 
@@ -147,6 +150,7 @@ public class KoulutusLOSToDTO {
                 opintojaksoDto.setId(koulutusLOS.getId());
                 opintojaksoDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(koulutusLOS.getName(), lang));
                 opintojaksoDto.setActive(los.getId().equals(koulutusLOS.getId()));
+                opintojaksoDto.setType(koulutusLOS.getType());
                 opintojaksoDtos.add(opintojaksoDto);
             }
             dto.setSiblings(opintojaksoDtos);
