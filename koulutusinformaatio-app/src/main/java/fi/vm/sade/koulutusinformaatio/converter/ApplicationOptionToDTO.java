@@ -97,6 +97,9 @@ public final class ApplicationOptionToDTO {
             dto.setOrganizationGroups(OrganizationGroupToDTO.convertAll(applicationOption.getOrganizationGroups()));
             dto.setPaid(applicationOption.isPaid());
 
+            dto.setHakuMenettelyKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getHakuMenettelyKuvaukset(), lang));
+            dto.setPeruutusEhdotKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getPeruutusEhdotKuvaukset(), lang));
+
             return dto;
         }
         return null;

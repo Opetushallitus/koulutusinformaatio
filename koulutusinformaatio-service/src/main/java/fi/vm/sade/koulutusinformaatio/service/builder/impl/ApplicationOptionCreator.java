@@ -233,6 +233,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ao.setAdditionalProof(educationObjectCreator.createAdditionalProof(hakukohde.getValintakokeet()));
 
+        ao.setHakuMenettelyKuvaukset(getI18nText(hakukohde.getHakuMenettelyKuvaukset()));
+        ao.setPeruutusEhdotKuvaukset(getI18nText(hakukohde.getPeruutusEhdotKuvaukset()));
+
         if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
             ao.setEducationTypeUri(SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
         }

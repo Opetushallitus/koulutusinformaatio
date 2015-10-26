@@ -1390,6 +1390,9 @@ public class LOSObjectCreator extends ObjectCreator {
                 childOpintojaksos.add(opintojakso);
             }
         }
+        for (KoulutusLOS child : childOpintojaksos) {
+            child.setSiblings(childOpintojaksos);
+        }
         los.setOpintojaksos(childOpintojaksos);
         ArrayList<KoulutusLOS> result = Lists.newArrayList(childOpintojaksos);
         result.add(los);

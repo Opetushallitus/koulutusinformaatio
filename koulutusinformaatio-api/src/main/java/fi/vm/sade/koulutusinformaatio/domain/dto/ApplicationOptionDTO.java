@@ -76,6 +76,8 @@ public class ApplicationOptionDTO {
     private String hakuaikaId;
     private List<OrganizationGroupDTO> organizationGroups;
     private boolean paid;
+    private String hakuMenettelyKuvaukset;
+    private String peruutusEhdotKuvaukset;
 
     public String getId() {
         return id;
@@ -450,6 +452,22 @@ public class ApplicationOptionDTO {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public String getHakuMenettelyKuvaukset() {
+        return hakuMenettelyKuvaukset;
+    }
+
+    public void setHakuMenettelyKuvaukset(String hakuMenettelyKuvaukset) {
+        this.hakuMenettelyKuvaukset = hakuMenettelyKuvaukset;
+    }
+
+    public String getPeruutusEhdotKuvaukset() {
+        return peruutusEhdotKuvaukset;
+    }
+
+    public void setPeruutusEhdotKuvaukset(String peruutusEhdotKuvaukset) {
+        this.peruutusEhdotKuvaukset = peruutusEhdotKuvaukset;
     }
 
 }

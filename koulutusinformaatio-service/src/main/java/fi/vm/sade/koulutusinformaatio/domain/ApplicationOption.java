@@ -93,6 +93,9 @@ public class ApplicationOption {
     private List<String> komotoOids = new ArrayList<String>();
     private boolean paid;
 
+    private I18nText hakuMenettelyKuvaukset;
+    private I18nText peruutusEhdotKuvaukset;
+
 
     public String getId() {
         return id;
@@ -537,6 +540,22 @@ public class ApplicationOption {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public I18nText getHakuMenettelyKuvaukset() {
+        return hakuMenettelyKuvaukset;
+    }
+
+    public void setHakuMenettelyKuvaukset(I18nText hakuMenettelyKuvaukset) {
+        this.hakuMenettelyKuvaukset = hakuMenettelyKuvaukset;
+    }
+
+    public I18nText getPeruutusEhdotKuvaukset() {
+        return peruutusEhdotKuvaukset;
+    }
+
+    public void setPeruutusEhdotKuvaukset(I18nText peruutusEhdotKuvaukset) {
+        this.peruutusEhdotKuvaukset = peruutusEhdotKuvaukset;
     }
 
 }
