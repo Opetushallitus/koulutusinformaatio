@@ -27,7 +27,6 @@ public class HigherEducationLOS extends KoulutusLOS {
     private I18nText infoAboutTeachingLangs;
     private I18nText majorSelection;
     private I18nText finalExam;
-    private I18nText competence;
     private I18nText researchFocus;
     
     
@@ -63,14 +62,6 @@ public class HigherEducationLOS extends KoulutusLOS {
 
     public I18nText getFinalExam() {
         return finalExam;
-    }
-
-    public void setCompetence(I18nText i18nTextEnriched) {
-        this.competence = i18nTextEnriched;
-    }
-
-    public I18nText getCompetence() {
-        return competence;
     }
 
     public void setResearchFocus(I18nText i18nTextEnriched) {

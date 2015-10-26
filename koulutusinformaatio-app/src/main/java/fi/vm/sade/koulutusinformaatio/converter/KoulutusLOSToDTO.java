@@ -164,6 +164,14 @@ public class KoulutusLOSToDTO {
 
         dto.setKoulutusPrerequisite(CodeToDTO.convert(los.getKoulutusPrerequisite(), lang));
 
+        dto.setOpinnonTyyppiUri(los.getOpinnonTyyppiUri());
+        dto.setMaksullisuus(ConverterUtil.getTextByLanguageUseFallbackLang(los.getMaksullisuus(), lang));
+        dto.setEdeltavatOpinnot(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEdeltavatOpinnot(), lang));
+        dto.setArviointi(ConverterUtil.getTextByLanguageUseFallbackLang(los.getArviointi(), lang));
+        dto.setOpetuksenAikaJaPaikka(ConverterUtil.getTextByLanguageUseFallbackLang(los.getOpetuksenAikaJaPaikka(), lang));
+        dto.setLisatietoja(ConverterUtil.getTextByLanguageUseFallbackLang(los.getLisatietoja(), lang));
+        dto.setCompetence(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCompetence(), lang));
+
         return dto;
     }
 

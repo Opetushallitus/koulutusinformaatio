@@ -84,6 +84,15 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     // Status of the lo. For preview
     private String status;
 
+    private String opinnonTyyppiUri;
+
+    private String maksullisuus;
+    private String edeltavatOpinnot;
+    private String arviointi;
+    private String opetuksenAikaJaPaikka;
+    private String lisatietoja;
+    private String competence;
+
     public String getId() {
         return id;
     }
@@ -531,6 +540,62 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setTarjoajanKoulutus(String tarjoajanKoulutus) {
         this.tarjoajanKoulutus = tarjoajanKoulutus;
+    }
+
+    public String getOpinnonTyyppiUri() {
+        return opinnonTyyppiUri;
+    }
+
+    public void setOpinnonTyyppiUri(String opinnonTyyppiUri) {
+        this.opinnonTyyppiUri = opinnonTyyppiUri;
+    }
+
+    public String getMaksullisuus() {
+        return maksullisuus;
+    }
+
+    public void setMaksullisuus(String maksullisuus) {
+        this.maksullisuus = maksullisuus;
+    }
+
+    public String getEdeltavatOpinnot() {
+        return edeltavatOpinnot;
+    }
+
+    public void setEdeltavatOpinnot(String edeltavatOpinnot) {
+        this.edeltavatOpinnot = edeltavatOpinnot;
+    }
+
+    public String getArviointi() {
+        return arviointi;
+    }
+
+    public void setArviointi(String arviointi) {
+        this.arviointi = arviointi;
+    }
+
+    public String getOpetuksenAikaJaPaikka() {
+        return opetuksenAikaJaPaikka;
+    }
+
+    public void setOpetuksenAikaJaPaikka(String opetuksenAikaJaPaikka) {
+        this.opetuksenAikaJaPaikka = opetuksenAikaJaPaikka;
+    }
+
+    public String getLisatietoja() {
+        return lisatietoja;
+    }
+
+    public void setLisatietoja(String lisatietoja) {
+        this.lisatietoja = lisatietoja;
+    }
+
+    public String getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(String competence) {
+        this.competence = competence;
     }
 
 }

@@ -95,6 +95,14 @@ public class KoulutusLOS extends LOS {
     private String opettaja;
     private String opinnonTyyppiUri;
     private String tarjoajanKoulutus;
+    
+    private I18nText maksullisuus;
+    private I18nText edeltavatOpinnot;
+    private I18nText arviointi;
+    private I18nText opetuksenAikaJaPaikka;
+    private I18nText lisatietoja;
+
+    private I18nText competence;
 
     public String getId() {
         return id;
@@ -601,6 +609,54 @@ public class KoulutusLOS extends LOS {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public I18nText getMaksullisuus() {
+        return maksullisuus;
+    }
+
+    public void setMaksullisuus(I18nText maksullisuus) {
+        this.maksullisuus = maksullisuus;
+    }
+
+    public I18nText getEdeltavatOpinnot() {
+        return edeltavatOpinnot;
+    }
+
+    public void setEdeltavatOpinnot(I18nText edeltavatOpinnot) {
+        this.edeltavatOpinnot = edeltavatOpinnot;
+    }
+
+    public I18nText getArviointi() {
+        return arviointi;
+    }
+
+    public void setArviointi(I18nText arviointi) {
+        this.arviointi = arviointi;
+    }
+
+    public I18nText getOpetuksenAikaJaPaikka() {
+        return opetuksenAikaJaPaikka;
+    }
+
+    public void setOpetuksenAikaJaPaikka(I18nText opetuksenAikaJaPaikka) {
+        this.opetuksenAikaJaPaikka = opetuksenAikaJaPaikka;
+    }
+
+    public I18nText getLisatietoja() {
+        return lisatietoja;
+    }
+
+    public void setLisatietoja(I18nText lisatietoja) {
+        this.lisatietoja = lisatietoja;
+    }
+
+    public I18nText getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(I18nText competence) {
+        this.competence = competence;
     }
 
 }

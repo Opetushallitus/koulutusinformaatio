@@ -865,6 +865,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setSubjects(getSubjects(koulutus.getOppiaineet()));
         los.setOpinnonTyyppiUri(koulutus.getOpinnonTyyppiUri());
         los.setTarjoajanKoulutus(koulutus.getTarjoajanKoulutus());
+
     }
 
     private <S extends KoulutusV1RDTO, T extends KoulutusLOS> void addKoulutusV1Fields(S koulutus, T los, boolean checkStatus, String aoType,
@@ -946,6 +947,36 @@ public class LOSObjectCreator extends ObjectCreator {
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA).getTekstis().containsKey(UNDEFINED)) {
             los.setSelectingDegreeProgram(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA)));
         }
+
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS).getTekstis().containsKey(UNDEFINED)) {
+            los.setMaksullisuus(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS)));
+        }
+
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.EDELTAVAT_OPINNOT) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.EDELTAVAT_OPINNOT).getTekstis().containsKey(UNDEFINED)) {
+            los.setEdeltavatOpinnot(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.EDELTAVAT_OPINNOT)));
+        }
+
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.ARVIOINTIKRITEERIT) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.ARVIOINTIKRITEERIT).getTekstis().containsKey(UNDEFINED)) {
+            los.setArviointi(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.ARVIOINTIKRITEERIT)));
+        }
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.OPETUKSEN_AIKA_JA_PAIKKA) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.OPETUKSEN_AIKA_JA_PAIKKA).getTekstis().containsKey(UNDEFINED)) {
+            los.setOpetuksenAikaJaPaikka(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.OPETUKSEN_AIKA_JA_PAIKKA)));
+        }
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIEDOT) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIEDOT).getTekstis().containsKey(UNDEFINED)) {
+            los.setLisatietoja(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIEDOT)));
+        }
+
+        if (koulutus.getKuvausKomo().get(KomoTeksti.PATEVYYS) != null
+                && !koulutus.getKuvausKomo().get(KomoTeksti.PATEVYYS).getTekstis().containsKey(UNDEFINED)) {
+            los.setCompetence(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.PATEVYYS)));
+        }
+
+        // TODO: varmista että kaikki KomotoTekstityypit löytyvät tästä generoinnista
 
         los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));
 

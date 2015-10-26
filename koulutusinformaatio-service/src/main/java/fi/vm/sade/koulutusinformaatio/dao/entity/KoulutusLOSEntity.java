@@ -152,7 +152,22 @@ public class KoulutusLOSEntity {
     private List<KoulutusLOSEntity> opintojaksos = Lists.newArrayList();
 
     private String opettaja;
+    private String opinnonTyyppiUri;
     private String tarjoajanKoulutus;
+
+    @Embedded
+    private I18nTextEntity maksullisuus;
+    @Embedded
+    private I18nTextEntity edeltavatOpinnot;
+    @Embedded
+    private I18nTextEntity arviointi;
+    @Embedded
+    private I18nTextEntity opetuksenAikaJaPaikka;
+    @Embedded
+    private I18nTextEntity lisatietoja;
+
+    @Embedded
+    private I18nTextEntity competence;
 
     public String getId() {
         return id;
@@ -666,6 +681,62 @@ public class KoulutusLOSEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getOpinnonTyyppiUri() {
+        return opinnonTyyppiUri;
+    }
+
+    public void setOpinnonTyyppiUri(String opinnonTyyppiUri) {
+        this.opinnonTyyppiUri = opinnonTyyppiUri;
+    }
+
+    public I18nTextEntity getMaksullisuus() {
+        return maksullisuus;
+    }
+
+    public void setMaksullisuus(I18nTextEntity maksullisuus) {
+        this.maksullisuus = maksullisuus;
+    }
+
+    public I18nTextEntity getEdeltavatOpinnot() {
+        return edeltavatOpinnot;
+    }
+
+    public void setEdeltavatOpinnot(I18nTextEntity edeltavatOpinnot) {
+        this.edeltavatOpinnot = edeltavatOpinnot;
+    }
+
+    public I18nTextEntity getArviointi() {
+        return arviointi;
+    }
+
+    public void setArviointi(I18nTextEntity arviointi) {
+        this.arviointi = arviointi;
+    }
+
+    public I18nTextEntity getOpetuksenAikaJaPaikka() {
+        return opetuksenAikaJaPaikka;
+    }
+
+    public void setOpetuksenAikaJaPaikka(I18nTextEntity opetuksenAikaJaPaikka) {
+        this.opetuksenAikaJaPaikka = opetuksenAikaJaPaikka;
+    }
+
+    public I18nTextEntity getLisatietoja() {
+        return lisatietoja;
+    }
+
+    public void setLisatietoja(I18nTextEntity lisatietoja) {
+        this.lisatietoja = lisatietoja;
+    }
+
+    public I18nTextEntity getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(I18nTextEntity competence) {
+        this.competence = competence;
     }
 
 }
