@@ -32,7 +32,6 @@ import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -72,67 +71,55 @@ public class TarjontaServiceImplTest {
                 providerService, tarjontaRawService, organisaatioRawService, mock(ParameterService.class));
         
         mockHigherEdRawRes();
-        this.mockCalendarApplicationSystems();
+        mockCalendarApplicationSystems();
+        service.setCreator(creator);
     }
 
     private void mockHigherEdRawRes() {
-    	
-    	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = new ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>();
-    	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = new HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>();
-    	List<TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>> resSets = new ArrayList<TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>>();
-    	TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> resSet = new TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>();
-    	List<KoulutusHakutulosV1RDTO> koulTulokset = new ArrayList<KoulutusHakutulosV1RDTO>();
-    	KoulutusHakutulosV1RDTO koulJulk = new KoulutusHakutulosV1RDTO();
-    	koulJulk.setOid("1.2.3.4");
-    	koulJulk.setTila(TarjontaTila.JULKAISTU);
-    	koulTulokset.add(koulJulk);
-    	KoulutusHakutulosV1RDTO koulEiJulk = new KoulutusHakutulosV1RDTO();
-    	koulEiJulk.setOid("2.2.3.4");
-    	koulEiJulk.setTila(TarjontaTila.VALMIS);
-    	koulTulokset.add(koulEiJulk);
-    	resSet.setTulokset(koulTulokset);
-    	resSets.add(resSet);
-    	results.setTulokset(resSets);
-    	rawRes.setResult(results);
+        
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = new ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>();
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = new HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>();
+        List<TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>> resSets = new ArrayList<TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>>();
+        TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> resSet = new TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>();
+        List<KoulutusHakutulosV1RDTO> koulTulokset = new ArrayList<KoulutusHakutulosV1RDTO>();
+        KoulutusHakutulosV1RDTO koulJulk = new KoulutusHakutulosV1RDTO();
+        koulJulk.setOid("1.2.3.4");
+        koulJulk.setTila(TarjontaTila.JULKAISTU);
+        koulTulokset.add(koulJulk);
+        resSet.setTulokset(koulTulokset);
+        resSets.add(resSet);
+        results.setTulokset(resSets);
+        rawRes.setResult(results);
         when(tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.KORKEAKOULUTUS.name())).thenReturn(rawRes);
-    	
-    	ResultV1RDTO<KoulutusV1RDTO> koulutusRes = new ResultV1RDTO<KoulutusV1RDTO>();
-    	KoulutusKorkeakouluV1RDTO koulutus1 = new KoulutusKorkeakouluV1RDTO();
-    	koulutus1.setOid(koulJulk.getOid());
-    	koulutus1.setTila(TarjontaTila.JULKAISTU);
-    	koulutusRes.setResult(koulutus1);
-    	
-    	
-    	when(tarjontaRawService.getV1KoulutusLearningOpportunity(koulJulk.getOid())).thenReturn(koulutusRes);
-    	
-    	ResultV1RDTO<KoulutusV1RDTO> koulutusRes2 = new ResultV1RDTO<KoulutusV1RDTO>();
-    	KoulutusKorkeakouluV1RDTO koulutus2 = new KoulutusKorkeakouluV1RDTO();
-    	koulutus2.setOid(koulEiJulk.getOid());
-    	koulutus2.setTila(TarjontaTila.VALMIS);
-    	koulutusRes2.setResult(koulutus2);
-    	
-    	when(tarjontaRawService.getV1KoulutusLearningOpportunity(koulEiJulk.getOid())).thenReturn(koulutusRes2);
-    	creator = mock(LOSObjectCreator.class);//new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
-    	service.setCreator(creator);
-    	
-    	
-    	try {
-    		HigherEducationLOS los1 = new HigherEducationLOS();
-        	los1.setId(koulJulk.getOid());
-    		when(creator.createHigherEducationLOS(koulutus1, true)).thenReturn(los1);
-    	
-    		HigherEducationLOS los2 = new HigherEducationLOS();
-    		los2.setId(koulEiJulk.getOid());
-    		when(creator.createHigherEducationLOS(koulutus2, false)).thenReturn(los2);
-    	} catch (Exception ex) {
-    		ex.printStackTrace();
-    	}
-    	
+        
+        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = new ResultV1RDTO<KoulutusV1RDTO>();
+        KoulutusKorkeakouluV1RDTO koulutus1 = new KoulutusKorkeakouluV1RDTO();
+        koulutus1.setOid(koulJulk.getOid());
+        koulutus1.setTila(TarjontaTila.JULKAISTU);
+        koulutusRes.setResult(koulutus1);
+        
+        when(tarjontaRawService.getV1KoulutusLearningOpportunity(koulJulk.getOid())).thenReturn(koulutusRes);
+        
+        ResultV1RDTO<KoulutusV1RDTO> koulutusRes2 = new ResultV1RDTO<KoulutusV1RDTO>();
+        KoulutusKorkeakouluV1RDTO koulutus2 = new KoulutusKorkeakouluV1RDTO();
+        koulutus2.setTila(TarjontaTila.VALMIS);
+        koulutusRes2.setResult(koulutus2);
+        
+        creator = mock(LOSObjectCreator.class);//new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+        
+        try {
+            HigherEducationLOS los1 = new HigherEducationLOS();
+            los1.setId(koulJulk.getOid());
+            when(creator.createHigherEducationLOS(koulutus1, true)).thenReturn(los1);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
 
         when(tarjontaRawService.getChildrenOfParentHigherEducationLOS(null)).thenReturn(null);
         when(tarjontaRawService.getParentsOfHigherEducationLOS(null)).thenReturn(null);
         
-	}
+    }
     
     private void mockCalendarApplicationSystems() {
         
@@ -166,14 +153,8 @@ public class TarjontaServiceImplTest {
     
     @Test
     public void testFindHigherEducations() throws KoodistoException, IOException, ResourceNotFoundException {
-    	List<HigherEducationLOS> higherEds = service.findHigherEducations();
-    	assertEquals(higherEds.size(), 1);
-    }
-    
-    @Test
-    public void testfindHigherEducationLearningOpportunity() throws TarjontaParseException, KoodistoException, IOException, ResourceNotFoundException {
-    	HigherEducationLOS nonPublished = service.findHigherEducationLearningOpportunity("2.2.3.4");
-    	assertEquals(nonPublished.getId(), "2.2.3.4");
+        List<HigherEducationLOS> higherEds = service.findHigherEducations();
+        assertEquals(higherEds.size(), 1);
     }
     
     @Test

@@ -1,0 +1,102 @@
+{
+  "params" : null,
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1445515886102,
+    "modifiedBy" : "1.2.246.562.24.00000000001",
+    "oid" : "1.2.246.562.20.17319592006",
+    "version" : 1,
+    "hakukohteenNimi" : null,
+    "hakukohteenNimiUri" : null,
+    "hakukohteenNimet" : {
+      "kieli_fi" : "Opintokokonaisuuden hakukohde"
+    },
+    "tarjoajaNimet" : {
+      "fi" : "Aalto-korkeakoulusäätiö"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+      "1.2.246.562.17.52083499963" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.82388989657" ]
+      }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.82388989657" ],
+    "hakuOid" : "1.2.246.562.29.40204812131",
+    "hakuaikaId" : "4084169",
+    "hakukelpoisuusvaatimusUris" : [ ],
+    "opintoOikeusUris" : [ ],
+    "hakukohdeKoulutusOids" : [ "1.2.246.562.17.52083499963" ],
+    "hakuaikaAlkuPvm" : null,
+    "hakuaikaLoppuPvm" : null,
+    "alinHyvaksyttavaKeskiarvo" : 0.0,
+    "alinValintaPistemaara" : 0,
+    "ylinValintapistemaara" : 0,
+    "aloituspaikatLkm" : 0,
+    "edellisenVuodenHakijatLkm" : 0,
+    "valintojenAloituspaikatLkm" : 0,
+    "sahkoinenToimitusOsoite" : null,
+    "soraKuvausKoodiUri" : null,
+    "tila" : "JULKAISTU",
+    "valintaperustekuvausKoodiUri" : null,
+    "liitteidenToimitusPvm" : null,
+    "ulkoinenTunniste" : null,
+    "koulutusAsteTyyppi" : "KORKEAKOULUTUS",
+    "toteutusTyyppi" : "KORKEAKOULUOPINTO",
+    "koulutusmoduuliTyyppi" : "OPINTOKOKONAISUUS",
+    "koulutuslaji" : null,
+    "lisatiedot" : {
+      "kieli_sv" : "",
+      "kieli_en" : "",
+      "kieli_fi" : ""
+    },
+    "valintaperusteKuvaukset" : null,
+    "soraKuvaukset" : null,
+    "hakukelpoisuusVaatimusKuvaukset" : { },
+    "aloituspaikatKuvaukset" : null,
+    "kaytetaanJarjestelmanValintaPalvelua" : true,
+    "kaytetaanHaunPaattymisenAikaa" : false,
+    "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+    "hakukohteenLiitteet" : [ ],
+    "yhteystiedot" : [ ],
+    "liitteidenToimitusOsoite" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : null,
+      "version" : 0,
+      "osoiterivi1" : "PL 11110",
+      "osoiterivi2" : null,
+      "postinumero" : "posti_00076",
+      "postinumeroArvo" : "00076",
+      "postitoimipaikka" : "AALTO"
+    },
+    "valintakokeet" : [ ],
+    "valintaPerusteKuvausTunniste" : null,
+    "kaksoisTutkinto" : false,
+    "soraKuvausTunniste" : null,
+    "opetusKielet" : [ "kieli_fi" ],
+    "valintaPerusteKuvausKielet" : [ ],
+    "soraKuvausKielet" : [ ],
+    "painotettavatOppiaineet" : [ ],
+    "hakuMenettelyKuvaukset" : {
+      "kieli_sv" : "",
+      "kieli_en" : "",
+      "kieli_fi" : ""
+    },
+    "peruutusEhdotKuvaukset" : {
+      "kieli_sv" : "",
+      "kieli_en" : "",
+      "kieli_fi" : ""
+    },
+    "ryhmaliitokset" : [ ],
+    "organisaatioRyhmaOids" : [ ],
+    "ylioppilastutkintoAntaaHakukelpoisuuden" : false,
+    "kelaLinjaKoodi" : null,
+    "kelaLinjaTarkenne" : null,
+    "ensikertalaistenAloituspaikat" : null
+  },
+  "status" : "OK",
+  "errors" : null,
+  "accessRights" : { }
+}

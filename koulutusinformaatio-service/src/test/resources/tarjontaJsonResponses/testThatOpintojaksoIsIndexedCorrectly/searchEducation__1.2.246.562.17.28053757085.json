@@ -1,0 +1,60 @@
+{
+  "status" : "OK",
+  "params" : null,
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.82388989657",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Aalto-korkeakoulusäätiö"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.17.28053757085",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Opintojakso 1"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : "kausi_s#1",
+        "vuosi" : 2015,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "KORKEAKOULUTUS",
+        "toteutustyyppiEnum" : "KORKEAKOULUOPINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : 1446069600000,
+        "koulutuksenAlkamisPvmMax" : 1446069600000,
+        "tarjoajat" : [ "1.2.246.562.10.82388989657" ],
+        "koulutusmoduuliTyyppi" : "OPINTOJAKSO",
+        "komoOid" : "1.2.246.562.13.98222067427",
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : "1.2.246.562.13.50124886206",
+        "siblingKomotos" : null,
+        "koulutuslaji" : { }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "accessRights" : { },
+  "errors" : null
+}

@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.integrationtest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -227,6 +228,27 @@ public class IncrementalIndexerTest {
         assertEquals("1.2.246.562.17.79497399471", adultLosses.get(0).getId());
 
     }
+
+    @Test
+    public void testThatOpintojaksoIsIndexedCorrectly() throws Exception {
+
+        LogManager.getLogManager().reset();
+
+        tarjontaRawServiceMock.setTestCase("testThatOpintojaksoIsIndexedCorrectly");
+        KoulutusLOSEntity opintojakso = koulutusLOSDAO.get("1.2.246.562.17.28053757085");
+        KoulutusLOSEntity opintokokonaisuus = koulutusLOSDAO.get("1.2.246.562.17.52083499963");
+        assertNull(opintojakso);
+        assertNull(opintokokonaisuus);
+
+        incrementalUpdateService.updateChangedEducationData();
+
+        opintojakso = koulutusLOSDAO.get("1.2.246.562.17.28053757085");
+        opintokokonaisuus = koulutusLOSDAO.get("1.2.246.562.17.52083499963");
+        assertNotNull(opintojakso);
+        assertNotNull(opintokokonaisuus);
+        // TODO: testaa loppuun asti
+    }
+
 
     private void validateTutkinto(TutkintoLOSEntity tutkinto, List<String> allowedTutkinToIDs) {
         assertTrue("Tutkinto " + tutkinto.getId() + " has no application options.", tutkinto.getApplicationOptions().size() > 0);

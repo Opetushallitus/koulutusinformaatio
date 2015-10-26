@@ -175,6 +175,22 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Higher educations saved.");
             tarjontaService.clearProcessedLists();
 
+
+            List<KoulutusHakutulosV1RDTO> opintojaksot = this.tarjontaService.findKorkeakouluOpinnot();
+            LOG.info("Found opintojaksot: {}", opintojaksot.size());
+            for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
+                LOG.debug("Saving opintojaksoeducation: {}", dto.getOid());
+                List<KoulutusLOS> losses = tarjontaService.createKorkeakouluopinto(dto);
+                for (KoulutusLOS los : losses) {
+                    indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                    this.educationDataUpdateService.save(los);
+
+                }
+            }
+            LOG.info("Korkeakoulu opintos saved.");
+            tarjontaService.clearProcessedLists();
+
+
             // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
             List<AdultUpperSecondaryLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
             LOG.info("Found adult upper secondary  and base educations: {}", adultEducations.size());
@@ -309,21 +325,15 @@ public class UpdateServiceImpl implements UpdateService {
         }
     }
 
-    private void indexToSolr(KoulutusLOS curLOS,
+    private void indexToSolr(LOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         if (curLOS instanceof HigherEducationLOS) {
-            for (HigherEducationLOS curChild: ((HigherEducationLOS)curLOS).getChildren()) {
+            for (HigherEducationLOS curChild : ((HigherEducationLOS) curLOS).getChildren()) {
                 indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             }
         }
-    }
-
-    private void indexToSolr(LOS los,
-            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-        this.indexerService.addLearningOpportunitySpecification(los, loUpdateSolr, lopUpdateSolr);
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
     }
 
     @Override

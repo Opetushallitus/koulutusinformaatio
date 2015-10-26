@@ -116,7 +116,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setOrganizationGroups(educationObjectCreator.createOrganizationGroups(hakukohde.getRyhmaliitokset(), hakukohde.getOrganisaatioRyhmaOids()));
         ao.setKaksoistutkinto(hakukohde.getKaksoisTutkinto());
         ao.setVocational(SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType()));
-        ao.setEducationCodeUri(los.getEducationCode().getUri());
+        if (los.getEducationCode() != null) {
+            ao.setEducationCodeUri(los.getEducationCode().getUri());
+        }
         ao.setPrerequisite(los.getKoulutusPrerequisite());
         
         List<String> baseEducations = new ArrayList<String>();

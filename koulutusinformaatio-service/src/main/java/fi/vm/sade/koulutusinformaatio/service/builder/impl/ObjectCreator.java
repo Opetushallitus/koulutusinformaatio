@@ -126,6 +126,13 @@ public abstract class ObjectCreator {
         return translUris;
     }
 
+    protected I18nText getI18nTextEnriched(KoodiV1RDTO koodi) throws KoodistoException {
+        if (koodi != null) {
+            return getI18nTextEnriched(koodi.getMeta());
+        }
+        return null;
+    }
+
     protected I18nText getI18nTextEnriched(Map<String, KoodiV1RDTO> meta) throws KoodistoException {
         if (meta != null && !meta.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();

@@ -15,12 +15,13 @@
  */
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
@@ -39,6 +40,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String educationDegreeName;
     private String degreeTitle;
     private Date startDate;
+    private Date endDate;
     private List<Date> startDates;
     private String plannedDuration;
     private String plannedDurationUnit;
@@ -75,6 +77,9 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private Set<ChildLOIRefDTO> siblings;
     private ParentLOSRefDTO parentLos;
     private CodeDTO koulutusPrerequisite;
+    private Map<String, List<String>> subjects;
+    private String opettaja;
+    private String tarjoajanKoulutus;
 
     // Status of the lo. For preview
     private String status;
@@ -494,6 +499,38 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setKoulutusPrerequisite(CodeDTO koulutusPrerequisite) {
         this.koulutusPrerequisite = koulutusPrerequisite;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Map<String, List<String>> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Map<String, List<String>> subjects) {
+        this.subjects = subjects;
+    }
+
+    public String getOpettaja() {
+        return opettaja;
+    }
+
+    public void setOpettaja(String opettaja) {
+        this.opettaja = opettaja;
+    }
+
+    public String getTarjoajanKoulutus() {
+        return tarjoajanKoulutus;
+    }
+
+    public void setTarjoajanKoulutus(String tarjoajanKoulutus) {
+        this.tarjoajanKoulutus = tarjoajanKoulutus;
     }
 
 }

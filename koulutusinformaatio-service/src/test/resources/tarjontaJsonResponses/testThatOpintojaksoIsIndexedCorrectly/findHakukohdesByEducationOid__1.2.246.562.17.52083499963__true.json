@@ -1,0 +1,71 @@
+{
+  "params" : null,
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.82388989657",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Aalto-korkeakoulusäätiö"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.17319592006",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Opintokokonaisuuden hakukohde"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2015,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "KORKEAKOULUTUS",
+        "toteutustyyppiEnum" : "KORKEAKOULUOPINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "OPINTOKOKONAISUUS",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Erillishaku",
+          "sv" : "Separata antagningar",
+          "en" : "Erillishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "Ensimmäinen hakuaika (2015-10-01 15:00 - 2016-10-01 15:00)",
+        "aloituspaikat" : 0,
+        "hakuOid" : "1.2.246.562.29.40204812131",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : { }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "status" : "OK",
+  "errors" : null,
+  "accessRights" : { }
+}

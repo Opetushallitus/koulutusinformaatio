@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+
 public class KoulutusLOS extends LOS {
 
     // Varmistetut
@@ -23,6 +25,7 @@ public class KoulutusLOS extends LOS {
     private I18nText educationDegreeLang;
     private I18nText degreeTitle;
     private Date startDate;
+    private Date endDate;
     private List<Date> startDates;
     private String plannedDuration;
     private I18nText plannedDurationUnit;
@@ -83,6 +86,15 @@ public class KoulutusLOS extends LOS {
     private List<KoulutusLOS> siblings = new ArrayList<KoulutusLOS>();
 
     private boolean osaamisalaton;
+
+    //Tutkintoon johtamattoman LOSin kentät
+
+    private KoulutusLOS opintokokonaisuus;
+    private List<KoulutusLOS> opintojaksos = Lists.newArrayList();
+
+    private String opettaja;
+    private String opinnonTyyppiUri;
+    private String tarjoajanKoulutus;
 
     public String getId() {
         return id;
@@ -541,6 +553,54 @@ public class KoulutusLOS extends LOS {
 
     public void setOsaamisalaton(boolean osaamisalaton) {
         this.osaamisalaton = osaamisalaton;
+    }
+
+    public KoulutusLOS getOpintokokonaisuus() {
+        return opintokokonaisuus;
+    }
+
+    public void setOpintokokonaisuus(KoulutusLOS opintokokonaisuus) {
+        this.opintokokonaisuus = opintokokonaisuus;
+    }
+
+    public List<KoulutusLOS> getOpintojaksos() {
+        return opintojaksos;
+    }
+
+    public void setOpintojaksos(List<KoulutusLOS> opintojaksos) {
+        this.opintojaksos = opintojaksos;
+    }
+
+    public String getOpettaja() {
+        return opettaja;
+    }
+
+    public void setOpettaja(String opettaja) {
+        this.opettaja = opettaja;
+    }
+
+    public String getOpinnonTyyppiUri() {
+        return opinnonTyyppiUri;
+    }
+
+    public void setOpinnonTyyppiUri(String opinnonTyyppiUri) {
+        this.opinnonTyyppiUri = opinnonTyyppiUri;
+    }
+
+    public String getTarjoajanKoulutus() {
+        return tarjoajanKoulutus;
+    }
+
+    public void setTarjoajanKoulutus(String tarjoajanKoulutus) {
+        this.tarjoajanKoulutus = tarjoajanKoulutus;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
 }

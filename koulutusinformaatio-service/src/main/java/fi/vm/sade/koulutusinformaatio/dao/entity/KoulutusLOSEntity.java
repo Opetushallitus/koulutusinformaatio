@@ -9,8 +9,11 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+
 /**
  *
  * @author Markus
@@ -56,6 +59,7 @@ public class KoulutusLOSEntity {
     @Embedded
     private List<Date> startDates;
     private Date startDate;
+    private Date endDate;
     private String plannedDuration;
 
     @Embedded
@@ -84,7 +88,6 @@ public class KoulutusLOSEntity {
     private String komoOid;
     @Embedded
     private List<I18nTextEntity> formOfTeaching;
-
 
     @Embedded
     private List<CodeEntity> prerequisites;
@@ -143,57 +146,82 @@ public class KoulutusLOSEntity {
 
     private ToteutustyyppiEnum toteutustyyppi;
 
+    @Reference
+    private KoulutusLOSEntity opintokokonaisuus;
+    @Reference
+    private List<KoulutusLOSEntity> opintojaksos = Lists.newArrayList();
+
+    private String opettaja;
+    private String tarjoajanKoulutus;
+
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
+
     public I18nTextEntity getContent() {
         return content;
     }
+
     public void setContent(I18nTextEntity content) {
         this.content = content;
     }
+
     public I18nTextEntity getGoals() {
         return goals;
     }
+
     public void setGoals(I18nTextEntity goals) {
         this.goals = goals;
     }
+
     public I18nTextEntity getStructure() {
         return structure;
     }
+
     public void setStructure(I18nTextEntity structure) {
         this.structure = structure;
     }
+
     public I18nTextEntity getInternationalization() {
         return internationalization;
     }
+
     public void setInternationalization(I18nTextEntity internationalization) {
         this.internationalization = internationalization;
     }
+
     public I18nTextEntity getCooperation() {
         return cooperation;
     }
+
     public void setCooperation(I18nTextEntity cooperation) {
         this.cooperation = cooperation;
     }
+
     public I18nTextEntity getAccessToFurtherStudies() {
         return accessToFurtherStudies;
     }
+
     public void setAccessToFurtherStudies(I18nTextEntity accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
     }
+
     public List<ContactPersonEntity> getContactPersons() {
         return contactPersons;
     }
+
     public void setContactPersons(List<ContactPersonEntity> contactPersons) {
         this.contactPersons = contactPersons;
     }
+
     public I18nTextEntity getEducationDomain() {
         return educationDomain;
     }
+
     public void setEducationDomain(I18nTextEntity educationDomain) {
         this.educationDomain = educationDomain;
     }
@@ -209,97 +237,128 @@ public class KoulutusLOSEntity {
     public I18nTextEntity getName() {
         return name;
     }
+
     public void setName(I18nTextEntity name) {
         this.name = name;
     }
+
     public I18nTextEntity getKoulutuskoodi() {
         return koulutuskoodi;
     }
+
     public void setKoulutuskoodi(I18nTextEntity koulutuskoodi) {
         this.koulutuskoodi = koulutuskoodi;
     }
+
     public String getEducationDegree() {
         return educationDegree;
     }
+
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
     }
+
     public I18nTextEntity getDegreeTitle() {
         return degreeTitle;
     }
+
     public void setDegreeTitle(I18nTextEntity degreeTitle) {
         this.degreeTitle = degreeTitle;
     }
+
     public Date getStartDate() {
         return startDate;
     }
+
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+
     public String getPlannedDuration() {
         return plannedDuration;
     }
+
     public void setPlannedDuration(String plannedDuration) {
         this.plannedDuration = plannedDuration;
     }
+
     public I18nTextEntity getPlannedDurationUnit() {
         return plannedDurationUnit;
     }
+
     public void setPlannedDurationUnit(I18nTextEntity plannedDurationUnit) {
         this.plannedDurationUnit = plannedDurationUnit;
     }
+
     public String getPduCodeUri() {
         return pduCodeUri;
     }
+
     public void setPduCodeUri(String pduCodeUri) {
         this.pduCodeUri = pduCodeUri;
     }
+
     public String getCreditValue() {
         return creditValue;
     }
+
     public void setCreditValue(String creditValue) {
         this.creditValue = creditValue;
     }
+
     public I18nTextEntity getDegree() {
         return degree;
     }
+
     public void setDegree(I18nTextEntity degree) {
         this.degree = degree;
     }
+
     public List<I18nTextEntity> getQualifications() {
         return qualifications;
     }
+
     public void setQualifications(List<I18nTextEntity> qualifications) {
         this.qualifications = qualifications;
     }
+
     public CodeEntity getEducationCode() {
         return educationCode;
     }
+
     public void setEducationCode(CodeEntity educationCode) {
         this.educationCode = educationCode;
     }
+
     public List<CodeEntity> getTeachingLanguages() {
         return teachingLanguages;
     }
+
     public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
     }
+
     public LearningOpportunityProviderEntity getProvider() {
         return provider;
     }
+
     public void setProvider(LearningOpportunityProviderEntity provider) {
         this.provider = provider;
     }
+
     public List<ApplicationOptionEntity> getApplicationOptions() {
         return applicationOptions;
     }
+
     public void setApplicationOptions(
             List<ApplicationOptionEntity> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
+
     public String getKomoOid() {
         return komoOid;
     }
+
     public void setKomoOid(String komoOid) {
         this.komoOid = komoOid;
     }
@@ -307,12 +366,15 @@ public class KoulutusLOSEntity {
     public String getType() {
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }
+
     public List<I18nTextEntity> getFormOfTeaching() {
         return formOfTeaching;
     }
+
     public void setFormOfTeaching(List<I18nTextEntity> formOfTeaching) {
         this.formOfTeaching = formOfTeaching;
     }
@@ -320,139 +382,184 @@ public class KoulutusLOSEntity {
     public List<CodeEntity> getPrerequisites() {
         return prerequisites;
     }
+
     public void setPrerequisites(List<CodeEntity> prerequisites) {
         this.prerequisites = prerequisites;
     }
+
     public I18nTextEntity getCreditUnit() {
         return creditUnit;
     }
+
     public void setCreditUnit(I18nTextEntity creditUnit) {
         this.creditUnit = creditUnit;
     }
+
     public I18nTextEntity getEducationDegreeLang() {
         return educationDegreeLang;
     }
+
     public void setEducationDegreeLang(I18nTextEntity educationDegreeLang) {
         this.educationDegreeLang = educationDegreeLang;
     }
+
     public List<I18nTextEntity> getTeachingTimes() {
         return teachingTimes;
     }
+
     public void setTeachingTimes(List<I18nTextEntity> teachingTimes) {
         this.teachingTimes = teachingTimes;
     }
+
     public List<I18nTextEntity> getTeachingPlaces() {
         return teachingPlaces;
     }
+
     public void setTeachingPlaces(List<I18nTextEntity> teachingPlaces) {
         this.teachingPlaces = teachingPlaces;
     }
+
     public I18nTextEntity getStartSeason() {
         return startSeason;
     }
+
     public void setStartSeason(I18nTextEntity startSeason) {
         this.startSeason = startSeason;
     }
+
     public int getStartYear() {
         return startYear;
     }
+
     public void setStartYear(int startYear) {
         this.startYear = startYear;
     }
+
     public List<CodeEntity> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
+
     public void setAvailableTranslationLanguages(List<CodeEntity> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
+
     public List<CodeEntity> getFacetPrerequisites() {
         return facetPrerequisites;
     }
+
     public void setFacetPrerequisites(List<CodeEntity> facetPrerequisites) {
         this.facetPrerequisites = facetPrerequisites;
     }
+
     public List<CodeEntity> getTopics() {
         return topics;
     }
+
     public void setTopics(List<CodeEntity> topics) {
         this.topics = topics;
     }
+
     public List<CodeEntity> getThemes() {
         return themes;
     }
+
     public void setThemes(List<CodeEntity> themes) {
         this.themes = themes;
     }
+
     public String getEducationType() {
         return educationType;
     }
+
     public void setEducationType(String educationType) {
         this.educationType = educationType;
     }
+
     public List<CodeEntity> getFotFacet() {
         return fotFacet;
     }
+
     public void setFotFacet(List<CodeEntity> fotFacet) {
         this.fotFacet = fotFacet;
     }
+
     public List<CodeEntity> getTimeOfTeachingFacet() {
         return timeOfTeachingFacet;
     }
+
     public void setTimeOfTeachingFacet(List<CodeEntity> timeOfTeachingFacet) {
         this.timeOfTeachingFacet = timeOfTeachingFacet;
     }
+
     public List<CodeEntity> getFormOfStudyFacet() {
         return formOfStudyFacet;
     }
+
     public void setFormOfStudyFacet(List<CodeEntity> formOfStudyFacet) {
         this.formOfStudyFacet = formOfStudyFacet;
     }
+
     public CodeEntity getKoulutuslaji() {
         return koulutuslaji;
     }
+
     public void setKoulutuslaji(CodeEntity koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
     }
+
     public I18nTextEntity getTargetGroup() {
         return targetGroup;
     }
+
     public void setTargetGroup(I18nTextEntity targetGroup) {
         this.targetGroup = targetGroup;
     }
+
     public I18nTextEntity getSubjectsAndCourses() {
         return subjectsAndCourses;
     }
+
     public void setSubjectsAndCourses(I18nTextEntity subjectsAndCourses) {
         this.subjectsAndCourses = subjectsAndCourses;
     }
+
     public List<LanguageSelection> getLanguageSelection() {
         return languageSelection;
     }
+
     public void setLanguageSelection(List<LanguageSelection> languageSelection) {
         this.languageSelection = languageSelection;
     }
+
     public List<I18nTextEntity> getDiplomas() {
         return diplomas;
     }
+
     public void setDiplomas(List<I18nTextEntity> diplomas) {
         this.diplomas = diplomas;
     }
+
     public List<LearningOpportunityProviderEntity> getAdditionalProviders() {
         return additionalProviders;
     }
+
     public void setAdditionalProviders(
             List<LearningOpportunityProviderEntity> additionalProviders) {
         this.additionalProviders = additionalProviders;
     }
-	public List<I18nTextEntity> getDegreeTitles() {
-		return degreeTitles;
-	}
-	public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
-		this.degreeTitles = degreeTitles;
-	}
+
+    public List<I18nTextEntity> getDegreeTitles() {
+        return degreeTitles;
+    }
+
+    public void setDegreeTitles(List<I18nTextEntity> degreeTitles) {
+        this.degreeTitles = degreeTitles;
+    }
+
     public List<Date> getStartDates() {
         return startDates;
     }
+
     public void setStartDates(List<Date> startDates) {
         this.startDates = startDates;
     }
@@ -472,9 +579,11 @@ public class KoulutusLOSEntity {
     public void setLinkToCurriculum(String linkToCurriculum) {
         this.linkToCurriculum = linkToCurriculum;
     }
+
     public List<KoulutusLOSEntity> getSiblings() {
         return siblings;
     }
+
     public void setSiblings(List<KoulutusLOSEntity> siblings) {
         this.siblings = siblings;
     }
@@ -502,9 +611,11 @@ public class KoulutusLOSEntity {
     public void setSelectingDegreeProgram(I18nTextEntity selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
     }
+
     public boolean isOsaamisalaton() {
         return osaamisalaton;
     }
+
     public void setOsaamisalaton(boolean osaamisalaton) {
         this.osaamisalaton = osaamisalaton;
     }
@@ -515,6 +626,46 @@ public class KoulutusLOSEntity {
 
     public void setToteutustyyppi(ToteutustyyppiEnum toteutustyyppi) {
         this.toteutustyyppi = toteutustyyppi;
+    }
+
+    public KoulutusLOSEntity getOpintokokonaisuus() {
+        return opintokokonaisuus;
+    }
+
+    public void setOpintokokonaisuus(KoulutusLOSEntity opintokokonaisuus) {
+        this.opintokokonaisuus = opintokokonaisuus;
+    }
+
+    public List<KoulutusLOSEntity> getOpintojaksos() {
+        return opintojaksos;
+    }
+
+    public void setOpintojaksos(List<KoulutusLOSEntity> opintojaksos) {
+        this.opintojaksos = opintojaksos;
+    }
+
+    public String getOpettaja() {
+        return opettaja;
+    }
+
+    public void setOpettaja(String opettaja) {
+        this.opettaja = opettaja;
+    }
+
+    public String getTarjoajanKoulutus() {
+        return tarjoajanKoulutus;
+    }
+
+    public void setTarjoajanKoulutus(String tarjoajanKoulutus) {
+        this.tarjoajanKoulutus = tarjoajanKoulutus;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
 }

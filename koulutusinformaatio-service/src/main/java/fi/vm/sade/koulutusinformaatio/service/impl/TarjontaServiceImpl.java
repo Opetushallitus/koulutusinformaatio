@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
@@ -66,6 +67,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KorkeakouluOpintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatillinenPerustutkintoV1RDTO;
@@ -87,12 +89,10 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
 
-    private OrganisaatioRawService organisaatioRawService;
     private KoodistoService koodistoService;
     private ProviderService providerService;
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
-    private ParameterService parameterService;
 
     private HashSet<String> processedOids = new HashSet<String>();
     private HashMap<String, TutkintoLOS> processedTutkintos = new HashMap<String, TutkintoLOS>();
@@ -104,8 +104,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.tarjontaRawService = tarjontaRawService;
-        this.organisaatioRawService = organisaatioRawService;
-        this.parameterService = parameterService;
+        this.creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
     }
 
     public TarjontaServiceImpl() {
@@ -113,10 +112,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<HigherEducationLOS> findHigherEducations() throws KoodistoException, ResourceNotFoundException {
-
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
 
         // List of all properly published higher education learning objects, regardles of position in hierarchy
         List<HigherEducationLOS> koulutukset = new ArrayList<HigherEducationLOS>();
@@ -134,9 +129,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-                    continue;
-                }
                 ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulutus.getOid());
                 KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
                 if (koulutusDTO == null) {
@@ -173,6 +165,20 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
 
         return createChildHierarchy(koulutukset, komoToLOSMap, parentOids, aoToEducationsMap);
+    }
+
+    @Override
+    public List<KoulutusHakutulosV1RDTO> findKorkeakouluOpinnot() {
+        List<KoulutusHakutulosV1RDTO> result = Lists.newArrayList();
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService
+                .listEducationsByToteutustyyppi(ToteutustyyppiEnum.KORKEAKOULUOPINTO.name());
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                result.add(curKoulutus);
+            }
+        }
+        return result;
     }
 
     private I18nPicture retrieveStructureImage(String oid) throws KoodistoException {
@@ -300,9 +306,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (this.providerService != null) {
             this.providerService.clearCache();
         }
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
         if (koulutusDTO == null) {
@@ -331,9 +334,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid) throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
         LOG.debug(" Koulutustila: {}", koulutusDTO.getTila().toString());
@@ -480,10 +480,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public List<AdultUpperSecondaryLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException {
 
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-
         List<AdultUpperSecondaryLOS> koulutukset = new ArrayList<AdultUpperSecondaryLOS>();
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
@@ -543,10 +539,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public List<KoulutusLOS> findValmistavaKoulutusEducations() throws KoodistoException {
 
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-
         List<KoulutusLOS> losList = new ArrayList<KoulutusLOS>();
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
@@ -603,10 +595,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException {
 
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-
         List<CompetenceBasedQualificationParentLOS> koulutukset = new ArrayList<CompetenceBasedQualificationParentLOS>();
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
@@ -658,10 +646,6 @@ public class TarjontaServiceImpl implements TarjontaService {
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
 
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         KoulutusLukioV1RDTO koulutusDTO = (KoulutusLukioV1RDTO) koulutusRes.getResult();
 
@@ -693,10 +677,6 @@ public class TarjontaServiceImpl implements TarjontaService {
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
 
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-
         ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(oid);
         NayttotutkintoV1RDTO dto = res.getResult();
 
@@ -712,9 +692,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
         KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
         case KORKEAKOULUTUS:
@@ -758,10 +735,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException {
 
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-
         List<CalendarApplicationSystem> results = new ArrayList<CalendarApplicationSystem>();
         ResultV1RDTO<List<String>> hakuRes = this.tarjontaRawService.searchHakus(TarjontaConstants.HAKUTAPA_YHTEISHAKUV1);
 
@@ -798,11 +771,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public CalendarApplicationSystem createCalendarApplicationSystem(
             String hakuOid) throws KoodistoException {
-
-        if (this.creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
-
         ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(hakuOid);
         HakuV1RDTO curHaku = curHakuResult.getResult();
         if (curHaku != null) {
@@ -872,9 +840,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<KoulutusLOS> createAmmatillinenKoulutusLOS(KoulutusHakutulosV1RDTO koulutusDTO) {
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
         try {
 
             ArrayList<KoulutusLOS> losses = new ArrayList<KoulutusLOS>();
@@ -965,9 +930,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public KoulutusLOS createLukioKoulutusLOS(KoulutusHakutulosV1RDTO koulutusDTO) {
-        if (creator == null) {
-            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService);
-        }
         try {
             return creator.createLukioLOS(koulutusDTO.getOid(), true);
         } catch (KoodistoException e) {
@@ -1043,5 +1005,20 @@ public class TarjontaServiceImpl implements TarjontaService {
                         return input.getOid();
                     }
                 }).toSet();
+    }
+
+    @Override
+    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) {
+        try {
+            ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
+            KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
+            return creator.createKorkeakouluopinto(koulutusDTO, true, false);
+        } catch (KoodistoException e) {
+            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage());
+            return null;
+        } catch (TarjontaParseException e) {
+            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage());
+            return null;
+        }
     }
 }

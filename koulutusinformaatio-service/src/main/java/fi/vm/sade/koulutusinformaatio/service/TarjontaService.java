@@ -57,6 +57,8 @@ public interface TarjontaService {
 	public HigherEducationLOS findHigherEducationLearningOpportunity(
 			String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
+    public List<KoulutusHakutulosV1RDTO> findKorkeakouluOpinnot();
+
     public List<Code> getEdTypeCodes() throws KoodistoException;
 
     HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
@@ -113,5 +115,12 @@ public interface TarjontaService {
     public Set<String> findKoulutusOidsByHaku(String asOid);
 
     public Set<String> findKoulutusOidsByAo(String aoOid);
+
+    /**
+     * Luo korkeakouluopinnon annetusta DTOsta. Jos dto on opintojakso, luo opintokokonaisuuden ja kaikki sen opintojaksot.
+     * @param dto
+     * @return
+     */
+    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto);
 
 }
