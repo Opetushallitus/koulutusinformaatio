@@ -75,7 +75,7 @@ public interface TarjontaService {
 
     public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
-    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException;
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KIException;
 
     public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo);
 

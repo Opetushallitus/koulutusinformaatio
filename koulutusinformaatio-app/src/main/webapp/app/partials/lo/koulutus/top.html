@@ -18,7 +18,8 @@
         <a data-ng-if="!lo.preview && lo.parentLos.type == 'TUTKINTO'" href="{{lo.parentLos.url}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{lo.parentLos.name}}</a>
         <a data-ng-if="!lo.preview && lo.parentLos.type == 'KOULUTUS'" href="{{lo.parentLos.url}}">{{lo.parentLos.name}}</a>
         <!-- PREVIEW -->
-        <a data-ng-if="lo.preview">{{lo.parentLos.name}}</a>
+        <a data-ng-if="lo.preview && lo.parentLos.type == 'TUTKINTO'">{{lo.parentLos.name}}</a>
+        <a data-ng-if="lo.preview && lo.parentLos.type == 'KOULUTUS'" href="{{lo.parentLos.url}}">{{lo.parentLos.name}}</a>
         <!-- END PREVIEW -->
     </div>
 

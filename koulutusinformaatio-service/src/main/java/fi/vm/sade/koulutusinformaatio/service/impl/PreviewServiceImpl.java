@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentL
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -38,6 +41,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 public class PreviewServiceImpl implements PreviewService {
 
     private TarjontaService tarjontaService;
+    private static final Logger LOG = LoggerFactory.getLogger(PreviewServiceImpl.class);
 
     @Autowired
     public PreviewServiceImpl (TarjontaService tarjontaService) {
@@ -103,17 +107,14 @@ public class PreviewServiceImpl implements PreviewService {
     public KoulutusLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
             KoulutusLOS los = this.tarjontaService.createKoulutusLOS(oid, false);
-            if (los.getEducationType().equals(SolrConstants.ED_TYPE_AMMATILLINEN)) {
+            if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
                 TutkintoLOS tutkinto = new TutkintoLOS();
                 tutkinto.setName(los.getEducationCode().getName());
                 los.setTutkinto(tutkinto);
             }
             return los;
-        } catch (KoodistoException e) {
-            e.printStackTrace();
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
-        } catch (TarjontaParseException e) {
-            e.printStackTrace();
+        } catch (KIException e) {
+            LOG.warn("Resource: " + oid + " not found", e);
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
         }
     }

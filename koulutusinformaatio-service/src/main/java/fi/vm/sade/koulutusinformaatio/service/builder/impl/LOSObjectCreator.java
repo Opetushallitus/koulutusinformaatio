@@ -1409,7 +1409,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
 
     public List<KoulutusLOS> createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCall) throws KIException {
-        if (alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) {
+        if (checkStatus && alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) {
             LOG.debug("Korkeakouluopinto oli jo käsitelty");
             return Lists.newArrayList();
         }
