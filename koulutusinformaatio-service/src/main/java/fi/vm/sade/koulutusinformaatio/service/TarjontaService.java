@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentL
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -120,7 +121,8 @@ public interface TarjontaService {
      * Luo korkeakouluopinnon annetusta DTOsta. Jos dto on opintojakso, luo opintokokonaisuuden ja kaikki sen opintojaksot.
      * @param dto
      * @return
+     * @throws KIException 
      */
-    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto);
+    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException;
 
 }

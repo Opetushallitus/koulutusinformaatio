@@ -2,39 +2,48 @@
     <div class="panel panel-gray">
         <div class="panel-body">
             <ul class="list-unstyled">
-                <li><span data-ki-i18n="education-starts"
-                    data-show-colon="true"></span> <strong data-ng-show="lo.startDates">{{lo.startDates.join(', ')}}</strong>
-                    <strong data-ng-hide="lo.startDates">{{lo.startSeason}}
-                        {{lo.startYear}}</strong></li>
-                <li><span data-ki-i18n="language-of-instruction"
-                    data-show-colon="true"></span> <span
-                    data-ng-repeat="tl in lo.teachingLanguages"> <strong>{{tl}}</strong><span
-                        data-ng-show="!$last">,</span>
-                </span></li>
-                <li><span data-ki-i18n="duration" data-show-colon="true"></span>
+                <li>
+                    <span data-ki-i18n="vastaava-korkeakoulu" data-ng-hide="!lo.vastaavaKorkeakoulu" data-show-colon="true"></span>
+                    <strong>{{lo.vastaavaKorkeakoulu}}</strong></li>
+                <li>
+                    <span data-ki-i18n="education-starts" data-show-colon="true"></span>
+                    <strong data-ng-show="lo.startDate">{{lo.startDate}}</strong><strong data-ng-show="lo.startDate && lo.endDate"> - {{lo.endDate}}</strong>
+                    <strong data-ng-hide="lo.startDate">{{lo.startSeason}} {{lo.startYear}}</strong></li>
+                <li>
+                    <span data-ki-i18n="language-of-instruction" data-show-colon="true"></span>
+                    <span data-ng-repeat="tl in lo.teachingLanguages"> 
+                        <strong>{{tl}}</strong><span data-ng-show="!$last">,</span>
+                    </span></li>
+                <li>
+                    <span data-ki-i18n="duration" data-show-colon="true"></span>
                     <strong>{{lo.creditValue}} {{lo.creditUnit}}</strong></li>
-                <li><span data-ki-i18n="planned-duration"
-                    data-show-colon="true"></span> <strong>{{lo.plannedDuration}}
-                        {{lo.plannedDurationUnit}}</strong></li>
-                <li><span data-ki-i18n="time-of-teaching"
-                    data-show-colon="true"></span> <span
-                    data-ng-repeat="tot in lo.teachingTimes"> <strong>{{tot}}</strong><span
-                        data-ng-show="!$last">,</span>
-                </span></li>
-                <li><span data-ki-i18n="place-of-teaching"
-                    data-show-colon="true"></span> <span
-                    data-ng-repeat="top in lo.teachingPlaces"> <strong>{{top}}</strong><span
-                        data-ng-show="!$last">,</span>
-                </span></li>
-                <li><span data-ki-i18n="form-of-education-higher"
-                    data-show-colon="true"></span> <span
-                    data-ng-repeat="fot in lo.formOfTeaching"> <strong>{{fot}}</strong><span
-                        data-ng-show="!$last">,</span>
-                </span></li>
+                <li data-ng-show="lo.plannedDuration">
+                    <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
+                    <strong>{{lo.plannedDuration}} {{lo.plannedDurationUnit}}</strong></li>
+                <li>
+                    <span data-ki-i18n="time-of-teaching" data-show-colon="true"></span>
+                    <span data-ng-repeat="tot in lo.teachingTimes">
+                        <strong>{{tot}}</strong><span data-ng-show="!$last">,</span>
+                    </span></li>
+                <li>
+                    <span data-ki-i18n="place-of-teaching" data-show-colon="true"></span>
+                    <span data-ng-repeat="top in lo.teachingPlaces">
+                        <strong>{{top}}</strong><span data-ng-show="!$last">,</span>
+                    </span></li>
+                <li>
+                    <span data-ki-i18n="form-of-education-higher" data-show-colon="true"></span> 
+                    <span data-ng-repeat="fot in lo.formOfTeaching">
+                        <strong>{{fot}}</strong><span data-ng-show="!$last">,</span>
+                    </span></li>
                 <li data-ng-if="lo.koulutusPrerequisite">
                     <span data-ki-i18n="prerequisite-education" data-show-colon="true"></span>
-                    <strong>{{lo.koulutusPrerequisite.name}}</strong>
-                </li>
+                    <strong>{{lo.koulutusPrerequisite.name}}</strong></li>
+                <li data-ng-show="lo.charge">
+                    <span data-ki-i18n="chargeable" data-show-colon="true"></span>
+                    <strong>{{lo.charge}} <span data-ki-i18n="euro"></span></strong></li>
+                <li data-ng-show="lo.opettaja">
+                    <span data-ki-i18n="opettaja" data-show-colon="true"></span>
+                    <strong>{{lo.opettaja}}</strong></li>
             </ul>
         </div>
     </div>

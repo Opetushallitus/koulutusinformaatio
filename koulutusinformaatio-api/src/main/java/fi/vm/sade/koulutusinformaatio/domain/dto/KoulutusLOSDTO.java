@@ -79,19 +79,20 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private CodeDTO koulutusPrerequisite;
     private Map<String, List<String>> subjects;
     private String opettaja;
-    private String tarjoajanKoulutus;
-
-    // Status of the lo. For preview
-    private String status;
 
     private String opinnonTyyppiUri;
 
+    private String vastaavaKorkeakoulu;
     private String maksullisuus;
     private String edeltavatOpinnot;
     private String arviointi;
     private String opetuksenAikaJaPaikka;
     private String lisatietoja;
     private String competence;
+    private String charge;
+
+    // Status of the lo. For preview
+    private String status;
 
     public String getId() {
         return id;
@@ -534,14 +535,6 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
         this.opettaja = opettaja;
     }
 
-    public String getTarjoajanKoulutus() {
-        return tarjoajanKoulutus;
-    }
-
-    public void setTarjoajanKoulutus(String tarjoajanKoulutus) {
-        this.tarjoajanKoulutus = tarjoajanKoulutus;
-    }
-
     public String getOpinnonTyyppiUri() {
         return opinnonTyyppiUri;
     }
@@ -596,6 +589,22 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setCompetence(String competence) {
         this.competence = competence;
+    }
+
+    public String getCharge() {
+        return charge;
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
+    }
+
+    public String getVastaavaKorkeakoulu() {
+        return vastaavaKorkeakoulu;
+    }
+
+    public void setVastaavaKorkeakoulu(String vastaavaKorkeakoulu) {
+        this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
     }
 
 }

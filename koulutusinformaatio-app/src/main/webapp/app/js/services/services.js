@@ -407,6 +407,10 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
                 var startDate = new Date(result.startDate);
                 result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
             }
+            if (result.endDate) {
+                var endDate = new Date(result.endDate);
+                result.endDate = endDate.getDate() + '.' + (endDate.getMonth() + 1) + '.' + endDate.getFullYear();
+            }
             for (var dateIndex in result.startDates) {
                 var date = $filter('date')(result.startDates[dateIndex], 'd.M.yyyy');
                 result.startDates[dateIndex] = date;

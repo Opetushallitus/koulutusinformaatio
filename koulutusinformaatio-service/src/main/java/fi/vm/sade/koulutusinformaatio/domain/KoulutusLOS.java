@@ -94,8 +94,9 @@ public class KoulutusLOS extends LOS {
 
     private String opettaja;
     private String opinnonTyyppiUri;
-    private String tarjoajanKoulutus;
+    private String hinta;
     
+    private I18nText vastaavaKorkeakoulu;
     private I18nText maksullisuus;
     private I18nText edeltavatOpinnot;
     private I18nText arviointi;
@@ -595,12 +596,12 @@ public class KoulutusLOS extends LOS {
         this.opinnonTyyppiUri = opinnonTyyppiUri;
     }
 
-    public String getTarjoajanKoulutus() {
-        return tarjoajanKoulutus;
+    public I18nText getVastaavaKorkeakoulu() {
+        return vastaavaKorkeakoulu;
     }
 
-    public void setTarjoajanKoulutus(String tarjoajanKoulutus) {
-        this.tarjoajanKoulutus = tarjoajanKoulutus;
+    public void setVastaavaKorkeakoulu(I18nText vastaavaKorkeakoulu) {
+        this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
     }
 
     public Date getEndDate() {
@@ -657,6 +658,14 @@ public class KoulutusLOS extends LOS {
 
     public void setCompetence(I18nText competence) {
         this.competence = competence;
+    }
+
+    public String getHinta() {
+        return hinta;
+    }
+
+    public void setHinta(String hinta) {
+        this.hinta = hinta;
     }
 
 }

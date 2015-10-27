@@ -109,8 +109,7 @@ public class KoulutusLOSToDTO {
             for (KoulutusLOS sibling : los.getSiblings()) {
 
                 if (los.getKoulutusPrerequisite() != null
-                    && !TutkintoLOSToDTO.isSamePrerequisite(los.getKoulutusPrerequisite().getValue(), sibling)
-                ) {
+                        && !TutkintoLOSToDTO.isSamePrerequisite(los.getKoulutusPrerequisite().getValue(), sibling)) {
                     continue;
                 }
 
@@ -160,7 +159,7 @@ public class KoulutusLOSToDTO {
 
         dto.setOpettaja(los.getOpettaja());
         dto.setSubjects(los.getSubjects());
-        dto.setTarjoajanKoulutus(los.getTarjoajanKoulutus());
+        dto.setVastaavaKorkeakoulu(ConverterUtil.getTextByLanguageUseFallbackLang(los.getVastaavaKorkeakoulu(), lang));
 
         dto.setKoulutusPrerequisite(CodeToDTO.convert(los.getKoulutusPrerequisite(), lang));
 
@@ -171,6 +170,8 @@ public class KoulutusLOSToDTO {
         dto.setOpetuksenAikaJaPaikka(ConverterUtil.getTextByLanguageUseFallbackLang(los.getOpetuksenAikaJaPaikka(), lang));
         dto.setLisatietoja(ConverterUtil.getTextByLanguageUseFallbackLang(los.getLisatietoja(), lang));
         dto.setCompetence(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCompetence(), lang));
+
+        dto.setCharge(los.getHinta());
 
         return dto;
     }

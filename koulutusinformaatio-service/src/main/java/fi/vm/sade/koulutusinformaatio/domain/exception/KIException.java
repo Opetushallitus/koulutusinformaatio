@@ -26,4 +26,8 @@ public class KIException extends Exception {
     public KIException(String s) {
         super(s);
     }
+
+    public KIException(String s, Throwable e) {
+        super(s, e);
+    }
 }

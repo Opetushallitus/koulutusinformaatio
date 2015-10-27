@@ -153,8 +153,10 @@ public class KoulutusLOSEntity {
 
     private String opettaja;
     private String opinnonTyyppiUri;
-    private String tarjoajanKoulutus;
+    private String hinta;
 
+    @Embedded
+    private I18nTextEntity vastaavaKorkeakoulu;
     @Embedded
     private I18nTextEntity maksullisuus;
     @Embedded
@@ -667,14 +669,6 @@ public class KoulutusLOSEntity {
         this.opettaja = opettaja;
     }
 
-    public String getTarjoajanKoulutus() {
-        return tarjoajanKoulutus;
-    }
-
-    public void setTarjoajanKoulutus(String tarjoajanKoulutus) {
-        this.tarjoajanKoulutus = tarjoajanKoulutus;
-    }
-
     public Date getEndDate() {
         return endDate;
     }
@@ -737,6 +731,22 @@ public class KoulutusLOSEntity {
 
     public void setCompetence(I18nTextEntity competence) {
         this.competence = competence;
+    }
+
+    public String getHinta() {
+        return hinta;
+    }
+
+    public void setHinta(String hinta) {
+        this.hinta = hinta;
+    }
+
+    public I18nTextEntity getVastaavaKorkeakoulu() {
+        return vastaavaKorkeakoulu;
+    }
+
+    public void setVastaavaKorkeakoulu(I18nTextEntity vastaavaKorkeakoulu) {
+        this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
     }
 
 }

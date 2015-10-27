@@ -48,6 +48,7 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nPicture;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -1008,7 +1009,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) {
+    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException {
         try {
             ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
             KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
