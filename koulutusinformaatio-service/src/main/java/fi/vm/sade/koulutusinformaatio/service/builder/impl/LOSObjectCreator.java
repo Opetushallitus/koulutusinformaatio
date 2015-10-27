@@ -1437,6 +1437,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (KoulutusLOS opintojakso : opintojaksoList) {
                 alreadyCreatedKorkeakouluOpintos.add(opintojakso.getId());
                 opintojakso.setOpintokokonaisuus(los);
+                opintojakso.getApplicationOptions().addAll(los.getApplicationOptions());
                 childOpintojaksos.add(opintojakso);
             }
         }
