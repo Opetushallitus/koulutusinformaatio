@@ -34,6 +34,8 @@ public interface ProviderService {
 
     public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException, ResourceNotFoundException;
 
+    public String getOppilaitosTyyppiByOID(String oid) throws ResourceNotFoundException;
+
     /**
      * Fetches list of Organizations of type Oppilaitos from organisaatio service.
      * 

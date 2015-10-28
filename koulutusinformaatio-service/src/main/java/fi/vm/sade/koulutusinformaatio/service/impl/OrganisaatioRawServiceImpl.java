@@ -26,10 +26,10 @@ import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 @Service
-public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
+public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
 
     private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
-    
+
     private final String organisaatioResourceUrl;
 
     @Autowired
@@ -51,8 +51,28 @@ public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
             return mapper.readValue(conn.getInputStream(), OrganisaatioRDTO.class);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new ResourceNotFoundException("Organization "+oid+" not found: "+e.getMessage());
+            throw new ResourceNotFoundException("Organization " + oid + " not found: " + e.getMessage());
         }
+    }
+
+    @Override
+    public OrganisaatioHakutulos findOrganisaatio(String oid) throws ResourceNotFoundException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
+        ClientConfig cc = new DefaultClientConfig();
+        cc.getSingletons().add(jacksProv);
+        Client clientWithJacksonSerializer = Client.create(cc);
+        WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
+        return orgRes
+                .queryParam("noCache", String.format("%s", System.currentTimeMillis()))
+                .queryParam("aktiiviset", "true")
+                .queryParam("lakkautetut", "false")
+                .queryParam("suunnitellut", "false")
+                .queryParam("oid", oid)
+                .queryParam("searchstr", "")
+                .accept(JSON_UTF8)
+                .get(new GenericType<OrganisaatioHakutulos>() {});
     }
 
     @Override
@@ -73,11 +93,7 @@ public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
                 .queryParam("organisaatiotyyppi", organisaatioType)
                 .queryParam("searchstr", "")
                 .accept(JSON_UTF8)
-                .get(new GenericType<OrganisaatioHakutulos>() {
-                });
+                .get(new GenericType<OrganisaatioHakutulos>() {});
     }
-    
-    
-    
-    
+
 }

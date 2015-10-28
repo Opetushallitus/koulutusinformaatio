@@ -44,4 +44,6 @@ public interface OrganisaatioRawService {
      */
     public OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType) throws ResourceNotFoundException;
 
+    OrganisaatioHakutulos findOrganisaatio(String oid) throws ResourceNotFoundException;
+
 }

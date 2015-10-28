@@ -1410,7 +1410,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public List<KoulutusLOS> createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCall) throws KIException {
         if (checkStatus && alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) {
-            LOG.debug("Korkeakouluopinto oli jo käsitelty");
+            LOG.debug("Korkeakouluopinto on jo käsitelty aiemmin.");
             return Lists.newArrayList();
         }
         if (!StringUtils.isBlank(dto.getOpintokokonaisuusOid()) && !isRecursiveCall) {
@@ -1422,11 +1422,13 @@ public class LOSObjectCreator extends ObjectCreator {
             return opintokokonaisuusList;
         }
         LOG.debug("Luodaan korkeakouluopinto {} {}", dto.getKoulutusmoduuliTyyppi().name(), dto.getOid());
+        // Jos opintojakso kuuluu kokonaisuuteen, kokonaisuudella on hakukohde ja opintojakso voi olla ilman.
         boolean needsAOsToBeValid = StringUtils.isEmpty(dto.getOpintokokonaisuusOid());
 
         KoulutusLOS los = new KoulutusLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
-        los.setEducationType(SolrConstants.ED_TYPE_AVOIN);
+
+        addKorkeakouluopintoEducationType(dto, los);
         addKoulutusV1Fields(dto, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, needsAOsToBeValid);
         addTutkintoonJohtamatonKoulutusFields(dto, los);
 
@@ -1448,6 +1450,28 @@ public class LOSObjectCreator extends ObjectCreator {
         ArrayList<KoulutusLOS> result = Lists.newArrayList(childOpintojaksos);
         result.add(los);
         return result;
+    }
+
+    private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws ResourceNotFoundException, KIException {
+        String tyypinMaarittavaOrganisaatioOid = null;
+        if (dto.getTarjoajanKoulutus() != null) { // Koulutustyyppi määräytyy opinnon tarjoajan mukaan
+            tyypinMaarittavaOrganisaatioOid = tarjontaRawService.searchEducation(dto.getTarjoajanKoulutus()).getResult().getTulokset().get(0).getOid();
+        } else { // tai suoraan organisaation mukaan jos tarjoaja itse järjestää opinnon
+            tyypinMaarittavaOrganisaatioOid = dto.getOrganisaatio().getOid();
+        }
+
+        // Haetaan organisaatiopalvelun hakurajapinnasta organisaation oppilaitostyyppi
+        String oppilaitostyyppi = providerService.getOppilaitosTyyppiByOID(tyypinMaarittavaOrganisaatioOid);
+        if (oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_AMK)) {
+            los.setEducationType(SolrConstants.ED_TYPE_AVOIN_AMK);
+        } else if (oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_YLIOPISTO)
+                || oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_SOTILASKK)) {
+            los.setEducationType(SolrConstants.ED_TYPE_AVOIN_YO);
+        } else {
+            LOG.error("Tuntematon korkeakouluopinnon {} oppilaitostyyppi {} organisaatiolla {}", dto.getOid(), oppilaitostyyppi,
+                    tyypinMaarittavaOrganisaatioOid);
+            throw new KIException(String.format("Tuntematon oppilaitostyyppi %s koulutuksella %s", oppilaitostyyppi, dto.getOid()));
+        }
     }
 
 }

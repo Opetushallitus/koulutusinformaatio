@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,6 +224,28 @@ public class ProviderServiceImpl implements ProviderService {
             return result.getOrganisaatiot();
         }
         return new ArrayList<OrganisaatioPerustieto>();
+    }
+
+    @Override
+    public String getOppilaitosTyyppiByOID(String oid) throws ResourceNotFoundException {
+        OrganisaatioPerustieto tulos = organisaatioRawService.findOrganisaatio(oid).getOrganisaatiot().get(0);
+        String oppilaitosTyyppi = getOppilaitosTyyppi(tulos);
+        if (oppilaitosTyyppi != null)
+            return oppilaitosTyyppi;
+        throw new ResourceNotFoundException("Organisaatiolla " + oid + " ei ollut oppilaitostyyppiä!");
+
+    }
+
+    private String getOppilaitosTyyppi(OrganisaatioPerustieto tulos) {
+        if (!StringUtils.isBlank(tulos.getOppilaitostyyppi())) {
+            return tulos.getOppilaitostyyppi();
+        }
+        for (OrganisaatioPerustieto organisaatioPerustieto : tulos.getChildren()) {
+            String childsOppilaitosTyyppi = getOppilaitosTyyppi(organisaatioPerustieto);
+            if (childsOppilaitosTyyppi != null)
+                return childsOppilaitosTyyppi;
+        }
+        return null;
     }
 
 }

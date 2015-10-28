@@ -452,10 +452,11 @@ public final class SolrUtil {
         public static final String ED_TYPE_AMKS = "et01.04";
         public static final String ED_TYPE_AMK = "et01.04.01";
         public static final String ED_TYPE_YLEMPI_AMK = "et01.04.02";
+        public static final String ED_TYPE_AVOIN_AMK = "et01.04.03";
         public static final String ED_TYPE_YOS = "et01.05";
         public static final String ED_TYPE_KANDIDAATTI = "et01.05.01";
         public static final String ED_TYPE_MAISTERI = "et01.05.02";
-        public static final String ED_TYPE_AVOIN = "et01.05.03";
+        public static final String ED_TYPE_AVOIN_YO = "et01.05.03";
         
         public static final String ED_TYPE_MUU = "et02";
         public static final String ED_TYPE_PK_JALK = "et02.01";
