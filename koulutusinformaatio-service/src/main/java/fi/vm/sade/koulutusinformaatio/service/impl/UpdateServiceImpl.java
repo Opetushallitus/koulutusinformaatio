@@ -177,9 +177,9 @@ public class UpdateServiceImpl implements UpdateService {
 
 
             List<KoulutusHakutulosV1RDTO> opintojaksot = this.tarjontaService.findKorkeakouluOpinnot();
-            LOG.info("Found opintojaksot: {}", opintojaksot.size());
+            LOG.info("Löytyi {} opintojaksoa.", opintojaksot.size());
             for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
-                LOG.debug("Saving opintojaksoeducation: {}", dto.getOid());
+                LOG.debug("Luodaan ja tallennetaan opintojakso: {}", dto.getOid());
                 List<KoulutusLOS> losses = tarjontaService.createKorkeakouluopinto(dto);
                 for (KoulutusLOS los : losses) {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -187,7 +187,7 @@ public class UpdateServiceImpl implements UpdateService {
 
                 }
             }
-            LOG.info("Korkeakoulu opintos saved.");
+            LOG.info("Korkeakouluopinnot tallennettu.");
             tarjontaService.clearProcessedLists();
 
 
