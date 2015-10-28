@@ -75,6 +75,14 @@
     "chargeable-true": "Yes",
     "prerequisite-education": "Prior education",
 
+    "vastaava-korkeakoulu": "Vastaava korkeakoulu",
+    "opettaja": "Opettaja",
+    "maksullisuus": "Maksullisuus",
+    "edeltavat-opinnot": "Edeltävät opinnot",
+    "arviointi": "Arviointi",
+    "opetuksen-aika-ja-paikka": "Optuksen aika ja paikka",
+    "lisatietoja": "Lisätietoja",
+    
     "average-limit": "Minimum grade point average",
     "lowest-acceptable-average": "Minimum grade point average required for admittance",
     "lowest-acceptable-average-description": "The minimum grade point average is set by the educational institution. Applicants whose grade point average is lower than this will not be admitted to the study programme. The grade point average required for admittance varies from year to year and may be higher.",
@@ -124,7 +132,9 @@
     "further-application-info": "Additional information on applying",
     "eligibility-description": "Eligibility",
     "info-center": "Admissions services",
-
+    "haku-menettely": "Haku- tai ilmoittautumismenettely",
+    "peruutusehdot": "Peruutusehdot",
+    
     "academy-description": "About the educational institution",
     "accessibility-anchor": "Accessibility",
     "accommodation-anchor": "Accommodation",

@@ -53,10 +53,14 @@
     "yo-et0105": "Universitet, lägre examen (kandidat mm.)",
     "yo-et0205": "Folkhögskolornas allmänbildande linjer",
     "yo-et02015": "Undervisning i huslig ekonomi (Hushållsskolan)",
-
+    "yo-et010403": "Öppen yrkeshögskola",
+    "yo-et010503": "Öppet universitet",
+    
     "at-et010401": "Yrkeshögskoleexamen",
     "at-et0105": "Universitetsexamen",
-
+    "at-et010403": "Öppen yrkeshögskola",
+    "at-et010503": "Öppet universitet",
+    
     "mm-et020103-n": "Handledande utbildning för grundläggande yrkesutbildning",
     "mm-et020106": "Handledande utbildning för grundläggande yrkesutbildning",
     "mm-et021202": "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
@@ -70,16 +74,22 @@
     "yo_aiku-et010401": "Yrkeshögskoleexamen",
     "yo_aiku-et0105": "Lägre examen vid universitet",
     "yo_aiku-et0205": "Folkhögskolornas långa linjer",
-
+    "yo_aiku-et010403": "Öppen yrkeshögskola",
+    "yo_aiku-et010503": "Öppet universitet",
+    
     "amm_pt_aiku-et010303-a": "Yrkesexamen som vuxenutbildning - ofta krävs dessutom 3 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "amm_pt_aiku-et010304-a": "Specialyrkesexamen som vuxenutbildning - ofta krävs dessutom 5 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "amm_pt_aiku-et010401": "Yrkeshögskoleexamen",
     "amm_pt_aiku-et0105": "Lägre examen vid universitet (kandidat etc.)",
     "amm_pt_aiku-et0205": "Folkhögskolornas utbildningar",
-
+    "amm_pt_aiku-et010403": "Öppen yrkeshögskola",
+    "amm_pt_aiku-et010503": "Öppet universitet",
+    
     "alempi_kk_aiku-et010402": "Högre yrkeshögskoleexamen",
     "alempi_kk_aiku-et010502": "Högre examen vid universitet (magister etc.)",
-
+    "alempi_kk_aiku-et010403": "Öppen yrkeshögskola",
+    "alempi_kk_aiku-et010503": "Öppet universitet",
+    
     "pk_aiku-et010102": "Vuxengymnasium och studentexamen",
     "pk_aiku-et010301-n": "Yrkesinriktad grundexamen i utbildning för unga",
     "pk_aiku-et010301-a": "Yrkesinriktad grundexamen som vuxenutbildning - ofta krävs dessutom arbetserfarenhet eller på annat sätt inhämtade kunskaper",

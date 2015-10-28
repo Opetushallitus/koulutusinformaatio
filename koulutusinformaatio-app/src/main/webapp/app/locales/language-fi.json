@@ -75,6 +75,14 @@
     "chargeable-true": "Kyllä",
     "prerequisite-education": "Pohjakoulutus",
 
+    "vastaava-korkeakoulu": "Vastaava korkeakoulu",
+    "opettaja": "Opettaja",
+    "maksullisuus": "Maksullisuus",
+    "edeltavat-opinnot": "Edeltävät opinnot",
+    "arviointi": "Arviointi",
+    "opetuksen-aika-ja-paikka": "Optuksen aika ja paikka",
+    "lisatietoja": "Lisätietoja",
+
     "average-limit": "Keskiarvoraja",
     "lowest-acceptable-average": "alin hyväksyttävä keskiarvo",
     "lowest-acceptable-average-description": "Oppilaitoksen asettama keskiarvoraja jonka alittaneita hakijoita ei valita koulutukseen. Opiskelijaksi ottamisen keskiarvo vaihtelee vuosittain ja voi olla korkeampi.",
@@ -124,6 +132,9 @@
     "further-application-info": "Lisätietoa hakemisesta",
     "eligibility-description": "Hakukelpoisuusvaatimukset",
     "info-center": "Hakuneuvonta",
+    "haku-menettely": "Haku- tai ilmoittautumismenettely",
+    "peruutusehdot": "Peruutusehdot",
+    
 
     "academy-description": "Oppilaitoksen esittely",
     "accessibility-anchor": "Esteettömyys",

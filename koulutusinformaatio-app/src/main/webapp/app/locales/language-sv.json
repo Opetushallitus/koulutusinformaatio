@@ -75,6 +75,14 @@
     "chargeable-true": "Ja",
     "prerequisite-education": "Grundutbildning",
 
+    "vastaava-korkeakoulu": "Ansvarig högskola",
+    "opettaja": "Ansvarig lärare",
+    "maksullisuus": "Studieavgifter",
+    "edeltavat-opinnot": "Tidigare studier",
+    "arviointi": "Bedömning",
+    "opetuksen-aika-ja-paikka": "Tid och plats för studier",
+    "lisatietoja": "Mera information",
+    
     "average-limit": "Medeltalsgräns",
     "lowest-acceptable-average": "lägsta godkända medeltal",
     "lowest-acceptable-average-description": "Av läroanstalten fastställd lägsta godkända medeltalsgräns. Sökande med lägre medeltal kan inte bli antagna till utbildningen. Medeltalet för antagning av studerande varierar årligen och kan vara högre.",
@@ -124,6 +132,8 @@
     "further-application-info": "Tilläggsinformation om ansökan",
     "eligibility-description": "Ansökningsbehörighet",
     "info-center": "Ansökningsrådgivning",
+    "haku-menettely": "Anmälan",
+    "peruutusehdot": "Villkor för annullering",
 
     "academy-description": "Presentation av läroanstalten",
     "accessibility-anchor": "Tillgänglighet",
