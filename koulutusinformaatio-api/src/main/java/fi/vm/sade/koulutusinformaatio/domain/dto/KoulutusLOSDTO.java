@@ -74,6 +74,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private List<ArticleResultDTO> edTypeSuggestions;
     private String workingLifePlacement;
     private String linkToCurriculum;
+    private Set<ChildLOIRefDTO> opintojaksos;
     private Set<ChildLOIRefDTO> siblings;
     private ParentLOSRefDTO parentLos;
     private CodeDTO koulutusPrerequisite;
@@ -485,6 +486,14 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setLinkToCurriculum(String linkToCurriculum) {
         this.linkToCurriculum = linkToCurriculum;
+    }
+
+    public Set<ChildLOIRefDTO> getOpintojaksos() {
+        return opintojaksos;
+    }
+
+    public void setOpintojaksos(Set<ChildLOIRefDTO> opintojaksos) {
+        this.opintojaksos = opintojaksos;
     }
 
     public Set<ChildLOIRefDTO> getSiblings() {

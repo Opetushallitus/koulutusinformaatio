@@ -1397,31 +1397,30 @@ public class LOSObjectCreator extends ObjectCreator {
         this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
     }
 
-    public List<KoulutusLOS> createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) throws KIException {
+    public KoulutusLOS createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) throws KIException {
         ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         if (result != null) {
             KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) result.getResult();
             return createKorkeakouluopinto(koulutusDTO, checkStatus, isRecursiveCall);
         }
-        return Lists.newArrayList();
+        return null;
     }
 
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
 
-    public List<KoulutusLOS> createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCall) throws KIException {
+    public KoulutusLOS createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCallForOpintojakso) throws KIException {
         if (checkStatus && alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) {
             LOG.debug("Korkeakouluopinto on jo käsitelty aiemmin.");
-            return Lists.newArrayList();
+            return null;
         }
-        if (!StringUtils.isBlank(dto.getOpintokokonaisuusOid()) && !isRecursiveCall) {
+        if (!StringUtils.isBlank(dto.getOpintokokonaisuusOid()) && !isRecursiveCallForOpintojakso) {
             LOG.debug("Opintojakso kuuluu opintokokonaisuuteen {} -> luodaan opintokokonaisuus.", dto.getOpintokokonaisuusOid());
-            List<KoulutusLOS> opintokokonaisuusList = createKorkeakouluopinto(dto.getOpintokokonaisuusOid(), checkStatus, false);
-            for (KoulutusLOS opintokokonaisuus : opintokokonaisuusList) {
-                alreadyCreatedKorkeakouluOpintos.add(opintokokonaisuus.getId());
-            }
-            return opintokokonaisuusList;
+            KoulutusLOS opintokokonaisuus = createKorkeakouluopinto(dto.getOpintokokonaisuusOid(), checkStatus, false);
+            alreadyCreatedKorkeakouluOpintos.add(opintokokonaisuus.getId());
+            return opintokokonaisuus;
         }
         LOG.debug("Luodaan korkeakouluopinto {} {}", dto.getKoulutusmoduuliTyyppi().name(), dto.getOid());
+
         // Jos opintojakso kuuluu kokonaisuuteen, kokonaisuudella on hakukohde ja opintojakso voi olla ilman.
         boolean needsAOsToBeValid = StringUtils.isEmpty(dto.getOpintokokonaisuusOid());
 
@@ -1435,21 +1434,17 @@ public class LOSObjectCreator extends ObjectCreator {
         List<KoulutusLOS> childOpintojaksos = Lists.newArrayList();
         alreadyCreatedKorkeakouluOpintos.add(los.getId());
         for (String opintojaksoOid : dto.getOpintojaksoOids()) {
-            List<KoulutusLOS> opintojaksoList = createKorkeakouluopinto(opintojaksoOid, checkStatus, true);
-            for (KoulutusLOS opintojakso : opintojaksoList) {
-                alreadyCreatedKorkeakouluOpintos.add(opintojakso.getId());
-                opintojakso.setOpintokokonaisuus(los);
-                opintojakso.getApplicationOptions().addAll(los.getApplicationOptions());
-                childOpintojaksos.add(opintojakso);
-            }
+            KoulutusLOS opintojakso = createKorkeakouluopinto(opintojaksoOid, checkStatus, true);
+            alreadyCreatedKorkeakouluOpintos.add(opintojakso.getId());
+            opintojakso.setOpintokokonaisuus(los);
+            opintojakso.getApplicationOptions().addAll(los.getApplicationOptions());
+            childOpintojaksos.add(opintojakso);
         }
         for (KoulutusLOS child : childOpintojaksos) {
             child.setSiblings(childOpintojaksos);
         }
         los.setOpintojaksos(childOpintojaksos);
-        ArrayList<KoulutusLOS> result = Lists.newArrayList(childOpintojaksos);
-        result.add(los);
-        return result;
+        return los;
     }
 
     private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws ResourceNotFoundException, KIException {

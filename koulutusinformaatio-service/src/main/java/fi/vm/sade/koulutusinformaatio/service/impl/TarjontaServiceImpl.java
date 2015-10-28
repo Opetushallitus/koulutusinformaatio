@@ -727,11 +727,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             los = creator.createLukioLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
             break;
         case KORKEAKOULUOPINTO: // Opintokokonaisuus ja opintojakso
-            List<KoulutusLOS> loses = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus, false);
-            for (KoulutusLOS koulutusLOS : loses) {
-                if (koulutusLOS.getId().equals(koulutusDTO.getOid()))
-                    los = koulutusLOS;
-            }
+            los = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus, false);
             break;
         default:
             break;
@@ -1015,17 +1011,17 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException {
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException {
         try {
             ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
             KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
             return creator.createKorkeakouluopinto(koulutusDTO, true, false);
         } catch (KoodistoException e) {
             LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage());
-            return Lists.newArrayList();
+            return null;
         } catch (TarjontaParseException e) {
             LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage());
-            return Lists.newArrayList();
+            return null;
         }
     }
 }

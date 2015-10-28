@@ -123,6 +123,6 @@ public interface TarjontaService {
      * @return
      * @throws KIException 
      */
-    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException;
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException;
 
 }

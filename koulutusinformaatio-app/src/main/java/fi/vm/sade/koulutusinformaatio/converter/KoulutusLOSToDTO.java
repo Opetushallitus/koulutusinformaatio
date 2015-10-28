@@ -152,7 +152,11 @@ public class KoulutusLOSToDTO {
                 opintojaksoDto.setType(koulutusLOS.getType());
                 opintojaksoDtos.add(opintojaksoDto);
             }
-            dto.setSiblings(opintojaksoDtos);
+            if (los.getOpintokokonaisuus() != null) {
+                dto.setSiblings(opintojaksoDtos);
+            } else {
+                dto.setOpintojaksos(opintojaksoDtos);
+            }
         }
 
         dto.setEndDate(los.getEndDate());
