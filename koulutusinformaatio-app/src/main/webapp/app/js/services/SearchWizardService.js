@@ -253,7 +253,9 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                     Config.educationTypes.ERIKOISAMMATTITUTKINTO,
                     Config.educationTypes.YLEMPI_AMMATTIKORKEAKOULUTUTKINTO,
                     Config.educationTypes.YLEMPI_YLIOPISTO,
-                    Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT
+                    Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT,
+                    Config.educationTypes.AVOIN_AMMATTIKORKEAKOULUTUTKINTO,
+                    Config.educationTypes.AVOIN_YLIOPISTO
                 ];
             },
 
