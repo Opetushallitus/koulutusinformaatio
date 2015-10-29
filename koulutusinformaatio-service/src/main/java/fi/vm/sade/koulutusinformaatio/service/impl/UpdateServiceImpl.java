@@ -181,11 +181,13 @@ public class UpdateServiceImpl implements UpdateService {
             for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
                 LOG.debug("Luodaan ja tallennetaan opintojakso: {}", dto.getOid());
                 KoulutusLOS los = tarjontaService.createKorkeakouluopinto(dto);
-                indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(los);
-                for (KoulutusLOS child : los.getOpintojaksos()) {
-                    indexToSolr(child, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                    this.educationDataUpdateService.save(child);
+                if (los != null) {
+                    indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                    this.educationDataUpdateService.save(los);
+                    for (KoulutusLOS child : los.getOpintojaksos()) {
+                        indexToSolr(child, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                        this.educationDataUpdateService.save(child);
+                    }
                 }
             }
             LOG.info("Korkeakouluopinnot tallennettu.");

@@ -1416,7 +1416,9 @@ public class LOSObjectCreator extends ObjectCreator {
         if (!StringUtils.isBlank(dto.getOpintokokonaisuusOid()) && !isRecursiveCallForOpintojakso) {
             LOG.debug("Opintojakso kuuluu opintokokonaisuuteen {} -> luodaan opintokokonaisuus.", dto.getOpintokokonaisuusOid());
             KoulutusLOS opintokokonaisuus = createKorkeakouluopinto(dto.getOpintokokonaisuusOid(), checkStatus, false);
-            alreadyCreatedKorkeakouluOpintos.add(opintokokonaisuus.getId());
+            if (opintokokonaisuus != null) {
+                alreadyCreatedKorkeakouluOpintos.add(opintokokonaisuus.getId());
+            }
             return opintokokonaisuus;
         }
         LOG.debug("Luodaan korkeakouluopinto {} {}", dto.getKoulutusmoduuliTyyppi().name(), dto.getOid());
@@ -1435,10 +1437,12 @@ public class LOSObjectCreator extends ObjectCreator {
         alreadyCreatedKorkeakouluOpintos.add(los.getId());
         for (String opintojaksoOid : dto.getOpintojaksoOids()) {
             KoulutusLOS opintojakso = createKorkeakouluopinto(opintojaksoOid, checkStatus, true);
-            alreadyCreatedKorkeakouluOpintos.add(opintojakso.getId());
-            opintojakso.setOpintokokonaisuus(los);
-            opintojakso.getApplicationOptions().addAll(los.getApplicationOptions());
-            childOpintojaksos.add(opintojakso);
+            if (opintojakso != null) {
+                alreadyCreatedKorkeakouluOpintos.add(opintojakso.getId());
+                opintojakso.setOpintokokonaisuus(los);
+                opintojakso.getApplicationOptions().addAll(los.getApplicationOptions());
+                childOpintojaksos.add(opintojakso);
+            }
         }
         for (KoulutusLOS child : childOpintojaksos) {
             child.setSiblings(childOpintojaksos);
