@@ -37,8 +37,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 
@@ -71,7 +69,7 @@ public class ApplicationSystemCreatorTest extends KoodistoAwareTest {
         dto.setHakuaikas(Lists.newArrayList(hakuaika));
         dto.setHakutapaUri(TarjontaConstants.HAKUTAPA_YHTEISHAKUV1);
 
-        creator = new ApplicationSystemCreator(koodistoService, mock(ParameterService.class));
+        creator = new ApplicationSystemCreator(koodistoService, mock(ParameterService.class), Lists.<String> newArrayList());
     }
 
     @Test

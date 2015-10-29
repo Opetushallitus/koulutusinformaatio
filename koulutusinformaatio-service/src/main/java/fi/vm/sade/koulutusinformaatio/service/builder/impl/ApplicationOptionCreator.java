@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,6 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -63,22 +63,29 @@ public class ApplicationOptionCreator extends ObjectCreator {
     private EducationObjectCreator educationObjectCreator;
     private ApplicationSystemCreator applicationSystemCreator;
 
+    private List<String> overriddenASOids;
+
     protected ApplicationOptionCreator(KoodistoService koodistoService,
                                        OrganisaatioRawService organisaatioRawService,
-                                       ParameterService parameterService) {
+                                       ParameterService parameterService, List<String> overriddenASOids) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.educationObjectCreator = new EducationObjectCreator(koodistoService, organisaatioRawService);
-        this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService, parameterService);
+        this.overriddenASOids = overriddenASOids;
+        this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService, parameterService, overriddenASOids);
     }
 
     public ApplicationSystemCreator getApplicationSystemCreator() {
         return applicationSystemCreator;
     }
 
-    public ApplicationOption createV1EducationApplicationOption(KoulutusLOS los,
-                                                                HakukohdeV1RDTO hakukohde,
-            HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
+    public ApplicationOption createV1EducationApplicationOption(KoulutusLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException,
+            ResourceNotFoundException {
+
+        // Demoympäristössä halutaan näyttää vain ne hakukohteet, jotka kuuluvat hakuihin overriddenASOids listalla
+        if (overriddenASOids != null && !overriddenASOids.isEmpty() && !overriddenASOids.contains(haku.getOid())) {
+            return null;
+        }
 
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
@@ -141,17 +148,13 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
-                DateRange range = new DateRange();
-                range.setStartDate(ha.getAlkuPvm());
-                range.setEndDate(ha.getLoppuPvm());
-                as.getApplicationDates().add(range);
-
                 if (ha.getHakuaikaId().equals(hakukohde.getHakuaikaId())) {
                     aoHakuaika = ha;
                 }
-
             }
         }
+        
+        
         ao.setApplicationSystem(as);
         if (!Strings.isNullOrEmpty(hakukohde.getSoraKuvausKoodiUri())) {
             ao.setSora(true);
@@ -172,6 +175,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setApplicationEndDate(haku.getHakuaikas().get(0).getLoppuPvm());
             ao.setApplicationPeriodName(super.getI18nText(haku.getHakuaikas().get(0).getNimet()));
             ao.setInternalASDateRef(haku.getHakuaikas().get(0).getHakuaikaId());
+        }
+
+        if (overriddenASOids != null && overriddenASOids.contains(haku.getOid())) {
+            setDemoApplicationDates(ao);
         }
 
         if (aoHakuaika != null && aoHakuaika.getNimet() != null && !aoHakuaika.getNimet().isEmpty()) {
@@ -238,6 +245,16 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setPaid(haku.isMaksumuuriKaytossa());
 
         return ao;
+    }
+
+    private void setDemoApplicationDates(ApplicationOption ao) {
+        LOG.warn("Puukotetaan demohakukohde {} näkyviin!", ao.getId());
+        Calendar start = Calendar.getInstance();
+        start.add(Calendar.MONTH, -6);
+        Calendar end = Calendar.getInstance();
+        end.add(Calendar.MONTH, 6);
+        ao.setApplicationStartDate(start.getTime());
+        ao.setApplicationEndDate(end.getTime());
     }
 
     private List<String> extractCodeVales(List<Code> teachingLanguages) {

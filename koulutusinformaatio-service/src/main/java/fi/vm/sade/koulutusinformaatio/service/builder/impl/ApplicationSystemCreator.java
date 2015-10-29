@@ -18,6 +18,10 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
@@ -36,12 +40,17 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
  */
 public class ApplicationSystemCreator extends ObjectCreator {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationSystemCreator.class);
+
     private static final String VARSINAINEN_HAKU = "hakutyyppi_01";
     private ParameterService parameterService;
 
-    public ApplicationSystemCreator(KoodistoService koodistoService, ParameterService parameterService) {
+    private List<String> overriddenASOids;
+
+    public ApplicationSystemCreator(KoodistoService koodistoService, ParameterService parameterService, List<String> overriddenASOids) {
         super(koodistoService);
         this.parameterService = parameterService;
+        this.overriddenASOids = overriddenASOids;
     }
 
     public ApplicationSystem createApplicationSystem(HakuV1RDTO asDto) throws KoodistoException {
@@ -60,6 +69,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
                     range.setEndDate(ha.getLoppuPvm());
                     as.getApplicationDates().add(range);
                 }
+
             }
             if (asDto.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
                 HandleHakuParameters(as);
@@ -69,10 +79,32 @@ public class ApplicationSystemCreator extends ObjectCreator {
             as.setShowEducationsUntil(asDto.getOpintopolunNayttaminenLoppuu());
             as.setUseSystemApplicationForm(asDto.isJarjestelmanHakulomake());
 
+            // Demoympäristöä varten pakotetaan haku näkyviin.
+            if (overriddenASOids != null && overriddenASOids.contains(asDto.getOid())) {
+                LOG.warn("Puukotetaan demohaku {} näkyviin!", as.getId());
+                addDemoApplicationDates(as);
+                as.setShownAsFacet(true);
+                Calendar end = Calendar.getInstance();
+                end.add(Calendar.MONTH, 16);
+                as.setShowEducationsUntil(end.getTime());
+            }
             return as;
         } else {
             return null;
         }
+    }
+
+    private void addDemoApplicationDates(ApplicationSystem as) {
+        DateRange range = new DateRange();
+        Calendar start = Calendar.getInstance();
+        start.add(Calendar.MONTH, -6);
+        Calendar end = Calendar.getInstance();
+        end.add(Calendar.MONTH, 6);
+
+        range.setStartDate(start.getTime());
+        range.setEndDate(end.getTime());
+
+        as.getApplicationDates().add(range);
     }
 
     /*

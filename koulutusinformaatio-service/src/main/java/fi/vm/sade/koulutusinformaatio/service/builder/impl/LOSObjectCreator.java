@@ -27,8 +27,6 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 
@@ -89,7 +87,6 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 /**
  * @author Hannu Lyytikainen
  */
-@Component
 public class LOSObjectCreator extends ObjectCreator {
 
     private static final Logger LOG = LoggerFactory.getLogger(LOSObjectCreator.class);
@@ -101,11 +98,10 @@ public class LOSObjectCreator extends ObjectCreator {
     private TarjontaRawService tarjontaRawService;
     private ApplicationOptionCreator applicationOptionCreator;
 
-    @Autowired
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
-            ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService) {
+            ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService, List<String> overriddenASOids) {
         super(koodistoService);
-        applicationOptionCreator = new ApplicationOptionCreator(koodistoService, organisaatioRawService, parameterService);
+        applicationOptionCreator = new ApplicationOptionCreator(koodistoService, organisaatioRawService, parameterService, overriddenASOids);
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.tarjontaRawService = tarjontaRawService;

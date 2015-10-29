@@ -115,7 +115,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         prerequisite = new Code();
         prerequisite.setValue("prerequisite");
         prerequisite.setName(TestUtil.createI18nText("peruskoulu"));
-        creator = new ApplicationOptionCreator(koodistoService, organisaatioRawService, parameterService);
+        creator = new ApplicationOptionCreator(koodistoService, organisaatioRawService, parameterService, Lists.<String> newArrayList());
 
     }
 

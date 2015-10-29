@@ -28,6 +28,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -69,7 +71,7 @@ public class TarjontaServiceImplTest {
         tarjontaRawService = mock(TarjontaRawService.class);
 
         service = new TarjontaServiceImpl(koodistoService,
-                providerService, tarjontaRawService, organisaatioRawService, mock(ParameterService.class));
+                providerService, tarjontaRawService, organisaatioRawService, mock(ParameterService.class), Lists.<String> newArrayList());
         
         mockHigherEdRawRes();
         this.mockCalendarApplicationSystems();
