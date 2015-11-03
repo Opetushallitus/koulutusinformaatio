@@ -40,7 +40,7 @@
         <morphia.version>0.105</morphia.version>
         <oph.organisaatio.version>13.0-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>10.1-SNAPSHOT</oph.koodisto.version>
-        <oph.tarjonta.version>2015-41-SNAPSHOT</oph.tarjonta.version>
+        <oph.tarjonta.version>2015-49-SNAPSHOT</oph.tarjonta.version>
         <javax.mail.version>1.4</javax.mail.version>
     </properties>
 

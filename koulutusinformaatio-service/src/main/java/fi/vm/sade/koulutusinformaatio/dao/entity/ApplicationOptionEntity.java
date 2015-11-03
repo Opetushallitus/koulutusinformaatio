@@ -103,7 +103,24 @@ public class ApplicationOptionEntity {
     private List<OrganizationGroupEntity> organizationGroups;
     private boolean isPseudo;
     private boolean paid;
+    private List<String> pohjakoulutusLiitteet;
+    private boolean isJosYoEiMuitaLiitepyyntoja;
 
+    public boolean isJosYoEiMuitaLiitepyyntoja() {
+        return isJosYoEiMuitaLiitepyyntoja;
+    }
+
+    public void setJosYoEiMuitaLiitepyyntoja(boolean isJosYoEiMuitaLiitepyyntoja) {
+        this.isJosYoEiMuitaLiitepyyntoja = isJosYoEiMuitaLiitepyyntoja;
+    }
+
+    public List<String> getPohjakoulutusLiitteet() {
+        return pohjakoulutusLiitteet;
+    }
+
+    public void setPohjakoulutusLiitteet(List<String> pohjakoulutusLiitteet) {
+        this.pohjakoulutusLiitteet = pohjakoulutusLiitteet;
+    }
 
     public ApplicationOptionEntity() {
 

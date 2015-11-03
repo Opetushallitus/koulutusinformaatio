@@ -96,6 +96,8 @@ public final class ApplicationOptionToDTO {
             dto.setHakuaikaId(applicationOption.getInternalASDateRef());
             dto.setOrganizationGroups(OrganizationGroupToDTO.convertAll(applicationOption.getOrganizationGroups()));
             dto.setPaid(applicationOption.isPaid());
+            dto.setPohjakoulutusLiitteet(applicationOption.getPohjakoulutusLiitteet());
+            dto.setJosYoEiMuitaLiitepyyntoja(applicationOption.isJosYoEiMuitaLiitepyyntoja());
 
             return dto;
         }

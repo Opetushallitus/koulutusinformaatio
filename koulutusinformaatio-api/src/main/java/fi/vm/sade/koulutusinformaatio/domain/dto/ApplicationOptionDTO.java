@@ -76,6 +76,24 @@ public class ApplicationOptionDTO {
     private String hakuaikaId;
     private List<OrganizationGroupDTO> organizationGroups;
     private boolean paid;
+    private List<String> pohjakoulutusLiitteet;
+    private boolean isJosYoEiMuitaLiitepyyntoja;
+
+    public boolean isJosYoEiMuitaLiitepyyntoja() {
+        return isJosYoEiMuitaLiitepyyntoja;
+    }
+
+    public void setJosYoEiMuitaLiitepyyntoja(boolean isJosYoEiMuitaLiitepyyntoja) {
+        this.isJosYoEiMuitaLiitepyyntoja = isJosYoEiMuitaLiitepyyntoja;
+    }
+
+    public List<String> getPohjakoulutusLiitteet() {
+        return pohjakoulutusLiitteet;
+    }
+
+    public void setPohjakoulutusLiitteet(List<String> pohjakoulutusLiitteet) {
+        this.pohjakoulutusLiitteet = pohjakoulutusLiitteet;
+    }
 
     public String getId() {
         return id;
