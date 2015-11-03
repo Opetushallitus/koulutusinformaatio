@@ -92,7 +92,24 @@ public class ApplicationOption {
     private boolean isPseudo;
     private List<String> komotoOids = new ArrayList<String>();
     private boolean paid;
+    private boolean isJosYoEiMuitaLiitepyyntoja;
+    private List<String> pohjakoulutusLiitteet = new ArrayList<>();
 
+    public boolean isJosYoEiMuitaLiitepyyntoja() {
+        return isJosYoEiMuitaLiitepyyntoja;
+    }
+
+    public void setJosYoEiMuitaLiitepyyntoja(boolean isJosYoEiMuitaLiitepyyntoja) {
+        this.isJosYoEiMuitaLiitepyyntoja = isJosYoEiMuitaLiitepyyntoja;
+    }
+
+    public List<String> getPohjakoulutusLiitteet() {
+        return pohjakoulutusLiitteet;
+    }
+
+    public void setPohjakoulutusLiitteet(List<String> pohjakoulutusLiitteet) {
+        this.pohjakoulutusLiitteet = pohjakoulutusLiitteet;
+    }
 
     public String getId() {
         return id;
