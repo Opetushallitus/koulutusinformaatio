@@ -24,6 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +115,13 @@ public class TarjontaServiceImpl implements TarjontaService {
         this.tarjontaRawService = tarjontaRawService;
         this.organisaatioRawService = organisaatioRawService;
         this.parameterService = parameterService;
-        this.overriddenASOids = overriddenASOids;
+        this.overriddenASOids = Lists.newArrayList(Collections2
+                .filter(overriddenASOids, new Predicate<String>() {
+                    @Override
+                    public boolean apply(String s) {
+                        return StringUtils.isNotBlank(s);
+                    }
+                }));
     }
 
     public TarjontaServiceImpl() {

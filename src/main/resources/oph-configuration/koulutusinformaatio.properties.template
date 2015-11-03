@@ -26,7 +26,7 @@ solr.base.url={{solr_base_url}}
 # Workaround, user.home propertyn pitäisi tulla systeemistä kuten muissakin, mutta ei toimi tässä palvelussa 
 user.home=/data00/oph/koulutusinformaatio
 koulutusinformaatio.error.report.recipients={{koulutusinformaatio_error_report_recipients}}
-koulutusinformaatio.overridden.haku.uris={{koulutusinformaatio_overridden_haku_uris|default('')}}
+koulutusinformaatio.overridden.haku.uris={{koulutusinformaatio_overridden_haku_uris}}
 
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
