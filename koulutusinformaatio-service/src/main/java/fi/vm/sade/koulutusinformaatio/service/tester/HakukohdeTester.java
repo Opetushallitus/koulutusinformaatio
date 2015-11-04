@@ -59,6 +59,7 @@ public class HakukohdeTester {
                     || rawRes.getResult() == null
                     || rawRes.getResult().getTulokset() == null
                     || rawRes.getResult().getTulokset().isEmpty()) {
+                running = false;
                 return;
             }
 
