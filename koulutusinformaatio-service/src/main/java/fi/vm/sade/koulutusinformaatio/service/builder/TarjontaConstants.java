@@ -74,4 +74,9 @@ public class TarjontaConstants {
     public static final String ORG_TYPE_TOIMIPISTE = "Toimipiste";
     public static final String ORG_TYPE_OPPILAITOS = "Oppilaitos";
     public static final String KOODISTO_OPPILAITOSTYYPPIFASETTI = "oppilaitostyyppifasetti";
+
+    public static final String OPPILAITOSTYYPPI_AMK = "oppilaitostyyppi_41";
+    public static final String OPPILAITOSTYYPPI_YLIOPISTO = "oppilaitostyyppi_42";
+    public static final String OPPILAITOSTYYPPI_SOTILASKK = "oppilaitostyyppi_43";
+
 }

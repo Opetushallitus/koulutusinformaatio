@@ -62,6 +62,7 @@
     "description-language-selection": "Description also available in",
 
     "education-starts": "Studies begin",
+    "ajankohta": "Ajankohta",
     "degree-execution-starts": "Completing of competence-based qualification begins",
     "language-of-instruction": "Language of instruction",
     "form-of-education": "Form of teaching",
@@ -75,6 +76,14 @@
     "chargeable-true": "Yes",
     "prerequisite-education": "Prior education",
 
+    "vastaava-korkeakoulu": "Responsible higher education institution",
+    "opettaja": "Responsible teacher",
+    "maksullisuus": "Fee",
+    "edeltavat-opinnot": "Previous studies",
+    "arviointi": "Evaluation",
+    "opetuksen-aika-ja-paikka": "Instruction time and location",
+    "lisatietoja": "Further information",
+    
     "average-limit": "Minimum grade point average",
     "lowest-acceptable-average": "Minimum grade point average required for admittance",
     "lowest-acceptable-average-description": "The minimum grade point average is set by the educational institution. Applicants whose grade point average is lower than this will not be admitted to the study programme. The grade point average required for admittance varies from year to year and may be higher.",
@@ -124,7 +133,9 @@
     "further-application-info": "Additional information on applying",
     "eligibility-description": "Eligibility",
     "info-center": "Admissions services",
-
+    "haku-menettely": "Application and enrolment procedures",
+    "peruutusehdot": "Cancellation terms",
+    
     "academy-description": "About the educational institution",
     "accessibility-anchor": "Accessibility",
     "accommodation-anchor": "Accommodation",

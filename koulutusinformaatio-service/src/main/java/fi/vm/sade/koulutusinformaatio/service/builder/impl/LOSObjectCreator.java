@@ -16,19 +16,22 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
@@ -42,11 +45,11 @@ import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -60,6 +63,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.OppiaineV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
@@ -68,6 +72,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KorkeakouluOpintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatillinenPerustutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
@@ -76,6 +81,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.TutkintoonJohtamatonKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
@@ -340,8 +346,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
-        addKoulutusV1Fields(koulutus, los);
-        addKoulutusGenericV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
+        addKoulutusGenericV1Fields(koulutus, los);
         addKoulutus2AsteV1Fields(koulutus, los);
 
         if (koulutus.getLukiodiplomit() != null) {
@@ -357,8 +363,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_ADULT_BASE);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
-        addKoulutusV1Fields(koulutus, los);
-        addKoulutusGenericV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
+        addKoulutusGenericV1Fields(koulutus, los);
         addKoulutus2AsteV1Fields(koulutus, los);
 
         return los;
@@ -459,8 +465,8 @@ public class LOSObjectCreator extends ObjectCreator {
         return educationRef;
     }
 
-    private HashMap<String, ApplicationOption> cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
-    private HashSet<String> invalidOids = new HashSet<String>();
+    private Map<String, ApplicationOption> cachedApplicationOptionResults = Maps.newHashMap();
+    private Set<String> invalidOids = Sets.newHashSet();
 
     private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
 
@@ -474,7 +480,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> hakukohdeTarjoajat = result.getResult().getTulokset();
 
-        List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
+        List<ApplicationOption> aos = Lists.newArrayList();
 
         for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> curProvider : hakukohdeTarjoajat) {
             for (HakukohdeHakutulosV1RDTO curHakukoh : curProvider.getTulokset()) {
@@ -600,8 +606,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 newLos.setParent(new ParentLOSRef(los.getId(), los.getName()));
 
             } catch (TarjontaParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOG.warn("Failed to parse AdultVocationalLOS {} for komo {}", curKomotoOid, parentKomoOid, e);
             }
         }
 
@@ -833,8 +838,8 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = new KoulutusLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(edType);
-        addKoulutusV1Fields(koulutusDTO, los);
-        addKoulutusGenericV1Fields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS);
+        addKoulutusV1Fields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
+        addKoulutusGenericV1Fields(koulutusDTO, los);
         if (!checkStatus) {
             los.setStatus(koulutusDTO.getTila().toString());
         }
@@ -851,14 +856,37 @@ public class LOSObjectCreator extends ObjectCreator {
         }
     }
 
-    private <S extends KoulutusV1RDTO, T extends LOS> void addKoulutusV1Fields(S koulutus, T los) throws KoodistoException, TarjontaParseException {
+    private void addTutkintoonJohtamatonKoulutusFields(TutkintoonJohtamatonKoulutusV1RDTO koulutus, KoulutusLOS los) throws KIException {
+        try {
+            los.setPrerequisites(createCodes(koulutus.getPohjakoulutusvaatimukset()));
+            los.setEndDate(koulutus.getKoulutuksenLoppumisPvm());
+            los.setCreditValue(koulutus.getOpintojenLaajuusPistetta());
+            los.setOpettaja(koulutus.getOpettaja());
+            los.setSubjects(getSubjects(koulutus.getOppiaineet()));
+            los.setOpinnonTyyppiUri(koulutus.getOpinnonTyyppiUri());
+
+            if (!StringUtils.isEmpty(koulutus.getTarjoajanKoulutus())) {
+                ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> vastaavanYliopistonKoulutus = tarjontaRawService.searchEducation(koulutus
+                        .getTarjoajanKoulutus());
+                String vastaavaOppilaitosOid = vastaavanYliopistonKoulutus.getResult().getTulokset().get(0).getOid();
+                los.setVastaavaKorkeakoulu(providerService.getByOID(vastaavaOppilaitosOid).getName());
+            }
+        } catch (ResourceNotFoundException | IOException e) {
+            LOG.warn("Organisaation hakeminen avoimen yliopiston koulutuksesta {} vastaavalle koulutukselle {} epäonnistui.", koulutus.getOid(),
+                    koulutus.getTarjoajanKoulutus(), e);
+            throw new ResourceNotFoundException("Organisaation hakeminen avoimen yliopiston koulutuksesta vastaavalle organisaatiolle epäonnistui", e);
+        }
+    }
+
+    private <S extends KoulutusV1RDTO, T extends KoulutusLOS> void addKoulutusV1Fields(S koulutus, T los, boolean checkStatus, String aoType,
+            boolean needsAOsToBeValid) throws KoodistoException, TarjontaParseException {
         los.setId(koulutus.getOid());
         los.setToteutustyyppi(koulutus.getToteutustyyppi());
-        los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
-        los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
+        los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
+        los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         if (los.getName() == null) {
-            los.setName(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
-            los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
+            los.setName(getI18nTextEnriched(koulutus.getKoulutuskoodi()));
+            los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutuskoodi()));
         }
         if (los.getName() == null) {
             throw new TarjontaParseException("Generating LOS for oid " + koulutus.getOid() + " failed. Could not parse name from DTO.");
@@ -880,19 +908,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getAmmattinimikkeet() != null) {
             los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
         }
-    }
-
-    private <S extends KoulutusAmmatillinenPerustutkintoV1RDTO, T extends KoulutusLOS> void addKoulutusAmmatillinenPerustutkintoV1Fields(S koulutus, T los)
-            throws KoodistoException, TarjontaParseException {
-        if (koulutus.getKoulutuksenTavoitteet() != null) {
-            los.setGoals(getI18nText(koulutus.getKoulutuksenTavoitteet()));
-        }
-        los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes()));
-        los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));
-    }
-
-    private <S extends KoulutusGenericV1RDTO, T extends KoulutusLOS> void addKoulutusGenericV1Fields(S koulutus, T los, boolean checkStatus, String aoType)
-            throws KoodistoException, TarjontaParseException {
+        
         los.setKomoOid(koulutus.getKomoOid());
 
         Map<String, Code> availableLanguagesMap = new HashMap<String, Code>();
@@ -942,6 +958,36 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setSelectingDegreeProgram(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA)));
         }
 
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS).getTekstis().containsKey(UNDEFINED)) {
+            los.setMaksullisuus(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS)));
+        }
+
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.EDELTAVAT_OPINNOT) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.EDELTAVAT_OPINNOT).getTekstis().containsKey(UNDEFINED)) {
+            los.setEdeltavatOpinnot(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.EDELTAVAT_OPINNOT)));
+        }
+
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.ARVIOINTIKRITEERIT) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.ARVIOINTIKRITEERIT).getTekstis().containsKey(UNDEFINED)) {
+            los.setArviointi(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.ARVIOINTIKRITEERIT)));
+        }
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.OPETUKSEN_AIKA_JA_PAIKKA) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.OPETUKSEN_AIKA_JA_PAIKKA).getTekstis().containsKey(UNDEFINED)) {
+            los.setOpetuksenAikaJaPaikka(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.OPETUKSEN_AIKA_JA_PAIKKA)));
+        }
+        if (koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIEDOT) != null
+                && !koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIEDOT).getTekstis().containsKey(UNDEFINED)) {
+            los.setLisatietoja(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIEDOT)));
+        }
+
+        if (koulutus.getKuvausKomo().get(KomoTeksti.PATEVYYS) != null
+                && !koulutus.getKuvausKomo().get(KomoTeksti.PATEVYYS).getTekstis().containsKey(UNDEFINED)) {
+            los.setCompetence(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.PATEVYYS)));
+        }
+
+        // TODO: varmista että kaikki KomotoTekstityypit löytyvät tästä generoinnista
+
         los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));
 
         // fields used to resolve available translation languages
@@ -966,12 +1012,17 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
 
-        los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
-        los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
-        los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
-        los.setEducationDegree(koulutus.getKoulutusaste().getUri());
-        los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
-        los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
+        los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala()));
+        los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi()));
+        los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste()));
+
+        los.setDegree(getI18nTextEnriched(koulutus.getTutkinto()));
+        if (koulutus.getKoulutuskoodi() != null) {
+            los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
+        }
+        if (koulutus.getKoulutusaste() != null) {
+            los.setEducationDegree(koulutus.getKoulutusaste().getUri());
+        }
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
         }
@@ -979,20 +1030,16 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setStartYear(koulutus.getKoulutuksenAlkamisvuosi());
         }
         if (koulutus.getKoulutuksenAlkamiskausi() != null) {
-            los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi().getMeta()));
+            los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi()));
         }
 
         los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
         if (koulutus.getSuunniteltuKestoTyyppi() != null) {
-            los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
+            los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi()));
             los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
         }
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
-        los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
-
-        if (koulutus.getKoulutuslaji() != null) {
-            los.setKoulutuslaji(koodistoService.searchFirst(koulutus.getKoulutuslaji().getUri()));
-        }
+        los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
@@ -1009,22 +1056,22 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
 
-        Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
-        if (requirementsCode != null) {
-            los.getPrerequisites().add(requirementsCode);
-        }
-        los.setKoulutusPrerequisite(requirementsCode);
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
-        los.setLinkToCurriculum(koulutus.getLinkkiOpetussuunnitelmaan());
         los.setOsaamisalaton(koulutus.getKoulutusohjelma().getUri() == null);
+
+        if (koulutus.getHinta() != null) {
+            los.setHinta("" + koulutus.getHinta());
+        } else {
+            los.setHinta(koulutus.getHintaString());
+        }
 
         // THIS ACTUALLY CREATES THE HAKUKOHDE!!!
         boolean existsValidHakukohde = fetchAndCreateHakukohdeData(los, checkStatus);
 
         // If we are not fetching for preview, an exception is thrown if no valid application options exist
-        if (checkStatus && !existsValidHakukohde) {
+        if (checkStatus && needsAOsToBeValid && !existsValidHakukohde) {
             throw new TarjontaParseException("No valid application options for education: " + los.getId());
         }
         if (los.getApplicationOptions() != null) {
@@ -1036,6 +1083,33 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setType(aoType);
             }
         }
+
+        if (!checkStatus) {
+            los.setStatus(koulutus.getTila().toString());
+        }
+        
+    }
+
+    private <S extends KoulutusAmmatillinenPerustutkintoV1RDTO, T extends KoulutusLOS> void addKoulutusAmmatillinenPerustutkintoV1Fields(S koulutus, T los)
+            throws KoodistoException, TarjontaParseException {
+        if (koulutus.getKoulutuksenTavoitteet() != null) {
+            los.setGoals(getI18nText(koulutus.getKoulutuksenTavoitteet()));
+        }
+        los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes()));
+        los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));
+    }
+
+    private <S extends KoulutusGenericV1RDTO, T extends KoulutusLOS> void addKoulutusGenericV1Fields(S koulutus, T los)
+            throws KoodistoException, TarjontaParseException {
+        Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
+        if (requirementsCode != null) {
+            los.getPrerequisites().add(requirementsCode);
+        }
+        los.setKoulutusPrerequisite(requirementsCode);
+        if (koulutus.getKoulutuslaji() != null) {
+            los.setKoulutuslaji(koodistoService.searchFirst(koulutus.getKoulutuslaji().getUri()));
+        }
+        los.setLinkToCurriculum(koulutus.getLinkkiOpetussuunnitelmaan());
     }
 
     private AdultVocationalLOS createAdultVocationalLOS(NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
@@ -1044,7 +1118,9 @@ public class LOSObjectCreator extends ObjectCreator {
 
         AdultVocationalLOS los = new AdultVocationalLOS();
 
-        addKoulutusV1Fields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_VOCATIONAL, true);
+
+        //TODO: Poistetaan addKoulutusV1Fields metodin täyttämät kentät alta.
 
         los.setStatus(koulutus.getTila().toString());
 
@@ -1312,8 +1388,85 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public void clearProcessedLists() {
-        this.cachedApplicationOptionResults = new HashMap<String, ApplicationOption>();
-        this.invalidOids = new HashSet<String>();
+        this.cachedApplicationOptionResults = Maps.newHashMap();
+        this.invalidOids = Sets.newHashSet();
+        this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
+    }
+
+    public KoulutusLOS createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) throws KIException {
+        ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
+        if (result != null) {
+            KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) result.getResult();
+            return createKorkeakouluopinto(koulutusDTO, checkStatus, isRecursiveCall);
+        }
+        return null;
+    }
+
+    private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
+
+    public KoulutusLOS createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCallForOpintojakso) throws KIException {
+        if (checkStatus && alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) {
+            LOG.debug("Korkeakouluopinto on jo käsitelty aiemmin.");
+            return null;
+        }
+        if (!StringUtils.isBlank(dto.getOpintokokonaisuusOid()) && !isRecursiveCallForOpintojakso) {
+            LOG.debug("Opintojakso kuuluu opintokokonaisuuteen {} -> luodaan opintokokonaisuus.", dto.getOpintokokonaisuusOid());
+            KoulutusLOS opintokokonaisuus = createKorkeakouluopinto(dto.getOpintokokonaisuusOid(), checkStatus, false);
+            if (opintokokonaisuus != null) {
+                alreadyCreatedKorkeakouluOpintos.add(opintokokonaisuus.getId());
+            }
+            return opintokokonaisuus;
+        }
+        LOG.debug("Luodaan korkeakouluopinto {} {}", dto.getKoulutusmoduuliTyyppi().name(), dto.getOid());
+
+        // Jos opintojakso kuuluu kokonaisuuteen, kokonaisuudella on hakukohde ja opintojakso voi olla ilman.
+        boolean needsAOsToBeValid = StringUtils.isEmpty(dto.getOpintokokonaisuusOid());
+
+        KoulutusLOS los = new KoulutusLOS();
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
+
+        addKorkeakouluopintoEducationType(dto, los);
+        addKoulutusV1Fields(dto, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, needsAOsToBeValid);
+        addTutkintoonJohtamatonKoulutusFields(dto, los);
+
+        List<KoulutusLOS> childOpintojaksos = Lists.newArrayList();
+        alreadyCreatedKorkeakouluOpintos.add(los.getId());
+        for (String opintojaksoOid : dto.getOpintojaksoOids()) {
+            KoulutusLOS opintojakso = createKorkeakouluopinto(opintojaksoOid, checkStatus, true);
+            if (opintojakso != null) {
+                alreadyCreatedKorkeakouluOpintos.add(opintojakso.getId());
+                opintojakso.setOpintokokonaisuus(los);
+                opintojakso.getApplicationOptions().addAll(los.getApplicationOptions());
+                childOpintojaksos.add(opintojakso);
+            }
+        }
+        for (KoulutusLOS child : childOpintojaksos) {
+            child.setSiblings(childOpintojaksos);
+        }
+        los.setOpintojaksos(childOpintojaksos);
+        return los;
+    }
+
+    private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws ResourceNotFoundException, KIException {
+        String tyypinMaarittavaOrganisaatioOid = null;
+        if (dto.getTarjoajanKoulutus() != null) { // Koulutustyyppi määräytyy opinnon tarjoajan mukaan
+            tyypinMaarittavaOrganisaatioOid = tarjontaRawService.searchEducation(dto.getTarjoajanKoulutus()).getResult().getTulokset().get(0).getOid();
+        } else { // tai suoraan organisaation mukaan jos tarjoaja itse järjestää opinnon
+            tyypinMaarittavaOrganisaatioOid = dto.getOrganisaatio().getOid();
+        }
+
+        // Haetaan organisaatiopalvelun hakurajapinnasta organisaation oppilaitostyyppi
+        String oppilaitostyyppi = providerService.getOppilaitosTyyppiByOID(tyypinMaarittavaOrganisaatioOid);
+        if (oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_AMK)) {
+            los.setEducationType(SolrConstants.ED_TYPE_AVOIN_AMK);
+        } else if (oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_YLIOPISTO)
+                || oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_SOTILASKK)) {
+            los.setEducationType(SolrConstants.ED_TYPE_AVOIN_YO);
+        } else {
+            LOG.error("Tuntematon korkeakouluopinnon {} oppilaitostyyppi {} organisaatiolla {}", dto.getOid(), oppilaitostyyppi,
+                    tyypinMaarittavaOrganisaatioOid);
+            throw new KIException(String.format("Tuntematon oppilaitostyyppi %s koulutuksella %s", oppilaitostyyppi, dto.getOid()));
+        }
     }
 
 }

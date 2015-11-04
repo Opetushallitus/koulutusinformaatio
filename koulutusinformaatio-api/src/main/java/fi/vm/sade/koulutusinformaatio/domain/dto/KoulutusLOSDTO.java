@@ -15,12 +15,13 @@
  */
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
@@ -39,6 +40,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String educationDegreeName;
     private String degreeTitle;
     private Date startDate;
+    private Date endDate;
     private List<Date> startDates;
     private String plannedDuration;
     private String plannedDurationUnit;
@@ -72,9 +74,23 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private List<ArticleResultDTO> edTypeSuggestions;
     private String workingLifePlacement;
     private String linkToCurriculum;
+    private Set<ChildLOIRefDTO> opintojaksos;
     private Set<ChildLOIRefDTO> siblings;
     private ParentLOSRefDTO parentLos;
     private CodeDTO koulutusPrerequisite;
+    private Map<String, List<String>> subjects;
+    private String opettaja;
+
+    private String opinnonTyyppiUri;
+
+    private String vastaavaKorkeakoulu;
+    private String maksullisuus;
+    private String edeltavatOpinnot;
+    private String arviointi;
+    private String opetuksenAikaJaPaikka;
+    private String lisatietoja;
+    private String competence;
+    private String charge;
 
     // Status of the lo. For preview
     private String status;
@@ -472,6 +488,14 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
         this.linkToCurriculum = linkToCurriculum;
     }
 
+    public Set<ChildLOIRefDTO> getOpintojaksos() {
+        return opintojaksos;
+    }
+
+    public void setOpintojaksos(Set<ChildLOIRefDTO> opintojaksos) {
+        this.opintojaksos = opintojaksos;
+    }
+
     public Set<ChildLOIRefDTO> getSiblings() {
         return siblings;
     }
@@ -494,6 +518,102 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setKoulutusPrerequisite(CodeDTO koulutusPrerequisite) {
         this.koulutusPrerequisite = koulutusPrerequisite;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Map<String, List<String>> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Map<String, List<String>> subjects) {
+        this.subjects = subjects;
+    }
+
+    public String getOpettaja() {
+        return opettaja;
+    }
+
+    public void setOpettaja(String opettaja) {
+        this.opettaja = opettaja;
+    }
+
+    public String getOpinnonTyyppiUri() {
+        return opinnonTyyppiUri;
+    }
+
+    public void setOpinnonTyyppiUri(String opinnonTyyppiUri) {
+        this.opinnonTyyppiUri = opinnonTyyppiUri;
+    }
+
+    public String getMaksullisuus() {
+        return maksullisuus;
+    }
+
+    public void setMaksullisuus(String maksullisuus) {
+        this.maksullisuus = maksullisuus;
+    }
+
+    public String getEdeltavatOpinnot() {
+        return edeltavatOpinnot;
+    }
+
+    public void setEdeltavatOpinnot(String edeltavatOpinnot) {
+        this.edeltavatOpinnot = edeltavatOpinnot;
+    }
+
+    public String getArviointi() {
+        return arviointi;
+    }
+
+    public void setArviointi(String arviointi) {
+        this.arviointi = arviointi;
+    }
+
+    public String getOpetuksenAikaJaPaikka() {
+        return opetuksenAikaJaPaikka;
+    }
+
+    public void setOpetuksenAikaJaPaikka(String opetuksenAikaJaPaikka) {
+        this.opetuksenAikaJaPaikka = opetuksenAikaJaPaikka;
+    }
+
+    public String getLisatietoja() {
+        return lisatietoja;
+    }
+
+    public void setLisatietoja(String lisatietoja) {
+        this.lisatietoja = lisatietoja;
+    }
+
+    public String getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(String competence) {
+        this.competence = competence;
+    }
+
+    public String getCharge() {
+        return charge;
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
+    }
+
+    public String getVastaavaKorkeakoulu() {
+        return vastaavaKorkeakoulu;
+    }
+
+    public void setVastaavaKorkeakoulu(String vastaavaKorkeakoulu) {
+        this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
     }
 
 }

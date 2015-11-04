@@ -159,7 +159,11 @@ public class IncrementalLOSIndexer {
             koulutusIndexer.indexLukioKoulutusKomoto(koulutusDTO);
             break;
 
-        case KORKEAKOULUOPINTO: // Tulossa
+        case KORKEAKOULUOPINTO: // Opintokokonaisuus ja opintojakso
+            LOG.debug("Korkeakouluopinto: {}", koulutusDTO.getOid());
+            koulutusIndexer.indexKorkeakouluopintoKomoto(koulutusDTO);
+            break;
+
         case AIKUISTEN_PERUSOPETUS: // Tulossa
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS: // Poistunut
         case MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS: // Poistunut

@@ -161,6 +161,35 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
+    public void indexKorkeakouluopintoKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
+        KoulutusLOS los = tarjontaService.createKorkeakouluopinto(dto);
+
+        KoulutusLOS losToRemove = (KoulutusLOS) dataQueryService.getLos(dto.getOid());
+        if (losToRemove != null) {
+            removeKorkeakouluOpintoAndRelatives(losToRemove);
+        }
+
+        this.indexToSolr(los);
+        this.dataUpdateService.updateKoulutusLos(los);
+
+        for (KoulutusLOS child : los.getOpintojaksos()) {
+            this.indexToSolr(child);
+            this.dataUpdateService.updateKoulutusLos(child);
+        }
+    }
+
+    private void removeKorkeakouluOpintoAndRelatives(KoulutusLOS los) {
+        if (los.getOpintokokonaisuus() != null) {
+            removeKorkeakouluOpintoAndRelatives(los.getOpintokokonaisuus());
+        } else {
+            for (KoulutusLOS child : los.getOpintojaksos()) {
+                dataUpdateService.deleteLos(child);
+            }
+            dataUpdateService.deleteLos(los);
+        }
+
+    }
+
     public void indexValmistavaKoulutusKomoto(String curKomotoOid) throws Exception {
         LOG.debug("Indexing koulutus ed komoto: {}", curKomotoOid);
         KoulutusLOS createdLos = null;

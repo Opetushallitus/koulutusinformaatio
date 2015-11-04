@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+
 public class KoulutusLOS extends LOS {
 
     // Varmistetut
@@ -23,6 +25,7 @@ public class KoulutusLOS extends LOS {
     private I18nText educationDegreeLang;
     private I18nText degreeTitle;
     private Date startDate;
+    private Date endDate;
     private List<Date> startDates;
     private String plannedDuration;
     private I18nText plannedDurationUnit;
@@ -41,8 +44,8 @@ public class KoulutusLOS extends LOS {
     private List<Code> teachingLanguages;
 
     private Provider provider;
-    private List<Provider> additionalProviders = new ArrayList<Provider>();
-    private List<ApplicationOption> applicationOptions;
+    private List<Provider> additionalProviders = Lists.newArrayList();
+    private List<ApplicationOption> applicationOptions = Lists.newArrayList();
 
     private String komoOid;
 
@@ -83,6 +86,24 @@ public class KoulutusLOS extends LOS {
     private List<KoulutusLOS> siblings = new ArrayList<KoulutusLOS>();
 
     private boolean osaamisalaton;
+
+    //Tutkintoon johtamattoman LOSin kentät
+
+    private KoulutusLOS opintokokonaisuus;
+    private List<KoulutusLOS> opintojaksos = Lists.newArrayList();
+
+    private String opettaja;
+    private String opinnonTyyppiUri;
+    private String hinta;
+    
+    private I18nText vastaavaKorkeakoulu;
+    private I18nText maksullisuus;
+    private I18nText edeltavatOpinnot;
+    private I18nText arviointi;
+    private I18nText opetuksenAikaJaPaikka;
+    private I18nText lisatietoja;
+
+    private I18nText competence;
 
     public String getId() {
         return id;
@@ -541,6 +562,110 @@ public class KoulutusLOS extends LOS {
 
     public void setOsaamisalaton(boolean osaamisalaton) {
         this.osaamisalaton = osaamisalaton;
+    }
+
+    public KoulutusLOS getOpintokokonaisuus() {
+        return opintokokonaisuus;
+    }
+
+    public void setOpintokokonaisuus(KoulutusLOS opintokokonaisuus) {
+        this.opintokokonaisuus = opintokokonaisuus;
+    }
+
+    public List<KoulutusLOS> getOpintojaksos() {
+        return opintojaksos;
+    }
+
+    public void setOpintojaksos(List<KoulutusLOS> opintojaksos) {
+        this.opintojaksos = opintojaksos;
+    }
+
+    public String getOpettaja() {
+        return opettaja;
+    }
+
+    public void setOpettaja(String opettaja) {
+        this.opettaja = opettaja;
+    }
+
+    public String getOpinnonTyyppiUri() {
+        return opinnonTyyppiUri;
+    }
+
+    public void setOpinnonTyyppiUri(String opinnonTyyppiUri) {
+        this.opinnonTyyppiUri = opinnonTyyppiUri;
+    }
+
+    public I18nText getVastaavaKorkeakoulu() {
+        return vastaavaKorkeakoulu;
+    }
+
+    public void setVastaavaKorkeakoulu(I18nText vastaavaKorkeakoulu) {
+        this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public I18nText getMaksullisuus() {
+        return maksullisuus;
+    }
+
+    public void setMaksullisuus(I18nText maksullisuus) {
+        this.maksullisuus = maksullisuus;
+    }
+
+    public I18nText getEdeltavatOpinnot() {
+        return edeltavatOpinnot;
+    }
+
+    public void setEdeltavatOpinnot(I18nText edeltavatOpinnot) {
+        this.edeltavatOpinnot = edeltavatOpinnot;
+    }
+
+    public I18nText getArviointi() {
+        return arviointi;
+    }
+
+    public void setArviointi(I18nText arviointi) {
+        this.arviointi = arviointi;
+    }
+
+    public I18nText getOpetuksenAikaJaPaikka() {
+        return opetuksenAikaJaPaikka;
+    }
+
+    public void setOpetuksenAikaJaPaikka(I18nText opetuksenAikaJaPaikka) {
+        this.opetuksenAikaJaPaikka = opetuksenAikaJaPaikka;
+    }
+
+    public I18nText getLisatietoja() {
+        return lisatietoja;
+    }
+
+    public void setLisatietoja(I18nText lisatietoja) {
+        this.lisatietoja = lisatietoja;
+    }
+
+    public I18nText getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(I18nText competence) {
+        this.competence = competence;
+    }
+
+    public String getHinta() {
+        return hinta;
+    }
+
+    public void setHinta(String hinta) {
+        this.hinta = hinta;
     }
 
 }

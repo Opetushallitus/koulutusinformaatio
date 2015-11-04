@@ -103,6 +103,10 @@ public class ApplicationOptionEntity {
     private List<OrganizationGroupEntity> organizationGroups;
     private boolean isPseudo;
     private boolean paid;
+    @Embedded
+    private I18nTextEntity hakuMenettelyKuvaukset;
+    @Embedded
+    private I18nTextEntity peruutusEhdotKuvaukset;
     private List<String> pohjakoulutusLiitteet;
     private boolean isJosYoEiMuitaLiitepyyntoja;
 
@@ -495,4 +499,21 @@ public class ApplicationOptionEntity {
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
+
+    public I18nTextEntity getHakuMenettelyKuvaukset() {
+        return hakuMenettelyKuvaukset;
+    }
+
+    public void setHakuMenettelyKuvaukset(I18nTextEntity hakuMenettelyKuvaukset) {
+        this.hakuMenettelyKuvaukset = hakuMenettelyKuvaukset;
+    }
+
+    public I18nTextEntity getPeruutusEhdotKuvaukset() {
+        return peruutusEhdotKuvaukset;
+    }
+
+    public void setPeruutusEhdotKuvaukset(I18nTextEntity peruutusEhdotKuvaukset) {
+        this.peruutusEhdotKuvaukset = peruutusEhdotKuvaukset;
+    }
+
 }

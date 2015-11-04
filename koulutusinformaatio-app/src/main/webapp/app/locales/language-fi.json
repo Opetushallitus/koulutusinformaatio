@@ -62,6 +62,7 @@
     "description-language-selection": "Kuvaus saatavilla myös",
 
     "education-starts": "Koulutus alkaa",
+    "ajankohta": "Koulutuksen ajankohta",
     "degree-execution-starts": "Tutkinnon suorittaminen alkaa",
     "language-of-instruction": "Opetuskieli",
     "form-of-education": "Opetusmuoto",
@@ -74,6 +75,14 @@
     "chargeable-false": "Ei",
     "chargeable-true": "Kyllä",
     "prerequisite-education": "Pohjakoulutus",
+
+    "vastaava-korkeakoulu": "Vastaava korkeakoulu",
+    "opettaja": "Opettaja",
+    "maksullisuus": "Maksullisuus",
+    "edeltavat-opinnot": "Edeltävät opinnot",
+    "arviointi": "Arviointi",
+    "opetuksen-aika-ja-paikka": "Opetuksen aika ja paikka",
+    "lisatietoja": "Lisätietoja",
 
     "average-limit": "Keskiarvoraja",
     "lowest-acceptable-average": "alin hyväksyttävä keskiarvo",
@@ -124,6 +133,9 @@
     "further-application-info": "Lisätietoa hakemisesta",
     "eligibility-description": "Hakukelpoisuusvaatimukset",
     "info-center": "Hakuneuvonta",
+    "haku-menettely": "Haku- tai ilmoittautumismenettely",
+    "peruutusehdot": "Peruutusehdot",
+    
 
     "academy-description": "Oppilaitoksen esittely",
     "accessibility-anchor": "Esteettömyys",

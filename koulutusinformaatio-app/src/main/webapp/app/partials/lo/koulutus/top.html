@@ -3,21 +3,23 @@
     <div>{{provider.homeplace}}</div>
 
     <div data-ng-repeat="parent in lo.parents">
-    	<span>
-    		<a data-ng-href="#!/korkeakoulu/{{parent.id}}">{{parent.name}}</a>
+        <span>
+            <a data-ng-href="#!/korkeakoulu/{{parent.id}}">{{parent.name}}</a>
             <!-- PREVIEW -->
             <span data-ng-if="lo.preview" data-ki-preview-status-label="parent.status" data-lang="virkailijaLang"></span>
             <!-- END PREVIEW -->
-    	</span>
+        </span>
     </div>
 
     <div data-ng-if="lo.parentLos">
         <div data-ng-if="!(lo.qualifications.length == 1)">{{lo.educationDomain}}</div>
         <div data-ng-if="lo.qualifications.length == 1">{{lo.educationDomain}}, {{lo.qualifications[0]}}</span></div>
 
-        <a data-ng-if="!lo.preview" href="#!/tutkinto/{{lo.parentLos.id}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{lo.parentLos.name}}</a>
+        <a data-ng-if="!lo.preview && lo.parentLos.type == 'TUTKINTO'" href="{{lo.parentLos.url}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{lo.parentLos.name}}</a>
+        <a data-ng-if="!lo.preview && lo.parentLos.type == 'KOULUTUS'" href="{{lo.parentLos.url}}">{{lo.parentLos.name}}</a>
         <!-- PREVIEW -->
-        <a data-ng-if="lo.preview">{{lo.parentLos.name}}</a>
+        <a data-ng-if="lo.preview && lo.parentLos.type == 'TUTKINTO'">{{lo.parentLos.name}}</a>
+        <a data-ng-if="lo.preview && lo.parentLos.type == 'KOULUTUS'" href="{{lo.parentLos.url}}">{{lo.parentLos.name}}</a>
         <!-- END PREVIEW -->
     </div>
 
@@ -34,6 +36,7 @@
     <!-- PREVIEW -->
     <div data-ng-if="lo.preview && lo.educationType == 'et01.03.01'" data-ki-i18n="esikatselu-sisaruslista-placeholder" data-lang="{{virkailijaLang}}"></div>
     <!-- END PREVIEW -->
-    <div data-ki-sibling-ribbon data-siblings="lo.siblings" template="siblingsNew" class="ribbon"></div>
-    <div data-ki-child-ribbon data-children="lo.children" data-lang="virkailijaLang" type="loType" class="ribbon"></div>
+    <div data-ng-if="lo.opintojaksos" data-ki-sibling-ribbon data-siblings="lo.opintojaksos" template="siblingsNew" class="ribbon"></div>
+    <div data-ng-if="lo.siblings"  data-ki-sibling-ribbon data-siblings="lo.siblings" template="siblingsNew" class="ribbon"></div>
+    <div data-ng-if="lo.children"  data-ki-child-ribbon data-children="lo.children" data-lang="virkailijaLang" type="loType" class="ribbon"></div>
 </section>

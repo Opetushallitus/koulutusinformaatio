@@ -123,7 +123,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setOrganizationGroups(educationObjectCreator.createOrganizationGroups(hakukohde.getRyhmaliitokset(), hakukohde.getOrganisaatioRyhmaOids()));
         ao.setKaksoistutkinto(hakukohde.getKaksoisTutkinto());
         ao.setVocational(SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType()));
-        ao.setEducationCodeUri(los.getEducationCode().getUri());
+        if (los.getEducationCode() != null) {
+            ao.setEducationCodeUri(los.getEducationCode().getUri());
+        }
         ao.setPrerequisite(los.getKoulutusPrerequisite());
         ao.setPohjakoulutusLiitteet(hakukohde.getPohjakoulutusliitteet());
         ao.setJosYoEiMuitaLiitepyyntoja(hakukohde.isJosYoEiMuitaLiitepyyntoja());
@@ -239,6 +241,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.getKomotoOids().addAll(hakukohde.getHakukohdeKoulutusOids());
 
         ao.setAdditionalProof(educationObjectCreator.createAdditionalProof(hakukohde.getValintakokeet()));
+
+        ao.setHakuMenettelyKuvaukset(getI18nText(hakukohde.getHakuMenettelyKuvaukset()));
+        ao.setPeruutusEhdotKuvaukset(getI18nText(hakukohde.getPeruutusEhdotKuvaukset()));
 
         if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
             ao.setEducationTypeUri(SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);

@@ -1,15 +1,19 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class KoulutusLOSToDTO {
 
@@ -105,8 +109,7 @@ public class KoulutusLOSToDTO {
             for (KoulutusLOS sibling : los.getSiblings()) {
 
                 if (los.getKoulutusPrerequisite() != null
-                    && !TutkintoLOSToDTO.isSamePrerequisite(los.getKoulutusPrerequisite().getValue(), sibling)
-                ) {
+                        && !TutkintoLOSToDTO.isSamePrerequisite(los.getKoulutusPrerequisite().getValue(), sibling)) {
                     continue;
                 }
 
@@ -114,6 +117,7 @@ public class KoulutusLOSToDTO {
                 siblingDto.setId(sibling.getId());
                 siblingDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(sibling.getName(), lang));
                 siblingDto.setActive(los.getId().equals(sibling.getId()));
+                siblingDto.setType(sibling.getType());
                 siblings.add(siblingDto);
             }
             dto.setSiblings(siblings);
@@ -125,10 +129,53 @@ public class KoulutusLOSToDTO {
 
             parentLos.setId(tutkintoLOS.getId());
             parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(tutkintoLOS.getName(), lang));
+            parentLos.setType(tutkintoLOS.getType());
             dto.setParentLos(parentLos);
         }
 
+        KoulutusLOS opintokokonaisuus = los.getOpintokokonaisuus();
+        if (opintokokonaisuus != null) {
+            ParentLOSRefDTO parentLos = new ParentLOSRefDTO();
+            parentLos.setId(opintokokonaisuus.getId());
+            parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(opintokokonaisuus.getName(), lang));
+            parentLos.setType(opintokokonaisuus.getType());
+            dto.setParentLos(parentLos);
+        }
+
+        if (!los.getOpintojaksos().isEmpty()) {
+            Set<ChildLOIRefDTO> opintojaksoDtos = new HashSet<ChildLOIRefDTO>();
+            for (KoulutusLOS koulutusLOS : los.getOpintojaksos()) {
+                ChildLOIRefDTO opintojaksoDto = new ChildLOIRefDTO();
+                opintojaksoDto.setId(koulutusLOS.getId());
+                opintojaksoDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(koulutusLOS.getName(), lang));
+                opintojaksoDto.setActive(los.getId().equals(koulutusLOS.getId()));
+                opintojaksoDto.setType(koulutusLOS.getType());
+                opintojaksoDtos.add(opintojaksoDto);
+            }
+            if (los.getOpintokokonaisuus() != null) {
+                dto.setSiblings(opintojaksoDtos);
+            } else {
+                dto.setOpintojaksos(opintojaksoDtos);
+            }
+        }
+
+        dto.setEndDate(los.getEndDate());
+
+        dto.setOpettaja(los.getOpettaja());
+        dto.setSubjects(los.getSubjects());
+        dto.setVastaavaKorkeakoulu(ConverterUtil.getTextByLanguageUseFallbackLang(los.getVastaavaKorkeakoulu(), lang));
+
         dto.setKoulutusPrerequisite(CodeToDTO.convert(los.getKoulutusPrerequisite(), lang));
+
+        dto.setOpinnonTyyppiUri(los.getOpinnonTyyppiUri());
+        dto.setMaksullisuus(ConverterUtil.getTextByLanguageUseFallbackLang(los.getMaksullisuus(), lang));
+        dto.setEdeltavatOpinnot(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEdeltavatOpinnot(), lang));
+        dto.setArviointi(ConverterUtil.getTextByLanguageUseFallbackLang(los.getArviointi(), lang));
+        dto.setOpetuksenAikaJaPaikka(ConverterUtil.getTextByLanguageUseFallbackLang(los.getOpetuksenAikaJaPaikka(), lang));
+        dto.setLisatietoja(ConverterUtil.getTextByLanguageUseFallbackLang(los.getLisatietoja(), lang));
+        dto.setCompetence(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCompetence(), lang));
+
+        dto.setCharge(los.getHinta());
 
         return dto;
     }

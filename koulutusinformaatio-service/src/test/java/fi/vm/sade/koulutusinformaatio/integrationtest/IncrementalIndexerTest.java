@@ -2,12 +2,12 @@ package fi.vm.sade.koulutusinformaatio.integrationtest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.LogManager;
 
 import org.junit.After;
 import org.junit.Before;
@@ -227,6 +227,32 @@ public class IncrementalIndexerTest {
         assertEquals("1.2.246.562.17.79497399471", adultLosses.get(0).getId());
 
     }
+
+    @Test
+    public void testThatOpintojaksoIsIndexedCorrectly() throws Exception {
+
+        tarjontaRawServiceMock.setTestCase("testThatOpintojaksoIsIndexedCorrectly");
+        String opintojaksoId = "1.2.246.562.17.28053757085";
+        KoulutusLOSEntity opintojakso = koulutusLOSDAO.get(opintojaksoId);
+        String opintokokonaisuusId = "1.2.246.562.17.52083499963";
+        KoulutusLOSEntity opintokokonaisuus = koulutusLOSDAO.get(opintokokonaisuusId);
+        assertNull(opintojakso);
+        assertNull(opintokokonaisuus);
+
+        incrementalUpdateService.updateChangedEducationData();
+
+        opintojakso = koulutusLOSDAO.get(opintojaksoId);
+        opintokokonaisuus = koulutusLOSDAO.get(opintokokonaisuusId);
+        assertNotNull(opintojakso);
+        assertNotNull(opintokokonaisuus);
+        assertNull(opintokokonaisuus.getOpintokokonaisuus());
+        assertEquals(1, opintokokonaisuus.getOpintojaksos().size());
+        assertEquals(0, opintojakso.getOpintojaksos().size());
+        assertEquals(opintokokonaisuusId, opintojakso.getOpintokokonaisuus().getId());
+        assertEquals(opintojaksoId, opintokokonaisuus.getOpintojaksos().get(0).getId());
+
+    }
+
 
     private void validateTutkinto(TutkintoLOSEntity tutkinto, List<String> allowedTutkinToIDs) {
         assertTrue("Tutkinto " + tutkinto.getId() + " has no application options.", tutkinto.getApplicationOptions().size() > 0);

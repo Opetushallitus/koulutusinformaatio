@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentL
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -57,6 +58,8 @@ public interface TarjontaService {
 	public HigherEducationLOS findHigherEducationLearningOpportunity(
 			String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
+    public List<KoulutusHakutulosV1RDTO> findKorkeakouluOpinnot();
+
     public List<Code> getEdTypeCodes() throws KoodistoException;
 
     HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
@@ -72,7 +75,7 @@ public interface TarjontaService {
 
     public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
-    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException;
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KIException;
 
     public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo);
 
@@ -113,5 +116,13 @@ public interface TarjontaService {
     public Set<String> findKoulutusOidsByHaku(String asOid);
 
     public Set<String> findKoulutusOidsByAo(String aoOid);
+
+    /**
+     * Luo korkeakouluopinnon annetusta DTOsta. Jos dto on opintojakso, luo opintokokonaisuuden ja kaikki sen opintojaksot.
+     * @param dto
+     * @return
+     * @throws KIException 
+     */
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException;
 
 }

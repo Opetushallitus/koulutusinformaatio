@@ -99,6 +99,9 @@ public final class ApplicationOptionToDTO {
             dto.setPohjakoulutusLiitteet(applicationOption.getPohjakoulutusLiitteet());
             dto.setJosYoEiMuitaLiitepyyntoja(applicationOption.isJosYoEiMuitaLiitepyyntoja());
 
+            dto.setHakuMenettelyKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getHakuMenettelyKuvaukset(), lang));
+            dto.setPeruutusEhdotKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getPeruutusEhdotKuvaukset(), lang));
+
             return dto;
         }
         return null;
