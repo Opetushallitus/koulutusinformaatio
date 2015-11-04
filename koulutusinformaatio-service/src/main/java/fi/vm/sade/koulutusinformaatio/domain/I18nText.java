@@ -72,6 +72,10 @@ public class I18nText {
         this.translations.put(key, value);
     }
 
+    public static boolean hasTranslationForLanguage(I18nText text, String lang) {
+        return text != null && text.getTranslations() != null && text.getTranslations().containsKey(lang);
+    }
+
     @Override
     public String toString() {
         return translations.toString();

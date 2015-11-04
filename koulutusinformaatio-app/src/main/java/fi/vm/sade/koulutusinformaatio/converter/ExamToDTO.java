@@ -23,6 +23,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.Exam;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ExamDTO;
 
 /**
@@ -34,7 +35,7 @@ public final class ExamToDTO {
     }
 
     public static ExamDTO convert(Exam exam, String lang) {
-        if (exam != null)  {
+        if (exam != null && I18nText.hasTranslationForLanguage(exam.getDescription(), lang))  {
             ExamDTO dto = new ExamDTO();
             dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getType(), lang));
             dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getDescription(), lang));
