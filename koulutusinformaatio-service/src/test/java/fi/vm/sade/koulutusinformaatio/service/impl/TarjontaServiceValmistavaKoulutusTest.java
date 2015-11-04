@@ -33,12 +33,12 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -76,17 +76,19 @@ public class TarjontaServiceValmistavaKoulutusTest {
 
     @Mock
     private ParameterService parameterService;
-    
-    @InjectMocks
+
     private TarjontaServiceImpl service;
-    
-    
+
+
 
     private final static String CIVILIZING_OID = "234.243.243.21";
     
     @SuppressWarnings("unchecked")
     @Before
     public void init() throws Exception {
+        service = new TarjontaServiceImpl(koodistoService, providerService, rawService,
+                organisaatioRawService, parameterService, new ArrayList<String>());
+
         setCreator();
         KoulutusHakutulosV1RDTO mockedEducationResult = mock(KoulutusHakutulosV1RDTO.class);
         when(mockedEducationResult.getTila()).thenReturn(TarjontaTila.JULKAISTU);
