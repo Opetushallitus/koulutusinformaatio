@@ -107,6 +107,9 @@ public abstract class ObjectCreator {
             i18nText.setTranslations(translations);
             return i18nText;
         }
+        if(rawMaterial != null){
+            return getI18nTextEnriched(rawMaterial.getMeta());
+        }
         return null;
     }
     
