@@ -32,7 +32,7 @@ import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 
 /**
@@ -40,13 +40,13 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
  */
 public final class TutkintoLOSToDTO {
 
-    public static ParentLearningOpportunitySpecificationDTO convert(final TutkintoLOS tutkintoLOS,
+    public static TutkintoLOSDTO convert(final TutkintoLOS tutkintoLOS,
                                                                     final String lang,
                                                                     final String uiLang,
                                                                     final String defaultLang,
                                                                     final String prerequisite) {
 
-        ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
+        TutkintoLOSDTO parent = new TutkintoLOSDTO();
         parent.setId(tutkintoLOS.getId());
         parent.setName(ConverterUtil.getTextByLanguage(tutkintoLOS.getName(), lang));
         parent.setEducationDegree(tutkintoLOS.getEducationDegree());

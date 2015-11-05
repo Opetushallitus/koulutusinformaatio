@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 
 public class TutkintoLOSToDTOTest {
@@ -33,7 +33,7 @@ public class TutkintoLOSToDTOTest {
         code.setValue("PK");
         child.setKoulutusPrerequisite(code);
         tutkinto.setChildEducations(Lists.newArrayList(child));
-        ParentLearningOpportunitySpecificationDTO dto = TutkintoLOSToDTO.convert(tutkinto, "fi", "fi", "fi", "PK");
+        TutkintoLOSDTO dto = TutkintoLOSToDTO.convert(tutkinto, "fi", "fi", "fi", "PK");
         assertEquals(1, dto.getChildren().size());
     }
 }

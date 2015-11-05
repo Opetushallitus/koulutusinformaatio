@@ -28,7 +28,7 @@ import java.util.List;
  */
 public interface LearningOpportunityService {
 
-    ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite) throws ResourceNotFoundException;
+    TutkintoLOSDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite) throws ResourceNotFoundException;
 
     ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException;
 

@@ -27,7 +27,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ParentLearningOpportunitySpecificationDTO implements Articled {
+public class TutkintoLOSDTO implements Articled {
 
     private String id;
     private String name;

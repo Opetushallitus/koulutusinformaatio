@@ -32,7 +32,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecifi
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
@@ -80,7 +80,7 @@ public interface LearningOpportunityResource {
     @GET
     @Path("tutkinto/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(@PathParam("id") String id,
+    public TutkintoLOSDTO getTutkintoLearningOpportunity(@PathParam("id") String id,
                                                                                   @QueryParam("lang") String lang,
                                                                                   @QueryParam("uiLang") String uiLang,
                                                                                   @QueryParam("prerequisite") String prerequisite);

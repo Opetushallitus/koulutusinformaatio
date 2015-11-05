@@ -29,7 +29,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecifi
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
@@ -74,7 +74,7 @@ public class LearningOpportunityResourceImplTest {
                         eq(SearchType.LO)))
                 .thenThrow(SearchException.class);
 
-        ParentLearningOpportunitySpecificationDTO parentDTO = new ParentLearningOpportunitySpecificationDTO();
+        TutkintoLOSDTO parentDTO = new TutkintoLOSDTO();
         parentDTO.setId("parentLOSId");
         parentDTO.setName("parent name");
 

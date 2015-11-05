@@ -52,7 +52,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite)
+    public TutkintoLOSDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite)
             throws ResourceNotFoundException {
         TutkintoLOS tutkintoLOS = educationDataQueryService.getTutkintoLearningOpportunity(id);
         if (lang == null) {

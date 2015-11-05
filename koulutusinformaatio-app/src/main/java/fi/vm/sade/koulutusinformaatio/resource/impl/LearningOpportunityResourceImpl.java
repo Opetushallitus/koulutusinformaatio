@@ -41,7 +41,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
@@ -109,9 +109,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite) {
+    public TutkintoLOSDTO getTutkintoLearningOpportunity(String id, String lang, String uiLang, String prerequisite) {
         try {
-            ParentLearningOpportunitySpecificationDTO dto = null;
+            TutkintoLOSDTO dto = null;
 
             dto = learningOpportunityService.getTutkintoLearningOpportunity(id, lang, uiLang, prerequisite);
 
