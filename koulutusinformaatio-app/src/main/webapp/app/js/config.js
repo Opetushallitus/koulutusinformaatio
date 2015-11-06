@@ -33,6 +33,19 @@ window.Config.app.prod = {
     }
 };
 
+/* Configurations for production environment */
+window.Config.app.demo = {
+    fi: {
+        tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
+    },
+    sv: {
+        tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
+    },
+    en: {
+        tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
+    }
+};
+
 /* Configurations for koulutus environment */
 window.Config.app.koulutus = {
     fi: {
