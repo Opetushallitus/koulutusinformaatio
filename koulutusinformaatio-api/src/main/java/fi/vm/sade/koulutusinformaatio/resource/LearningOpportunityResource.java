@@ -26,17 +26,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 
@@ -127,7 +126,7 @@ public interface LearningOpportunityResource {
     @GET
     @Path("koulutus/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public StandaloneLOSDTO getKoulutusLearningOpportunity(@PathParam("id") String id,
+    public KoulutusLOSDTO getKoulutusLearningOpportunity(@PathParam("id") String id,
                                                                                                   @QueryParam("lang") String lang,
                                                                                                   @QueryParam("uiLang") String uiLang);
 
@@ -172,7 +171,7 @@ public interface LearningOpportunityResource {
     @GET
     @Path("adultupsec/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(@PathParam("id") String id,
+    public KoulutusLOSDTO getAdultUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
 

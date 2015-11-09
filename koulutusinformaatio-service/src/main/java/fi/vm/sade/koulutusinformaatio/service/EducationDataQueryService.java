@@ -18,7 +18,6 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import java.util.List;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
@@ -110,9 +109,6 @@ public interface EducationDataQueryService {
     List<LOS> findLearningOpportunitiesByProviderId(String providerId);
 
     DataStatus getLatestSuccessDataStatus();
-
-    AdultUpperSecondaryLOS getAdultUpperSecondaryLearningOpportunity(final String oid)
-            throws ResourceNotFoundException;
 
     KoulutusLOS getKoulutusLearningOpportunity(final String oid)
             throws ResourceNotFoundException;

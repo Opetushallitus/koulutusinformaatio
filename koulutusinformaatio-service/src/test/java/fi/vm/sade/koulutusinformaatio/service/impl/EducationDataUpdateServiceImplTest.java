@@ -1,18 +1,42 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.*;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
+import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
+import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
+import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
 /**
  * @author Mikko Majapuro
@@ -28,7 +52,6 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
     private HigherEducationLOSDAO higherEdDAO;
-    private AdultUpperSecondaryLOSDAO adultUpsecDAO;
     private AdultVocationalLOSDAO adultVocDAO;
     private KoulutusLOSDAO koulutusDAO;
     private TutkintoLOSDAO tutkintoDAO;
@@ -44,13 +67,12 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         dataStatusDAO = mockDataStatudDAO();
         higherEdDAO = mockHigherEdDAO();
-        adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
         koulutusDAO = mock(KoulutusLOSDAO.class);
         tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataUpdateServiceImpl(modelMapper, applicationOptionDAO, learningOpportunityProviderDAO,
                 pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO, specialLearningOpportunitySpecificationDAO,
-                higherEdDAO, adultUpsecDAO, koulutusDAO, tutkintoDAO, adultVocDAO);
+                higherEdDAO, koulutusDAO, tutkintoDAO, adultVocDAO);
     }
 
     @Test

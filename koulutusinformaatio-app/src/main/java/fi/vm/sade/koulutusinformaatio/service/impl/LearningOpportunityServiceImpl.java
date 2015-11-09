@@ -16,22 +16,64 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.converter.*;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+
+import fi.vm.sade.koulutusinformaatio.converter.AdultVocationalParentLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToBasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ChildLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
+import fi.vm.sade.koulutusinformaatio.converter.HigherEducationLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.KoulutusLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.LOSToSearchResult;
+import fi.vm.sade.koulutusinformaatio.converter.PictureToThumbnail;
+import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.SpecialLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.TutkintoLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.UpperSecondaryLOSToDTO;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -302,20 +344,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 
 
     @Override
-    public AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(
-            String oid, String lang, String uiLang)
-            throws ResourceNotFoundException {
-        AdultUpperSecondaryLOS los = this.previewService.previewAdultUpperSecondaryLearningOpportunity(oid);
-        AdultUpperSecondaryLOSDTO dto = null;
-        if (lang != null && !lang.isEmpty()) {
-            dto = AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
-        } else {
-            dto = AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang);
-        }
-        return dto;
-    }
-
-    @Override
     public StandaloneLOSDTO previewKoulutusLearningOpportunity(
             String oid, String lang, String uiLang)
             throws ResourceNotFoundException {
@@ -347,30 +375,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public DataStatus getLastSuccesfulDataStatus() {
        return educationDataQueryService.getLatestSuccessDataStatus();
 
-    }
-
-    @Override
-    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
-            String id) throws ResourceNotFoundException {
-        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
-        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty())
-                ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
-        return AdultUpperSecondaryLOSToDTO.convert(los, lang, lang);
-    }
-
-    @Override
-    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
-            String id, String uiLang) throws ResourceNotFoundException {
-        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
-        return AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang);
-    }
-
-    @Override
-    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
-            String id, String lang, String uiLang)
-                    throws ResourceNotFoundException {
-        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
-        return AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
     }
 
     @Override

@@ -54,7 +54,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     private UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO;
     private HigherEducationLOSDAO higheredDAO;
     private AdultVocationalLOSDAO adultvocDAO;
-    private AdultUpperSecondaryLOSDAO adultupecDAO;
+    private KoulutusLOSDAO adultupecDAO;
     private String phantomjs;
     private String snapshotScript;
     private String snapshotFolder;
@@ -68,7 +68,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO,
                                @Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
                                @Qualifier("adultVocationalLOSDAO") AdultVocationalLOSDAO adultvocDAO,
-                               @Qualifier("adultUpperSecondaryLOSDAO") AdultUpperSecondaryLOSDAO adultupsecDAO,
+                               @Qualifier("koulutusLOSDAO") KoulutusLOSDAO adultupsecDAO,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,

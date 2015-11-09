@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
@@ -34,7 +33,6 @@ import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
@@ -44,7 +42,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -78,7 +75,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
-    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
     private TutkintoLOSDAO tutkintoLOSDAO;
@@ -92,7 +88,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO,
-            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO) {
@@ -105,7 +100,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
-        this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
         this.tutkintoLOSDAO = tutkintoLOSDAO;
@@ -158,8 +152,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.upperSecondaryLOSDAO.deleteById(los.getId());
         } else if (los instanceof HigherEducationLOS) {
             this.higherEducationLOSDAO.deleteById(los.getId());
-        } else if (los instanceof AdultUpperSecondaryLOS) {
-            this.adultUpperSecondaryLOSDAO.deleteById(los.getId());
         } else if (los instanceof CompetenceBasedQualificationParentLOS) {
             this.adultVocationalLOSDAO.deleteById(los.getId());
         } else if (los instanceof KoulutusLOS) {
@@ -225,52 +217,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.higherEducationLOSDAO.deleteById(plos.getId());
             this.higherEducationLOSDAO.save(plos);
-        }
-
-    }
-
-    @Override
-    public void updateAdultUpsecLos(AdultUpperSecondaryLOS los) {
-
-        if (los != null) {
-
-            try {
-                Provider existingProv = this.getProvider(los.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                    for (String curAsId : existingProv.getApplicationSystemIds()) {
-                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                            los.getProvider().getApplicationSystemIds().add(curAsId);
-                        }
-                    }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.warn("Problem updating provider's application system references");
-            }
-
-            AdultUpperSecondaryLOSEntity plos =
-                    modelMapper.map(los, AdultUpperSecondaryLOSEntity.class);
-
-            this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
-            save(plos.getProvider());
-
-            if (plos.getApplicationOptions() != null) {
-                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-
-                    try {
-                        ApplicationOptionEntity exAo = this.getAo(ao.getId());
-                        updateLosRefs(ao, exAo, plos.getId());
-                    } catch (ResourceNotFoundException ex) {
-                        LOG.debug("No existing ao");
-                    }
-
-                    this.applicationOptionDAO.deleteById(ao.getId());
-                    save(ao);
-                }
-            }
-
-            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
-            this.adultUpperSecondaryLOSDAO.deleteById(plos.getId());
-            this.adultUpperSecondaryLOSDAO.save(plos);
         }
 
     }

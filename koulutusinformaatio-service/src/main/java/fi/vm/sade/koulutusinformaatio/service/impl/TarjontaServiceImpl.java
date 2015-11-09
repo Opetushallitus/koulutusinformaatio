@@ -40,7 +40,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
@@ -492,9 +491,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<AdultUpperSecondaryLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException {
+    public List<KoulutusLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException {
 
-        List<AdultUpperSecondaryLOS> koulutukset = new ArrayList<AdultUpperSecondaryLOS>();
+        List<KoulutusLOS> koulutukset = new ArrayList<KoulutusLOS>();
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
                 ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA.name(), ToteutustyyppiEnum.AIKUISTEN_PERUSOPETUS.name());
@@ -521,7 +520,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }
 
                 try {
-                    AdultUpperSecondaryLOS los = null;
+                    KoulutusLOS los = null;
                     if (curKoulutus.getToteutustyyppiEnum().equals(ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA)) {
                         los = creator.createAdultUpperSeconcaryLOS((KoulutusLukioV1RDTO) koulutusDTO, true);
                     } else {
@@ -539,7 +538,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
         }
 
-        for (AdultUpperSecondaryLOS curLos : koulutukset) {
+        for (KoulutusLOS curLos : koulutukset) {
             if (curLos.getApplicationOptions() != null) {
                 for (ApplicationOption ao : curLos.getApplicationOptions()) {
                     ao.setHigherEdLOSRefs(aoToEducationsMap.get(ao.getId()));
@@ -656,37 +655,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus)
-            throws TarjontaParseException, KoodistoException,
-            ResourceNotFoundException {
-
-        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
-        KoulutusLukioV1RDTO koulutusDTO = (KoulutusLukioV1RDTO) koulutusRes.getResult();
-
-        LOG.debug("cur upsec adult education dto: {}", koulutusDTO.getOid());
-        if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
-            LOG.debug("Koulutus is not adult upper secondary");
-            throw new TarjontaParseException("Koulutus is not adult upper secondary");
-        }
-        if (checkStatus && !(TarjontaTila.JULKAISTU.toString().equals(koulutusDTO.getTila().toString()))) {
-            throw new TarjontaParseException("Koulutus: " + oid + " is not published");
-        }
-
-        try {
-            AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, checkStatus);
-            los.setStatus(koulutusDTO.getTila().toString());
-            LOG.debug("Created los: {}", los.getId());
-            LOG.debug("Updated aolos references for: {}", los.getId());
-            return los;
-
-        } catch (TarjontaParseException ex) {
-            LOG.debug(ex.getMessage());
-            throw ex;
-        }
-
-    }
-
-    @Override
     public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, boolean checkStatus)
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
@@ -739,6 +707,12 @@ public class TarjontaServiceImpl implements TarjontaService {
         case LUKIOKOULUTUS:
             los = creator.createLukioLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
             break;
+        case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
+            los = creator.createAdultUpperSeconcaryLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
+            break;
+        case EB_RP_ISH:
+            los = creator.createIbRfIshLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
+            break;
         case KORKEAKOULUOPINTO: // Opintokokonaisuus ja opintojakso
             los = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus, false);
             break;
@@ -772,7 +746,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
         }
 
-        LOG.debug("REturning {} results", results.size());
+        LOG.debug("Returning {} results", results.size());
 
         return results;
     }

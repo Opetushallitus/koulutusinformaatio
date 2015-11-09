@@ -3,7 +3,6 @@ package fi.vm.sade.koulutusinformaatio.integrationtest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
@@ -30,9 +29,6 @@ public class TestHelper {
     KoulutusLOSDAO koulutusLOSDAO;
 
     @Autowired
-    AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
-
-    @Autowired
     AdultVocationalLOSDAO adultVocationalLOSDAO;
 
     @Autowired
@@ -52,7 +48,6 @@ public class TestHelper {
         learningOpportunityProviderDAO.getCollection().drop();
         childLearningOpportunityDAO.getCollection().drop();
         koulutusLOSDAO.getCollection().drop();
-        adultUpperSecondaryLOSDAO.getCollection().drop();
         adultVocationalLOSDAO.getCollection().drop();
         tutkintoLOSDAO.getCollection().drop();
         higherEducationLOSDAO.getCollection().drop();

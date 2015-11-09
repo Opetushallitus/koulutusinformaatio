@@ -73,7 +73,6 @@ var kiApp = angular.module('kiApp',
                     ParentLOService,
                     SpecialLOService,
                     HigherEducationLOService,
-                    AdultUpperSecondaryLOService,
                     AdultVocationalLOService) {
                 
                 switch($route.current.params.loType) {
@@ -94,11 +93,11 @@ var kiApp = angular.module('kiApp',
                     case 'valmistava':
                         return SpecialLOService;
                     case 'aikuislukio':
-                        return AdultUpperSecondaryLOService;
+                        return KoulutusLOService;
                     case 'ammatillinenaikuiskoulutus':
                         return AdultVocationalLOService;
                     case 'aikuistenperusopetus':
-                        return AdultUpperSecondaryLOService;
+                        return KoulutusLOService;
                 }
             },
             partialUrl: function($rootScope, $route, UtilityService) {

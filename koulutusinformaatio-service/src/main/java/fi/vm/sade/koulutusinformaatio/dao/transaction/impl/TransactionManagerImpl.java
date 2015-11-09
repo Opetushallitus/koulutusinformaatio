@@ -34,7 +34,6 @@ import com.mongodb.CommandResult;
 import com.mongodb.MongoClient;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
@@ -78,7 +77,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private PictureDAO pictureTransactionDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
-    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO;
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private DataStatusDAO dataStatusTransactionDAO;
@@ -92,7 +90,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
-    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
@@ -133,7 +130,6 @@ public class TransactionManagerImpl implements TransactionManager {
             PictureDAO pictureTransactionDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
-            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO,
             KoulutusLOSDAO koulutusLOSTransactionDAO,
             TutkintoLOSDAO tutkintoLOSTransactionDAO,
@@ -146,7 +142,6 @@ public class TransactionManagerImpl implements TransactionManager {
             PictureDAO pictureDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO, 
-            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO,
@@ -171,7 +166,6 @@ public class TransactionManagerImpl implements TransactionManager {
         this.pictureTransactionDAO = pictureTransactionDAO;
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
-        this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
         this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
         this.koulutusLOSTransactionDAO = koulutusLOSTransactionDAO;
         this.tutkintoLOSTransactionDAO = tutkintoLOSTransactionDAO;
@@ -183,7 +177,6 @@ public class TransactionManagerImpl implements TransactionManager {
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
-        this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
         this.tutkintoLOSDAO = tutkintoLOSDAO;
@@ -276,7 +269,6 @@ public class TransactionManagerImpl implements TransactionManager {
         pictureTransactionDAO.getCollection().drop();
         upperSecondaryLOSTransactionDAO.getCollection().drop();
         higherEducationLOSTransactionDAO.getCollection().drop();
-        adultUpperSecondaryLOSTransactionDAO.getCollection().drop();
         adultVocationalLOSTransactionDAO.getCollection().drop();
         specialLOSTransactionDAO.getCollection().drop();
         dataStatusTransactionDAO.getCollection().drop();
@@ -292,7 +284,6 @@ public class TransactionManagerImpl implements TransactionManager {
         learningOpportunityProviderDAO.getCollection().drop();
         upperSecondaryLearningOpportunitySpecificationDAO.getCollection().drop();
         higherEducationLOSDAO.getCollection().drop();
-        adultUpperSecondaryLOSDAO.getCollection().drop();
         adultVocationalLOSDAO.getCollection().drop();
         specialLearningOpportunitySpecificationDAO.getCollection().drop();
         koulutusLOSDAO.getCollection().drop();

@@ -30,7 +30,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
@@ -42,7 +41,6 @@ import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
@@ -54,7 +52,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -87,7 +84,6 @@ EducationIncrementalDataQueryService {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
-    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
     private TutkintoLOSDAO tutkintoLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
@@ -101,7 +97,6 @@ EducationIncrementalDataQueryService {
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
             HigherEducationLOSDAO higherEducationLOSDAO,
-            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO,
@@ -114,7 +109,6 @@ EducationIncrementalDataQueryService {
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
-        this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
         this.tutkintoLOSDAO = tutkintoLOSDAO;
@@ -144,11 +138,7 @@ EducationIncrementalDataQueryService {
             return modelMapper.map(higherEdE, HigherEducationLOS.class);
         }
         
-        AdultUpperSecondaryLOSEntity adultUpsecEdE = this.adultUpperSecondaryLOSDAO.get(losId);
-        if (adultUpsecEdE != null) {
-            return modelMapper.map(adultUpsecEdE, AdultUpperSecondaryLOS.class);
-        }
-        
+
         CompetenceBasedQualificationParentLOSEntity adultVocationalEdE = this.adultVocationalLOSDAO.get(losId);
         if (adultVocationalEdE != null) {
             return modelMapper.map(adultVocationalEdE, CompetenceBasedQualificationParentLOS.class);

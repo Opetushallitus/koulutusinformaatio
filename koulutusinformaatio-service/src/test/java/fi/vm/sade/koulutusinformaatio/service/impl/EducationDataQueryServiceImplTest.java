@@ -16,22 +16,41 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import org.junit.Before;
-import org.junit.Test;
-import org.modelmapper.ModelMapper;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
+import org.junit.Before;
+import org.junit.Test;
+import org.modelmapper.ModelMapper;
+
+import com.google.common.collect.Lists;
+
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
+import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
+import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
+import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
 /**
  * @author Mikko Majapuro
@@ -48,7 +67,6 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     private DataStatusDAO dataStatusDAO;
     private LearningOpportunityProviderDAO providerDAO;
     private HigherEducationLOSDAO higherEdDAO;
-    private AdultUpperSecondaryLOSDAO adultUpsecDAO;
     private KoulutusLOSDAO koulutusDAO;
     private TutkintoLOSDAO tutkintoDAO;
     private AdultVocationalLOSDAO adultVocDAO;
@@ -65,13 +83,12 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         providerDAO = mockProviderDAO();
         higherEdDAO = mockHigherEdDAO();
-        adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
         koulutusDAO = mock(KoulutusLOSDAO.class);
         tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataQueryServiceImpl(applicationOptionDAO, modelMapper,
                 childLearningOpportunityDAO, dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, koulutusDAO, tutkintoDAO, providerDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultVocDAO, koulutusDAO, tutkintoDAO, providerDAO);
     }
     
     /**

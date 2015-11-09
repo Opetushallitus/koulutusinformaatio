@@ -216,16 +216,6 @@ service('KoulutusLOService', ['GeneralLOService', 'HigherEducationTransformer', 
     }
 }]).
 
-/**
- * Resource for requesting adult upper secondary LO data
- */
-service('AdultUpperSecondaryLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
-    return {
-        query: function(options) {
-            return GeneralLOService.query(options, '../lo/adultupsec/', HigherEducationTransformer);
-        }
-    }
-}]).
 
 /**
  * Resource for requesting adult vocational LO data

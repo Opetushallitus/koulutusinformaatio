@@ -1,0 +1,225 @@
+{
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1446641660802,
+    "modifiedBy" : "1.2.246.562.24.00000000001",
+    "oid" : "1.2.246.562.20.21239062025",
+    "version" : 3,
+    "hakukohteenNimi" : null,
+    "hakukohteenNimiUri" : "hakukohteet_809#2",
+    "hakukohteenNimet" : {
+      "kieli_sv" : "Gymnasiets IB-linje",
+      "kieli_en" : "IB Programme",
+      "kieli_fi" : "Lukion IB-linja"
+    },
+    "tarjoajaNimet" : {
+      "en" : "International School of Helsinki"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+      "1.2.246.562.17.70879824525" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.63709849283" ]
+      }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.63709849283" ],
+    "hakuOid" : "1.2.246.562.29.10019923548",
+    "hakuaikaId" : "4092285",
+    "hakukelpoisuusvaatimusUris" : [ "hakukelpoisuusvaatimusta_5" ],
+    "opintoOikeusUris" : [ ],
+    "hakukohdeKoulutusOids" : [ "1.2.246.562.17.70879824525" ],
+    "hakuaikaAlkuPvm" : null,
+    "hakuaikaLoppuPvm" : null,
+    "alinHyvaksyttavaKeskiarvo" : 0.0,
+    "alinValintaPistemaara" : 0,
+    "ylinValintapistemaara" : 0,
+    "aloituspaikatLkm" : 250,
+    "edellisenVuodenHakijatLkm" : 0,
+    "valintojenAloituspaikatLkm" : 0,
+    "sahkoinenToimitusOsoite" : null,
+    "soraKuvausKoodiUri" : null,
+    "tila" : "JULKAISTU",
+    "valintaperustekuvausKoodiUri" : null,
+    "liitteidenToimitusPvm" : null,
+    "ulkoinenTunniste" : null,
+    "koulutusAsteTyyppi" : "LUKIOKOULUTUS",
+    "toteutusTyyppi" : "EB_RP_ISH",
+    "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+    "koulutuslaji" : "N",
+    "lisatiedot" : {
+      "kieli_sv" : "",
+      "kieli_en" : "",
+      "kieli_fi" : "<h4>Lisätietoja hakemisesta</h4>"
+    },
+    "valintaperusteKuvaukset" : {
+      "kieli_fi" : "<h4>Valintaperustekuvaus</h4>"
+    },
+    "soraKuvaukset" : null,
+    "hakukelpoisuusVaatimusKuvaukset" : {
+      "kieli_sv" : "Om du har slutfört den grundläggande utbildningens lärokurs eller motsvarande lärokurs kan du söka till gymnasieutbildning. Om du har avlagt din examen utomlands eller avbrutit läroplikten kan du söka till gymnasieutbildning genom ansökan enligt prövning. Utbildningsanordnaren bedömer då skilt ditt utbildningsbehov och förutsättningar att klara av studierna.",
+      "kieli_fi" : "Perusopetuksen tai sitä vastaavan aiemman oppimäärän suorittaneet voivat hakea lukiokoulutukseen. Jos hakijalla on ulkomailla suoritettu tutkinto tai hänen oppivelvollisuutensa on keskeytynyt, hän voi hakea lukiokoulutukseen harkintaan perustuvan haun kautta. Tällöin koulutuksen järjestäjä arvioi erikseen hakijan koulutustarpeen ja edellytykset suoriutua opinnoista."
+    },
+    "aloituspaikatKuvaukset" : null,
+    "kaytetaanJarjestelmanValintaPalvelua" : true,
+    "kaytetaanHaunPaattymisenAikaa" : false,
+    "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+    "hakukohteenLiitteet" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "4194013",
+      "version" : 0,
+      "hakukohdeOid" : null,
+      "kieliUri" : "kieli_fi",
+      "kieliNimi" : "suomi",
+      "liitteenNimi" : "Kuha",
+      "liitteenTyyppi" : null,
+      "jarjestys" : 0,
+      "kaytetaanHakulomakkeella" : true,
+      "liitteenKuvaukset" : {
+        "kieli_fi" : "<p>kahen kilon</p>"
+      },
+      "toimitettavaMennessa" : 1448801549176,
+      "liitteenToimitusOsoite" : {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : null,
+        "version" : 0,
+        "osoiterivi1" : "ASDASD",
+        "osoiterivi2" : null,
+        "postinumero" : "posti_00180",
+        "postinumeroArvo" : "00180",
+        "postitoimipaikka" : "HELSINKI"
+      },
+      "sahkoinenToimitusOsoite" : "asd@asd.casd"
+    } ],
+    "yhteystiedot" : [ ],
+    "liitteidenToimitusOsoite" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : null,
+      "version" : 0,
+      "osoiterivi1" : "Selkämerenkatu 11",
+      "osoiterivi2" : null,
+      "postinumero" : "posti_00180",
+      "postinumeroArvo" : "00180",
+      "postitoimipaikka" : "HELSINKI"
+    },
+    "valintakokeet" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "4194023",
+      "version" : 0,
+      "hakukohdeOid" : null,
+      "kieliUri" : "kieli_ru",
+      "kieliNimi" : "venäjä",
+      "valintakoeNimi" : "Valintakoe koe",
+      "valintakoetyyppi" : null,
+      "valintakokeenKuvaus" : {
+        "uri" : "kieli_ru",
+        "nimi" : "venäjä",
+        "monikielisetNimet" : [ {
+          "kieli" : "FI",
+          "nimi" : "venäjä"
+        }, {
+          "kieli" : "SV",
+          "nimi" : "ryska"
+        }, {
+          "kieli" : "EN",
+          "nimi" : "Russian"
+        } ],
+        "arvo" : "RU",
+        "versio" : 1,
+        "teksti" : "<p>asdasdas</p>"
+      },
+      "valintakoeAjankohtas" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "4194024",
+        "version" : 0,
+        "kellonaikaKaytossa" : true,
+        "lisatiedot" : "Kuhan testasin",
+        "osoite" : {
+          "created" : null,
+          "createdBy" : null,
+          "modified" : null,
+          "modifiedBy" : null,
+          "oid" : null,
+          "version" : 0,
+          "osoiterivi1" : "asd",
+          "osoiterivi2" : null,
+          "postinumero" : "posti_00011",
+          "postinumeroArvo" : "00011",
+          "postitoimipaikka" : "ITELLA"
+        },
+        "loppuu" : 1448887897840,
+        "alkaa" : 1448369497840
+      } ],
+      "pisterajat" : [ ],
+      "kuvaukset" : { },
+      "lisanaytot" : { }
+    }, {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "4194020",
+      "version" : 0,
+      "hakukohdeOid" : null,
+      "kieliUri" : "kieli_fi",
+      "kieliNimi" : "suomi",
+      "valintakoeNimi" : "Kuhan kokeilin",
+      "valintakoetyyppi" : null,
+      "valintakokeenKuvaus" : {
+        "uri" : "kieli_fi",
+        "nimi" : "suomi",
+        "monikielisetNimet" : [ {
+          "kieli" : "EN",
+          "nimi" : "Finnish"
+        }, {
+          "kieli" : "FI",
+          "nimi" : "suomi"
+        }, {
+          "kieli" : "SV",
+          "nimi" : "finska"
+        } ],
+        "arvo" : "FI",
+        "versio" : 1,
+        "teksti" : "<p>asdasd</p>"
+      },
+      "valintakoeAjankohtas" : [ ],
+      "pisterajat" : [ ],
+      "kuvaukset" : { },
+      "lisanaytot" : { }
+    } ],
+    "valintaPerusteKuvausTunniste" : null,
+    "kaksoisTutkinto" : false,
+    "soraKuvausTunniste" : null,
+    "opetusKielet" : [ "kieli_sv", "kieli_ru", "kieli_fi" ],
+    "valintaPerusteKuvausKielet" : [ ],
+    "soraKuvausKielet" : [ ],
+    "painotettavatOppiaineet" : [ ],
+    "hakuMenettelyKuvaukset" : { },
+    "peruutusEhdotKuvaukset" : { },
+    "ryhmaliitokset" : [ ],
+    "organisaatioRyhmaOids" : [ ],
+    "ylioppilastutkintoAntaaHakukelpoisuuden" : false,
+    "kelaLinjaKoodi" : null,
+    "kelaLinjaTarkenne" : null,
+    "ensikertalaistenAloituspaikat" : null,
+    "pohjakoulutusliitteet" : [ ],
+    "josYoEiMuitaLiitepyyntoja" : false
+  },
+  "status" : "OK",
+  "params" : null,
+  "accessRights" : { },
+  "errors" : null
+}

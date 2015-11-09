@@ -86,8 +86,7 @@ public class IncrementalLOSIndexer {
                                                                             this.loHttpSolrServer, 
                                                                             this.lopHttpSolrServer, 
                                                                             this.locationHttpSolrServer);      
-        this.adultLosIndexer = new IncrementalAdultLOSIndexer(this.tarjontaRawService, 
-                this.tarjontaService, 
+        this.adultLosIndexer = new IncrementalAdultLOSIndexer(this.tarjontaService,
                 this.dataUpdateService, 
                 this.indexerService,
                 this.loHttpSolrServer, 
@@ -126,8 +125,9 @@ public class IncrementalLOSIndexer {
             break;
         
         case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
-            LOG.debug("Adult upsec komo: {}", koulutusDTO.getKomoOid());
-            this.indexAdultUpsecKomo(koulutusDTO.getKomoOid());
+        case EB_RP_ISH:
+            LOG.debug("Aikuislukio ja Yhteishaun ulkopuolinen lukiokoulutus: {}", koulutusDTO.getKomoOid());
+            this.koulutusIndexer.indexSingleKoulutusWithoutRelations(koulutusDTO);
             break;
 
         case AMMATTITUTKINTO:
@@ -144,7 +144,7 @@ public class IncrementalLOSIndexer {
         case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
             LOG.debug("Valma/Telma koulutus: {}", koulutusDTO.getKomoOid());
-            this.koulutusIndexer.indexValmistavaKoulutusKomoto(komotoOid);
+            this.koulutusIndexer.indexSingleKoulutusWithoutRelations(koulutusDTO);
             break;
             
         case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
@@ -154,9 +154,8 @@ public class IncrementalLOSIndexer {
             break;
 
         case LUKIOKOULUTUS: // Lukiokoulutus
-        case EB_RP_ISH: // Lukiokoulutus
             LOG.debug("Lukiokoulutus: {}", koulutusDTO.getKomoOid());
-            koulutusIndexer.indexLukioKoulutusKomoto(koulutusDTO);
+            koulutusIndexer.indexSingleKoulutusWithoutRelations(koulutusDTO);
             break;
 
         case KORKEAKOULUOPINTO: // Opintokokonaisuus ja opintojakso
@@ -193,10 +192,6 @@ public class IncrementalLOSIndexer {
     public void indexKoulutusLos(String komotoOid) throws Exception {
         if (!tarjontaService.hasAlreadyProcessedOid(komotoOid))
             indexLoiData(komotoOid);
-    }
-
-    private void indexAdultUpsecKomo(String curKomoOid) throws Exception {
-        this.adultLosIndexer.indexAdultUpsecKomo(curKomoOid);
     }
 
 }

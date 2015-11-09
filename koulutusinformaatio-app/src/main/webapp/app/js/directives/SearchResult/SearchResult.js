@@ -94,10 +94,9 @@ directive('extendedSearchresultData',
         'UpperSecondaryLOService',
         'KoulutusLOService',
         'HigherEducationLOService',
-        'AdultUpperSecondaryLOService',
         'AdultVocationalLOService',
         'LOTypes',
-        function ($q, ParentLOService, SpecialLOService, UpperSecondaryLOService, KoulutusLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService, LOTypes) {
+        function ($q, ParentLOService, SpecialLOService, UpperSecondaryLOService, KoulutusLOService, HigherEducationLOService, KoulutusLOService, AdultVocationalLOService, LOTypes) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
@@ -119,11 +118,11 @@ directive('extendedSearchresultData',
                 } else if(iAttrs.extendedSearchresultData === LOTypes.KORKEAKOULU) {
                     LOService = HigherEducationLOService;
                 } else if (iAttrs.extendedSearchresultData === LOTypes.AIKUISLUKIO) {
-                    LOService = AdultUpperSecondaryLOService;
+                    LOService = KoulutusLOService;
                 } else if (iAttrs.extendedSearchresultData === LOTypes.AMMATILLINENAIKUISKOULUTUS) {
                     LOService = AdultVocationalLOService;
                 } else if (iAttrs.extendedSearchresultData === LOTypes.AIKUISTENPERUSOPETUS) {
-                    LOService = AdultUpperSecondaryLOService;
+                    LOService = KoulutusLOService;
                 }
 
                 LOService.query({id: $scope.lo.id}).then(function(result) {
@@ -145,7 +144,7 @@ directive('extendedSearchresultData',
 
                 $scope.loType = iAttrs.extendedSearchresultData;
 
-                return deferred.promise;        
+                return deferred.promise;
             };
         }
     };

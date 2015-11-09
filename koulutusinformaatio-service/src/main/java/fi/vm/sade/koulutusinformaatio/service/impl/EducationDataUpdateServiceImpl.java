@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import com.mongodb.MongoInternalException;
 
-import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
@@ -36,7 +35,6 @@ import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
@@ -49,7 +47,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpeci
 import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
@@ -75,7 +72,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
-    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO;
     private KoulutusLOSDAO koulutusLOSTransactionDAO;
     private TutkintoLOSDAO tutkintoLOSTransactionDAO;
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
@@ -90,7 +86,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
-            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
             KoulutusLOSDAO koulutusLOSTransactionDAO,
             TutkintoLOSDAO tutkintoLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO) {
@@ -102,7 +97,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
-        this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
         this.koulutusLOSTransactionDAO = koulutusLOSTransactionDAO;
         this.tutkintoLOSTransactionDAO = tutkintoLOSTransactionDAO;
         this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
@@ -119,9 +113,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         } 
         else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
             saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
-        } 
-        else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
-            saveAdultUpperSecondaryLOS((AdultUpperSecondaryLOS)learningOpportunitySpecification);
         } 
         else if (learningOpportunitySpecification instanceof KoulutusLOS) {
             saveKoulutusLOS((KoulutusLOS)learningOpportunitySpecification);
@@ -147,27 +138,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     save(ao);
                 }
             this.adultVocationalLOSTransactionDAO.save(entity);
-        }
-        
-    }
-
-    private void saveAdultUpperSecondaryLOS(
-            AdultUpperSecondaryLOS learningOpportunitySpecification) {
-        
-        if (learningOpportunitySpecification != null) {
-            AdultUpperSecondaryLOSEntity entity =
-                    modelMapper.map(learningOpportunitySpecification, AdultUpperSecondaryLOSEntity.class);
-
-            save(entity.getProvider());
-            
-            for (LearningOpportunityProviderEntity addProv : entity.getAdditionalProviders()) {
-                save(addProv);
-            }
-
-                for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
-                    save(ao);
-                }
-            this.adultUpperSecondaryLOSTransactionDAO.save(entity);
         }
         
     }
@@ -312,11 +282,11 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     && plos.getStructureImage().getPictureTranslations() != null) {
                 for (PictureEntity curPict : plos.getStructureImage().getPictureTranslations().values()) {
                     try {
-                        save(curPict);
+                    save(curPict);
                     } catch (MongoInternalException e) {
                         LOGGER.error("Saving los {} failed to mongo exception!", los.getId(), e);
-                    }
                 }
+            }
             }
 
 

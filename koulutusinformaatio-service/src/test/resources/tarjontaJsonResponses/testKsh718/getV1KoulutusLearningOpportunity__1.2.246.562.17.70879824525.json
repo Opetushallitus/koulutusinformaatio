@@ -1,0 +1,1934 @@
+{
+  "result" : {
+    "created" : null,
+    "toteutustyyppi": "EB_RP_ISH",
+    "createdBy" : null,
+    "modified" : 1446641656429,
+    "modifiedBy" : "1.2.246.562.24.00000000001",
+    "oid" : "1.2.246.562.17.70879824525",
+    "version" : 2,
+    "koulutuskoodi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutus_301102",
+      "versio" : 4,
+      "arvo" : "301102",
+      "nimi" : "IB-tutkinto (International Baccalaureate)",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "IB-examen (International Baccalaureate)",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "IB Examination",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "IB-tutkinto (International Baccalaureate)",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusaste" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusasteoph2002_31",
+      "versio" : 1,
+      "arvo" : "31",
+      "nimi" : "Lukiokoulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Gymnasieutbildning",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "General upper secondary education",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Lukiokoulutus",
+          "meta" : null
+        }
+      }
+    },
+    "koulutusala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutusalaoph2002_0",
+      "versio" : 1,
+      "arvo" : "0",
+      "nimi" : "Yleissivistävä koulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Allmänutbildning",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "General Education",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Yleissivistävä koulutus",
+          "meta" : null
+        }
+      }
+    },
+    "opintoala" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintoalaoph2002_003",
+      "versio" : 1,
+      "arvo" : "003",
+      "nimi" : "Lukiokoulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Gymnasieutbildning",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "General upper secondary education",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Lukiokoulutus",
+          "meta" : null
+        }
+      }
+    },
+    "tutkinto" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "eqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "eqf_3",
+      "versio" : 1,
+      "arvo" : "3",
+      "nimi" : "Taso 3",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Nivå 3",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Level 3",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Taso 3",
+          "meta" : null
+        }
+      }
+    },
+    "nqf" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "",
+      "versio" : -1,
+      "arvo" : "",
+      "nimi" : "",
+      "meta" : null
+    },
+    "opintojenLaajuusyksikko" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintojenlaajuusyksikko_4",
+      "versio" : 1,
+      "arvo" : "4",
+      "nimi" : "kurssia",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "kurser",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "course units",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "kurssia",
+          "meta" : null
+        }
+      }
+    },
+    "koulutustyyppi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutustyyppi_21",
+      "versio" : 1,
+      "arvo" : "21",
+      "nimi" : "EB, RP, ISH",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "EB, RP, ISH",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "EB, RP, ISH",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "EB, RP, ISH",
+          "meta" : null
+        }
+      }
+    },
+    "ohjelmas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "moduulityyppi" : "LUKIOKOULUTUS",
+    "komoOid" : "1.2.246.562.5.2013061010184431795697",
+    "komotoOid" : null,
+    "organisaatio" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.63709849283",
+      "version" : null,
+      "nimi" : "International School of Helsinki",
+      "nimet" : [ ]
+    },
+    "koulutusohjelma" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "lukiolinjat_0042",
+      "versio" : 1,
+      "arvo" : "0042",
+      "nimi" : "Lukion IB-linja",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Gymnasiets IB-linje",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "IB Programme",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Lukion IB-linja",
+          "meta" : null
+        }
+      },
+      "tekstis" : { }
+    },
+    "tunniste" : "",
+    "hakijalleNaytettavaTunniste" : null,
+    "tila" : "JULKAISTU",
+    "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+    "kuvausKomo" : {
+      "TAVOITTEET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_en" : {
+            "kieliUri" : "kieli_en",
+            "kieliVersio" : 1,
+            "kieliArvo" : "EN",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_en" : "<p>Over the course of the two years the students study six IB subjects, write an Extended Essay of about 4,000 words, follow a course in Theory of Knowledge and plan and implement their own CAS programme (Creativity, Action, Service).</p> <p>The Diploma Programme aims to offer students:</p> <ul>     <li>a broad and balanced, yet academically demanding, programme of study</li>     <li>development of critical thinking and reflective skills</li>     <li>development of research skills</li>     <li>development of independent learning skills</li>     <li>development of intercultural understanding</li>     <li>a globally recognized university entrance qualification.</li> </ul>",
+          "kieli_fi" : "<p>Kahden vuoden IBDP-opintoihin kuuluu kuuden oppiaineen lisäksi opintoja tiedon teoriasta (Theory of Knowledge), tutkielman laadinta (Extended Essay) sekä CAS-toiminta (Creativity, Action and Service).</p> <p>Tutkinnon tavoitteena on</p> <ul>     <li>tarjota opiskelijoille laaja, tasapainoinen ja akateemisesti haastava opintokokonaisuus</li>     <li>kehittää opiskelijoiden kriittistä ajattelua ja reflektoinnin taitoja</li>     <li>kehittää opiskelijoiden tutkimisen taitoja</li>     <li>kehittää opiskelijoiden itsenäisen oppimisen taitoja</li>     <li>kehittää opiskelijoiden kulttuurien välistä ymmärrystä</li>     <li>tarjota opiskelijoille kansainvälisesti tunnustettu tutkinto jatko-opintoihin</li> </ul>"
+        }
+      },
+      "JATKOOPINTO_MAHDOLLISUUDET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_en" : {
+            "kieliUri" : "kieli_en",
+            "kieliVersio" : 1,
+            "kieliArvo" : "EN",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_en" : "IB Diploma qualifies for higher education in Finland and abroad.",
+          "kieli_fi" : "IB Diploma antaa jatko-opintokelpoisuuden korkeakouluihin."
+        }
+      },
+      "KOULUTUKSEN_RAKENNE" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_en" : {
+            "kieliUri" : "kieli_en",
+            "kieliVersio" : 1,
+            "kieliArvo" : "EN",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          },
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_en" : "<p>The IB Diploma Programme is an academically challenging and balanced programme of education with final examinations that prepares students, aged 16 to 19, for success at university and life beyond. In Finnish schools DP studies are usually preceded by a preparatory year during which students take upper secondary school courses in accordance with the Finnish national system. However, the language of instruction is usually English.</p> <p>The curriculum is set by International Baccalaureate organization <a href=\"http://www.ibo.org/diploma/\">http://www.ibo.org/diploma/</a>. Students choose the six subjects they will study in the Diploma Programme from the 6 subject groups. At least three and not more than four subjects are taken at higher level (240 teaching hours), while the other subjects are taken at standard level (150 teaching hours). The subjects available vary in IB schools.</p> <p><b>Group 1: </b>studies in language and literature, usually student's mother tongue and/or language used in his/her studies e.g. Finnish/Swedish A Literature, English A Language and Literature or English A Literature. Usually it possible to choose a self-taught language A literature, too.</p> <p><b>Group 2:</b> language acquisition (B to continue the studies and ab initio to start the studies) e.g. French B, Swedish B, Russian ab initio or another language A from group 1</p> <p><b>Group 3:</b> individuals and societies: e.g. History, Psychology or Economics</p> <p><b>Group 4:</b> experimental sciences: e.g. Biology, Chemistry or Physics</p> <p><b>Group 5:</b> mathematics and computer science: e.g. Mathematics HL, Mathematics SL or Mathematical Studies SL</p> <p><b>Group 6:</b> arts or electives: e.g. Visual arts or another subject from groups 1 to 5.</p>",
+          "kieli_fi" : "<p>Kansainvälinen IBDP-tutkinto (International Baccalaureate Diploma Programme) on akateemisesti haastava nuorten lukiokoulutus, jonka päätteeksi osallistutaan kansainvälisiin IB-ylioppilaskokeisiin. Opiskelijat valitaan lukioon IB-linjalle, jossa opiskelu koostuu yhden vuoden kestävästä valmistavasta luokasta ja kaksivuotisesta IBDP-opiskelusta. Valmistavalla luokalla opetus on täysin tai osittain englanninkielistä. Toisena ja kolmantena vuotena opetuskieli on englanti (poikkeuksena kieliaineet).</p> <p>Opinnot suoritetaan voimassa olevan International-Baccalaureate-järjestön hyväksymän opetussuunnitelman mukaisesti <a href=\"http://www.ibo.org/diploma/\">http://www.ibo.org/diploma/</a>. Opiskelija valitsee kuusi oppiainetta kuudesta ryhmästä. Oppiaineista 3-4 suoritetaan pitkänä (240 tuntia) ja muut perustasolla (150 tuntia). Oppiaineiden valikoima vaihtelee eri IB-lukioissa.</p> <p><b>Ryhmä 1:</b> Kielen ja kirjallisuuden opinnot, yleensä opiskelijan äidinkieli ja/tai koulun opetuskieli esimerkiksi suomi A literature, englanti A language and literature tai englanti A literature. Yleensä on myös mahdollista valita aineeksi itseopiskeltu äidinkieli, mikäli sitä ei opeteta koulussa.</p> <p><b>Ryhmä 2:</b> Vieras kieli, jota on yleensä opiskeltu jo ennen lukiota (taso B) tai alkeista aloittaen (taso ab initio) esimerkiksi ranska B, ruotsi B, venäjä ab initio tai toinen kieli ryhmästä 1</p> <p><b>Ryhmä 3:</b> Humanistiset ja yhteiskunnalliset aineet esimerkiksi historia, psykologia tai taloustiede</p> <p><b>Ryhmä 4:</b> Kokeelliset luonnontieteet esimerkiksi biologia, fysiikka tai kemia</p> <p><b>Ryhmä 5</b>: Matematiikka ja tietotekniikka esimerkiksi matematiikan eri tasot.</p> <p><b>Ryhmä 6</b>: Taiteet tai valinnaiset aineet esimerkiksi kuvataide tai toinen aine ryhmistä 1-5</p>"
+        }
+      }
+    },
+    "kuvausKomoto" : {
+      "SISALTO" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : "<h4>Koulutuksen sisältö</h4> <p>Kuvaa koulutuksen keskeinen sisältö.</p>"
+        }
+      },
+      "YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : "<h4>Yhteistyö muiden toimijoiden kanssa</h4> <p>Kerro hakeutujalle keskeiset tiedot esimerkiksi työelämäyhteistyöstä tai verkostoyhteistyöstä.</p>"
+        }
+      },
+      "KANSAINVALISTYMINEN" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : "kieli_fi",
+            "kieliVersio" : 1,
+            "kieliArvo" : "FI",
+            "kieliKaannos" : null,
+            "uri" : null,
+            "versio" : null,
+            "arvo" : null,
+            "nimi" : null,
+            "meta" : null
+          }
+        },
+        "tekstis" : {
+          "kieli_fi" : "<h4>Kansainvälistyminen</h4> <p>Kerro hakeutujalle, miten kansainvälisyys näkyy ja toteutuu koulutuksessa</p>"
+        }
+      }
+    },
+    "suunniteltuKestoArvo" : "999",
+    "suunniteltuKestoTyyppi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "suunniteltukesto_01",
+      "versio" : 1,
+      "arvo" : "01",
+      "nimi" : "vuotta",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "år",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "years",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "vuotta",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuksenAlkamiskausi" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "kausi_s",
+      "versio" : 1,
+      "arvo" : "S",
+      "nimi" : "Syksy",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Höst",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Autumn",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Syksy",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuksenAlkamisvuosi" : 2015,
+    "koulutuksenAlkamisPvms" : [ 1448402400000, 1448316000000 ],
+    "opetuskielis" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "kieli_sv",
+          "versio" : 1,
+          "arvo" : "SV",
+          "nimi" : "ruotsi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "svenska",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Swedish",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "ruotsi",
+              "meta" : null
+            }
+          }
+        },
+        "kieli_ru" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "kieli_ru",
+          "versio" : 1,
+          "arvo" : "RU",
+          "nimi" : "venäjä",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "ryska",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Russian",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "venäjä",
+              "meta" : null
+            }
+          }
+        },
+        "kieli_fi" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "kieli_fi",
+          "versio" : 1,
+          "arvo" : "FI",
+          "nimi" : "suomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "finska",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Finnish",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "suomi",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "kieli_sv" : 1,
+        "kieli_ru" : 1,
+        "kieli_fi" : 1
+      }
+    },
+    "opetusmuodos" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "opetusmuotokk_3" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetusmuotokk_3",
+          "versio" : 1,
+          "arvo" : "3",
+          "nimi" : "Monimuoto-opetus",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Flerformsundervisning",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Blended learning",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Monimuoto-opetus",
+              "meta" : null
+            }
+          }
+        },
+        "opetusmuotokk_4" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetusmuotokk_4",
+          "versio" : 1,
+          "arvo" : "4",
+          "nimi" : "Verkko-opiskelu",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Web-baserade studier",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Online studies",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Verkko-opiskelu",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "opetusmuotokk_3" : 1,
+        "opetusmuotokk_4" : 1
+      }
+    },
+    "opetusAikas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "opetusaikakk_1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetusaikakk_1",
+          "versio" : 1,
+          "arvo" : "1",
+          "nimi" : "Päiväopetus",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Dagundervisning",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Day time teaching",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Päiväopetus",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "opetusaikakk_1" : 1
+      }
+    },
+    "opetusPaikkas" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "opetuspaikkakk_1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "opetuspaikkakk_1",
+          "versio" : 1,
+          "arvo" : "1",
+          "nimi" : "Lähiopetus",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Närundervisning",
+              "meta" : null
+            },
+            "kieli_en" : {
+              "kieliUri" : "kieli_en",
+              "kieliVersio" : 1,
+              "kieliArvo" : "EN",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Contact teaching",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Lähiopetus",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "opetuspaikkakk_1" : 1
+      }
+    },
+    "opintojenLaajuusarvo" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "opintojenlaajuus_75",
+      "versio" : 1,
+      "arvo" : "75",
+      "nimi" : "75",
+      "meta" : {
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "75",
+          "meta" : null
+        }
+      }
+    },
+    "opetusJarjestajat" : [ ],
+    "opetusTarjoajat" : [ "1.2.246.562.10.63709849283" ],
+    "ammattinimikkeet" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "aihees" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : null,
+      "uris" : { }
+    },
+    "parents" : [ "1.2.246.562.5.2013061010184431678580" ],
+    "children" : [ ],
+    "hintaString" : "",
+    "hinta" : null,
+    "opintojenMaksullisuus" : false,
+    "isAvoimenYliopistonKoulutus" : false,
+    "oppiaineet" : [ ],
+    "opintopolkuAlkamiskausi" : null,
+    "extraParams" : { },
+    "sisaltyvatKoulutuskoodit" : null,
+    "yhteyshenkilos" : [ {
+      "henkiloOid" : null,
+      "etunimet" : "Hyyppärä",
+      "sukunimi" : "Yhdistää",
+      "titteli" : "asdaaja",
+      "sahkoposti" : "asd@gmail.asd",
+      "puhelin" : "040123456789",
+      "kielet" : [ ],
+      "henkiloTyyppi" : "YHTEYSHENKILO"
+    } ],
+    "pohjakoulutusvaatimus" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "pohjakoulutusvaatimustoinenaste_pk",
+      "versio" : 1,
+      "arvo" : "PK",
+      "nimi" : "Peruskoulu",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Grundskola",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Peruskoulu",
+          "meta" : null
+        }
+      }
+    },
+    "koulutuslaji" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "koulutuslaji_n",
+      "versio" : 1,
+      "arvo" : "N",
+      "nimi" : "Nuorten koulutus",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Utbildning för unga",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Education and training for young",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Nuorten koulutus",
+          "meta" : null
+        }
+      }
+    },
+    "linkkiOpetussuunnitelmaan" : "asd.com",
+    "kielivalikoima" : {
+      "VALINNAINEN_OMAN_AIDINKIELEN_OPETUS" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_an" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "kieli_an",
+            "versio" : 1,
+            "arvo" : "AN",
+            "nimi" : "aragonia",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "aragonia",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Aragonese",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "aragonia",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "kieli_an" : 1
+        }
+      },
+      "B3KIELI" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_am" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "kieli_am",
+            "versio" : 1,
+            "arvo" : "AM",
+            "nimi" : "amhara",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "amhariska, amharinya",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Amharic",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "amhara",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "kieli_am" : 1
+        }
+      },
+      "B2KIELI" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_ps" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "kieli_ps",
+            "versio" : 1,
+            "arvo" : "PS",
+            "nimi" : "afgaani, pasto",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "pashto",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Pashto, Pushto",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "afgaani, pasto",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "kieli_ps" : 1
+        }
+      },
+      "MUUT_KIELET" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "kieli_sv",
+            "versio" : 1,
+            "arvo" : "SV",
+            "nimi" : "ruotsi",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "svenska",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Swedish",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "ruotsi",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "kieli_sv" : 1
+        }
+      },
+      "A1A2KIELI" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_fi" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "kieli_fi",
+            "versio" : 1,
+            "arvo" : "FI",
+            "nimi" : "suomi",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "finska",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Finnish",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "suomi",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "kieli_fi" : 1
+        }
+      },
+      "B1KIELI" : {
+        "kieliUri" : null,
+        "kieliVersio" : null,
+        "kieliArvo" : null,
+        "kieliKaannos" : null,
+        "uri" : null,
+        "versio" : null,
+        "arvo" : null,
+        "nimi" : null,
+        "meta" : {
+          "kieli_sv" : {
+            "kieliUri" : null,
+            "kieliVersio" : null,
+            "kieliArvo" : null,
+            "kieliKaannos" : null,
+            "uri" : "kieli_sv",
+            "versio" : 1,
+            "arvo" : "SV",
+            "nimi" : "ruotsi",
+            "meta" : {
+              "kieli_sv" : {
+                "kieliUri" : "kieli_sv",
+                "kieliVersio" : 1,
+                "kieliArvo" : "SV",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "svenska",
+                "meta" : null
+              },
+              "kieli_en" : {
+                "kieliUri" : "kieli_en",
+                "kieliVersio" : 1,
+                "kieliArvo" : "EN",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "Swedish",
+                "meta" : null
+              },
+              "kieli_fi" : {
+                "kieliUri" : "kieli_fi",
+                "kieliVersio" : 1,
+                "kieliArvo" : "FI",
+                "kieliKaannos" : null,
+                "uri" : null,
+                "versio" : null,
+                "arvo" : null,
+                "nimi" : "ruotsi",
+                "meta" : null
+              }
+            }
+          }
+        },
+        "uris" : {
+          "kieli_sv" : 1
+        }
+      }
+    },
+    "tutkintonimike" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : "tutkintonimikkeet_00001",
+      "versio" : 2,
+      "arvo" : "00001",
+      "nimi" : "Ylioppilas",
+      "meta" : {
+        "kieli_sv" : {
+          "kieliUri" : "kieli_sv",
+          "kieliVersio" : 1,
+          "kieliArvo" : "SV",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Student",
+          "meta" : null
+        },
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : null,
+          "arvo" : null,
+          "nimi" : "Ylioppilas",
+          "meta" : null
+        }
+      }
+    },
+    "lukiodiplomit" : {
+      "kieliUri" : null,
+      "kieliVersio" : null,
+      "kieliArvo" : null,
+      "kieliKaannos" : null,
+      "uri" : null,
+      "versio" : null,
+      "arvo" : null,
+      "nimi" : null,
+      "meta" : {
+        "lukiodiplomit_5" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_5",
+          "versio" : 1,
+          "arvo" : "5",
+          "nimi" : "Median lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i media",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Median lukiodiplomi",
+              "meta" : null
+            }
+          }
+        },
+        "lukiodiplomit_6" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_6",
+          "versio" : 1,
+          "arvo" : "6",
+          "nimi" : "Musiikin lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i musik",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Musiikin lukiodiplomi",
+              "meta" : null
+            }
+          }
+        },
+        "lukiodiplomit_7" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_7",
+          "versio" : 1,
+          "arvo" : "7",
+          "nimi" : "Tanssin lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i dans",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Tanssin lukiodiplomi",
+              "meta" : null
+            }
+          }
+        },
+        "lukiodiplomit_8" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_8",
+          "versio" : 1,
+          "arvo" : "8",
+          "nimi" : "Teatterin lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i teaterkonst",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Teatterin lukiodiplomi",
+              "meta" : null
+            }
+          }
+        },
+        "lukiodiplomit_1" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_1",
+          "versio" : 1,
+          "arvo" : "1",
+          "nimi" : "Kotitalouden lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i huslig ekonomi",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Kotitalouden lukiodiplomi",
+              "meta" : null
+            }
+          }
+        },
+        "lukiodiplomit_2" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_2",
+          "versio" : 1,
+          "arvo" : "2",
+          "nimi" : "Kuvataiteen lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i bildkonst",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Kuvataiteen lukiodiplomi",
+              "meta" : null
+            }
+          }
+        },
+        "lukiodiplomit_3" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_3",
+          "versio" : 1,
+          "arvo" : "3",
+          "nimi" : "Käsityön lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i slöjd",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Käsityön lukiodiplomi",
+              "meta" : null
+            }
+          }
+        },
+        "lukiodiplomit_4" : {
+          "kieliUri" : null,
+          "kieliVersio" : null,
+          "kieliArvo" : null,
+          "kieliKaannos" : null,
+          "uri" : "lukiodiplomit_4",
+          "versio" : 1,
+          "arvo" : "4",
+          "nimi" : "Liikunnan lukiodiplomi",
+          "meta" : {
+            "kieli_sv" : {
+              "kieliUri" : "kieli_sv",
+              "kieliVersio" : 1,
+              "kieliArvo" : "SV",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "gymnasiediplomet i gymnastik",
+              "meta" : null
+            },
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : null,
+              "arvo" : null,
+              "nimi" : "Liikunnan lukiodiplomi",
+              "meta" : null
+            }
+          }
+        }
+      },
+      "uris" : {
+        "lukiodiplomit_5" : 1,
+        "lukiodiplomit_6" : 1,
+        "lukiodiplomit_7" : 1,
+        "lukiodiplomit_8" : 1,
+        "lukiodiplomit_1" : 1,
+        "lukiodiplomit_2" : 1,
+        "lukiodiplomit_3" : 1,
+        "lukiodiplomit_4" : 1
+      }
+    },
+    "koulutusasteTyyppi" : "LUKIOKOULUTUS"
+  },
+  "status" : "OK",
+  "params" : null,
+  "accessRights" : { },
+  "errors" : null
+}

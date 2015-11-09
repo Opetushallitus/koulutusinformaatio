@@ -34,7 +34,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
@@ -339,14 +338,14 @@ public class LOSObjectCreator extends ObjectCreator {
         return subjects;
     }
 
-    public AdultUpperSecondaryLOS createAdultUpperSeconcaryLOS(KoulutusLukioV1RDTO koulutus, boolean checkStatus)
+    public KoulutusLOS createAdultUpperSeconcaryLOS(KoulutusLukioV1RDTO koulutus, boolean checkStatus)
             throws TarjontaParseException, KoodistoException {
 
-        AdultUpperSecondaryLOS los = new AdultUpperSecondaryLOS();
+        KoulutusLOS los = new KoulutusLOS();
 
-        los.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         addKoulutusGenericV1Fields(koulutus, los);
         addKoulutus2AsteV1Fields(koulutus, los);
 
@@ -357,9 +356,31 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
 
-    public AdultUpperSecondaryLOS createAdultBaseEducationLOS(Koulutus2AsteV1RDTO koulutus, boolean checkStatus) throws KoodistoException,
+    public KoulutusLOS createIbRfIshLOS(KoulutusLukioV1RDTO koulutus, boolean checkStatus)
+            throws TarjontaParseException, KoodistoException {
+
+        KoulutusLOS los = new KoulutusLOS();
+
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
+        los.setEducationType(SolrConstants.ED_TYPE_LUKIO);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
+        addKoulutusGenericV1Fields(koulutus, los);
+        addKoulutus2AsteV1Fields(koulutus, los);
+        los.setQualifications(null); // aina ylioppilas, ei haluta näyttää kuvauksessa
+
+        if (koulutus.getLukiodiplomit() != null) {
+            los.setDiplomas(getI18nTextMultiple(koulutus.getLukiodiplomit()));
+        }
+
+        for (ApplicationOption ao : los.getApplicationOptions()) {
+            ao.setEligibilityDescription(null); // Lukioiden hakukohteilla näytetään valintaperusteet (SelectionCriteria) hakukelpoisuustiedon sijaan.
+        }
+        return los;
+    }
+
+    public KoulutusLOS createAdultBaseEducationLOS(Koulutus2AsteV1RDTO koulutus, boolean checkStatus) throws KoodistoException,
             TarjontaParseException {
-        AdultUpperSecondaryLOS los = new AdultUpperSecondaryLOS();
+        KoulutusLOS los = new KoulutusLOS();
 
         los.setType(TarjontaConstants.TYPE_ADULT_BASE);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);

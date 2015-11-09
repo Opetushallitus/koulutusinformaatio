@@ -253,6 +253,41 @@ public class IncrementalIndexerTest {
 
     }
 
+    @Test
+    public void testKsh718() throws Exception {
+        tarjontaRawServiceMock.setTestCase("testKsh718");
+        String oid = "1.2.246.562.17.70879824525";
+        KoulutusLOSEntity los = koulutusLOSDAO.get(oid);
+        assertNull(los);
+
+        incrementalUpdateService.updateChangedEducationData();
+
+        los = koulutusLOSDAO.get(oid);
+        assertNotNull(los);
+
+        assertTrue("Koulutus " + los.getId() + " has no application options.", los.getApplicationOptions().size() > 0);
+        // Tekstikentät kälissä
+        assertNotNull(los.getGoals());
+        assertNotNull(los.getContent());
+        assertNotNull(los.getStructure());
+        assertNotNull(los.getLanguageSelection());
+        assertNotNull(los.getDiplomas());
+        assertNotNull(los.getInternationalization());
+        assertNotNull(los.getCooperation());
+        assertNotNull(los.getAccessToFurtherStudies());
+        assertNotNull(los.getContactPersons());
+
+        // Harmaa laatikko
+        assertNotNull(los.getStartDate());
+        assertNotNull(los.getTeachingLanguages());
+        assertNotNull(los.getPlannedDuration());
+        assertNotNull(los.getPlannedDurationUnit());
+        assertNotNull(los.getTeachingTimes());
+        assertNotNull(los.getTeachingPlaces());
+        assertNotNull(los.getFormOfTeaching());
+        assertNotNull(los.getKoulutusPrerequisite());
+
+    }
 
     private void validateTutkinto(TutkintoLOSEntity tutkinto, List<String> allowedTutkinToIDs) {
         assertTrue("Tutkinto " + tutkinto.getId() + " has no application options.", tutkinto.getApplicationOptions().size() > 0);

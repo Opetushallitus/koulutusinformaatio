@@ -48,6 +48,7 @@ public class SEOServiceImpl implements SEOService {
     private Map<String, String> sitemapParams;
     private String sitemapLocation;
 
+    //FIXME: SEO service on korjattava ja päivitettävä uusia koulutustyyppejä ja urleja vastaavaksi
 
     @Autowired
     public SEOServiceImpl(SnapshotService snapshotService,
@@ -59,14 +60,15 @@ public class SEOServiceImpl implements SEOService {
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
         this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, baseUrl);
-        String collections = "tutkinto:parentLearningOpportunitySpecifications," +
+        String collections = "tutkinto:tutkintoLOS," +
+                "koulutus:koulutusLOS," +
                 "koulutusohjelma:childLearningOpportunities," +
                 "lukio:upperSecondaryLearningOpportunitySpecifications," +
                 "valmentava:specialLearningOpportunitySpecifications:-creditValue," +
                 "erityisopetus:specialLearningOpportunitySpecifications:+creditValue," +
                 "korkeakoulu:universityAppliedScienceLOS," +
                 "ammatillinenaikuiskoulutus:competenceBasedQualificationParentLOS," +
-                "aikuislukio:adultUpperSecondaryLOS";
+                "aikuislukio:koulutusLOS";
         this.sitemapParams.put(SitemapBuilder.PROPERTY_COLLECTIONS, collections);
         this.sitemapLocation = sitemapLocation;
     }

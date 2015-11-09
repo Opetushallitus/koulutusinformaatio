@@ -1,6 +1,5 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
@@ -15,8 +14,6 @@ public interface EducationIncrementalDataUpdateService {
     void deleteLos(LOS los);
     
     void updateHigherEdLos(HigherEducationLOS curParent);
-
-    void updateAdultUpsecLos(AdultUpperSecondaryLOS createdLos);
 
     void updateAdultVocationalLos(
             CompetenceBasedQualificationParentLOS createdLos);

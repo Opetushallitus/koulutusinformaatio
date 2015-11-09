@@ -123,16 +123,7 @@
         <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
     
-  	<bean id="adultUpperSecondaryLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO">
-        <constructor-arg>
-            <ref bean="primaryTransactionDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryTransactionDatastore"/>
-        </constructor-arg>
-    </bean>
-
-  	<bean id="adultVocationalLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO">
+    <bean id="adultVocationalLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO">
         <constructor-arg>
             <ref bean="primaryTransactionDatastore"/>
         </constructor-arg>

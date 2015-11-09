@@ -16,12 +16,25 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-
-import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -117,12 +130,6 @@ public interface LearningOpportunityService {
 
     DataStatus getLastSuccesfulDataStatus();
 
-    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException;
-
-    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
-
-    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
-
     KoulutusLOSDTO getKoulutusLearningOpportunity(String id) throws ResourceNotFoundException;
 
     KoulutusLOSDTO getKoulutusLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
@@ -134,8 +141,6 @@ public interface LearningOpportunityService {
     AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
     AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
-
-    AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
 
     AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(String oid, String lang, String uiLang) throws ResourceNotFoundException;
 

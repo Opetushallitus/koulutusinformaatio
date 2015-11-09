@@ -33,7 +33,6 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.Articled;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
@@ -45,9 +44,9 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
@@ -162,7 +161,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
 
     @Override
-    public StandaloneLOSDTO getKoulutusLearningOpportunity(
+    public KoulutusLOSDTO getKoulutusLearningOpportunity(
             String id, String lang, String uiLang) {
         try {
 
@@ -252,11 +251,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 HigherEducationLOSDTO dto = learningOpportunityService.previewHigherEdLearningOpportunity(oid, lang, uiLang);
                 setArticles(uiLang, dto, dto.getKoulutuskoodi(), dto.getEducationType());
                 return dto;
-            } else if ("aikuislukio".equals(loType)) {
-                return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
-            } else if ("aikuistenperusopetus".equals(loType)) {
-                return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
-            } else if ("koulutus".equals(loType)) {
+            } else if ("aikuislukio".equals(loType)
+                    || "aikuistenperusopetus".equals(loType)
+                    || "koulutus".equals(loType)) {
                 return learningOpportunityService.previewKoulutusLearningOpportunity(oid, lang, uiLang);
             } else if ("ammatillinenaikuiskoulutus".equals(loType)) {
                 AdultVocationalParentLOSDTO dto = learningOpportunityService.previewAdultVocationalLearningOpportunity(oid, lang, uiLang);
@@ -266,10 +263,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 return dto;
             }
             throw new ResourceNotFoundException("No preview implemented for loType: " + loType);
-        } catch (ResourceNotFoundException e) {
+        } catch (KIException e) {
             throw KIExceptionHandler.resolveException(e);
-        } catch (SearchException ex) {
-            throw KIExceptionHandler.resolveException(ex);
         }
     }
 
@@ -280,40 +275,6 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         } catch (ResourceNotFoundException ex) {
             throw KIExceptionHandler.resolveException(ex);
         }
-    }
-
-    @Override
-    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
-            String id, String lang, String uiLang) {
-
-        try {
-
-            AdultUpperSecondaryLOSDTO dto = null;
-
-            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                dto = learningOpportunityService.getAdultUpperSecondaryLearningOpportunity(id);
-                uiLang = (dto.getTeachingLanguages() != null && !dto.getTeachingLanguages().isEmpty())
-                        ? dto.getTeachingLanguages().get(0).toLowerCase() : LANG_FI;
-            }
-            else if (Strings.isNullOrEmpty(lang)) {
-                dto = this.learningOpportunityService.getAdultUpperSecondaryLearningOpportunity(id, uiLang.toLowerCase());
-            }
-            else {
-                dto = learningOpportunityService.getAdultUpperSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
-            }
-
-            String koulutuskoodi = dto.getKoulutuskoodi();
-            String edType = dto.getEducationType();
-
-            setArticles(uiLang, dto, koulutuskoodi, edType);
-
-            return dto;
-        } catch (ResourceNotFoundException e) {
-            throw KIExceptionHandler.resolveException(e);
-        } catch (SearchException se) {
-            throw KIExceptionHandler.resolveException(se);
-        }
-
     }
 
     @Override
@@ -361,5 +322,10 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
             dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
         }
+    }
+
+    @Override
+    public KoulutusLOSDTO getAdultUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) {
+        return getKoulutusLearningOpportunity(id, lang, uiLang);
     }
 }

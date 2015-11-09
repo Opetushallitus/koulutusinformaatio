@@ -1,0 +1,77 @@
+{
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.63709849283",
+      "version" : 0,
+      "nimi" : {
+        "en" : "International School of Helsinki"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.21239062025",
+        "version" : null,
+        "nimi" : {
+          "fi" : "Lukion IB-linja",
+          "sv" : "Gymnasiets IB-linje",
+          "en" : "IB Programme"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2015,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "LUKIOKOULUTUS",
+        "toteutustyyppiEnum" : "EB_RP_ISH",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "TUTKINTO_OHJELMA",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_sv", "kieli_ru", "kieli_fi" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Erillishaku",
+          "sv" : "Separata antagningar",
+          "en" : "Erillishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "(2015-10-23 12:44 - 2015-10-30 12:44)",
+        "aloituspaikat" : 250,
+        "hakuOid" : "1.2.246.562.29.10019923548",
+        "ryhmaliitokset" : [ ],
+        "koulutuslaji" : {
+          "fi" : "Nuorten koulutus",
+          "sv" : "Utbildning för unga",
+          "en" : "Education and training for young"
+        }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "status" : "OK",
+  "params" : null,
+  "accessRights" : { },
+  "errors" : null
+}

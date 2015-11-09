@@ -32,7 +32,6 @@ import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -151,8 +150,8 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
-    public void indexLukioKoulutusKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
-        KoulutusLOS los = tarjontaService.createLukioKoulutusLOS(dto);
+    public void indexSingleKoulutusWithoutRelations(KoulutusHakutulosV1RDTO dto) throws Exception {
+        KoulutusLOS los = tarjontaService.createKoulutusLOS(dto.getOid(), true);
         if (los == null) {
             removeKoulutusLOS(dto.getOid());
         } else {
@@ -189,24 +188,4 @@ public class IncrementalKoulutusLOSIndexer {
         }
 
     }
-
-    public void indexValmistavaKoulutusKomoto(String curKomotoOid) throws Exception {
-        LOG.debug("Indexing koulutus ed komoto: {}", curKomotoOid);
-        KoulutusLOS createdLos = null;
-        try {
-            createdLos = this.tarjontaService.createKoulutusLOS(curKomotoOid, true);
-        } catch (TarjontaParseException tpe) {
-            createdLos = null;
-        }
-        if (createdLos == null) {
-            removeKoulutusLOS(curKomotoOid);
-        } else {
-            this.indexToSolr(createdLos);
-            this.dataUpdateService.updateKoulutusLos(createdLos);
-        }
-
-
-    }
-
-
 }

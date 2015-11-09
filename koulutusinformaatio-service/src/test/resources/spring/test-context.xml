@@ -100,15 +100,6 @@
         </constructor-arg>
     </bean>
 
-    <bean id="koulutusLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO">
-        <constructor-arg>
-            <ref bean="primaryDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryDatastore"/>
-        </constructor-arg>
-    </bean>
-
     <bean id="upperSecondaryLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
         <constructor-arg>
             <ref bean="primaryDatastore"/>
@@ -127,7 +118,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="adultUpperSecondaryLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO">
+    <bean id="koulutusLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO">
         <constructor-arg>
             <ref bean="primaryDatastore"/>
         </constructor-arg>

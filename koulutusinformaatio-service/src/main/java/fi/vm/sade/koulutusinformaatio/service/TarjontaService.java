@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.service;
 import java.util.List;
 import java.util.Set;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -55,8 +54,8 @@ public interface TarjontaService {
      * @throws TarjontaParseException
      * @throws KoodistoException
      */
-	public HigherEducationLOS findHigherEducationLearningOpportunity(
-			String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+    public HigherEducationLOS findHigherEducationLearningOpportunity(
+            String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
     public List<KoulutusHakutulosV1RDTO> findKorkeakouluOpinnot();
 
@@ -65,17 +64,13 @@ public interface TarjontaService {
     HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
             throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
-    public List<AdultUpperSecondaryLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException;
+    public List<KoulutusLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException;
     
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 
     List<KoulutusLOS> findValmistavaKoulutusEducations() throws KoodistoException;
 
-    public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
-
     public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
-
-    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KIException;
 
     public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo);
 
@@ -124,5 +119,7 @@ public interface TarjontaService {
      * @throws KIException 
      */
     public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException;
+
+    KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KIException;
 
 }
