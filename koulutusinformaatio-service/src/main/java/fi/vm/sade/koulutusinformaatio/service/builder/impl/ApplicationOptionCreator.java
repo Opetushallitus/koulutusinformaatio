@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +45,6 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
 
 /**
@@ -120,6 +116,11 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setSoraDescription(getI18nText(hakukohde.getSoraKuvaukset()));
         ao.setEligibilityDescription(getI18nText(hakukohde.getHakukelpoisuusVaatimusKuvaukset()));
         ao.setExams(educationObjectCreator.createEducationExams(hakukohde.getValintakokeet()));
+        if (hakukohde.getValintakokeet() != null) {
+            for (ValintakoeV1RDTO valintakoe : hakukohde.getValintakokeet()) {
+                ao.setOverallScoreLimit(educationObjectCreator.resolvePointLimit(valintakoe, "Kokonaispisteet"));
+            }
+        }
         ao.setOrganizationGroups(educationObjectCreator.createOrganizationGroups(hakukohde.getRyhmaliitokset(), hakukohde.getOrganisaatioRyhmaOids()));
         ao.setKaksoistutkinto(hakukohde.getKaksoisTutkinto());
         ao.setVocational(SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType()));
