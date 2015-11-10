@@ -88,6 +88,9 @@ public final class TutkintoLOSToDTO {
 
             // Koulutusohjelman valinta on aina sama tutkinnon kaikille komotoille, joilla on sama PK-vaatimus
             KoulutusLOS firstChild = getFirstLosWithMatchingPrerequisite(tutkintoLOS.getChildEducations(), prerequisite);
+            if (firstChild == null) {
+                throw new KIConversionException("No matching child educations!");
+            }
             parent.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(firstChild.getSelectingDegreeProgram(), lang));
 
             for (KoulutusLOS child : tutkintoLOS.getChildEducations()) {
