@@ -74,7 +74,7 @@ public final class ExamToDTO {
                 convertedExams = convertHigherEdExamsByLang(ConverterUtil.FALLBACK_LANG, exams);
             }
             if (convertedExams == null || convertedExams.isEmpty()) {
-                convertedExams = convertHigherEdExamsByLang(exams.get(0).getType().getTranslations().keySet().iterator().next(), exams);
+                convertedExams = convertHigherEdExamsByLang(lang, exams);
             }
             
             return convertedExams != null && !convertedExams.isEmpty() ? convertedExams : null;
