@@ -86,8 +86,8 @@ public final class TutkintoLOSToDTO {
 
             SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
 
-            // Koulutusohjelman valinta on aina sama tutkinnon kaikille komotoille
-            KoulutusLOS firstChild = tutkintoLOS.getChildEducations().get(0);
+            // Koulutusohjelman valinta on aina sama tutkinnon kaikille komotoille, joilla on sama PK-vaatimus
+            KoulutusLOS firstChild = getFirstLosWithMatchingPrerequisite(tutkintoLOS.getChildEducations(), prerequisite);
             parent.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(firstChild.getSelectingDegreeProgram(), lang));
 
             for (KoulutusLOS child : tutkintoLOS.getChildEducations()) {
@@ -123,6 +123,15 @@ public final class TutkintoLOSToDTO {
             throw new KIConversionException("Tutkinnolla " + parent.getId() + " ei ole koulutuksia pohjakoulutuksella " + prerequisite);
 
         return parent;
+    }
+
+    public static KoulutusLOS getFirstLosWithMatchingPrerequisite(List<KoulutusLOS> loses, String prerequisite) {
+        for (KoulutusLOS los : loses) {
+            if (isSamePrerequisite(prerequisite, los)) {
+                return los;
+            }
+        }
+        return null;
     }
 
     public static boolean isSamePrerequisite(String prerequisite, KoulutusLOS child) {
