@@ -73,7 +73,9 @@ public class I18nText {
     }
 
     public static boolean hasTranslationForLanguage(I18nText text, String lang) {
-        return text != null && text.getTranslations() != null && text.getTranslations().containsKey(lang);
+        lang = lang.replace("kieli_", "");
+        return text != null && text.getTranslations() != null
+                && (text.getTranslations().containsKey(lang) || text.getTranslations().containsKey("kieli_" + lang));
     }
 
     @Override

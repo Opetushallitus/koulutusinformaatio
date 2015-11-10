@@ -75,10 +75,12 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
     public ScoreLimit resolvePointLimit(ValintakoeV1RDTO valintakoe, String type) {
-        for (ValintakoePisterajaV1RDTO valintakoePisteraja : valintakoe.getPisterajat()) {
-            if (valintakoePisteraja.getPisterajatyyppi().equals(type)) {
-                return new ScoreLimit(valintakoePisteraja.getAlinPistemaara(),
-                        valintakoePisteraja.getAlinHyvaksyttyPistemaara(), valintakoePisteraja.getYlinPistemaara());
+        if (valintakoe != null && valintakoe.getPisterajat() != null) {
+            for (ValintakoePisterajaV1RDTO valintakoePisteraja : valintakoe.getPisterajat()) {
+                if (valintakoePisteraja.getPisterajatyyppi().equals(type)) {
+                    return new ScoreLimit(valintakoePisteraja.getAlinPistemaara(),
+                            valintakoePisteraja.getAlinHyvaksyttyPistemaara(), valintakoePisteraja.getYlinPistemaara());
+                }
             }
         }
         return null;
@@ -158,6 +160,7 @@ public class EducationObjectCreator extends ObjectCreator {
                             examEvents.add(examEvent);
                         }
                     }
+                    exam.setScoreLimit(resolvePointLimit(valintakoe, "Paasykoe"));
                     exam.setExamEvents(examEvents);
                     if (exam.getType() != null || !examEvents.isEmpty())
                         exams.add(exam);

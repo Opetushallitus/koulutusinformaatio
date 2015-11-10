@@ -345,8 +345,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         addKoulutusGenericV1Fields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         addKoulutus2AsteV1Fields(koulutus, los);
 
         if (koulutus.getLukiodiplomit() != null) {
@@ -363,8 +363,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(SolrConstants.ED_TYPE_LUKIO);
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         addKoulutusGenericV1Fields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         addKoulutus2AsteV1Fields(koulutus, los);
         los.setQualifications(null); // aina ylioppilas, ei haluta näyttää kuvauksessa
 
@@ -384,8 +384,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_ADULT_BASE);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
         addKoulutusGenericV1Fields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
         addKoulutus2AsteV1Fields(koulutus, los);
 
         return los;
@@ -859,8 +859,8 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = new KoulutusLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(edType);
-        addKoulutusV1Fields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         addKoulutusGenericV1Fields(koulutusDTO, los);
+        addKoulutusV1Fields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         if (!checkStatus) {
             los.setStatus(koulutusDTO.getTila().toString());
         }
@@ -880,6 +880,9 @@ public class LOSObjectCreator extends ObjectCreator {
     private void addTutkintoonJohtamatonKoulutusFields(TutkintoonJohtamatonKoulutusV1RDTO koulutus, KoulutusLOS los) throws KIException {
         try {
             los.setPrerequisites(createCodes(koulutus.getPohjakoulutusvaatimukset()));
+            List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
+            los.setFacetPrerequisites(facetPrequisites);
+
             los.setEndDate(koulutus.getKoulutuksenLoppumisPvm());
             los.setCreditValue(koulutus.getOpintojenLaajuusPistetta());
             los.setOpettaja(koulutus.getOpettaja());
@@ -1077,8 +1080,6 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
 
-        List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
-        los.setFacetPrerequisites(facetPrequisites);
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
         los.setOsaamisalaton(koulutus.getKoulutusohjelma().getUri() == null);
 
@@ -1120,6 +1121,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));
     }
 
+    // Tämä täytyy ajaa ennen addKoulutusV1Fields, koska pohjakoulutus asetetaan täällä.
     private <S extends KoulutusGenericV1RDTO, T extends KoulutusLOS> void addKoulutusGenericV1Fields(S koulutus, T los)
             throws KoodistoException, TarjontaParseException {
         Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
@@ -1127,6 +1129,8 @@ public class LOSObjectCreator extends ObjectCreator {
             los.getPrerequisites().add(requirementsCode);
         }
         los.setKoulutusPrerequisite(requirementsCode);
+        List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
+        los.setFacetPrerequisites(facetPrequisites);
         if (koulutus.getKoulutuslaji() != null) {
             los.setKoulutuslaji(koodistoService.searchFirst(koulutus.getKoulutuslaji().getUri()));
         }
@@ -1352,8 +1356,6 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getKoulutuslaji() != null) {
             los.setKoulutuslaji(this.koodistoService.searchFirst(koulutus.getKoulutuslaji().getUri()));
         }
-
-        los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));
 
         return los;
 

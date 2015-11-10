@@ -355,13 +355,26 @@ directive('kiScores', ['TranslationService', function(TranslationService) {
             typename: '=typename'
         },
         link: function(scope, element, attrs) {
-            if (scope.scoreElement) {
-                if (scope.scoreElement.lowestScore 
-                    || scope.scoreElement.highestScore
-                    || scope.scoreElement.lowestAcceptedScore) {
-                    scope.scores = TranslationService.getTranslation(scope.typename + '-scores', {min: scope.scoreElement.lowestScore, max: scope.scoreElement.highestScore, threshold: scope.scoreElement.lowestAcceptedScore});
+            var unbindWatcher = scope.$watch('scoreElement', function() {
+                if (scope.scoreElement) {
+                    if (scope.scoreElement.lowestScore
+                        || scope.scoreElement.highestScore
+                        || scope.scoreElement.lowestAcceptedScore) {
+
+                        var translationKey = scope.typename + '-scores';
+                        if (!scope.scoreElement.lowestAcceptedScore) {
+                            translationKey += '-no-treshold';
+                        }
+
+                        scope.scores = TranslationService.getTranslation(translationKey, {
+                            min: scope.scoreElement.lowestScore,
+                            max: scope.scoreElement.highestScore,
+                            threshold: scope.scoreElement.lowestAcceptedScore
+                        });
+                    }
+                    unbindWatcher();
                 }
-            }
+            });
         }
     };
 }]).
