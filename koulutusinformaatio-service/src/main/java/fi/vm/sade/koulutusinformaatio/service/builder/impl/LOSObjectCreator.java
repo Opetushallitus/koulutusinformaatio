@@ -346,8 +346,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISLUKIO);
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
         addKoulutusGenericV1Fields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
         addKoulutus2AsteV1Fields(koulutus, los);
 
         if (koulutus.getLukiodiplomit() != null) {
@@ -363,8 +363,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setType(TarjontaConstants.TYPE_ADULT_BASE);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
         addKoulutusGenericV1Fields(koulutus, los);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
         addKoulutus2AsteV1Fields(koulutus, los);
 
         return los;
@@ -838,8 +838,8 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = new KoulutusLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setEducationType(edType);
-        addKoulutusV1Fields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         addKoulutusGenericV1Fields(koulutusDTO, los);
+        addKoulutusV1Fields(koulutusDTO, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
         if (!checkStatus) {
             los.setStatus(koulutusDTO.getTila().toString());
         }
@@ -1100,6 +1100,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));
     }
 
+    // Tämä täytyy ajaa ennen addKoulutusV1Fields, koska pohjakoulutus asetetaan täällä.
     private <S extends KoulutusGenericV1RDTO, T extends KoulutusLOS> void addKoulutusGenericV1Fields(S koulutus, T los)
             throws KoodistoException, TarjontaParseException {
         Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
