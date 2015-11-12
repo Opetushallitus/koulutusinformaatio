@@ -7,6 +7,7 @@ You need the following files in your `~/oph-configuration` directory: common.pro
 Then you can run the application:
 
     mvn tomcat:run
+    OR with KIJetty class run
 
 And go to http://localhost:8080/koulutusinformaatio-app/
 

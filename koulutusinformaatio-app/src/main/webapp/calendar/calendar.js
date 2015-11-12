@@ -49,10 +49,8 @@ var ApplicationSystemCalendar = (function() {
 
         // override default options with param opts
         $.extend(true, o, defaultOptions, options);
-        o.lang = getLanguageFromHost();
-          
-        
-        
+        o.lang = options.lang ? options.lang : getLanguageFromHost();
+
         // intitalize language
         ki.i18n.init(o.lang);
 
@@ -92,7 +90,7 @@ var ApplicationSystemCalendar = (function() {
                     return key;
                 });
 
-                createCalendar(data);
+                createCalendar(data, calendar);
             });
         };
 
@@ -114,7 +112,7 @@ var ApplicationSystemCalendar = (function() {
         }
     },
 
-    createCalendar = function(obj) {
+    createCalendar = function(obj, calendar) {
         _.each(obj, function(monthobj, index) {
             countLisahaut = 0;
             var list = $('<ul class="list-unstyled"></ul>');

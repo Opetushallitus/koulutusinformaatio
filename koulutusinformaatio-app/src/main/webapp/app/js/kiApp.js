@@ -1,4 +1,3 @@
-/*  Application module */
 
 var kiApp = angular.module('kiApp', 
     [
@@ -18,9 +17,38 @@ var kiApp = angular.module('kiApp',
         'ngSanitize',
         'ngTouch',
         'ngAnimate',
-        'vcRecaptcha'
+        'vcRecaptcha',
+        'pascalprecht.translate'
     ])
+.factory('useFinnishWhenMissing', function () {
+  return function (translationID) {
+      return localeJSON ? localeJSON[translationID + ".fi"] : translationID
+  };
+})
+.config(['$translateProvider', function ($translateProvider) {
+      try {
+          var l = localeJSON
+          function isLang(lang) {
+              return function(v,k) {
+                  return !(_.endsWith(k, lang));
+              };
+          };
+          function removePostfix(val, key) {
+              return key.substring(0, key.length - 3)
+          }
+          $translateProvider.translations('fi', _.mapKeys(_.omit(l, isLang('fi')), removePostfix));
+          $translateProvider.translations('sv', _.mapKeys(_.omit(l, isLang('sv')), removePostfix));
+          $translateProvider.translations('en', _.mapKeys(_.omit(l, isLang('en')), removePostfix));
+          function getLanguageFromHost() {
+              var lang = jQuery.cookie(i18n.options.cookieName)
+              return lang != null ? lang : "fi"
+          }
+          $translateProvider.useMissingTranslationHandler('useFinnishWhenMissing');
+          $translateProvider.preferredLanguage(getLanguageFromHost());
+      } catch(e) {
 
+      }
+}])
 // initialize piwik analytics tool
 .config(['$analyticsProvider', function( $analyticsProvider) {
     OPH.Common.initPiwik(window.Config.app.common.piwikUrl);

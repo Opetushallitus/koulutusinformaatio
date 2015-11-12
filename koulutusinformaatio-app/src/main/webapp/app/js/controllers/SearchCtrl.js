@@ -4,7 +4,11 @@
 function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService, Config) {
     $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
     $scope.suggestions = [];
-    
+
+    if($scope.demo) {
+        $rootScope.title = TranslationService.getTranslation('sitename');
+    }
+
     $scope.locales = {
         'search': TranslationService.getTranslation('tooltip:search')
     }
@@ -38,7 +42,9 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             $scope.queryString = '*';
         }
 
-        if ($scope.queryString) {
+        if($scope.demo) {
+            window.location = "/app/#!/haku/" + encodeURIComponent($scope.queryString);
+        } else if ($scope.queryString) {
         	
             var activeTab = $location.search().tab;
             FilterService.clear(); // clear all filters for new search
@@ -58,7 +64,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             var filters = FilterService.get();
             filters.tab = activeTab;
             $location.hash(null);
-            
+
             $location.path('/haku/' + encodeURIComponent(queryString));
             $location.search(filters);
 

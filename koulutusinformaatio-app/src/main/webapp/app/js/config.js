@@ -33,15 +33,21 @@ window.Config.app.prod = {
     }
 };
 
-/* Configurations for production environment */
+/* Configurations for demo environment */
 window.Config.app.demo = {
     fi: {
+        frontpageUrl: '/app/demo.html',
+        introUrl: 'https://opintopolku.fi/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext',
         tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
     },
     sv: {
+        frontpageUrl: '/app/demo.html',
+        introUrl: 'https://opintopolku.fi/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext',
         tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
     },
     en: {
+        frontpageUrl: '/app/demo.html',
+        introUrl: 'https://opintopolku.fi/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext',
         tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
     }
 };

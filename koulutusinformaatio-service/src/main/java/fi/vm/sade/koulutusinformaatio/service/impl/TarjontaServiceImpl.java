@@ -101,6 +101,8 @@ public class TarjontaServiceImpl implements TarjontaService {
     private HashSet<String> processedOids = new HashSet<String>();
     private HashMap<String, TutkintoLOS> processedTutkintos = new HashMap<String, TutkintoLOS>();
 
+    private Set<String> overriddenASOids;
+
     @Autowired
     public TarjontaServiceImpl(KoodistoService koodistoService,
             ProviderService providerService, TarjontaRawService tarjontaRawService,
@@ -118,6 +120,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }));
         this.creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService, parameterService,
                 filteredOverriddenASOids);
+        this.overriddenASOids = Sets.newHashSet(filteredOverriddenASOids);
     }
 
     public TarjontaServiceImpl() {
@@ -734,6 +737,10 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         if (hakuOids != null) {
             for (String curOid : hakuOids) {
+                // Demoympäristössä halutaan näyttää vain ne haut, jotka on mainittu overriddenASOids listalla
+                if (overriddenASOids != null && !overriddenASOids.isEmpty() && !overriddenASOids.contains(curOid)) {
+                    continue;
+                }
 
                 LOG.debug("fetching application system: {}", curOid);
 

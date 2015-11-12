@@ -19,15 +19,19 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystemParameters;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -147,6 +151,27 @@ public class ApplicationSystemCreator extends ObjectCreator {
 
                 as.getApplicationPeriods().add(ap);
             }
+        }
+
+        if (overriddenASOids != null && overriddenASOids.contains(haku.getOid())) {
+            LOG.warn("Puukotetaan demohaku {} näkyviin!", as.getId());
+            Calendar start = Calendar.getInstance();
+            start.add(Calendar.MONTH, -6);
+            Calendar end = Calendar.getInstance();
+            end.add(Calendar.MONTH, 6);
+
+            DateRange demorange = new DateRange();
+            demorange.setStartDate(start.getTime());
+            demorange.setEndDate(end.getTime());
+
+            ApplicationPeriod ap = new ApplicationPeriod();
+            ap.setDateRange(demorange);
+            Map<String, String> translations = Maps.newHashMap();
+            translations.put("fi", "Demohakuaika");
+            I18nText demoName = new I18nText(translations);
+            ap.setName(demoName);
+
+            as.getApplicationPeriods().add(ap);
         }
 
         return as;
