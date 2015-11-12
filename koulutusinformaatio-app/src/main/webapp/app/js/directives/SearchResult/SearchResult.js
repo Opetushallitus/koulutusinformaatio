@@ -96,7 +96,7 @@ directive('extendedSearchresultData',
         'HigherEducationLOService',
         'AdultVocationalLOService',
         'LOTypes',
-        function ($q, ParentLOService, SpecialLOService, UpperSecondaryLOService, KoulutusLOService, HigherEducationLOService, KoulutusLOService, AdultVocationalLOService, LOTypes) {
+        function ($q, ParentLOService, SpecialLOService, UpperSecondaryLOService, KoulutusLOService, HigherEducationLOService, AdultVocationalLOService, LOTypes) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
