@@ -86,29 +86,14 @@ public class ApplicationSystemCreator extends ObjectCreator {
             // Demoympäristöä varten pakotetaan haku näkyviin.
             if (overriddenASOids != null && overriddenASOids.contains(asDto.getOid())) {
                 LOG.warn("Puukotetaan demohaku {} näkyviin!", as.getId());
-                addDemoApplicationDates(as);
+                as.getApplicationDates().add(getDemoRange(asDto));
                 as.setShownAsFacet(true);
-                Calendar end = Calendar.getInstance();
-                end.add(Calendar.MONTH, 16);
-                as.setShowEducationsUntil(end.getTime());
+                as.setShowEducationsUntil(getModifiedDate(asDto.getHakuaikas().get(0).getLoppuPvm(), 12));
             }
             return as;
         } else {
             return null;
         }
-    }
-
-    private void addDemoApplicationDates(ApplicationSystem as) {
-        DateRange range = new DateRange();
-        Calendar start = Calendar.getInstance();
-        start.add(Calendar.MONTH, -6);
-        Calendar end = Calendar.getInstance();
-        end.add(Calendar.MONTH, 6);
-
-        range.setStartDate(start.getTime());
-        range.setEndDate(end.getTime());
-
-        as.getApplicationDates().add(range);
     }
 
     /*
@@ -155,17 +140,8 @@ public class ApplicationSystemCreator extends ObjectCreator {
 
         if (overriddenASOids != null && overriddenASOids.contains(haku.getOid())) {
             LOG.warn("Puukotetaan demohaku {} näkyviin!", as.getId());
-            Calendar start = Calendar.getInstance();
-            start.add(Calendar.MONTH, -6);
-            Calendar end = Calendar.getInstance();
-            end.add(Calendar.MONTH, 6);
-
-            DateRange demorange = new DateRange();
-            demorange.setStartDate(start.getTime());
-            demorange.setEndDate(end.getTime());
-
             ApplicationPeriod ap = new ApplicationPeriod();
-            ap.setDateRange(demorange);
+            ap.setDateRange(getDemoRange(haku));
             Map<String, String> translations = Maps.newHashMap();
             translations.put("fi", "Demohakuaika");
             I18nText demoName = new I18nText(translations);
@@ -175,5 +151,19 @@ public class ApplicationSystemCreator extends ObjectCreator {
         }
 
         return as;
+    }
+
+    private DateRange getDemoRange(HakuV1RDTO haku) {
+        DateRange demorange = new DateRange();
+        demorange.setStartDate(getModifiedDate(haku.getHakuaikas().get(0).getAlkuPvm(), -12));
+        demorange.setEndDate(getModifiedDate(haku.getHakuaikas().get(0).getLoppuPvm(), 12));
+        return demorange;
+    }
+
+    private Date getModifiedDate(Date date, int months) {
+        Calendar start = Calendar.getInstance();
+        start.setTime(date);
+        start.add(Calendar.MONTH, months);
+        return start.getTime();
     }
 }
