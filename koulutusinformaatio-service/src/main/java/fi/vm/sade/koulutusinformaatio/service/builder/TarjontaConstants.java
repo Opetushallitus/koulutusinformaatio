@@ -78,5 +78,7 @@ public class TarjontaConstants {
     public static final String OPPILAITOSTYYPPI_AMK = "oppilaitostyyppi_41";
     public static final String OPPILAITOSTYYPPI_YLIOPISTO = "oppilaitostyyppi_42";
     public static final String OPPILAITOSTYYPPI_SOTILASKK = "oppilaitostyyppi_43";
+    public static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    public static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
 
 }

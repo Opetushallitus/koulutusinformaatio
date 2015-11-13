@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +38,19 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
 
 /**
@@ -62,8 +68,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
     private List<String> overriddenASOids;
 
     protected ApplicationOptionCreator(KoodistoService koodistoService,
-                                       OrganisaatioRawService organisaatioRawService,
-                                       ParameterService parameterService, List<String> overriddenASOids) {
+            OrganisaatioRawService organisaatioRawService,
+            ParameterService parameterService, List<String> overriddenASOids) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.educationObjectCreator = new EducationObjectCreator(koodistoService, organisaatioRawService);
@@ -94,7 +100,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 ao.setName(hakKohdeNames.get(0));
             }
         }
-        
+
         try {
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohde.getHakukohteenNimiUri()));
         } catch (Exception ex) {
@@ -103,8 +109,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
         if (ao.getAoIdentifier() == null) {
             ao.setAoIdentifier(hakukohde.getHakukohteenNimiUri());
         }
-        
-        ao.setAthleteEducation(false);
+
+        ao.setAthleteEducation(isAthleteEducation(ao.getAoIdentifier()));
         ao.setStartingQuota(hakukohde.getAloituspaikatLkm());
         ao.setFirstTimerStartingQuota(hakukohde.getEnsikertalaistenAloituspaikat());
         ao.setStartingQuotaDescription(getI18nText(hakukohde.getAloituspaikatKuvaukset()));
@@ -140,7 +146,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             List<Code> subCodes = koodistoService.searchSubCodes(
                     los.getKoulutusPrerequisite().getUri(),
                     TarjontaConstants.BASE_EDUCATION_KOODISTO_URI
-            );
+                    );
             for (Code subCode : subCodes) {
                 baseEducations.add(subCode.getValue());
             }
@@ -158,8 +164,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 }
             }
         }
-        
-        
+
         ao.setApplicationSystem(as);
         if (!Strings.isNullOrEmpty(hakukohde.getSoraKuvausKoodiUri())) {
             ao.setSora(true);
@@ -236,7 +241,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         ao.setAttachments(new ArrayList<ApplicationOptionAttachment>(attachments.values()));
         ao.setAdditionalInfo(getI18nText(hakukohde.getLisatiedot()));
-        
+
         ao.setApplicationOffice(getApplicationOffice(hakukohde.getYhteystiedot()));
 
         ao.getKomotoOids().addAll(hakukohde.getHakukohdeKoulutusOids());
@@ -249,7 +254,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
             ao.setEducationTypeUri(SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
         }
-        
+
         ao.setPaid(haku.isMaksumuuriKaytossa());
 
         return ao;
@@ -384,6 +389,25 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 map.put(lang, map.get(fallbacklang));
             }
         }
+    }
+
+    private boolean isAthleteEducation(final String aoIdentifier) {
+        if (!Strings.isNullOrEmpty(aoIdentifier)) {
+            try {
+                List<Code> superCodes = koodistoService.searchSuperCodes(TarjontaConstants.ATHLETE_EDUCATION_KOODISTO_URI,
+                        TarjontaConstants.APPLICATION_OPTIONS_KOODISTO_URI);
+                if (superCodes != null) {
+                    for (Code code : superCodes) {
+                        if (aoIdentifier.equals(code.getValue())) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (KoodistoException e) {
+                throw new KIConversionException("Conversion failed - " + e.getMessage());
+            }
+        }
+        return false;
     }
 
 }
