@@ -133,7 +133,6 @@ var ApplicationSystemCalendar = (function() {
             panel.append( createPanel(ki.i18n.t('month-' + month), list, 'month_' + index) );
         });
         calendar.append(panel);
-        calendar.show();
     },
 
     createPanel = function(title, content, id) {
