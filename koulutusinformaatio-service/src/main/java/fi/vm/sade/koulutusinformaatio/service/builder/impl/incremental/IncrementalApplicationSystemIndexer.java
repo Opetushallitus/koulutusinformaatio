@@ -20,6 +20,8 @@ import java.util.Set;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +51,8 @@ public class IncrementalApplicationSystemIndexer {
     private final HttpSolrServer lopHttpSolrServer;
 
     private final HttpSolrServer locationHttpSolrServer;
+
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalApplicationSystemIndexer.class);
     
     @Autowired
     public IncrementalApplicationSystemIndexer(TarjontaService tarjontaService,
@@ -75,9 +79,13 @@ public class IncrementalApplicationSystemIndexer {
         koulutusToBeUpdated.addAll(tarjontaService.findKoulutusOidsByHaku(asOid)); // julkaistu koulutus tarjonnasta
         koulutusToBeUpdated.addAll(dataQueryService.getLearningOpportunityIdsByAS(asOid)); // jo valmiiksi indeksoitu koulutus
 
-        for (String string : koulutusToBeUpdated) {
-            if (!tarjontaService.hasAlreadyProcessedOid(string))
-                losIndexer.indexKoulutusLos(string);
+        for (String oid : koulutusToBeUpdated) {
+            try {
+                if (!tarjontaService.hasAlreadyProcessedOid(oid))
+                    losIndexer.indexKoulutusLos(oid);
+            } catch (Exception e) {
+                LOG.info("Koulutuksen {} indeksointi epäonnistui.", oid, e);
+            }
         }
         indexApplicationSystemForCalendar(asOid);
     }
