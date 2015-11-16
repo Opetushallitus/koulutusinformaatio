@@ -40,8 +40,15 @@ var kiApp = angular.module('kiApp',
           $translateProvider.translations('sv', _.mapKeys(_.omit(l, isLang('sv')), removePostfix));
           $translateProvider.translations('en', _.mapKeys(_.omit(l, isLang('en')), removePostfix));
           function getLanguageFromHost() {
-              var lang = jQuery.cookie(i18n.options.cookieName)
-              return lang != null ? lang : "fi"
+            var x = window.location.host.split('.')
+            if (x.length < 2)
+                return 'fi'
+            switch (x[x.length - 2]) {
+            case 'opintopolku': return 'fi'
+            case 'studieinfo': return 'sv'
+            case 'studyinfo': return 'en'
+            }
+            return 'fi'
           }
           $translateProvider.useMissingTranslationHandler('useFinnishWhenMissing');
           $translateProvider.preferredLanguage(getLanguageFromHost());

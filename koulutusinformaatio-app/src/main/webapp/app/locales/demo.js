@@ -2,7 +2,8 @@ var localeJSON = JSON.flatten({
   "calendar" : {
     "title" : {
       "fi" : "Yhteishaut ja hakulomakkeet",
-      "sv" : "Kommande ansökningar"
+      "sv" : "Kommande ansökningar",
+      "en" : "Joint applications and application forms"
     }
   },
   "frontpage" : {
