@@ -63,9 +63,9 @@ public class ApplicationSystemCreator extends ObjectCreator {
             as.setId(asDto.getOid());
             as.setMaxApplications(asDto.getMaxHakukohdes());
             as.setName(getI18nText(asDto.getNimi()));
-            as.setApplicationFormLink( asDto.getHakulomakeUri() );
-            as.setHakutapaUri( koodistoService.searchFirstCodeValue(asDto.getHakutapaUri()) );
-            as.setHakutyyppiUri( koodistoService.searchFirstCodeValue(asDto.getHakutyyppiUri()));
+            as.setApplicationFormLink(asDto.getHakulomakeUri());
+            as.setHakutapaUri(koodistoService.searchFirstCodeValue(asDto.getHakutapaUri()));
+            as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(asDto.getHakutyyppiUri()));
             if (asDto.getHakuaikas() != null) {
                 for (HakuaikaV1RDTO ha : asDto.getHakuaikas()) {
                     DateRange range = new DateRange();
@@ -123,7 +123,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
         as.setShownInCalendar(shownInCalendar);
         as.setVarsinainenHaku(haku.getHakutyyppiUri().contains(VARSINAINEN_HAKU));
 
-        as.setTargetGroupCode(koodistoService.searchFirstCodeValue( haku.getKohdejoukkoUri() ));
+        as.setTargetGroupCode(koodistoService.searchFirstCodeValue(haku.getKohdejoukkoUri()));
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
                 DateRange range = new DateRange();
@@ -148,6 +148,8 @@ public class ApplicationSystemCreator extends ObjectCreator {
             ap.setName(demoName);
 
             as.getApplicationPeriods().add(ap);
+        } else if (!overriddenASOids.isEmpty()) { // Hakua ei haluta näyttää kalenterissa, jos sitä ei ole määritetty näkymään demoympäristössä.
+            return null;
         }
 
         return as;

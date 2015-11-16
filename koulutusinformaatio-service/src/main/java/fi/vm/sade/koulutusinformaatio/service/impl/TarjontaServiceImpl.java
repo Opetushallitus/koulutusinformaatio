@@ -747,9 +747,11 @@ public class TarjontaServiceImpl implements TarjontaService {
                 ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(curOid);
                 HakuV1RDTO curHaku = curHakuResult.getResult();
 
-                results.add(this.creator.createApplicationSystemForCalendar(curHaku, isValidCalendarHaku(curHaku)));
-                LOG.debug("Applicatoin system created");
-
+                CalendarApplicationSystem applicationSystemForCalendar = this.creator.createApplicationSystemForCalendar(curHaku, isValidCalendarHaku(curHaku));
+                if (applicationSystemForCalendar != null) {
+                    results.add(applicationSystemForCalendar);
+                    LOG.debug("Application system created");
+                }
             }
         }
 
