@@ -627,7 +627,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 newLos.setParent(new ParentLOSRef(los.getId(), los.getName()));
 
             } catch (TarjontaParseException e) {
-                LOG.warn("Failed to parse AdultVocationalLOS {} for komo {}", curKomotoOid, parentKomoOid, e);
+                LOG.info("Failed to parse AdultVocationalLOS {} for komo {}: {}", curKomotoOid, parentKomoOid, e.getMessage());
             }
         }
 
