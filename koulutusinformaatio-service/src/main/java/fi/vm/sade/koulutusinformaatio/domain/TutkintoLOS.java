@@ -59,8 +59,6 @@ public class TutkintoLOS extends LOS {
 
     private Set<Code> teachingLanguages = new HashSet<Code>();
 
-    private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
-
     public List<ChildLOS> getChildren() {
         return children;
     }
@@ -239,14 +237,6 @@ public class TutkintoLOS extends LOS {
 
     public void setChildEducations(List<KoulutusLOS> childEducations) {
         this.childEducations = childEducations;
-    }
-
-    public Set<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public Code getEducationCode() {

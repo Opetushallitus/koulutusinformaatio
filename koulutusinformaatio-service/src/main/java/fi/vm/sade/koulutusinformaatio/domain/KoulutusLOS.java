@@ -45,7 +45,6 @@ public class KoulutusLOS extends LOS {
 
     private Provider provider;
     private List<Provider> additionalProviders = Lists.newArrayList();
-    private List<ApplicationOption> applicationOptions = Lists.newArrayList();
 
     private String komoOid;
 
@@ -271,14 +270,6 @@ public class KoulutusLOS extends LOS {
 
     public List<Code> getTeachingLanguages() {
         return teachingLanguages;
-    }
-
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public String getKomoOid() {
