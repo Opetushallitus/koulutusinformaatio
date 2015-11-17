@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 /**
@@ -34,7 +36,9 @@ public abstract class LOS {
     private List<Code> themes; // teemat
     private List<I18nText> professionalTitles;
     private ToteutustyyppiEnum toteutustyyppi;
+    private List<ApplicationOption> applicationOptions = Lists.newArrayList();
 
+    
     public String getId() {
         return id;
     }
@@ -107,5 +111,13 @@ public abstract class LOS {
 
     public void setToteutustyyppi(ToteutustyyppiEnum toteutustyyppi) {
         this.toteutustyyppi = toteutustyyppi;
+    }
+
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 }

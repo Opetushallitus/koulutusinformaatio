@@ -19,7 +19,6 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private I18nText educationType;
     
     private Provider provider;
-    private List<ApplicationOption> applicationOptions;
     
     private List<AdultVocationalLOS> children;
     
@@ -65,12 +64,6 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
         this.provider = provider;
     }
     
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
-    }
     public List<Code> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
