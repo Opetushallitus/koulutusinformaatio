@@ -35,14 +35,11 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.AoSolrSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
@@ -114,34 +111,11 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
     private List<Provider> filterProvidersWithoutOngoingEducation(List<Provider> learningOpportunityProviders, String asId, List<String> baseEducations,
             String lang) throws SearchException {
         List<Provider> result = new ArrayList<Provider>();
-        HashSet<String> pohjakoulutuvaatimus = new HashSet<String>();
-        for (String be : baseEducations) {
-            try {
-                List<Code> codeElements = koodistoService.searchSuperCodes("pohjakoulutustoinenaste_" + be, "pohjakoulutusvaatimustoinenaste");
-                for (Code code : codeElements) {
-                    pohjakoulutuvaatimus.add(code.getValue());
-                }
-            } catch (Exception e) {
-                LOG.warn("Failed to fetch super codes for base education code " + be);
-            }
-        }
-
-        // Lisätään PK tai YO rajain tai null, jos molemmat halutaan
-        boolean pk = pohjakoulutuvaatimus.contains("PK");
-        boolean yo = pohjakoulutuvaatimus.contains("YO");
-        String be = null;
-        if (!pk && yo) {
-            be = "YO";
-        } else if (pk && !yo) {
-            be = "PK";
-        }
-
-        LOSearchResultList loSearchResult = searchService.searchLearningOpportunities("*", be, null, new ArrayList<String>(), new ArrayList<String>(),
-                new ArrayList<String>(), lang, true, false, false, 0, 9999999, null, null, null, null, null, asId, SearchType.LO);
+        List<AoSolrSearchResult> aoSearchResults = searchService.searchOngoingApplicationOptions(asId, learningOpportunityProviders, baseEducations);
 
         HashSet<String> ongoingProviderIDs = new HashSet<String>();
-        for (LOSearchResult lo : loSearchResult.getResults()) {
-            ongoingProviderIDs.addAll(lo.getLopIds());
+        for (AoSolrSearchResult lo : aoSearchResults) {
+            ongoingProviderIDs.add(lo.getLopId());
         }
         for (Provider p : learningOpportunityProviders) {
             if (ongoingProviderIDs.contains(p.getId())) {

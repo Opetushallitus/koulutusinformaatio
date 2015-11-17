@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import fi.vm.sade.koulutusinformaatio.domain.AoSolrSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
@@ -110,6 +113,11 @@ public class LearningOpportunityProviderResourceImplTest {
         when(learningOpportunityService.getProvider("prov111", "fi")).thenReturn(dto);
         
         providerResource = new LearningOpportunityProviderResourceImpl(searchService, null, learningOpportunityService, koodistoService);
+
+        List<AoSolrSearchResult> aos = new ArrayList<AoSolrSearchResult>();
+        AoSolrSearchResult ao = new AoSolrSearchResult(null, "prov211", null, null, null, null);
+        aos.add(ao);
+        when(searchService.searchOngoingApplicationOptions(eq("asID"), anyListOf(Provider.class), anyListOf(String.class))).thenReturn(aos);
         
     }
     
