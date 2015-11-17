@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.AoSolrSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -35,6 +36,9 @@ public interface SearchService {
             final boolean nonVocational, int start, int rows, String lang, boolean prefix, String type) throws SearchException;
 
     List<Provider> searchLearningOpportunityProviders(final String term, String lang, boolean prefix, String type) throws SearchException;
+
+    List<AoSolrSearchResult> searchOngoingApplicationOptions(final String asId, List<Provider> learningOpportunityProviders, List<String> baseEducations)
+            throws SearchException;
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
             List<String> cities, List<String> facetFilters,
