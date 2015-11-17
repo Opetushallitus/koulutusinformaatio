@@ -177,8 +177,8 @@ public class SearchServiceSolrImpl implements SearchService {
             String lopId = (String) result.getFieldValue(SolrUtil.AoFields.LOP_ID);
             List<String> prerequisites = (List<String>) result.getFieldValue(SolrUtil.AoFields.PREREQUISITES);
             String asId = (String) result.getFieldValue(SolrUtil.AoFields.AS_ID);
-            Date startDate = (Date) result.getFieldValue(SolrUtil.AoFields.START_DATE);
-            Date endDate = (Date) result.getFieldValue(SolrUtil.AoFields.END_DATE);
+            Date startDate = ((ArrayList<Date>) result.getFieldValue(SolrUtil.AoFields.START_DATE)).get(0);
+            Date endDate = ((ArrayList<Date>) result.getFieldValue(SolrUtil.AoFields.END_DATE)).get(0);
             AoSolrSearchResult ao = new AoSolrSearchResult(id, lopId, prerequisites, asId, startDate, endDate);
             aos.add(ao);
         }
