@@ -231,6 +231,8 @@ public class IndexerServiceImpl implements IndexerService {
                 nonVocationalAsIds,
                 providerAsIds);
 
+        createAoDocs(lopSolr, los, provider);
+        
         if (los instanceof KoulutusLOS) {
             KoulutusLOS uas = (KoulutusLOS) los;
             for (Provider curAddProv : uas.getAdditionalProviders()) {
@@ -247,6 +249,29 @@ public class IndexerServiceImpl implements IndexerService {
     }
     
     
+    private void createAoDocs(HttpSolrServer lopSolr, LOS los, Provider provider) throws SolrServerException, IOException {
+        List<SolrInputDocument> aoDocs = Lists.newArrayList();
+        for (ApplicationOption ao : los.getApplicationOptions()) {
+            SolrInputDocument aoDoc = new SolrInputDocument();
+            aoDoc.addField(SolrUtil.AoFields.ID, ao.getId());
+            aoDoc.addField(SolrUtil.AoFields.TYPE, SolrUtil.TYPE_APPLICATIONOPTION);
+            aoDoc.addField(SolrUtil.AoFields.LOP_ID, provider.getId());
+            aoDoc.addField(SolrUtil.AoFields.AS_ID, ao.getApplicationSystem().getId());
+            aoDoc.addField(SolrUtil.AoFields.START_DATE, ao.getApplicationStartDate());
+            aoDoc.addField(SolrUtil.AoFields.END_DATE, ao.getApplicationEndDate());
+
+            List<String> bes = ao.getRequiredBaseEducations();
+            for (String be : bes) {
+                aoDoc.addField(SolrUtil.AoFields.PREREQUISITES, be);
+            }
+
+            aoDocs.add(aoDoc);
+            LOGGER.debug("Added application option {} to solr", ao.getId());
+        }
+        if (!aoDocs.isEmpty()) {
+            lopSolr.add(aoDocs);
+        }
+    }
 
     public void createProviderDocs(Provider provider, 
                                     HttpSolrServer lopSolr, 
