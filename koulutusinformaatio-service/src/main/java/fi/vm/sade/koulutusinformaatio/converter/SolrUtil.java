@@ -98,6 +98,7 @@ public final class SolrUtil {
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_FACET = "FASETTI";
     public static final String TYPE_ORGANISATION = "ORGANISAATIO";
+    public static final String TYPE_APPLICATIONOPTION = "HAKUKOHDE";
     
 
     public static final Integer AS_COUNT = 10;
@@ -426,6 +427,17 @@ public final class SolrUtil {
         public static final String ADDRESS_FI = "address_fi_str_display";
         
         
+    }
+
+    public static class AoFields {
+        public static final String ID = "id";
+        public static final String TYPE = "type";
+        public static final String LOP_ID = "lopId";
+        public static final String AS_ID = "asId";
+        public static final String START_DATE = "asStart";
+        public static final String END_DATE = "asEnd";
+        public static final String PREREQUISITES = "prerequisites";
+
     }
 
     public static class SolrConstants {
