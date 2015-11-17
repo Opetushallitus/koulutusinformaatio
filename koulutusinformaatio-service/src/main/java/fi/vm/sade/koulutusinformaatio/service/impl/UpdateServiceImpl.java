@@ -50,8 +50,7 @@ import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -61,10 +60,6 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-
-
-
-
 
 /**
  * @author Hannu Lyytikainen
@@ -174,7 +169,6 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Higher educations saved.");
             tarjontaService.clearProcessedLists();
 
-
             List<KoulutusHakutulosV1RDTO> opintojaksot = this.tarjontaService.findKorkeakouluOpinnot();
             LOG.info("Löytyi {} opintojaksoa.", opintojaksot.size());
             for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
@@ -191,7 +185,6 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Korkeakouluopinnot tallennettu.");
             tarjontaService.clearProcessedLists();
-
 
             // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
             List<KoulutusLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
@@ -283,7 +276,8 @@ public class UpdateServiceImpl implements UpdateService {
      * are not providers of learning opportunities.
      * 
      */
-    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException, SolrServerException {
+    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws MalformedURLException,
+            IOException, SolrServerException, KIException {
 
         List<OrganisaatioPerustieto> orgBasics = this.providerService.fetchOpplaitokset();
         LOG.debug("Oppilaitokset fetched");
@@ -303,10 +297,10 @@ public class UpdateServiceImpl implements UpdateService {
      * Indexes and saves the given list of organizations. 
      */
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
-            HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
+            HttpSolrServer lopUpdateSolr) throws MalformedURLException, IOException, SolrServerException, KIException {
         LOG.debug("organisations length: {}", orgBasics.size());
         for (OrganisaatioPerustieto curOrg : orgBasics) {
-       
+
             LOG.debug("Fetching org {}", curOrg.getOid());
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
                 LOG.debug("Indexing organisaatio: {}", curOrg.getOid());
@@ -319,22 +313,27 @@ public class UpdateServiceImpl implements UpdateService {
                 }
                 if (curProv.getOlTypeFacets() != null && !curProv.getOlTypeFacets().isEmpty()) {
                     this.educationDataUpdateService.save(curProv);
-                    this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
+                    this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(),
+                            new HashSet<String>());
                     LOG.debug("Indexed and saved organisaatio: {}", curOrg.getOid());
                 }
-                
+
             }
         }
     }
 
     private void indexToSolr(LOS curLOS,
-            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-        this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        if (curLOS instanceof HigherEducationLOS) {
-            for (HigherEducationLOS curChild : ((HigherEducationLOS) curLOS).getChildren()) {
-                indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KIException {
+        try {
+            this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+            if (curLOS instanceof HigherEducationLOS) {
+                for (HigherEducationLOS curChild : ((HigherEducationLOS) curLOS).getChildren()) {
+                    indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                }
             }
+        } catch (Exception e) {
+            throw new KIException("Indexing LOS " + curLOS.getId() + " to solr failed", e);
         }
     }
 
@@ -371,7 +370,8 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Articles succesfully indexed");
         } catch (Exception ex) {
             indexerService.rollbackIncrementalSolrChanges();
-            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s", ex.getMessage())));
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s",
+                    ex.getMessage())));
             LOG.warn("Article update failed ", ex);
 
         } finally {
@@ -404,4 +404,3 @@ public class UpdateServiceImpl implements UpdateService {
         }
     }
 }
-

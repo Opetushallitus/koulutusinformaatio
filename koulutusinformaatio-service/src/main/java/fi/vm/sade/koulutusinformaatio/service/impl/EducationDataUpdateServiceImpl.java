@@ -56,6 +56,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 
 /**
@@ -104,42 +105,46 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     }
 
     @Override
-    public void save(LOS learningOpportunitySpecification) {
-        if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
-            save((UpperSecondaryLOS) learningOpportunitySpecification);
-        }
-        else if (learningOpportunitySpecification instanceof SpecialLOS) {
-            save((SpecialLOS) learningOpportunitySpecification);
-        } 
-        else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
-            saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
-        } 
-        else if (learningOpportunitySpecification instanceof KoulutusLOS) {
-            saveKoulutusLOS((KoulutusLOS)learningOpportunitySpecification);
-        } 
-        else if (learningOpportunitySpecification instanceof TutkintoLOS) {
-            saveTutkintoLOS((TutkintoLOS) learningOpportunitySpecification);
-        }
-        else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
-            saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS)learningOpportunitySpecification);
+    public void save(LOS learningOpportunitySpecification) throws KIException {
+        try {
+            if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
+                save((UpperSecondaryLOS) learningOpportunitySpecification);
+            }
+            else if (learningOpportunitySpecification instanceof SpecialLOS) {
+                save((SpecialLOS) learningOpportunitySpecification);
+            }
+            else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
+                saveHigherEducationLOS((HigherEducationLOS) learningOpportunitySpecification);
+            }
+            else if (learningOpportunitySpecification instanceof KoulutusLOS) {
+                saveKoulutusLOS((KoulutusLOS) learningOpportunitySpecification);
+            }
+            else if (learningOpportunitySpecification instanceof TutkintoLOS) {
+                saveTutkintoLOS((TutkintoLOS) learningOpportunitySpecification);
+            }
+            else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
+                saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS) learningOpportunitySpecification);
+            }
+        } catch (Exception e) {
+            throw new KIException("Failed to save koulutus " + learningOpportunitySpecification.getId() + " to mongo.", e);
         }
     }
 
     private void saveAdultVocationalLOS(
             CompetenceBasedQualificationParentLOS learningOpportunitySpecification) {
-        
+
         if (learningOpportunitySpecification != null) {
             CompetenceBasedQualificationParentLOSEntity entity =
                     modelMapper.map(learningOpportunitySpecification, CompetenceBasedQualificationParentLOSEntity.class);
 
             save(entity.getProvider());
 
-                for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
-                    save(ao);
-                }
+            for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
+                save(ao);
+            }
             this.adultVocationalLOSTransactionDAO.save(entity);
         }
-        
+
     }
 
     private void saveKoulutusLOS(
@@ -194,7 +199,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(specialLOS, SpecialLearningOpportunitySpecificationEntity.class);
 
             save(entity.getProvider());
-            
+
             for (LearningOpportunityProviderEntity addProv : entity.getAdditionalProviders()) {
                 save(addProv);
             }
@@ -214,7 +219,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(upperSecondaryLOS, UpperSecondaryLearningOpportunitySpecificationEntity.class);
 
             save(entity.getProvider());
-            
+
             for (LearningOpportunityProviderEntity addProv : entity.getAdditionalProviders()) {
                 save(addProv);
             }
@@ -240,11 +245,14 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             learningOpportunityProviderTransactionDAO.save(learningOpportunityProvider);
         }
     }
-    
-    public void save(Provider provider) {
-        LearningOpportunityProviderEntity provE 
-            = modelMapper.map(provider, LearningOpportunityProviderEntity.class);
-        save(provE);
+
+    public void save(Provider provider) throws KIException {
+        try {
+            LearningOpportunityProviderEntity provE = modelMapper.map(provider, LearningOpportunityProviderEntity.class);
+            save(provE);
+        } catch (Exception e) {
+            throw new KIException("Failed to save provider " + provider.getId() + " to mongo.", e);
+        }
     }
 
     private void save(final ApplicationOptionEntity applicationOption) {
@@ -271,25 +279,22 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(los, HigherEducationLOSEntity.class);
 
             save(plos.getProvider());
-            
+
             for (LearningOpportunityProviderEntity addProv : plos.getAdditionalProviders()) {
                 save(addProv);
             }
-            
-            
-            if (plos.getStructureImage() != null 
-                    && plos.getStructureImage().getPictureTranslations() != null 
+
+            if (plos.getStructureImage() != null
+                    && plos.getStructureImage().getPictureTranslations() != null
                     && plos.getStructureImage().getPictureTranslations() != null) {
                 for (PictureEntity curPict : plos.getStructureImage().getPictureTranslations().values()) {
                     try {
-                    save(curPict);
+                        save(curPict);
                     } catch (MongoInternalException e) {
                         LOGGER.error("Saving los {} failed to mongo exception!", los.getId(), e);
+                    }
                 }
             }
-            }
-
-
 
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
