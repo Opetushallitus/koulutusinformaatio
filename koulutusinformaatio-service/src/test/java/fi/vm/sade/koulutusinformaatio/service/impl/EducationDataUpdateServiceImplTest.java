@@ -36,6 +36,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
 /**
@@ -76,7 +77,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     }
 
     @Test
-    public void testSaveUpperSecondaryLOS() {
+    public void testSaveUpperSecondaryLOS() throws KIException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId("aoid");
         List<ApplicationOption> aos = Lists.newArrayList(ao);
@@ -95,7 +96,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     }
 
     @Test
-    public void testSaveSpecialLOS() {
+    public void testSaveSpecialLOS() throws KIException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId("aoid");
         List<ApplicationOption> aos = Lists.newArrayList(ao);
@@ -114,7 +115,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     }
     
     @Test
-    public void testSaveHigherEducationLOS() {
+    public void testSaveHigherEducationLOS() throws KIException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId("aoid");
         List<ApplicationOption> aos = Lists.newArrayList(ao);
