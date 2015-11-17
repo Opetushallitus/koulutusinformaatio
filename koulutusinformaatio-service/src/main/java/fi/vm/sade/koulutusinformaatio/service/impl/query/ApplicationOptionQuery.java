@@ -20,12 +20,9 @@ import java.util.List;
 
 import org.apache.solr.client.solrj.SolrQuery;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
 
 /**
  * Solr query for querying learning opportunity providers.
@@ -34,7 +31,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
  */
 public class ApplicationOptionQuery extends SolrQuery {
 
-    public ApplicationOptionQuery(String asId, List<Provider> learningOpportunityProviders, List<String> baseEducations) {
+    public ApplicationOptionQuery(String asId, List<String> baseEducations) {
         super(String.format("%s:%s", SolrUtil.AoFields.TYPE, SolrUtil.TYPE_APPLICATIONOPTION));
 
         this.setStart(0);
@@ -43,10 +40,6 @@ public class ApplicationOptionQuery extends SolrQuery {
         if (asId != null) {
             this.addFilterQuery(String.format("%s:%s", SolrUtil.AoFields.AS_ID, asId));
         }
-        if (learningOpportunityProviders != null) {
-            this.addFilterQuery(String.format("%s:(\"%s\")", SolrUtil.AoFields.LOP_ID, Joiner.on("\" OR \"")
-                    .join(getProviderOids(learningOpportunityProviders))));
-        }
         if (baseEducations != null && !baseEducations.isEmpty()) {
             this.addFilterQuery(String.format("%s:(\"%s\")", SolrUtil.AoFields.PREREQUISITES, Joiner.on("\" OR \"").join(baseEducations)));
         }
@@ -54,14 +47,5 @@ public class ApplicationOptionQuery extends SolrQuery {
         ongoingFQ.append(String.format("(%s:[* TO NOW] AND %s:[NOW TO *])", SolrUtil.AoFields.START_DATE, SolrUtil.AoFields.END_DATE));
         ongoingFQ.append(String.format("OR (%s:[* TO NOW] AND -%s:[* TO *])", SolrUtil.AoFields.START_DATE, SolrUtil.AoFields.END_DATE)); // jatkuvalla haulla ei välttämättä ole päättymisaikaa
         this.addFilterQuery(ongoingFQ.toString());
-    }
-
-    private List<String> getProviderOids(List<Provider> learningOpportunityProviders) {
-        return Lists.transform(learningOpportunityProviders, new Function<Provider, String>() {
-            @Override
-            public String apply(Provider input) {
-                return input.getId();
-            }
-        });
     }
 }

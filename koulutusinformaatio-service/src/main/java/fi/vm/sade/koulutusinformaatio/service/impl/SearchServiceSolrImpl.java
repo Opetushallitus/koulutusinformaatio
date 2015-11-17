@@ -164,7 +164,7 @@ public class SearchServiceSolrImpl implements SearchService {
             throws SearchException {
 
         List<AoSolrSearchResult> aos = new ArrayList<AoSolrSearchResult>();
-        SolrQuery query = new ApplicationOptionQuery(applicationSystemId, learningOpportunityProviders, baseEducations);
+        SolrQuery query = new ApplicationOptionQuery(applicationSystemId, baseEducations);
 
         QueryResponse queryResponse = null;
         try {
