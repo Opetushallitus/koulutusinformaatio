@@ -130,7 +130,7 @@ directive('extendedSearchresultData',
                         for(var i = 0; i < result.lo.children.length; i++) {
                             // filter out unnecessary lois by prerequisite
                             var loi = result.lo.children[i];
-                            if ($scope.lo.prerequisiteCode != loi.prerequisite.value) {
+                            if (loi.prerequisite && $scope.lo.prerequisiteCode != loi.prerequisite.value) {
                                 result.lo.children.splice(i, 1);
                             }
                         }
