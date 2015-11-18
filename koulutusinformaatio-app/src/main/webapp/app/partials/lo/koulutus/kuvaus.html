@@ -17,7 +17,7 @@
                     <span data-ng-repeat="tl in lo.teachingLanguages"> 
                         <strong>{{tl}}</strong><span data-ng-show="!$last">,</span>
                     </span></li>
-                <li>
+                <li data-ng-show="lo.creditValue">
                     <span data-ki-i18n="duration" data-show-colon="true"></span>
                     <strong>{{lo.creditValue}} {{lo.creditUnit}}</strong></li>
                 <li data-ng-show="lo.plannedDuration">
