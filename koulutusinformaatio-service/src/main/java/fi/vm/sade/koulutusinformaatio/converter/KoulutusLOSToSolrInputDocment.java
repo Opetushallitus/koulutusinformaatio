@@ -506,9 +506,11 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
         String educationUri = los.getEducationCode() != null && los.getEducationCode().getUri() != null ? los.getEducationCode().getUri() : "";
         LOG.debug("Education code: {}", educationUri);
 
+        boolean isKaksoistutkinto = false;
         for (ApplicationOption ao : los.getApplicationOptions()) {
             if (ao.isKaksoistutkinto()) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+                isKaksoistutkinto = true;
                 break;
             }
         }
@@ -544,9 +546,16 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
         if (los.getType().equals(TarjontaConstants.TYPE_KOULUTUS)) {
             if (los.getEducationType().equals(SolrConstants.ED_TYPE_LUKIO)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_LUKIO);
+                if (isKaksoistutkinto) {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLISET);
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLINEN);
+                }
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_AMMATILLINEN)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLISET);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLINEN);
+                if (isKaksoistutkinto) {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_LUKIO);
+                }
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMA)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_PK_JALK);
