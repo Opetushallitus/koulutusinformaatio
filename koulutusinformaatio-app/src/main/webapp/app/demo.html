@@ -106,9 +106,12 @@
                     <div id="as-calendar" style="width: 100%;"></div>
                 </div>
 
-                <div translate="frontpage.info" class="col-sm-16"></div>
-
-                <div class="col-sm-16 "><a href="/app/demoohje.html">{{'frontpage.ohje-button' | translate}}</a></div>
+                <div class="show-in-demo">
+                    <div translate="frontpage.info" class="col-sm-16"></div>
+                    <div class="col-sm-16 ">
+                        <a href="/app/demoohje.html">{{'frontpage.ohje-button' | translate}}</a>
+                    </div>
+                </div>
             </div>
 
 
@@ -137,9 +140,16 @@
 // ]]>
 </script>    
 <script>
-    $("html").on("oppija-raamit-loaded", function() {
-        $("body").show();
-    })
+  $("html").on("oppija-raamit-loaded", function() {
+    $("body").show();
+  })
+
+  function isDemoEnv() {
+    return (window.location.href.indexOf("/demo.opintopolku.fi") > 0 ||
+        window.location.href.indexOf("/demo.studieinfo.fi") > 0 ||
+        window.location.href.indexOf("/demo.studyinfo.fi") > 0);
+  }
+  $(".show-in-demo").toggle(isDemoEnv());
 </script>
 </body>
 </html>
