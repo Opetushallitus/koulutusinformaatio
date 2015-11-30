@@ -41,6 +41,7 @@ public class ApplicationOptionSearchResultDTO {
     private String educationCodeUri;
     private List<OrganizationGroupDTO> organizationGroups;
     private List<ApplicationOptionAttachmentDTO> attachments;
+    private List<String> requiredBaseEducations;
 
     public String getId() {
         return id;
@@ -152,5 +153,13 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setTeachingLanguageNames(List<String> teachingLanguageNames) {
         this.teachingLanguageNames = teachingLanguageNames;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
+    }
+
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
     }
 }

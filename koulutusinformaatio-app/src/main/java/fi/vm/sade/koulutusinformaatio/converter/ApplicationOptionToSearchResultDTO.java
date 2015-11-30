@@ -52,7 +52,7 @@ public final class ApplicationOptionToSearchResultDTO {
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setOrganizationGroups(OrganizationGroupToDTO.convertAll(applicationOption.getOrganizationGroups()));
             dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang));
-            
+            dto.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
             if (applicationOption.getProvider() != null) {
                 dto.setAthleteEducation(applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation());
             } else {
