@@ -23,15 +23,19 @@
     </form>
 
     <div data-ng-if="item.applicationFormLink || item.paid">
-        <a data-ng-if="!isApplicationOptionDisabled(item)" data-ng-href="{{item.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
-            <i class="kicon-link-ext-alt"></i>
-            <span data-ki-i18n="apply-button-label"></span>
-        </a>
-        <span data-ng-if="isApplicationOptionDisabled(item)" class="text-muted">
-            <i class="kicon-link-ext-alt"></i>
-            <span data-ki-i18n="apply-button-label"></span>
-        </a>
+        <span data-ng-if="!isApplicationOptionDisabled(item)">
+            <a data-ng-if="item.paid" data-ng-href="/hakuperusteet/ao/{{item.id}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+                <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+            </a>
+            <a data-ng-if="!item.paid" data-ng-href="{{item.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+                <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+            </a>
+        </span>
+        <span data-ng-if="isApplicationOptionDisabled(item)">
+            <a class="text-muted">
+                <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+            </a>
+        </span>
     </div>
-
     <div class="pull-right" data-ki-app-basket-application-status data-ao="item"></div>
 </div>
