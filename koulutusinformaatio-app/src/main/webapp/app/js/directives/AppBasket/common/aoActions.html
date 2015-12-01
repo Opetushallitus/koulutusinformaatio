@@ -22,7 +22,7 @@
         </button>
     </form>
 
-    <div data-ng-if="item.applicationFormLink">
+    <div data-ng-if="item.applicationFormLink || item.paid">
         <a data-ng-if="!isApplicationOptionDisabled(item)" data-ng-href="{{item.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
             <i class="kicon-link-ext-alt"></i>
             <span data-ki-i18n="apply-button-label"></span>

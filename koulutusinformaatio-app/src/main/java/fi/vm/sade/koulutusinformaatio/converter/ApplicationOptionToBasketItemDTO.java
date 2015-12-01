@@ -86,6 +86,7 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setKotitalous(ao.getEducationCodeUri() != null && ao.getEducationCodeUri().contains(TarjontaConstants.KOTITALOUSKOODI));
                 aoDTO.setHakuaikaId(ao.getInternalASDateRef());
                 aoDTO.setPseudo(ao.isPseudo());
+                aoDTO.setPaid(ao.isPaid());
 
                 ParentLOSRef los = ao.getParent();
                 if (los != null) {

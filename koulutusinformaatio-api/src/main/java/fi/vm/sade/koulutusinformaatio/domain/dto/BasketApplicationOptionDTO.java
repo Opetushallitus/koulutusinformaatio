@@ -64,6 +64,7 @@ public class BasketApplicationOptionDTO {
     private String hakuaikaId;
     private boolean useSystemApplicationForm;
     private boolean isPseudo;
+    private boolean isPaid;
 
 
     public String getId() {
@@ -350,5 +351,13 @@ public class BasketApplicationOptionDTO {
 
     public void setPseudo(boolean isPseudo) {
         this.isPseudo = isPseudo;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean isPaid) {
+        this.isPaid = isPaid;
     }
 }
