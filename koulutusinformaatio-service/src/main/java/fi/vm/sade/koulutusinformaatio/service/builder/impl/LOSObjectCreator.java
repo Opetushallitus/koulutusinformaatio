@@ -820,6 +820,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (!los.isOsaamisalaton()) {
             los.setAccessToFurtherStudies(null); // Ammatillisilla koulutuksilla jatko-opinnot näytetään tutkinnon sivulla
         }
+        los.setStructure(null); // Ammatillisilla perustutkinnoilla ei haluta näyttää opintojen rakennetta
         return los;
     }
 
