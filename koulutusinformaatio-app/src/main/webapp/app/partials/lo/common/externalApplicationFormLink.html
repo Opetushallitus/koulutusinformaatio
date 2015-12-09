@@ -1,4 +1,4 @@
-<div data-ng-if="as.applicationFormLink || ao.paid">
+<div data-ng-if="!as.useSystemApplicationForm && (as.applicationFormLink || ao.paid)">
     <span data-ng-if="ao.canBeApplied">
         <a data-ng-if="ao.paid" data-ng-href="/hakuperusteet/ao/{{ao.id}}" title="{{locales.externalApplicationForm}}" target="_blank">
             <i class="kicon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
