@@ -9,11 +9,12 @@
                 <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{extendedLO.lo.educationDegree}}" />
                 <input type="hidden" name="preference1-Koulutus-id-sora" value="{{applicationoption.sora}}" />
                 <input type="hidden" name="preference1-Koulutus-id-lang" value="{{applicationoption.teachLang}}" />
-                <input type="hidden"name="preference1-Koulutus-id-athlete" value="{{provider.athleteEducation || applicationoption.athleteEducation}}" />
-                <input type="hidden"name="preference1-Koulutus-id-aoIdentifier" value="{{applicationoption.aoIdentifier}}" />
-                <input type="hidden"name="preference1-Koulutus-id-kaksoistutkinto" value="{{applicationoption.kaksoistutkinto}}" />
-                <input type="hidden"name="preference1-Koulutus-id-vocational" value="{{applicationoption.vocational}}" />
-                <input type="hidden"name="preference1-Koulutus-id-educationcode" value="{{applicationoption.educationCodeUri}}" />
+                <input type="hidden" name="preference1-Koulutus-id-athlete" value="{{provider.athleteEducation || applicationoption.athleteEducation}}" />
+                <input type="hidden" name="preference1-Koulutus-id-aoIdentifier" value="{{applicationoption.aoIdentifier}}" />
+                <input type="hidden" name="preference1-Koulutus-id-kaksoistutkinto" value="{{applicationoption.kaksoistutkinto}}" />
+                <input type="hidden" name="preference1-Koulutus-id-vocational" value="{{applicationoption.vocational}}" />
+                <input type="hidden" name="preference1-Koulutus-id-educationcode" value="{{applicationoption.educationCodeUri}}" />
+                <input type="hidden" name="preference1-Koulutus-requiredBaseEducations" value="{{applicationoption.requiredBaseEducations}}" />
 
                 <button data-ng-if="applicationsystem.useSystemApplicationForm" class="btn btn-default" type="submit" data-ng-disabled="!applicationoption.canBeApplied">
                     <span data-ng-if="!applicationsystem.isLisahaku" data-ki-i18n="apply-button-label"></span>
