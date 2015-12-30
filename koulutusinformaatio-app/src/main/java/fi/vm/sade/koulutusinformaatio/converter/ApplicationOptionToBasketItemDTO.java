@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -87,6 +88,9 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setHakuaikaId(ao.getInternalASDateRef());
                 aoDTO.setPseudo(ao.isPseudo());
                 aoDTO.setPaid(ao.isPaid());
+
+                List<String> requiredBaseEducations = ao.getRequiredBaseEducations() == null ? Lists.<String>newArrayList() : ao.getRequiredBaseEducations();
+                aoDTO.setBaseEducationRequirement(Joiner.on(",").join(requiredBaseEducations));
 
                 ParentLOSRef los = ao.getParent();
                 if (los != null) {
