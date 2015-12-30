@@ -46,3 +46,8 @@ value="{{ao.vocational}}" />
 type="hidden"
 name="preference1-Koulutus-id-educationcode"
 value="{{ao.educationCodeUri}}" />
+<span data-ng-if="ao.requiredBaseEducations">
+    <input type="hidden"
+           name="preference1-Koulutus-requiredBaseEducations"
+           value="{{ao.requiredBaseEducations.join(',')}}" />
+</span>
