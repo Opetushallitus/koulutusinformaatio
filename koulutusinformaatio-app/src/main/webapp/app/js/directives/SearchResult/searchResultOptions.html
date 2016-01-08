@@ -14,7 +14,9 @@
                 <input type="hidden" name="preference1-Koulutus-id-kaksoistutkinto" value="{{applicationoption.kaksoistutkinto}}" />
                 <input type="hidden" name="preference1-Koulutus-id-vocational" value="{{applicationoption.vocational}}" />
                 <input type="hidden" name="preference1-Koulutus-id-educationcode" value="{{applicationoption.educationCodeUri}}" />
-                <input type="hidden" name="preference1-Koulutus-requiredBaseEducations" value="{{applicationoption.requiredBaseEducations}}" />
+                <span data-ng-if="applicationoption.requiredBaseEducations">
+                    <input type="hidden" name="preference1-Koulutus-requiredBaseEducations" value="{{applicationoption.requiredBaseEducations.join(',')}}" />
+                </span>
 
                 <button data-ng-if="applicationsystem.useSystemApplicationForm" class="btn btn-default" type="submit" data-ng-disabled="!applicationoption.canBeApplied">
                     <span data-ng-if="!applicationsystem.isLisahaku" data-ki-i18n="apply-button-label"></span>
