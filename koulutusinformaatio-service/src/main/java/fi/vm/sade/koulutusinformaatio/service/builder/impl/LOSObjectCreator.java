@@ -385,7 +385,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setType(TarjontaConstants.TYPE_ADULT_BASE);
         los.setEducationType(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
         addKoulutusGenericV1Fields(koulutus, los);
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_UPSEC, true);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_BASE, true);
         addKoulutus2AsteV1Fields(koulutus, los);
 
         return los;
