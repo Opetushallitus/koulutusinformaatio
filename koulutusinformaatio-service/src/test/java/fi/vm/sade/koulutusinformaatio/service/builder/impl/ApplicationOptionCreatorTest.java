@@ -26,6 +26,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -64,6 +65,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.RyhmaliitosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoePisterajaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -378,6 +381,32 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         assertEquals("postinumero", address.getPostalCode().get("en"));
         assertEquals("postitoimipaikka", address.getPostOffice().get("fi"));
         assertEquals("postitoimipaikka", address.getPostOffice().get("en"));
+    }
+
+    @Test
+    public void testExamEventsAreCreatedDespiteMissingType() throws Exception {
+        KoulutusLOS koulutus = getKoulutusLOS();
+        Date hakuaikaStart = getRelativeDateFromNow(-12);
+        Date hakuaikaEnd = getRelativeDateFromNow(12);
+        HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+
+        ValintakoeV1RDTO valintakoe = new ValintakoeV1RDTO();
+        valintakoe.setOid("1.2.3.4.5");
+        ValintakoePisterajaV1RDTO pisteraja = new ValintakoePisterajaV1RDTO();
+        pisteraja.setPisterajatyyppi(ValintakoePisterajaV1RDTO.PAASYKOE);
+        pisteraja.setAlinPistemaara(new BigDecimal(0));
+        pisteraja.setYlinPistemaara(new BigDecimal(10));
+        pisteraja.setAlinHyvaksyttyPistemaara(new BigDecimal(7));
+        valintakoe.setPisterajat(Lists.newArrayList(pisteraja));
+        List<ValintakoeV1RDTO> valintakokeet = Lists.newArrayList(valintakoe);
+        hakukohde.setValintakokeet(valintakokeet);
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(koulutus, hakukohde, haku);
+
+        assertNotNull(ao);
+        assertEquals(1, ao.getExams().size());
+        assertEquals(ValintakoePisterajaV1RDTO.PAASYKOE, ao.getExams().get(0).getType().get("fi"));
     }
 
     private HakukohdeLiiteV1RDTO createLiite(String oid, Integer jarjestys, String kieli, String liitteenNimi, String liitteenKuvaus, String osoiterivi1,
