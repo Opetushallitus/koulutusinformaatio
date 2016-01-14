@@ -65,13 +65,6 @@ angular.module('kiApp.filters', [])
     }
 }])
 
-// trust the html bind with ng-bind-html
-.filter('unsafe', function($sce) {
-    return function(val) {
-        return $sce.trustAsHtml(val);
-    };
-})
-
 // splits the given array into columns
 .filter('columnize', function() {
     var cache = {};

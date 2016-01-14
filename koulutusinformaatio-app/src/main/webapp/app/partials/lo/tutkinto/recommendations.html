@@ -51,12 +51,12 @@
                 <li data-ng-repeat="article in lo.edCodeSuggestions">
                     <i class="kicon-angle-double-right"></i>
                     <a data-ng-href="{{article.url}}">
-                        {{article.title | unsafe}}</a>
+                        {{article.title}}</a>
                 </li>
                 <li data-ng-repeat="article in lo.edTypeSuggestions">
                     <i class="kicon-angle-double-right"></i>
                     <a data-ng-href="{{article.url}}">
-                        {{article.title | unsafe}} </a>
+                        {{article.title}} </a>
                 </li>
             </ul>
             <!-- END PREVIEW EXCLUDE -->
@@ -64,10 +64,10 @@
             <!-- PREVIEW -->
             <ul data-ng-if="lo.preview" class="inside">
                 <li data-ng-repeat="article in lo.edCodeSuggestions">
-                        {{article.title | unsafe}}
+                        {{article.title}}
                 </li>
                 <li data-ng-repeat="article in lo.edTypeSuggestions">
-                        {{article.title | unsafe}}
+                        {{article.title}}
                 </li>
             </ul>
             <!-- END PREVIEW -->

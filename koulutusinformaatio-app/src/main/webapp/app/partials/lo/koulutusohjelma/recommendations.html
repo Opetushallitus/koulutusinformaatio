@@ -51,11 +51,11 @@
 			<ul class="list-unstyled" data-ng-if="!parent.preview">
 				<li data-ng-repeat="article in parent.edCodeSuggestions">
 					<i class="kicon-angle-double-right"></i>
-					<a data-ng-href="{{article.url}}" data-ng-bind-html="article.title | unsafe"></a>
+					<a data-ng-href="{{article.url}}" data-ng-bind-html="article.title"></a>
 				</li>
 				<li data-ng-repeat="article in parent.edTypeSuggestions">
 					<i class="kicon-angle-double-right"></i>
-					<a data-ng-href="{{article.url}}" data-ng-bind-html="article.title | unsafe"></a>
+					<a data-ng-href="{{article.url}}" data-ng-bind-html="article.title"></a>
 				</li>
 			</ul>
 			<!-- END PREVIEW EXCLUDE -->
@@ -63,10 +63,10 @@
 			<!-- PREVIEW -->
 			<ul data-ng-if="parent.preview" class="inside">
 				<li data-ng-repeat="article in parent.edCodeSuggestions">
-					<span data-ng-bind-html="article.title | unsafe"></span>
+					<span data-ng-bind-html="article.title"></span>
 				</li>
 				<li data-ng-repeat="article in parent.edTypeSuggestions">
-					<span data-ng-bind-html="article.title | unsafe"></span>
+					<span data-ng-bind-html="article.title"></span>
 				</li>
 			</ul>
 			<!-- END PREVIEW -->

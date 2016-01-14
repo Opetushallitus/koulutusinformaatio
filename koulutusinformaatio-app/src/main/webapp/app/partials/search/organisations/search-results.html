@@ -68,7 +68,7 @@
                         <img data-ng-src="data:image/jpeg;base64,{{provider.thumbnailEncoded}}" data-ng-show="provider.thumbnailEncoded" class="img-responsive content-img"/>
                     </div>
                     <div class="col-xs-16 col-md-13  margin-vertical-small">
-                        <h2><a data-ng-href="#!/organisaatio/{{provider.id}}"><span data-ng-bind-html="provider.name | unsafe"></span></a></h2>
+                        <h2><a data-ng-href="#!/organisaatio/{{provider.id}}"><span data-ng-bind-html="provider.name"></span></a></h2>
                         <p>{{provider.address}}</p>
                         <a data-ng-show= "provider.providerOrg" href="javascript:void(0);" data-ng-click="showLosForProvider(provider.name)"><span data-ki-i18n="search-all-los" data-show-colon="true"></span> {{provider.name}}</a>
                     </div>
