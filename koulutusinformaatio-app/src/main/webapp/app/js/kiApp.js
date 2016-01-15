@@ -217,15 +217,10 @@ var kiApp = angular.module('kiApp',
     return {
         get: function(property) {
             var lang = LanguageService.getLanguage();
-            var host = HostResolver.resolve($location.host());
-            var mappedHost = HostResolver.mapHostToConf(host);
-            if (appConfig[mappedHost][lang][property]) {
-                return appConfig[mappedHost][lang][property];
-            } else if (appConfig.common[lang][property]) {
-                return appConfig.common[lang][property];
-            } else {
-                return appConfig.common[property];
-            }
+            var mappedHost = HostResolver.mapHostToConf($location.host());
+            return appConfig[mappedHost][property] ||
+                appConfig.common[lang][property] ||
+                appConfig.common[property];
         }
     }
 });

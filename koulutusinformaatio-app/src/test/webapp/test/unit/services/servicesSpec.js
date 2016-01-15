@@ -660,25 +660,6 @@ describe('HostResolver', function() {
         });
     });
 
-    describe('resolve', function() {
-
-        it('should return undefined value for undefined host', function() {
-            var host;
-            var result = service.resolve(host);
-            expect(result).toBeUndefined();
-        });
-
-        it('should return undefined value for non-existing host', function() {
-            var result = service.resolve('non-existing-host');
-            expect(result).toBeUndefined();
-        });
-
-        it('should return correct value for existing host', function() {
-            var result = service.resolve('testi');
-            expect(result).toEqual('qa');
-        });
-    });
-
     describe('mapHostToConf', function() {
 
         it('should return default value (prod) for undefined host', function() {
@@ -697,9 +678,9 @@ describe('HostResolver', function() {
             expect(result).toEqual('dev');
         });
 
-        it('should return correct value for host "reppu"', function() {
-            var result = service.mapHostToConf('reppu');
-            expect(result).toEqual('reppu');
+        it('should return correct value for host "luokka"', function() {
+            var result = service.mapHostToConf('itest-opintopolku.fi');
+            expect(result).toEqual('luokka');
         });
 
     });
