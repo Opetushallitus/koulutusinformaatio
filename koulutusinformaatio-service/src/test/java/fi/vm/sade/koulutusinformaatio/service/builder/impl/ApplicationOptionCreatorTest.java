@@ -467,7 +467,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         ApplicationOption ao = creator.createV1EducationApplicationOption(koulutus, hakukohde, haku);
 
         assertNotNull(ao);
-        assertEquals(false, ao.isKysytaanHarkinnanvaraiset());
+        assertFalse(ao.isKysytaanHarkinnanvaraiset());
     }
 
     private HakukohdeLiiteV1RDTO createLiite(String oid, Integer jarjestys, String kieli, String liitteenNimi, String liitteenKuvaus, String osoiterivi1,
