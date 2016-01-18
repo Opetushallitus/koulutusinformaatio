@@ -5,7 +5,7 @@ angular.module('kiApp.CookieService', ['ngResource']).
  *  By default cookies are prefixed with 'test'-prefix in all development and test environments
  *  to avoid cookie handling issues for subdomains in IE. In production cookie names are never prefixed. 
  */
-service('CookieService', ['$location', 'HostResolver', function($location, HostResolver) {
+service('CookieService', ['$location', function($location) {
 	return {
 		get: function(name) {
 			var defaultConfig = {useLocalStorage: false};

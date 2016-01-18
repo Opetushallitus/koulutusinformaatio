@@ -409,6 +409,67 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         assertEquals(ValintakoePisterajaV1RDTO.PAASYKOE, ao.getExams().get(0).getType().get("fi"));
     }
 
+    @Test
+    public void testHarkinnanvaraisetBooleanIsNotSetForNonVocational() throws Exception {
+        KoulutusLOS koulutus = getKoulutusLOS();
+        Date hakuaikaStart = getRelativeDateFromNow(-12);
+        Date hakuaikaEnd = getRelativeDateFromNow(12);
+        HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+
+        Code edCode = new Code();
+        edCode.setUri("koulutus_321602"); // Audiovisuaalisen viestinnän perustutkinto
+        koulutus.setEducationCode(edCode);
+        koulutus.setEducationDegree("koulutusasteoph2002_31"); // Ei ammatillinen koulutus
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(koulutus, hakukohde, haku);
+
+        assertNotNull(ao);
+        assertEquals(false, ao.isKysytaanHarkinnanvaraiset());
+    }
+
+    @Test
+    public void testHarkinnanvaraisetBooleanIsSetForVocational() throws Exception {
+        KoulutusLOS koulutus = getKoulutusLOS();
+        Date hakuaikaStart = getRelativeDateFromNow(-12);
+        Date hakuaikaEnd = getRelativeDateFromNow(12);
+        HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+
+        Code edCode = new Code();
+        edCode.setUri("koulutus_000001"); // Ammatillinen opettajankoulutus
+        koulutus.setEducationCode(edCode);
+        koulutus.setEducationDegree("koulutusasteoph2002_32"); // Ammatillinen koulutus
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(koulutus, hakukohde, haku);
+
+        assertNotNull(ao);
+        assertEquals(true, ao.isKysytaanHarkinnanvaraiset());
+    }
+
+    @Test
+    public void testHarkinnanvaraisetBooleanIsNotSetForSpecificVocational() throws Exception {
+        KoulutusLOS koulutus = getKoulutusLOS();
+        Date hakuaikaStart = getRelativeDateFromNow(-12);
+        Date hakuaikaEnd = getRelativeDateFromNow(12);
+        HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+
+        Code edCode = new Code();
+        edCode.setUri("koulutus_321602"); // Audiovisuaalisen viestinnän perustutkinto
+
+        List<Code> audiovisuaalinen = Lists.newArrayList(edCode);
+        when(koodistoService.searchSuperCodes("hakulomakkeenasetukset_eiharkinnanvaraisuutta", "koulutus")).thenReturn(audiovisuaalinen);
+
+        koulutus.setEducationCode(edCode);
+        koulutus.setEducationDegree("koulutusasteoph2002_32"); // Ammatillinen koulutus
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(koulutus, hakukohde, haku);
+
+        assertNotNull(ao);
+        assertFalse(ao.isKysytaanHarkinnanvaraiset());
+    }
+
     private HakukohdeLiiteV1RDTO createLiite(String oid, Integer jarjestys, String kieli, String liitteenNimi, String liitteenKuvaus, String osoiterivi1,
             String postinumero, String postinumeroArvo, String postitoimipaikka) {
         HakukohdeLiiteV1RDTO liite = new HakukohdeLiiteV1RDTO();

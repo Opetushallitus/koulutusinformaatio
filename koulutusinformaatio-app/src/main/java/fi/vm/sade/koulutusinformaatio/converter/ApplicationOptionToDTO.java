@@ -98,6 +98,7 @@ public final class ApplicationOptionToDTO {
             dto.setPaid(applicationOption.isPaid());
             dto.setPohjakoulutusLiitteet(applicationOption.getPohjakoulutusLiitteet());
             dto.setJosYoEiMuitaLiitepyyntoja(applicationOption.isJosYoEiMuitaLiitepyyntoja());
+            dto.setKysytaanHarkinnanvaraiset(applicationOption.isKysytaanHarkinnanvaraiset());
 
             dto.setHakuMenettelyKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getHakuMenettelyKuvaukset(), lang));
             dto.setPeruutusEhdotKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getPeruutusEhdotKuvaukset(), lang));
