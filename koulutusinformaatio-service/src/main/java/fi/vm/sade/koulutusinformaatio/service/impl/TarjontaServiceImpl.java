@@ -1013,10 +1013,10 @@ public class TarjontaServiceImpl implements TarjontaService {
             KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
             return creator.createKorkeakouluopinto(koulutusDTO, true, false);
         } catch (KoodistoException e) {
-            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage());
+            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage(), e);
             return null;
         } catch (TarjontaParseException e) {
-            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage());
+            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage(), e);
             return null;
         }
     }
