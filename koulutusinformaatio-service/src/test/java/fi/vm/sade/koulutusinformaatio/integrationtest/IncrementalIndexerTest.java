@@ -148,9 +148,6 @@ public class IncrementalIndexerTest {
         List<TutkintoLOSEntity> tutkintos = tutkintoLOSDAO.find().asList();
         List<KoulutusLOSEntity> losses = koulutusLOSDAO.find().asList();
         List<ApplicationOptionEntity> aos = applicationOptionDAO.find().asList();
-        assertEquals(2, tutkintos.size());
-        assertEquals(6, losses.size());
-        assertEquals(6, aos.size());
 
         List<String> allowedTutkintoIDs = Lists.newArrayList(
                 "1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy",
@@ -180,6 +177,11 @@ public class IncrementalIndexerTest {
         for (ApplicationOptionEntity ao : aos) {
             validateAo(ao, allowedAoIDs);
         }
+
+        assertEquals(2, tutkintos.size());
+        assertEquals(6, losses.size());
+        assertEquals(6, aos.size());
+
     }
 
     @Test
