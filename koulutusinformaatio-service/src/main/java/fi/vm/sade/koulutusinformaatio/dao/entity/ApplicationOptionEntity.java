@@ -109,6 +109,7 @@ public class ApplicationOptionEntity {
     private I18nTextEntity peruutusEhdotKuvaukset;
     private List<String> pohjakoulutusLiitteet;
     private boolean isJosYoEiMuitaLiitepyyntoja;
+    private boolean kysytaanHarkinnanvaraiset;
 
     public boolean isJosYoEiMuitaLiitepyyntoja() {
         return isJosYoEiMuitaLiitepyyntoja;
@@ -514,6 +515,14 @@ public class ApplicationOptionEntity {
 
     public void setPeruutusEhdotKuvaukset(I18nTextEntity peruutusEhdotKuvaukset) {
         this.peruutusEhdotKuvaukset = peruutusEhdotKuvaukset;
+    }
+
+    public boolean isKysytaanHarkinnanvaraiset() {
+        return kysytaanHarkinnanvaraiset;
+    }
+
+    public void setKysytaanHarkinnanvaraiset(boolean kysytaanHarkinnanvaraiset) {
+        this.kysytaanHarkinnanvaraiset = kysytaanHarkinnanvaraiset;
     }
 
 }

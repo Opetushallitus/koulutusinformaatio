@@ -59,7 +59,13 @@ import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
 public class ApplicationOptionCreator extends ObjectCreator {
 
 
+    private static final String KOULUTUS_KOODISTO_URI = "koulutus";
+
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationOptionCreator.class);
+
+    private static final String AMMATILLINEN_KOULUTUS_KOULUTUSASTE = "koulutusasteoph2002_32";
+
+    private static final String EI_KYSYTA_HARKIINANVARAISIA_KOODIURI = "hakulomakkeenasetukset_eiharkinnanvaraisuutta";
 
     private KoodistoService koodistoService;
     private EducationObjectCreator educationObjectCreator;
@@ -132,6 +138,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setVocational(SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType()));
         if (los.getEducationCode() != null) {
             ao.setEducationCodeUri(los.getEducationCode().getUri());
+            ao.setKysytaanHarkinnanvaraiset(getKysytaankoHarkinnanvaraiset(hakukohde, los.getEducationDegree(), los.getEducationCode().getUri()));
         }
         ao.setPrerequisite(los.getKoulutusPrerequisite());
         ao.setPohjakoulutusLiitteet(hakukohde.getPohjakoulutusliitteet());
@@ -258,6 +265,24 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setPaid(haku.isMaksumuuriKaytossa());
 
         return ao;
+    }
+
+    private boolean getKysytaankoHarkinnanvaraiset(HakukohdeV1RDTO hakukohde, String koulutusaste, String koulutuskoodi) throws KoodistoException {
+        boolean result = AMMATILLINEN_KOULUTUS_KOULUTUSASTE.equals(koulutusaste); // Ammatillisilta kysytään harkinnanvaraiset
+        if (result && !StringUtils.isEmpty(koulutuskoodi)) {
+            try {
+                List<Code> koodit = koodistoService.searchSuperCodes(EI_KYSYTA_HARKIINANVARAISIA_KOODIURI, KOULUTUS_KOODISTO_URI);
+                for (Code code : koodit) {
+                    if (koulutuskoodi.equals(code.getUri()))
+                        return false; // Koodistossa on erikseen asetettu koodinsuhteilla, että koulutukselta ei kysytä harkinnanvaraisuutta.
+                }
+            } catch (KoodistoException e) {
+                LOG.error("Hakulomakkeen asetuskoodiston koodi {} palautti virheen: {}", EI_KYSYTA_HARKIINANVARAISIA_KOODIURI,
+                        e.getMessage(), e);
+                throw e;
+            }
+        }
+        return result;
     }
 
     private void setDemoApplicationDates(ApplicationOption ao) {

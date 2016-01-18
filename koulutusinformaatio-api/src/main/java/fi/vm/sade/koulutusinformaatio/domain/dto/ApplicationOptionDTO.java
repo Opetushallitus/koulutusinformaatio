@@ -80,6 +80,7 @@ public class ApplicationOptionDTO {
     private String peruutusEhdotKuvaukset;
     private List<String> pohjakoulutusLiitteet;
     private boolean isJosYoEiMuitaLiitepyyntoja;
+    private boolean kysytaanHarkinnanvaraiset;
 
     public boolean isJosYoEiMuitaLiitepyyntoja() {
         return isJosYoEiMuitaLiitepyyntoja;
@@ -486,6 +487,14 @@ public class ApplicationOptionDTO {
 
     public void setPeruutusEhdotKuvaukset(String peruutusEhdotKuvaukset) {
         this.peruutusEhdotKuvaukset = peruutusEhdotKuvaukset;
+    }
+
+    public boolean isKysytaanHarkinnanvaraiset() {
+        return kysytaanHarkinnanvaraiset;
+    }
+
+    public void setKysytaanHarkinnanvaraiset(boolean kysytaanHarkinnanvaraiset) {
+        this.kysytaanHarkinnanvaraiset = kysytaanHarkinnanvaraiset;
     }
 
 }

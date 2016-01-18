@@ -93,10 +93,12 @@ public class ApplicationOption {
     private List<String> komotoOids = new ArrayList<String>();
     private boolean paid;
     private boolean isJosYoEiMuitaLiitepyyntoja;
+    private boolean kysytaanHarkinnanvaraiset;
     private List<String> pohjakoulutusLiitteet = new ArrayList<>();
 
     private I18nText hakuMenettelyKuvaukset;
     private I18nText peruutusEhdotKuvaukset;
+
     public boolean isJosYoEiMuitaLiitepyyntoja() {
         return isJosYoEiMuitaLiitepyyntoja;
     }
@@ -379,12 +381,15 @@ public class ApplicationOption {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         ApplicationOption that = (ApplicationOption) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null)
+            return false;
 
         return true;
     }
@@ -397,9 +402,11 @@ public class ApplicationOption {
     public void setSoraDescription(I18nText i18nText) {
         this.soraDescription = i18nText;
     }
+
     public I18nText getSoraDescription() {
         return soraDescription;
     }
+
     public void setStatus(String tila) {
         this.status = tila;
     }
@@ -464,6 +471,7 @@ public class ApplicationOption {
     public List<OrganizationGroup> getOrganizationGroups() {
         return organizationGroups;
     }
+
     public I18nText getApplicationPeriodName() {
         return applicationPeriodName;
     }
@@ -471,6 +479,7 @@ public class ApplicationOption {
     public void setApplicationPeriodName(I18nText applicationPeriodName) {
         this.applicationPeriodName = applicationPeriodName;
     }
+
     public void setStartingQuotaDescription(I18nText aloituspaikkaKuvaus) {
         this.startingQuotaDescription = aloituspaikkaKuvaus;
     }
@@ -572,6 +581,14 @@ public class ApplicationOption {
 
     public void setPeruutusEhdotKuvaukset(I18nText peruutusEhdotKuvaukset) {
         this.peruutusEhdotKuvaukset = peruutusEhdotKuvaukset;
+    }
+
+    public boolean isKysytaanHarkinnanvaraiset() {
+        return kysytaanHarkinnanvaraiset;
+    }
+
+    public void setKysytaanHarkinnanvaraiset(boolean kysytaanHarkinnanvaraiset) {
+        this.kysytaanHarkinnanvaraiset = kysytaanHarkinnanvaraiset;
     }
 
 }
