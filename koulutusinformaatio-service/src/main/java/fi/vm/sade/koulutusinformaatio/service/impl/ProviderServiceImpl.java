@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,8 +240,8 @@ public class ProviderServiceImpl implements ProviderService {
 
     private Set<String> validOppilaitosTyyppis = Sets.newHashSet(OPPILAITOSTYYPPI_AMK, OPPILAITOSTYYPPI_YLIOPISTO, OPPILAITOSTYYPPI_SOTILASKK);
     private String getOppilaitosTyyppi(OrganisaatioPerustieto tulos) {
-        String oppilaitostyyppiUri = StringUtils.split(tulos.getOppilaitostyyppi(), '#')[0];
-        if (!StringUtils.isBlank(oppilaitostyyppiUri) && validOppilaitosTyyppis.contains(oppilaitostyyppiUri)) {
+        String oppilaitostyyppiUri = Strings.nullToEmpty(tulos.getOppilaitostyyppi()).split("#")[0];
+        if (validOppilaitosTyyppis.contains(oppilaitostyyppiUri)) {
             return oppilaitostyyppiUri;
         }
         for (OrganisaatioPerustieto organisaatioPerustieto : tulos.getChildren()) {
