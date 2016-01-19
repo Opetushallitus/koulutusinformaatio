@@ -241,8 +241,9 @@ public class ProviderServiceImpl implements ProviderService {
 
     private Set<String> validOppilaitosTyyppis = Sets.newHashSet(OPPILAITOSTYYPPI_AMK, OPPILAITOSTYYPPI_YLIOPISTO, OPPILAITOSTYYPPI_SOTILASKK);
     private String getOppilaitosTyyppi(OrganisaatioPerustieto tulos) {
-        if (!StringUtils.isBlank(tulos.getOppilaitostyyppi()) && validOppilaitosTyyppis.contains(tulos.getOppilaitostyyppi())) {
-            return tulos.getOppilaitostyyppi();
+        String oppilaitostyyppiUri = StringUtils.split(tulos.getOppilaitostyyppi(), '#')[0];
+        if (!StringUtils.isBlank(oppilaitostyyppiUri) && validOppilaitosTyyppis.contains(oppilaitostyyppiUri)) {
+            return oppilaitostyyppiUri;
         }
         for (OrganisaatioPerustieto organisaatioPerustieto : tulos.getChildren()) {
             String childsOppilaitosTyyppi = getOppilaitosTyyppi(organisaatioPerustieto);
