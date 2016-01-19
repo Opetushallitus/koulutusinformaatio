@@ -38,6 +38,7 @@ public class ApplicationOptionSearchResultDTO {
     private boolean athleteEducation;
     private boolean kaksoistutkinto;
     private boolean vocational;
+    private boolean kysytaanHarkinnanvaraiset;
     private String educationCodeUri;
     private List<OrganizationGroupDTO> organizationGroups;
     private List<ApplicationOptionAttachmentDTO> attachments;
@@ -161,5 +162,13 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
         this.requiredBaseEducations = requiredBaseEducations;
+    }
+
+    public boolean isKysytaanHarkinnanvaraiset() {
+        return kysytaanHarkinnanvaraiset;
+    }
+
+    public void setKysytaanHarkinnanvaraiset(boolean kysytaanHarkinnanvaraiset) {
+        this.kysytaanHarkinnanvaraiset = kysytaanHarkinnanvaraiset;
     }
 }
