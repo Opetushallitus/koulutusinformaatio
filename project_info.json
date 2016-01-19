@@ -1,0 +1,10 @@
+{
+  "name": "koulutusinformaatio",
+
+  "Makefile": "no",
+
+  "projects": [
+    {"name": "koulutusinformaatio-web", "uses": "koulutusinformaatio-rest oppija-raamit"},
+    {"name": "koulutusinformaatio-rest", "uses": "tarjonta-rest koodisto-rest organisaatio-rest cas ldap oppija-mongo"}
+  ]
+}
