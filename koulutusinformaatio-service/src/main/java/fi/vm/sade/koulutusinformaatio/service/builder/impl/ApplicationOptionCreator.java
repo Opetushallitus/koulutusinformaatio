@@ -267,9 +267,14 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
+    /*
+     * Harkinnanvaraiset kysymykset kysytään ammatillisilta koulutuksilta.
+     * Poikkeuksena ovat koodirelaatioilla määritellyt koulutukset, joilla harkinnanvaraiset kysymykset jätetään pois, jos niillä ei ole valintakokeita.
+     */
     private boolean getKysytaankoHarkinnanvaraiset(HakukohdeV1RDTO hakukohde, String koulutusaste, String koulutuskoodi) throws KoodistoException {
         boolean isAmmatillinen = AMMATILLINEN_KOULUTUS_KOULUTUSASTE.equals(koulutusaste);
-        if (isAmmatillinen && !StringUtils.isEmpty(koulutuskoodi)) {
+        boolean hasExams = hakukohde.getValintakokeet() != null && hakukohde.getValintakokeet().size() > 0;
+        if (isAmmatillinen && !hasExams && !StringUtils.isEmpty(koulutuskoodi)) {
             try {
                 List<Code> koodit = koodistoService.searchSuperCodes(EI_KYSYTA_HARKINNANVARAISIA_KOODIURI, KOULUTUS_KOODISTO_URI);
                 for (Code code : koodit) {
