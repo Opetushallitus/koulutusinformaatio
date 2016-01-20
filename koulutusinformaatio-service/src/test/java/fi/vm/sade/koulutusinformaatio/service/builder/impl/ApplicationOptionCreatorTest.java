@@ -448,12 +448,46 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
     }
 
     @Test
-    public void testHarkinnanvaraisetBooleanIsNotSetForSpecificVocational() throws Exception {
+    public void testHarkinnanvaraisetBooleanIsSetForSpecificVocationalWithoutExams() throws Exception {
         KoulutusLOS koulutus = getKoulutusLOS();
         Date hakuaikaStart = getRelativeDateFromNow(-12);
         Date hakuaikaEnd = getRelativeDateFromNow(12);
         HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+
+        Code edCode = new Code();
+        edCode.setUri("koulutus_321602"); // Audiovisuaalisen viestinnän perustutkinto
+
+        List<Code> audiovisuaalinen = Lists.newArrayList(edCode);
+        when(koodistoService.searchSuperCodes("hakulomakkeenasetukset_eiharkinnanvaraisuutta", "koulutus")).thenReturn(audiovisuaalinen);
+
+        koulutus.setEducationCode(edCode);
+        koulutus.setEducationDegree("koulutusasteoph2002_32"); // Ammatillinen koulutus
+
+        ApplicationOption ao = creator.createV1EducationApplicationOption(koulutus, hakukohde, haku);
+
+        assertNotNull(ao);
+        assertTrue(ao.isKysytaanHarkinnanvaraiset());
+    }
+
+    @Test
+    public void testHarkinnanvaraisetBooleanIsNotSetForSpecificVocationalWithExams() throws Exception {
+        KoulutusLOS koulutus = getKoulutusLOS();
+        Date hakuaikaStart = getRelativeDateFromNow(-12);
+        Date hakuaikaEnd = getRelativeDateFromNow(12);
+        HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
+        HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
+
+        ValintakoeV1RDTO valintakoe = new ValintakoeV1RDTO();
+        valintakoe.setOid("1.2.3.4.5");
+        ValintakoePisterajaV1RDTO pisteraja = new ValintakoePisterajaV1RDTO();
+        pisteraja.setPisterajatyyppi(ValintakoePisterajaV1RDTO.PAASYKOE);
+        pisteraja.setAlinPistemaara(new BigDecimal(0));
+        pisteraja.setYlinPistemaara(new BigDecimal(10));
+        pisteraja.setAlinHyvaksyttyPistemaara(new BigDecimal(7));
+        valintakoe.setPisterajat(Lists.newArrayList(pisteraja));
+        List<ValintakoeV1RDTO> valintakokeet = Lists.newArrayList(valintakoe);
+        hakukohde.setValintakokeet(valintakokeet);
 
         Code edCode = new Code();
         edCode.setUri("koulutus_321602"); // Audiovisuaalisen viestinnän perustutkinto
