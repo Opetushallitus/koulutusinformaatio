@@ -16,13 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +45,9 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -267,14 +263,19 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
+    /*
+     * Harkinnanvaraiset kysymykset kysytään ammatillisilta koulutuksilta.
+     * Poikkeuksena ovat koodirelaatioilla määritellyt koulutukset, joilla harkinnanvaraiset kysymykset jätetään pois, jos niillä on valintakokeita.
+     */
     private boolean getKysytaankoHarkinnanvaraiset(HakukohdeV1RDTO hakukohde, String koulutusaste, String koulutuskoodi) throws KoodistoException {
         boolean isAmmatillinen = AMMATILLINEN_KOULUTUS_KOULUTUSASTE.equals(koulutusaste);
-        if (isAmmatillinen && !StringUtils.isEmpty(koulutuskoodi)) {
+        boolean hasExams = !CollectionUtils.isEmpty(hakukohde.getValintakokeet());
+        if (isAmmatillinen && hasExams && !StringUtils.isEmpty(koulutuskoodi)) {
             try {
                 List<Code> koodit = koodistoService.searchSuperCodes(EI_KYSYTA_HARKINNANVARAISIA_KOODIURI, KOULUTUS_KOODISTO_URI);
                 for (Code code : koodit) {
                     if (koulutuskoodi.equals(code.getUri()))
-                        return false; // Koodistossa on erikseen asetettu koodinsuhteilla, että koulutukselta ei kysytä harkinnanvaraisuutta.
+                        return false; // Koodistossa on erikseen asetettu koodinsuhteilla että koulutukselta ei kysytä harkinnanvaraisuutta.
                 }
             } catch (KoodistoException e) {
                 LOG.error("Hakulomakkeen asetuskoodiston koodi {} palautti virheen: {}", EI_KYSYTA_HARKINNANVARAISIA_KOODIURI,

@@ -65,6 +65,7 @@ public class BasketApplicationOptionDTO {
     private boolean useSystemApplicationForm;
     private boolean isPseudo;
     private boolean isPaid;
+    private boolean kysytaanHarkinnanvaraiset;
 
 
     public String getId() {
@@ -359,5 +360,13 @@ public class BasketApplicationOptionDTO {
 
     public void setPaid(boolean isPaid) {
         this.isPaid = isPaid;
+    }
+
+    public boolean isKysytaanHarkinnanvaraiset() {
+        return kysytaanHarkinnanvaraiset;
+    }
+
+    public void setKysytaanHarkinnanvaraiset(boolean kysytaanHarkinnanvaraiset) {
+        this.kysytaanHarkinnanvaraiset = kysytaanHarkinnanvaraiset;
     }
 }

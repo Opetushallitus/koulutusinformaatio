@@ -49,6 +49,7 @@ public final class ApplicationOptionToSearchResultDTO {
             dto.setTeachingLanguageNames(ConverterUtil.getTextsByLanguage(applicationOption.getTeachingLanguageNames(),lang));
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setVocational(applicationOption.isVocational());
+            dto.setKysytaanHarkinnanvaraiset(applicationOption.isKysytaanHarkinnanvaraiset());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setOrganizationGroups(OrganizationGroupToDTO.convertAll(applicationOption.getOrganizationGroups()));
             dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang));
