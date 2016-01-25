@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,6 +50,7 @@ public class ApplicationSystemCreatorTest extends KoodistoAwareTest {
     Date start;
     Date end;
     ApplicationSystemCreator creator;
+    private final static String AO_FORM_LINK = "http//hakukohdekohtainen.com";
 
     @Before
     public void init() {
@@ -72,10 +74,17 @@ public class ApplicationSystemCreatorTest extends KoodistoAwareTest {
         creator = new ApplicationSystemCreator(koodistoService, mock(ParameterService.class), Lists.<String> newArrayList());
     }
 
+    private HakukohdeV1RDTO getHakukohdeDto() {
+        HakukohdeV1RDTO dto = new HakukohdeV1RDTO();
+        dto.setHakulomakeUrl(AO_FORM_LINK);
+        return dto;
+    }
+
     @Test
     public void testCreateApplicationSystem() throws KoodistoException {
-        ApplicationSystem as = creator.createApplicationSystem(dto);
+        ApplicationSystem as = creator.createApplicationSystemForAo(dto, getHakukohdeDto());
         assertNotNull(as);
+        assertEquals(AO_FORM_LINK, as.getApplicationFormLink());
         assertEquals("1.2.3", as.getId());
         assertEquals(10, as.getMaxApplications());
         assertEquals("as name fi", as.getName().get(getFi()));
@@ -88,6 +97,6 @@ public class ApplicationSystemCreatorTest extends KoodistoAwareTest {
     @Test
     public void testCreateApplicationSystemWithNull() throws KoodistoException {
         dto = null;
-        assertNull(creator.createApplicationSystem(dto));
+        assertNull(creator.createApplicationSystemForAo(dto, getHakukohdeDto()));
     }
 }

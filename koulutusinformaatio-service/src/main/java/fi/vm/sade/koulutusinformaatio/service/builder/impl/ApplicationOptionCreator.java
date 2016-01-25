@@ -156,7 +156,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         ao.setRequiredBaseEducations(baseEducations);
 
-        ApplicationSystem as = applicationSystemCreator.createApplicationSystem(haku);
+        ApplicationSystem as = applicationSystemCreator.createApplicationSystemForAo(haku, hakukohde);
 
         HakuaikaV1RDTO aoHakuaika = null;
 

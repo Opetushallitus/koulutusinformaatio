@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,13 +58,13 @@ public class ApplicationSystemCreator extends ObjectCreator {
         this.overriddenASOids = overriddenASOids;
     }
 
-    public ApplicationSystem createApplicationSystem(HakuV1RDTO asDto) throws KoodistoException {
+    public ApplicationSystem createApplicationSystemForAo(HakuV1RDTO asDto, HakukohdeV1RDTO aoDto) throws KoodistoException {
         if (asDto != null) {
             ApplicationSystem as = new ApplicationSystem();
             as.setId(asDto.getOid());
             as.setMaxApplications(asDto.getMaxHakukohdes());
             as.setName(getI18nText(asDto.getNimi()));
-            as.setApplicationFormLink(asDto.getHakulomakeUri());
+            as.setApplicationFormLink(aoDto.getHakulomakeUrl());
             as.setHakutapaUri(koodistoService.searchFirstCodeValue(asDto.getHakutapaUri()));
             as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(asDto.getHakutyyppiUri()));
             if (asDto.getHakuaikas() != null) {
