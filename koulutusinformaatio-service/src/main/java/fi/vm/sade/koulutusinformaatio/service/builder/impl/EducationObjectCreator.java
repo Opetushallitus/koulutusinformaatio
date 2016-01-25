@@ -177,7 +177,7 @@ public class EducationObjectCreator extends ObjectCreator {
     private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
         if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
             Map<String, String> translations = new HashMap<String, String>();
-            translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
+            translations.put(valintakokeenKuvaus.getArvo().toLowerCase().split("_")[1], valintakokeenKuvaus.getTeksti());
             I18nText text = new I18nText();
             text.setTranslations(translations);
             return text;
