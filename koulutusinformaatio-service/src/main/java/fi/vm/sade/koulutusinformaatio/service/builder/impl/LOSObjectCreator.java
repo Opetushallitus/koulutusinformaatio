@@ -1222,17 +1222,6 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
 
-        if (koulutus.getYhteyshenkilos() != null) {
-            for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
-                ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                        yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
-                if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
-                    contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
-                }
-                los.getContactPersons().add(contactPerson);
-            }
-        }
-
         los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
         los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
