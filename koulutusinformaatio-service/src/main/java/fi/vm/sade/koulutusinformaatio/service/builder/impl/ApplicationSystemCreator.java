@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,17 +58,17 @@ public class ApplicationSystemCreator extends ObjectCreator {
         this.overriddenASOids = overriddenASOids;
     }
 
-    public ApplicationSystem createApplicationSystem(HakuV1RDTO asDto) throws KoodistoException {
-        if (asDto != null) {
+    public ApplicationSystem createApplicationSystemForAo(HakuV1RDTO hakuDto, HakukohdeV1RDTO hakukohdeDto) throws KoodistoException {
+        if (hakuDto != null) {
             ApplicationSystem as = new ApplicationSystem();
-            as.setId(asDto.getOid());
-            as.setMaxApplications(asDto.getMaxHakukohdes());
-            as.setName(getI18nText(asDto.getNimi()));
-            as.setApplicationFormLink(asDto.getHakulomakeUri());
-            as.setHakutapaUri(koodistoService.searchFirstCodeValue(asDto.getHakutapaUri()));
-            as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(asDto.getHakutyyppiUri()));
-            if (asDto.getHakuaikas() != null) {
-                for (HakuaikaV1RDTO ha : asDto.getHakuaikas()) {
+            as.setId(hakuDto.getOid());
+            as.setMaxApplications(hakuDto.getMaxHakukohdes());
+            as.setName(getI18nText(hakuDto.getNimi()));
+            as.setApplicationFormLink(hakukohdeDto.getHakulomakeUrl());
+            as.setHakutapaUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutapaUri()));
+            as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutyyppiUri()));
+            if (hakuDto.getHakuaikas() != null) {
+                for (HakuaikaV1RDTO ha : hakuDto.getHakuaikas()) {
                     DateRange range = new DateRange();
                     range.setStartDate(ha.getAlkuPvm());
                     range.setEndDate(ha.getLoppuPvm());
@@ -75,20 +76,20 @@ public class ApplicationSystemCreator extends ObjectCreator {
                 }
 
             }
-            if (asDto.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
+            if (hakuDto.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
                 HandleHakuParameters(as);
             } else {
                 as.setShownAsFacet(false);
             }
-            as.setShowEducationsUntil(asDto.getOpintopolunNayttaminenLoppuu());
-            as.setUseSystemApplicationForm(asDto.isJarjestelmanHakulomake());
+            as.setShowEducationsUntil(hakuDto.getOpintopolunNayttaminenLoppuu());
+            as.setUseSystemApplicationForm(hakuDto.isJarjestelmanHakulomake());
 
             // Demoympäristöä varten pakotetaan haku näkyviin.
-            if (overriddenASOids != null && overriddenASOids.contains(asDto.getOid())) {
+            if (overriddenASOids != null && overriddenASOids.contains(hakuDto.getOid())) {
                 LOG.warn("Puukotetaan demohaku {} näkyviin!", as.getId());
-                as.getApplicationDates().add(getDemoRange(asDto));
+                as.getApplicationDates().add(getDemoRange(hakuDto));
                 as.setShownAsFacet(true);
-                as.setShowEducationsUntil(getModifiedDate(asDto.getHakuaikas().get(0).getLoppuPvm(), 12));
+                as.setShowEducationsUntil(getModifiedDate(hakuDto.getHakuaikas().get(0).getLoppuPvm(), 12));
             }
             return as;
         } else {
