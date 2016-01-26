@@ -26,6 +26,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
@@ -36,6 +41,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
  * @author Hannu Lyytikainen
  */
 @Path("/lop")
+@Api(value = "/lop", description = "Opetustarjoajat")
 public interface LearningOpportunityProviderResource {
 
     public static final String BASE_EDUCATION = "baseEducation";
@@ -67,26 +73,39 @@ public interface LearningOpportunityProviderResource {
     @GET
     @Path("search/{" + TERM + "}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public List<ProviderSearchResultDTO> searchProviders(@PathParam(TERM) final String term,
-                                                 @QueryParam(ASID) final String asId,
-                                                 @QueryParam(BASE_EDUCATION) final List<String> baseEducation,
-                                                 @DefaultValue(value = "true") @QueryParam(VOCATIONAL) final boolean vocational,
-                                                 @DefaultValue(value = "true") @QueryParam(NON_VOCATIONAL) final boolean nonVocational,
-                                                 @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                 @DefaultValue(value = "50") @QueryParam("rows") int rows,
-                                                 @DefaultValue(LANG_FI) @QueryParam(LANG) String lang,
-                                                 @DefaultValue("false") @QueryParam(ONGOING) boolean ongoing,
-                                                 @QueryParam("type") String type);
+    @ApiOperation(value = "Tarjoajien etsiminen",
+        notes = "",
+        response = ProviderSearchResultDTO.class,
+        responseContainer = "List")
+    public List<ProviderSearchResultDTO> searchProviders(
+            @ApiParam(value = "Hakusana") @PathParam(TERM) final String term,
+            @ApiParam(value = "Haun oid") @QueryParam(ASID) final String asId,
+            @ApiParam(value = "Pohjakoulutus") @QueryParam(BASE_EDUCATION) final List<String> baseEducation,
+            @ApiParam(value = "Vain ammatilliset") @DefaultValue(value = "true") @QueryParam(VOCATIONAL) final boolean vocational,
+            @ApiParam(value = "Vain ei-ammatilliset") @DefaultValue(value = "true") @QueryParam(NON_VOCATIONAL) final boolean nonVocational,
+            @ApiParam(value = "Sivutuksen alku") @DefaultValue(value = "0") @QueryParam("start") int start,
+            @ApiParam(value = "Sivun suuruus") @DefaultValue(value = "50") @QueryParam("rows") int rows,
+            @ApiParam(value = "Kieli") @DefaultValue(LANG_FI) @QueryParam(LANG) String lang,
+            @ApiParam(value = "Tarjoajalla on koulutusta avoimessa haussa") @DefaultValue("false") @QueryParam(ONGOING) boolean ongoing,
+            @ApiParam(value = "Tyyppi") @QueryParam("type") String type);
 
     @GET
     @Path("{lopId}/picture")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public PictureDTO getProviderPicture(@PathParam("lopId") final String lopId);
+    @ApiOperation(value = "Kuva",
+        notes = "",
+        response = PictureDTO.class)
+    public PictureDTO getProviderPicture(
+            @ApiParam(value = "Tarjoajan oid") @PathParam("lopId") final String lopId);
     
     @GET
     @Path("{lopId}/thumbnail")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public PictureDTO getProviderThumbnail(@PathParam("lopId") final String lopId);
+    @ApiOperation(value = "Pikkukuvan",
+        notes = "",
+        response = PictureDTO.class)
+    public PictureDTO getProviderThumbnail(
+            @ApiParam(value = "Tarjoajan oid") @PathParam("lopId") final String lopId);
     
     /**
      * Returns the Learning opportunity provider (organization) with the given id (lopId).
@@ -99,7 +118,11 @@ public interface LearningOpportunityProviderResource {
     @GET
     @Path("{lopId}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public LearningOpportunityProviderDTO getProvider(@PathParam("lopId") final String lopId,
-                                  @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+    @ApiOperation(value = "Tarjoajan haku oidilla",
+        notes = "",
+        response = LearningOpportunityProviderDTO.class)
+    public LearningOpportunityProviderDTO getProvider(
+            @ApiParam(value = "Tarjoajan oid") @PathParam("lopId") final String lopId,
+            @ApiParam(value = "Kieli") @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
 
 }
