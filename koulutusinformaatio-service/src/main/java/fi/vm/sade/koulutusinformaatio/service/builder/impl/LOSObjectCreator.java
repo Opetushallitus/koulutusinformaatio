@@ -1065,6 +1065,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
+        los.setCreditUnitShort(koodistoService.searchFirst(koulutus.getOpintojenLaajuusyksikko().getUri()).getShortTitle());
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());

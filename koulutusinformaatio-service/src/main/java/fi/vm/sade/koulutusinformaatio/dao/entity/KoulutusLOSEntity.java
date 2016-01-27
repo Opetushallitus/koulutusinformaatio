@@ -69,6 +69,8 @@ public class KoulutusLOSEntity {
     @Embedded
     private I18nTextEntity creditUnit;
     @Embedded
+    private I18nTextEntity creditUnitShort;
+    @Embedded
     private I18nTextEntity degree;
     @Embedded
     private List<I18nTextEntity> qualifications;
@@ -410,6 +412,14 @@ public class KoulutusLOSEntity {
 
     public void setCreditUnit(I18nTextEntity creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public I18nTextEntity getCreditUnitShort() {
+        return creditUnitShort;
+    }
+
+    public void setCreditUnitShort(I18nTextEntity creditUnitShort) {
+        this.creditUnitShort = creditUnitShort;
     }
 
     public I18nTextEntity getEducationDegreeLang() {

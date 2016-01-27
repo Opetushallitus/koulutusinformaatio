@@ -49,6 +49,7 @@ public class KoulutusLOSToDTO {
         dto.setCreditValue(los.getCreditValue());
 
         dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));
+        dto.setCreditUnitShort(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnitShort(), uiLang));
 
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getFormOfTeaching(), uiLang));
@@ -72,6 +73,7 @@ public class KoulutusLOSToDTO {
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
         dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), uiLang));
         dto.setLinkToCurriculum(los.getLinkToCurriculum());
+        dto.setToteutustyyppi(los.getToteutustyyppi());
 
         // as based approach for UI
 

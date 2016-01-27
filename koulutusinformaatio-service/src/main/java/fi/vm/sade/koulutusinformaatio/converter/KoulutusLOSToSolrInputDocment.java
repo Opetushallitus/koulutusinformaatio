@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,10 +91,16 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
 
         if (los.getCreditValue() != null && los.getCreditUnit() != null && los.getCreditUnit().getTranslations() != null
                 && !los.getCreditUnit().getTranslations().isEmpty()) {
+
+            I18nText unit = los.getCreditUnit();
+            if (ToteutustyyppiEnum.KORKEAKOULUOPINTO.equals(los.getToteutustyyppi())) {
+                unit = los.getCreditUnitShort();
+            }
+
             doc.addField(LearningOpportunity.CREDITS,
                     String.format("%s %s", los.getCreditValue(),
                             SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(),
-                                    los.getCreditUnit().getTranslations())));
+                                    unit.getTranslations())));
         }
 
         String teachingLang = los.getTeachingLanguages().isEmpty() ? "EXC" : los.getTeachingLanguages().get(0).getValue().toLowerCase();
