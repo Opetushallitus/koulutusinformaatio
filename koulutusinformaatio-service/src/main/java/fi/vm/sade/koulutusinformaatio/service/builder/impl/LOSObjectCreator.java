@@ -1084,6 +1084,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
         los.setOsaamisalaton(koulutus.getKoulutusohjelma().getUri() == null);
+        los.setHakijalleNaytettavaTunniste(koulutus.getHakijalleNaytettavaTunniste());
 
         if (koulutus.getHinta() != null) {
             los.setHinta("" + koulutus.getHinta());

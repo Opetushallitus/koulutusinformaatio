@@ -104,6 +104,7 @@ public class KoulutusLOS extends LOS {
     private I18nText lisatietoja;
 
     private I18nText competence;
+    private String hakijalleNaytettavaTunniste;
 
     public String getId() {
         return id;
@@ -668,4 +669,11 @@ public class KoulutusLOS extends LOS {
         this.hinta = hinta;
     }
 
+    public String getHakijalleNaytettavaTunniste() {
+        return hakijalleNaytettavaTunniste;
+    }
+
+    public void setHakijalleNaytettavaTunniste(String hakijalleNaytettavaTunniste) {
+        this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
+    }
 }

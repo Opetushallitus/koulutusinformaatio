@@ -178,6 +178,7 @@ public class KoulutusLOSToDTO {
         dto.setCompetence(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCompetence(), lang));
 
         dto.setCharge(los.getHinta());
+        dto.setHakijalleNaytettavaTunniste(los.getHakijalleNaytettavaTunniste());
 
         return dto;
     }

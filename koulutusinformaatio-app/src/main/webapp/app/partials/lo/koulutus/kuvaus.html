@@ -47,6 +47,10 @@
                 <li data-ng-show="lo.opettaja">
                     <span data-ki-i18n="opettaja" data-show-colon="true"></span>
                     <strong>{{lo.opettaja}}</strong></li>
+                <li data-ng-if="lo.hakijalleNaytettavaTunniste">
+                    <span data-ki-i18n="hakijalleNaytettavaTunniste" data-show-colon="true"></span>
+                    <strong>{{lo.hakijalleNaytettavaTunniste}}</strong>
+                </li>
             </ul>
         </div>
     </div>

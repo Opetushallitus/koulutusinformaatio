@@ -94,6 +94,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String competence;
     private String charge;
     private ToteutustyyppiEnum toteutustyyppi;
+    private String hakijalleNaytettavaTunniste;
 
     // Status of the lo. For preview
     private String status;
@@ -633,5 +634,13 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setToteutustyyppi(ToteutustyyppiEnum toteutustyyppi) {
         this.toteutustyyppi = toteutustyyppi;
+    }
+
+    public String getHakijalleNaytettavaTunniste() {
+        return hakijalleNaytettavaTunniste;
+    }
+
+    public void setHakijalleNaytettavaTunniste(String hakijalleNaytettavaTunniste) {
+        this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
     }
 }

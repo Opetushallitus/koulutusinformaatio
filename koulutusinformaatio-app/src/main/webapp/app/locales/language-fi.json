@@ -374,5 +374,6 @@
      
      "qualifications": "Tutkintonimikkeet",
      "double-exam": "Mahdollisuus suorittaa lukio-opintoja ja / tai ylioppilastutkinto",
-     "print": "Tulosta"
+     "print": "Tulosta",
+    "hakijalleNaytettavaTunniste": "Tunniste"
 }

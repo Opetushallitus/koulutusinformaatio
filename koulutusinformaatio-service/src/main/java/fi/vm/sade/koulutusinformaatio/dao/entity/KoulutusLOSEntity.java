@@ -172,6 +172,8 @@ public class KoulutusLOSEntity {
 
     @Embedded
     private I18nTextEntity competence;
+    @Embedded
+    private String hakijalleNaytettavaTunniste;
 
     public String getId() {
         return id;
@@ -759,4 +761,11 @@ public class KoulutusLOSEntity {
         this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
     }
 
+    public String getHakijalleNaytettavaTunniste() {
+        return hakijalleNaytettavaTunniste;
+    }
+
+    public void setHakijalleNaytettavaTunniste(String hakijalleNaytettavaTunniste) {
+        this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
+    }
 }
