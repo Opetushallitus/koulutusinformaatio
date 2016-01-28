@@ -146,7 +146,7 @@ public class EducationObjectCreator extends ObjectCreator {
                     if (valintakoe.getValintakokeenKuvaus() != null) {
                         exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     } else if (valintakoe.getKuvaukset() != null) {
-                        exam.setDescription(new I18nText(valintakoe.getKuvaukset()));
+                        exam.setDescription(getI18nText(valintakoe.getKuvaukset()));
                     }
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
