@@ -80,7 +80,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private Set<ChildLOIRefDTO> siblings;
     private ParentLOSRefDTO parentLos;
     private CodeDTO koulutusPrerequisite;
-    private Map<String, List<String>> subjects;
+    private List<String> subjects;
     private String opettaja;
 
     private String opinnonTyyppiUri;
@@ -540,11 +540,11 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
         this.endDate = endDate;
     }
 
-    public Map<String, List<String>> getSubjects() {
+    public List<String> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(Map<String, List<String>> subjects) {
+    public void setSubjects(List<String> subjects) {
         this.subjects = subjects;
     }
 

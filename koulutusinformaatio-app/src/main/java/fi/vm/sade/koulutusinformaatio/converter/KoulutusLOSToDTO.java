@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.HashMultimap;
@@ -164,7 +165,15 @@ public class KoulutusLOSToDTO {
         dto.setEndDate(los.getEndDate());
 
         dto.setOpettaja(los.getOpettaja());
-        dto.setSubjects(los.getSubjects());
+
+        if (los.getSubjects() != null) {
+            dto.setSubjects(
+                    los.getSubjects().get(uiLang) != null
+                        ? los.getSubjects().get(uiLang)
+                        : los.getSubjects().get(ConverterUtil.FALLBACK_LANG)
+            );
+        }
+
         dto.setVastaavaKorkeakoulu(ConverterUtil.getTextByLanguageUseFallbackLang(los.getVastaavaKorkeakoulu(), lang));
 
         dto.setKoulutusPrerequisite(CodeToDTO.convert(los.getKoulutusPrerequisite(), lang));

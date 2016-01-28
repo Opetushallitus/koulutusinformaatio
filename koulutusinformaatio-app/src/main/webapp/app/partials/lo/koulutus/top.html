@@ -38,6 +38,12 @@
     <!-- PREVIEW -->
     <div data-ng-if="lo.preview && lo.educationType == 'et01.03.01'" data-ki-i18n="esikatselu-sisaruslista-placeholder" data-lang="{{virkailijaLang}}"></div>
     <!-- END PREVIEW -->
+
+    <div>
+        <span tabindex="0" class="label label-subject" data-ng-repeat="subject in lo.subjects | orderBy:'toString()'"
+              data-ng-click="selectLabel(subject)" data-ng-keypress="selectLabel(subject)">{{subject}}</span>
+    </div>
+
     <div data-ng-if="lo.opintojaksos" data-ki-sibling-ribbon data-siblings="lo.opintojaksos" template="siblingsNew" class="ribbon"></div>
     <div data-ng-if="lo.siblings"  data-ki-sibling-ribbon data-siblings="lo.siblings" template="siblingsNew" class="ribbon"></div>
     <div data-ng-if="lo.children"  data-ki-child-ribbon data-children="lo.children" data-lang="virkailijaLang" type="loType" class="ribbon"></div>
