@@ -5,13 +5,13 @@
                 <li>
                     <span data-ki-i18n="vastaava-korkeakoulu" data-ng-hide="!lo.vastaavaKorkeakoulu" data-show-colon="true"></span>
                     <strong>{{lo.vastaavaKorkeakoulu}}</strong></li>
-                <li data-ng-if="!lo.endDate">
+                <li data-ng-if="!(lo.startDate && lo.endDate)">
                     <span data-ki-i18n="education-starts" data-show-colon="true"></span>
                     <strong data-ng-show="lo.startDate">{{lo.startDate}}</strong><strong data-ng-show="lo.startDate && lo.endDate"> - {{lo.endDate}}</strong>
                     <strong data-ng-hide="lo.startDate">{{lo.startSeason}} {{lo.startYear}}</strong></li>
-                <li data-ng-if="lo.endDate">
+                <li data-ng-if="lo.startDate && lo.endDate">
                     <span data-ki-i18n="ajankohta" data-show-colon="true"></span>
-                    <strong data-ng-show="lo.startDate">{{lo.startDate}} - {{lo.endDate}}</strong></li>
+                    <strong>{{lo.startDate}} - {{lo.endDate}}</strong></li>
                 <li>
                     <span data-ki-i18n="language-of-instruction" data-show-colon="true"></span>
                     <span data-ng-repeat="tl in lo.teachingLanguages"> 
