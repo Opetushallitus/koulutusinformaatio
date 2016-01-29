@@ -139,8 +139,6 @@ public class EducationObjectCreator extends ObjectCreator {
                         exam.setType(type.getName());
                     } else if (valintakoe.getValintakoeNimi() != null && valintakoe.getKieliUri() != null) {
                         exam.setType(getI18nText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
-                    } else if (valintakoe.getPisterajat() != null && !valintakoe.getPisterajat().isEmpty()) {
-                        exam.setType(null); // Kälissä käytetään oletusotsikkoa "Pääsykokeet"
                     }
                     if (valintakoe.getValintakokeenKuvaus() != null) {
                         exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));

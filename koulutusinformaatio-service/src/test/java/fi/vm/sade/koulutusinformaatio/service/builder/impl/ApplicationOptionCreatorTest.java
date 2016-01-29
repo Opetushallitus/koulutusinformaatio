@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeAjankohtaRDTO;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -400,8 +399,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         pisteraja.setYlinPistemaara(new BigDecimal(10));
         pisteraja.setAlinHyvaksyttyPistemaara(new BigDecimal(7));
         valintakoe.setPisterajat(Lists.newArrayList(pisteraja));
-        ValintakoeAjankohtaRDTO ajankohta = new ValintakoeAjankohtaRDTO();
-        valintakoe.setValintakoeAjankohtas(Lists.<ValintakoeAjankohtaRDTO>newArrayList(ajankohta));
         List<ValintakoeV1RDTO> valintakokeet = Lists.newArrayList(valintakoe);
         hakukohde.setValintakokeet(valintakokeet);
 

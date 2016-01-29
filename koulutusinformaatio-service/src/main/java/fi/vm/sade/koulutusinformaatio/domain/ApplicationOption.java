@@ -61,8 +61,8 @@ public class ApplicationOption {
     private I18nText selectionCriteria;
     private Code prerequisite;
     // base educations, one of these is required to be able to apply to this application option
-    private List<String> requiredBaseEducations = Lists.newArrayList();
-    private List<Exam> exams = Lists.newArrayList();
+    private List<String> requiredBaseEducations;
+    private List<Exam> exams;
     // application option specific application dates or application system dates
     private boolean specificApplicationDates;
     private Date applicationStartDate;
