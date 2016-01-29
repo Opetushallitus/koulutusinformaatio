@@ -406,7 +406,6 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
 
         assertNotNull(ao);
         assertEquals(1, ao.getExams().size());
-        assertEquals(ValintakoePisterajaV1RDTO.PAASYKOE, ao.getExams().get(0).getType().get("fi"));
     }
 
     @Test
