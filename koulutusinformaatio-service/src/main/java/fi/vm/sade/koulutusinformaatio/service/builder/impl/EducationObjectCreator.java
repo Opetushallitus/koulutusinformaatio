@@ -140,8 +140,7 @@ public class EducationObjectCreator extends ObjectCreator {
                     } else if (valintakoe.getValintakoeNimi() != null && valintakoe.getKieliUri() != null) {
                         exam.setType(getI18nText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
                     } else if (valintakoe.getPisterajat() != null && !valintakoe.getPisterajat().isEmpty()) {
-                        String pisterajatyyppi = valintakoe.getPisterajat().get(0).getPisterajatyyppi();
-                        exam.setType(getI18nText(pisterajatyyppi, "fi"));
+                        exam.setType(null); // Kälissä käytetään oletusotsikkoa "Pääsykokeet"
                     }
                     if (valintakoe.getValintakokeenKuvaus() != null) {
                         exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
@@ -165,8 +164,7 @@ public class EducationObjectCreator extends ObjectCreator {
                     }
                     exam.setScoreLimit(resolvePointLimit(valintakoe, "Paasykoe"));
                     exam.setExamEvents(examEvents);
-                    if (exam.getType() != null || !examEvents.isEmpty())
-                        exams.add(exam);
+                    exams.add(exam);
                 }
             }
             return exams;
