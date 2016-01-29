@@ -129,6 +129,12 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
                     los.getTeachingLanguages(), curProv.getName().getTranslations()));
         }
 
+        if (los.getVastaavaKorkeakoulu() != null) {
+            doc.addField(LearningOpportunity.RESPONSIBLE_PROVIDER_FI, los.getVastaavaKorkeakoulu().get("fi"));
+            doc.addField(LearningOpportunity.RESPONSIBLE_PROVIDER_SV, los.getVastaavaKorkeakoulu().get("sv"));
+            doc.addField(LearningOpportunity.RESPONSIBLE_PROVIDER_EN, los.getVastaavaKorkeakoulu().get("en"));
+        }
+
         indexAddresses(provider, los.getAdditionalProviders(), doc);
 
         if (los.getApplicationOptions() != null) {

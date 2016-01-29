@@ -48,6 +48,7 @@ public class LearningOpportunitySearchResultDTO {
     private String homeplace;
     private String childName;
     private List<String> subjects;
+    private String responsibleProvider;
 
 
     public String getId() {
@@ -192,5 +193,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setSubjects(List<String> subjects) {
         this.subjects = subjects;
+    }
+
+    public String getResponsibleProvider() {
+        return responsibleProvider;
+    }
+
+    public void setResponsibleProvider(String responsibleProvider) {
+        this.responsibleProvider = responsibleProvider;
     }
 }

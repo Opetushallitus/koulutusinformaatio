@@ -14,8 +14,13 @@
                 <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
                 <span>{{lo.prerequisite}}</span><br />
             </span>
-            <div data-ng-repeat="lopName in lo.lopNames">
-            	<span>{{lopName}}</span><br/>
+            <div data-ng-if="lo.responsibleProvider">
+                <span data-ki-i18n="vastaava-korkeakoulu" data-show-colon="true"></span> {{lo.responsibleProvider}}<br/>
+                <span data-ki-i18n="koulutuksen-jarjestaa" data-show-colon="true"></span>
+                <span data-ng-repeat="lopName in lo.lopNames">{{lopName}}<br/></span>
+            </div>
+            <div data-ng-if="!lo.responsibleProvider">
+                <span data-ng-repeat="lopName in lo.lopNames">{{lopName}}<br/></span>
             </div>
             <span>{{lo.homeplace}}</span>
         </div>

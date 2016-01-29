@@ -272,6 +272,9 @@ public final class SolrUtil {
         public static final String LOP_NAME_FI = "lopName_fi";
         public static final String LOP_NAME_SV = "lopName_sv";
         public static final String LOP_NAME_EN = "lopName_en";
+        public static final String RESPONSIBLE_PROVIDER_FI = "responsibleProvider_fi";
+        public static final String RESPONSIBLE_PROVIDER_SV = "responsibleProvider_sv";
+        public static final String RESPONSIBLE_PROVIDER_EN = "responsibleProvider_en";
         public static final String LOP_HOMEPLACE = "lopHomeplace";
         public static final String LOP_ADDRESS_FI = "lopAddress_fi";
         public static final String LOP_DESCRIPTION_FI = "lopDescription_fi";
