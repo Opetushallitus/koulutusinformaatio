@@ -1,3 +1,12 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                              //
+//  Tähän kirjastoon on tehty muutoksia. Älä päivitä varomattomasti!                            //
+//   - Popover-elementit on suljettavissa elementin oikeassa yläreunassa olevasta sulkunapista  //
+//   - Popover-elementtien sisältö voi olla HTML-muotoista                                      //
+//   - Typeahead-komponentin vaihtoehdot on ryhmiteltävissä kategorioihin                       //
+//                                                                                              //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
