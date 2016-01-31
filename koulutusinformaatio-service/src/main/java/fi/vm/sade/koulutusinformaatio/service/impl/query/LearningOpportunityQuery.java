@@ -139,9 +139,14 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.addFacetField(LearningOpportunity.FORM_OF_STUDY);
         this.addFacetField(LearningOpportunity.AS_FACET);
         this.setFacetSort("index");
+        this.setParam("f." + LearningOpportunity.PREREQUISITES + ".facet.missing", true);
         
         for (String curFilter : facetFilters) {
-            this.addFilterQuery(curFilter);
+            if (curFilter.startsWith(LearningOpportunity.PREREQUISITES + ":")) {
+                this.addFilterQuery("-(-" + curFilter + " AND " + LearningOpportunity.PREREQUISITES + ":[* TO *])");
+            } else {
+                this.addFilterQuery(curFilter);
+            }
         }
         
     }

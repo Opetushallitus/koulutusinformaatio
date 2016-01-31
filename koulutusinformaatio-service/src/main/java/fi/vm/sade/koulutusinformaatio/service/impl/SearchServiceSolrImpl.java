@@ -813,9 +813,24 @@ public class SearchServiceSolrImpl implements SearchService {
             }
         }
         if (prerequisiteF != null) {
+            Count missingCount = Iterables.find(prerequisiteF.getValues(), new Predicate<Count>() {
+                @Override
+                public boolean apply(Count count) {
+                    return count.getName() == null;
+                }
+            });
+
             for (Count curC : prerequisiteF.getValues()) {
+                if (curC == missingCount) {
+                    continue;
+                }
 
                 long count = isPrereqSet ? 0 : curC.getCount();
+
+                if (!isPrereqSet) {
+                    // LO without a prerequisite should be found when searching with any prerequisite
+                    count += missingCount.getCount();
+                }
 
                 FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,
                         getLocalizedFacetName(curC.getName(), lang),
