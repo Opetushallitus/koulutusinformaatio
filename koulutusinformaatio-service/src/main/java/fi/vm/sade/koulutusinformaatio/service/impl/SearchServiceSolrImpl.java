@@ -499,19 +499,7 @@ public class SearchServiceSolrImpl implements SearchService {
         List<String> lopId = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>) (doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
         String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
         List<String> subjects = getSubjects(doc, lang);
-        Map<String, String> responsibleProviderLangMap = new HashMap<>();
-        responsibleProviderLangMap.put("fi", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_FI));
-        responsibleProviderLangMap.put("sv", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_SV));
-        responsibleProviderLangMap.put("en", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_EN));
-        String responsibleProvider = responsibleProviderLangMap.get(lang);
-        if (StringUtils.isBlank(responsibleProvider)) {
-            responsibleProvider = Iterables.find(responsibleProviderLangMap.values(), new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return !StringUtils.isBlank(input);
-                }
-            }, "");
-        }
+        String responsibleProvider = getResponsibleProvider(doc, lang);
 
         LOG.debug("gathered info now creating search result: {}", id);
 
@@ -529,6 +517,28 @@ public class SearchServiceSolrImpl implements SearchService {
 
         return lo;
 
+    }
+
+    private String getResponsibleProvider(SolrDocument doc, String lang) {
+        Map<String, String> responsibleProviderLangMap = new HashMap<>();
+
+        responsibleProviderLangMap.put("fi", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_FI));
+        responsibleProviderLangMap.put("sv", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_SV));
+        responsibleProviderLangMap.put("en", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_EN));
+
+        return getValueFromLangMap(responsibleProviderLangMap, lang);
+    }
+
+    private static String getValueFromLangMap(Map<String, String> langMap, String preferredLang) {
+        List<String> langOrder = Lists.newArrayList(preferredLang, "fi", "sv", "en");
+
+        for (String lang : langOrder) {
+            if (!StringUtils.isBlank(langMap.get(lang))) {
+                return langMap.get(lang);
+            }
+        }
+
+        return langMap.values().iterator().next();
     }
 
     private List<String> getSubjects(SolrDocument doc, String lang) {
