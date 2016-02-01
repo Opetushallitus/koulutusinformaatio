@@ -499,7 +499,6 @@ public class SearchServiceSolrImpl implements SearchService {
         List<String> lopId = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>) (doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
         String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
         List<String> subjects = getSubjects(doc, lang);
-        Map<String, Object> lorem = doc.getFieldValueMap();
         Map<String, String> responsibleProviderLangMap = new HashMap<>();
         responsibleProviderLangMap.put("fi", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_FI));
         responsibleProviderLangMap.put("sv", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_SV));
