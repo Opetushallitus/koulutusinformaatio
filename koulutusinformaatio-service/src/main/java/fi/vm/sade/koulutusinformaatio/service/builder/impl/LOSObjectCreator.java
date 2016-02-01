@@ -1065,7 +1065,12 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
-        los.setCreditUnitShort(koodistoService.searchFirst(koulutus.getOpintojenLaajuusyksikko().getUri()).getShortTitle());
+
+        try {
+            los.setCreditUnitShort(koodistoService.searchFirst(koulutus.getOpintojenLaajuusyksikko().getUri()).getShortTitle());
+        } catch (NullPointerException e) {
+            LOG.warn("Credit unit short not found for LO with oid {}", koulutus.getOid());
+        }
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
