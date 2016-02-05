@@ -26,12 +26,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LocationDTO;
 
 /**
  * @author Mikko Majapuro
  */
 @Path("/location")
+@Api(value = "/location", description = "Kuntien hakurajapinta")
 public interface LocationResource {
 
     public static final String TERM = "term";
@@ -40,21 +46,44 @@ public interface LocationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public List<LocationDTO> getLocations(@QueryParam("code") List<String> code, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+    @ApiOperation(value = "Kunnan tietojen haku koodilla",
+        notes = "",
+        response = LocationDTO.class,
+        responseContainer = "List")
+    public List<LocationDTO> getLocations(
+            @ApiParam(value = "Kuntakoodi") @QueryParam("code") List<String> code,
+            @ApiParam(value = "Kieli") @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
 
     @GET
     @Path("search/{" + TERM + "}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public List<LocationDTO> searchLocations(@PathParam(TERM) final String term, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
-    
+    @ApiOperation(value = "Kunnan etsiminen sanahaulla",
+        notes = "",
+        response = LocationDTO.class,
+        responseContainer = "List")
+    public List<LocationDTO> searchLocations(
+            @ApiParam(value = "Hakusana") @PathParam(TERM) final String term,
+            @ApiParam(value = "Kieli") @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+
     @GET
     @Path("districts")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public List<LocationDTO> getDistricts(@DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
-    
+    @ApiOperation(value = "Maakuntalistaus",
+        notes = "",
+        response = LocationDTO.class,
+        responseContainer = "List")
+    public List<LocationDTO> getDistricts(
+            @ApiParam(value = "Kieli") @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+
     @GET
     @Path("child-locations")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public List<LocationDTO> getChildLocations(@QueryParam("districts") List<String> districts, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
-    
+    @ApiOperation(value = "Maakunnan kuntien listaaminen",
+        notes = "",
+        response = LocationDTO.class,
+        responseContainer = "List")
+    public List<LocationDTO> getChildLocations(
+            @ApiParam(value = "Lista maakuntia") @QueryParam("districts") List<String> districts,
+            @ApiParam(value = "Kieli") @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+
 }
