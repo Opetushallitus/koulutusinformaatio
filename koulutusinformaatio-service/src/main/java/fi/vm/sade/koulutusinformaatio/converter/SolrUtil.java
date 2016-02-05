@@ -16,23 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.DisMaxParams;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -172,18 +167,20 @@ public final class SolrUtil {
         docs.add(doc);
     }
 
-    public static String resolveTextWithFallback(String lang,
-            Map<String, String> translations) {
-        String translation = translations.get(lang);
-        if (translation == null) {
-            translation = translations.get(FALLBACK_LANG);
+    public static String resolveTextWithFallback(String lang, Map<String, String> translations) {
+        if (translations.isEmpty()) {
+            return null;
         }
-        if ((translation == null)
-                && !translations.isEmpty() 
-                && !translations.values().isEmpty()) {
-            translation = translations.values().iterator().next();
+
+        List<String> langOrder = Lists.newArrayList(lang, FALLBACK_LANG, "fi", "sv", "en");
+
+        for (String preferredLang : langOrder) {
+            if (!StringUtils.isBlank(translations.get(preferredLang))) {
+                return translations.get(preferredLang);
+            }
         }
-        return translation;
+
+        return translations.values().iterator().next();
     }
     
     

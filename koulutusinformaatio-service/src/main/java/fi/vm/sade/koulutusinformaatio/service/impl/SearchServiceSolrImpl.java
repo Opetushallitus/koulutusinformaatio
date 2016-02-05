@@ -31,7 +31,6 @@ import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
-import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -526,19 +525,7 @@ public class SearchServiceSolrImpl implements SearchService {
         responsibleProviderLangMap.put("sv", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_SV));
         responsibleProviderLangMap.put("en", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_EN));
 
-        return getValueFromLangMap(responsibleProviderLangMap, lang);
-    }
-
-    private static String getValueFromLangMap(Map<String, String> langMap, String preferredLang) {
-        List<String> langOrder = Lists.newArrayList(preferredLang, "fi", "sv", "en");
-
-        for (String lang : langOrder) {
-            if (!StringUtils.isBlank(langMap.get(lang))) {
-                return langMap.get(lang);
-            }
-        }
-
-        return langMap.values().iterator().next();
+        return SolrUtil.resolveTextWithFallback(lang, responsibleProviderLangMap);
     }
 
     private List<String> getSubjects(SolrDocument doc, String lang) {
