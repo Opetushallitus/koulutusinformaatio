@@ -52,10 +52,6 @@ public class LOSObjectCreatorTest extends TestCase {
     public void init() throws Exception {
         when(koodistoService.search(any(String.class))).thenReturn(new ArrayList<Code>());
         Code mockedCode = new Code(){{
-            this.setValue("code_1");
-            this.setUri("uri");
-            this.setName(new I18nText(ImmutableMap.of("fi", "nimi_fi")));
-            this.setDescription(new I18nText(ImmutableMap.of("fi", "descr_fi")));
             this.setShortTitle(new I18nText(ImmutableMap.of("fi", "shortTitle_fi")));
         }};
         when(koodistoService.searchFirst(any(String.class))).thenReturn(mockedCode);
