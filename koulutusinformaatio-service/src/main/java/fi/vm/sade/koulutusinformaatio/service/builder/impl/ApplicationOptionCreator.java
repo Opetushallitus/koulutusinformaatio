@@ -145,6 +145,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             baseEducations.add(code.getUri());
         }
         baseEducations.addAll(hakukohde.getHakukelpoisuusvaatimusUris());
+        baseEducations.addAll(hakukohde.getOpintoOikeusUris());
         if (los.getKoulutusPrerequisite() != null) {
             List<Code> subCodes = koodistoService.searchSubCodes(
                     los.getKoulutusPrerequisite().getUri(),

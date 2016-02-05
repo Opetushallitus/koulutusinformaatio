@@ -32,6 +32,7 @@ public class KoulutusLOS extends LOS {
     private String pduCodeUri;
     private String creditValue;
     private I18nText creditUnit;
+    private I18nText creditUnitShort;
     private I18nText degree;
     private I18nText infoAboutCharge;
     private I18nText careerOpportunities;
@@ -103,6 +104,7 @@ public class KoulutusLOS extends LOS {
     private I18nText lisatietoja;
 
     private I18nText competence;
+    private String hakijalleNaytettavaTunniste;
 
     public String getId() {
         return id;
@@ -302,6 +304,14 @@ public class KoulutusLOS extends LOS {
 
     public void setCreditUnit(I18nText creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public I18nText getCreditUnitShort() {
+        return creditUnitShort;
+    }
+
+    public void setCreditUnitShort(I18nText creditUnitShort) {
+        this.creditUnitShort = creditUnitShort;
     }
 
     public I18nText getEducationDegreeLang() {
@@ -659,4 +669,11 @@ public class KoulutusLOS extends LOS {
         this.hinta = hinta;
     }
 
+    public String getHakijalleNaytettavaTunniste() {
+        return hakijalleNaytettavaTunniste;
+    }
+
+    public void setHakijalleNaytettavaTunniste(String hakijalleNaytettavaTunniste) {
+        this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
+    }
 }

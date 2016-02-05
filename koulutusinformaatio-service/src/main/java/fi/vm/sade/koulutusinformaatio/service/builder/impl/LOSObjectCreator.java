@@ -1066,6 +1066,11 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
 
+        if (koulutus.getOpintojenLaajuusyksikko() != null
+            && !StringUtils.isBlank(koulutus.getOpintojenLaajuusyksikko().getUri())) {
+            los.setCreditUnitShort(koodistoService.searchFirst(koulutus.getOpintojenLaajuusyksikko().getUri()).getShortTitle());
+        }
+
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
             los.setProvider(provider);
@@ -1083,6 +1088,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
         los.setOsaamisalaton(koulutus.getKoulutusohjelma().getUri() == null);
+        los.setHakijalleNaytettavaTunniste(koulutus.getHakijalleNaytettavaTunniste());
 
         if (koulutus.getHinta() != null) {
             los.setHinta("" + koulutus.getHinta());

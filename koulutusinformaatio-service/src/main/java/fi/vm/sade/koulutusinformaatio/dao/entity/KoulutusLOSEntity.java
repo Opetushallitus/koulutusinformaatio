@@ -3,6 +3,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -68,6 +69,8 @@ public class KoulutusLOSEntity {
     private String creditValue;
     @Embedded
     private I18nTextEntity creditUnit;
+    @Embedded
+    private I18nTextEntity creditUnitShort;
     @Embedded
     private I18nTextEntity degree;
     @Embedded
@@ -170,6 +173,10 @@ public class KoulutusLOSEntity {
 
     @Embedded
     private I18nTextEntity competence;
+    @Embedded
+    private String hakijalleNaytettavaTunniste;
+    @Embedded
+    private Map<String, List<String>> subjects;
 
     public String getId() {
         return id;
@@ -410,6 +417,14 @@ public class KoulutusLOSEntity {
 
     public void setCreditUnit(I18nTextEntity creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public I18nTextEntity getCreditUnitShort() {
+        return creditUnitShort;
+    }
+
+    public void setCreditUnitShort(I18nTextEntity creditUnitShort) {
+        this.creditUnitShort = creditUnitShort;
     }
 
     public I18nTextEntity getEducationDegreeLang() {
@@ -749,4 +764,19 @@ public class KoulutusLOSEntity {
         this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
     }
 
+    public String getHakijalleNaytettavaTunniste() {
+        return hakijalleNaytettavaTunniste;
+    }
+
+    public void setHakijalleNaytettavaTunniste(String hakijalleNaytettavaTunniste) {
+        this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
+    }
+
+    public Map<String, List<String>> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Map<String, List<String>> subjects) {
+        this.subjects = subjects;
+    }
 }

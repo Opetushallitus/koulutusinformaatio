@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.HashMultimap;
@@ -49,6 +50,7 @@ public class KoulutusLOSToDTO {
         dto.setCreditValue(los.getCreditValue());
 
         dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));
+        dto.setCreditUnitShort(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnitShort(), uiLang));
 
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getFormOfTeaching(), uiLang));
@@ -72,6 +74,7 @@ public class KoulutusLOSToDTO {
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
         dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), uiLang));
         dto.setLinkToCurriculum(los.getLinkToCurriculum());
+        dto.setToteutustyyppi(los.getToteutustyyppi());
 
         // as based approach for UI
 
@@ -162,7 +165,15 @@ public class KoulutusLOSToDTO {
         dto.setEndDate(los.getEndDate());
 
         dto.setOpettaja(los.getOpettaja());
-        dto.setSubjects(los.getSubjects());
+
+        if (los.getSubjects() != null) {
+            dto.setSubjects(
+                    los.getSubjects().get(uiLang) != null
+                        ? los.getSubjects().get(uiLang)
+                        : los.getSubjects().get(ConverterUtil.FALLBACK_LANG)
+            );
+        }
+
         dto.setVastaavaKorkeakoulu(ConverterUtil.getTextByLanguageUseFallbackLang(los.getVastaavaKorkeakoulu(), lang));
 
         dto.setKoulutusPrerequisite(CodeToDTO.convert(los.getKoulutusPrerequisite(), lang));
@@ -176,6 +187,7 @@ public class KoulutusLOSToDTO {
         dto.setCompetence(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCompetence(), lang));
 
         dto.setCharge(los.getHinta());
+        dto.setHakijalleNaytettavaTunniste(los.getHakijalleNaytettavaTunniste());
 
         return dto;
     }

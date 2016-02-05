@@ -1,19 +1,19 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.ImmutableMap;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
+import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
+import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,29 +21,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.OppiaineV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
-import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
-import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
-import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import java.util.*;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by alexis on 7.5.2015.
@@ -69,6 +51,10 @@ public class LOSObjectCreatorTest extends TestCase {
     @Before
     public void init() throws Exception {
         when(koodistoService.search(any(String.class))).thenReturn(new ArrayList<Code>());
+        Code mockedCode = new Code(){{
+            this.setShortTitle(new I18nText(ImmutableMap.of("fi", "shortTitle_fi")));
+        }};
+        when(koodistoService.searchFirst(any(String.class))).thenReturn(mockedCode);
         when(tarjontaRawService.findHakukohdesByEducationOid(any(String.class), anyBoolean())).thenReturn(null);
     }
 

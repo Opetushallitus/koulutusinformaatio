@@ -16,17 +16,21 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -42,43 +46,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
-import fi.vm.sade.koulutusinformaatio.domain.AoSolrSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
-import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.Facet;
-import fi.vm.sade.koulutusinformaatio.domain.FacetValue;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.ProviderResult;
-import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ApplicationOptionQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ApplicationSystemQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ArticleQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.AutocompleteQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderNameFirstCharactersQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderTypeQuery;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
@@ -526,6 +498,7 @@ public class SearchServiceSolrImpl implements SearchService {
         List<String> lopId = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>) (doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
         String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
         List<String> subjects = getSubjects(doc, lang);
+        String responsibleProvider = getResponsibleProvider(doc, lang);
 
         LOG.debug("gathered info now creating search result: {}", id);
 
@@ -533,7 +506,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 id, name,
                 lopId, lopNames, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects);
+                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider);
 
         LOG.debug("Created search result: {}", id);
 
@@ -543,6 +516,16 @@ public class SearchServiceSolrImpl implements SearchService {
 
         return lo;
 
+    }
+
+    private String getResponsibleProvider(SolrDocument doc, String lang) {
+        Map<String, String> responsibleProviderLangMap = new HashMap<>();
+
+        responsibleProviderLangMap.put("fi", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_FI));
+        responsibleProviderLangMap.put("sv", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_SV));
+        responsibleProviderLangMap.put("en", (String) doc.get(LearningOpportunity.RESPONSIBLE_PROVIDER_EN));
+
+        return SolrUtil.resolveTextWithFallback(lang, responsibleProviderLangMap);
     }
 
     private List<String> getSubjects(SolrDocument doc, String lang) {
@@ -826,9 +809,24 @@ public class SearchServiceSolrImpl implements SearchService {
             }
         }
         if (prerequisiteF != null) {
+            Count missingCount = Iterables.find(prerequisiteF.getValues(), new Predicate<Count>() {
+                @Override
+                public boolean apply(Count count) {
+                    return count.getName() == null;
+                }
+            });
+
             for (Count curC : prerequisiteF.getValues()) {
+                if (curC == missingCount) {
+                    continue;
+                }
 
                 long count = isPrereqSet ? 0 : curC.getCount();
+
+                if (!isPrereqSet) {
+                    // LO without a prerequisite should be found when searching with any prerequisite
+                    count += missingCount.getCount();
+                }
 
                 FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,
                         getLocalizedFacetName(curC.getName(), lang),

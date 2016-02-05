@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -47,6 +48,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String pduCodeUri;
     private String creditValue;
     private String creditUnit;
+    private String creditUnitShort;
     private String degree;
     private String educationCode;
     private List<String> teachingLanguages;
@@ -78,7 +80,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private Set<ChildLOIRefDTO> siblings;
     private ParentLOSRefDTO parentLos;
     private CodeDTO koulutusPrerequisite;
-    private Map<String, List<String>> subjects;
+    private List<String> subjects;
     private String opettaja;
 
     private String opinnonTyyppiUri;
@@ -91,6 +93,8 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String lisatietoja;
     private String competence;
     private String charge;
+    private ToteutustyyppiEnum toteutustyyppi;
+    private String hakijalleNaytettavaTunniste;
 
     // Status of the lo. For preview
     private String status;
@@ -245,6 +249,14 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
 
     public void setCreditUnit(String creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public String getCreditUnitShort() {
+        return creditUnitShort;
+    }
+
+    public void setCreditUnitShort(String creditUnitShort) {
+        this.creditUnitShort = creditUnitShort;
     }
 
     public String getDegree() {
@@ -528,11 +540,11 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
         this.endDate = endDate;
     }
 
-    public Map<String, List<String>> getSubjects() {
+    public List<String> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(Map<String, List<String>> subjects) {
+    public void setSubjects(List<String> subjects) {
         this.subjects = subjects;
     }
 
@@ -616,4 +628,19 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
         this.vastaavaKorkeakoulu = vastaavaKorkeakoulu;
     }
 
+    public ToteutustyyppiEnum getToteutustyyppi() {
+        return toteutustyyppi;
+    }
+
+    public void setToteutustyyppi(ToteutustyyppiEnum toteutustyyppi) {
+        this.toteutustyyppi = toteutustyyppi;
+    }
+
+    public String getHakijalleNaytettavaTunniste() {
+        return hakijalleNaytettavaTunniste;
+    }
+
+    public void setHakijalleNaytettavaTunniste(String hakijalleNaytettavaTunniste) {
+        this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
+    }
 }

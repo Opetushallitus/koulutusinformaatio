@@ -1,16 +1,15 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import java.util.List;
-
+import com.google.common.base.Joiner;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Joiner;
+import java.util.List;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import static fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -31,16 +30,16 @@ public class LearningOpportunityQuery extends SolrQuery {
         LOG.debug(String.format("Query term: (%s)", term));
         
         if (prerequisite != null) {
-            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
+            this.addFilterQuery(String.format("%s:%s", PREREQUISITES, prerequisite));
         }
         if (asId != null) {
-            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.AS_ID, asId));
+            this.addFilterQuery(String.format("%s:%s", AS_ID, asId));
         }
         this.setStart(start);
         this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {
             this.addFilterQuery(
-                    String.format("%s:(\"%s\")", LearningOpportunity.LOP_HOMEPLACE, Joiner.on("\" OR \"").join(cities))
+                    String.format("%s:(\"%s\")", LOP_HOMEPLACE, Joiner.on("\" OR \"").join(cities))
                     );
         }
         
@@ -64,10 +63,10 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
         
         //leaving the faces, timestamps and application systems docs out
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_APPLICATION_SYSTEM));
+        this.addFilterQuery(String.format("-%s:%s", ID, SolrConstants.TIMESTAMP_DOC));
+        this.addFilterQuery(String.format("-%s:%s", TYPE, SolrConstants.TYPE_FACET));
+        this.addFilterQuery(String.format("-%s:%s", TYPE, SolrConstants.TYPE_ARTICLE));
+        this.addFilterQuery(String.format("-%s:%s", TYPE, SolrConstants.TYPE_APPLICATION_SYSTEM));
         
         
         addFacetsToQuery(facetFilters);
@@ -78,11 +77,11 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         this.setParam("q.op", "AND");
         if (sort != null && "fi".equals(lang)) {
-            this.addSort(LearningOpportunity.NAME_FI_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
+            this.addSort(NAME_FI_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
         } else if (sort != null && "sv".equals(lang)) {
-            this.addSort(LearningOpportunity.NAME_SV_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
+            this.addSort(NAME_SV_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
         } else if (sort != null && "en".equals(lang)) {
-            this.addSort(LearningOpportunity.NAME_EN_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
+            this.addSort(NAME_EN_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
         } else if (sort != null) {
             this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
@@ -129,19 +128,25 @@ public class LearningOpportunityQuery extends SolrQuery {
     private void addFacetsToQuery(List<String> facetFilters) {
         this.setFacet(true);
         this.setFacetLimit(-1);
-        this.addFacetField(LearningOpportunity.TEACHING_LANGUAGE);
-        this.addFacetField(LearningOpportunity.EDUCATION_TYPE);
-        this.addFacetField(LearningOpportunity.PREREQUISITES);
-        this.addFacetField(LearningOpportunity.TOPIC);
-        this.addFacetField(LearningOpportunity.THEME);
-        this.addFacetField(LearningOpportunity.FORM_OF_TEACHING);
-        this.addFacetField(LearningOpportunity.TIME_OF_TEACHING);
-        this.addFacetField(LearningOpportunity.FORM_OF_STUDY);
-        this.addFacetField(LearningOpportunity.AS_FACET);
+        this.addFacetField(TEACHING_LANGUAGE);
+        this.addFacetField(EDUCATION_TYPE);
+        this.addFacetField(PREREQUISITES);
+        this.addFacetField(TOPIC);
+        this.addFacetField(THEME);
+        this.addFacetField(FORM_OF_TEACHING);
+        this.addFacetField(TIME_OF_TEACHING);
+        this.addFacetField(FORM_OF_STUDY);
+        this.addFacetField(AS_FACET);
         this.setFacetSort("index");
+        this.setParam("f." + PREREQUISITES + ".facet.missing", true);
         
         for (String curFilter : facetFilters) {
-            this.addFilterQuery(curFilter);
+            if (curFilter.startsWith(PREREQUISITES + ":")) {
+                // Prerequisite should match or be empty
+                this.addFilterQuery("-(-" + curFilter + " AND " + PREREQUISITES + ":[* TO *])");
+            } else {
+                this.addFilterQuery(curFilter);
+            }
         }
         
     }
@@ -150,13 +155,13 @@ public class LearningOpportunityQuery extends SolrQuery {
             String lang) {
         
         if (lang.equalsIgnoreCase("fi")) {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME_DISPLAY_FI, lopFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LOP_NAME_DISPLAY_FI, lopFilter));
         } else if (lang.equalsIgnoreCase("sv")) {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME_DISPLAY_SV, lopFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LOP_NAME_DISPLAY_SV, lopFilter));
         } else if (lang.equalsIgnoreCase("en")) {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME_DISPLAY_EN, lopFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LOP_NAME_DISPLAY_EN, lopFilter));
         } else {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME, lopFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LOP_NAME, lopFilter));
         }
     }
     
@@ -164,13 +169,13 @@ public class LearningOpportunityQuery extends SolrQuery {
             String lang) { 
         
         if (lang.equalsIgnoreCase("fi")) {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
         } else if (lang.equalsIgnoreCase("sv")) {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_SV, educationCodeFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, EDUCATION_CODE_DISPLAY_SV, educationCodeFilter));
         } else if (lang.equalsIgnoreCase("en")) {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_EN, educationCodeFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, EDUCATION_CODE_DISPLAY_EN, educationCodeFilter));
         } else {
-            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+            this.addFilterQuery(String.format(SolrUtil.QUOTED_QUERY_FORMAT, EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
         }
     }
     

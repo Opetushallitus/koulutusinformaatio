@@ -372,5 +372,7 @@
      "search-all-los": "Sök alla utbildningar",
      "qualifications": "Examensbenämningar",
      "double-exam": "Möjlighet att avlägga gymnasiestudier och / eller studentexamen.",
-     "print": "Skriv ut"
+     "print": "Skriv ut",
+    "hakijalleNaytettavaTunniste": "Identifierare",
+    "koulutuksen-jarjestaa": "Utbildningen ordnas av"
 }

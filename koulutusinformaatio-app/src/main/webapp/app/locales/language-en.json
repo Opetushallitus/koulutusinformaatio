@@ -372,5 +372,7 @@
      "search-all-los": "Find all study options",
      "qualifications": "Qualifications",
      "double-exam": "Possibility to complete general upper secondary studies and / or matriculation examination.",
-     "print": "Print"
+     "print": "Print",
+    "hakijalleNaytettavaTunniste": "Identifier",
+    "koulutuksen-jarjestaa": "Education is organised by"
 }
