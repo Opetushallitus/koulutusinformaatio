@@ -33,6 +33,7 @@ module.exports = function(config) {
             appPath + 'app/lib/angular/1.2.13/angular-sanitize.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-touch.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-animate.min.js',
+            appPath + 'app/lib/angular/1.2.13/angular-cookies.min.js',
             appPath + 'app/lib/angular-translate.js',
             appPath + 'app/lib/angular-recaptcha/2.1.1/angular-recaptcha.min.js',
             appPath + 'app/lib/lodash/lodash-min.js',

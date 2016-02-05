@@ -14,8 +14,16 @@ var kiApp = angular.module('previewApp',
         'underscore',
         'ngRoute',
         'ngSanitize',
-        'ngTouch'
+        'ngTouch',
+        'ngCookies'
     ])
+
+.run(function($http, $cookies) {
+    $http.defaults.headers.common['clientSubSystemCode'] = "koulutusinformaatio.koulutusinformaatio-app.preview-frontend";
+    if($cookies['CSRF']) {
+        $http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
+    }
+})
 
 // initialize piwik analytics tool
 .config(['$analyticsProvider', function( $analyticsProvider) {

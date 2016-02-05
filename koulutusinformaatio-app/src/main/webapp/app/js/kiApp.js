@@ -17,9 +17,16 @@ var kiApp = angular.module('kiApp',
         'ngSanitize',
         'ngTouch',
         'ngAnimate',
+        'ngCookies',
         'vcRecaptcha',
         'pascalprecht.translate'
     ])
+.run(function($http, $cookies) {
+    $http.defaults.headers.common['clientSubSystemCode'] = "koulutusinformaatio.koulutusinformaatio-app.frontend";
+    if($cookies['CSRF']) {
+        $http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
+    }
+})
 .factory('useFinnishWhenMissing', function () {
   return function (translationID) {
       return localeJSON ? localeJSON[translationID + ".fi"] : translationID
