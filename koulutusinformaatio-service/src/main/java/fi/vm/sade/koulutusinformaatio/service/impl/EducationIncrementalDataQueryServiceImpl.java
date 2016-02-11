@@ -26,41 +26,30 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
@@ -77,12 +66,9 @@ EducationIncrementalDataQueryService {
     private static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataQueryServiceImpl.class);
 
     private ApplicationOptionDAO applicationOptionDAO;
-    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
     private PictureDAO pictureDAO;
-    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
-    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
     private TutkintoLOSDAO tutkintoLOSDAO;
@@ -92,10 +78,7 @@ EducationIncrementalDataQueryService {
 
     @Autowired
     public EducationIncrementalDataQueryServiceImpl(ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
-            ChildLearningOpportunityDAO childLearningOpportunityDAO,
             DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
-            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
             HigherEducationLOSDAO higherEducationLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
@@ -103,11 +86,8 @@ EducationIncrementalDataQueryService {
             LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
-        this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
-        this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
-        this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
@@ -119,25 +99,10 @@ EducationIncrementalDataQueryService {
 
     @Override
     public LOS getLos(String losId) {
-
-        ChildLearningOpportunitySpecificationEntity childE = this.childLearningOpportunityDAO.get(losId);
-        if (childE != null) {
-            return modelMapper.map(childE, ChildLOS.class);
-        }
-        UpperSecondaryLearningOpportunitySpecificationEntity upsecE = this.upperSecondaryLearningOpportunitySpecificationDAO.get(losId);
-        if (upsecE != null) {
-            return modelMapper.map(upsecE, UpperSecondaryLOS.class);
-        }
-        SpecialLearningOpportunitySpecificationEntity specialLosE = this.specialLearningOpportunitySpecificationDAO.get(losId);
-        if (specialLosE != null) {
-            return modelMapper.map(specialLosE, SpecialLOS.class);
-        }
-
         HigherEducationLOSEntity higherEdE = this.higherEducationLOSDAO.get(losId);
         if (higherEdE != null) {
             return modelMapper.map(higherEdE, HigherEducationLOS.class);
         }
-        
 
         CompetenceBasedQualificationParentLOSEntity adultVocationalEdE = this.adultVocationalLOSDAO.get(losId);
         if (adultVocationalEdE != null) {
@@ -160,55 +125,12 @@ EducationIncrementalDataQueryService {
     @Override
     public List<LOS> findLearningOpportunitiesByLoiId(String loiId) {
 
-        List<ChildLearningOpportunitySpecificationEntity> childrenE = this.childLearningOpportunityDAO.findByLoiId(loiId);
-        if (childrenE != null) {
-
-            return Lists.transform(
-                    childrenE,
-                    new Function<ChildLearningOpportunitySpecificationEntity, LOS>() {
-                        @Override
-                        public LOS apply(ChildLearningOpportunitySpecificationEntity input) {
-                            return modelMapper.map(input, ChildLOS.class);
-                        }
-                    }
-                    );
-
-        }
-
-        List<SpecialLearningOpportunitySpecificationEntity> specialsE = this.specialLearningOpportunitySpecificationDAO.findByLoiId(loiId);
-        if (specialsE != null) {
-            return Lists.transform(
-                    specialsE,
-                    new Function<SpecialLearningOpportunitySpecificationEntity, LOS>() {
-                        @Override
-                        public LOS apply(SpecialLearningOpportunitySpecificationEntity input) {
-                            return modelMapper.map(input, SpecialLOS.class);
-                        }
-                    }
-                    );
-        }
-
-        List<UpperSecondaryLearningOpportunitySpecificationEntity> upsecsE = this.upperSecondaryLearningOpportunitySpecificationDAO.findByLoiId(loiId);
-        if (upsecsE != null) {
-            return Lists.transform(
-                    upsecsE,
-                    new Function<UpperSecondaryLearningOpportunitySpecificationEntity, LOS>() {
-                        @Override
-                        public LOS apply(UpperSecondaryLearningOpportunitySpecificationEntity input) {
-                            return modelMapper.map(input, UpperSecondaryLOS.class);
-                        }
-                    }
-                    );
-        }
-
         HigherEducationLOSEntity higheredE = this.higherEducationLOSDAO.get(loiId);
         if (higheredE != null) {
             List<LOS> losses = new ArrayList<LOS>();
             losses.add(modelMapper.map(higheredE, HigherEducationLOS.class));
             return losses;
         }
-
-
 
         return null;
     }
@@ -258,18 +180,7 @@ EducationIncrementalDataQueryService {
                 loss.add(curLosRef.getId());
             }
         }
-        LOG.debug("Getting special loss");
-        List<Key<SpecialLearningOpportunitySpecificationEntity>> specials =  this.specialLearningOpportunitySpecificationDAO.findByAoId(aoE.getId());
-        if (specials != null && !specials.isEmpty()) {
-            LOG.debug("There are specials: {}", specials.size());
-            for (Key<SpecialLearningOpportunitySpecificationEntity> curSpec : specials) {
-                if (!loss.contains(curSpec.getId().toString())) {
-                    LOG.debug("Adding here: {}", curSpec.getId());
-                    loss.add(curSpec.getId().toString());
-                }
-            }
-        }
-        
+
         LOG.debug("returning: " + loss.size() + " los ids.");
         return loss;
     }

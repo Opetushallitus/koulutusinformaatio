@@ -19,14 +19,11 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.SetMultimap;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
@@ -79,8 +76,6 @@ public final class TutkintoLOSToDTO {
         if (tutkintoLOS.getTopics() != null) {
             parent.setTopics(CodeToDTO.convertAll(tutkintoLOS.getTopics(), uiLang));
         }
-
-        parent.setContainsPseudoChildLOS(containsPseudoChild(tutkintoLOS.getChildren()));
 
         if (!tutkintoLOS.getChildEducations().isEmpty()) {
 
@@ -146,19 +141,5 @@ public final class TutkintoLOSToDTO {
             return false;
         }
         return true;
-    }
-
-    private static boolean containsPseudoChild(List<ChildLOS> children) {
-        if (children == null) {
-            return false;
-        }
-
-        return Iterables.tryFind(children, new Predicate<ChildLOS>() {
-
-            @Override
-            public boolean apply(ChildLOS input) {
-                return input.isPseudo();
-            }
-        }).isPresent();
     }
 }

@@ -31,8 +31,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
@@ -40,9 +38,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 
 /**
  * @author Mikko Majapuro
@@ -112,7 +108,7 @@ public interface LearningOpportunityResource {
     @Path("child/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Deprecated
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(
+    public KoulutusLOSDTO getChildLearningOpportunity(
             @PathParam("cloId") String cloId,
             @QueryParam("lang") String lang,
             @QueryParam("uiLang") String uiLang);
@@ -128,7 +124,7 @@ public interface LearningOpportunityResource {
     @Path("upsec/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Deprecated
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(
+    public KoulutusLOSDTO getUpperSecondaryLearningOpportunity(
             @PathParam("id") String id,
             @QueryParam("lang") String lang,
             @QueryParam("uiLang") String uiLang);
@@ -164,7 +160,7 @@ public interface LearningOpportunityResource {
     @Path("special/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Deprecated
-    public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(
+    public KoulutusLOSDTO getSpecialLearningOpportunity(
             @PathParam("id") String id,
             @QueryParam("lang") String lang,
             @QueryParam("uiLang") String uiLang);

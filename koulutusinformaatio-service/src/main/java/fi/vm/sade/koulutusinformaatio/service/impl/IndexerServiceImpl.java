@@ -36,7 +36,6 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
@@ -44,10 +43,7 @@ import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
@@ -156,38 +152,6 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
-            // Adding upper secondary los (high school)
-        } else if (los instanceof UpperSecondaryLOS) {
-            UpperSecondaryLOS upperLOS = (UpperSecondaryLOS) los;
-            provider = upperLOS.getProvider();
-            for (UpperSecondaryLOI loi : upperLOS.getLois()) {
-                for (ApplicationOption ao : loi.getApplicationOptions()) {
-                    providerAsIds.add(ao.getApplicationSystem().getId());
-                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
-                    if (ao.isVocational()) {
-                        vocationalAsIds.add(ao.getApplicationSystem().getId());
-                    } else {
-                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
-                    }
-                }
-            }
-            // Adding special los
-        } else if (los instanceof SpecialLOS) {
-            SpecialLOS special = (SpecialLOS) los;
-            provider = special.getProvider();
-
-            for (ChildLOI childLOI : special.getLois()) {
-                for (ApplicationOption ao : childLOI.getApplicationOptions()) {
-                    providerAsIds.add(ao.getApplicationSystem().getId());
-                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
-                    if (ao.isVocational()) {
-                        vocationalAsIds.add(ao.getApplicationSystem().getId());
-                    } else {
-                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
-                    }
-                }
-            }
-
             // Adding higher education los
         } else if (los instanceof KoulutusLOS) {
             KoulutusLOS uas = (KoulutusLOS) los;
@@ -606,11 +570,6 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Override
     public void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException {
-        if (curLos instanceof SpecialLOS) {
-            for (ChildLOI curChild : ((SpecialLOS) curLos).getLois()) {
-                loHttpSolrServer.deleteById(curChild.getId());
-            }
-        }
         loHttpSolrServer.deleteById(curLos.getId());
         if (curLos instanceof TutkintoLOS) {
             loHttpSolrServer.deleteById(curLos.getId() + "#PK");

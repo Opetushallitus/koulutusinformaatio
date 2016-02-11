@@ -25,15 +25,12 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.HTTPException;
@@ -78,13 +75,6 @@ public class LearningOpportunityResourceImplTest {
         parentDTO.setId("parentLOSId");
         parentDTO.setName("parent name");
 
-        ChildLearningOpportunitySpecificationDTO childDTO = new ChildLearningOpportunitySpecificationDTO();
-        childDTO.setId("childid");
-        childDTO.setName("childName");
-
-        when(learningOpportunityService.getChildLearningOpportunity(eq("childid"), eq("fi"), eq("fi"))).thenReturn(childDTO);
-        when(learningOpportunityService.getChildLearningOpportunity(eq("childid"))).thenReturn(childDTO);
-        
         SuggestedTermsResult suggestions = new SuggestedTermsResult();
         List<String> terms = Arrays.asList("term1", "term2");
         suggestions.setLoNames(terms);
@@ -102,17 +92,6 @@ public class LearningOpportunityResourceImplTest {
         
         when(learningOpportunityService.getHigherEducationLearningOpportunity(anyString())).thenReturn(higherLos);
         when(learningOpportunityService.previewHigherEdLearningOpportunity(anyString(), anyString(), anyString())).thenReturn(higherLos);
-        
-        
-        SpecialLearningOpportunitySpecificationDTO specialLos = new SpecialLearningOpportunitySpecificationDTO();
-        specialLos.setId("specialLosId");
-        
-        when(learningOpportunityService.getSpecialSecondaryLearningOpportunity(anyString())).thenReturn(specialLos);
-        
-        UpperSecondaryLearningOpportunitySpecificationDTO upperSecLos = new UpperSecondaryLearningOpportunitySpecificationDTO();
-        upperSecLos.setId("upperSecLosId");
-        
-        when(learningOpportunityService.getUpperSecondaryLearningOpportunity(anyString())).thenReturn(upperSecLos);
         
         resource = new LearningOpportunityResourceImpl(searchService, modelMapper, learningOpportunityService);
 
@@ -133,14 +112,6 @@ public class LearningOpportunityResourceImplTest {
         assertEquals("PK", result.getResults().get(0).getPrerequisiteCode());
         assertEquals("3.4.5", result.getResults().get(0).getParentId());
         assertEquals("4.5.6", result.getResults().get(0).getLosId());
-    }
-
-    @Test
-    public void testGetChildLearningOpportunity() {
-        ChildLearningOpportunitySpecificationDTO dto1 = resource.getChildLearningOpportunity("childid", "fi", "fi");
-        assertNotNull(dto1);
-        ChildLearningOpportunitySpecificationDTO dto2 = resource.getChildLearningOpportunity("childid", null, null);
-        assertNotNull(dto2);
     }
 
     @Test(expected = HTTPException.class)
@@ -177,16 +148,4 @@ public class LearningOpportunityResourceImplTest {
         assertEquals("1.2.3.34", dto.getId());
     }
     
-    @Test
-    public void testGetSpecialLearningOpportunity() {
-        SpecialLearningOpportunitySpecificationDTO specialLos = resource.getSpecialLearningOpportunity("specialLosId", null, null);
-        assertEquals("specialLosId", specialLos.getId());
-    }
-    
-    @Test
-    public void testGetUpperSecondaryLearningOpportunity() {
-        UpperSecondaryLearningOpportunitySpecificationDTO upperSecLos = resource.getUpperSecondaryLearningOpportunity("upperSecLosId", null, null);
-        assertEquals("upperSecLosId", upperSecLos.getId());
-    }
-
 }
