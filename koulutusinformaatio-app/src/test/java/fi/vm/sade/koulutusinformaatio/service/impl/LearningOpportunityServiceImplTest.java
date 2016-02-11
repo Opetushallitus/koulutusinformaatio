@@ -43,27 +43,18 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Exam;
 import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityInstanceDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -78,8 +69,6 @@ public class LearningOpportunityServiceImplTest {
 
     private LearningOpportunityService learningOpportunityService;
     private EducationDataQueryService educationDataQueryService;
-    private ChildLOS childLOS;
-    private ChildLOI childLOI;
     private ApplicationOption applicationOption;
     private PreviewService previewService;
 
@@ -89,56 +78,25 @@ public class LearningOpportunityServiceImplTest {
 
         Code prerequisite = new Code("PK", createI18Text("Peruskoulu"), createI18Text("Peruskoulukoodin kuvaus"));
 
-        List<ChildLOIRef> childLOIRefs = new ArrayList<ChildLOIRef>();
-        childLOIRefs.add(createChildLOIRef(createI18Text("c1"), "c1 fi", "as123", "lo123", prerequisite));
-        childLOIRefs.add(createChildLOIRef(createI18Text("c2"), "c2 fi", "as123", "lo124", prerequisite));
-        childLOIRefs.add(createChildLOIRef(createI18Text("c3"), "c3 fi", "as124", "lo125", prerequisite));
-
         Set<String> asIds = new HashSet<String>();
         asIds.add("as123");
         asIds.add("as124");
         Provider parentProvider = createProvider("p1234", createI18Text("provider1"), asIds);
         applicationOption = createApplicationOption("ao123", createI18Text("ao name"), "as123",
-                parentProvider, new Date(), 100, 25, 6, 77, childLOIRefs, "32",
+                parentProvider, new Date(), 100, 25, 6, 77, "32",
                 prerequisite);
         List<ApplicationOption> aos = Lists.newArrayList(applicationOption);
-
-        childLOS = new ChildLOS();
-        childLOS.setId("lo123");
-        childLOS.setName(createI18Text("child 1"));
-        childLOS.setQualification(createI18Text("Qualification"));
-        ParentLOSRef parent = new ParentLOSRef();
-        parent.setId("1234");
-        parent.setName(createI18Text("parent name"));
-        childLOS.setParent(parent);
 
         Code c = new Code();
         c.setValue("fi");
         c.setDescription(createI18Text("suomi"));
 
-        Map<String, String> links = new HashMap<String, String>();
-        links.put("link1", "link1");
-        links.put("link2", "link2");
-
-        childLOI = new ChildLOI();
-        childLOI.setStartDate(new Date());
-        childLOI.setApplicationOptions(Lists.newArrayList(aos));
-        childLOI.setFormOfEducation(Lists.newArrayList(createI18Text("FormOfEducation"), createI18Text("FormOfEducation2")));
-        childLOI.setFormOfTeaching(Lists.newArrayList(createI18Text("FormOfTeaching"), createI18Text("FormOfTeaching2")));
-        childLOI.setPrerequisite(new Code("PK", createI18Text("Prerequisite"), null));
-        childLOI.setTeachingLanguages(Lists.newArrayList(c));
-        childLOI.setWebLinks(links);
-        childLOI.setRelated(childLOIRefs);
-        childLOI.setPrerequisite(prerequisite);
-        childLOS.setLois(Lists.newArrayList(childLOI));
-
         ModelMapper modelMapper = new ModelMapper();
 
-        when(educationDataQueryService.getChildLearningOpportunity(eq("clo123"))).thenReturn(childLOS);
         when(educationDataQueryService.getApplicationOption(eq("ao123"))).thenReturn(applicationOption);
         
         previewService = mock(PreviewService.class);
-        
+
         HigherEducationLOS heLOS = new HigherEducationLOS();
         heLOS.setId("1.3.2.4He");
         heLOS.setCreditUnit(this.createI18Text("opintoviikkoa"));
@@ -152,46 +110,26 @@ public class LearningOpportunityServiceImplTest {
         heLOS.setApplicationOptions(Lists.newArrayList(aos));
         heLOS.setFormOfTeaching(Lists.newArrayList(createI18Text("FormOfTeaching"), createI18Text("FormOfTeaching2")));
         heLOS.setTeachingLanguages(Lists.newArrayList(c));
-        
+
         Provider mainProvider = new Provider();
         mainProvider.setId("mainProvider");
         heLOS.setProvider(mainProvider);
-        
+
         Provider additionalProvider = new Provider();
         additionalProvider.setId("additionalProvider");
-        
+
         heLOS.setAdditionalProviders(Arrays.asList(additionalProvider));
-        
+
         when(educationDataQueryService.getHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
         when(previewService.previewHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
         when(educationDataQueryService.getApplicationOptions(anyListOf(String.class))).thenReturn(aos);
         when(educationDataQueryService.findApplicationOptions("as123", "", "", true, true)).thenReturn(aos);
-        
+
         List<LOS> losses = new ArrayList<LOS>();
 
-        UpperSecondaryLOS upperLOS = new UpperSecondaryLOS();
-        upperLOS.setId("2234");
-        upperLOS.setAccessToFurtherStudies(createI18Text("AccessToFurtherStudies"));
-        upperLOS.setEducationDegree("32");
-        upperLOS.setName(createI18Text("name"));
-        upperLOS.setGoals(createI18Text("goals"));
-        upperLOS.setStructure(createI18Text("StructureDiagram"));
-        losses.add(upperLOS);
-
-        losses.add(childLOS);
-        
-        SpecialLOS specialLOS = new SpecialLOS();
-        specialLOS.setId("3234");
-        specialLOS.setAccessToFurtherStudies(createI18Text("AccessToFurtherStudies"));
-        specialLOS.setEducationDegree("32");
-        specialLOS.setName(createI18Text("name"));
-        specialLOS.setGoals(createI18Text("goals"));
-        specialLOS.setStructure(createI18Text("StructureDiagram"));
-        losses.add(specialLOS);
-        
         when(educationDataQueryService.findLearningOpportunitiesByProviderId("provId")).thenReturn(losses);
 
-        
+
         Provider provider = new Provider();
         provider.setId("prov111");
         provider.setAccessibility(createI18Text("accessibility"));
@@ -199,14 +137,15 @@ public class LearningOpportunityServiceImplTest {
         provider.setEmail(createI18Text("has@email.fi"));
         provider.setHomePlace(createI18Text("Vantaa"));
         provider.setName(createI18Text("prov111"));
-        
+
         when(educationDataQueryService.getProvider("prov111")).thenReturn(provider);
-        
+
         learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, previewService, modelMapper);
     }
-    
+
     /**
      * Tests the fetching of provider from learning opportunity service.
+     *
      * @throws ResourceNotFoundException
      */
     @Test
@@ -222,31 +161,12 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(results.get(0).getApplicationOptions().size(), 1);
         assertEquals(results.get(0).getApplicationOptions().get(0).getId(), "ao123");
     }
-    
+
     @Test
     public void testSearchApplicationOptions() {
         List<ApplicationOptionSearchResultDTO> results = learningOpportunityService.searchApplicationOptions("as123", "", "", true, true, false, "fi");
         assertEquals(results.size(), 1);
         assertEquals(results.get(0).getId(), "ao123");
-    }
-    
-    @Test
-    public void testFindLearningOpportunitiesByProviderId() {
-        List<LearningOpportunitySearchResultDTO> results = learningOpportunityService.findLearningOpportunitiesByProviderId("provId", "fi");
-        assertEquals(results.size(), 3);
-        assertTrue(results.get(0).getId().contains("23"));
-    }
-
-    @Test
-    public void testGetChildLearningOpportunity() throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationDTO result = learningOpportunityService.getChildLearningOpportunity("clo123");
-        checkResult("fi", "fi", result);
-    }
-
-    @Test
-    public void testGetChildLearningOpportunityEn() throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationDTO result = learningOpportunityService.getChildLearningOpportunity("clo123", "en", "en");
-        checkResult("en", "fi", result);
     }
 
     @Test
@@ -260,16 +180,17 @@ public class LearningOpportunityServiceImplTest {
         ApplicationOptionDTO result = learningOpportunityService.getApplicationOption(applicationOption.getId(), "en", "en");
         checkResult("en", "fi", result);
     }
-    
+
     @Test
     public void testetHigherEducationLearningOpportunity() throws ResourceNotFoundException {
         HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He");
         assertEquals("1.3.2.4He", losDto.getId());
         assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
     }
-    
+
     /**
      * Testing learnin opportunity with multiple providers
+     *
      * @throws ResourceNotFoundException
      */
     @Test
@@ -280,33 +201,30 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(1, losDto.getAdditionalProviders().size());
         assertEquals("additionalProvider", losDto.getAdditionalProviders().get(0).getId());
     }
-    
-    
-    
+
+
     @Test
     public void testetHigherEducationLearningOpportunitySv() throws ResourceNotFoundException {
         HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "sv", "sv");
         assertEquals("1.3.2.4He", losDto.getId());
         assertEquals("opintoviikkoa sv", losDto.getCreditUnit());
     }
-    
+
     @Test
     public void testetHigherEducationLearningOpportunityEn() throws ResourceNotFoundException {
         HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "en", "en");
         assertEquals("1.3.2.4He", losDto.getId());
         assertEquals("opintoviikkoa en", losDto.getCreditUnit());
     }
-    
-    
-    
+
+
     @Test
     public void testPreviewLearningOpportunity() throws ResourceNotFoundException {
         HigherEducationLOSDTO losDto = learningOpportunityService.previewHigherEdLearningOpportunity("1.3.2.4He", "fi", "fi");
         assertEquals("1.3.2.4He", losDto.getId());
         assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
-        
+
     }
-    
 
 
     private void checkResult(String lang, String defaultLang, ApplicationOptionDTO result) {
@@ -325,36 +243,6 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(applicationOption.getChildLOIRefs().size(), result.getChildRefs().size());
     }
 
-    private void checkResult(String lang, String defaultLang, ChildLearningOpportunitySpecificationDTO result) {
-        assertNotNull(result);
-        assertEquals(childLOS.getId(), result.getId());
-        assertEquals(childLOS.getName().getTranslations().get(defaultLang), result.getName());
-
-        assertNotNull(result.getLois());
-        assertEquals(1, result.getLois().size());
-
-        assertEquals(childLOS.getQualification().getTranslations().get(lang), result.getQualification());
-        assertEquals(childLOS.getParent().getName().getTranslations().get(defaultLang), result.getParent().getName());
-        assertEquals(childLOS.getParent().getId(), result.getParent().getId());
-
-        assertNotNull(result.getLois());
-        assertEquals(1, result.getLois().size());
-        ChildLearningOpportunityInstanceDTO loi = result.getLois().get(0);
-        assertEquals(childLOI.getApplicationOptions().get(0).getId(),
-                loi.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getId());
-        assertEquals(childLOI.getApplicationOptions().get(0).getName().getTranslations().get(lang),
-                loi.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getName());
-        assertEquals(childLOI.getPrerequisite().getValue(),
-                loi.getPrerequisite().getValue());
-        assertEquals(childLOI.getPrerequisite().getDescription().getTranslations().get(lang),
-                loi.getPrerequisite().getDescription());
-
-        assertEquals(childLOI.getStartDate(), loi.getStartDate());
-        assertEquals(childLOI.getFormOfEducation().get(0).getTranslations().get(lang), loi.getFormOfEducation().get(0));
-        assertEquals(childLOI.getFormOfTeaching().get(0).getTranslations().get(lang), loi.getFormOfTeaching().get(0));
-        assertEquals(1, loi.getTeachingLanguages().size());
-        assertEquals(2, loi.getWebLinks().size());
-    }
 
     private I18nText createI18Text(String text) {
         Map<String, String> translations = new HashMap<String, String>();
@@ -362,16 +250,6 @@ public class LearningOpportunityServiceImplTest {
         translations.put("sv", text + " sv");
         translations.put("en", text + " en");
         return new I18nText(translations);
-    }
-
-    private ChildLOIRef createChildLOIRef(I18nText name, String nameByTeachingLang, String asId, String losId, Code prerequisite) {
-        ChildLOIRef ref = new ChildLOIRef();
-        ref.setName(name);
-        ref.setNameByTeachingLang(nameByTeachingLang);
-        ref.setAsIds(Lists.newArrayList(asId));
-        ref.setLosId(losId);
-        ref.setPrerequisite(prerequisite);
-        return ref;
     }
 
     private Provider createProvider(String id, I18nText name, Set<String> asIds) {
@@ -384,7 +262,7 @@ public class LearningOpportunityServiceImplTest {
 
     private ApplicationOption createApplicationOption(String id, I18nText name, String asId, Provider provider, Date attDeadline,
                                                       int lastYearApplicantCount, double lowestAcceptedAverage,
-                                                      int lowestAcceptedScore, int startingQuota, List<ChildLOIRef> childLOIRefs,
+                                                      int lowestAcceptedScore, int startingQuota,
                                                       String educationDegree, Code prerequisite) {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(id);
@@ -399,7 +277,6 @@ public class LearningOpportunityServiceImplTest {
         ao.setLowestAcceptedAverage(lowestAcceptedAverage);
         ao.setLowestAcceptedScore(lowestAcceptedScore);
         ao.setStartingQuota(startingQuota);
-        ao.setChildLOIRefs(childLOIRefs);
         ao.setEducationDegree(educationDegree);
         ao.setPrerequisite(prerequisite);
         Exam exam = new Exam();

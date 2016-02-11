@@ -186,14 +186,6 @@ public class TutkintoLOSDTO implements Articled {
         this.additionalProviders = additionalProviders;
     }
 
-    public void setContainsPseudoChildLOS(boolean containsPseudChildLOS) {
-        this.containsPseudoChildLOS = containsPseudChildLOS;
-    }
-
-    public boolean isContainsPseudoChildLOS() {
-        return containsPseudoChildLOS;
-    }
-
     public void setEdCodeSuggestions(List<ArticleResultDTO> edCodeSuggestions) {
         this.edCodeSuggestions = edCodeSuggestions;
     }

@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.service;
 import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
@@ -27,9 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -52,40 +49,14 @@ public interface EducationDataQueryService {
 
     ApplicationOption getApplicationOption(final String aoId) throws ResourceNotFoundException;
 
-    /**
-     * Gets the child learning opportunity
-     * @param childLoId child learning opportunity id
-     * @return child learning opportunity
-     */
-    ChildLOS getChildLearningOpportunity(final String childLoId) throws ResourceNotFoundException;
-
     DataStatus getLatestDataStatus();
 
     Picture getPicture(final String id) throws ResourceNotFoundException;
 
     /**
-     * Retrieves an upper secondary learning opportunity specification.
-     *
-     * @param id los id
-     * @return upper secondary los
-     * @throws ResourceNotFoundException
-     */
-    UpperSecondaryLOS getUpperSecondaryLearningOpportunity(final String id) throws ResourceNotFoundException;
-
-    /**
-     * Retrieves a special learning opportunity specification.
-     *
-     * @param id los id
-     * @return special los
-     * @throws ResourceNotFoundException
-     */
-    SpecialLOS getSpecialLearningOpportunity(final String id) throws ResourceNotFoundException;
-    
-    
-    /**
      * Retrieves a university of applied science learning opportunity specification.
      *
-     * @param id los id
+     * @param oid los id
      * @return university of applied science los
      * @throws ResourceNotFoundException
      */

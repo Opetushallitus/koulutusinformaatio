@@ -50,22 +50,12 @@ public class TutkintoLOS extends LOS {
 
     private Code educationCode;
 
-    private List<ChildLOS> children;
-
     private List<KoulutusLOS> childEducations = new ArrayList<KoulutusLOS>();
 
     private I18nText educationDomain;
     private I18nText stydyDomain;
 
     private Set<Code> teachingLanguages = new HashSet<Code>();
-
-    public List<ChildLOS> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLOS> children) {
-        this.children = children;
-    }
 
     public I18nText getEducationDomain() {
         return educationDomain;
