@@ -29,21 +29,15 @@ import com.google.common.collect.Lists;
 import com.mongodb.DBCollection;
 
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
 
 /**
  * @author Hannu Lyytikainen
@@ -52,26 +46,6 @@ public class AbstractEducationServiceTest {
 
     protected final static String NOTFOUND = "notfound";
     protected Date lastDataUpdate;
-
-    protected SpecialLearningOpportunitySpecificationDAO mockSpecialDAO() {
-        SpecialLearningOpportunitySpecificationEntity entity = new SpecialLearningOpportunitySpecificationEntity();
-        entity.setId("specialid");
-        SpecialLearningOpportunitySpecificationDAO dao = mock(SpecialLearningOpportunitySpecificationDAO.class);
-        when(dao.get(eq(entity.getId()))).thenReturn(entity);
-        when(dao.getFromSecondary(eq(entity.getId()))).thenReturn(entity);
-        when(dao.getFromSecondary(eq(NOTFOUND))).thenReturn(null);
-        return dao;
-    }
-
-    protected UpperSecondaryLearningOpportunitySpecificationDAO mockUpSecDAO() {
-        UpperSecondaryLearningOpportunitySpecificationEntity entity = new UpperSecondaryLearningOpportunitySpecificationEntity();
-        entity.setId("upsecid");
-        UpperSecondaryLearningOpportunitySpecificationDAO dao = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
-        when(dao.get(eq(entity.getId()))).thenReturn(entity);
-        when(dao.getFromSecondary(eq(entity.getId()))).thenReturn(entity);
-        when(dao.getFromSecondary(eq(NOTFOUND))).thenReturn(null);
-        return dao;
-    }
 
     protected PictureDAO mockPictureDAO() {
         PictureEntity entity = new PictureEntity();
@@ -91,17 +65,6 @@ public class AbstractEducationServiceTest {
         entity.setLastUpdateDuration(1000L);
         DataStatusDAO dao = mock(DataStatusDAO.class);
         when(dao.getLatest()).thenReturn(entity);
-        return dao;
-    }
-
-    protected ChildLearningOpportunityDAO mockChildDAO() {
-        ChildLearningOpportunitySpecificationEntity entity = new ChildLearningOpportunitySpecificationEntity();
-        entity.setId("childid");
-        ChildLearningOpportunityDAO dao = mock(ChildLearningOpportunityDAO.class);
-        when(dao.get(entity.getId())).thenReturn(entity);
-        when(dao.getFromSecondary(entity.getId())).thenReturn(entity);
-        when(dao.get(NOTFOUND)).thenReturn(null);
-        when(dao.getFromSecondary(NOTFOUND)).thenReturn(null);
         return dao;
     }
 

@@ -30,20 +30,14 @@ import fi.vm.sade.koulutusinformaatio.converter.AdultVocationalParentLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToBasketItemDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ChildLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.converter.HigherEducationLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.LOSToSearchResult;
 import fi.vm.sade.koulutusinformaatio.converter.PictureToThumbnail;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.SpecialLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.TutkintoLOSToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.UpperSecondaryLOSToDTO;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
@@ -51,24 +45,18 @@ import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -101,73 +89,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             lang = uiLang;
         }
         return TutkintoLOSToDTO.convert(tutkintoLOS, lang, uiLang, LANG_FI, prerequisite);
-    }
-
-    @Override
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
-        ChildLOS childLOS = educationDataQueryService.getChildLearningOpportunity(cloId);
-        String lang = resolveDefaultLanguage(childLOS.getLois().get(0), LANG_FI);
-        return ChildLOSToDTO.convert(childLOS, lang, lang, lang);
-    }
-
-    @Override
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String uiLang) throws ResourceNotFoundException {
-        ChildLOS childLOS = educationDataQueryService.getChildLearningOpportunity(cloId);
-        String lang = resolveDefaultLanguage(childLOS.getLois().get(0), uiLang);
-        return ChildLOSToDTO.convert(childLOS, lang, uiLang, lang);
-    }
-
-    @Override
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang, String uiLang) throws ResourceNotFoundException {
-        ChildLOS childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
-        String defaultLang = resolveDefaultLanguage(childLO.getLois().get(0), lang);
-        return ChildLOSToDTO.convert(childLO, lang, uiLang, defaultLang);
-    }
-
-    @Override
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
-        UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
-        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0), LANG_FI);
-        return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, lang, lang);
-    }
-
-    @Override
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException {
-        UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
-        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0), uiLang);
-        return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, uiLang, lang);
-    }
-
-    @Override
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang)
-            throws ResourceNotFoundException {
-        UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
-        String defaultLang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0), lang);
-        return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, uiLang, defaultLang);
-    }
-
-    @Override
-    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
-        SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
-        String lang = resolveDefaultLanguage(los.getLois().get(0), LANG_FI);
-        return SpecialLOSToDTO.convert(los, lang, lang, lang);
-    }
-
-    @Override
-    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException {
-        SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
-        String lang = resolveDefaultLanguage(los.getLois().get(0), uiLang);
-        return SpecialLOSToDTO.convert(los, lang, uiLang, lang);
-    }
-
-    @Override
-    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id,
-            String lang,
-            String uiLang)
-                    throws ResourceNotFoundException {
-        SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
-        String defaultLang = resolveDefaultLanguage(los.getLois().get(0), lang);
-        return SpecialLOSToDTO.convert(los, lang, uiLang, defaultLang);
     }
 
     @Override
@@ -242,42 +163,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public List<LearningOpportunitySearchResultDTO> findLearningOpportunitiesByProviderId(String providerId, String lang) {
         List<LOS> losses = educationDataQueryService.findLearningOpportunitiesByProviderId(providerId);
         return LOSToSearchResult.convert(losses, lang);
-    }
-
-    private String resolveDefaultLanguage(final ChildLOI childLOI, String lang) {
-        if (childLOI.getTeachingLanguages() == null || childLOI.getTeachingLanguages().isEmpty()) {
-            return LANG_FI;
-        } else {
-            for (Code code : childLOI.getTeachingLanguages()) {
-                if (code.getValue().equalsIgnoreCase(lang)) {
-                    return lang;
-                }
-            }
-            for (Code code : childLOI.getTeachingLanguages()) {
-                if (code.getValue().equalsIgnoreCase(LANG_FI)) {
-                    return LANG_FI;
-                }
-            }
-            return childLOI.getTeachingLanguages().get(0).getValue().toLowerCase();
-        }
-    }
-
-    private String resolveDefaultLanguage(final UpperSecondaryLOI loi, String lang) {
-        if (loi.getTeachingLanguages() == null || loi.getTeachingLanguages().isEmpty()) {
-            return LANG_FI;
-        } else {
-            for (Code code : loi.getTeachingLanguages()) {
-                if (code.getValue().equalsIgnoreCase(lang)) {
-                    return lang;
-                }
-            }
-            for (Code code : loi.getTeachingLanguages()) {
-                if (code.getValue().equalsIgnoreCase(LANG_FI)) {
-                    return LANG_FI;
-                }
-            }
-            return loi.getTeachingLanguages().get(0).getValue().toLowerCase();
-        }
     }
 
     private String resolveDefaultLanguage(final ApplicationOption ao, String lang) {
