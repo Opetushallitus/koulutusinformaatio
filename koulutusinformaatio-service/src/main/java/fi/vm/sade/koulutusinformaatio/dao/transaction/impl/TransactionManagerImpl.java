@@ -36,15 +36,12 @@ import com.mongodb.MongoClient;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -73,25 +70,19 @@ public class TransactionManagerImpl implements TransactionManager {
     private HttpSolrServer adminHttpSolrServer;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
-    private ChildLearningOpportunityDAO childLOTransactionDAO;
     private PictureDAO pictureTransactionDAO;
-    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
-    private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private DataStatusDAO dataStatusTransactionDAO;
     private KoulutusLOSDAO koulutusLOSTransactionDAO;
     private TutkintoLOSDAO tutkintoLOSTransactionDAO;
 
     private ApplicationOptionDAO applicationOptionDAO;
-    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
-    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
-    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
     private TutkintoLOSDAO tutkintoLOSDAO;
     
@@ -126,26 +117,20 @@ public class TransactionManagerImpl implements TransactionManager {
             @Value("${solr.location.update.url}") String locationUpdateCoreName,
             ApplicationOptionDAO applicationOptionTransactionDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
-            ChildLearningOpportunityDAO childLOTransactionDAO,
             PictureDAO pictureTransactionDAO,
-            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
             AdultVocationalLOSDAO adultVocationalLOSTransactionDAO,
             KoulutusLOSDAO koulutusLOSTransactionDAO,
             TutkintoLOSDAO tutkintoLOSTransactionDAO,
-            SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             DataStatusDAO dataStatusTransactionDAO,
             ApplicationOptionDAO applicationOptionDAO,
-            ChildLearningOpportunityDAO childLearningOpportunityDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             DataStatusDAO dataStatusDAO,
             PictureDAO pictureDAO,
-            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-            HigherEducationLOSDAO higherEducationLOSDAO, 
+            HigherEducationLOSDAO higherEducationLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
             TutkintoLOSDAO tutkintoLOSDAO,
-            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             KoodistoService koodistoService,
             ProviderService providerService,
             ParameterService parameterService) {
@@ -162,25 +147,19 @@ public class TransactionManagerImpl implements TransactionManager {
         this.adminHttpSolrServer = adminHttpSolrServer;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
-        this.childLOTransactionDAO = childLOTransactionDAO;
         this.pictureTransactionDAO = pictureTransactionDAO;
-        this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
         this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
         this.koulutusLOSTransactionDAO = koulutusLOSTransactionDAO;
         this.tutkintoLOSTransactionDAO = tutkintoLOSTransactionDAO;
-        this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.applicationOptionDAO = applicationOptionDAO;
-        this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
-        this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
         this.tutkintoLOSDAO = tutkintoLOSDAO;
-        this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.parameterService = parameterService;
@@ -265,12 +244,9 @@ public class TransactionManagerImpl implements TransactionManager {
     private void dropTransactionDbCollections() {
         applicationOptionTransactionDAO.getCollection().drop();
         learningOpportunityProviderTransactionDAO.getCollection().drop();
-        childLOTransactionDAO.getCollection().drop();
         pictureTransactionDAO.getCollection().drop();
-        upperSecondaryLOSTransactionDAO.getCollection().drop();
         higherEducationLOSTransactionDAO.getCollection().drop();
         adultVocationalLOSTransactionDAO.getCollection().drop();
-        specialLOSTransactionDAO.getCollection().drop();
         dataStatusTransactionDAO.getCollection().drop();
         koulutusLOSTransactionDAO.getCollection().drop();
         tutkintoLOSTransactionDAO.getCollection().drop();
@@ -278,14 +254,11 @@ public class TransactionManagerImpl implements TransactionManager {
 
     private void dropDbCollections() {
         applicationOptionDAO.getCollection().drop();
-        childLearningOpportunityDAO.getCollection().drop();
         dataStatusDAO.getCollection().drop();
         pictureDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
-        upperSecondaryLearningOpportunitySpecificationDAO.getCollection().drop();
         higherEducationLOSDAO.getCollection().drop();
         adultVocationalLOSDAO.getCollection().drop();
-        specialLearningOpportunitySpecificationDAO.getCollection().drop();
         koulutusLOSDAO.getCollection().drop();
         tutkintoLOSDAO.getCollection().drop();
         

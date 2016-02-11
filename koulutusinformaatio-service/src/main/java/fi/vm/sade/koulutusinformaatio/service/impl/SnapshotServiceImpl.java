@@ -49,9 +49,6 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String TYPE_ADULT_UPSEC = "aikuislukio";
     private static final String QUERY_PARAM_LANG = "descriptionLang";
 
-    private SpecialLearningOpportunitySpecificationDAO specialDAO;
-    private ChildLearningOpportunityDAO childDAO;
-    private UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO;
     private HigherEducationLOSDAO higheredDAO;
     private AdultVocationalLOSDAO adultvocDAO;
     private KoulutusLOSDAO adultupecDAO;
@@ -61,21 +58,13 @@ public class SnapshotServiceImpl implements SnapshotService {
     private String baseUrl;
 
     @Autowired
-    public SnapshotServiceImpl(@Qualifier("specialLearningOpportunitySpecificationDAO")
-                               SpecialLearningOpportunitySpecificationDAO specialDAO,
-                               @Qualifier("childLearningOpportunityDAO") ChildLearningOpportunityDAO childDAO,
-                               @Qualifier("upperSecondaryLearningOpportunitySpecificationDAO")
-                               UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO,
-                               @Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
+    public SnapshotServiceImpl(@Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
                                @Qualifier("adultVocationalLOSDAO") AdultVocationalLOSDAO adultvocDAO,
                                @Qualifier("koulutusLOSDAO") KoulutusLOSDAO adultupsecDAO,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
                                @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl) {
-        this.specialDAO = specialDAO;
-        this.childDAO = childDAO;
-        this.upsecDAO = upsecDAO;
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
         this.adultupecDAO = adultupsecDAO;
@@ -88,12 +77,6 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public void renderSnapshots() {
         LOG.info("Rendering html snapshots");
-        prerender(TYPE_SPECIAL, specialDAO.findIds());
-        LOG.debug("Special LOs rendered");
-        prerender(TYPE_CHILD, childDAO.findIds());
-        LOG.debug("Child LOs rendered");
-        prerender(TYPE_UPSEC, upsecDAO.findIds());
-        LOG.debug("Upsec LOs rendered");
         prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
         LOG.debug("HigherEd LOs rendered");
         prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
