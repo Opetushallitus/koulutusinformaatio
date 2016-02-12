@@ -15,6 +15,10 @@
  */
 package fi.vm.sade.koulutusinformaatio.service;
 
+import org.apache.solr.client.solrj.SolrServerException;
+
+import java.io.IOException;
+
 /**
  * @author risal1
  *
@@ -26,5 +30,7 @@ public interface PartialUpdateService extends RunningService {
     void updateApplicationSystem(String oid);
 
     void updateApplicationOption(String oid);
-    
+
+    void updateGeneralData();
+
 }
