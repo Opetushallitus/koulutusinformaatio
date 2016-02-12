@@ -145,13 +145,26 @@ public class AdminResource {
         }
         return Response.seeOther(new URI("admin/status")).build();
     }
-    
+
     @GET
     @Path("/partial/ao/{oid}")
     public Response partialUpdateApplicationOptionData(@PathParam("oid") String oid) throws URISyntaxException {
         try {
             if (!runningServiceChecker.isAnyServiceRunning()) {
                 partialUpdateService.updateApplicationOption(oid);
+            }
+        } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+
+    @GET
+    @Path("/partial/general")
+    public Response partialUpdateApplicationOptionData() throws URISyntaxException {
+        try {
+            if (!runningServiceChecker.isAnyServiceRunning()) {
+                partialUpdateService.updateGeneralData();
             }
         } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
