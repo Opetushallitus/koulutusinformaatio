@@ -2,7 +2,8 @@
  *  Controller for search field in header
  */
 function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService, Config) {
-    $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
+    $scope.searchFieldAriaLabel = TranslationService.getTranslation('search-field-aria-label');
+    $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder');
     $scope.suggestions = [];
 
     if($scope.demo) {
