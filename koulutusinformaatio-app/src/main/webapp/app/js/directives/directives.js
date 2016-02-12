@@ -118,7 +118,7 @@ directive('kiAbsoluteLink', function() {
             scope.getLocations = function($viewValue) {
                 return SearchLocationService.query($viewValue);
             };
-
+            scope.arialabel = TranslationService.getTranslation('location-filter-aria-label');
             scope.placeholder = TranslationService.getTranslation('location-filter-placeholder');
         }
     };
