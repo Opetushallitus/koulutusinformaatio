@@ -15,8 +15,12 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +30,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
@@ -80,7 +83,10 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     
     @Autowired @Qualifier("locationAliasSolrServer") 
     private HttpSolrServer locationHttpSolrServer;
-    
+
+    @Autowired
+    private GeneralUpdateServiceImpl generalUpdateService;
+
     @Async
     @Override
     public void updateEducation(String oid) {
@@ -97,7 +103,19 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     public void updateApplicationOption(String oid) {
         doUpdate(oid, new ApplicationOptionUpdater());
     }
-    
+
+    @Override
+    public void updateGeneralData() {
+        try {
+            startRunning();
+            generalUpdateService.updateGeneralData(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
+        } catch (Exception e){
+            LOGGER.warn("Failed to update general data.", e);
+        } finally {
+            running = false;
+        }
+    }
+
     private void doUpdate(String oid, Updater updater) {
         startRunning();
         try {

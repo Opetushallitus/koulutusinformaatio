@@ -73,12 +73,11 @@ public class UpdateServiceImpl implements UpdateService {
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
     private ArticleService articleService;
-    private ProviderService providerService;
+    private GeneralUpdateServiceImpl generalUpdateService;
 
     private TransactionManager transactionManager;
     private boolean running = false;
     private long runningSince = 0;
-    private LocationService locationService;
     private long fullIndexingStartTime;
 
     @Value("${koulutusinformaatio.error.report.recipients}")
@@ -92,17 +91,16 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
-            EducationDataUpdateService educationDataUpdateService,
-            TransactionManager transactionManager, LocationService locationService,
-            ProviderService providerService,
-            ArticleService articleService) {
+                             EducationDataUpdateService educationDataUpdateService,
+                             TransactionManager transactionManager,
+                             ArticleService articleService,
+                             GeneralUpdateServiceImpl generalUpdateService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
         this.transactionManager = transactionManager;
-        this.locationService = locationService;
         this.articleService = articleService;
-        this.providerService = providerService;
+        this.generalUpdateService = generalUpdateService;
     }
 
     @Override
@@ -215,35 +213,8 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Valmistava educations saved.");
 
-            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
-            LOG.info("Providers indexed");
-
-            List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
-            indexerService.addFacetCodes(edTypeCodes, loUpdateSolr);
-            LOG.info("Education types indexded.");
-
-            List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
-            indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
-            LOG.info("Base educations indexded.");
-
-            List<Location> locations = locationService.getMunicipalities();
-            LOG.debug("Got locations");
-            indexerService.addLocations(locations, locationUpdateSolr);
-            LOG.info("Location indexed");
-
-            List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
-            for (CalendarApplicationSystem curAs : applicationSystems) {
-                LOG.debug("Indexing application system: {}", curAs.getId());
-                this.indexerService.indexASToSolr(curAs, loUpdateSolr);
-            }
-            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-            LOG.info("Application systems indexed");
-
-            List<Article> articles = this.articleService.fetchArticles();
-            LOG.debug("Articles fetched");
-            indexerService.addArticles(loUpdateSolr, articles);
-            LOG.info("Articles indexed to solr");
+            generalUpdateService.updateGeneralData(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            LOG.info("General information saved.");
 
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
@@ -267,59 +238,6 @@ public class UpdateServiceImpl implements UpdateService {
 
     public long getProgressCounter() {
         return System.currentTimeMillis() - fullIndexingStartTime;
-    }
-
-    /*
-     * 
-     * Handles the indexing of providers from organisaatio service to solr and MongoDB.
-     * This method is used when indexing organizations (Oppilaitos, Toimipiste) which 
-     * are not providers of learning opportunities.
-     * 
-     */
-    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws MalformedURLException,
-            IOException, SolrServerException, KIException {
-
-        List<OrganisaatioPerustieto> orgBasics = this.providerService.fetchOpplaitokset();
-        LOG.debug("Oppilaitokset fetched");
-        createAndSaveProviders(orgBasics, lopUpdateSolr);
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        LOG.debug("Oppilaitokset saved");
-        orgBasics = this.providerService.fetchToimipisteet();
-        createAndSaveProviders(orgBasics, lopUpdateSolr);
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        orgBasics = this.providerService.fetchOppisopimusToimipisteet();
-        createAndSaveProviders(orgBasics, lopUpdateSolr);
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        LOG.debug("toimipisteet saved");
-    }
-
-    /*
-     * Indexes and saves the given list of organizations. 
-     */
-    private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
-            HttpSolrServer lopUpdateSolr) throws MalformedURLException, IOException, SolrServerException, KIException {
-        LOG.debug("organisations length: {}", orgBasics.size());
-        for (OrganisaatioPerustieto curOrg : orgBasics) {
-
-            LOG.debug("Fetching org {}", curOrg.getOid());
-            if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
-                LOG.debug("Indexing organisaatio: {}", curOrg.getOid());
-                Provider curProv = null;
-                try {
-                    curProv = this.providerService.getByOID(curOrg.getOid());
-                } catch (Exception ex) {
-                    LOG.warn("Problem indexing organization: " + curOrg.getOid(), ex);
-                    continue;
-                }
-                if (curProv.getOlTypeFacets() != null && !curProv.getOlTypeFacets().isEmpty()) {
-                    this.educationDataUpdateService.save(curProv);
-                    this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(),
-                            new HashSet<String>());
-                    LOG.debug("Indexed and saved organisaatio: {}", curOrg.getOid());
-                }
-
-            }
-        }
     }
 
     private void indexToSolr(LOS curLOS,
