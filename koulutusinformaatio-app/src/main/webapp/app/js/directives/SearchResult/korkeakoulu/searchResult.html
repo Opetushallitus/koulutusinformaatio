@@ -2,7 +2,7 @@
     <div class="row row-xs-height">
         <div class="col-xs-10 col-xs-height">
             <h2 title="{{locales.openEducation}}">
-                <a href="{{lo.linkHref}}">{{lo.name}}</a>
+                <a href="{{lo.linkHref}}" aria-label="{{lo.homeplace}}">{{lo.name}}</a>
             </h2>
             
             <span tabindex="0" class="label label-subject" data-ng-repeat="subject in lo.subjects | orderBy:'toString()'" data-ng-click="selectLabel(subject)" data-ng-keypress="selectLabel(subject)">{{subject}}</span>
