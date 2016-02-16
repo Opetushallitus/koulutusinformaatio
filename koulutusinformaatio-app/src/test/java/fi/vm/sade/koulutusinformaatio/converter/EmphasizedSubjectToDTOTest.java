@@ -40,11 +40,9 @@ public class EmphasizedSubjectToDTOTest {
 
     @Before
     public void inti() {
-        emphasizedSubject = new EmphasizedSubject();
         I18nText subject = new I18nText();
         subject.put("fi", "subject fi");
-        emphasizedSubject.setSubject(subject);
-        emphasizedSubject.setValue("val string");
+        emphasizedSubject = new EmphasizedSubject(subject, "val string");
     }
 
     @Test
