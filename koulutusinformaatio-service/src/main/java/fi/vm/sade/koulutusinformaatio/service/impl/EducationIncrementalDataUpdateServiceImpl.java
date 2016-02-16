@@ -24,15 +24,12 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
@@ -42,16 +39,13 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 
@@ -69,11 +63,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private ModelMapper modelMapper;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
-    private ChildLearningOpportunityDAO childLODAO;
     private PictureDAO pictureDAO;
-    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSDAO;
     private DataStatusDAO dataStatusDAO;
-    private SpecialLearningOpportunitySpecificationDAO specialLOSDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private KoulutusLOSDAO koulutusLOSDAO;
@@ -83,10 +74,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper,
             ApplicationOptionDAO applicationOptionDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
-            ChildLearningOpportunityDAO childLearningOpportunityDAO,
             PictureDAO pictureDAO,
-            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-            DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
+            DataStatusDAO dataStatusDAO,
             HigherEducationLOSDAO higherEducationLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,
             KoulutusLOSDAO koulutusLOSDAO,
@@ -94,11 +83,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.modelMapper = modelMapper;
         this.applicationOptionDAO = applicationOptionDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
-        this.childLODAO = childLearningOpportunityDAO;
         this.pictureDAO = pictureDAO;
-        this.upperSecondaryLOSDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.dataStatusDAO = dataStatusDAO;
-        this.specialLOSDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.koulutusLOSDAO = koulutusLOSDAO;
@@ -144,13 +130,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     public void deleteLos(LOS los) {
         String type = los.getToteutustyyppi() != null ? los.getToteutustyyppi().name() : los.getType();
         LOG.info("Deleted {} koulutus: {}", type != null ? type : "by oid", los.getId());
-        if (los instanceof ChildLOS) {
-            this.childLODAO.deleteById(los.getId());
-        } else if (los instanceof SpecialLOS) {
-            this.specialLOSDAO.deleteById(los.getId());
-        } else if (los instanceof UpperSecondaryLOS) {
-            this.upperSecondaryLOSDAO.deleteById(los.getId());
-        } else if (los instanceof HigherEducationLOS) {
+        if (los instanceof HigherEducationLOS) {
             this.higherEducationLOSDAO.deleteById(los.getId());
         } else if (los instanceof CompetenceBasedQualificationParentLOS) {
             this.adultVocationalLOSDAO.deleteById(los.getId());

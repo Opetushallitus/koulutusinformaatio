@@ -77,15 +77,6 @@
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
 
-    <bean id="childLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
-        <constructor-arg>
-            <ref bean="primaryDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryDatastore"/>
-        </constructor-arg>
-    </bean>
-
     <bean id="dataStatusDAO" class="fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO">
         <constructor-arg>
             <ref bean="mongo"/>
@@ -105,24 +96,6 @@
         </constructor-arg>
     </bean>
 
-    <bean id="upperSecondaryLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="primaryDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryDatastore"/>
-        </constructor-arg>
-    </bean>
-
-    <bean id="specialLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="primaryDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryDatastore"/>
-        </constructor-arg>
-    </bean>
-    
     <bean id="higherEducationLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO">
         <constructor-arg>
             <ref bean="mongo"/>

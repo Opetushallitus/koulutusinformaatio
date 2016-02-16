@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.util;
 import java.util.List;
 import java.util.Map;
 
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import org.mockito.ArgumentMatcher;
 
 import com.google.common.collect.Lists;
@@ -26,7 +27,6 @@ import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 /**
@@ -74,29 +74,11 @@ public class TestUtil {
         return ref;
     }
 
-    public static ChildLOIRef createChildLORef(String name, String asId, String loId) {
-        ChildLOIRef ref = new ChildLOIRef();
-        ref.setNameByTeachingLang(name + " fi");
-        ref.setName(createI18nText(name + " fi", name + " sv", name + " en"));
-        ref.setAsIds(Lists.newArrayList(asId));
-        ref.setId(loId);
-        return ref;
-    }
-
     public static ArgumentMatcher<List> isListOfOneELement() {
         return new ArgumentMatcher<List>() {
             @Override
             public boolean matches(Object list) {
                 return ((List) list).size() == 1;
-            }
-        };
-    }
-
-    public static ArgumentMatcher<List> isListOfTwoELements() {
-        return new ArgumentMatcher<List>() {
-            @Override
-            public boolean matches(Object list) {
-                return ((List) list).size() == 2;
             }
         };
     }

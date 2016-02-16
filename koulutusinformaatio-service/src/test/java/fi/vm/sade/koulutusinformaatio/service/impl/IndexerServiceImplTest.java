@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -45,15 +44,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
-import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
 /**
@@ -184,41 +177,4 @@ public class IndexerServiceImplTest {
         this.indexerServiceImpl.createProviderDocs(prov, this.lopUpdateHttpSolrServer, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
         verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
     }
-    
-    @Test(expected=RuntimeException.class)
-    public void throwsRuntimeExceptionWhenUnknownExceptionIsCaughtWhileIndexingLearningOpportunitySpecification() throws SolrServerException, IOException {
-        SpecialLOS los = new SpecialLOS();
-        los.setId("123.56534.4534.32");
-        los.setLois(Arrays.asList(givenChildLOI(givenApplicationOption())));
-        indexerServiceImpl.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
-    }
-
-    private ApplicationOption givenApplicationOption() {
-        ApplicationOption ao1 = new ApplicationOption();
-        ao1.setId("AO1_id");
-        ao1.setPrerequisite(new Code("PK",
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en"),
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en")));
-        ao1.setRequiredBaseEducations(Lists.newArrayList("1"));
-        return ao1;
-    }
-
-    private ChildLOI givenChildLOI(ApplicationOption ao1) {
-        ChildLOI childLOI1 = new ChildLOI();
-        childLOI1.setId("childLOI1_id");
-        childLOI1.setPrerequisite(new Code("PK",
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en"),
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en")));
-
-        childLOI1.setTeachingLanguages(Lists.newArrayList(new Code("fi",
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en"),
-                TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en"))));
-
-        childLOI1.setProfessionalTitles(Lists.newArrayList(TestUtil.createI18nText("Professional title fi", "Professional title sv", "Professional title en")));
-        childLOI1.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
-        childLOI1.setApplicationOptions(Lists.newArrayList(ao1));
-        return childLOI1;
-    }
-
-
 }

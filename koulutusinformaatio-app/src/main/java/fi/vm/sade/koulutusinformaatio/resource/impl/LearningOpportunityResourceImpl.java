@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
@@ -35,7 +36,6 @@ import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.Articled;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
@@ -43,9 +43,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -125,38 +123,14 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang, String uiLang) {
-        try {
-            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                return learningOpportunityService.getChildLearningOpportunity(cloId);
-            }
-            else if (Strings.isNullOrEmpty(lang)) {
-                return learningOpportunityService.getChildLearningOpportunity(cloId, uiLang.toLowerCase());
-            }
-            else {
-                return learningOpportunityService.getChildLearningOpportunity(cloId, lang.toLowerCase(), uiLang.toLowerCase());
-            }
-        } catch (ResourceNotFoundException e) {
-            throw KIExceptionHandler.resolveException(e);
-        }
+    public KoulutusLOSDTO getChildLearningOpportunity(String id, String lang, String uiLang) {
+        return getKoulutusLearningOpportunity(id, lang, uiLang);
     }
 
     @Override
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(
+    public KoulutusLOSDTO getUpperSecondaryLearningOpportunity(
             String id, String lang, String uiLang) {
-        try {
-            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                return learningOpportunityService.getUpperSecondaryLearningOpportunity(id);
-            }
-            else if (Strings.isNullOrEmpty(lang)) {
-                return learningOpportunityService.getUpperSecondaryLearningOpportunity(id, uiLang.toLowerCase());
-            }
-            else {
-                return learningOpportunityService.getUpperSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
-            }
-        } catch (ResourceNotFoundException e) {
-            throw KIExceptionHandler.resolveException(e);
-        }
+        return getKoulutusLearningOpportunity(id, lang, uiLang);
     }
 
 
@@ -188,20 +162,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(String id, String lang, String uiLang) {
-        try {
-            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                return learningOpportunityService.getSpecialSecondaryLearningOpportunity(id);
-            }
-            else if (Strings.isNullOrEmpty(lang)) {
-                return learningOpportunityService.getSpecialSecondaryLearningOpportunity(id, uiLang.toLowerCase());
-            }
-            else {
-                return learningOpportunityService.getSpecialSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
-            }
-        } catch (ResourceNotFoundException e) {
-            throw KIExceptionHandler.resolveException(e);
-        }
+    public KoulutusLOSDTO getSpecialLearningOpportunity(String id, String lang, String uiLang) {
+        return getKoulutusLearningOpportunity(id, lang, uiLang);
     }
 
     @Override

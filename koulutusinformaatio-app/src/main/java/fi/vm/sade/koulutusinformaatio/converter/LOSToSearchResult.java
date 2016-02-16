@@ -46,16 +46,7 @@ public final class LOSToSearchResult {
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
         if (los instanceof KoulutusLOS) {
             dto.setType(TarjontaConstants.TYPE_KOULUTUS);
-        } else if (los instanceof ChildLOS) {
-            dto.setType(TarjontaConstants.TYPE_CHILD.toLowerCase());
-        }
-        else if (los instanceof UpperSecondaryLOS) {
-            dto.setType(TarjontaConstants.TYPE_UPSEC.toLowerCase());
-        }
-        else if (los instanceof SpecialLOS) {
-            dto.setType(TarjontaConstants.TYPE_SPECIAL.toLowerCase());
-        }
-        else {
+        } else {
             dto.setType(TarjontaConstants.TYPE_KK);
         }
         return dto;

@@ -67,15 +67,6 @@
         <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
-    <bean id="childLOTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
-        <constructor-arg>
-            <ref bean="primaryTransactionDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryTransactionDatastore"/>
-        </constructor-arg>
-    </bean>
-
     <bean id="dataStatusTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO">
         <constructor-arg>
             <ref bean="transactionMongo"/>
@@ -95,24 +86,6 @@
         </constructor-arg>
     </bean>
 
-    <bean id="upperSecondaryLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="primaryTransactionDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryTransactionDatastore"/>
-        </constructor-arg>
-    </bean>
-
-    <bean id="specialLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="primaryTransactionDatastore"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="secondaryTransactionDatastore"/>
-        </constructor-arg>
-    </bean>
-    
     <bean id="higherEducationLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO">
         <constructor-arg>
             <ref bean="mongo"/>
