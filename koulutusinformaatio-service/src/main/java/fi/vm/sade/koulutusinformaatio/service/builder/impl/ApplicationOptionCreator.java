@@ -16,6 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +26,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -38,12 +33,6 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.YhteystiedotV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.Osoitemuoto;
 import org.springframework.util.CollectionUtils;
 
@@ -260,7 +249,14 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
 
         ao.setPaid(haku.isMaksumuuriKaytossa());
-
+        if (hakukohde.getPainotettavatOppiaineet() != null) {
+            List<EmphasizedSubject> emphasizedSubjects = Lists.newArrayList();
+            List<PainotettavaOppiaineV1RDTO> painotettavat = hakukohde.getPainotettavatOppiaineet();
+            for (PainotettavaOppiaineV1RDTO painotettava : painotettavat) {
+                emphasizedSubjects.add(new EmphasizedSubject(koodistoService.searchFirstName(painotettava.getOppiaineUri()), painotettava.getPainokerroin().toString()));
+            }
+            ao.setEmphasizedSubjects(emphasizedSubjects);
+        }
         return ao;
     }
 
