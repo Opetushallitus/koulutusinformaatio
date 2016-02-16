@@ -550,7 +550,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     }
 
                 } catch (Exception ex) {
-                    LOG.debug("Problem fetching ao: {}", ex.getMessage());
+                    LOG.debug("Problem fetching ao: {}", ex.getMessage(), ex);
                     invalidOids.add(aoId);
                 }
             }
