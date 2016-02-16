@@ -26,7 +26,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
@@ -43,6 +48,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportuni
  * @author Mikko Majapuro
  */
 @Path("/lo")
+@Api(value = "/lo", description = "Koulutukset")
 public interface LearningOpportunityResource {
 
     /**
@@ -56,33 +62,41 @@ public interface LearningOpportunityResource {
     @GET
     @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
-    public LOSearchResultListDTO searchLearningOpportunities(@QueryParam("text") String text,
-                                                             @QueryParam("prerequisite") String prerequisite,
-                                                             @QueryParam("city") List<String> cities,
-                                                             @QueryParam("facetFilters") List<String> facetFilters,
-                                                             @QueryParam("articleFacetFilters") List<String> articleFilters,
-                                                             @QueryParam("providerFacetFilters") List<String> providerFilters,
-                                                             @QueryParam("lang") String lang,
-                                                             @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
-                                                             @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
-                                                             @DefaultValue(value = "false") @QueryParam("upcomingLater") boolean upcomingLater,
-                                                             @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                             @DefaultValue(value = "100") @QueryParam("rows") int rows,
-                                                             @QueryParam("sort") String sort,
-                                                             @DefaultValue(value = "asc") @QueryParam("order") String order,
-                                                             @QueryParam("lopFilter") String lopFilter,
-                                                             @QueryParam("educationCodeFilter") String educationCodeFilter,
-                                                             @QueryParam("excludes") List<String> excludes,
-                                                             @QueryParam("asId") final String asId,
-                                                             @QueryParam("searchType") SearchType searchType);
+    @ApiOperation(value = "Koulutusten etsintärajapinta",
+        notes = "",
+        response = LOSearchResultListDTO.class)
+    public LOSearchResultListDTO searchLearningOpportunities(
+            @ApiParam(value = "Teksti") @QueryParam("text") String text,
+            @ApiParam(value = "Pohjakoulutus") @QueryParam("prerequisite") String prerequisite,
+            @ApiParam(value = "Haun oid") @QueryParam("city") List<String> cities,
+            @ApiParam(value = "Koulutuksen hakurajaimet") @QueryParam("facetFilters") List<String> facetFilters,
+            @ApiParam(value = "Artikkelin hakurajaimet") @QueryParam("articleFacetFilters") List<String> articleFilters,
+            @ApiParam(value = "Tarjoajien hakurajaimet") @QueryParam("providerFacetFilters") List<String> providerFilters,
+            @ApiParam(value = "Kieli") @QueryParam("lang") String lang,
+            @ApiParam(value = "Vain avoimien hakujen koulutukset") @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
+            @ApiParam(value = "Tulevan kauden hauissa olevat koulutukset") @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
+            @ApiParam(value = "Myöhempien kausien hakujen koulutukuset") @DefaultValue(value = "false") @QueryParam("upcomingLater") boolean upcomingLater,
+            @ApiParam(value = "Sivutuksen alku") @DefaultValue(value = "0") @QueryParam("start") int start,
+            @ApiParam(value = "Sivun koko") @DefaultValue(value = "100") @QueryParam("rows") int rows,
+            @ApiParam(value = "Järjestyskriteeri") @QueryParam("sort") String sort,
+            @ApiParam(value = "Järjestyksen suunta") @DefaultValue(value = "asc") @QueryParam("order") String order,
+            @ApiParam(value = "Tarjoajarajain") @QueryParam("lopFilter") String lopFilter,
+            @ApiParam(value = "Koulutuskoodirajain") @QueryParam("educationCodeFilter") String educationCodeFilter,
+            @ApiParam(value = "Pois jätettävät koulutusoidit") @QueryParam("excludes") List<String> excludes,
+            @ApiParam(value = "Haun oid") @QueryParam("asId") final String asId,
+            @ApiParam(value = "Hakutyyppi") @QueryParam("searchType") SearchType searchType);
 
     @GET
     @Path("tutkinto/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public TutkintoLOSDTO getTutkintoLearningOpportunity(@PathParam("id") String id,
-                                                                                  @QueryParam("lang") String lang,
-                                                                                  @QueryParam("uiLang") String uiLang,
-                                                                                  @QueryParam("prerequisite") String prerequisite);
+    @ApiOperation(value = "Ammatillisten tutkintojen tutkintosivujen rajapinta",
+        notes = "Tuntkintosivulle on koostettu opetustarjoajan ammattitutkinnon hakukohteet.",
+        response = TutkintoLOSDTO.class)
+    public TutkintoLOSDTO getTutkintoLearningOpportunity(
+            @ApiParam(value = "Tutkinnon id") @PathParam("id") String id,
+            @ApiParam(value = "Kieli") @QueryParam("lang") String lang,
+            @ApiParam(value = "Käyttöliittymäkieli") @QueryParam("uiLang") String uiLang,
+            @ApiParam(value = "PK vai YO-pohjainen tutkinto") @QueryParam("prerequisite") String prerequisite);
 
     /**
      * Fetches a child learning opportunity that belongs to the specified parent.
@@ -97,9 +111,11 @@ public interface LearningOpportunityResource {
     @GET
     @Path("child/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(@PathParam("cloId") String cloId,
-                                                                                @QueryParam("lang") String lang,
-                                                                                @QueryParam("uiLang") String uiLang);
+    @Deprecated
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(
+            @PathParam("cloId") String cloId,
+            @QueryParam("lang") String lang,
+            @QueryParam("uiLang") String uiLang);
     /**
      * Fetches an upper secondary (lukio) learning opportunity
      *
@@ -111,9 +127,11 @@ public interface LearningOpportunityResource {
     @GET
     @Path("upsec/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(@PathParam("id") String id,
-                                                                                                  @QueryParam("lang") String lang,
-                                                                                                  @QueryParam("uiLang") String uiLang);
+    @Deprecated
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(
+            @PathParam("id") String id,
+            @QueryParam("lang") String lang,
+            @QueryParam("uiLang") String uiLang);
 
     /**
      * Fetches an generic v1 learning opportunity (standalone)
@@ -126,9 +144,13 @@ public interface LearningOpportunityResource {
     @GET
     @Path("koulutus/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public KoulutusLOSDTO getKoulutusLearningOpportunity(@PathParam("id") String id,
-                                                                                                  @QueryParam("lang") String lang,
-                                                                                                  @QueryParam("uiLang") String uiLang);
+    @ApiOperation(value = "Koulutusten rajapinta",
+        notes = "Kaikki koulutukset lukuunottamatta korkeakoulujen koulutuksia.",
+        response = KoulutusLOSDTO.class)
+    public KoulutusLOSDTO getKoulutusLearningOpportunity(
+            @ApiParam(value = "Koulutuksen oid") @PathParam("id") String id,
+            @ApiParam(value = "Kieli") @QueryParam("lang") String lang,
+            @ApiParam(value = "Käyttöliittymäkieli") @QueryParam("uiLang") String uiLang);
 
     /**
      * Fetches a special learning opportunity specification.
@@ -141,9 +163,11 @@ public interface LearningOpportunityResource {
     @GET
     @Path("special/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(@PathParam("id") String id,
-                                                                                    @QueryParam("lang") String lang,
-                                                                                    @QueryParam("uiLang") String uiLang);
+    @Deprecated
+    public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(
+            @PathParam("id") String id,
+            @QueryParam("lang") String lang,
+            @QueryParam("uiLang") String uiLang);
 
     /**
      * Fetches a higher education learning opportunity specification.
@@ -156,9 +180,13 @@ public interface LearningOpportunityResource {
     @GET
     @Path("highered/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public HigherEducationLOSDTO getHigherEducationLearningOpportunity(@PathParam("id") String id,
-                                                                                    @QueryParam("lang") String lang,
-                                                                                    @QueryParam("uiLang") String uiLang);
+    @ApiOperation(value = "Korkeakoulutuksen rajapinta",
+        notes = "Yliopistot ja ammattikorkeakoulutus",
+        response = HigherEducationLOSDTO.class)
+    public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
+            @ApiParam(value = "Koulutusken oid") @PathParam("id") String id,
+            @ApiParam(value = "Kieli") @QueryParam("lang") String lang,
+            @ApiParam(value = "Käyttöliittymäkieli") @QueryParam("uiLang") String uiLang);
 
     /**
      * Fetches an adult upper secondary learning opportunity specification.
@@ -171,9 +199,11 @@ public interface LearningOpportunityResource {
     @GET
     @Path("adultupsec/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public KoulutusLOSDTO getAdultUpperSecondaryLearningOpportunity(@PathParam("id") String id,
-                                                                                    @QueryParam("lang") String lang,
-                                                                                    @QueryParam("uiLang") String uiLang);
+    @Deprecated
+    public KoulutusLOSDTO getAdultUpperSecondaryLearningOpportunity(
+            @PathParam("id") String id,
+            @QueryParam("lang") String lang,
+            @QueryParam("uiLang") String uiLang);
 
 
     /**
@@ -187,9 +217,11 @@ public interface LearningOpportunityResource {
     @GET
     @Path("adultvocational/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(@PathParam("id") String id,
-                                                                                    @QueryParam("lang") String lang,
-                                                                                    @QueryParam("uiLang") String uiLang);
+    @Deprecated
+    public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
+            @PathParam("id") String id,
+            @QueryParam("lang") String lang,
+            @QueryParam("uiLang") String uiLang);
 
 
     /**
@@ -203,8 +235,12 @@ public interface LearningOpportunityResource {
     @GET
     @Path("autocomplete")
     @Produces(MediaType.APPLICATION_JSON)
-    public SuggestedTermsResultDTO getSuggestedTerms(@QueryParam("term") String term,
-                                                     @QueryParam("lang") String lang);
+    @ApiOperation(value = "Hakupalkin hakuehdotusrajapinta",
+        notes = "",
+        response = SuggestedTermsResultDTO.class)
+    public SuggestedTermsResultDTO getSuggestedTerms(
+            @ApiParam(value = "Hakusana") @QueryParam("term") String term,
+            @ApiParam(value = "Kieli") @QueryParam("lang") String lang);
 
     /**
      * Fetches a higher education learning opportunity. To be used in preview for learning opportunity.
@@ -216,13 +252,21 @@ public interface LearningOpportunityResource {
     @GET
     @Path("preview/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public LOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
-                                                     @QueryParam("lang") String lang,
-                                                     @QueryParam("uiLang") String uiLang,
-                                                     @QueryParam("loType") String loType);
+    @ApiOperation(value = "Esikatselun rajapinta",
+        notes = "",
+        response = LOSDTO.class)
+    public LOSDTO previewLearningOpportunity(
+            @ApiParam(value = "Koulutuksen oid")  @PathParam("oid") String oid,
+            @ApiParam(value = "Kieli")  @QueryParam("lang") String lang,
+            @ApiParam(value = "Käyttöliittymäkieli")  @QueryParam("uiLang") String uiLang,
+            @ApiParam(value = "Koulutustyyppi")  @QueryParam("loType") String loType);
 
     @GET
     @Path("/picture/{id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public PictureDTO getPicture(@PathParam("id") final String id);
+    @ApiOperation(value = "Hakukohteiden etsiminen haulla ja tarjoajalla",
+        notes = "",
+        response = PictureDTO.class)
+    public PictureDTO getPicture(
+            @ApiParam(value = "Kuvan id")  @PathParam("id") final String id);
 }
