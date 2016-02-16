@@ -99,7 +99,11 @@ public class ApplicationSystemCreator extends ObjectCreator {
     }
 
     private boolean isSiirtohaku(HakuV1RDTO hakuDto) {
-        return TarjontaConstants.HAKUTAPA_ERILLIS.equals(hakuDto.getHakutapaUri().split("#")[0])
+        return hakuDto != null
+                && hakuDto.getHakutapaUri() != null
+                && hakuDto.getKohdejoukkoUri() != null
+                && hakuDto.getKohdejoukonTarkenne() != null
+                && TarjontaConstants.HAKUTAPA_ERILLIS.equals(hakuDto.getHakutapaUri().split("#")[0])
                 && TarjontaConstants.KOHDEJOUKKO_KORKEAKOULUTUS.equals(hakuDto.getKohdejoukkoUri().split("#")[0])
                 && TarjontaConstants.KOHDEJOUKONTARKENNE_SIIRTOHAKU.equals(hakuDto.getKohdejoukonTarkenne().split("#")[0]);
 
