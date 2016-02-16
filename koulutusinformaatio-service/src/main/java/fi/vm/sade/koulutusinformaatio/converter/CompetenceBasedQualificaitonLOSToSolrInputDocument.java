@@ -126,7 +126,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                     if (curAs.isShownAsFacet()) {
                         doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
                     }
-                    if(curAs.isShownAsFacet())
+                    if(curAs.isSiirtohaku())
                         doc.addField(LearningOpportunity.SIIRTOHAKU, true);
                     doc.addField(LearningOpportunity.AS_ID, curAs.getId());
                 }
@@ -238,7 +238,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                     if (curAs.isShownAsFacet()) {
                         doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
                     }
-                    if(curAs.isShownAsFacet())
+                    if(curAs.isSiirtohaku())
                         doc.addField(LearningOpportunity.SIIRTOHAKU, true);
 
                 }

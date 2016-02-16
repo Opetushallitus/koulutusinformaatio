@@ -155,7 +155,7 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
                     if (as.isShownAsFacet()) {
                         doc.addField(LearningOpportunity.AS_FACET, as.getId());
                     }
-                    if(as.isShownAsFacet())
+                    if(as.isSiirtohaku())
                         doc.addField(LearningOpportunity.SIIRTOHAKU, true);
 
                 }
