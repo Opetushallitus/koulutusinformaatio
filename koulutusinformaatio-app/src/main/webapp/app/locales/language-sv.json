@@ -287,6 +287,8 @@
     "facet-remove": "Avlägsna",
     "facet-focus-filter": "Specificera avgränsningen",
     "filter-search-as-upcoming": "Ansökningstiden ännu ej påbörjad",
+    "filter-search-siirtohaku": "Ansökningar om överflyttning vid högskolor",
+    "siirtohaku_ffm": "Ansökningar om överflyttning vid högskolor",
     "haun-tila": "Ansökans status",
     "selaile-koulutuksia": "Avgränsa sökresultatet",
     "valitse-alue": "Välj först landskap, sedan stad / kommun",

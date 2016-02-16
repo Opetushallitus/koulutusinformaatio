@@ -44,7 +44,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
         
         setApplicationStatusFilters(ongoing, upcoming, upcomingLater, upcomingDate, upcomingLaterDate);
-        
+
         if (lopFilter != null) {
             addLopRecommendationFilter(lopFilter, lang);
         }
@@ -137,6 +137,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.addFacetField(TIME_OF_TEACHING);
         this.addFacetField(FORM_OF_STUDY);
         this.addFacetField(AS_FACET);
+        this.addFacetField(SIIRTOHAKU);
         this.setFacetSort("index");
         this.setParam("f." + PREREQUISITES + ".facet.missing", true);
         

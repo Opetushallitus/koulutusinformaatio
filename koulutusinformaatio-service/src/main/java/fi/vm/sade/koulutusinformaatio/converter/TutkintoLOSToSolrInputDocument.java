@@ -189,6 +189,9 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                                 doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
                             }
                             doc.addField(LearningOpportunity.AS_ID, curAs.getId());
+                            if(curAs.isSiirtohaku())
+                                doc.addField(LearningOpportunity.SIIRTOHAKU, true);
+
                         }
                         if (ao.getName() != null) {
                             aoNameFi = String.format("%s %s", aoNameFi, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
@@ -342,6 +345,9 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 if (curAs.isShownAsFacet()) {
                     doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
                 }
+                if(curAs.isSiirtohaku())
+                    doc.addField(LearningOpportunity.SIIRTOHAKU, true);
+
             }
         }
     }

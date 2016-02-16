@@ -83,6 +83,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
             }
             as.setShowEducationsUntil(hakuDto.getOpintopolunNayttaminenLoppuu());
             as.setUseSystemApplicationForm(hakuDto.isJarjestelmanHakulomake());
+            as.setSiirtohaku(isSiirtohaku(hakuDto));
 
             // Demoympäristöä varten pakotetaan haku näkyviin.
             if (overriddenASOids != null && overriddenASOids.contains(hakuDto.getOid())) {
@@ -95,6 +96,17 @@ public class ApplicationSystemCreator extends ObjectCreator {
         } else {
             return null;
         }
+    }
+
+    private boolean isSiirtohaku(HakuV1RDTO hakuDto) {
+        return hakuDto != null
+                && hakuDto.getHakutapaUri() != null
+                && hakuDto.getKohdejoukkoUri() != null
+                && hakuDto.getKohdejoukonTarkenne() != null
+                && TarjontaConstants.HAKUTAPA_ERILLIS.equals(hakuDto.getHakutapaUri().split("#")[0])
+                && TarjontaConstants.KOHDEJOUKKO_KORKEAKOULUTUS.equals(hakuDto.getKohdejoukkoUri().split("#")[0])
+                && TarjontaConstants.KOHDEJOUKONTARKENNE_SIIRTOHAKU.equals(hakuDto.getKohdejoukonTarkenne().split("#")[0]);
+
     }
 
     /*
