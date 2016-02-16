@@ -11,11 +11,6 @@ public class EmphasizedSubject {
     public EmphasizedSubject() {
     }
 
-    public EmphasizedSubject(I18nText subject, String value) {
-        this.setSubject(subject);
-        this.setValue(value);
-    }
-
     public String getValue() {
         return value;
     }
