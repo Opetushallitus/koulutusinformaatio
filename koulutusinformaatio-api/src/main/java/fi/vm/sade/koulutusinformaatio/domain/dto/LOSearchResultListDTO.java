@@ -33,7 +33,7 @@ public class LOSearchResultListDTO {
     private long totalCount;
     private FacetDTO teachingLangFacet;
     private FacetDTO filterFacet;
-    private FacetDTO appStatusFacet; 
+    private FacetDTO appStatusFacet;
     private FacetDTO edTypeFacet;
     private FacetDTO prerequisiteFacet;
     private FacetDTO topicFacet;
@@ -43,11 +43,12 @@ public class LOSearchResultListDTO {
     private FacetDTO timeOfTeachingFacet;
     private FacetDTO formOfStudyFacet;
     private FacetDTO applicationSystemFacet;
+    private FacetDTO siirtohakuFacet;
     private FacetValueDTO lopRecommendationFilter;
     private long loCount;
     private long articleCount;
     private long orgCount;
-    
+
 
     private FacetValueDTO educationCodeRecommendationFilter;
 
@@ -91,7 +92,7 @@ public class LOSearchResultListDTO {
     public void setAppStatusFacet(FacetDTO appStatusFacet) {
         this.appStatusFacet = appStatusFacet;
     }
-    
+
 
     public FacetDTO getEdTypeFacet() {
         return edTypeFacet;
@@ -116,7 +117,7 @@ public class LOSearchResultListDTO {
     public void setTopicFacet(FacetDTO topicFacet) {
         this.topicFacet = topicFacet;
     }
-    
+
     public FacetValueDTO getLopRecommendationFilter() {
         return lopRecommendationFilter;
     }
@@ -220,5 +221,13 @@ public class LOSearchResultListDTO {
 
     public void setApplicationSystemFacet(FacetDTO applicationSystemFacet) {
         this.applicationSystemFacet = applicationSystemFacet;
+    }
+
+    public FacetDTO getSiirtohakuFacet() {
+        return siirtohakuFacet;
+    }
+
+    public void setSiirtohakuFacet(FacetDTO siirtohakuFacet) {
+        this.siirtohakuFacet = siirtohakuFacet;
     }
 }

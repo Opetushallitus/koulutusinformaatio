@@ -263,7 +263,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.upcomingLater = false;
     	$scope.change();
     }
-    
+
     $scope.openAreaDialog = function() {
     	DistrictService.query().then(function(result) {
     		$scope.distResult = result;

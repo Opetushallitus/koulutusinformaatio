@@ -38,6 +38,7 @@ public class ApplicationSystem {
     private boolean useSystemApplicationForm;
 
     private Date showEducationsUntil;
+    private boolean siirtohaku;
 
     public String getId() {
         return id;
@@ -150,5 +151,13 @@ public class ApplicationSystem {
 
     public void setShowEducationsUntil(Date showEducationsUntil) {
         this.showEducationsUntil = showEducationsUntil;
+    }
+
+    public boolean isSiirtohaku() {
+        return siirtohaku;
+    }
+
+    public void setSiirtohaku(boolean siirtohaku) {
+        this.siirtohaku = siirtohaku;
     }
 }

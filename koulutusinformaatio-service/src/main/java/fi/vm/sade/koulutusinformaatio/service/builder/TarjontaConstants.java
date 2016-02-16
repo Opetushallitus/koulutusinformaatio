@@ -66,7 +66,8 @@ public class TarjontaConstants {
     
     public static final String HAKUTAPA_YHTEISHAKUV1 = "hakutapa_01#1";
     public static final String HAKUTAPA_YHTEISHAKU = "hakutapa_01";
-    
+    public static final String HAKUTAPA_ERILLIS = "hakutapa_02";
+
     public static final String HAKUTYYPPI_VARSINAINEN = "hakutyyppi_01";
     public static final String HAKUTYYPPI_LISA = "hakutyyppi_03";
     public static final String OPPILAITOSTYYPPIFASETT_OPPISOPIMUS = "oppilaitostyyppifasetti_15";
@@ -81,4 +82,6 @@ public class TarjontaConstants {
     public static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     public static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
 
+    public static final String KOHDEJOUKKO_KORKEAKOULUTUS = "haunkohdejoukko_12";
+    public static final String KOHDEJOUKONTARKENNE_SIIRTOHAKU = "haunkohdejoukontarkenne_1";
 }

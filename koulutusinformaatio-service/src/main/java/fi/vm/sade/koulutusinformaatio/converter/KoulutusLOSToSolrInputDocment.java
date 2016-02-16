@@ -70,6 +70,8 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
         doc.addField(LearningOpportunity.LOS_ID, los.getId());
         for (ApplicationOption ao : los.getApplicationOptions()) {
             doc.addField(LearningOpportunity.AS_ID, ao.getApplicationSystem().getId());
+            if(ao.getApplicationSystem().isSiirtohaku())
+                doc.addField(LearningOpportunity.SIIRTOHAKU, true);
         }
 
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
@@ -153,6 +155,8 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
                     if (as.isShownAsFacet()) {
                         doc.addField(LearningOpportunity.AS_FACET, as.getId());
                     }
+                    if(as.isShownAsFacet())
+                        doc.addField(LearningOpportunity.SIIRTOHAKU, true);
 
                 }
                 if (ao.getName() != null) {
