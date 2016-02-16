@@ -41,6 +41,7 @@ public class ApplicationSystemEntity {
     @Embedded
     private DateRangeEntity facetRange;
     private boolean useSystemApplicationForm;
+    private boolean siirtohaku;
 
     public ApplicationSystemEntity() {}
 
@@ -122,5 +123,13 @@ public class ApplicationSystemEntity {
 
     public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
         this.useSystemApplicationForm = useSystemApplicationForm;
+    }
+
+    public boolean isSiirtohaku() {
+        return siirtohaku;
+    }
+
+    public void setSiirtohaku(boolean siirtohaku) {
+        this.siirtohaku = siirtohaku;
     }
 }

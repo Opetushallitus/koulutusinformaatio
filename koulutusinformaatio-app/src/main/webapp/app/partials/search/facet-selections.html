@@ -44,8 +44,14 @@
             </li>
             <li data-ng-repeat="fs in facetSelections">
                 <a href="javascript:void(0)" data-ng-click="removeSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
-                    <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span data-ki-i18n="{{fs.valueName}}"></span>
-                    <span class="remove">
+                    <span data-ng-if="fs.facetField == 'siirtohaku_ffm'">
+                        <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="{{fs.facetField}}"></span>
+                    </span>
+                    <span data-ng-if="fs.facetField != 'siirtohaku_ffm'">
+                        <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span
+                            data-ki-i18n="{{fs.valueName}}"></span>
+                    </span>
+                <span class="remove">
                         <span class="sr-only" data-ki-i18n="facet-remove"></span>
                     </span>
                 </a>

@@ -285,6 +285,8 @@
     "facet-remove": "Remove",
     "facet-focus-filter": "Specify search criteria",
     "filter-search-as-upcoming": "Application period not open",
+    "filter-search-siirtohaku": "Transfer applications for higher education",
+    "siirtohaku_ffm": "Transfer applications for higher education",
     "haun-tila": "Status of the application period",
     "selaile-koulutuksia": "Limit search results",
     "valitse-alue": "First choose region, then city / municipality",
