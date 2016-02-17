@@ -24,16 +24,14 @@ public class ContactPerson {
     private String phone;
     private String title;
     private String email;
-    private String lastName;
-    private String firstNames;
+    private String name;
     private String type;
 
-    public ContactPerson(String phone, String title, String email, String lastName, String firstNames) {
+    public ContactPerson(String phone, String title, String email, String name) {
         this.phone = phone;
         this.title = title;
         this.email = email;
-        this.lastName = lastName;
-        this.firstNames = firstNames;
+        this.name = name;
     }
 
     public ContactPerson() {}
@@ -62,27 +60,19 @@ public class ContactPerson {
         this.email = email;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstNames() {
-        return firstNames;
-    }
-
-    public void setFirstNames(String firstNames) {
-        this.firstNames = firstNames;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

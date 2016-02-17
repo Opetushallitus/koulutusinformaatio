@@ -222,7 +222,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
                 ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                        yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
+                        yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getNimi());
                 if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
                     contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
                 }
@@ -1029,7 +1029,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
                 ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                        yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
+                        yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getNimi());
                 if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
                     contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
                 }
@@ -1293,7 +1293,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 List<ContactPerson> persons = new ArrayList<ContactPerson>();
                 for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getValmistavaKoulutus().getYhteyshenkilos()) {
                     ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                            yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
+                            yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getNimi());
                     if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
                         contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
                     }
