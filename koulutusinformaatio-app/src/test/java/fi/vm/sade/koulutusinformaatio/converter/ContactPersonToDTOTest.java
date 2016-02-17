@@ -40,8 +40,7 @@ public class ContactPersonToDTOTest {
     @Before
     public void init() {
         cp = new ContactPerson();
-        cp .setFirstNames("first names");
-        cp.setLastName("last name");
+        cp.setName("first names lastname");
         cp.setEmail("email address");
         cp.setPhone("phone number");
         cp.setTitle("person title");
@@ -54,6 +53,7 @@ public class ContactPersonToDTOTest {
         assertNotNull(dto);
         assertEquals("first names", dto.getFirstNames());
         assertEquals("last name", dto.getLastName());
+        assertEquals("first names lastname", dto.getName());
         assertEquals("email address", dto.getEmail());
         assertEquals("phone number", dto.getPhone());
         assertEquals("person title", dto.getTitle());
