@@ -8,7 +8,7 @@
 		<span data-ng-if="person.type != 'ECTS_KOORDINAATTORI'">
 			<span data-ng-show="person.title">{{person.title}}<br /></span>
 		</span>
-		<span data-ng-show="person.firstNames">{{person.firstNames}}</span> <span data-ng-show="person.lastName">{{person.lastName}}</span><br />
+		<span data-ng-show="person.name">{{person.name}}</span><br />
 		<span data-ng-show="person.email">
 			<span data-ki-i18n="plain:email" data-show-colon="true" data-lang="{{translationLanguage}}"></span> <span data-ki-email="{{person.email}}"></span><br />
 		</span>
