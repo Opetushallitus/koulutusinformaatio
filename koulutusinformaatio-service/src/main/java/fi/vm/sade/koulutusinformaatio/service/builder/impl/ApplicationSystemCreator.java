@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,14 +100,14 @@ public class ApplicationSystemCreator extends ObjectCreator {
     }
 
     private boolean isSiirtohaku(HakuV1RDTO hakuDto) {
-        return hakuDto != null
-                && hakuDto.getHakutapaUri() != null
-                && hakuDto.getKohdejoukkoUri() != null
-                && hakuDto.getKohdejoukonTarkenne() != null
-                && TarjontaConstants.HAKUTAPA_ERILLIS.equals(hakuDto.getHakutapaUri().split("#")[0])
-                && TarjontaConstants.KOHDEJOUKKO_KORKEAKOULUTUS.equals(hakuDto.getKohdejoukkoUri().split("#")[0])
-                && TarjontaConstants.KOHDEJOUKONTARKENNE_SIIRTOHAKU.equals(hakuDto.getKohdejoukonTarkenne().split("#")[0]);
+        return nullsafeCodeUriEquals(hakuDto.getHakutapaUri(), TarjontaConstants.HAKUTAPA_ERILLIS)
+                && nullsafeCodeUriEquals(hakuDto.getKohdejoukkoUri(), TarjontaConstants.KOHDEJOUKKO_KORKEAKOULUTUS)
+                && nullsafeCodeUriEquals(hakuDto.getKohdejoukonTarkenne(), TarjontaConstants.KOHDEJOUKONTARKENNE_SIIRTOHAKU);
+    }
 
+    // Stripts the version number from code uri and check for equality
+    private boolean nullsafeCodeUriEquals(String codeUri, String value) {
+        return StringUtils.equals(StringUtils.defaultString(codeUri).split("#")[0], value);
     }
 
     /*
