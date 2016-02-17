@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
@@ -230,12 +231,14 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     public String getOppilaitosTyyppiByOID(String oid) throws ResourceNotFoundException {
-        OrganisaatioPerustieto tulos = organisaatioRawService.findOrganisaatio(oid).getOrganisaatiot().get(0);
+        List<OrganisaatioPerustieto> organisaatiot = organisaatioRawService.findOrganisaatio(oid).getOrganisaatiot();
+        if (CollectionUtils.isEmpty(organisaatiot))
+            throw new ResourceNotFoundException("Organisaatiota " + oid + " ei löytynyt!");
+        OrganisaatioPerustieto tulos = organisaatiot.get(0);
         String oppilaitosTyyppi = getOppilaitosTyyppi(tulos);
         if (oppilaitosTyyppi != null)
             return oppilaitosTyyppi;
         throw new ResourceNotFoundException("Organisaatiolla " + oid + " ei ollut oppilaitostyyppiä!");
-
     }
 
     private Set<String> validOppilaitosTyyppis = Sets.newHashSet(OPPILAITOSTYYPPI_AMK, OPPILAITOSTYYPPI_YLIOPISTO, OPPILAITOSTYYPPI_SOTILASKK);
