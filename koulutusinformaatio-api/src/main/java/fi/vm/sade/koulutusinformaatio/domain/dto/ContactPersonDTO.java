@@ -29,6 +29,7 @@ public class ContactPersonDTO {
     private String email;
     private String lastName;
     private String firstNames;
+    private String name;
     private String type;
 
     public String getPhone() {
@@ -77,5 +78,13 @@ public class ContactPersonDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

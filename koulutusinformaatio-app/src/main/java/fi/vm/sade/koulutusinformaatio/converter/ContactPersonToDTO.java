@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Function;
@@ -23,6 +24,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ContactPersonDTO;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Mikko Majapuro
@@ -37,14 +39,27 @@ public final class ContactPersonToDTO {
             return null;
         } else {
             ContactPersonDTO cp = new ContactPersonDTO();
-            cp.setFirstNames(contactPerson.getFirstNames());
-            cp.setLastName(contactPerson.getLastName());
+            cp.setFirstNames(getFirstNames(contactPerson));
+            cp.setLastName(getLastName(contactPerson));
+            cp.setName(contactPerson.getName());
             cp.setEmail(contactPerson.getEmail());
             cp.setPhone(contactPerson.getPhone());
             cp.setTitle(contactPerson.getTitle());
             cp.setType(contactPerson.getType());
             return cp;
         }
+    }
+
+    // the last word of the name
+    private static String getLastName(ContactPerson contactPerson) {
+        String[] split = StringUtils.split(contactPerson.getName());
+        return split[split.length];
+    }
+
+    // all other words of the name
+    private static String getFirstNames(ContactPerson contactPerson) {
+        String[] split = StringUtils.split(contactPerson.getName());
+        return StringUtils.join(Arrays.copyOf(split, split.length-1));
     }
 
     public static List<ContactPersonDTO> convertAll(List<ContactPerson> contactPersonList) {
