@@ -25,16 +25,28 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
 
 /**
  * @author Mikko Majapuro
  */
 @Path("/basket")
+@Api(value = "/basket", description = "Muistilista")
 public interface BasketResource {
 
     @GET
     @Path("items")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    List<BasketItemDTO> getBasketItems(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
+    @ApiOperation(value = "Muistilistan populoimiseen tarkoitettu hakukohteiden rajapinta",
+        notes = "",
+        response = BasketItemDTO.class,
+        responseContainer = "List")
+    List<BasketItemDTO> getBasketItems(
+            @ApiParam(value = "Lista oideja") @QueryParam("aoId") List<String> aoId, 
+            @ApiParam(value = "Kieli") @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 }

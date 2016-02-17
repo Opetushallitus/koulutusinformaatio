@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +84,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
             }
             as.setShowEducationsUntil(hakuDto.getOpintopolunNayttaminenLoppuu());
             as.setUseSystemApplicationForm(hakuDto.isJarjestelmanHakulomake());
+            as.setSiirtohaku(isSiirtohaku(hakuDto));
 
             // Demoympäristöä varten pakotetaan haku näkyviin.
             if (overriddenASOids != null && overriddenASOids.contains(hakuDto.getOid())) {
@@ -95,6 +97,17 @@ public class ApplicationSystemCreator extends ObjectCreator {
         } else {
             return null;
         }
+    }
+
+    private boolean isSiirtohaku(HakuV1RDTO hakuDto) {
+        return nullsafeCodeUriEquals(hakuDto.getHakutapaUri(), TarjontaConstants.HAKUTAPA_ERILLIS)
+                && nullsafeCodeUriEquals(hakuDto.getKohdejoukkoUri(), TarjontaConstants.KOHDEJOUKKO_KORKEAKOULUTUS)
+                && nullsafeCodeUriEquals(hakuDto.getKohdejoukonTarkenne(), TarjontaConstants.KOHDEJOUKONTARKENNE_SIIRTOHAKU);
+    }
+
+    // Stripts the version number from code uri and check for equality
+    private boolean nullsafeCodeUriEquals(String codeUri, String value) {
+        return StringUtils.equals(StringUtils.defaultString(codeUri).split("#")[0], value);
     }
 
     /*

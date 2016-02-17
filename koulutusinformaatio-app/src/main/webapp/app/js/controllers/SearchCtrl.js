@@ -2,7 +2,8 @@
  *  Controller for search field in header
  */
 function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService, Config) {
-    $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
+    $scope.searchFieldAriaLabel = TranslationService.getTranslation('search-field-aria-label');
+    $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder');
     $scope.suggestions = [];
 
     if($scope.demo) {
@@ -262,7 +263,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.upcomingLater = false;
     	$scope.change();
     }
-    
+
     $scope.openAreaDialog = function() {
     	DistrictService.query().then(function(result) {
     		$scope.distResult = result;

@@ -26,6 +26,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 
@@ -33,27 +37,44 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDT
  * @author Mikko Majapuro
  */
 @Path("/ao")
+@Api(value = "/ao", description = "Hakukohteet")
 public interface ApplicationOptionResource {
 
     @GET
     @Path("/search/{asId}/{lopId}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Hakukohteiden etsiminen haulla ja tarjoajalla",
+            notes = "",
+            response = ApplicationOptionSearchResultDTO.class,
+            responseContainer = "List")
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(
-            @PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
-            @QueryParam("baseEducation") final String baseEducation,
-            @DefaultValue("true") @QueryParam("vocational") boolean vocational,
-            @DefaultValue("true") @QueryParam("nonVocational") boolean nonVocational,
-            @DefaultValue("false") @QueryParam("ongoing") boolean ongoing,
-            @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
+            @ApiParam(value = "Haun oid") @PathParam("asId") final String asId, 
+            @ApiParam(value = "Tarjoajan oid") @PathParam("lopId") final String lopId,
+            @ApiParam(value = "Pohjakoulutus") @QueryParam("baseEducation") final String baseEducation,
+            @ApiParam(value = "Ammatillisia koulutuksia") @DefaultValue("true") @QueryParam("vocational") boolean vocational,
+            @ApiParam(value = "Ei-ammatillista") @DefaultValue("true") @QueryParam("nonVocational") boolean nonVocational,
+            @ApiParam(value = "Haku on auki") @DefaultValue("false") @QueryParam("ongoing") boolean ongoing,
+            @ApiParam(value = "Kieli") @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 
     @GET
     @Path("/{aoId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ApplicationOptionDTO getApplicationOption(@PathParam("aoId") final String aoId, @DefaultValue("fi") @QueryParam("lang") String lang,
-                                                     @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
+    @ApiOperation(value = "Hakukohteen hakeminen oidilla",
+            notes = "",
+            response = ApplicationOptionSearchResultDTO.class)
+    public ApplicationOptionDTO getApplicationOption(
+            @ApiParam(value = "Oid") @PathParam("aoId") final String aoId,
+            @ApiParam(value = "Hakukohteen kieli") @DefaultValue("fi") @QueryParam("lang") String lang,
+            @ApiParam(value = "Käyttöliittymäkieli") @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public List<ApplicationOptionDTO> getApplicationOptions(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("lang") String lang,
-                                                            @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
+    @ApiOperation(value = "Usean hakukohten hakeminen oideilla",
+            notes = "",
+            response = ApplicationOptionDTO.class,
+            responseContainer = "List")
+    public List<ApplicationOptionDTO> getApplicationOptions(
+            @ApiParam(value = "Lista oideja") @QueryParam("aoId") List<String> aoId, 
+            @ApiParam(value = "Hakukohteen kieli", required = true) @DefaultValue("fi") @QueryParam("lang") String lang,
+            @ApiParam(value = "Käyttöliittymäkieli") @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 }

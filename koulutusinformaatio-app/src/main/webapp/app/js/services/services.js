@@ -1362,7 +1362,7 @@ service('FilterService', [
         isOngoing: function() {
             return filters.ongoing;
         },
-        
+
         isUpcoming: function() {
             return filters.upcoming;
         },

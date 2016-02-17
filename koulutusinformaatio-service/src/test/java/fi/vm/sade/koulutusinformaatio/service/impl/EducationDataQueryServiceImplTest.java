@@ -32,23 +32,17 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -60,9 +54,6 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
 
     private EducationDataQueryServiceImpl service;
     private ApplicationOptionDAO applicationOptionDAO;
-    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
-    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
-    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
     private LearningOpportunityProviderDAO providerDAO;
@@ -76,19 +67,15 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         lastDataUpdate = new Date();
         ModelMapper modelMapper = new ModelMapper();
         applicationOptionDAO = mockApplicationOptionDAO();
-        childLearningOpportunityDAO = mockChildDAO();
         dataStatusDAO = mockDataStatudDAO();
         pictureDAO = mockPictureDAO();
-        upperSecondaryLearningOpportunitySpecificationDAO = mockUpSecDAO();
-        specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         providerDAO = mockProviderDAO();
         higherEdDAO = mockHigherEdDAO();
         koulutusDAO = mock(KoulutusLOSDAO.class);
         tutkintoDAO = mock(TutkintoLOSDAO.class);
         adultVocDAO = mock(AdultVocationalLOSDAO.class);
-        service = new EducationDataQueryServiceImpl(applicationOptionDAO, modelMapper,
-                childLearningOpportunityDAO, dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultVocDAO, koulutusDAO, tutkintoDAO, providerDAO);
+        service = new EducationDataQueryServiceImpl(applicationOptionDAO, modelMapper, dataStatusDAO, pictureDAO,
+                 higherEdDAO, adultVocDAO, koulutusDAO, tutkintoDAO, providerDAO);
     }
     
     /**
@@ -129,18 +116,6 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     }
 
     @Test
-    public void testGetChildLearningOpportunity() throws ResourceNotFoundException {
-        ChildLOS child = service.getChildLearningOpportunity("childid");
-        assertNotNull(child);
-        assertEquals("childid", child.getId());
-    }
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void testGetChildLearningOpportunityNotFound() throws ResourceNotFoundException {
-        service.getChildLearningOpportunity(NOTFOUND);
-    }
-
-    @Test
     public void testGetLatestDataStatus() {
         DataStatus latest = service.getLatestDataStatus();
         assertEquals(lastDataUpdate, latest.getLastUpdateFinished());
@@ -157,30 +132,6 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     @Test(expected = ResourceNotFoundException.class)
     public void testPictureNotFound() throws ResourceNotFoundException {
         service.getPicture(NOTFOUND);
-    }
-
-    @Test
-    public void testGetUpperSecondaryLearningOpportunity() throws ResourceNotFoundException {
-        UpperSecondaryLOS los  = service.getUpperSecondaryLearningOpportunity("upsecid");
-        assertNotNull(los);
-        assertEquals("upsecid", los.getId());
-    }
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void testGetUpperSecondaryLearningOpportunityNotFound() throws ResourceNotFoundException {
-        service.getUpperSecondaryLearningOpportunity(NOTFOUND);
-    }
-
-    @Test
-    public void testGetSpecialLearningOpportunity() throws ResourceNotFoundException {
-        SpecialLOS los = service.getSpecialLearningOpportunity("specialid");
-        assertNotNull(los);
-        assertEquals("specialid", los.getId());
-    }
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void testGetSpecialLearningOpportunityNotFound() throws ResourceNotFoundException {
-        service.getSpecialLearningOpportunity(NOTFOUND);
     }
 
     @Test

@@ -25,14 +25,10 @@ import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
 
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
 /**
@@ -92,18 +88,6 @@ public class FacetIndexerTest {
     }
     
     @Test
-    public void testCreateUpperSecondaryFacetDocs() {
-        UpperSecondaryLOI loi = new UpperSecondaryLOI();
-        loi.setTeachingLanguages(Arrays.asList(lang));
-        loi.setPrerequisite(prerequisite);
-        UpperSecondaryLOS los = new UpperSecondaryLOS();
-        los.setTopics(topics);
-        los.setThemes(themes);
-        List<SolrInputDocument> docs = indexer.createFacetDocs(loi, los);
-        assertEquals(6, docs.size());
-    }
-    
-    @Test
     public void testCreateTutkintoLOSFacetDocs() {
         KoulutusLOS koulutus = new KoulutusLOS();
         koulutus.setTeachingLanguages(Arrays.asList(lang));
@@ -126,17 +110,4 @@ public class FacetIndexerTest {
         List<SolrInputDocument> docs = indexer.createFacetDocs(los);
         assertEquals(6, docs.size());
     }
-    
-    @Test
-    public void testCreateSpecialFacetDocs() {
-        ChildLOI loi = new ChildLOI();
-        loi.setTeachingLanguages(Arrays.asList(lang));
-        loi.setPrerequisite(prerequisite);
-        SpecialLOS los = new SpecialLOS();
-        los.setTopics(topics);
-        los.setThemes(themes);
-        List<SolrInputDocument> docs = indexer.createFacetDocs(loi, los);
-        assertEquals(6, docs.size());
-    }
-    
 }

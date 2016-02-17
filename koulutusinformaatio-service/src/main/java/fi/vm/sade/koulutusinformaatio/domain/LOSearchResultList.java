@@ -38,6 +38,7 @@ public class LOSearchResultList {
     private Facet fotFacet;
     private Facet timeOfTeachingFacet;
     private Facet formOfStudyFacet;
+    private Facet siirtohakuFacet;
     private FacetValue lopRecommendationFilter;
     private FacetValue educationCodeRecommendationFilter;
     private long loCount;
@@ -214,5 +215,13 @@ public class LOSearchResultList {
 
     public void setApplicationSystemFacet(Facet applicationSystemFacet) {
         this.applicationSystemFacet = applicationSystemFacet;
+    }
+
+    public Facet getSiirtohakuFacet() {
+        return siirtohakuFacet;
+    }
+
+    public void setSiirtohakuFacet(Facet siirtohakuFacet) {
+        this.siirtohakuFacet = siirtohakuFacet;
     }
 }

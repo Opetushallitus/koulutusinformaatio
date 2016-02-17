@@ -702,6 +702,7 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setFotFacet(getFotFacet(response, lang, facetFilters));
         searchResultList.setTimeOfTeachingFacet(getTimeOfTeachingFacet(response, lang, facetFilters));
         searchResultList.setFormOfStudyFacet(getFormOfStudyFacet(response, lang, facetFilters));
+        searchResultList.setSiirtohakuFacet(getSiirtohakuFacet(response, lang, facetFilters));
 
     }
 
@@ -1020,6 +1021,38 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         timeOfTeachingFacet.setFacetValues(values);
         return timeOfTeachingFacet;
+    }
+
+    /*
+     * Siirtohaut
+     */
+    private Facet getSiirtohakuFacet(QueryResponse response, String lang, List<String> facetFilters) {
+
+        FacetField siirtohakuF = response.getFacetField(LearningOpportunity.SIIRTOHAKU);
+        Facet siirtohakuFacet = new Facet();
+        List<FacetValue> values = new ArrayList<>();
+
+        boolean isFilterSet = false;
+        for (String curFilter : facetFilters) {
+            if (curFilter.contains(LearningOpportunity.SIIRTOHAKU)) {
+                isFilterSet = true;
+            }
+        }
+
+        if (siirtohakuF != null) {
+            for (Count curC : siirtohakuF.getValues()) {
+
+                long count = isFilterSet ? 0 : curC.getCount();
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.SIIRTOHAKU,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        count,
+                        curC.getName());
+                values.add(newVal);
+            }
+        }
+        siirtohakuFacet.setFacetValues(values);
+        return siirtohakuFacet;
     }
 
     /*
