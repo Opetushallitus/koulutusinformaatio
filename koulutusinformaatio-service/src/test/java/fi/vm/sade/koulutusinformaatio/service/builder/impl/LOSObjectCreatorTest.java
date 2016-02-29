@@ -1,16 +1,18 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvausV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
+import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
+import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import junit.framework.TestCase;
@@ -101,6 +103,10 @@ public class LOSObjectCreatorTest extends TestCase {
         dto.setOpintojenLaajuusarvo(givenKoodiV1RDTOWithMeta());
         dto.setOpintojenLaajuusyksikko(givenKoodiV1RDTOWithMeta());
         dto.setOppiaineet(new HashSet<OppiaineV1RDTO>());
+        dto.setKuvausKomo(new KuvausV1RDTO<KomoTeksti>());
+        dto.setKuvausKomoto(new KuvausV1RDTO<KomotoTeksti>());
+        dto.setOrganisaatio(new OrganisaatioV1RDTO("orgOid"));
+        dto.setOpetusTarjoajat(Sets.<String>newHashSet());
         return dto;
     }
 
@@ -136,6 +142,7 @@ public class LOSObjectCreatorTest extends TestCase {
     private ResultV1RDTO<HakukohdeV1RDTO> givenV1Hakukohde() {
         HakukohdeV1RDTO hakukohde = new HakukohdeV1RDTO();
         hakukohde.setOid("392.12.345.231");
+        hakukohde.setTila(TarjontaTila.JULKAISTU);
         hakukohde.setHakukohteenNimiUri("Hakukohde");
         hakukohde.setAloituspaikatLkm(10);
         hakukohde.setAlinValintaPistemaara(5);
@@ -170,7 +177,11 @@ public class LOSObjectCreatorTest extends TestCase {
         dto.setModified(new Date());
         dto.setModifiedBy("Teppo Testaaja");
         dto.setOid("921.00.123.12");
+        dto.setOrganisaatio(new OrganisaatioV1RDTO("orgOid"));
         dto.setTila(TarjontaTila.JULKAISTU);
+        dto.setKoulutuksenAlkamisPvms(Sets.newHashSet(new Date()));
+        dto.setKuvausKomo(new KuvausV1RDTO<KomoTeksti>());
+        dto.setKuvausKomoto(new KuvausV1RDTO<KomotoTeksti>());
         dto.setToteutustyyppi(ToteutustyyppiEnum.VAPAAN_SIVISTYSTYON_KOULUTUS);
         dto.setKoulutuskoodi(givenKoodiV1RDTOWithMeta());
         dto.setKoulutusohjelmanNimiKannassa(givenCodeMap("KoulutusOhjelmanNimiKannassa", "fi"));
