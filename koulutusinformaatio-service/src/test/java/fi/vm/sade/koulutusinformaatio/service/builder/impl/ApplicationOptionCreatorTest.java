@@ -561,7 +561,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         hakukohde.setAloituspaikatLkm(10);
         hakukohde.setEnsikertalaistenAloituspaikat(5);
         hakukohde.setAlinValintaPistemaara(5);
-        hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
+        hakukohde.setAlinHyvaksyttavaKeskiarvo(4.0);
         hakukohde.setLiitteidenToimitusPvm(new Date());
         hakukohde.setEdellisenVuodenHakijatLkm(10);
         Map<String, String> selectionCriteria = Maps.newHashMap();

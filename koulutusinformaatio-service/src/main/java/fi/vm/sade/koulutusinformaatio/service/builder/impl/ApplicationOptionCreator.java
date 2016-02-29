@@ -127,7 +127,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         ao.setPrerequisite(los.getKoulutusPrerequisite());
         ao.setPohjakoulutusLiitteet(hakukohde.getPohjakoulutusliitteet());
-        ao.setJosYoEiMuitaLiitepyyntoja(hakukohde.isJosYoEiMuitaLiitepyyntoja());
+        ao.setJosYoEiMuitaLiitepyyntoja(hakukohde.getJosYoEiMuitaLiitepyyntoja());
 
         List<String> baseEducations = new ArrayList<String>();
         for (Code code : los.getPrerequisites()) {
@@ -165,7 +165,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ao.setTeachingLanguages(extractCodeVales(los.getTeachingLanguages()));
 
-        ao.setSpecificApplicationDates(hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa());
+        ao.setSpecificApplicationDates(hakukohde.getKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohde.getHakuaikaAlkuPvm());
             ao.setApplicationEndDate(hakukohde.getHakuaikaLoppuPvm());
