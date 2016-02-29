@@ -536,7 +536,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
                     // If fetching for preview, the status of the application option is added
                     if (!checkStatus) {
-                        ao.setStatus(hakukohdeDTO.getTila());
+                        ao.setStatus(hakukohdeDTO.getTila().name());
                         ao.getApplicationSystem().setStatus(hakuDTO.getTila());
                     }
                     if (ao.showInOpintopolku()) {
@@ -876,7 +876,6 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     private void addTutkintoonJohtamatonKoulutusFields(TutkintoonJohtamatonKoulutusV1RDTO koulutus, KoulutusLOS los) throws KoodistoException, OrganisaatioException {
-        los.setPrerequisites(createCodes(koulutus.getPohjakoulutusvaatimukset()));
         List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
         los.setFacetPrerequisites(facetPrequisites);
 

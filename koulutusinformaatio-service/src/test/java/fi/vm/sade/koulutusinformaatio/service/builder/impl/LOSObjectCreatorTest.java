@@ -139,7 +139,7 @@ public class LOSObjectCreatorTest extends TestCase {
         hakukohde.setHakukohteenNimiUri("Hakukohde");
         hakukohde.setAloituspaikatLkm(10);
         hakukohde.setAlinValintaPistemaara(5);
-        hakukohde.setAlinHyvaksyttavaKeskiarvo(4);
+        hakukohde.setAlinHyvaksyttavaKeskiarvo(4.0);
         hakukohde.setLiitteidenToimitusPvm(new Date());
         hakukohde.setEdellisenVuodenHakijatLkm(10);
         hakukohde.setKaksoisTutkinto(false);
