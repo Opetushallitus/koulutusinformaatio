@@ -920,7 +920,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 && !koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET).getTekstis().containsKey(UNDEFINED)) {
             los.setGoals(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
         }
-        if (koulutus.getAihees().getUris() != null && !koulutus.getAihees().getUris().isEmpty()) {
+        if (koulutus.getAihees() != null && koulutus.getAihees().getUris() != null && !koulutus.getAihees().getUris().isEmpty()) {
             los.setTopics(createCodes(koulutus.getAihees()));
         }
         else if (koulutus.getOpintoala() != null) {
@@ -1086,7 +1086,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
 
         los.setStartDates(Lists.newArrayList(koulutus.getKoulutuksenAlkamisPvms()));
-        los.setOsaamisalaton(koulutus.getKoulutusohjelma().getUri() == null);
+        boolean hasOsaamisala = KoodiV1RDTO.notEmpty(koulutus.getKoulutusohjelma());
+        los.setOsaamisalaton(!hasOsaamisala);
         los.setHakijalleNaytettavaTunniste(koulutus.getHakijalleNaytettavaTunniste());
 
         if (koulutus.getHinta() != null) {

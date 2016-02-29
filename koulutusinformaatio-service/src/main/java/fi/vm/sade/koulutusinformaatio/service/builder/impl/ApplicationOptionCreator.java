@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,14 +128,18 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         ao.setPrerequisite(los.getKoulutusPrerequisite());
         ao.setPohjakoulutusLiitteet(hakukohde.getPohjakoulutusliitteet());
-        ao.setJosYoEiMuitaLiitepyyntoja(hakukohde.getJosYoEiMuitaLiitepyyntoja());
+        ao.setJosYoEiMuitaLiitepyyntoja(BooleanUtils.toBoolean(hakukohde.getJosYoEiMuitaLiitepyyntoja()));
 
         List<String> baseEducations = new ArrayList<String>();
         for (Code code : los.getPrerequisites()) {
             baseEducations.add(code.getUri());
         }
-        baseEducations.addAll(hakukohde.getHakukelpoisuusvaatimusUris());
-        baseEducations.addAll(hakukohde.getOpintoOikeusUris());
+        if (hakukohde.getHakukelpoisuusvaatimusUris() != null) {
+            baseEducations.addAll(hakukohde.getHakukelpoisuusvaatimusUris());
+        }
+        if (hakukohde.getOpintoOikeusUris() != null) {
+            baseEducations.addAll(hakukohde.getOpintoOikeusUris());
+        }
         if (los.getKoulutusPrerequisite() != null) {
             List<Code> subCodes = koodistoService.searchSubCodes(
                     los.getKoulutusPrerequisite().getUri(),
@@ -237,7 +242,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ao.setApplicationOffice(getApplicationOffice(hakukohde.getYhteystiedot()));
 
-        ao.getKomotoOids().addAll(hakukohde.getHakukohdeKoulutusOids());
+        if (hakukohde.getHakukohdeKoulutusOids() != null) {
+            ao.getKomotoOids().addAll(hakukohde.getHakukohdeKoulutusOids());
+        }
 
         ao.setAdditionalProof(educationObjectCreator.createAdditionalProof(hakukohde.getValintakokeet()));
 
