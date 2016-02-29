@@ -133,7 +133,7 @@ public class HakukohdeTester {
                 aoHakuaika = hakuaika;
             }
         }
-        if (hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa()) {
+        if (hakukohde.getKaytetaanHakukohdekohtaistaHakuaikaa()) {
             return isOngoing(hakukohde.getHakuaikaAlkuPvm(), hakukohde.getHakuaikaLoppuPvm(), haku.getOpintopolunNayttaminenLoppuu());
         }
         return isOngoing(aoHakuaika.getAlkuPvm(), aoHakuaika.getLoppuPvm(), haku.getOpintopolunNayttaminenLoppuu());
