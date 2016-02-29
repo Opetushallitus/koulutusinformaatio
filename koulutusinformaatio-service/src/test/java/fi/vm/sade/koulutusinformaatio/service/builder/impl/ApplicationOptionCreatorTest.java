@@ -212,6 +212,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
                 new File("src/test/java/fi/vm/sade/koulutusinformaatio/service/builder/impl/HakukohdeV1RDTOLiite2.json"), HakukohdeLiiteV1RDTO.class);
         liite1.setJarjestys(1);
         liite2.setJarjestys(1);
+        hakukohde.setHakukohteenLiitteet(new ArrayList<HakukohdeLiiteV1RDTO>());
         hakukohde.getHakukohteenLiitteet().add(liite1);
         hakukohde.getHakukohteenLiitteet().add(liite2);
 
@@ -359,7 +360,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         Date hakuaikaEnd = getRelativeDateFromNow(12);
         HakuV1RDTO haku = getHakuV1RDTO(hakuaikaStart, hakuaikaEnd);
         HakukohdeV1RDTO hakukohde = getHakukohdeV1RDTO();
-        List<HakukohdeLiiteV1RDTO> liitteet = hakukohde.getHakukohteenLiitteet();
+        List<HakukohdeLiiteV1RDTO> liitteet = new ArrayList<>();
         HakukohdeLiiteV1RDTO liiteFi = createLiite("3203625", 0, "kieli_fi", "liitteenNimi", "liitteenKuvaukset", "osoiterivi1", "postinumero", "postinumeroArvo",
                 "postitoimipaikka");
         HakukohdeLiiteV1RDTO liiteEn = createLiite("3203628", 0, "kieli_en", "liitteenNimiEn", "liitteenKuvauksetEn", "osoiterivi1En", "postinumero",

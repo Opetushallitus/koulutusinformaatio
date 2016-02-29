@@ -53,7 +53,7 @@ public final class ContactPersonToDTO {
     // the last word of the name
     private static String getLastName(ContactPerson contactPerson) {
         String[] split = StringUtils.split(contactPerson.getName());
-        return split[split.length];
+        return split[split.length - 1];
     }
 
     // all other words of the name
