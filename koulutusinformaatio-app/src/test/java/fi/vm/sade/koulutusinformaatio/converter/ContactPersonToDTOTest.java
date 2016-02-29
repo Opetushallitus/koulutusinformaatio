@@ -51,8 +51,6 @@ public class ContactPersonToDTOTest {
     public void testConvert() {
         ContactPersonDTO dto = ContactPersonToDTO.convert(cp);
         assertNotNull(dto);
-        assertEquals("first names", dto.getFirstNames());
-        assertEquals("last name", dto.getLastName());
         assertEquals("first names lastname", dto.getName());
         assertEquals("email address", dto.getEmail());
         assertEquals("phone number", dto.getPhone());
