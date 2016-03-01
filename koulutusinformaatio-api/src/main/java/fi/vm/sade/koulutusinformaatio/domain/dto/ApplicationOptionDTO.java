@@ -81,6 +81,8 @@ public class ApplicationOptionDTO {
     private List<String> pohjakoulutusLiitteet;
     private boolean isJosYoEiMuitaLiitepyyntoja;
     private boolean kysytaanHarkinnanvaraiset;
+    private String applicationFormLink;
+
 
     public boolean isJosYoEiMuitaLiitepyyntoja() {
         return isJosYoEiMuitaLiitepyyntoja;
@@ -497,4 +499,11 @@ public class ApplicationOptionDTO {
         this.kysytaanHarkinnanvaraiset = kysytaanHarkinnanvaraiset;
     }
 
+    public String getApplicationFormLink() {
+        return applicationFormLink;
+    }
+
+    public void setApplicationFormLink(String applicationFormLink) {
+        this.applicationFormLink = applicationFormLink;
+    }
 }
