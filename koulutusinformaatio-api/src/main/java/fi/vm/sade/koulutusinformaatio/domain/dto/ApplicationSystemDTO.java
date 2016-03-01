@@ -35,6 +35,7 @@ public class ApplicationSystemDTO {
     private boolean asOngoing;
     private Date nextApplicationPeriodStarts;
     private String status;
+    @Deprecated // Hakukohdekohtainen lomakelinkki
     private String applicationFormLink;
     private String hakutapa;
     private String hakutyyppi;
@@ -96,10 +97,12 @@ public class ApplicationSystemDTO {
         this.status = status;
     }
 
+    @Deprecated
     public String getApplicationFormLink() {
         return applicationFormLink;
     }
 
+    @Deprecated
     public void setApplicationFormLink(String applicationFormLink) {
         this.applicationFormLink = applicationFormLink;
     }

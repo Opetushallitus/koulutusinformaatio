@@ -103,6 +103,8 @@ public final class ApplicationOptionToDTO {
             dto.setHakuMenettelyKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getHakuMenettelyKuvaukset(), lang));
             dto.setPeruutusEhdotKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getPeruutusEhdotKuvaukset(), lang));
 
+            dto.setApplicationFormLink(applicationOption.getApplicationSystem().getApplicationFormLink());
+
             return dto;
         }
         return null;
