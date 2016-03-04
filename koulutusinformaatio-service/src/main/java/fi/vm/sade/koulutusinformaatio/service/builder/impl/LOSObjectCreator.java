@@ -878,7 +878,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
     }
 
-    private void addTutkintoonJohtamatonKoulutusFields(TutkintoonJohtamatonKoulutusV1RDTO koulutus, KoulutusLOS los) throws KIException {
+    private void addTutkintoonJohtamatonKoulutusFields(TutkintoonJohtamatonKoulutusV1RDTO koulutus, KoulutusLOS los) throws ResourceNotFoundException, IOException, KoodistoException {
         try {
             los.setPrerequisites(createCodes(koulutus.getPohjakoulutusvaatimukset()));
             List<Code> facetPrequisites = this.getFacetPrequisites(los.getPrerequisites());
@@ -896,7 +896,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 String vastaavaOppilaitosOid = vastaavanYliopistonKoulutus.getResult().getTulokset().get(0).getOid();
                 los.setVastaavaKorkeakoulu(providerService.getByOID(vastaavaOppilaitosOid).getName());
             }
-        } catch (ResourceNotFoundException | IOException e) {
+        } catch (ResourceNotFoundException e) {
             LOG.warn("Organisaation hakeminen avoimen yliopiston koulutuksesta {} vastaavalle koulutukselle {} epäonnistui.", koulutus.getOid(),
                     koulutus.getTarjoajanKoulutus(), e);
             throw new ResourceNotFoundException("Organisaation hakeminen avoimen yliopiston koulutuksesta vastaavalle organisaatiolle epäonnistui", e);
@@ -1412,7 +1412,7 @@ public class LOSObjectCreator extends ObjectCreator {
         this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
     }
 
-    public KoulutusLOS createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) throws KIException {
+    public KoulutusLOS createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) {
         ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         if (result != null) {
             KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) result.getResult();
@@ -1423,7 +1423,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
 
-    public KoulutusLOS createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCallForOpintojakso) throws KIException {
+    public KoulutusLOS createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCallForOpintojakso) {
         if (checkStatus && alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) {
             LOG.debug("Korkeakouluopinto on jo käsitelty aiemmin.");
             return null;
@@ -1444,9 +1444,14 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = new KoulutusLOS();
         los.setType(TarjontaConstants.TYPE_KOULUTUS);
 
-        addKorkeakouluopintoEducationType(dto, los);
-        addKoulutusV1Fields(dto, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, needsAOsToBeValid);
-        addTutkintoonJohtamatonKoulutusFields(dto, los);
+        try {
+            addKorkeakouluopintoEducationType(dto, los);
+            addKoulutusV1Fields(dto, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, needsAOsToBeValid);
+            addTutkintoonJohtamatonKoulutusFields(dto, los);
+        } catch (ResourceNotFoundException | KoodistoException | TarjontaParseException | IOException e) {
+            LOG.error("Failed to create korkeakouluopinto {}", dto.getOid(), e);
+            return null;
+        }
 
         List<KoulutusLOS> childOpintojaksos = Lists.newArrayList();
         alreadyCreatedKorkeakouluOpintos.add(los.getId());
@@ -1466,7 +1471,7 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
 
-    private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws ResourceNotFoundException, KIException {
+    private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws ResourceNotFoundException {
         String tyypinMaarittavaOrganisaatioOid = null;
         if (dto.getTarjoajanKoulutus() != null) { // Koulutustyyppi määräytyy opinnon tarjoajan mukaan
             tyypinMaarittavaOrganisaatioOid = tarjontaRawService.searchEducation(dto.getTarjoajanKoulutus()).getResult().getTulokset().get(0).getOid();
@@ -1476,15 +1481,15 @@ public class LOSObjectCreator extends ObjectCreator {
 
         // Haetaan organisaatiopalvelun hakurajapinnasta organisaation oppilaitostyyppi
         String oppilaitostyyppi = providerService.getOppilaitosTyyppiByOID(tyypinMaarittavaOrganisaatioOid);
-        if (oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_AMK)) {
+        if (StringUtils.contains(oppilaitostyyppi, TarjontaConstants.OPPILAITOSTYYPPI_AMK)) {
             los.setEducationType(SolrConstants.ED_TYPE_AVOIN_AMK);
-        } else if (oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_YLIOPISTO)
-                || oppilaitostyyppi.contains(TarjontaConstants.OPPILAITOSTYYPPI_SOTILASKK)) {
+        } else if (StringUtils.contains(oppilaitostyyppi, TarjontaConstants.OPPILAITOSTYYPPI_YLIOPISTO)
+                || StringUtils.contains(oppilaitostyyppi, TarjontaConstants.OPPILAITOSTYYPPI_SOTILASKK)) {
             los.setEducationType(SolrConstants.ED_TYPE_AVOIN_YO);
         } else {
             LOG.error("Tuntematon korkeakouluopinnon {} oppilaitostyyppi {} organisaatiolla {}", dto.getOid(), oppilaitostyyppi,
                     tyypinMaarittavaOrganisaatioOid);
-            throw new KIException(String.format("Tuntematon oppilaitostyyppi %s koulutuksella %s", oppilaitostyyppi, dto.getOid()));
+            throw new ResourceNotFoundException(String.format("Tuntematon oppilaitostyyppi %s koulutuksella %s", oppilaitostyyppi, dto.getOid()));
         }
     }
 
