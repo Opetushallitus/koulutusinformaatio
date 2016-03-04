@@ -232,13 +232,17 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public String getOppilaitosTyyppiByOID(String oid) throws ResourceNotFoundException {
         List<OrganisaatioPerustieto> organisaatiot = organisaatioRawService.findOrganisaatio(oid).getOrganisaatiot();
-        if (CollectionUtils.isEmpty(organisaatiot))
-            throw new ResourceNotFoundException("Organisaatiota " + oid + " ei löytynyt!");
+        if (CollectionUtils.isEmpty(organisaatiot)){
+            LOG.error("Organisaatiota " + oid + " ei löytynyt!");
+            return null;
+        }
         OrganisaatioPerustieto tulos = organisaatiot.get(0);
         String oppilaitosTyyppi = getOppilaitosTyyppi(tulos);
-        if (oppilaitosTyyppi != null)
-            return oppilaitosTyyppi;
-        throw new ResourceNotFoundException("Organisaatiolla " + oid + " ei ollut oppilaitostyyppiä!");
+        if (oppilaitosTyyppi == null){
+            LOG.error("Organisaatiolla " + oid + " ei ollut oppilaitostyyppiä!");
+            return null;
+        }
+        return oppilaitosTyyppi;
     }
 
     private Set<String> validOppilaitosTyyppis = Sets.newHashSet(OPPILAITOSTYYPPI_AMK, OPPILAITOSTYYPPI_YLIOPISTO, OPPILAITOSTYYPPI_SOTILASKK);
