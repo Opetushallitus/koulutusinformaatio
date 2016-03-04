@@ -998,16 +998,8 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException {
-        try {
-            ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
-            KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
-            return creator.createKorkeakouluopinto(koulutusDTO, true, false);
-        } catch (KoodistoException e) {
-            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage(), e);
-            return null;
-        } catch (TarjontaParseException e) {
-            LOG.warn("Failed to create opintojakso " + dto.getOid() + ": " + e.getMessage(), e);
-            return null;
-        }
+        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
+        KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
+        return creator.createKorkeakouluopinto(koulutusDTO, true, false);
     }
 }
