@@ -29,6 +29,8 @@ import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
 
     private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
+    public static final int CONNECT_TIMEOUT = 1000;
+    public static final int READ_TIMEOUT = 30000;
 
     private final String organisaatioResourceUrl;
 
@@ -63,6 +65,9 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
         ClientConfig cc = new DefaultClientConfig();
         cc.getSingletons().add(jacksProv);
         Client clientWithJacksonSerializer = Client.create(cc);
+        clientWithJacksonSerializer.setConnectTimeout(CONNECT_TIMEOUT);
+        clientWithJacksonSerializer.setReadTimeout(READ_TIMEOUT);
+
         WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
         return orgRes
                 .queryParam("noCache", String.format("%s", System.currentTimeMillis()))
@@ -84,6 +89,9 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
         ClientConfig cc = new DefaultClientConfig();
         cc.getSingletons().add(jacksProv);
         Client clientWithJacksonSerializer = Client.create(cc);
+        clientWithJacksonSerializer.setConnectTimeout(CONNECT_TIMEOUT);
+        clientWithJacksonSerializer.setReadTimeout(READ_TIMEOUT);
+
         WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
         return orgRes
                 .queryParam("noCache", String.format("%s", System.currentTimeMillis()))

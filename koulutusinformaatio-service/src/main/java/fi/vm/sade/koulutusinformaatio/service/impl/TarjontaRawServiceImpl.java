@@ -27,6 +27,8 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -58,6 +60,10 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
+    private static final Logger LOG = LoggerFactory.getLogger(TarjontaRawServiceImpl.class);
+    public static final int CONNECT_TIMEOUT = 1000;
+    public static final int READ_TIMEOUT = 30000;
+
 
     private WebResource v1KoulutusResource;
     private WebResource v1AOResource;
@@ -76,6 +82,8 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         ClientConfig cc = new DefaultClientConfig();
         cc.getSingletons().add(jacksProv);
         Client clientWithJacksonSerializer = Client.create(cc);
+        clientWithJacksonSerializer.setConnectTimeout(CONNECT_TIMEOUT);
+        clientWithJacksonSerializer.setReadTimeout(READ_TIMEOUT);
         v1KoulutusResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
         v1AOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
         v1ASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
@@ -243,7 +251,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .accept(JSON_UTF8)
                         .get(type);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.warn("Calling resource failed: " + resource);
                 try {
                     Thread.sleep(2500);
                 } catch (InterruptedException e1) {
@@ -251,6 +259,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 }
             }
         }
+        LOG.warn("Calling resource failed, last retry: " + resource);
         return resource
                 .accept(JSON_UTF8)
                 .get(type);
