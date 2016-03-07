@@ -168,12 +168,14 @@ public class IncrementalKoulutusLOSIndexer {
             removeKorkeakouluOpintoAndRelatives(losToRemove);
         }
 
-        this.indexToSolr(los);
-        this.dataUpdateService.updateKoulutusLos(los);
+        if(los != null) {
+            this.indexToSolr(los);
+            this.dataUpdateService.updateKoulutusLos(los);
 
-        for (KoulutusLOS child : los.getOpintojaksos()) {
-            this.indexToSolr(child);
-            this.dataUpdateService.updateKoulutusLos(child);
+            for (KoulutusLOS child : los.getOpintojaksos()) {
+                this.indexToSolr(child);
+                this.dataUpdateService.updateKoulutusLos(child);
+            }
         }
     }
 
