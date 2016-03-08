@@ -10,7 +10,10 @@ public class KICommitException extends KIException {
     public KICommitException(String s) {
         super(s);
     }
-    
+    public KICommitException(String s, Exception e) {
+        super(s, e);
+    }
+
     public KICommitException(Exception ex) {
         super(ex.getMessage());
     }
