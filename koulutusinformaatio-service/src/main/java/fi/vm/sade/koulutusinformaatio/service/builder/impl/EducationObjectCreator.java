@@ -33,6 +33,7 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
 import fi.vm.sade.koulutusinformaatio.domain.ScoreLimit;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
@@ -181,11 +182,11 @@ public class EducationObjectCreator extends ObjectCreator {
         return null;
     }
 
-    public List<OrganizationGroup> createOrganizationGroups(List<RyhmaliitosV1RDTO> ryhmaliitokset, String... organisaatioRyhmaOids) throws ResourceNotFoundException {
+    public List<OrganizationGroup> createOrganizationGroups(List<RyhmaliitosV1RDTO> ryhmaliitokset, String... organisaatioRyhmaOids) throws OrganisaatioException {
         if (organisaatioRyhmaOids == null) {
-            return new ArrayList<OrganizationGroup>();
+            return new ArrayList<>();
         }
-        List<OrganizationGroup> groups = new ArrayList<OrganizationGroup>(organisaatioRyhmaOids.length);
+        List<OrganizationGroup> groups = new ArrayList<>(organisaatioRyhmaOids.length);
         for (String oid: organisaatioRyhmaOids) {
             OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
             boolean isGroup = false;
@@ -196,7 +197,7 @@ public class EducationObjectCreator extends ObjectCreator {
                 }
             }
             if (!isGroup) {
-                throw new ResourceNotFoundException("Organization "+oid+" is not group");
+                throw new OrganisaatioException("Organization "+oid+" is not group");
             }
 
             OrganizationGroup group = new OrganizationGroup();
