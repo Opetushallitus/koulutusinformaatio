@@ -1,22 +1,18 @@
 package fi.vm.sade.koulutusinformaatio.integrationtest;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 
 public class ProviderServiceMock implements ProviderService {
     @Override
-    public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException, ResourceNotFoundException {
+    public Provider getByOID(String oid) {
         Provider provider = new Provider();
         provider.setId(oid);
 
@@ -28,12 +24,12 @@ public class ProviderServiceMock implements ProviderService {
     }
 
     @Override
-    public List<OrganisaatioPerustieto> fetchOpplaitokset() throws MalformedURLException, IOException, ResourceNotFoundException {
+    public List<OrganisaatioPerustieto> fetchOpplaitokset() {
         return Lists.newArrayList(new OrganisaatioPerustieto());
     }
 
     @Override
-    public List<OrganisaatioPerustieto> fetchToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException {
+    public List<OrganisaatioPerustieto> fetchToimipisteet() {
         return Lists.newArrayList(new OrganisaatioPerustieto());
     }
 
@@ -43,12 +39,12 @@ public class ProviderServiceMock implements ProviderService {
     }
 
     @Override
-    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException {
+    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet() {
         return Lists.newArrayList(new OrganisaatioPerustieto());
     }
 
     @Override
-    public String getOppilaitosTyyppiByOID(String oid) throws ResourceNotFoundException {
+    public String getOppilaitosTyyppiByOID(String oid) {
         return TarjontaConstants.OPPILAITOSTYYPPI_YLIOPISTO;
     }
 }

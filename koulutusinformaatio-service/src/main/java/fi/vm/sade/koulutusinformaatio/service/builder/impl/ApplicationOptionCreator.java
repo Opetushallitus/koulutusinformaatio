@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -72,8 +73,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return applicationSystemCreator;
     }
 
-    public ApplicationOption createV1EducationApplicationOption(KoulutusLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException,
-            ResourceNotFoundException {
+    public ApplicationOption createV1EducationApplicationOption(KoulutusLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException, OrganisaatioException {
 
         // Demoympäristössä halutaan näyttää vain ne hakukohteet, jotka kuuluvat hakuihin overriddenASOids listalla
         if (overriddenASOids != null && !overriddenASOids.isEmpty() && !overriddenASOids.contains(haku.getOid())) {
