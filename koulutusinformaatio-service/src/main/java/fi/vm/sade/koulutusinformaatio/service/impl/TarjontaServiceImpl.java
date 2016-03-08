@@ -215,28 +215,19 @@ public class TarjontaServiceImpl implements TarjontaService {
                     aoLoss = new ArrayList<HigherEducationLOSRef>();
                     aoToEducationsMap.put(curAo.getId(), aoLoss);
                 }
-                if (!refAlreadyCreated(curAo, aoLoss)) {
-                    HigherEducationLOSRef newRef = new HigherEducationLOSRef();
-                    newRef.setId(los.getId());
-                    newRef.setName(los.getName());
-                    newRef.setPrerequisite(curAo.getPrerequisite());
-                    newRef.setQualifications(los.getQualifications());
-                    newRef.setProvider(curAo.getProvider().getName());
-                    aoLoss.add(newRef);
-                    aoToEducationsMap.put(curAo.getId(), aoLoss);
-                }
+
+                HigherEducationLOSRef newRef = new HigherEducationLOSRef();
+                newRef.setId(los.getId());
+                newRef.setName(los.getName());
+                newRef.setPrerequisite(curAo.getPrerequisite());
+                newRef.setQualifications(los.getQualifications());
+                newRef.setProvider(curAo.getProvider().getName());
+                aoLoss.add(newRef);
+                aoToEducationsMap.put(curAo.getId(), aoLoss);
             }
         }
         LOG.debug("ao los references now updated");
 
-    }
-
-    private boolean refAlreadyCreated(ApplicationOption curAo, List<HigherEducationLOSRef> aoLoss) {
-        for (HigherEducationLOSRef ref : aoLoss) {
-            if (ref.getId().equals(curAo.getId()))
-                return true;
-        }
-        return false;
     }
 
     private void updateAOLosReferences(CompetenceBasedQualificationParentLOS los,
