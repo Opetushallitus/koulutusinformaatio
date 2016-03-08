@@ -660,12 +660,12 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KIException {
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException {
         KoulutusV1RDTO dto = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid).getResult();
         return createKoulutusLOS(dto, checkStatus);
     }
 
-    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KIException {
+    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, ResourceNotFoundException, TarjontaParseException {
         KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
         case KORKEAKOULUTUS:
@@ -997,7 +997,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException {
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) {
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
         KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
         return creator.createKorkeakouluopinto(koulutusDTO, true, false);

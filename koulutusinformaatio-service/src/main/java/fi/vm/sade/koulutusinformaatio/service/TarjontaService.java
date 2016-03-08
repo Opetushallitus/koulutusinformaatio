@@ -118,8 +118,8 @@ public interface TarjontaService {
      * @return
      * @throws KIException 
      */
-    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KIException;
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto);
 
-    KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KIException;
+    KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException;
 
 }

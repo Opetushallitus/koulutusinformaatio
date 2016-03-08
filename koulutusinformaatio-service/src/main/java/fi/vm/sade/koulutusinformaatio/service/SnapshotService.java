@@ -16,11 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
+
 /**
  * @author Hannu Lyytikainen
  */
 public interface SnapshotService {
 
-    public void renderSnapshots();
+    void renderSnapshots() throws IndexingException;
 
 }

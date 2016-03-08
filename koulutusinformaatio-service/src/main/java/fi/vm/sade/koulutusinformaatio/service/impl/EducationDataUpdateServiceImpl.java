@@ -92,22 +92,18 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     }
 
     @Override
-    public void save(LOS learningOpportunitySpecification) throws KIException {
-        try {
-            if (learningOpportunitySpecification instanceof HigherEducationLOS) {
-                saveHigherEducationLOS((HigherEducationLOS) learningOpportunitySpecification);
-            }
-            else if (learningOpportunitySpecification instanceof KoulutusLOS) {
-                saveKoulutusLOS((KoulutusLOS) learningOpportunitySpecification);
-            }
-            else if (learningOpportunitySpecification instanceof TutkintoLOS) {
-                saveTutkintoLOS((TutkintoLOS) learningOpportunitySpecification);
-            }
-            else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
-                saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS) learningOpportunitySpecification);
-            }
-        } catch (Exception e) {
-            throw new KIException("Failed to save koulutus " + learningOpportunitySpecification.getId() + " to mongo.", e);
+    public void save(LOS learningOpportunitySpecification) {
+        if (learningOpportunitySpecification instanceof HigherEducationLOS) {
+            saveHigherEducationLOS((HigherEducationLOS) learningOpportunitySpecification);
+        }
+        else if (learningOpportunitySpecification instanceof KoulutusLOS) {
+            saveKoulutusLOS((KoulutusLOS) learningOpportunitySpecification);
+        }
+        else if (learningOpportunitySpecification instanceof TutkintoLOS) {
+            saveTutkintoLOS((TutkintoLOS) learningOpportunitySpecification);
+        }
+        else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
+            saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS) learningOpportunitySpecification);
         }
     }
 
@@ -187,13 +183,9 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
     }
 
-    public void save(Provider provider) throws KIException {
-        try {
-            LearningOpportunityProviderEntity provE = modelMapper.map(provider, LearningOpportunityProviderEntity.class);
-            save(provE);
-        } catch (Exception e) {
-            throw new KIException("Failed to save provider " + provider.getId() + " to mongo.", e);
-        }
+    public void save(Provider provider) {
+        LearningOpportunityProviderEntity provE = modelMapper.map(provider, LearningOpportunityProviderEntity.class);
+        save(provE);
     }
 
     private void save(final ApplicationOptionEntity applicationOption) {

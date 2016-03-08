@@ -26,9 +26,9 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
  */
 public interface EducationDataUpdateService {
 
-    void save(final LOS learningOpportunitySpecification) throws KIException;
+    void save(final LOS learningOpportunitySpecification);
 
     void save(final DataStatus dataStatus);
     
-    void save(final Provider provider) throws KIException;
+    void save(final Provider provider);
 }
