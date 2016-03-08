@@ -16,9 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -48,7 +46,7 @@ public class ApplicationOptionEntity {
     @Embedded
     private List<ChildLOIRefEntity> childLOIRefs = new ArrayList<ChildLOIRefEntity>();
     @Embedded
-    private List<HigherEducationLOSRefEntity> higherEdLOSRefs = new ArrayList<HigherEducationLOSRefEntity>();
+    private Set<HigherEducationLOSRefEntity> higherEdLOSRefs = new HashSet<>();
     private Integer startingQuota;
     private Integer firstTimerStartingQuota;
     @Embedded
@@ -408,11 +406,11 @@ public class ApplicationOptionEntity {
         this.eligibilityDescription = prerequisiteDescription;
     }
 
-    public List<HigherEducationLOSRefEntity> getHigherEdLOSRefs() {
+    public Set<HigherEducationLOSRefEntity> getHigherEdLOSRefs() {
         return higherEdLOSRefs;
     }
 
-    public void setHigherEdLOSRefs(List<HigherEducationLOSRefEntity> higherEdLOSRefs) {
+    public void setHigherEdLOSRefs(Set<HigherEducationLOSRefEntity> higherEdLOSRefs) {
         this.higherEdLOSRefs = higherEdLOSRefs;
     }
 

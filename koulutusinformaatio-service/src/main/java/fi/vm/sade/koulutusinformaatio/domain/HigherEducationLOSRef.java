@@ -1,5 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import com.google.common.base.Objects;
+
 import java.util.List;
 
 /**
@@ -76,4 +78,17 @@ public class HigherEducationLOSRef {
         return adultVocational;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HigherEducationLOSRef that = (HigherEducationLOSRef) o;
+        return Objects.equal(id, that.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
