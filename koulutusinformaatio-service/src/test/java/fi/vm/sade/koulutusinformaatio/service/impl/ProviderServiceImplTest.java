@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -80,7 +81,7 @@ public class ProviderServiceImplTest {
     public WireMockRule wireMockRule = new WireMockRule(PORT);
 
     @Before
-    public void setup() throws IOException, KoodistoException, ResourceNotFoundException {
+    public void setup() throws Exception {
         stubFor(get(urlEqualTo("/" + CHILD_ORGANISAATIO_OID + "?includeImage=true"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -116,7 +117,7 @@ public class ProviderServiceImplTest {
     }
 
     @Test
-    public void testGetByOid() throws KoodistoException, ResourceNotFoundException {
+    public void testGetByOid() throws Exception {
         Provider p = service.getByOID(CHILD_ORGANISAATIO_OID);
         assertNotNull(p);
         assertEquals(p.getId(), CHILD_ORGANISAATIO_OID);
@@ -144,7 +145,7 @@ public class ProviderServiceImplTest {
      * @throws IOException
      */
     @Test
-    public void testFetchOppilaitokset() throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException {
+    public void testFetchOppilaitokset() throws Exception {
         
         ProviderService service = prepareWithMockRawService();
         List<OrganisaatioPerustieto> result = service.fetchOpplaitokset();
@@ -161,7 +162,7 @@ public class ProviderServiceImplTest {
      * @throws IOException
      */
     @Test
-    public void testFetchOppisopimustoimipisteet() throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException {
+    public void testFetchOppisopimustoimipisteet() throws Exception {
         
         ProviderService service = prepareWithMockRawService();
         List<OrganisaatioPerustieto> result = service.fetchOppisopimusToimipisteet();
@@ -178,7 +179,7 @@ public class ProviderServiceImplTest {
      * @throws IOException
      */
     @Test
-    public void testFetchToimipisteet() throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException {
+    public void testFetchToimipisteet() throws Exception {
         
         ProviderService service = prepareWithMockRawService();
         List<OrganisaatioPerustieto> result = service.fetchToimipisteet();
@@ -203,7 +204,7 @@ public class ProviderServiceImplTest {
     /*
      * Prepares a ProviderServiceImpl with a mock OrganisaatioRawService.
      */
-    private ProviderServiceImpl prepareWithMockRawService() throws ResourceNotFoundException, KoodistoException {
+    private ProviderServiceImpl prepareWithMockRawService() throws Exception {
         KoodistoService koodistoService = mock(KoodistoService.class);
         ConversionService conversionService = mock(ConversionService.class);
         OrganisaatioRawService organisaatioRawService = mock(OrganisaatioRawService.class);
