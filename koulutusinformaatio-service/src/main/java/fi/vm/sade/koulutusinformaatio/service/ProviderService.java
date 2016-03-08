@@ -22,6 +22,7 @@ import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 
@@ -32,9 +33,9 @@ import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
  */
 public interface ProviderService {
 
-    public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException, ResourceNotFoundException;
+    Provider getByOID(String oid) throws OrganisaatioException;
 
-    public String getOppilaitosTyyppiByOID(String oid) throws ResourceNotFoundException;
+    String getOppilaitosTyyppiByOID(String oid) throws OrganisaatioException;
 
     /**
      * Fetches list of Organizations of type Oppilaitos from organisaatio service.
@@ -44,7 +45,7 @@ public interface ProviderService {
      * @throws IOException
      * @throws ResourceNotFoundException
      */
-    public List<OrganisaatioPerustieto> fetchOpplaitokset() throws MalformedURLException, IOException, ResourceNotFoundException;
+    List<OrganisaatioPerustieto> fetchOpplaitokset() throws OrganisaatioException;
     
     /**
      * Fetches list of Organizations of type Toimipiste from organisaatio service.
@@ -54,8 +55,8 @@ public interface ProviderService {
      * @throws IOException
      * @throws ResourceNotFoundException
      */
-    public List<OrganisaatioPerustieto> fetchToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException;
+    List<OrganisaatioPerustieto> fetchToimipisteet() throws OrganisaatioException;
     void clearCache();
 
-    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException;
+    List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet() throws OrganisaatioException;
 }
