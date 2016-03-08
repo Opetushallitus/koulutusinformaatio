@@ -62,7 +62,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     }
 
     @Test
-    public void testSaveHigherEducationLOS() throws KIException {
+    public void testSaveHigherEducationLOS() {
         ApplicationOption ao = new ApplicationOption();
         ao.setId("aoid");
         List<ApplicationOption> aos = Lists.newArrayList(ao);
