@@ -132,7 +132,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService
                 .listEducationsByToteutustyyppi(ToteutustyyppiEnum.KORKEAKOULUTUS.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-        Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
+        Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<>();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
                 ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulutus.getOid());
@@ -206,13 +206,13 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     private void updateAOLosReferences(KoulutusLOS los,
-            Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
+            Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap) {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
                 LOG.debug("Updating ao los references for ao: {}", curAo.getId());
-                List<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
+                Set<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
                 if (aoLoss == null) {
-                    aoLoss = new ArrayList<HigherEducationLOSRef>();
+                    aoLoss = new HashSet<>();
                     aoToEducationsMap.put(curAo.getId(), aoLoss);
                 }
 
@@ -231,13 +231,13 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     private void updateAOLosReferences(CompetenceBasedQualificationParentLOS los,
-            Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
+            Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap) {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
                 LOG.debug("Updating ao los references for ao: {}", curAo.getId());
-                List<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
+                Set<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
                 if (aoLoss == null) {
-                    aoLoss = new ArrayList<HigherEducationLOSRef>();
+                    aoLoss = new HashSet<>();
                     aoToEducationsMap.put(curAo.getId(), aoLoss);
                 }
                 aoLoss.add(createAdultVocationalLosRef(los, curAo));
@@ -266,7 +266,7 @@ public class TarjontaServiceImpl implements TarjontaService {
      * Creating the learning opportunity hierarchy for higher education
      */
     private List<HigherEducationLOS> createChildHierarchy(List<HigherEducationLOS> koulutukset,
-            Map<String, List<HigherEducationLOS>> komoToLOSMap, List<String> parentOids, Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
+            Map<String, List<HigherEducationLOS>> komoToLOSMap, List<String> parentOids, Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap) {
 
         for (HigherEducationLOS curLos : koulutukset) {
 
@@ -491,7 +491,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
                 ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA.name(), ToteutustyyppiEnum.AIKUISTEN_PERUSOPETUS.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-        Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
+        Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<>();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
 
@@ -556,7 +556,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 ToteutustyyppiEnum.VAPAAN_SIVISTYSTYON_KOULUTUS.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
 
-        Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
+        Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<>();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             LOG.debug("Cur Valmistava tarjoaja result: {}", curRes.getOid());
@@ -608,7 +608,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 ToteutustyyppiEnum.AMMATTITUTKINTO.name(),
                 ToteutustyyppiEnum.ERIKOISAMMATTITUTKINTO.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-        Map<String, List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String, List<HigherEducationLOSRef>>();
+        Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<>();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             LOG.debug("Cur Adult Vocationals tarjoaja result: {}", curRes.getOid());

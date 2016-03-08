@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 
@@ -34,7 +31,7 @@ public class ApplicationOption {
     private ApplicationSystem applicationSystem;
     private String educationDegree;
     private List<ChildLOIRef> childLOIRefs = new ArrayList<ChildLOIRef>();
-    private List<HigherEducationLOSRef> higherEdLOSRefs = new ArrayList<HigherEducationLOSRef>();
+    private Set<HigherEducationLOSRef> higherEdLOSRefs = new HashSet<>();
     private Provider provider;
     private ApplicationOffice applicationOffice;
     // "aloituspaikatLkm" : 10,
@@ -432,11 +429,11 @@ public class ApplicationOption {
         return eligibilityDescription;
     }
 
-    public List<HigherEducationLOSRef> getHigherEdLOSRefs() {
+    public Set<HigherEducationLOSRef> getHigherEdLOSRefs() {
         return higherEdLOSRefs;
     }
 
-    public void setHigherEdLOSRefs(List<HigherEducationLOSRef> higherEdLOSRefs) {
+    public void setHigherEdLOSRefs(Set<HigherEducationLOSRef> higherEdLOSRefs) {
         this.higherEdLOSRefs = higherEdLOSRefs;
     }
 
