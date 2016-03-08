@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
+import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.util.StreamReaderHelper;
@@ -75,7 +76,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     @Override
-    public void renderSnapshots() {
+    public void renderSnapshots() throws IndexingException {
         LOG.info("Rendering html snapshots");
         prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
         LOG.debug("HigherEd LOs rendered");
@@ -87,7 +88,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.info("Rendering html snapshots finished");
     }
     
-    private void prerenderWithTeachingLanguages(String type, List<String> ids) {
+    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
         for (String id : ids) {
             HigherEducationLOSEntity los = higheredDAO.get(id);
             
@@ -106,23 +107,15 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
             
             // generate default snapshot
-            try {
-                String cmd = generatePhantomJSCommand(type, id);
-                invokePhantomJS(cmd, id);
-            } catch (KIException e) {
-                LOG.error(e.getMessage());
-            }
+            String cmd = generatePhantomJSCommand(type, id);
+            invokePhantomJS(cmd, id);
         }
     }
 
-    private void prerender(String type, List<String> ids) {
+    private void prerender(String type, List<String> ids) throws IndexingException {
         for (String id : ids) {
-            try {
-                String cmd = generatePhantomJSCommand(type, id);
-                invokePhantomJS(cmd, id);
-            } catch (KIException e) {
-                LOG.error(e.getMessage());
-            }
+            String cmd = generatePhantomJSCommand(type, id);
+            invokePhantomJS(cmd, id);
         }
     }
     
@@ -138,7 +131,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     
     
 
-    private void invokePhantomJS(String cmd, String id) throws KIException {
+    private void invokePhantomJS(String cmd, String id) throws IndexingException {
 
         try {
             // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"            
@@ -155,15 +148,15 @@ public class SnapshotServiceImpl implements SnapshotService {
             process.destroy();
             
             if (exitStatus != 0) {
-                throw new KIException(String.format("Rendering snapshot for learning opportunity %s failed with exit status: %d",
+                throw new IndexingException(String.format("Rendering snapshot for learning opportunity %s failed with exit status: %d",
                         id, exitStatus));
             }
 
         } catch (IOException e) {
-            throw new KIException(String.format("Rendering learning opportunity %s failed due to IOException: %s",
+            throw new IndexingException(String.format("Rendering learning opportunity %s failed due to IOException: %s",
                     id, e.getMessage()));
         } catch (InterruptedException e) {
-            throw new KIException(String.format("Rendering learning opportunity %s failed due to InterruptedException: %s",
+            throw new IndexingException(String.format("Rendering learning opportunity %s failed due to InterruptedException: %s",
                     id, e.getMessage()));
         }
     }

@@ -18,14 +18,13 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import static fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants.*;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,6 @@ import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
@@ -69,65 +67,73 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public Provider getByOID(String oid) throws KoodistoException, ResourceNotFoundException {
-        LOG.debug("Fetching provider with oid {}", oid);
-        
-        Provider cachedProvider = providerMap.get(oid);
-        if (cachedProvider != null) {
-            LOG.debug("Returning provider from cache");
-            return cachedProvider; 
-        }
+    public Provider getByOID(String oid) throws OrganisaatioException {
+        try {
+            LOG.debug("Fetching provider with oid {}", oid);
 
-        OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
-
-        Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
-        if (!validate(provider) && !Strings.isNullOrEmpty(organisaatioRDTO.getParentOid())) {
-
-            LOG.debug("Enriching provider {} with parent provider {}", organisaatioRDTO.getOid(), organisaatioRDTO.getParentOid());
-            
-            Provider parent = getByOID(organisaatioRDTO.getParentOid());
-            LOG.debug("Got parent provider");
-
-            provider = inheritMetadata(provider, parent);
-        }
-        
-        if (provider.getType() == null) {
-            inheritOlTypes(provider, organisaatioRDTO);
-        } 
-        if (provider.getType() != null) {
-            provider.getOlTypes().add(provider.getType());
-        }
-        if (provider.getOlTypes() != null) {
-            for (Code curOlType : provider.getOlTypes()) {
-                List<Code> olFacets = this.koodistoService.searchSuperCodes(curOlType.getUri(), KOODISTO_OPPILAITOSTYYPPIFASETTI);
-                provider.getOlTypeFacets().addAll(olFacets);
+            Provider cachedProvider = providerMap.get(oid);
+            if (cachedProvider != null) {
+                LOG.debug("Returning provider from cache");
+                return cachedProvider;
             }
+
+            OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
+
+            Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
+            if (!validate(provider) && !Strings.isNullOrEmpty(organisaatioRDTO.getParentOid())) {
+
+                LOG.debug("Enriching provider {} with parent provider {}", organisaatioRDTO.getOid(), organisaatioRDTO.getParentOid());
+
+                Provider parent = getByOID(organisaatioRDTO.getParentOid());
+                LOG.debug("Got parent provider");
+
+                provider = inheritMetadata(provider, parent);
+            }
+
+            if (provider.getType() == null) {
+                inheritOlTypes(provider, organisaatioRDTO);
+            }
+            if (provider.getType() != null) {
+                provider.getOlTypes().add(provider.getType());
+            }
+            if (provider.getOlTypes() != null) {
+                for (Code curOlType : provider.getOlTypes()) {
+                    List<Code> olFacets = null;
+                        olFacets = this.koodistoService.searchSuperCodes(curOlType.getUri(), KOODISTO_OPPILAITOSTYYPPIFASETTI);
+                    provider.getOlTypeFacets().addAll(olFacets);
+                }
+            }
+            if (organisaatioRDTO.getTyypit() != null && organisaatioRDTO.getTyypit().contains(ORG_TYPE_OPPISOPIMUSTOIMIPISTE)) {
+                Code opSopToim = koodistoService.searchFirst(OPPILAITOSTYYPPIFASETT_OPPISOPIMUS);
+                provider.getOlTypeFacets().add(opSopToim);
+            }
+
+
+            providerMap.put(oid, provider);
+
+            return provider;
+        } catch (KoodistoException e) {
+            throw new OrganisaatioException("Koodisto failed during organisaatio search", e);
         }
-        if (organisaatioRDTO.getTyypit() != null && organisaatioRDTO.getTyypit().contains(ORG_TYPE_OPPISOPIMUSTOIMIPISTE)) {
-            Code opSopToim = koodistoService.searchFirst(OPPILAITOSTYYPPIFASETT_OPPISOPIMUS);
-            provider.getOlTypeFacets().add(opSopToim);
-        }
-        
-        
-        providerMap.put(oid, provider);
-        
-        return provider;
     }
     
     
 
-    private void inheritOlTypes(Provider provider, OrganisaatioRDTO rawProvider) throws ResourceNotFoundException, KoodistoException {
-        
-        if (rawProvider.getTyypit().contains(ORG_TYPE_OPPILAITOS)) {
-            Code olTyyppi = koodistoService.searchFirst(rawProvider.getOppilaitosTyyppiUri());
-            if (olTyyppi != null) {
-                provider.getOlTypes().add(olTyyppi);
+    private void inheritOlTypes(Provider provider, OrganisaatioRDTO rawProvider) throws OrganisaatioException {
+        try{
+            if (rawProvider.getTyypit().contains(ORG_TYPE_OPPILAITOS)) {
+                Code olTyyppi = koodistoService.searchFirst(rawProvider.getOppilaitosTyyppiUri());
+                if (olTyyppi != null) {
+                    provider.getOlTypes().add(olTyyppi);
+                }
             }
+            else if (rawProvider.getTyypit().contains(ORG_TYPE_TOIMIPISTE)) {
+                OrganisaatioRDTO inheritableOrg = this.organisaatioRawService.getOrganisaatio(rawProvider.getParentOid());
+                inheritOlTypes(provider, inheritableOrg);
+            }
+        } catch (KoodistoException e) {
+            throw new OrganisaatioException("Koodisto failed during organisaatio search", e);
         }
-        else if (rawProvider.getTyypit().contains(ORG_TYPE_TOIMIPISTE)) {
-            OrganisaatioRDTO inheritableOrg = this.organisaatioRawService.getOrganisaatio(rawProvider.getParentOid());
-            inheritOlTypes(provider, inheritableOrg);
-        } 
     }
 
     private Provider inheritMetadata(Provider child, Provider parent) {
@@ -179,9 +185,7 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public List<OrganisaatioPerustieto> fetchOpplaitokset()
-            throws MalformedURLException, IOException,
-            ResourceNotFoundException {
+    public List<OrganisaatioPerustieto> fetchOpplaitokset() {
         List<OrganisaatioPerustieto> resOrgs = new ArrayList<OrganisaatioPerustieto>();
         
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType(ORG_TYPE_OPPILAITOS);
@@ -208,37 +212,33 @@ public class ProviderServiceImpl implements ProviderService {
 
     
     @Override
-    public List<OrganisaatioPerustieto> fetchToimipisteet()
-            throws MalformedURLException, IOException,
-            ResourceNotFoundException {
+    public List<OrganisaatioPerustieto> fetchToimipisteet() {
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType(ORG_TYPE_TOIMIPISTE);
         if (result != null && result.getOrganisaatiot() != null) {
             return result.getOrganisaatiot();
         }
-        return new ArrayList<OrganisaatioPerustieto>();
+        return new ArrayList<>();
     }
 
     @Override
-    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet()
-            throws MalformedURLException, IOException,
-            ResourceNotFoundException {
+    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet() {
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType(ORG_TYPE_OPPISOPIMUSTOIMIPISTE);
         if (result != null && result.getOrganisaatiot() != null) {
             return result.getOrganisaatiot();
         }
-        return new ArrayList<OrganisaatioPerustieto>();
+        return new ArrayList<>();
     }
 
     @Override
-    public String getOppilaitosTyyppiByOID(String oid) throws ResourceNotFoundException {
+    public String getOppilaitosTyyppiByOID(String oid) throws OrganisaatioException {
         List<OrganisaatioPerustieto> organisaatiot = organisaatioRawService.findOrganisaatio(oid).getOrganisaatiot();
         if (CollectionUtils.isEmpty(organisaatiot))
-            throw new ResourceNotFoundException("Organisaatiota " + oid + " ei löytynyt!");
+            throw new OrganisaatioException("Organisaatiota " + oid + " ei löytynyt!");
         OrganisaatioPerustieto tulos = organisaatiot.get(0);
         String oppilaitosTyyppi = getOppilaitosTyyppi(tulos);
         if (oppilaitosTyyppi != null)
             return oppilaitosTyyppi;
-        throw new ResourceNotFoundException("Organisaatiolla " + oid + " ei ollut oppilaitostyyppiä!");
+        throw new OrganisaatioException("Organisaatiolla " + oid + " ei ollut oppilaitostyyppiä!");
     }
 
     private Set<String> validOppilaitosTyyppis = Sets.newHashSet(OPPILAITOSTYYPPI_AMK, OPPILAITOSTYYPPI_YLIOPISTO, OPPILAITOSTYYPPI_SOTILASKK);
