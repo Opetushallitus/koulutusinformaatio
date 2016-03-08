@@ -30,6 +30,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -247,7 +248,7 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     private void indexToSolr(LOS curLOS,
-            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KIException {
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException {
         try {
             this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
@@ -257,7 +258,7 @@ public class UpdateServiceImpl implements UpdateService {
                 }
             }
         } catch (Exception e) {
-            throw new KIException("Indexing LOS " + curLOS.getId() + " to solr failed", e);
+            throw new KICommitException("Indexing LOS " + curLOS.getId() + " to solr failed", e);
         }
     }
 
