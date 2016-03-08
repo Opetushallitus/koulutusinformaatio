@@ -3,6 +3,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -20,7 +21,7 @@ public class HigherEducationLOSRefToDTO {
     private HigherEducationLOSRefToDTO() {
     }
 
-    public static List<HigherEducationLOSRefDTO> convert(final List<HigherEducationLOSRef> refs, final String lang) {
+    public static List<HigherEducationLOSRefDTO> convert(final Set<HigherEducationLOSRef> refs, final String lang) {
         List<HigherEducationLOSRefDTO> higherEdus = new ArrayList<HigherEducationLOSRefDTO>();
         if (refs != null) {
             for (HigherEducationLOSRef ref : refs) {

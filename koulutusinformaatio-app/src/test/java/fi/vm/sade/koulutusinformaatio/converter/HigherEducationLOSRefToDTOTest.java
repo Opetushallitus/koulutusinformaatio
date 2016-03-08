@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
+import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,7 +62,7 @@ public class HigherEducationLOSRefToDTOTest {
     @Test
     public void testConvertAll() {
         List<HigherEducationLOSRefDTO> dtos =
-                HigherEducationLOSRefToDTO.convert(Lists.newArrayList(ref), "fi");
+                HigherEducationLOSRefToDTO.convert(Sets.newHashSet(ref), "fi");
         assertNotNull(dtos);
         assertEquals(1, dtos.size());
         validateDTO(dtos.get(0));
