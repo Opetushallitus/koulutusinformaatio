@@ -33,32 +33,13 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     public static final int READ_TIMEOUT = 30000;
 
     private final String organisaatioResourceUrl;
+    private final WebResource orgRootRes;
+    private final WebResource orgRes;
 
     @Autowired
     public OrganisaatioRawServiceImpl(@Value("${organisaatio.api.rest.url}") final String organisaatioResourceUrl) {
         this.organisaatioResourceUrl = organisaatioResourceUrl;
-    }
 
-    @Override
-    public OrganisaatioRDTO getOrganisaatio(String oid) throws ResourceNotFoundException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        HttpURLConnection conn = null;
-        try {
-            URL orgUrl = new URL(String.format("%s/%s?includeImage=true", this.organisaatioResourceUrl, oid));
-            conn = (HttpURLConnection) (orgUrl.openConnection());
-            conn.setRequestMethod(SolrUtil.SolrConstants.GET);
-            conn.connect();
-            return mapper.readValue(conn.getInputStream(), OrganisaatioRDTO.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResourceNotFoundException("Organization " + oid + " not found: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public OrganisaatioHakutulos findOrganisaatio(String oid) throws ResourceNotFoundException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
@@ -68,7 +49,25 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
         clientWithJacksonSerializer.setConnectTimeout(CONNECT_TIMEOUT);
         clientWithJacksonSerializer.setReadTimeout(READ_TIMEOUT);
 
-        WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
+        orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
+        orgRootRes = clientWithJacksonSerializer.resource(String.format("%s", this.organisaatioResourceUrl));
+    }
+
+    @Override
+    public OrganisaatioRDTO getOrganisaatio(String oid) throws ResourceNotFoundException {
+        try {
+            return orgRootRes
+                    .path(oid)
+                    .queryParam("includeImage", "true")
+                    .accept(JSON_UTF8).get(OrganisaatioRDTO.class);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Organization " + oid + " not found", e);
+        }
+    }
+
+    @Override
+    public OrganisaatioHakutulos findOrganisaatio(String oid) throws ResourceNotFoundException {
+        try {
         return orgRes
                 .queryParam("noCache", String.format("%s", System.currentTimeMillis()))
                 .queryParam("aktiiviset", "true")
@@ -78,21 +77,15 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
                 .queryParam("searchstr", "")
                 .accept(JSON_UTF8)
                 .get(new GenericType<OrganisaatioHakutulos>() {});
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Finding organization " + oid + " failed", e);
+        }
     }
 
     @Override
     public OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType)
             throws ResourceNotFoundException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
-        ClientConfig cc = new DefaultClientConfig();
-        cc.getSingletons().add(jacksProv);
-        Client clientWithJacksonSerializer = Client.create(cc);
-        clientWithJacksonSerializer.setConnectTimeout(CONNECT_TIMEOUT);
-        clientWithJacksonSerializer.setReadTimeout(READ_TIMEOUT);
-
-        WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
+        try{
         return orgRes
                 .queryParam("noCache", String.format("%s", System.currentTimeMillis()))
                 .queryParam("aktiiviset", "true")
@@ -102,6 +95,9 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
                 .queryParam("searchstr", "")
                 .accept(JSON_UTF8)
                 .get(new GenericType<OrganisaatioHakutulos>() {});
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Organization type " + organisaatioType + " not found", e);
+        }
     }
 
 }
