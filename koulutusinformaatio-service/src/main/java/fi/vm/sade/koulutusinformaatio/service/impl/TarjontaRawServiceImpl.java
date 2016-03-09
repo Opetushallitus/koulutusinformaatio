@@ -260,9 +260,14 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
             }
         }
         LOG.warn("Calling resource failed, last retry: " + resource);
-        return resource
-                .accept(JSON_UTF8)
-                .get(type);
+        try {
+            return resource
+                    .accept(JSON_UTF8)
+                    .get(type);
+        } catch (Exception e) {
+            LOG.error("Calling resource failed: " + resource);
+            throw e;
+        }
     }
     @Override
     public ResultV1RDTO<KoulutusV1RDTO> getV1KoulutusLearningOpportunity(String oid) {
