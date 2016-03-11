@@ -573,6 +573,12 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
                 if (isKaksoistutkinto) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_LUKIO);
                 }
+            } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_AIKUISLUKIO)) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_LUKIO);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AIKUISLUKIO);
+            } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_AMM_ER)) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLISET);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMA)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_PK_JALK);
@@ -588,6 +594,9 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_VALMENTAVA)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_VALMENTAVA);
+            } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS)) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AIKUISTEN_PERUSOPETUS);
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_KANSANOPISTO)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_KANSANOPISTO);
