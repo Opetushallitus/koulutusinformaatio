@@ -614,6 +614,8 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
             } else if (los.getEducationType().equals(SolrConstants.ED_TYPE_AVOIN_AMK)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMKS);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AVOIN_AMK);
+            } else {
+                LOG.error("Puuttuva koulutustyyppi {}. Koulutus {} ei tule näkymään hakurajaimissa", los.getEducationType(), los.getId());
             }
         }
 
