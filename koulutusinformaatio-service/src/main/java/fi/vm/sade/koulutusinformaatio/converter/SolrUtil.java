@@ -195,48 +195,12 @@ public final class SolrUtil {
         }
         
     }
-    
+
+    private static final String SPECIAL_CHARS = ".,:;-^()[]\"{}~*?|&/";
+
     public static String fixString(String term) {
-        //LOG.debug("Term:" + term);
-        String[] splits = term.split(" ");
-        String fixed = "";
-        for (String curSplit : splits) {
-            if ((curSplit.length() > 1 || curSplit.equals("*")) && !curSplit.startsWith("&")) {
-                fixed = String.format("%s%s ", fixed, curSplit);
-            }
-        }
-
+        String fixed = StringUtils.replaceChars(term, SPECIAL_CHARS, " ");
         fixed = fixed.trim();
-        if (fixed.length() > 0) {
-            fixed = fixed.replace("\"", "");
-        }
-        if (fixed.length() > 0) {
-            fixed = fixed.replace("(", "");
-        }
-
-        if (fixed.length() > 0) {
-            fixed = fixed.replace(")", "");
-        }
-
-        if (fixed.length() > 0) {
-            fixed = fixed.replace(':', ' ');
-        }
-
-        if (fixed.length() > 0) {
-            fixed = fixed.replace('-', ' ');
-        }
-
-        if (fixed.length() > 0) {
-            fixed = fixed.replace(",", "");
-        }
-
-
-        if (fixed.endsWith("?")) {
-            fixed = fixed.substring(0, fixed.lastIndexOf('?'));
-        }
-
-        //LOG.debug("Fixed: " + fixed);
-
         return fixed;
     }
 
