@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
         this.koodistoService = koodistoService;
     }
 
+
     @Override
     public List<ProviderSearchResultDTO> searchProviders(String term, String asId, List<String> baseEducations, boolean vocational,
             boolean nonVocational, int start, int rows, final String lang, boolean ongoing, final String type) {
@@ -78,6 +80,8 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             } catch (UnsupportedEncodingException e) {
                 key = term;
             }
+            key = SolrUtil.fixString(key);
+
             if (key.equals("*")) {
                 key = "";
             } else {

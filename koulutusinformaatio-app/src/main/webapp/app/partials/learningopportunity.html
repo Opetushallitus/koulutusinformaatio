@@ -65,9 +65,9 @@
             </div>
             
             <!-- responsive tabdrop -->
-            <div class="pull-right tabdrop" dropdown is-open="status.isopen">
-                <div class="dropdown-toggle tabdrop-toggler">
-                    <div class="tabdrop-label">
+            <div class="pull-right tabdrop dropdown" tabdrop dropdown is-open="status.isopen">
+                <div class="dropdown-toggle tabdrop-toggler" dropdown-toggle tabdrop-toggler>
+                    <div class="tabdrop-label" tabdrop-label>
                         <div class="icon-bar"></div>
                         <div class="icon-bar"></div>
                         <div class="icon-bar"></div>
@@ -75,7 +75,7 @@
                     <span class="caret"></span>
                     <span class="sr-only">Näytä muut välilehdet</span>
                 </div>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu" dropdown-menu role="menu">
                     <li data-ng-if="!tabs[0]"><a href="javascript:void(0)" data-ng-click="tabs[0] = true">{{tabtitle.koulutus}}</a></li>
                     <li data-ng-if="!tabs[1]"><a href="javascript:void(0)" data-ng-click="tabs[1] = true">{{tabtitle.valintaperusteet}}</a></li>
                     <li data-ng-if="!tabs[2]"><a href="javascript:void(0)" data-ng-click="tabs[2] = true">{{provider.name}}</a></li>
