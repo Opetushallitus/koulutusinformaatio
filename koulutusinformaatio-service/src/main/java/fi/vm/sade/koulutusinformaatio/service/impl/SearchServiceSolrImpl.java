@@ -235,7 +235,7 @@ public class SearchServiceSolrImpl implements SearchService {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         String fixed = SolrUtil.fixString(trimmed);
-        if (!trimmed.isEmpty()) {
+        if (!fixed.isEmpty()) {
 
             String upcomingLimit = getDateLimitStr(false);
             String upcomingLaterLimit = getDateLimitStr(true);
