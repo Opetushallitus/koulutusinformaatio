@@ -192,7 +192,7 @@ var kiApp = angular.module('kiApp',
 })
 
 // initialize i18n and recaptcha libraries
-.run(['$location', '$rootScope', 'LanguageService', 'HostResolver', function($location, $rootScope, LanguageService, HostResolver) {
+.run(['$location', '$rootScope', 'LanguageService', function($location, $rootScope, LanguageService) {
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),

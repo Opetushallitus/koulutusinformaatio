@@ -106,7 +106,7 @@ var kiApp = angular.module('previewApp',
 })
 
 // initialize i18n library
-.run(['$location', 'LanguageService', 'HostResolver', 'VirkailijaLanguageService', function($location, LanguageService, HostResolver, VirkailijaLanguageService) {
+.run(['$location', 'LanguageService', 'VirkailijaLanguageService', function($location, LanguageService, VirkailijaLanguageService) {
     // 1. Setting ui-language based on url-parameter.
     // 2. Setting virkailija ui language
     // 3. Removing the parameter, to enable changing of language from ui
