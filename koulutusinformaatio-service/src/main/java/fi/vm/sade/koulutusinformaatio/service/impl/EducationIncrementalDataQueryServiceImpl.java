@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -173,7 +174,7 @@ EducationIncrementalDataQueryService {
             }
         }
         
-        List<HigherEducationLOSRefEntity> higherEdLossRefs =  aoE.getHigherEdLOSRefs();
+        Set<HigherEducationLOSRefEntity> higherEdLossRefs =  aoE.getHigherEdLOSRefs();
         if (higherEdLossRefs != null) {
             LOG.debug("Higher ed los refs: {}", higherEdLossRefs.size());
             for (HigherEducationLOSRefEntity curLosRef : higherEdLossRefs) {

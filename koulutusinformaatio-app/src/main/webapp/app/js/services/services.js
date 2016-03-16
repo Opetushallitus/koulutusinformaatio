@@ -95,6 +95,9 @@ service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', 
 
     return {
         query: function(districtVal) {
+            if(!lang || !districtVal || districtVal.length == 0){
+                return $q.reject("Invalid district or lang");
+            }
             var deferred = $q.defer();
 
             var params = '?lang=' + LanguageService.getLanguage();

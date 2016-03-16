@@ -17,7 +17,9 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -104,7 +106,7 @@ public class IncrementalAdultLOSIndexer {
         } else {
 
             for (ApplicationOption curAo : createdLos.getApplicationOptions()) {
-                List<HigherEducationLOSRef> refs = new ArrayList<HigherEducationLOSRef>();
+                Set<HigherEducationLOSRef> refs = new HashSet<>();
                 refs.add(tarjontaService.createAdultVocationalLosRef(createdLos, curAo));
                 curAo.setHigherEdLOSRefs(refs);
             }
