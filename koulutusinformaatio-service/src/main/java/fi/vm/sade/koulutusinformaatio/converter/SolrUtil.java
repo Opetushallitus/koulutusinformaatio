@@ -197,9 +197,10 @@ public final class SolrUtil {
     }
 
     private static final String SPECIAL_CHARS = ".,:;-^()[]\"{}~?|&/";
+    private static final String REPLACE_CHARS = "                   ";
 
     public static String fixString(String term) {
-        String fixed = StringUtils.replaceChars(term, SPECIAL_CHARS, " ");
+        String fixed = StringUtils.replaceChars(term, SPECIAL_CHARS, REPLACE_CHARS);
         fixed = fixed.trim();
         return fixed;
     }
