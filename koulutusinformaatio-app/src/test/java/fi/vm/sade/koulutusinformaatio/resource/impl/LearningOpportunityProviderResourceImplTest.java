@@ -88,7 +88,7 @@ public class LearningOpportunityProviderResourceImplTest {
         providers.add(provider2);
 
         when(searchService.searchLearningOpportunityProviders("prov", "asID", Arrays.asList(""), true, true, 10, 10, "fi", false, null)).thenReturn(providers);
-        when(searchService.searchLearningOpportunityProviders("prov* AND 2", "asID", Arrays.asList(""), true, true, 10, 10, "fi", false, null)).thenReturn(
+        when(searchService.searchLearningOpportunityProviders("prov* AND toinen", "asID", Arrays.asList(""), true, true, 10, 10, "fi", false, null)).thenReturn(
                 providers.subList(1, 2));
 
         LOSearchResultList educations = new LOSearchResultList();
@@ -151,7 +151,7 @@ public class LearningOpportunityProviderResourceImplTest {
 
     @Test
     public void testSearchProvidersWtihSpace() {
-        List<ProviderSearchResultDTO> results = providerResource.searchProviders("prov 2", "asID", Arrays.asList(""), true, true, 10, 10, "fi", false, null);
+        List<ProviderSearchResultDTO> results = providerResource.searchProviders("prov toinen", "asID", Arrays.asList(""), true, true, 10, 10, "fi", false, null);
         assertEquals(results.size(), 1);
         boolean foundOne = false;
         boolean foundTwo = false;
