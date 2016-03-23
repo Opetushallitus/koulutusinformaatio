@@ -20,11 +20,11 @@ ldap.manager.password={{ldap_manager_password}}
 ldap.manager-password={{ldap_manager_password}}
 ldap.manager.userdn={{ldap_manager_userdn}}
 mongo.db.maxpoolsize=100
-mongodb.ki.uri=mongodb://{{mongodb_koulutusinformaatio_host}}:{{mongodb_koulutusinformaatio_port}}
+mongodb.ki.uri=mongodb://{{mongodb_ki_host | default(mongodb_koulutusinformaatio_host)}}:{{mongodb_ki_port | default(mongodb_koulutusinformaatio_port)}}
 server.name={{ansible_hostname}}
 solr.base.url={{solr_base_url}}
 # Workaround, user.home propertyn pitäisi tulla systeemistä kuten muissakin, mutta ei toimi tässä palvelussa 
-user.home=/data00/oph/koulutusinformaatio
+user.home={{ cluster_user_home | default("/data00/oph/koulutusinformaatio") }}
 koulutusinformaatio.error.report.recipients={{koulutusinformaatio_error_report_recipients}}
 koulutusinformaatio.overridden.haku.uris={{koulutusinformaatio_overridden_haku_uris|default('')}}
 
@@ -47,10 +47,10 @@ activemq.topic.name.events=fi.vm.sade.events.eventsTopic
 aoid=1.2.246.562.14.71344129359
 application.oid.prefix=1.2.246.562.11
 asid=1.2.246.562.5.50476818906
-cas.callback.organisaatio-app=http://${server.name}:8301/organisaatio-app
-cas.callback.organisaatio-service=http://${server.name}:8301/organisaatio-service
-cas.callback.authentication-service=http://${server.name}:8308/authentication-service
-cas.callback.registration-ui=http://${server.name}:8308/registration-ui
+cas.callback.organisaatio-app=http://{{ cluster_organisaatio_host | default("${server.name}") }}:{{ cluster_organisaatio_port | default("8301") }}/organisaatio-app
+cas.callback.organisaatio-service=http://{{ cluster_organisaatio_host | default("${server.name}") }}:{{ cluster_organisaatio_port | default("8301") }}/organisaatio-service
+cas.callback.authentication-service=http://{{ cluster_authentication_host | default("${server.name}") }}:{{ cluster_authentication_port | default("8308") }}/authentication-service
+cas.callback.registration-ui=http://{{ authentication_host | default("${server.name}") }}:{{ authentication_port | default("8308") }}/registration-ui
 cas.group-role-attribute=cn
 cas.group-search-base=ou\=groups
 cas.group-search-filter=(uniqueMember\={0})
