@@ -1,3 +1,13 @@
+<script type="text/ng-template" id="/searchbar.typeahead.match.html">
+    <span data-ng-if="match.model.group"
+          data-ng-bind-html="match.label"
+          data-ng-attr-title="{{match.label}}"></span>
+    <a data-ng-if="!match.model.group"
+       href
+       tabindex="-1"
+       data-ng-bind-html="match.label | typeaheadHighlight:query"
+       data-ng-attr-title="{{match.label}}"></a>
+</script>
 <div class="container search-field" data-ng-controller="SearchFieldCtrl" data-ng-if="!hideSearchbar">
     <div class="row">
         <form method="get" data-ng-submit="search()" novalidate class="form-horizontal" role="form">
@@ -16,6 +26,7 @@
                         data-typeahead-wait-ms="500" 
                         data-typeahead-on-select="search()"
                         data-typeahead-focus-first="false"
+                        data-typeahead-template-url="/searchbar.typeahead.match.html"
                         autocomplete="off" />
                 </div>
                 <div class="col-xs-4 col-sm-4 margin-vertical-small">
