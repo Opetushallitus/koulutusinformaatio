@@ -27,4 +27,7 @@ public class KoodistoException extends KIException {
     public KoodistoException(Exception e) {
         super(e.getMessage());
     }
+    public KoodistoException(String s, Exception e) {
+        super(s, e);
+    }
 }

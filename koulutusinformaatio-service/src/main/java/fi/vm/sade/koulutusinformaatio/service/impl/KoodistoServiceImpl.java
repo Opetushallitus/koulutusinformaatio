@@ -272,8 +272,8 @@ public class KoodistoServiceImpl implements KoodistoService {
                 LOGGER.warn(String.format("No koodis found with search criteria: %s", searchCriteriaToString(criteria)));
             }
             return codes;
-        } catch (GenericFault e) {
-            throw new KoodistoException(e);
+        } catch (Exception e) {
+            throw new KoodistoException("Koodin haku termillä epäonnistui termillä: " + criteria, e);
         }
     }
 
