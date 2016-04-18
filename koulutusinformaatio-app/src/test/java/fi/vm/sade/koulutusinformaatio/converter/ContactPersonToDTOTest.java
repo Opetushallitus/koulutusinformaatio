@@ -69,11 +69,13 @@ public class ContactPersonToDTOTest {
 
         ContactPersonDTO dto = ContactPersonToDTO.convert(cp);
         assertNotNull(dto);
-        assertEquals("", dto.getName());
-        assertEquals("", dto.getEmail());
-        assertEquals("", dto.getPhone());
-        assertEquals("", dto.getTitle());
-        assertEquals("", dto.getType());
+        assertEquals(null, dto.getName());
+        assertEquals("", dto.getFirstNames());
+        assertEquals("", dto.getLastName());
+        assertEquals(null, dto.getEmail());
+        assertEquals(null, dto.getPhone());
+        assertEquals(null, dto.getTitle());
+        assertEquals(null, dto.getType());
     }
 
     @Test
@@ -88,6 +90,8 @@ public class ContactPersonToDTOTest {
         ContactPersonDTO dto = ContactPersonToDTO.convert(cp);
         assertNotNull(dto);
         assertEquals("", dto.getName());
+        assertEquals("", dto.getFirstNames());
+        assertEquals("", dto.getLastName());
         assertEquals("", dto.getEmail());
         assertEquals("", dto.getPhone());
         assertEquals("", dto.getTitle());
