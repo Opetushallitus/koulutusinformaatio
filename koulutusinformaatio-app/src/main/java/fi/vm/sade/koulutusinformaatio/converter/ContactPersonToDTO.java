@@ -16,15 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.common.base.Function;
+import com.google.common.base.Splitter;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ContactPersonDTO;
-import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.join;
 
 /**
  * @author Mikko Majapuro
@@ -52,14 +54,29 @@ public final class ContactPersonToDTO {
 
     // the last word of the name
     private static String getLastName(ContactPerson contactPerson) {
-        String[] split = StringUtils.split(contactPerson.getName());
-        return split[split.length - 1];
+        return splitToSeparateNames(contactPerson.getName())
+                .last()
+                .or("");
     }
 
     // all other words of the name
     private static String getFirstNames(ContactPerson contactPerson) {
-        String[] split = StringUtils.split(contactPerson.getName());
-        return StringUtils.join(Arrays.copyOf(split, split.length-1));
+        FluentIterable<String> names = splitToSeparateNames(contactPerson.getName());
+        if (names.isEmpty()) {
+            return "";
+        } else {
+            List<String> firstNames = names.limit(names.size() - 1).toList();
+            return join(firstNames, " ");
+        }
+    }
+
+    private static FluentIterable<String> splitToSeparateNames(String name) {
+        return FluentIterable.from(
+                Splitter.on(" ")
+                        .trimResults()
+                        .omitEmptyStrings()
+                        .split(defaultString(name))
+        );
     }
 
     public static List<ContactPersonDTO> convertAll(List<ContactPerson> contactPersonList) {

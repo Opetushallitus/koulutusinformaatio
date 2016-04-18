@@ -59,6 +59,46 @@ public class ContactPersonToDTOTest {
     }
 
     @Test
+    public void testConvertWhenFieldsAreNull() {
+        ContactPerson cp = new ContactPerson();
+        cp.setName(null);
+        cp.setEmail(null);
+        cp.setPhone(null);
+        cp.setTitle(null);
+        cp.setType(null);
+
+        ContactPersonDTO dto = ContactPersonToDTO.convert(cp);
+        assertNotNull(dto);
+        assertEquals(null, dto.getName());
+        assertEquals("", dto.getFirstNames());
+        assertEquals("", dto.getLastName());
+        assertEquals(null, dto.getEmail());
+        assertEquals(null, dto.getPhone());
+        assertEquals(null, dto.getTitle());
+        assertEquals(null, dto.getType());
+    }
+
+    @Test
+    public void testConvertWhenFieldsAreEmpty() {
+        ContactPerson cp = new ContactPerson();
+        cp.setName("");
+        cp.setEmail("");
+        cp.setPhone("");
+        cp.setTitle("");
+        cp.setType("");
+
+        ContactPersonDTO dto = ContactPersonToDTO.convert(cp);
+        assertNotNull(dto);
+        assertEquals("", dto.getName());
+        assertEquals("", dto.getFirstNames());
+        assertEquals("", dto.getLastName());
+        assertEquals("", dto.getEmail());
+        assertEquals("", dto.getPhone());
+        assertEquals("", dto.getTitle());
+        assertEquals("", dto.getType());
+    }
+
+    @Test
     public void testConvertNull() {
         assertNull(ContactPersonToDTO.convert(null));
     }
