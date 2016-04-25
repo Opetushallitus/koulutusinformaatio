@@ -238,6 +238,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<List<String>> searchHakus(String hakutapa) {
         return (ResultV1RDTO<List<String>>) getWithRetries(v1ASResource
+                        .queryParam("TILA", "JULKAISTU")
                         .queryParam("HAKUTAPA", hakutapa),
                 new GenericType<ResultV1RDTO<List<String>>>() {
                 });
