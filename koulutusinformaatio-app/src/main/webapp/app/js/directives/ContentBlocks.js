@@ -110,10 +110,13 @@ directive('kiStudentBenefits', ['CollapseBlockService', function(CollapseBlockSe
             $scope.$watch('content', function(value) {
                 if (value) {
                     $scope.provider = value;
-                    var showStudentBenefits = (value.living ||
+                    var showStudentBenefits = !!(value.living ||
                         value.livingExpenses ||
+                        value.financingStudies ||
                         value.dining ||
-                        value.healthcare) ? true : false;
+                        value.healthcare ||
+                        value.insurances ||
+                        value.leisureServices);
                     CollapseBlockService.setBlock($scope.blockId, showStudentBenefits);      
                 }
             });
