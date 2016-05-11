@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableMap;
 import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -1045,7 +1046,25 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setStartYear(koulutus.getKoulutuksenAlkamisvuosi());
         }
         if (koulutus.getKoulutuksenAlkamiskausi() != null) {
-            los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi()));
+
+            /**
+             * If 'Show start season as summer' is chosen in Tarjonta,
+             * set it so.
+             */
+            if (koulutus.getExtraParams() != null &&
+                    koulutus.getExtraParams().containsKey("opintopolkuKesaKausi") &&
+                    koulutus.getExtraParams().get("opintopolkuKesaKausi").equals("true")) {
+
+                Map<String, String> kesaMap = ImmutableMap.of(
+                        "fi", "Kesä",
+                        "sv", "Sommar",
+                        "en", "Summer"
+                );
+
+                los.setStartSeason(new I18nText(kesaMap));
+            } else {
+                los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi()));
+            }
         }
 
         los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
