@@ -7,6 +7,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvausV1RDTO;
@@ -125,6 +126,64 @@ public class LOSObjectCreatorTest extends TestCase {
         assertEquals(los.getShortTitle(), los.getApplicationOptions().get(0).getName());
     }
 
+    @Test
+    public void createKorkeakouluopintoLOSOverwritesSeasonIfExtraParams() throws Exception{
+
+        when(providerService.getOppilaitosTyyppiByOID(any(String.class))).thenReturn(TarjontaConstants.OPPILAITOSTYYPPI_AMK);
+        when(tarjontaRawService.getV1EducationHakukohde(any(String.class))).thenReturn(givenV1Hakukohde());
+        when(tarjontaRawService.findHakukohdesByEducationOid(any(String.class), anyBoolean())).thenReturn(givenHakukohdeResult());
+        when(tarjontaRawService.getV1EducationHakuByOid(any(String.class))).thenReturn(givenV1Haku());
+        when(aoCreator.createV1EducationApplicationOption(any(KoulutusLOS.class), any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class)))
+                .thenReturn(givenApplicationOption());
+        when(providerService.getByOID(any(String.class))).thenReturn(new Provider());
+
+        Map<String, String> kesaMap = ImmutableMap.of(
+                "kieli_fi", "Kesä",
+                "kieli_sv", "Sommar",
+                "kieli_en", "Summer"
+        );
+
+        I18nText I18NKesa = new I18nText(ImmutableMap.of(
+                "fi", "Kesä",
+                "sv", "Sommar",
+                "en", "Summer"
+        ));
+
+        I18nText I18NKevat = new I18nText(ImmutableMap.of(
+                "fi", "Kevät",
+                "sv", "Vår",
+                "en", "Spring"
+        ));
+
+        KoodiV1RDTO syksy = new KoodiV1RDTO("syksyUri", 1, "Syksy");
+        KoodiV1RDTO kevat = givenKevatKoodiV1RDTOWithMeta();
+
+        KorkeakouluOpintoV1RDTO dto = givenKorkeakouluOpintoDTO();
+        KorkeakouluOpintoV1RDTO dto2 = givenKorkeakouluOpintoDTO();
+
+        // LO with starting season overwrite using extraParams
+        dto.setOpintopolkuAlkamiskausi(kesaMap);
+        dto.setKoulutuksenAlkamiskausi(syksy);
+        dto.setExtraParams(ImmutableMap.of("opintopolkuKesaKausi", "true"));
+
+        // Regular LO with Spring starting season
+        dto2.setKoulutuksenAlkamiskausi(kevat);
+
+        /**
+         * First los should have startSeason as 'Summer', because of extraParams.
+         * Second los should have startSeason as 'Spring'.
+         */
+        KoulutusLOS los = creator.createKorkeakouluopinto(dto, false, false);
+        KoulutusLOS los2 = creator.createKorkeakouluopinto(dto2, false, false);
+
+        assertEquals(I18NKesa.get("fi"), los.getStartSeason().get("fi"));
+        assertEquals(I18NKesa.get("sv"), los.getStartSeason().get("sv"));
+        assertEquals(I18NKesa.get("en"), los.getStartSeason().get("en"));
+        assertEquals(I18NKevat.get("fi"), los2.getStartSeason().get("fi"));
+        assertEquals(I18NKevat.get("sv"), los2.getStartSeason().get("sv"));
+        assertEquals(I18NKevat.get("en"), los2.getStartSeason().get("en"));
+    }
+
 
     private ApplicationOption givenApplicationOption() {
         ApplicationOption ao = new ApplicationOption();
@@ -201,6 +260,30 @@ public class LOSObjectCreatorTest extends TestCase {
         return koodi;
     }
 
+    private KoodiV1RDTO givenKevatKoodiV1RDTOWithMeta() {
+        KoodiV1RDTO kevat = new KoodiV1RDTO("kevatUri", 1, "Kevät");
+
+        KoodiV1RDTO kevatFi = new KoodiV1RDTO("kevatUri", 1, "Kevät");
+        kevatFi.setKieliArvo("fi");
+        kevatFi.setNimi("Kevät");
+
+        KoodiV1RDTO kevatSv = new KoodiV1RDTO("vorUri", 1, "Vår");
+        kevatSv.setKieliArvo("sv");
+        kevatSv.setNimi("Vår");
+
+        KoodiV1RDTO kevatEn = new KoodiV1RDTO("sprUri", 1, "Spring");
+        kevatEn.setKieliArvo("en");
+        kevatEn.setNimi("Spring");
+
+        kevat.setMeta(ImmutableMap.of(
+                "fi", kevatFi,
+                "sv", kevatSv,
+                "en", kevatEn
+        ));
+
+        return kevat;
+    }
+
     private Map<String, KoodiV1RDTO> givenKoodiMeta() {
         Map<String, KoodiV1RDTO> map = new HashMap<String, KoodiV1RDTO>();
         KoodiV1RDTO koodi = new KoodiV1RDTO("uri", 1, "arvo", "KoulutuksenNimi");
@@ -215,6 +298,35 @@ public class LOSObjectCreatorTest extends TestCase {
         Map<String, String> codeMap = new HashMap<String, String>();
         codeMap.put(name, language);
         return codeMap;
+    }
+
+    private KorkeakouluOpintoV1RDTO givenKorkeakouluOpintoDTO () {
+        KorkeakouluOpintoV1RDTO dto = new KorkeakouluOpintoV1RDTO();
+
+        dto.setKoulutusmoduuliTyyppi(KoulutusmoduuliTyyppi.OPINTOKOKONAISUUS);
+        dto.setCreated(new Date());
+        dto.setCreatedBy("Teppo Testaaja");
+        dto.setKomoOid("123.123.234.123");
+        dto.setKoulutusmoduuliTyyppi(KoulutusmoduuliTyyppi.OPINTOKOKONAISUUS);
+        dto.setModified(new Date());
+        dto.setModifiedBy("Teppo Testaaja");
+        dto.setOid("921.00.123.12");
+        dto.setOrganisaatio(new OrganisaatioV1RDTO("orgOid"));
+        dto.setTila(TarjontaTila.JULKAISTU);
+        dto.setKoulutuksenAlkamisPvms(Sets.newHashSet(new Date()));
+        dto.setKuvausKomo(new KuvausV1RDTO<KomoTeksti>());
+        dto.setKuvausKomoto(new KuvausV1RDTO<KomotoTeksti>());
+        dto.setToteutustyyppi(ToteutustyyppiEnum.KORKEAKOULUOPINTO);
+        dto.setKoulutuskoodi(givenKoodiV1RDTOWithMeta());
+        dto.setKoulutusala(givenKoodiV1RDTOWithMeta());
+        dto.setKoulutusaste(givenKoodiV1RDTOWithMeta());
+        dto.setTutkinto(givenKoodiV1RDTOWithMeta());
+        dto.setSuunniteltuKestoTyyppi(givenKoodiV1RDTOWithMeta());
+        dto.setOpintojenLaajuusarvo(givenKoodiV1RDTOWithMeta());
+        dto.setOpintojenLaajuusyksikko(givenKoodiV1RDTOWithMeta());
+        dto.setOppiaineet(new HashSet<OppiaineV1RDTO>());
+        dto.setOpetusTarjoajat(Sets.<String>newHashSet());
+        return dto;
     }
 
 }
