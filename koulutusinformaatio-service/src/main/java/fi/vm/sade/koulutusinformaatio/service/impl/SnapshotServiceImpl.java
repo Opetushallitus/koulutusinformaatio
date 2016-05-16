@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.util.StreamReaderHelper;
+import fi.vm.sade.properties.OphProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +66,14 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
-                               @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl) {
+                               OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
         this.adultupecDAO = adultupsecDAO;
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
         this.snapshotFolder = prerenderFolder;
-        this.baseUrl = baseUrl;
+        this.baseUrl = urlProperties.url("koulutusinformaatio.learningopportunity.base");
     }
 
     @Override

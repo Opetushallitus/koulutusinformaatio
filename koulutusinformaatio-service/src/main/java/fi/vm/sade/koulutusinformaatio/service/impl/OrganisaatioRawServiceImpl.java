@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import javax.ws.rs.core.MediaType;
 
+import fi.vm.sade.properties.OphProperties;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -26,38 +27,33 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     public static final int CONNECT_TIMEOUT = 1000;
     public static final int READ_TIMEOUT = 30000;
 
-    private final String organisaatioResourceUrl;
-    private final WebResource orgRootRes;
-    private final WebResource orgRes;
+    private final OphProperties urlProperties;
+    private final Client clientWithJacksonSerializer;
 
     @Autowired
-    public OrganisaatioRawServiceImpl(@Value("${organisaatio.api.rest.url}") final String organisaatioResourceUrl) {
-        this.organisaatioResourceUrl = organisaatioResourceUrl;
+    public OrganisaatioRawServiceImpl(OphProperties urlProperties) {
+        this.urlProperties = urlProperties;
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
         ClientConfig cc = new DefaultClientConfig();
         cc.getSingletons().add(jacksProv);
-        Client clientWithJacksonSerializer = Client.create(cc);
+        clientWithJacksonSerializer = Client.create(cc);
         clientWithJacksonSerializer.setConnectTimeout(CONNECT_TIMEOUT);
         clientWithJacksonSerializer.setReadTimeout(READ_TIMEOUT);
-
-        orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
-        orgRootRes = clientWithJacksonSerializer.resource(String.format("%s", this.organisaatioResourceUrl));
     }
 
     @Override
     public OrganisaatioRDTO getOrganisaatio(String oid) {
-        return orgRootRes
-                .path(oid)
+        return clientWithJacksonSerializer.resource(urlProperties.url("organisaatio-service.organisaatio", oid))
                 .queryParam("includeImage", "true")
                 .accept(JSON_UTF8).get(OrganisaatioRDTO.class);
     }
 
     @Override
     public OrganisaatioHakutulos findOrganisaatio(String oid) {
-        return orgRes
+        return clientWithJacksonSerializer.resource(urlProperties.url("organisaatio-service.hae"))
                 .queryParam("noCache", String.format("%s", System.currentTimeMillis()))
                 .queryParam("aktiiviset", "true")
                 .queryParam("lakkautetut", "false")
@@ -71,7 +67,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
 
     @Override
     public OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType) {
-        return orgRes
+        return clientWithJacksonSerializer.resource(urlProperties.url("organisaatio-service.hae"))
                 .queryParam("noCache", String.format("%s", System.currentTimeMillis()))
                 .queryParam("aktiiviset", "true")
                 .queryParam("lakkautetut", "false")

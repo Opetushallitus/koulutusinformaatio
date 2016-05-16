@@ -23,10 +23,10 @@ import fi.vm.sade.koulutusinformaatio.domain.ArticleCode;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResults;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.properties.OphProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
@@ -44,17 +44,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleServiceImpl.class);
     
-    @Value("${koulutusinformaatio.wp.harvest-url:harvest}")
-    private String articleHarvestUrl;
-    
     private KoodistoService koodistoService;
-    
+    private OphProperties urlProperties;
+
     @Autowired
-    public ArticleServiceImpl(KoodistoService koodistoService) {
+    public ArticleServiceImpl(KoodistoService koodistoService, OphProperties urlProperties) {
         this.koodistoService = koodistoService;
+        this.urlProperties = urlProperties;
     }
-    
-    
+
     @Override
     public List<Article> fetchArticles() {
         List<Article> articles = new ArrayList<>();
@@ -136,7 +134,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, String extension, int page) {
-        String url = String.format("%s%s%s/?s=%s&json=1&page=%s", this.articleHarvestUrl, lang, extension, URLEncoder.encode(" "), page);
+        String url = String.format("%s%s%s/?s=%s&json=1&page=%s", urlProperties.url("wp.base"), lang, extension, URLEncoder.encode(" "), page);
         LOGGER.debug("Article search url: {}", url);
         
         try { 

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
+import fi.vm.sade.koulutusinformaatio.configuration.UrlConfiguration;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,7 +47,6 @@ import fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
@@ -64,7 +63,6 @@ public class ProviderServiceImplTest {
 
     ProviderServiceImpl service;
     private static final int PORT = 8800;
-    private static final String BASE_URL = "http://localhost:" + PORT;
     private static final String CHILD_ORGANISAATIO_OID = "1.2.3.4.5";
     private static final String PARENT_ORGANISAATIO_OID = "11.22.33.44.55";
     private static final String HOMEPLACE_URI = "homeplaceuri";
@@ -82,13 +80,13 @@ public class ProviderServiceImplTest {
 
     @Before
     public void setup() throws Exception {
-        stubFor(get(urlEqualTo("/" + CHILD_ORGANISAATIO_OID + "?includeImage=true"))
+        stubFor(get(urlEqualTo("/organisaatio-service/rest/organisaatio/" + CHILD_ORGANISAATIO_OID + "?includeImage=true"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(CHILD_ORGANISAATIO_JSON))
         );
-        stubFor(get(urlEqualTo("/" + PARENT_ORGANISAATIO_OID + "?includeImage=true"))
+        stubFor(get(urlEqualTo("/organisaatio-service/rest/organisaatio/" + PARENT_ORGANISAATIO_OID + "?includeImage=true"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -111,7 +109,7 @@ public class ProviderServiceImplTest {
         when(conversionService.convert(argThat(new IsChildOrganisaatio()), eq(Provider.class))).thenReturn(childProvider);
         when(conversionService.convert(argThat(new IsParentOrganisaatio()), eq(Provider.class))).thenReturn(parentProvider);
 
-        OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(BASE_URL);
+        OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(new UrlConfiguration().addDefault("host.virkailija", "localhost:" + PORT).addDefault("organisaatio-service.baseUrl", "http://localhost:" + PORT));
         service = new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
         
     }

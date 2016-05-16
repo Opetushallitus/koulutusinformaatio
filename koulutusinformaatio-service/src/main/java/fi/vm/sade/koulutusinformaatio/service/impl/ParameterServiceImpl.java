@@ -20,8 +20,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import fi.vm.sade.properties.OphProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,15 +43,15 @@ import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 public class ParameterServiceImpl implements ParameterService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParameterServiceImpl.class);
-    
-    @Value("${ohjausparametrit.api.rest.url}")
-    private String parametritUrl;
-    
+    private final OphProperties urlProperties;
+
     ObjectMapper mapper = new ObjectMapper();
     
     private Map<String, ApplicationSystemParameters> cache = new HashMap<String, ApplicationSystemParameters>();
 
-    public ParameterServiceImpl() {
+    @Autowired
+    public ParameterServiceImpl(OphProperties urlProperties) {
+        this.urlProperties = urlProperties;
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
@@ -61,11 +63,8 @@ public class ParameterServiceImpl implements ParameterService {
             return cache.get(oid);
         }
         
-        String urlStr =  String.format("%s%s", parametritUrl, oid);
-                
-        
         try {
-            URL url = new URL(urlStr);        
+            URL url = new URL(urlProperties.url("ohjausparametrit-service.parametri", oid));
 
             HttpURLConnection conn = (HttpURLConnection) (url.openConnection());
 
