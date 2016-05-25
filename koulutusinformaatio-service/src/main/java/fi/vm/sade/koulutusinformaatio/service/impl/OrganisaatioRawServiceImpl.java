@@ -36,7 +36,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     }
 
     private <R> R parseJson(final Class<R> clazz, OphHttpRequest request) {
-        return request.accept(OphHttpClient.JSON_UTF8)
+        return request.accept(OphHttpClient.JSON)
                 .execute(new OphHttpResponseHandler<R>() {
                     @Override
                     public R handleResponse(OphHttpResponse response) throws IOException {
