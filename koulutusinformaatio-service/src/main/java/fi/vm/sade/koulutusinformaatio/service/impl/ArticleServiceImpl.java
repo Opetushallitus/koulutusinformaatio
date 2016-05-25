@@ -15,23 +15,22 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import fi.vm.sade.javautils.httpclient.OphHttpClient;
+import fi.vm.sade.javautils.httpclient.OphHttpResponse;
+import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
+import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleCode;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResults;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.properties.OphProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,20 +44,19 @@ public class ArticleServiceImpl implements ArticleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleServiceImpl.class);
     
     private KoodistoService koodistoService;
-    private OphProperties urlProperties;
+    private final OphHttpClient client;
 
     @Autowired
-    public ArticleServiceImpl(KoodistoService koodistoService, OphProperties urlProperties) {
+    public ArticleServiceImpl(KoodistoService koodistoService, HttpClient client) {
         this.koodistoService = koodistoService;
-        this.urlProperties = urlProperties;
+        this.client = client.getClient();
     }
 
     @Override
     public List<Article> fetchArticles() {
         List<Article> articles = new ArrayList<>();
         
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ObjectMapper mapper = HttpClient.createJacksonMapper();
         
         articles.addAll(fetchArticlesByLang(mapper, "fi"));
         LOGGER.debug("Fetched finnish articles");
@@ -71,25 +69,25 @@ public class ArticleServiceImpl implements ArticleService {
 
     private List<Article> fetchArticlesByLang(ObjectMapper mapper, String lang) {
         List<Article> articles = new ArrayList<>();
-        articles.addAll(getArticlesByExtension(mapper, lang, ""));
-        articles.addAll(getArticlesByExtension(mapper, lang, "/story"));
+        articles.addAll(getArticlesByExtension(mapper, lang, false));
+        articles.addAll(getArticlesByExtension(mapper, lang, true));
         for (Article article : articles) {
             article.setLanguageCode(lang);
         }
         return articles;
     }
     
-    private List<Article> getArticlesByExtension(ObjectMapper mapper, String lang, String extension) {
+    private List<Article> getArticlesByExtension(ObjectMapper mapper, String lang, boolean story) {
         int page = 1;
         List<Article> articles = new ArrayList<>();
         
-        ArticleResults articlesRes = getArticlesByLang(mapper, lang, extension, page);
+        ArticleResults articlesRes = getArticlesByLang(mapper, lang, story, page);
         int pages = articlesRes.getPages();
 
         while (pages > 0) {
 
             articles.addAll(articlesRes.getPosts());
-            articlesRes = getArticlesByLang(mapper, lang, extension, ++page);
+            articlesRes = getArticlesByLang(mapper, lang, story, ++page);
             pages = articlesRes.getPages();
         
         }
@@ -133,21 +131,17 @@ public class ArticleServiceImpl implements ArticleService {
         article.setEducationCodes(edVals);
     }
 
-    private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, String extension, int page) {
-        String url = String.format("%s%s%s/?s=%s&json=1&page=%s", urlProperties.url("wp.base"), lang, extension, URLEncoder.encode(" "), page);
-        LOGGER.debug("Article search url: {}", url);
-        
-        try { 
-            URL orgUrl = new URL(url);        
-
-            HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
-
-            conn.setRequestMethod(SolrConstants.GET);
-            conn.connect();
-
-            return mapper.readValue(conn.getInputStream(), ArticleResults.class);
+    private ArticleResults getArticlesByLang(final ObjectMapper mapper, String lang, boolean story, int page) {
+        String urlKey = story ? "wp.article.story" : "wp.article";
+        try {
+            return client.get(urlKey, lang, " ", page).execute(new OphHttpResponseHandler<ArticleResults>() {
+                @Override
+                public ArticleResults handleResponse(OphHttpResponse response) throws IOException {
+                    return mapper.readValue(response.asInputStream(), ArticleResults.class);
+                }
+            });
         } catch (Exception ex) {
-            LOGGER.debug("No articles for url: {}", url);
+            LOGGER.debug("No articles", ex);
             ArticleResults articles = new ArticleResults();
             articles.setPosts(new ArrayList<Article>());
             articles.setCount(0);

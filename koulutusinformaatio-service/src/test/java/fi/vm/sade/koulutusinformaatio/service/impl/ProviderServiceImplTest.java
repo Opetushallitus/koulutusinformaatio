@@ -33,7 +33,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
 import fi.vm.sade.koulutusinformaatio.configuration.UrlConfiguration;
+import fi.vm.sade.properties.OphProperties;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -109,7 +111,8 @@ public class ProviderServiceImplTest {
         when(conversionService.convert(argThat(new IsChildOrganisaatio()), eq(Provider.class))).thenReturn(childProvider);
         when(conversionService.convert(argThat(new IsParentOrganisaatio()), eq(Provider.class))).thenReturn(parentProvider);
 
-        OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(new UrlConfiguration().addDefault("host.virkailija", "localhost:" + PORT).addDefault("organisaatio-service.baseUrl", "http://localhost:" + PORT));
+        OphProperties ophProperties = new UrlConfiguration().addDefault("host.virkailija", "localhost:" + PORT).addDefault("organisaatio-service.baseUrl", "http://localhost:" + PORT);
+        OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(new HttpClient(ophProperties));
         service = new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
         
     }

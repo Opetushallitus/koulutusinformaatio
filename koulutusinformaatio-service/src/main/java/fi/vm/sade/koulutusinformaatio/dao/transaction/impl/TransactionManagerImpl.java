@@ -16,9 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
 
+import fi.vm.sade.javautils.httpclient.OphHttpClient;
+import fi.vm.sade.javautils.httpclient.OphHttpResponse;
+import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
+import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -33,7 +36,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
 import com.mongodb.MongoClient;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
@@ -55,7 +57,7 @@ import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 public class TransactionManagerImpl implements TransactionManager {
     
     private static final Logger LOG = LoggerFactory.getLogger(TransactionManagerImpl.class);
-    private static final int ERROR_STATUS = 400;
+    private final OphHttpClient httpclient;
 
     private MongoClient mongo;
     private final String transactionDbName;
@@ -133,7 +135,8 @@ public class TransactionManagerImpl implements TransactionManager {
             TutkintoLOSDAO tutkintoLOSDAO,
             KoodistoService koodistoService,
             ProviderService providerService,
-            ParameterService parameterService) {
+            ParameterService parameterService,
+            HttpClient client) {
 
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
@@ -164,6 +167,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.providerService = providerService;
         this.parameterService = parameterService;
         this.dataStatusTransactionDAO = dataStatusTransactionDAO;
+        this.httpclient = client.getClient();
     }
 
     @Override
@@ -297,17 +301,12 @@ public class TransactionManagerImpl implements TransactionManager {
 
     private boolean swapAlias(String solrToSwapName, String aliasName) throws KICommitException {
         try {
-            URL myURL = new URL(String.format("%s%s%s%s%s", 
-                    adminHttpSolrServer.getBaseURL(), 
-                    SolrConstants.ALIAS_ACTION,
-                    aliasName, 
-                    SolrConstants.COLLECTIONS, 
-                    solrToSwapName));
-
-            HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
-            myURLConnection.setRequestMethod(SolrConstants.GET);
-            myURLConnection.connect();
-            return myURLConnection.getResponseCode() < ERROR_STATUS;
+            return httpclient.get("solr.swap", aliasName, solrToSwapName).execute(new OphHttpResponseHandler<Boolean>() {
+                @Override
+                public Boolean handleResponse(OphHttpResponse response) throws IOException {
+                    return response.getStatusCode() < 400;
+                }
+            });
         } catch (Exception ex) {
             throw new KICommitException(ex);
         }
