@@ -37,6 +37,7 @@
     <bean id="dataUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataUpdateServiceImpl"/>
     <bean id="dataQueryService" class="fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataQueryServiceImpl"/>
     <bean class="fi.vm.sade.koulutusinformaatio.configuration.UrlConfiguration"/>
+    <bean class="fi.vm.sade.koulutusinformaatio.configuration.HttpClient"/>
 
     <mockito:mock id="organisaatioRawService" class="fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService"/>
     <mockito:mock id="indexerService" class="fi.vm.sade.koulutusinformaatio.service.IndexerService"/>

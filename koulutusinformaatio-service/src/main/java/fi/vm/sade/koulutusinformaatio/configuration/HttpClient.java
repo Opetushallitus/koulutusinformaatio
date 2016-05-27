@@ -6,9 +6,9 @@ import fi.vm.sade.javautils.httpclient.ApacheOphHttpClient;
 import fi.vm.sade.javautils.httpclient.OphHttpClient;
 import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class HttpClient {
 
     private OphHttpClient client;
