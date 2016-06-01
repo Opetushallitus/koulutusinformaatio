@@ -48,7 +48,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     @Override
     public OrganisaatioHakutulos findOrganisaatio(String oid) {
         return parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
-                .param("noCache", String.format("%s", System.currentTimeMillis()))
+                .param("noCache", System.currentTimeMillis())
                 .param("aktiiviset", "true")
                 .param("lakkautetut", "false")
                 .param("suunnitellut", "false")
@@ -60,7 +60,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     @Override
     public OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType) {
         return parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
-                .param("noCache", String.format("%s", System.currentTimeMillis()))
+                .param("noCache", System.currentTimeMillis())
                 .param("aktiiviset", "true")
                 .param("lakkautetut", "false")
                 .param("suunnitellut", "false")

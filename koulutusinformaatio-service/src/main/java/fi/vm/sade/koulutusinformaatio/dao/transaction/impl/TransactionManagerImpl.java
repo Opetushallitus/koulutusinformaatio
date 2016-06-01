@@ -301,7 +301,7 @@ public class TransactionManagerImpl implements TransactionManager {
 
     private boolean swapAlias(String solrToSwapName, String aliasName) throws KICommitException {
         try {
-            return httpclient.get("solr.swap", aliasName, solrToSwapName).execute(new OphHttpResponseHandler<Boolean>() {
+            return httpclient.get("solr.swap", aliasName, solrToSwapName).skipResponseAssertions().execute(new OphHttpResponseHandler<Boolean>() {
                 @Override
                 public Boolean handleResponse(OphHttpResponse response) throws IOException {
                     return response.getStatusCode() < 400;

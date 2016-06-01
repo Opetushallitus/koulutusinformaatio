@@ -74,7 +74,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     private <T> T executeWithRetries(OphHttpRequest resource, final GenericType<T> type) {
-        return execute(resource.retryOnError(3, 2500L), type);
+        return execute(resource.retryOnError(3, 2500), type);
     }
 
     private <T> T execute(OphHttpRequest resource, final GenericType<T> type) {
