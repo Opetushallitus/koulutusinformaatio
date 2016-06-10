@@ -177,7 +177,7 @@ var ApplicationSystemCalendar = (function() {
         row.append( iconCol );
 
         var infoCol = $('<div class="col-xs-13 col-xs-offset-1"></div>');
-        infoCol.append('<strong>' + asName + '</strong>');
+        infoCol.append($('<strong/>').text(asName));
         infoCol.append(createApplicationTimeItem(item));
         row.append(infoCol);
 
@@ -226,7 +226,7 @@ var ApplicationSystemCalendar = (function() {
         if (!item.asOngoing) {
             button.attr('disabled', 'disabled');
         }
-        var form = $('<form action="/haku-app/lomake/' + item.id + '" target="hakulomake"></form>');
+        var form = $('<form action="/haku-app/lomake/' + encodeURIComponent(item.id) + '" target="hakulomake"></form>');
         form.append(button);
 
         return form;
