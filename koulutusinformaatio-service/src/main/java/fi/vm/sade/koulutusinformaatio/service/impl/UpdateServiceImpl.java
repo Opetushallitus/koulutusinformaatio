@@ -225,10 +225,12 @@ public class UpdateServiceImpl implements UpdateService {
 
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
-            handleError(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, e);
+            LOG.error("Education data update failed ", e);
+            rollBackUpdate(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, e.getMessage());
             sendMailOnException(e);
         } catch (Throwable t) {
-            handleError(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, t);
+            LOG.error("Education data update failed ", t);
+            rollBackUpdate(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, t.getMessage());
             sendMailOnException(new RuntimeException(t));
         } finally {
             tarjontaService.clearProcessedLists();
@@ -237,10 +239,9 @@ public class UpdateServiceImpl implements UpdateService {
         }
     }
 
-    private void handleError(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, Throwable t) throws IOException, SolrServerException {
-        LOG.error("Education data update failed ", t);
+    private void rollBackUpdate(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, String cause) throws IOException, SolrServerException {
         this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-        educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", t.getMessage())));
+        educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", cause)));
     }
 
     public long getProgressCounter() {
