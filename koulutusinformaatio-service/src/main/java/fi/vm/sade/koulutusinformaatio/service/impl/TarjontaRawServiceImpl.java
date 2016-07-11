@@ -16,28 +16,24 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
-
+import fi.vm.sade.javautils.httpclient.OphHttpClient;
+import fi.vm.sade.javautils.httpclient.OphHttpRequest;
+import fi.vm.sade.javautils.httpclient.OphHttpResponse;
+import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
+import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
 import org.codehaus.jackson.Version;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
@@ -53,253 +49,232 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPe
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
+import static fi.vm.sade.javautils.httpclient.OphHttpClient.JSON;
+
 /**
  * @author Hannu Lyytikainen
  */
 @Service
 public class TarjontaRawServiceImpl implements TarjontaRawService {
 
-    private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
-    private static final Logger LOG = LoggerFactory.getLogger(TarjontaRawServiceImpl.class);
-    public static final int CONNECT_TIMEOUT = 1000;
-    public static final int READ_TIMEOUT = 30000;
-
-
-    private WebResource v1KoulutusResource;
-    private WebResource v1AOResource;
-    private WebResource v1ASResource;
-    private WebResource v1StructureResource;
-    private WebResource v1KomoResource;
-    private WebResource lastModifiedResource;
+    private final OphHttpClient httpclient;
+    private final ObjectMapper mapper;
 
     @Autowired
-    public TarjontaRawServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl) {
-        ObjectMapper mapper = new ObjectMapper();
+    public TarjontaRawServiceImpl(HttpClient client) {
+        this.httpclient = client.getClient();
+        this.mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new SimpleModule("koulutusDeserializer", new Version(1, 0, 0, null))
                 .addDeserializer(KoulutusV1RDTO.class, new KoulutusDeserializer()));
-        JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
-        ClientConfig cc = new DefaultClientConfig();
-        cc.getSingletons().add(jacksProv);
-        Client clientWithJacksonSerializer = Client.create(cc);
-        clientWithJacksonSerializer.setConnectTimeout(CONNECT_TIMEOUT);
-        clientWithJacksonSerializer.setReadTimeout(READ_TIMEOUT);
-        v1KoulutusResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
-        v1AOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
-        v1ASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
-        v1StructureResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/link");
-        v1KomoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/komo");
-        lastModifiedResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/lastmodified");
     }
 
-    public TarjontaRawServiceImpl() {
+    private OphHttpRequest get(String key, String... params) {
+        return httpclient.get(key, params);
+    }
+
+    private <T> T executeWithRetries(OphHttpRequest resource, final GenericType<T> type) {
+        return execute(resource.retryOnError(3, 2500), type);
+    }
+
+    private <T> T execute(OphHttpRequest resource, final GenericType<T> type) {
+        return resource
+                .accept(JSON)
+                .execute(new OphHttpResponseHandler<T>() {
+                    @Override
+                    public T handleResponse(OphHttpResponse response) throws IOException {
+                        return mapper.readValue(response.asInputStream(), type.getRawClass());
+                    }
+                });
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> searchEducation(String oid) {
-        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
-                        .path("search")
-                        .queryParam("koulutusOid", oid)
-                        .queryParam("tila", "KAIKKI"),
+        return executeWithRetries(
+                get("tarjonta-service.koulutus.search")
+                        .param("koulutusOid", oid)
+                        .param("tila", "KAIKKI"),
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-                });
+                }
+        );
     }
-    
+
     @Override
     public ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO> getAdultBaseEducationLearningOpportunity(
             String oid) {
-        return (ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>) getWithRetries(v1KoulutusResource
-                        .path(oid),
+        return executeWithRetries(
+                get("tarjonta-service.koulutus", oid),
                 new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
-                });
+                }
+        );
     }
-    
+
     @Override
     public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(String oid) {
-        return (ResultV1RDTO<AmmattitutkintoV1RDTO>) getWithRetries(v1KoulutusResource
-                        .path(oid),
-                new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.koulutus", oid), new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
+                }
+        );
     }
-                
+
     public ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid) {
-        return (ResultV1RDTO<KomoV1RDTO>) getWithRetries(v1KomoResource
-                        .path(oid),
-                new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.komo", oid), new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid, boolean onlyPublished) {
         if (onlyPublished) {
-            return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
-                    .path("search")
-                    .queryParam("koulutusOid", oid)
-                    .queryParam("tila", "JULKAISTU"),
-                    new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
-                    });
+            return executeWithRetries(
+                    get("tarjonta-service.hakukohde.search")
+                            .param("koulutusOid", oid)
+                            .param("tila", "JULKAISTU"), new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                    }
+            );
         } else {
-            return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
-                    .path("search")
-                    .queryParam("koulutusOid", oid),
-                    new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
-                    });
+            return executeWithRetries(
+                    get("tarjonta-service.hakukohde.search")
+                            .param("koulutusOid", oid), new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                    }
+            );
         }
     }
 
     @Override
     public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid) {
-        return (ResultV1RDTO<HakukohdeV1RDTO>) getWithRetries(v1AOResource
-                        .path(oid),
-                new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.hakukohde", oid), new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
-        return (ResultV1RDTO<HakuV1RDTO>) getWithRetries(v1ASResource
-                        .path(oid),
-                new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.haku", oid), new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(
             String parentOid) {
-        return (ResultV1RDTO<Set<String>>) getWithRetries(v1StructureResource
-                        .path(parentOid),
-                new GenericType<ResultV1RDTO<Set<String>>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.link", parentOid), new GenericType<ResultV1RDTO<Set<String>>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
             String childKomoOid) {
-        return (ResultV1RDTO<Set<String>>) getWithRetries(v1StructureResource
-                        .path(childKomoOid)
-                        .path("parents"),
-                new GenericType<ResultV1RDTO<Set<String>>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.link.parents", childKomoOid), new GenericType<ResultV1RDTO<Set<String>>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
             String komoOid) {
-        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
-                        .path("search")
-                        .queryParam("komoOid", komoOid),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.koulutus.search")
+                        .param("komoOid", komoOid), new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
-        return (ResultV1RDTO<List<KuvaV1RDTO>>) getWithRetries(v1KoulutusResource
-                        .path(koulutusOid)
-                        .path("kuva"),
-                new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
-                });
+        return executeWithRetries(
+                get("tarjonta-service.koulutus.kuva", koulutusOid), new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
+                }
+        );
     }
 
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
-        return this.lastModifiedResource
-                .queryParam("lastModified", String.format("-%s", updatePeriod))
-                .accept(JSON_UTF8)
-                .get(new GenericType<Map<String, List<String>>>() {
-                });
+        return execute(
+                get("tarjonta-service.lastmodified").param("lastModified", String.format("-%s", updatePeriod)),
+                new GenericType<Map<String, List<String>>>() {
+                       }
+        );
     }
 
     @Override
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(
-            String... educationType) {
-        WebResource call = this.v1KoulutusResource
-                .path("search");
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(String... educationType) {
+        OphHttpRequest request = get("tarjonta-service.koulutus.search");
         for (String curType : educationType) {
-            call = call.queryParam("toteutustyyppi", curType);
+            request = request.param("toteutustyyppi", curType);
         }
-        call.queryParam("tila", "JULKAISTU");
-        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(call,
+        request.param("tila", "JULKAISTU");
+        return executeWithRetries(request,
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-                });
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String toteutusTyyppi, String providerOid, String koulutusKoodi) {
-        WebResource call = this.v1KoulutusResource.path("search")
-                .queryParam("toteutustyyppi", toteutusTyyppi)
-                .queryParam("organisationOid", providerOid)
-                .queryParam("koulutuskoodi", koulutusKoodi)
-                .queryParam("tila", "JULKAISTU");
-        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(call,
+        return executeWithRetries(
+                get("tarjonta-service.koulutus.search")
+                        .param("toteutustyyppi", toteutusTyyppi)
+                        .param("organisationOid", providerOid)
+                        .param("koulutuskoodi", koulutusKoodi)
+                        .param("tila", "JULKAISTU"),
                 new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
-                });
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<List<String>> searchHakus(String hakutapa) {
-        return (ResultV1RDTO<List<String>>) getWithRetries(v1ASResource
-                        .queryParam("TILA", "JULKAISTU")
-                        .queryParam("HAKUTAPA", hakutapa),
+        return executeWithRetries(
+                get("tarjonta-service.haku.search")
+                        .param("TILA", "JULKAISTU")
+                        .param("HAKUTAPA", hakutapa),
                 new GenericType<ResultV1RDTO<List<String>>>() {
-                });
+                }
+        );
     }
 
-    private Object getWithRetries(WebResource resource, GenericType type) {
-        int retries = 2;
-        while (--retries > 0) {
-            try {
-                return resource
-                        .accept(JSON_UTF8)
-                        .get(type);
-            } catch (Exception e) {
-                LOG.warn("Calling resource failed: " + resource);
-                try {
-                    Thread.sleep(2500);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-        LOG.warn("Calling resource failed, last retry: " + resource);
-        try {
-            return resource
-                    .accept(JSON_UTF8)
-                    .get(type);
-        } catch (Exception e) {
-            LOG.error("Calling resource failed: " + resource);
-            throw e;
-        }
-    }
     @Override
     public ResultV1RDTO<KoulutusV1RDTO> getV1KoulutusLearningOpportunity(String oid) {
-        return (ResultV1RDTO<KoulutusV1RDTO>) getWithRetries(v1KoulutusResource
-                .path(oid),
+        return executeWithRetries(
+                get("tarjonta-service.koulutus", oid),
                 new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
-                });
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getV1KoulutusByAsId(String asOid) {
-        return (ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>) getWithRetries(v1KoulutusResource
-                .path("search")
-                .queryParam("hakuOid", asOid)
-                .queryParam("tila", "JULKAISTU"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {});
+        return executeWithRetries(
+                get("tarjonta-service.koulutus.search")
+                        .param("hakuOid", asOid)
+                        .param("tila", "JULKAISTU"),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<List<NimiJaOidRDTO>> getV1KoulutusByAoId(String aoOid) {
-        return (ResultV1RDTO<List<NimiJaOidRDTO>>) getWithRetries(v1AOResource
-                .path(aoOid)
-                .path("koulutukset"),
-                new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {});
+        return executeWithRetries(
+                get("tarjonta-service.hakukohde.koulutukset", aoOid),
+                new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {
+                }
+        );
     }
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdes() {
-        return (ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>) getWithRetries(v1AOResource
-                .path("search")
-                .queryParam("tila", "JULKAISTU"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {});
+        return executeWithRetries(
+                get("tarjonta-service.hakukohde.search")
+                        .param("tila", "JULKAISTU"),
+                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                }
+        );
     }
 }

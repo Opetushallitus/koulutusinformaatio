@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.Map;
 
+import fi.vm.sade.properties.OphProperties;
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +54,13 @@ public class SEOServiceImpl implements SEOService {
     @Autowired
     public SEOServiceImpl(SnapshotService snapshotService,
                           Datastore primaryDatastore,
-                          @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl,
-                          @Value("${koulutusinformaatio.sitemap.filepath}") String sitemapLocation) {
+                          @Value("${koulutusinformaatio.sitemap.filepath}") String sitemapLocation,
+                          OphProperties urlProperties) {
         this.snapshotService = snapshotService;
         this.mongoDatastore = primaryDatastore;
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
-        this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, baseUrl);
+        this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, urlProperties.url("koulutusinformaatio.learningopportunity.base"));
         String collections = "tutkinto:tutkintoLOS," +
                 "koulutus:koulutusLOS," +
                 "koulutusohjelma:childLearningOpportunities," +

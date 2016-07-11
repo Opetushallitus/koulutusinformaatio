@@ -83,9 +83,6 @@ public class IndexerServiceImpl implements IndexerService {
     @Value("${solr.learningopportunity.url:learning_opportunity}")
     private String loHttpSolrName;
 
-    @Value("${koulutusinformaatio.wp.harvest-url:harvest}")
-    private String articleHarvestUrl;
-
     @Autowired
     public IndexerServiceImpl(ConversionService conversionService,
             @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,

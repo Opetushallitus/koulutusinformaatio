@@ -30,6 +30,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -71,10 +72,10 @@ public class DirectoryResource {
     @Autowired
     public DirectoryResource(LearningOpportunityService learningOpportunityService,
                              LearningOpportunityProviderService learningOpportunityProviderService,
-                             @Value("${koulutusinformaatio.baseurl.learningopportunity}") String ngBaseUrl) {
+                             OphProperties urlProperties) {
         this.learningOpportunityService = learningOpportunityService;
         this.learningOpportunityProviderService = learningOpportunityProviderService;
-        this.ngBaseUrl = ngBaseUrl;
+        this.ngBaseUrl = urlProperties.url("koulutusinformaatio.learningopportunity.base");
         this.resourceBundleHelper = new ResourceBundleHelper();
     }
 

@@ -15,20 +15,21 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import fi.vm.sade.javautils.httpclient.OphHttpClient;
+import fi.vm.sade.javautils.httpclient.OphHttpResponse;
+import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
+import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystemParameters;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 
@@ -41,40 +42,34 @@ import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 public class ParameterServiceImpl implements ParameterService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParameterServiceImpl.class);
-    
-    @Value("${ohjausparametrit.api.rest.url}")
-    private String parametritUrl;
-    
-    ObjectMapper mapper = new ObjectMapper();
+    private final OphHttpClient client;
+
+    ObjectMapper mapper = HttpClient.createJacksonMapper();
     
     private Map<String, ApplicationSystemParameters> cache = new HashMap<String, ApplicationSystemParameters>();
 
-    public ParameterServiceImpl() {
-        mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    @Autowired
+    public ParameterServiceImpl(HttpClient client) {
+        this.client = client.getClient();
+        mapper = HttpClient.createJacksonMapper();
     }
     
     @Override
-    public ApplicationSystemParameters getParametersForHaku(String oid) {
+    public ApplicationSystemParameters getParametersForHaku(final String oid) {
         
         if (cache.containsKey(oid)) {
             return cache.get(oid);
         }
         
-        String urlStr =  String.format("%s%s", parametritUrl, oid);
-                
-        
         try {
-            URL url = new URL(urlStr);        
-
-            HttpURLConnection conn = (HttpURLConnection) (url.openConnection());
-
-            conn.setRequestMethod(SolrConstants.GET);
-            conn.connect();
-
-            ApplicationSystemParameters params = mapper.readValue(conn.getInputStream(), ApplicationSystemParameters.class);
-            cache.put(oid, params);
-            return params;
+            client.get("ohjausparametrit-service.parametri", oid).expectStatus(200).execute(new OphHttpResponseHandler<ApplicationSystemParameters>() {
+                @Override
+                public ApplicationSystemParameters handleResponse(OphHttpResponse response) throws IOException {
+                    ApplicationSystemParameters params = mapper.readValue(response.asInputStream(), ApplicationSystemParameters.class);
+                    cache.put(oid, params);
+                    return params;
+                }
+            });
         } catch (Exception ex) {
             cache.put(oid, new ApplicationSystemParameters());
             LOGGER.debug("Error getting parameters for haku: {}", oid, ex);

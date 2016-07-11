@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.configuration;
 
+import fi.vm.sade.properties.OphProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,7 +30,7 @@ import fi.vm.sade.koodisto.util.KoodistoClient;
 public class WebServices {
 
     @Bean(name="koodistoClient")
-    public KoodistoClient getKoodistoClient() {
-        return new CachingKoodistoClient();
+    public KoodistoClient getKoodistoClient(OphProperties urlConfiguration) {
+        return new CachingKoodistoClient(urlConfiguration.url("koodisto-service.base"));
     }
 }
