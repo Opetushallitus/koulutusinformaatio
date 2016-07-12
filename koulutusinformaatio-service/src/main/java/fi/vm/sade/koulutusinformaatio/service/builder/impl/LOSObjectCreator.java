@@ -16,76 +16,30 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.collect.ImmutableMap;
-import fi.vm.sade.koulutusinformaatio.domain.exception.*;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.OppiaineV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KorkeakouluOpintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.Koulutus2AsteV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAmmatillinenPerustutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusGenericV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.TutkintoonJohtamatonKoulutusV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.ValmistavaKoulutusV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
 import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -111,7 +65,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public HigherEducationLOS createHigherEducationLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus)
-            throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
+            throws TarjontaParseException, KoodistoException {
 
         HigherEducationLOS los = new HigherEducationLOS();
 
@@ -120,8 +74,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setKomoOid(koulutus.getKomoOid());
 
         // Set<Code> availableLanguagaes = Sets.newHashSet();
-        Map<String, Code> availableLanguagesMap = new HashMap<String, Code>();
-        List<Code> rawTranslCodes = new ArrayList<Code>();
+        Map<String, Code> availableLanguagesMap = new HashMap<>();
+        List<Code> rawTranslCodes = new ArrayList<>();
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA) != null
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA).getTekstis().containsKey(UNDEFINED)) {
             los.setInfoAboutTeachingLangs(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA)));
@@ -215,16 +169,11 @@ public class LOSObjectCreator extends ObjectCreator {
          * for (Code teachingLanguage : los.getTeachingLanguages()) { availableLanguagesMap.put(teachingLanguage.getUri(), teachingLanguage); }
          */
 
-        los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        los.setAvailableTranslationLanguages(new ArrayList<>(availableLanguagesMap.values()));
 
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
-                ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                        yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getNimi());
-                if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
-                    contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
-                }
-                los.getContactPersons().add(contactPerson);
+                los.getContactPersons().add(getContactPerson(yhteyshenkiloRDTO));
             }
         }
 
@@ -316,10 +265,19 @@ public class LOSObjectCreator extends ObjectCreator {
 
     }
 
+    private ContactPerson getContactPerson(YhteyshenkiloTyyppi yhteyshenkiloRDTO) {
+        ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
+                yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getNimi());
+        if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
+            contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
+        }
+        return contactPerson;
+    }
+
     private HashMap<String, List<String>> getSubjects(Set<OppiaineV1RDTO> oppiaines) {
-        List<OppiaineV1RDTO> asList = new LinkedList<OppiaineV1RDTO>();
+        List<OppiaineV1RDTO> asList = new LinkedList<>();
         asList.addAll(oppiaines);
-        HashMap<String, List<String>> subjects = new HashMap<String, List<String>>();
+        HashMap<String, List<String>> subjects = new HashMap<>();
         subjects.put("fi", getSubjectsByLang(asList, "kieli_fi"));
         subjects.put("sv", getSubjectsByLang(asList, "kieli_sv"));
         subjects.put("en", getSubjectsByLang(asList, "kieli_en"));
@@ -327,7 +285,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     private ArrayList<String> getSubjectsByLang(List<OppiaineV1RDTO> list, String lang) {
-        ArrayList<String> subjects = new ArrayList<String>();
+        ArrayList<String> subjects = new ArrayList<>();
         for (OppiaineV1RDTO subject : list) {
             if (lang.equals(subject.getKieliKoodi())) {
                 subjects.add(subject.getOppiaine());
@@ -408,7 +366,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike()));
-        los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike())));
+        los.setQualifications(Collections.singletonList(getI18nTextEnriched(koulutus.getTutkintonimike())));
     }
 
     private String getEducationType(String uri) {
@@ -427,11 +385,11 @@ public class LOSObjectCreator extends ObjectCreator {
     // tutkintonimike
     private List<I18nText> getQualifications(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
 
-        List<I18nText> qualifications = new ArrayList<I18nText>();
+        List<I18nText> qualifications = new ArrayList<>();
 
         KoodiV1RDTO kandKoul = koulutus.getKandidaatinKoulutuskoodi();
 
-        List<Code> kandQuals = new ArrayList<Code>();
+        List<Code> kandQuals = new ArrayList<>();
 
         if (kandKoul != null
                 && kandKoul.getUri() != null
@@ -453,11 +411,11 @@ public class LOSObjectCreator extends ObjectCreator {
     // tutkintonimike
     private List<I18nText> getQualificationsForAikuAmm(NayttotutkintoV1RDTO koulutus) throws KoodistoException {
 
-        List<I18nText> qualifications = new ArrayList<I18nText>();
+        List<I18nText> qualifications = new ArrayList<>();
 
         String osaamisalalUri = koulutus.getKoulutusohjelma().getUri();// getKandidaatinKoulutuskoodi();
 
-        List<Code> quals = new ArrayList<Code>();
+        List<Code> quals = new ArrayList<>();
 
         if (osaamisalalUri != null) {
 
@@ -485,7 +443,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private Map<String, ApplicationOption> cachedApplicationOptionResults = Maps.newHashMap();
     private Set<String> invalidOids = Sets.newHashSet();
 
-    private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) throws KoodistoException {
+    private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) {
 
         ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = tarjontaRawService.findHakukohdesByEducationOid(los.getId(), checkStatus);
         if (result == null
@@ -516,7 +474,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ResultV1RDTO<HakuV1RDTO> hakuRes = tarjontaRawService.getV1EducationHakuByOid(curHakukoh.getHakuOid());
                 HakuV1RDTO hakuDTO = hakuRes.getResult();
 
-                if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString()))) {
+                if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().equals(TarjontaTila.JULKAISTU.toString()))) {
                     invalidOids.add(hakuDTO.getOid());
                     continue;
                 }
@@ -570,7 +528,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public HigherEducationLOSRef createHigherEducationLOSRef(
-            KoulutusKorkeakouluV1RDTO koulutusDTO, boolean b, ApplicationOption ao) throws TarjontaParseException, KoodistoException {
+            KoulutusKorkeakouluV1RDTO koulutusDTO, ApplicationOption ao) throws KoodistoException {
 
         HigherEducationLOSRef losRef = new HigherEducationLOSRef();
 
@@ -588,7 +546,7 @@ public class LOSObjectCreator extends ObjectCreator {
         CompetenceBasedQualificationParentLOS los = new CompetenceBasedQualificationParentLOS();
 
         los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);
-        List<Code> rawTranslCodes = new ArrayList<Code>();
+        List<Code> rawTranslCodes = new ArrayList<>();
 
         for (String curKomotoOid : komotoOids) {
             LOG.debug("Cur standalone competence komoto oid: {}", curKomotoOid);
@@ -614,7 +572,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
                 LOG.debug("Updating parnet los data with dto: {}", dto.getOid());
 
-                updateParentLosData(los, rawTranslCodes, dto, parentKomoOid, newLos);
+                updateParentLosData(los, rawTranslCodes, dto, newLos);
                 if (los.getChildren() == null) {
                     los.setChildren(new ArrayList<AdultVocationalLOS>());
                 }
@@ -634,15 +592,15 @@ public class LOSObjectCreator extends ObjectCreator {
             return null;
         }
 
-        Map<String, Code> availableLanguagesMap = new HashMap<String, Code>();
+        Map<String, Code> availableLanguagesMap = new HashMap<>();
         for (Code curCode : rawTranslCodes) {
             availableLanguagesMap.put(curCode.getUri(), curCode);
         }
-        los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        los.setAvailableTranslationLanguages(new ArrayList<>(availableLanguagesMap.values()));
 
-        Map<String, ApplicationOption> aoMap = new HashMap<String, ApplicationOption>();
-        Map<String, Code> topicMap = new HashMap<String, Code>();
-        Map<String, Code> themeMap = new HashMap<String, Code>();
+        Map<String, ApplicationOption> aoMap = new HashMap<>();
+        Map<String, Code> topicMap = new HashMap<>();
+        Map<String, Code> themeMap = new HashMap<>();
 
         for (AdultVocationalLOS curChild : los.getChildren()) {
             if (curChild.getApplicationOptions() != null) {
@@ -658,19 +616,19 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
 
-        los.setTopics(new ArrayList<Code>(topicMap.values()));
-        los.setThemes(new ArrayList<Code>(themeMap.values()));
+        los.setTopics(new ArrayList<>(topicMap.values()));
+        los.setThemes(new ArrayList<>(themeMap.values()));
 
         if (!aoMap.isEmpty()) {
-            los.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
+            los.setApplicationOptions(new ArrayList<>(aoMap.values()));
         }
 
         return los;
     }
 
     private void updateParentLosData(CompetenceBasedQualificationParentLOS los,
-            List<Code> rawTranslCodes, NayttotutkintoV1RDTO dto,
-            String parentKomoOid, AdultVocationalLOS newLos) throws KoodistoException {
+                                     List<Code> rawTranslCodes, NayttotutkintoV1RDTO dto,
+                                     AdultVocationalLOS newLos) throws KoodistoException {
         if (los.getName() == null) {
             // los.setName(newLos.getName());
             los.setName(getI18nTextEnriched(dto.getKoulutuskoodi()));
@@ -925,9 +883,9 @@ public class LOSObjectCreator extends ObjectCreator {
         
         los.setKomoOid(koulutus.getKomoOid());
 
-        Map<String, Code> availableLanguagesMap = new HashMap<String, Code>();
+        Map<String, Code> availableLanguagesMap = new HashMap<>();
 
-        List<Code> rawTranslCodes = new ArrayList<Code>();
+        List<Code> rawTranslCodes = new ArrayList<>();
 
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO) != null
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO).getTekstis().containsKey(UNDEFINED)) {
@@ -1013,16 +971,11 @@ public class LOSObjectCreator extends ObjectCreator {
         for (Code teachingLanguage : los.getTeachingLanguages()) {
             availableLanguagesMap.put(teachingLanguage.getUri(), teachingLanguage);
         }
-        los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        los.setAvailableTranslationLanguages(new ArrayList<>(availableLanguagesMap.values()));
 
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
-                ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                        yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getNimi());
-                if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
-                    contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
-                }
-                los.getContactPersons().add(contactPerson);
+                los.getContactPersons().add(getContactPerson(yhteyshenkiloRDTO));
             }
         }
 
@@ -1128,7 +1081,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     private <S extends KoulutusAmmatillinenPerustutkintoV1RDTO, T extends KoulutusLOS> void addKoulutusAmmatillinenPerustutkintoV1Fields(S koulutus, T los)
-            throws KoodistoException, TarjontaParseException {
+            throws KoodistoException {
         if (koulutus.getKoulutuksenTavoitteet() != null) {
             los.setGoals(getI18nText(koulutus.getKoulutuksenTavoitteet()));
         }
@@ -1138,7 +1091,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     // Tämä täytyy ajaa ennen addKoulutusV1Fields, koska pohjakoulutus asetetaan täällä.
     private <S extends KoulutusGenericV1RDTO, T extends KoulutusLOS> void addKoulutusGenericV1Fields(S koulutus, T los)
-            throws KoodistoException, TarjontaParseException {
+            throws KoodistoException {
         Code requirementsCode = createCode(koulutus.getPohjakoulutusvaatimus());
         if (requirementsCode != null) {
             los.getPrerequisites().add(requirementsCode);
@@ -1176,8 +1129,8 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         // Set<Code> availableLanguagaes = Sets.newHashSet();
-        Map<String, Code> availableLanguagesMap = new HashMap<String, Code>();
-        List<Code> rawTranslCodes = new ArrayList<Code>();
+        Map<String, Code> availableLanguagesMap = new HashMap<>();
+        List<Code> rawTranslCodes = new ArrayList<>();
 
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO) != null
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO).getTekstis().containsKey(UNDEFINED)) {
@@ -1234,7 +1187,7 @@ public class LOSObjectCreator extends ObjectCreator {
         for (Code teachingLanguage : los.getTeachingLanguages()) {
             availableLanguagesMap.put(teachingLanguage.getUri(), teachingLanguage);
         }
-        los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        los.setAvailableTranslationLanguages(new ArrayList<>(availableLanguagesMap.values()));
 
         los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala()));
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi()));
@@ -1298,14 +1251,9 @@ public class LOSObjectCreator extends ObjectCreator {
 
             if (koulutus.getValmistavaKoulutus().getYhteyshenkilos() != null
                     && !koulutus.getValmistavaKoulutus().getYhteyshenkilos().isEmpty()) {
-                List<ContactPerson> persons = new ArrayList<ContactPerson>();
+                List<ContactPerson> persons = new ArrayList<>();
                 for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getValmistavaKoulutus().getYhteyshenkilos()) {
-                    ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                            yhteyshenkiloRDTO.getSahkoposti(), yhteyshenkiloRDTO.getNimi());
-                    if (yhteyshenkiloRDTO.getHenkiloTyyppi() != null) {
-                        contactPerson.setType(yhteyshenkiloRDTO.getHenkiloTyyppi().name());
-                    }
-                    persons.add(contactPerson);
+                    persons.add(getContactPerson(yhteyshenkiloRDTO));
                 }
                 los.setPreparatoryContactPersons(persons);
             }
@@ -1382,8 +1330,8 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         try {
             tutkintoLOS.setProvider(providerService.getByOID(providerOid));
-        } catch (Exception ex) {
-            throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
+        } catch (OrganisaatioException e) {
+            throw new TarjontaParseException("Problem reading organisaatio for komo " + komo.getOid(), e);
         }
         NimiV1RDTO accessToFurtherStudies = komo.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET);
         if (accessToFurtherStudies != null) {
@@ -1420,7 +1368,7 @@ public class LOSObjectCreator extends ObjectCreator {
         this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
     }
 
-    public KoulutusLOS createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) {
+    private KoulutusLOS createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) {
         ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         if (result != null) {
             KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) result.getResult();

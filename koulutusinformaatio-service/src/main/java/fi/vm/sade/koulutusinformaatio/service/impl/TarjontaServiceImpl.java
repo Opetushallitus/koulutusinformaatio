@@ -41,7 +41,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -421,7 +420,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
                 LOG.debug("Creating higher education los ref for higher education!!!");
 
-                HigherEducationLOSRef losRef = creator.createHigherEducationLOSRef(koulutusDTO, validating, curAo);
+                HigherEducationLOSRef losRef = creator.createHigherEducationLOSRef(koulutusDTO, curAo);
 
                 curAo.getHigherEdLOSRefs().add(losRef);
 

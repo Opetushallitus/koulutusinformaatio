@@ -10,4 +10,7 @@ public class TarjontaParseException extends KIException {
     public TarjontaParseException(String s) {
         super(s);
     }
+    public TarjontaParseException(String s, Exception e) {
+        super(s, e);
+    }
 }
