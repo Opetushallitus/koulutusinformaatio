@@ -228,20 +228,20 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
 
-        los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
+        los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala()));
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         LOG.debug("Koulutusohjelma for " + koulutus.getOid() + ": " + koulutus.getKoulutusohjelma());
         los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         LOG.debug("Short title: {}", los.getShortTitle());
-        los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
+        los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi()));
         los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
         los.setEducationType(getEducationType(koulutus.getKoulutusaste().getUri()));
-        los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkinto().getMeta())); // muutos: oli koulutus.getKoulutusohjelma()
+        los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste()));
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkinto())); // muutos: oli koulutus.getKoulutusohjelma()
         los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes())); // uusi
         los.setQualifications(getQualifications(koulutus));
-        los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
+        los.setDegree(getI18nTextEnriched(koulutus.getTutkinto()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
         }
@@ -249,14 +249,14 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setStartYear(koulutus.getKoulutuksenAlkamisvuosi());
         }
         if (koulutus.getKoulutuksenAlkamiskausi() != null) {
-            los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi().getMeta()));
+            los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi()));
         }
 
         los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
-        los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
+        los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi()));
         los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
-        los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
+        los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
         los.setChargeable(koulutus.getOpintojenMaksullisuus());
 
         try {
@@ -407,10 +407,8 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setLanguageSelection(languageSelection);
         }
 
-        if (koulutus.getTutkintonimike() != null && koulutus.getTutkintonimike().getMeta() != null) {
-            los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
-            los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
-        }
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike()));
+        los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike())));
     }
 
     private String getEducationType(String uri) {
@@ -470,8 +468,8 @@ public class LOSObjectCreator extends ObjectCreator {
             for (Code curQual : quals) {
                 qualifications.add(curQual.getName());
             }
-        } else if (koulutus.getTutkintonimike() != null && koulutus.getTutkintonimike().getMeta() != null) {
-            qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
+        } else {
+            qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike()));
         }
         return qualifications;
     }
@@ -675,7 +673,7 @@ public class LOSObjectCreator extends ObjectCreator {
             String parentKomoOid, AdultVocationalLOS newLos) throws KoodistoException {
         if (los.getName() == null) {
             // los.setName(newLos.getName());
-            los.setName(getI18nTextEnriched(dto.getKoulutuskoodi().getMeta()));
+            los.setName(getI18nTextEnriched(dto.getKoulutuskoodi()));
         }
         if (los.getGoals() == null
                 && dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET) != null
@@ -716,10 +714,10 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setEducationDomain(newLos.getEducationDomain());
         }
         if (los.getEducationKind() == null) {
-            los.setEducationKind(getI18nTextEnriched(dto.getKoulutuslaji().getMeta()));
+            los.setEducationKind(getI18nTextEnriched(dto.getKoulutuslaji()));
         }
         if (los.getEducationType() == null) {
-            los.setEducationType(getI18nTextEnriched(dto.getKoulutustyyppi().getMeta()));
+            los.setEducationType(getI18nTextEnriched(dto.getKoulutustyyppi()));
             los.setEdtUri(dto.getKoulutustyyppi().getUri());
         }
 
@@ -1238,17 +1236,17 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
 
-        los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
-        los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
+        los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala()));
+        los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi()));
         los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
 
-        los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
+        los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike())); // muutos: oli koulutus.getKoulutusohjelma()
         // los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes())); // ei löydy NayttotutkintoV1RDTO:lle
-        los.setQualifications(getQualificationsForAikuAmm(koulutus));// Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
+        los.setQualifications(getQualificationsForAikuAmm(koulutus));// Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike())));
 
-        los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
+        los.setDegree(getI18nTextEnriched(koulutus.getTutkinto()));
 
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
@@ -1257,13 +1255,13 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setStartYear(koulutus.getKoulutuksenAlkamisvuosi());
         }
         if (koulutus.getKoulutuksenAlkamiskausi() != null) {
-            los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi().getMeta()));
+            los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi()));
         }
 
         if (koulutus.getValmistavaKoulutus() != null) {
 
             los.setPlannedDuration(koulutus.getValmistavaKoulutus().getSuunniteltuKestoArvo());
-            los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getMeta()));
+            los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi()));
             los.setPduCodeUri(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getUri());
             los.setChargeable(koulutus.getValmistavaKoulutus().getOpintojenMaksullisuus());
             if (koulutus.getValmistavaKoulutus().getHintaString() != null) {
@@ -1326,7 +1324,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
-        los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
+        los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
@@ -1394,17 +1392,17 @@ public class LOSObjectCreator extends ObjectCreator {
         tutkintoLOS.setEducationDegree(komo.getKoulutusaste().getArvo());
 
         tutkintoLOS.setId(CreatorUtil.resolveLOSId(komo.getOid(), providerOid, year, season));
-        tutkintoLOS.setName(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
-        tutkintoLOS.setShortTitle(getI18nTextEnriched(komo.getKoulutuskoodi().getMeta()));
+        tutkintoLOS.setName(getI18nTextEnriched(komo.getKoulutuskoodi()));
+        tutkintoLOS.setShortTitle(getI18nTextEnriched(komo.getKoulutuskoodi()));
         NimiV1RDTO goals = komo.getKuvausKomo().get(KomoTeksti.TAVOITTEET);
         if (goals != null) {
             tutkintoLOS.setGoals(getI18nText(goals.getTekstis()));
         }
         tutkintoLOS.setCreditValue(komo.getOpintojenLaajuusarvo().getArvo());
-        tutkintoLOS.setCreditUnit(getI18nTextEnriched(komo.getOpintojenLaajuusyksikko().getMeta()));
+        tutkintoLOS.setCreditUnit(getI18nTextEnriched(komo.getOpintojenLaajuusyksikko()));
 
-        tutkintoLOS.setEducationDomain(getI18nTextEnriched(komo.getKoulutusala().getMeta()));
-        tutkintoLOS.setStydyDomain(getI18nTextEnriched(komo.getOpintoala().getMeta()));
+        tutkintoLOS.setEducationDomain(getI18nTextEnriched(komo.getKoulutusala()));
+        tutkintoLOS.setStydyDomain(getI18nTextEnriched(komo.getOpintoala()));
         tutkintoLOS.setTopics(getTopics(komo.getOpintoala().getUri()));
         tutkintoLOS.setThemes(getThemes(tutkintoLOS));
         tutkintoLOS.setEducationCode(createCode(komo.getKoulutuskoodi()));
