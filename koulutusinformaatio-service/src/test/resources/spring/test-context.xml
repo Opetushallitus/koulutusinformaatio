@@ -25,7 +25,7 @@
        >
 
     <context:property-placeholder
-            location="classpath:koulutusinformaatio.properties"
+            location="classpath:common.properties"
             ignore-resource-not-found="true"/>
 
     <bean id="incrementalUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl" />
