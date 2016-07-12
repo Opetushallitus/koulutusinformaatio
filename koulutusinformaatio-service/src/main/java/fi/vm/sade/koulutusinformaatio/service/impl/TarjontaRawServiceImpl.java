@@ -30,10 +30,9 @@ import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.sun.jersey.api.client.GenericType;
 
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
@@ -73,17 +72,17 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return httpclient.get(key, params);
     }
 
-    private <T> T executeWithRetries(OphHttpRequest resource, final GenericType<T> type) {
+    private <T> T executeWithRetries(OphHttpRequest resource, final TypeReference<T> type) {
         return execute(resource.retryOnError(3, 2500), type);
     }
 
-    private <T> T execute(OphHttpRequest resource, final GenericType<T> type) {
+    private <T> T execute(OphHttpRequest resource, final TypeReference<T> type) {
         return resource
                 .accept(JSON)
                 .execute(new OphHttpResponseHandler<T>() {
                     @Override
                     public T handleResponse(OphHttpResponse response) throws IOException {
-                        return mapper.readValue(response.asInputStream(), type.getRawClass());
+                        return mapper.readValue(response.asInputStream(), type);
                     }
                 });
     }
@@ -94,7 +93,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 get("tarjonta-service.koulutus.search")
                         .param("koulutusOid", oid)
                         .param("tila", "KAIKKI"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 }
         );
     }
@@ -104,7 +103,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
             String oid) {
         return executeWithRetries(
                 get("tarjonta-service.koulutus", oid),
-                new GenericType<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
+                new TypeReference<ResultV1RDTO<KoulutusAikuistenPerusopetusV1RDTO>>() {
                 }
         );
     }
@@ -112,14 +111,14 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(String oid) {
         return executeWithRetries(
-                get("tarjonta-service.koulutus", oid), new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
+                get("tarjonta-service.koulutus", oid), new TypeReference<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
                 }
         );
     }
 
     public ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid) {
         return executeWithRetries(
-                get("tarjonta-service.komo", oid), new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
+                get("tarjonta-service.komo", oid), new TypeReference<ResultV1RDTO<KomoV1RDTO>>() {
                 }
         );
     }
@@ -130,13 +129,13 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
             return executeWithRetries(
                     get("tarjonta-service.hakukohde.search")
                             .param("koulutusOid", oid)
-                            .param("tila", "JULKAISTU"), new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                            .param("tila", "JULKAISTU"), new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
                     }
             );
         } else {
             return executeWithRetries(
                     get("tarjonta-service.hakukohde.search")
-                            .param("koulutusOid", oid), new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                            .param("koulutusOid", oid), new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
                     }
             );
         }
@@ -145,7 +144,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid) {
         return executeWithRetries(
-                get("tarjonta-service.hakukohde", oid), new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
+                get("tarjonta-service.hakukohde", oid), new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>() {
                 }
         );
     }
@@ -153,7 +152,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
         return executeWithRetries(
-                get("tarjonta-service.haku", oid), new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
+                get("tarjonta-service.haku", oid), new TypeReference<ResultV1RDTO<HakuV1RDTO>>() {
                 }
         );
     }
@@ -162,7 +161,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(
             String parentOid) {
         return executeWithRetries(
-                get("tarjonta-service.link", parentOid), new GenericType<ResultV1RDTO<Set<String>>>() {
+                get("tarjonta-service.link", parentOid), new TypeReference<ResultV1RDTO<Set<String>>>() {
                 }
         );
     }
@@ -171,7 +170,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
             String childKomoOid) {
         return executeWithRetries(
-                get("tarjonta-service.link.parents", childKomoOid), new GenericType<ResultV1RDTO<Set<String>>>() {
+                get("tarjonta-service.link.parents", childKomoOid), new TypeReference<ResultV1RDTO<Set<String>>>() {
                 }
         );
     }
@@ -181,7 +180,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
             String komoOid) {
         return executeWithRetries(
                 get("tarjonta-service.koulutus.search")
-                        .param("komoOid", komoOid), new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                        .param("komoOid", komoOid), new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 }
         );
     }
@@ -189,7 +188,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
         return executeWithRetries(
-                get("tarjonta-service.koulutus.kuva", koulutusOid), new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
+                get("tarjonta-service.koulutus.kuva", koulutusOid), new TypeReference<ResultV1RDTO<List<KuvaV1RDTO>>>() {
                 }
         );
     }
@@ -197,7 +196,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
         return execute(
                 get("tarjonta-service.lastmodified").param("lastModified", String.format("-%s", updatePeriod)),
-                new GenericType<Map<String, List<String>>>() {
+                new TypeReference<Map<String, List<String>>>() {
                        }
         );
     }
@@ -210,7 +209,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         }
         request.param("tila", "JULKAISTU");
         return executeWithRetries(request,
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 }
         );
     }
@@ -223,7 +222,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                         .param("organisationOid", providerOid)
                         .param("koulutuskoodi", koulutusKoodi)
                         .param("tila", "JULKAISTU"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 }
         );
     }
@@ -234,7 +233,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 get("tarjonta-service.haku.search")
                         .param("TILA", "JULKAISTU")
                         .param("HAKUTAPA", hakutapa),
-                new GenericType<ResultV1RDTO<List<String>>>() {
+                new TypeReference<ResultV1RDTO<List<String>>>() {
                 }
         );
     }
@@ -243,7 +242,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public ResultV1RDTO<KoulutusV1RDTO> getV1KoulutusLearningOpportunity(String oid) {
         return executeWithRetries(
                 get("tarjonta-service.koulutus", oid),
-                new GenericType<ResultV1RDTO<KoulutusV1RDTO>>() {
+                new TypeReference<ResultV1RDTO<KoulutusV1RDTO>>() {
                 }
         );
     }
@@ -254,7 +253,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 get("tarjonta-service.koulutus.search")
                         .param("hakuOid", asOid)
                         .param("tila", "JULKAISTU"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 }
         );
     }
@@ -263,7 +262,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public ResultV1RDTO<List<NimiJaOidRDTO>> getV1KoulutusByAoId(String aoOid) {
         return executeWithRetries(
                 get("tarjonta-service.hakukohde.koulutukset", aoOid),
-                new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {
+                new TypeReference<ResultV1RDTO<List<NimiJaOidRDTO>>>() {
                 }
         );
     }
@@ -273,7 +272,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return executeWithRetries(
                 get("tarjonta-service.hakukohde.search")
                         .param("tila", "JULKAISTU"),
-                new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
+                new TypeReference<ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>>>() {
                 }
         );
     }

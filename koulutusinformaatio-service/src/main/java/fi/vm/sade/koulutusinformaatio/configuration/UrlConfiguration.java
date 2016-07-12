@@ -14,7 +14,7 @@ public class UrlConfiguration extends OphProperties {
     }
 
     public UrlConfiguration(String activeSpringProfile) {
-        debugMode();
+        //debugMode();
         addFiles("/koulutusinformaatio-service-oph.properties");
         if(!SPRING_IT_PROFILE.equals(activeSpringProfile)) {
             addOptionalFiles(Paths.get(System.getProperties().getProperty("user.home"), "/oph-configuration/common.properties").toString());
