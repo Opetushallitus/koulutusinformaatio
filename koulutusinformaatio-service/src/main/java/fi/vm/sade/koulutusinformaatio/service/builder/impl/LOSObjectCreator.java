@@ -1244,7 +1244,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
 
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())); // muutos: oli koulutus.getKoulutusohjelma()
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike())); // muutos: oli koulutus.getKoulutusohjelma()
         // los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes())); // ei löydy NayttotutkintoV1RDTO:lle
         los.setQualifications(getQualificationsForAikuAmm(koulutus));// Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
 
