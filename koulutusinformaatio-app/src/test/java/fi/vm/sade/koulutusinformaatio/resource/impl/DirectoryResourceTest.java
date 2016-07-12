@@ -78,7 +78,7 @@ public class DirectoryResourceTest {
         when(providerService.getProvider(eq("4.5.6"), eq("fi")))
                 .thenReturn(provider);
 
-        resource = new DirectoryResource(learningOpportunityService, providerService, new UrlConfiguration().addDefault("host.oppija", "localhost:9012"));
+        resource = new DirectoryResource(learningOpportunityService, providerService, new UrlConfiguration().addOverride("host.oppija", "localhost:9012"));
     }
 
     @Test
