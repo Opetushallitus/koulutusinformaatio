@@ -57,3 +57,23 @@ If the solr server starts, but the localhost:8312/solr shows error message, chec
     module-install-parent/config/common/solr/home/solr.xml
 
 is unchanged (TODO: Check WHY the file changes sometimes). If the file is chaged, revert changes.
+
+### Start education update (indexing) manually
+To see status of indexing process visin
+
+    localhost:8080/admin/status
+
+To begin full update (several hours) visit
+
+    localhost:8080/admin/update
+
+To index only single learning opportunity / application option / application system visit
+
+    localhost:8080/admin/partial/lo/[oid]
+    localhost:8080/admin/partial/ao/[oid]
+    localhost:8080/admin/partial/as/[oid]
+
+To index facet and provider information visit
+
+    localhost:8080/admin/partial/general
+
