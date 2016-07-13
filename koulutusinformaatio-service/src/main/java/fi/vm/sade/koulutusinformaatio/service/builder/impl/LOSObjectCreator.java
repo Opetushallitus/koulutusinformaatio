@@ -366,7 +366,9 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike()));
-        los.setQualifications(Collections.singletonList(getI18nTextEnriched(koulutus.getTutkintonimike())));
+        los.setQualifications(koulutus.getTutkintonimike() == null ?
+                Lists.<I18nText>newArrayList() :
+                Collections.singletonList(getI18nTextEnriched(koulutus.getTutkintonimike())));
     }
 
     private String getEducationType(String uri) {

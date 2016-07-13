@@ -49,12 +49,12 @@ public class KoulutusLOS extends LOS {
 
     private String komoOid;
 
-    private List<Code> prerequisites = new ArrayList<Code>();
+    private List<Code> prerequisites = new ArrayList<>();
     private Code koulutusPrerequisite;
     private List<I18nText> formOfTeaching;
     private List<I18nText> teachingTimes;
     private List<I18nText> teachingPlaces;
-    private List<I18nText> qualifications;
+    private List<I18nText> qualifications = new ArrayList<>();
     private List<I18nText> degreeTitles;
     private I18nText startSeason;
     private int startYear;
