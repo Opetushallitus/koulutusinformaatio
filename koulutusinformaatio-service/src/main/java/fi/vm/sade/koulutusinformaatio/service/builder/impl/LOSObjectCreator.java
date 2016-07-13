@@ -420,17 +420,17 @@ public class LOSObjectCreator extends ObjectCreator {
         List<Code> quals = new ArrayList<>();
 
         if (osaamisalalUri != null) {
-
             quals = this.koodistoService.searchSubCodes(osaamisalalUri, TarjontaConstants.TUTKINTONIMIKEET_KOODISTO_URI);
         }
 
         if (quals != null && !quals.isEmpty()) {
-            for (Code curQual : quals) {
-                qualifications.add(curQual.getName());
-            }
-        } else {
+            for (Code curQual : quals)
+                if (curQual != null)
+                    qualifications.add(curQual.getName());
+        } else if(koulutus.getTutkintonimike() != null) {
             qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike()));
         }
+
         return qualifications;
     }
 
@@ -477,7 +477,9 @@ public class LOSObjectCreator extends ObjectCreator {
                 HakuV1RDTO hakuDTO = hakuRes.getResult();
 
                 if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().equals(TarjontaTila.JULKAISTU.toString()))) {
-                    invalidOids.add(hakuDTO.getOid());
+                    if (hakuDTO != null) {
+                        invalidOids.add(hakuDTO.getOid());
+                    }
                     continue;
                 }
 
@@ -560,7 +562,7 @@ public class LOSObjectCreator extends ObjectCreator {
             if (dto == null || dto.getToteutustyyppi() == null || !isAikuAmm(dto)) {
                 LOG.debug("Unfitting komoto, continuing");
                 try {
-                    LOG.debug("Toteutustyyppi: {}", dto.getToteutustyyppi().name());
+                    LOG.debug("Toteutustyyppi: {}", dto != null ? dto.getToteutustyyppi().name() : "null");
                 } catch (Exception ex) {
                     LOG.debug("Could not get toteutustyyppi: ");
                 }
@@ -587,7 +589,7 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
 
-        if (los == null || los.getChildren() == null || los.getChildren().isEmpty()) {
+        if (los.getChildren() == null || los.getChildren().isEmpty()) {
             if (checkStatus) {
                 throw new TarjontaParseException("No valid children for parent adult vocational: " + parentKomoOid);
             }
@@ -1430,7 +1432,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws OrganisaatioException {
-        String tyypinMaarittavaOrganisaatioOid = null;
+        String tyypinMaarittavaOrganisaatioOid;
         if (dto.getTarjoajanKoulutus() != null) { // Koulutustyyppi määräytyy opinnon tarjoajan mukaan
             tyypinMaarittavaOrganisaatioOid = tarjontaRawService.searchEducation(dto.getTarjoajanKoulutus()).getResult().getTulokset().get(0).getOid();
         } else { // tai suoraan organisaation mukaan jos tarjoaja itse järjestää opinnon
