@@ -204,16 +204,17 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     /*
      * Is a given facet value selected
      */
-    $scope.isSelected = function(facetValue) {
-    	var isSelected = false;
-    	for (var i = 0; i < $scope.facetSelections.length; i++) {
-    		if (($scope.facetSelections[i].facetField == facetValue.facetField)
-    				&& ($scope.facetSelections[i].valueId.indexOf(facetValue.valueId) > -1)) { // 'et02.01.01' includes 'et02.01'
-    			isSelected = true;
-    		}
-    	}
+    $scope.isSelected = function (facetValue) {
+        var isSelected = false;
+        for (var i = 0; i < $scope.facetSelections.length; i++) {
+            if (($scope.facetSelections[i].facetField == facetValue.facetField)
+                && ($scope.facetSelections[i].valueId === facetValue.valueId ||
+                facetValue.valueId.indexOf("et") == 0 && $scope.facetSelections[i].valueId.indexOf(facetValue.valueId) > -1)) { // 'et02.01.01' includes 'et02.01'
+                isSelected = true;
+            }
+        }
 
-    	return isSelected;
+        return isSelected;
     }
     
     //Are there selections to show in the facet selections area
