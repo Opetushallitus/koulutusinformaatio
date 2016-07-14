@@ -1,7 +1,7 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService, Config) {
+function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService) {
     $scope.searchFieldAriaLabel = TranslationService.getTranslation('search-field-aria-label');
     $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder');
     $scope.suggestions = [];
@@ -12,7 +12,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
 
     $scope.locales = {
         'search': TranslationService.getTranslation('tooltip:search')
-    }
+    };
 
     
     $scope.$watch('queryString', function() {
@@ -72,8 +72,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             $route.reload();
         }
     };
-};
-
+}
 /**
  *  Controller for search filters
  */
@@ -100,21 +99,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             articleFacetFilters: $scope.articleFacetFilters
         });
         
-        if ($scope.lopFilter != undefined) {
-        	$scope.lopRecommendation = true;
-        } else {
-        	$scope.lopRecommendation = false;
-        }
+        $scope.lopRecommendation = $scope.lopFilter != undefined;
         
-        if ($scope.educationCodeFilter != undefined) {
-        	$scope.educationCodeRecommendation = true;
-        } else {
-        	$scope.educationCodeRecommendation = false;
-        }
+        $scope.educationCodeRecommendation = $scope.educationCodeFilter != undefined;
 
         // append filters to url and reload
         $scope.refreshView();
-    }
+    };
 
     /*
      * localizations
@@ -127,7 +118,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         'resultsToShow': TranslationService.getTranslation('tooltip:choose-results-to-show'),
         'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria'),
         'searchResultFacetInfo': TranslationService.getTranslation('tooltip:search-result-facet-info')
-    }
+    };
 
     // filter selector collapse state
     $scope.filterSelectorIsCollapsed = false;
@@ -161,7 +152,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
 
     	$scope.change();
-    }
+    };
     
     /*
      * Removing a facet selection to broaden search.
@@ -183,23 +174,23 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 
     	$scope.facetFilters = tempFilters;
     	$scope.change();
-    }
+    };
     
     $scope.removeLopRecommendation = function() {
     	$scope.lopFilter = undefined;
     	$scope.change();
-    }
+    };
     
     $scope.removeEducationCodeRecommendation = function() {
     	$scope.educationCodeFilter = undefined;
     	$scope.change();
-    }
+    };
     
     //Is the facet selection a selection of finish teaching language
     $scope.isDefaultTeachLang = function(facetSelection) {
     	return (facetSelection.facetField == 'teachingLangCode_ffm') 
     			&& (facetSelection.valueId == $scope.resolveDefLang());
-    }
+    };
     
     /*
      * Is a given facet value selected
@@ -215,7 +206,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         }
 
         return isSelected;
-    }
+    };
     
     //Are there selections to show in the facet selections area
     $scope.areThereSelections = function() {
@@ -227,50 +218,50 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	 		|| $scope.upcomingLater
     	 		|| $scope.lopRecommendation
     	 		|| $scope.educationCodeRecommendation;
-    }
+    };
    
     //Removing a location from the facet selections area
     $scope.removeLocation = function(loc) {
     	$scope.locations.splice($scope.locations.indexOf(loc), 1);
         $scope.change();
-    }
+    };
     
     $scope.setOngoing = function() {
     	$scope.ongoing = true;
     	$scope.change();
-    }
+    };
     
     $scope.removeOngoing = function() {
     	$scope.ongoing = false;
     	$scope.change();
-    }
+    };
     
     $scope.setUpcoming = function() {
     	$scope.upcoming = true;
     	$scope.change();
-    }
+    };
     
     $scope.setUpcomingLater = function() {
     	$scope.upcomingLater = true;
     	$scope.change();
-    }
+    };
     
     $scope.removeUpcoming = function() {
     	$scope.upcoming = false;
     	$scope.change();
-    }
+    };
     
     $scope.removeUpcomingLater = function() {
     	$scope.upcomingLater = false;
     	$scope.change();
-    }
+    };
 
     $scope.openAreaDialog = function() {
     	DistrictService.query().then(function(result) {
     		$scope.distResult = result;
     		$scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
     	});
-    }
+    };
 
     $scope.toggleCollapsed = function(index) {
         if (!$scope.collapsed) {
@@ -278,7 +269,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         }
 
         $scope.collapsed[index] = !$scope.collapsed[index];
-    }
+    };
     
     $scope.isEdTypeSelected = function(facetValue) {
     	if ($scope.facetSelections == undefined || facetValue == undefined) {
@@ -292,7 +283,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		}
     	}
     	return isSelected;
-    }
+    };
 
     $scope.setFilteredLocations = function(value) {
         _.each(value, function(location) {
@@ -302,13 +293,12 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                 $scope.locations.push(location);
             }
         });
-    }
+    };
     
     $scope.selectLabel = function(label){
         $location.path("/haku/" + label);
     }
-};
-
+}
 /**
  *  Controller for search functionality 
  */
@@ -332,7 +322,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
         articles: TranslationService.getTranslation('search-tab-article'),
         articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip'),
         organisations: TranslationService.getTranslation('search-tab-organisation'),
-        organisationsTooltip: TranslationService.getTranslation('tooltip:search-tab-organisation-tooltip'),
+        organisationsTooltip: TranslationService.getTranslation('tooltip:search-tab-organisation-tooltip')
     };
 
     $scope.tabs = [
@@ -356,7 +346,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     $scope.refreshView = function() {
         $location.search(FilterService.get()).replace();
         $scope.initSearch();
-    }
+    };
 
     $scope.initTabs = function() {
         var qParams = $location.search();
@@ -368,11 +358,10 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
             $scope.tabs[0].active = true;
         }
         $timeout(function(){
-            var searcTablist = null;
-            searcTablist = new tabpanel('search-tablist', false);
+            new tabpanel('search-tablist', false);
         },0);
 
-    }
+    };
     
     //Getting the query params from the url
     //after which searching is done.
@@ -398,21 +387,13 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
                 $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
 
                 
-                if ($scope.lopFilter != undefined) {
-                	$scope.lopRecommendation = true;
-                } else {
-                	$scope.lopRecommendation = false;
-                }
+                $scope.lopRecommendation = $scope.lopFilter != undefined;
                 
-                if ($scope.educationCodeFilter != undefined) {
-                	$scope.educationCodeRecommendation = true;
-                } else {
-                	$scope.educationCodeRecommendation = false;
-                }
+                $scope.educationCodeRecommendation = $scope.educationCodeFilter != undefined;
                 
                 $scope.doSearching();
             });
-    }
+    };
     $scope.initTabs();
 
 	//Returns true if the language filter is set
@@ -431,7 +412,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     	}
     	
     	return false;
-    }
+    };
 
     //Searching solr
     $scope.doSearching = function() {
@@ -542,7 +523,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
             $scope.loResult.loCount = 0;
             $scope.loResult.articleCount = 0;
         }
-    }
+    };
 
     /*
      * Populating the facet selections (shown in the UI). Based on
@@ -604,8 +585,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     $scope.searchAll = function() {
         SearchLearningOpportunityService.searchAll({tab: 'los'});
     };
-};
-
+}
 function SortCtrl($scope, $location, FilterService, kiAppConstants) {
     $scope.updateItemsPerPage = function(tab) {
         FilterService.setItemsPerPage($scope.itemsPerPage);
@@ -622,7 +602,7 @@ function SortCtrl($scope, $location, FilterService, kiAppConstants) {
             $scope.$parent.model.currentOrganisationPage = kiAppConstants.searchResultsStartPage;
             $scope.refreshOrganisationView();
         }
-    }
+    };
 
     $scope.updateSortCriteria = function(tab) {
         FilterService.setSortCriteria($scope.sortCriteria);
@@ -634,5 +614,5 @@ function SortCtrl($scope, $location, FilterService, kiAppConstants) {
             $scope.refreshOrganisationView();
         }
     }
-};
+}
 
