@@ -132,12 +132,14 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                 }
             }
             for (I18nText i18n : curChild.getQualifications()) {
-                if (teachLang.equals("sv")) {
-                    doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
-                } else if (teachLang.equals("en")) {
-                    doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
-                } else {
-                    doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
+                if (i18n != null) {
+                    if (teachLang.equals("sv")) {
+                        doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
+                    } else if (teachLang.equals("en")) {
+                        doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
+                    } else {
+                        doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
+                    }
                 }
             }
         }
