@@ -76,7 +76,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal, _) {
+function SearchFilterCtrl($scope, $location, kiAppConstants, FilterService, DistrictService, TranslationService, _) {
 
     $scope.change = function() {
         FilterService.set({
@@ -127,12 +127,12 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
      * Selecting a facet value for filtering results
      */
     $scope.selectFacetFilter = function(selection, facetField) {
-    	var facetSelection = {facetField: facetField, selection: selection};
+
     	if ($scope.facetFilters != undefined) {
     		
     		var tempFilters = [];
     		
-    		angular.forEach($scope.facetFilters, function(value, index) {
+    		angular.forEach($scope.facetFilters, function(value) {
     			var curField = value.split(':')[0];
     			if ((facetField == 'theme_ffm' || facetField == 'topic_ffm')
     					&& curField != 'theme_ffm' && curField != 'topic_ffm') {
@@ -163,7 +163,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
 
     	var tempFilters = [];
-    	angular.forEach($scope.facetFilters, function(value, index) {
+    	angular.forEach($scope.facetFilters, function(value) {
     		var curVal = value.split(':')[1];
     		var curField = value.split(':')[0];
     		if ((curField != facetSelection.facetField) 
@@ -302,8 +302,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 /**
  *  Controller for search functionality 
  */
-function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, LanguageService, TranslationService, $timeout, SearchResultFacetTransformer) {
-    var queryParams;
+function SearchCtrl($scope, $rootScope, $location, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, LanguageService, TranslationService, $timeout, SearchResultFacetTransformer) {
+
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
     $rootScope.description = $rootScope.title;
@@ -532,23 +532,23 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     $scope.populateFacetSelections = function () {
     	$scope.facetSelections = [];
     	$scope.facetFilters = FilterService.getFacetFilters();
-    	angular.forEach($scope.facetFilters, function(fFilter, key) {
+    	angular.forEach($scope.facetFilters, function(fFilter) {
     		var curVal = fFilter.split(':')[1];
     		var selLength = $scope.facetSelections.length;
-    		angular.forEach($scope.loResult.teachingLangFacet.facetValues, function(fVal, key) {
+    		angular.forEach($scope.loResult.teachingLangFacet.facetValues, function(fVal) {
     			if (this == fVal.valueId) {
     				$scope.facetSelections.push(fVal);
     			}
     		}, curVal);
     		if (selLength == $scope.facetSelections.length) {
-    			angular.forEach($scope.loResult.prerequisiteFacet.facetValues, function(fVal, key) {
+    			angular.forEach($scope.loResult.prerequisiteFacet.facetValues, function(fVal) {
         			if (this == fVal.valueId) {
         				$scope.facetSelections.push(fVal);
         			}
         		}, curVal);
     		}
     		if (selLength == $scope.facetSelections.length) {
-    			angular.forEach($scope.loResult.filterFacet.facetValues, function(fVal, key) {
+    			angular.forEach($scope.loResult.filterFacet.facetValues, function(fVal) {
         			if (this == fVal.valueId) {
         				$scope.facetSelections.push(fVal);
         			}
@@ -556,7 +556,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     		} 
     	});
     	
-    	angular.forEach($scope.loResult.appStatusFacet.facetValues, function(fVal, key) {
+    	angular.forEach($scope.loResult.appStatusFacet.facetValues, function(fVal) {
     		if (fVal.valueId == 'ongoing') {
     			$scope.loResult.ongoingFacet = fVal;
     		} else if (fVal.valueId == 'upcoming') {
@@ -586,7 +586,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
         SearchLearningOpportunityService.searchAll({tab: 'los'});
     };
 }
-function SortCtrl($scope, $location, FilterService, kiAppConstants) {
+function SortCtrl($scope, FilterService, kiAppConstants) {
     $scope.updateItemsPerPage = function(tab) {
         FilterService.setItemsPerPage($scope.itemsPerPage);
         if (tab == 'los') {
