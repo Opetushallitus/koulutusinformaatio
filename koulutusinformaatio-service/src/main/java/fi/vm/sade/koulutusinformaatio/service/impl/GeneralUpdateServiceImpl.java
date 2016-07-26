@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -25,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -57,38 +59,57 @@ public class GeneralUpdateServiceImpl {
         this.providerService = providerService;
     }
 
-    public synchronized void updateGeneralData(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
-        LOG.info("Providers indexed");
-
-        List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
-        indexerService.addFacetCodes(edTypeCodes, loUpdateSolr);
-        LOG.info("Education types indexded.");
-
-        List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
-        indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
-        LOG.info("Base educations indexded.");
-
-        List<Location> locations = locationService.getMunicipalities();
-        LOG.debug("Got locations");
-        indexerService.addLocations(locations, locationUpdateSolr);
-        LOG.info("Location indexed");
-
-        List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
-        for (CalendarApplicationSystem curAs : applicationSystems) {
-            LOG.debug("Indexing application system: {}", curAs.getId());
-            this.indexerService.indexASToSolr(curAs, loUpdateSolr);
+    private void switchTask(StopWatch s, String task){
+        if(s.isRunning()) {
+            s.stop();
         }
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        LOG.info("Application systems indexed");
+        s.start(task);
+    }
+    public synchronized void updateGeneralData(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException, KIException {
+        StopWatch stopwatch = new StopWatch();
+        try{
+            stopwatch.start("Tarjoatiedot");
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
+            LOG.info("Providers indexed");
+            switchTask(stopwatch, "Koulutustyyppifasetit");
 
-        List<Article> articles = this.articleService.fetchArticles();
-        LOG.debug("Articles fetched");
-        indexerService.addArticles(loUpdateSolr, articles);
-        LOG.info("Articles indexed to solr");
+            List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
+            indexerService.addFacetCodes(edTypeCodes, loUpdateSolr);
+            LOG.info("Education types indexded.");
+            switchTask(stopwatch, "Pohjakoulutusfasetit");
 
-        indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
+            List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
+            indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
+            LOG.info("Base educations indexded.");
+            switchTask(stopwatch, "Sijaintifasetit");
+
+            List<Location> locations = locationService.getMunicipalities();
+            LOG.debug("Got locations");
+            indexerService.addLocations(locations, locationUpdateSolr);
+            LOG.info("Location indexed");
+            switchTask(stopwatch, "Hakujen tiedot");
+
+            List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
+            for (CalendarApplicationSystem curAs : applicationSystems) {
+                LOG.debug("Indexing application system: {}", curAs.getId());
+                this.indexerService.indexASToSolr(curAs, loUpdateSolr);
+            }
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+            LOG.info("Application systems indexed");
+            switchTask(stopwatch, "Artikkelit");
+
+            List<Article> articles = this.articleService.fetchArticles();
+            LOG.debug("Articles fetched");
+            indexerService.addArticles(loUpdateSolr, articles);
+            LOG.info("Articles indexed to solr");
+
+            indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
+        } finally {
+            if(stopwatch.isRunning())
+                stopwatch.stop();
+            LOG.info("Yleisen indeksoinnin vaiheet: " + stopwatch.toString());
+        }
     }
 
     /*

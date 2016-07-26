@@ -61,6 +61,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import org.springframework.util.StopWatch;
 
 /**
  * @author Hannu Lyytikainen
@@ -104,6 +105,13 @@ public class UpdateServiceImpl implements UpdateService {
         this.generalUpdateService = generalUpdateService;
     }
 
+    private void switchTask(StopWatch s, String task){
+        if(s.isRunning()) {
+            s.stop();
+        }
+        s.start(task);
+    }
+
     @Override
     @Async
     public synchronized void updateAllEducationData() throws Exception {
@@ -112,8 +120,9 @@ public class UpdateServiceImpl implements UpdateService {
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
         fullIndexingStartTime = System.currentTimeMillis();
 
+        StopWatch stopwatch = new StopWatch("Full indexing");
+        stopwatch.start("Lukio koulutukset");
         try {
-
             LOG.info("Starting full education data update");
             running = true;
             runningSince = System.currentTimeMillis();
@@ -134,6 +143,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Lukio educations saved.");
             tarjontaService.clearProcessedLists();
+            switchTask(stopwatch, "Ammatilliset koulutukset");
 
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
             LOG.info("Found vocational educations: " + vocationalEducations.size());
@@ -155,6 +165,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Vocational educations saved.");
             tarjontaService.clearProcessedLists();
+            switchTask(stopwatch, "Korkeakoulujen koulutukset");
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.info("Found higher educations: {}", higherEducations.size());
@@ -167,6 +178,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Higher educations saved.");
             tarjontaService.clearProcessedLists();
+            switchTask(stopwatch, "Opintojaksot korkeakouluista");
 
             List<KoulutusHakutulosV1RDTO> opintojaksot = this.tarjontaService.findKorkeakouluOpinnot();
             LOG.info("Löytyi {} opintojaksoa.", opintojaksot.size());
@@ -184,6 +196,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Korkeakouluopinnot tallennettu.");
             tarjontaService.clearProcessedLists();
+            switchTask(stopwatch, "Aikuislukio ja aikuisten perusopetus");
 
             // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
             List<KoulutusLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
@@ -195,6 +208,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Adult upper secondary and base educations saved.");
+            switchTask(stopwatch, "Aikuisten ammaillinen koulutus");
 
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             LOG.info("Found adult vocational educations: {}", adultVocationals.size());
@@ -204,6 +218,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Adult vocational educations saved.");
+            switchTask(stopwatch, "Valmistava koulutus");
 
             List<KoulutusLOS> valmistavaList = this.tarjontaService.findValmistavaKoulutusEducations();
             LOG.info("Found valmistava educations: {}", valmistavaList.size());
@@ -213,9 +228,11 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.info("Valmistava educations saved.");
+            switchTask(stopwatch, "Yleiskäyttöinen indeksointi");
 
             generalUpdateService.updateGeneralData(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.info("General information saved.");
+            switchTask(stopwatch, "Tietojen commitointi");
 
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
@@ -236,6 +253,9 @@ public class UpdateServiceImpl implements UpdateService {
             tarjontaService.clearProcessedLists();
             running = false;
             runningSince = 0;
+            if(stopwatch.isRunning())
+                stopwatch.stop();
+            LOG.info("Koulutusindeksoinnin vaiheet: " + stopwatch.toString());
         }
     }
 
