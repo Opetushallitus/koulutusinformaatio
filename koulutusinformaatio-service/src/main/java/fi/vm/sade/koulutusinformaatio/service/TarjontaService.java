@@ -16,21 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+
 import java.util.List;
 import java.util.Set;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -55,16 +46,16 @@ public interface TarjontaService {
      * @throws KoodistoException
      */
     public HigherEducationLOS findHigherEducationLearningOpportunity(
-            String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+            String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException;
 
     public List<KoulutusHakutulosV1RDTO> findKorkeakouluOpinnot();
 
     public List<Code> getEdTypeCodes() throws KoodistoException;
 
     HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
-            throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+            throws TarjontaParseException, KoodistoException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException;
 
-    public List<KoulutusLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException;
+    public List<KoulutusLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException, TarjontaParseException, OrganisaatioException;
     
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 
@@ -120,6 +111,6 @@ public interface TarjontaService {
      */
     public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto);
 
-    KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException;
+    KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException;
 
 }

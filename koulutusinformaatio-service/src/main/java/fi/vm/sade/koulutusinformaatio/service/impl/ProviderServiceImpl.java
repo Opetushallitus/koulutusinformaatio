@@ -16,15 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import static fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +35,9 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Sets;
+import java.util.*;
 
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+import static fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -200,7 +194,7 @@ public class ProviderServiceImpl implements ProviderService {
                             resOrgs.add(curOrg);
                         }
                     } catch (KoodistoException ex) {
-                        LOG.error("Problem checking oppilaitostyyppifasetti for: " + curOrg.getOid(), ex);
+                        LOG.warn("Problem checking oppilaitostyyppifasetti for: " + curOrg.getOid(), ex);
                         continue;
                     }
                 }

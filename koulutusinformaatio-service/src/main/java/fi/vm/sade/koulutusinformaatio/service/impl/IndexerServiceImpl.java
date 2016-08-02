@@ -1,15 +1,14 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -24,28 +23,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
-import fi.vm.sade.koulutusinformaatio.domain.Article;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -56,7 +37,7 @@ public class IndexerServiceImpl implements IndexerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
 
     private static final String FALLBACK_LANG = "fi";
-    
+
     private static final String SOLR_ERROR = "Solr search error occured.";
 
     private final ConversionService conversionService;
@@ -72,7 +53,7 @@ public class IndexerServiceImpl implements IndexerService {
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer locationUpdateHttpSolrServer;
     private final HttpSolrServer locationHttpSolrServer;
-    
+
     private final HttpSolrServer loAliasHttpSolrServer;
     private final HttpSolrServer lopAliasHttpSolrServer;
     private final HttpSolrServer locationAliasHttpSolrServer;
@@ -85,15 +66,15 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Autowired
     public IndexerServiceImpl(ConversionService conversionService,
-            @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
-            @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
-            @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
-            @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
-            @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer,
-            @Qualifier("locationHttpSolrServer") HttpSolrServer locationHttpSolrServer,
-            @Qualifier("loAliasSolrServer") HttpSolrServer loAliasHttpSolrServer,
-            @Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasHttpSolrServer,
-            @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasHttpSolrServer) {
+                              @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
+                              @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
+                              @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
+                              @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
+                              @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer,
+                              @Qualifier("locationHttpSolrServer") HttpSolrServer locationHttpSolrServer,
+                              @Qualifier("loAliasSolrServer") HttpSolrServer loAliasHttpSolrServer,
+                              @Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasHttpSolrServer,
+                              @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasHttpSolrServer) {
         this.conversionService = conversionService;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
@@ -108,14 +89,12 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) 
-                                                        throws IOException, SolrServerException {
+    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr)
+            throws KISolrException {
         try {
             addLearningOpportunitySpecificationInner(los, loSolr, lopSolr);
-        } catch (IOException e) {
-            throw e;
-        } catch (SolrServerException e) {
-            throw e;
+        } catch (IOException | SolrServerException e) {
+            throw new KISolrException(e);
         } catch (Exception e) {
             if (los != null) {
                 LOGGER.error(String.format("Indexing LOS(oid: %s) of type %s FAILED. Message: %s", los.getId(),
@@ -128,7 +107,7 @@ public class IndexerServiceImpl implements IndexerService {
         }
     }
 
-    private void addLearningOpportunitySpecificationInner(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws SolrServerException, IOException {
+    private void addLearningOpportunitySpecificationInner(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws SolrServerException, IOException, KISolrException {
         Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
@@ -193,7 +172,7 @@ public class IndexerServiceImpl implements IndexerService {
                 providerAsIds);
 
         createAoDocs(lopSolr, los, provider);
-        
+
         if (los instanceof KoulutusLOS) {
             KoulutusLOS uas = (KoulutusLOS) los;
             for (Provider curAddProv : uas.getAdditionalProviders()) {
@@ -208,8 +187,8 @@ public class IndexerServiceImpl implements IndexerService {
 
         loSolr.add(docs);
     }
-    
-    
+
+
     private void createAoDocs(HttpSolrServer lopSolr, LOS los, Provider provider) throws SolrServerException, IOException {
         List<SolrInputDocument> aoDocs = Lists.newArrayList();
         for (ApplicationOption ao : los.getApplicationOptions()) {
@@ -234,14 +213,14 @@ public class IndexerServiceImpl implements IndexerService {
         }
     }
 
-    public void createProviderDocs(Provider provider, 
-                                    HttpSolrServer lopSolr, 
-                                    Set<String> requiredBaseEducations, 
-                                    Set<String> vocationalAsIds,
-                                    Set<String> nonVocationalAsIds,
-                                    Set<String> providerAsIds) throws SolrServerException, IOException {
+    public void createProviderDocs(Provider provider,
+                                   HttpSolrServer lopSolr,
+                                   Set<String> requiredBaseEducations,
+                                   Set<String> vocationalAsIds,
+                                   Set<String> nonVocationalAsIds,
+                                   Set<String> providerAsIds) throws KISolrException {
 
-        
+
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
         if (provider != null) {
             SolrInputDocument providerDoc = new SolrInputDocument();
@@ -271,11 +250,10 @@ public class IndexerServiceImpl implements IndexerService {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, resolveTextByLangWithFallback("fi", provider.getType().getName().getTranslations()));
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, resolveTextByLangWithFallback("sv", provider.getType().getName().getTranslations()));
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_EN, resolveTextByLangWithFallback("en", provider.getType().getName().getTranslations()));
-            }
-            else {
+            } else {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, SolrConstants.PROVIDER_TYPE_UNKNOWN);
             }
-            
+
             Set<String> aggregatedBaseEdus = new HashSet<String>();
             aggregatedBaseEdus.addAll(requiredBaseEducations);
             Set<String> aggregatedProviderAsIds = new HashSet<String>();
@@ -287,7 +265,12 @@ public class IndexerServiceImpl implements IndexerService {
 
             // check if provider exists and update base education and as id values
             SolrQuery query = new SolrQuery("id:" + provider.getId());
-            QueryResponse response = lopSolr.query(query);//lopUpdateHttpSolrServer.query(query);
+            QueryResponse response = null;//lopUpdateHttpSolrServer.query(query);
+            try {
+                response = lopSolr.query(query);
+            } catch (SolrServerException e) {
+                throw new KISolrException(e);
+            }
             List<SolrDocument> results = response.getResults();
             if (results != null && results.size() > 0) {
                 List<String> edus = (List<String>) results.get(0).get(SolrUtil.ProviderFields.REQUIRED_BASE_EDUCATIONS);
@@ -307,7 +290,7 @@ public class IndexerServiceImpl implements IndexerService {
                     aggregatedNonVocationalAsIds.addAll(nonVocational);
                 }
             }
-            
+
             if (provider.getOlTypeFacets() != null) {
                 for (Code curOlType : provider.getOlTypeFacets()) {
                     if (curOlType != null && curOlType.getUri() != null) {
@@ -315,8 +298,8 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
-            
-            
+
+
             if (provider.getVisitingAddress() != null) {
                 Address visitingAddr = provider.getVisitingAddress();
                 String addrEn = this.getAddrStr(visitingAddr, "en");
@@ -324,22 +307,22 @@ public class IndexerServiceImpl implements IndexerService {
                     providerDoc.addField(SolrUtil.ProviderFields.ADDRESS_EN, addrEn);
                     providerDoc.addField(SolrUtil.ProviderFields.TEXT_EN, addrEn);
                 }
-               
+
                 String addrSv = this.getAddrStr(visitingAddr, "sv");
                 if (addrSv != null && !addrSv.isEmpty()) {
                     providerDoc.addField(SolrUtil.ProviderFields.ADDRESS_SV, addrSv);
                     providerDoc.addField(SolrUtil.ProviderFields.TEXT_SV, addrSv);
                 }
-                
+
                 String addrFi = this.getAddrStr(visitingAddr, "fi");
                 if (addrFi != null && !addrFi.isEmpty()) {
                     providerDoc.addField(SolrUtil.ProviderFields.ADDRESS_FI, addrFi);
                     providerDoc.addField(SolrUtil.ProviderFields.TEXT_FI, addrFi);
                 }
-                
-                
+
+
             }
-            
+
             if (provider.getHomeDistrict() != null) {
                 List<String> locVals = new ArrayList<String>();
                 locVals.addAll(provider.getHomeDistrict().getTranslations().values());
@@ -354,41 +337,45 @@ public class IndexerServiceImpl implements IndexerService {
             providerDoc.setField(SolrUtil.ProviderFields.VOCATIONAL_AS_IDS, aggregatedVocationalAsIds);
             providerDoc.setField(SolrUtil.ProviderFields.NON_VOCATIONAL_AS_IDS, aggregatedNonVocationalAsIds);
             providerDocs.add(providerDoc);
-            
+
             if (provider.getOlTypeFacets() != null) {
                 for (Code curOlType : provider.getOlTypeFacets()) {
                     SolrUtil.indexCodeAsFacetDoc(curOlType, providerDocs, false);
                 }
             }
-            
+
         }
         if (!providerDocs.isEmpty()) {
-            lopSolr.add(providerDocs);
+            try {
+                lopSolr.add(providerDocs);
+            } catch (SolrServerException | IOException e) {
+                throw new KISolrException(e);
+            }
         }
-        
+
     }
-    
+
     private String getAddrStr(Address addr, String lang) {
         if (lang.equalsIgnoreCase("en")) {
             return (addr.getStreetAddress() != null && addr.getStreetAddress().getTranslations() != null) ? this.resolveTextByLangEmptyDefault("en", addr.getStreetAddress().getTranslations()) : null;
         }
         if (lang.equalsIgnoreCase("fi") || lang.equalsIgnoreCase("sv")) {
             String addrStr = "";
-            addrStr = (addr.getStreetAddress() != null 
+            addrStr = (addr.getStreetAddress() != null
                     && addr.getStreetAddress().getTranslations() != null
-                    && !addr.getStreetAddress().getTranslations().isEmpty()) 
+                    && !addr.getStreetAddress().getTranslations().isEmpty())
                     ? this.resolveTextByLangWithFallback(lang, addr.getStreetAddress().getTranslations()) : addrStr;
-            String postalCode = (addr.getPostalCode() != null 
+            String postalCode = (addr.getPostalCode() != null
                     && addr.getPostalCode().getTranslations() != null
-                    && !addr.getPostalCode().getTranslations().isEmpty()) 
+                    && !addr.getPostalCode().getTranslations().isEmpty())
                     ? this.resolveTextByLangWithFallback(lang, addr.getPostalCode().getTranslations()) : "";
-            addrStr = (postalCode != "") ? String.format("%s, %s",  addrStr, postalCode) : addrStr;
-            addrStr = (addr.getPostOffice() != null 
+            addrStr = (postalCode != "") ? String.format("%s, %s", addrStr, postalCode) : addrStr;
+            addrStr = (addr.getPostOffice() != null
                     && addr.getPostOffice().getTranslations() != null
-                    && !addr.getPostOffice().getTranslations().isEmpty()) 
-                    ? String.format("%s, %s",  addrStr, this.resolveTextByLangWithFallback(lang, addr.getPostOffice().getTranslations())) 
-                            : addrStr;
-           return addrStr;
+                    && !addr.getPostOffice().getTranslations().isEmpty())
+                    ? String.format("%s, %s", addrStr, this.resolveTextByLangWithFallback(lang, addr.getPostOffice().getTranslations()))
+                    : addrStr;
+            return addrStr;
         }
         return null;
     }
@@ -397,19 +384,23 @@ public class IndexerServiceImpl implements IndexerService {
     public void commitLOChanges(HttpSolrServer loUpdateSolr,
                                 HttpSolrServer lopUpdateSolr,
                                 HttpSolrServer locationUpdateSolr,
-                                boolean createTimestamp) throws IOException, SolrServerException {
+                                boolean createTimestamp) throws KISolrException {
+        try {
 
-        if (createTimestamp) {
-            List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
-            SolrInputDocument timestampDoc = new SolrInputDocument();
-            timestampDoc.addField("id", "loUpdateTimestampDocument");
-            timestampDoc.addField("name", getTimestampStr());
-            timeStampDocs.add(timestampDoc);
-            loUpdateSolr.add(timeStampDocs);
+            if (createTimestamp) {
+                List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
+                SolrInputDocument timestampDoc = new SolrInputDocument();
+                timestampDoc.addField("id", "loUpdateTimestampDocument");
+                timestampDoc.addField("name", getTimestampStr());
+                timeStampDocs.add(timestampDoc);
+                loUpdateSolr.add(timeStampDocs);
+            }
+            loUpdateSolr.commit();
+            lopUpdateSolr.commit();
+            locationUpdateSolr.commit();
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
         }
-        loUpdateSolr.commit();
-        lopUpdateSolr.commit();
-        locationUpdateSolr.commit();
     }
 
     private String getTimestampStr() {
@@ -418,7 +409,7 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void addLocations(List<Location> locations, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException {
+    public void addLocations(List<Location> locations, HttpSolrServer locationUpdateSolr) throws KISolrException {
         List<SolrInputDocument> locationDocs = Lists.newArrayList();
 
         for (Location location : locations) {
@@ -434,7 +425,12 @@ public class IndexerServiceImpl implements IndexerService {
             }
             locationDocs.add(locationDoc);
         }
-        locationUpdateSolr.add(locationDocs);
+        try {
+            locationUpdateSolr.add(locationDocs);
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
+        }
+
     }
 
     /*
@@ -443,8 +439,8 @@ public class IndexerServiceImpl implements IndexerService {
      */
     @Override
     public HttpSolrServer getLoCollectionToUpdate() {
-        if ((this.loHttpAliasName != null) 
-                && (this.loHttpSolrName != null) 
+        if ((this.loHttpAliasName != null)
+                && (this.loHttpSolrName != null)
                 && this.loHttpAliasName.equals(this.loHttpSolrName)) {
             return this.loUpdateHttpSolrServer;
         }
@@ -459,7 +455,7 @@ public class IndexerServiceImpl implements IndexerService {
         }
         return this.loHttpSolrServer;
     }
-    
+
     @Override
     public boolean isDocumentInIndex(String docId, HttpSolrServer server) {
         LOGGER.debug("Checking if document is in index: {}", docId);
@@ -534,101 +530,113 @@ public class IndexerServiceImpl implements IndexerService {
             return translations.values().iterator().next();
         }
     }
-    
+
 
     private String resolveTextByLangEmptyDefault(String lang, Map<String, String> translations) {
         if (translations.containsKey(lang)) {
             return translations.get(lang);
-        } 
+        }
         return "";
     }
 
     @Override
     public void addFacetCodes(List<Code> edTypeCodes,
-            HttpSolrServer loUpdateSolr) throws IOException,
-            SolrServerException {
+                              HttpSolrServer loUpdateSolr) throws KISolrException {
         List<SolrInputDocument> edTypeDocs = Lists.newArrayList();
         for (Code curEdType : edTypeCodes) {
             SolrUtil.indexCodeAsFacetDoc(curEdType, edTypeDocs, true);
             LOGGER.debug(String.format("Indexed: %s to solr", curEdType.getValue()));
         }
-        loUpdateSolr.add(edTypeDocs);
+        try {
+            loUpdateSolr.add(edTypeDocs);
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
+        }
+
     }
 
     @Override
-    public void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws IOException, SolrServerException {
-        
+    public void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws KISolrException {
+
         for (Article curArticle : articles) {
             List<SolrInputDocument> docs = conversionService.convert(curArticle, List.class);
-            loUpdateSolr.add(docs);
+            try {
+                loUpdateSolr.add(docs);
+            } catch (SolrServerException | IOException e) {
+                throw new KISolrException(e);
+            }
         }
-        
+
     }
 
     @Override
-    public void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException {
-        loHttpSolrServer.deleteById(curLos.getId());
-        if (curLos instanceof TutkintoLOS) {
-            loHttpSolrServer.deleteById(curLos.getId() + "#PK");
-            loHttpSolrServer.deleteById(curLos.getId() + "#YO");
+    public void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws KISolrException {
+        try {
+            loHttpSolrServer.deleteById(curLos.getId());
+            if (curLos instanceof TutkintoLOS) {
+                loHttpSolrServer.deleteById(curLos.getId() + "#PK");
+                loHttpSolrServer.deleteById(curLos.getId() + "#YO");
+            }
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
         }
+
     }
 
     @Override
-    public void removeArticles() throws SearchException, IOException {
-        
+    public void removeArticles() throws KISolrException {
+
         SolrQuery query = new SolrQuery("*");
-        query.addFilterQuery(String.format("%s:%s", LearningOpportunity.TYPE,  SolrConstants.TYPE_ARTICLE));
-        
+        query.addFilterQuery(String.format("%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
+
         QueryResponse response = null;
         try {
-            if (query != null) {
-                response = loHttpSolrServer.query(query);
-                //SolrDocumentList docList =  response.getResults();
-                
-            }
+            response = loHttpSolrServer.query(query);
+            //SolrDocumentList docList =  response.getResults();
+
             if (response != null) {
                 for (SolrDocument result : response.getResults()) {
                     String articleId = result.getFieldValue(SolrUtil.LearningOpportunity.ID).toString();
                     this.loAliasHttpSolrServer.deleteById(articleId);
                 }
             }
-            
-            
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
         }
-        
-        
+
     }
 
     @Override
-    public void addArticles(List<Article> articles) throws IOException, SolrServerException {
-       
+    public void addArticles(List<Article> articles) throws KISolrException {
+
         this.addArticles(this.loAliasHttpSolrServer, articles);
         this.commitLOChanges(this.loAliasHttpSolrServer, this.lopAliasHttpSolrServer, this.locationAliasHttpSolrServer, true);
-        
-    }
-    
-    @Override
-    public void rollbackIncrementalSolrChanges() throws SolrServerException, IOException {
-        loAliasHttpSolrServer.rollback();
-        lopAliasHttpSolrServer.rollback();
-        locationAliasHttpSolrServer.rollback();
+
     }
 
     @Override
-    public void indexASToSolr(CalendarApplicationSystem as, HttpSolrServer loUpdateSolr) throws SolrServerException, IOException {
-       
+    public void rollbackIncrementalSolrChanges() throws KISolrException {
+        try {
+            loAliasHttpSolrServer.rollback();
+            lopAliasHttpSolrServer.rollback();
+            locationAliasHttpSolrServer.rollback();
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
+        }
+    }
+
+    @Override
+    public void indexASToSolr(CalendarApplicationSystem as, HttpSolrServer loUpdateSolr) throws KISolrException {
+
         SolrInputDocument asDoc = new SolrInputDocument();
-        
+
         asDoc.addField(SolrUtil.LearningOpportunity.ID, as.getId());
         if (as.isShownInCalendar()) {
             asDoc.addField(SolrUtil.LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_APPLICATION_SYSTEM);
         } else {
             asDoc.addField(SolrUtil.LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_FACET);
-        }        
-        
+        }
+
         String nameFi = resolveTextByLangWithFallback("fi", as.getName().getTranslations());
         if (nameFi != null && !nameFi.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_FI, nameFi);
@@ -644,14 +652,14 @@ public class IndexerServiceImpl implements IndexerService {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_EN, nameEn);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN, nameEn);
         }
-        
+
         asDoc.addField(SolrUtil.LearningOpportunity.AS_TARGET_GROUP_CODE, as.getTargetGroupCode());
         asDoc.addField(SolrUtil.LearningOpportunity.AS_IS_VARSINAINEN, as.isVarsinainenHaku());
-        
+
         int parentApplicationDateRangeIndex = 0;
-        
+
         for (ApplicationPeriod ap : as.getApplicationPeriods()) {//getApplicationDates()) {
-            
+
             DateRange dr = ap.getDateRange();
 
             asDoc.addField(new StringBuilder().append("asStart").append("_").
@@ -662,36 +670,37 @@ public class IndexerServiceImpl implements IndexerService {
             String nimiFi = null;
             String nimiSv = null;
             String nimiEn = null;
-            if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) { 
+            if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) {
 
                 nimiFi = this.resolveTextByLangEmptyDefault("fi", ap.getName().getTranslations());
                 nimiSv = this.resolveTextByLangEmptyDefault("sv", ap.getName().getTranslations());
                 nimiEn = this.resolveTextByLangEmptyDefault("en", ap.getName().getTranslations());
 
             }
-            
+
             asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).append("_fi_ss").toString(), nimiFi);
             asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).append("_sv_ss").toString(), nimiSv);
             asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).append("_en_ss").toString(), nimiEn);
-            
+
             parentApplicationDateRangeIndex++;
-            
-            
-            
+
+
         }
-        
+
         asDoc.addField(LearningOpportunity.FI_FNAME, SolrUtil.resolveTextWithFallback("fi", as.getName().getTranslations()));
         asDoc.addField(LearningOpportunity.SV_FNAME, SolrUtil.resolveTextWithFallback("sv", as.getName().getTranslations()));
         asDoc.addField(LearningOpportunity.EN_FNAME, SolrUtil.resolveTextWithFallback("en", as.getName().getTranslations()));
-        
-        loUpdateSolr.add(asDoc);
-        
-        
-        
-        
+
+        try {
+            loUpdateSolr.add(asDoc);
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
+        }
+
+
     }
 
 }

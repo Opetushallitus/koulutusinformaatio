@@ -17,10 +17,9 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
@@ -65,7 +63,8 @@ public class GeneralUpdateServiceImpl {
         }
         s.start(task);
     }
-    public synchronized void updateGeneralData(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException, KIException {
+
+    public synchronized void updateGeneralData(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException, KIException {
         StopWatch stopwatch = new StopWatch();
         try{
             stopwatch.start("Tarjoatiedot");
@@ -119,7 +118,7 @@ public class GeneralUpdateServiceImpl {
      * are not providers of learning opportunities.
      * 
      */
-    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException, KIException {
+    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws KIException {
 
         List<OrganisaatioPerustieto> orgBasics = this.providerService.fetchOpplaitokset();
         LOG.debug("Oppilaitokset fetched");
@@ -139,7 +138,7 @@ public class GeneralUpdateServiceImpl {
      * Indexes and saves the given list of organizations. 
      */
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
-                                        HttpSolrServer lopUpdateSolr) throws IOException, SolrServerException, KIException {
+                                        HttpSolrServer lopUpdateSolr) throws KIException {
         LOG.debug("organisations length: {}", orgBasics.size());
         for (OrganisaatioPerustieto curOrg : orgBasics) {
 

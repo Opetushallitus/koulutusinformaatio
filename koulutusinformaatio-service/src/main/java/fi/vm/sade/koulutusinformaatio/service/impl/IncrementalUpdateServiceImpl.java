@@ -15,12 +15,11 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,19 +29,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 
 
@@ -117,7 +108,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     @Override
     @Async
-    public void updateChangedEducationData() throws Exception {
+    public void updateChangedEducationData() {
 
         LOG.debug("updateChangedEducationData on its way");
         // Getting get update period
@@ -185,7 +176,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    private void indexKomotoChanges(Set<String> komotoChanges) throws Exception {
+    private void indexKomotoChanges(Set<String> komotoChanges) {
         for (String curOid : komotoChanges) {
             try {
                 if (!tarjontaService.hasAlreadyProcessedOid(curOid)) {
@@ -200,7 +191,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    private void indexKomoChanges(List<String> komoChanges) throws Exception {
+    private void indexKomoChanges(List<String> komoChanges) {
         for (String curKomoOid : komoChanges) {
             try {
                 if (this.losIndexer.isHigherEdKomo(curKomoOid)) { 

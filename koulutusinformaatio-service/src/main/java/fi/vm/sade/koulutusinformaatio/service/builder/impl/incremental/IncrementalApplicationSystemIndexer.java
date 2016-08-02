@@ -15,9 +15,12 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import java.io.IOException;
-import java.util.Set;
-
+import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -25,13 +28,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import java.io.IOException;
+import java.util.Set;
 
 /**
  * 
@@ -74,25 +72,25 @@ public class IncrementalApplicationSystemIndexer {
     /**
      * Main method for indexing data based on application system changes
      */
-    public void indexApplicationSystemData(String asOid) throws Exception {
+    public void indexApplicationSystemData(String asOid) throws ResourceNotFoundException, KISolrException, OrganisaatioException, NoValidApplicationOptionsException, TarjontaParseException, KoodistoException {
         Set<String> koulutusToBeUpdated = Sets.newHashSet();
         koulutusToBeUpdated.addAll(tarjontaService.findKoulutusOidsByHaku(asOid)); // julkaistu koulutus tarjonnasta
         koulutusToBeUpdated.addAll(dataQueryService.getLearningOpportunityIdsByAS(asOid)); // jo valmiiksi indeksoitu koulutus
 
         for (String oid : koulutusToBeUpdated) {
-            try {
-                if (!tarjontaService.hasAlreadyProcessedOid(oid))
-                    losIndexer.indexKoulutusLos(oid);
-            } catch (Exception e) {
-                LOG.info("Koulutuksen {} indeksointi epäonnistui.", oid, e);
-            }
+            if (!tarjontaService.hasAlreadyProcessedOid(oid))
+                losIndexer.indexKoulutusLos(oid);
         }
         indexApplicationSystemForCalendar(asOid);
     }
 
-    public void indexApplicationSystemForCalendar(String asOid) throws KoodistoException, SolrServerException, IOException {
+    public void indexApplicationSystemForCalendar(String asOid) throws KoodistoException, KISolrException {
         CalendarApplicationSystem calAS = this.tarjontaService.createCalendarApplicationSystem(asOid);
-        loHttpSolrServer.deleteById(asOid);
+        try {
+            loHttpSolrServer.deleteById(asOid);
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
+        }
         if (calAS != null) {
             this.indexerService.indexASToSolr(calAS, this.loHttpSolrServer);
         }

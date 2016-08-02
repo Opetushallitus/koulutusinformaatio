@@ -16,19 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction;
 
-import java.io.IOException;
-
-import org.apache.solr.client.solrj.SolrServerException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
-
-import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
 
 /**
  * @author Mikko Majapuro
  */
 public interface TransactionManager {
 
-    void beginTransaction(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
-    void rollBack(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
-    void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException;
+    void beginTransaction(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException;
+
+    void rollBack(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException;
+
+    void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException;
 }

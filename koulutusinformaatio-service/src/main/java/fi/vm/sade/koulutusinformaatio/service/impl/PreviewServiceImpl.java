@@ -15,22 +15,18 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -56,28 +52,22 @@ public class PreviewServiceImpl implements PreviewService {
                 throw new ResourceNotFoundException("Resource: " + oid + " not found");
             }
             return los;
-        } catch (TarjontaParseException e) {
+        } catch (TarjontaParseException | KoodistoException | OrganisaatioException e) {
             e.printStackTrace();
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
-        } catch (KoodistoException e) {
-            e.printStackTrace();
+        } catch (NoValidApplicationOptionsException e) {
+            LOG.error("preview failed due to missing hakukohdes. This should no happen.");
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
+
         }
     }
 
     @Override
     public CompetenceBasedQualificationParentLOS previewAdultVocationaParentLearningOpportunity(String oid)
             throws ResourceNotFoundException {
-        
         try {
-            
-            CompetenceBasedQualificationParentLOS los = this.tarjontaService.createCBQPLOS(oid, false);
-            return los;
-            
-        } catch (TarjontaParseException e) {
-            e.printStackTrace();
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
-        } catch (KoodistoException e) {
+            return this.tarjontaService.createCBQPLOS(oid, false);
+        } catch (TarjontaParseException | KoodistoException e) {
             e.printStackTrace();
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
         }
