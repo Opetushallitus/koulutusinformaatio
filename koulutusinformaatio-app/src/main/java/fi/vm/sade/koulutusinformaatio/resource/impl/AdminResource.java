@@ -29,6 +29,8 @@ import javax.ws.rs.core.Response;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +51,7 @@ import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
 @Component
 @Path("/admin")
 public class AdminResource {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminResource.class);
 
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
@@ -86,7 +89,6 @@ public class AdminResource {
                 updateService.updateAllEducationData();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();
@@ -100,7 +102,6 @@ public class AdminResource {
                 updateService.updateArticles();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();
@@ -114,7 +115,6 @@ public class AdminResource {
                 incrementalUpdateService.updateChangedEducationData();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();

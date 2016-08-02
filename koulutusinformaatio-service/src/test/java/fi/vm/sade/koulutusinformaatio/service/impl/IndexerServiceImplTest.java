@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -165,7 +166,7 @@ public class IndexerServiceImplTest {
      * @throws IOException
      */
     @Test
-    public void createProviderDocsTest() throws SolrServerException, IOException {
+    public void createProviderDocsTest() throws SolrServerException, IOException, KISolrException {
         Provider prov = new Provider();
         prov.setId("1.1.1.organisation");
         I18nText name = new I18nText();

@@ -28,12 +28,12 @@ public interface UpdateService extends RunningService {
      * Updates all the eduction data. Drops old data and
      * replaces it with new.
      */
-    public void updateAllEducationData() throws Exception;
+    public void updateAllEducationData() ;
     
     /**
      * Indexes articles to solr
      */
-    public void updateArticles() throws Exception;
+    public void updateArticles() ;
     
     /**
      * Returns long which represents progress of full indexing

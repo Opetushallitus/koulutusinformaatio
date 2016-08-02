@@ -117,7 +117,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     @Override
     @Async
-    public void updateChangedEducationData() throws Exception {
+    public void updateChangedEducationData()  {
 
         LOG.debug("updateChangedEducationData on its way");
         // Getting get update period
@@ -185,7 +185,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    private void indexKomotoChanges(Set<String> komotoChanges) throws Exception {
+    private void indexKomotoChanges(Set<String> komotoChanges)  {
         for (String curOid : komotoChanges) {
             try {
                 if (!tarjontaService.hasAlreadyProcessedOid(curOid)) {
@@ -200,7 +200,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    private void indexKomoChanges(List<String> komoChanges) throws Exception {
+    private void indexKomoChanges(List<String> komoChanges)  {
         for (String curKomoOid : komoChanges) {
             try {
                 if (this.losIndexer.isHigherEdKomo(curKomoOid)) { 

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 
 /**
@@ -27,6 +28,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
  */
 public interface ArticleService {
     
-    List<Article> fetchArticles() throws IOException, KoodistoException;
+    List<Article> fetchArticles();
 
 }

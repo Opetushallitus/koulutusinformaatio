@@ -200,7 +200,7 @@ public class ProviderServiceImpl implements ProviderService {
                             resOrgs.add(curOrg);
                         }
                     } catch (KoodistoException ex) {
-                        LOG.error("Problem checking oppilaitostyyppifasetti for: " + curOrg.getOid(), ex);
+                        LOG.warn("Problem checking oppilaitostyyppifasetti for: " + curOrg.getOid(), ex);
                         continue;
                     }
                 }

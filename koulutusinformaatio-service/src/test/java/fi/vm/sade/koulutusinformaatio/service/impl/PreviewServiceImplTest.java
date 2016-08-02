@@ -19,13 +19,11 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 
@@ -40,7 +38,7 @@ public class PreviewServiceImplTest {
 	private PreviewService service;
 	
 	@Before
-    public void setup() throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
+    public void setup() throws TarjontaParseException, KoodistoException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException {
 		tarjontaService = mock(TarjontaService.class);
 
 		HigherEducationLOS heLOS = new HigherEducationLOS();

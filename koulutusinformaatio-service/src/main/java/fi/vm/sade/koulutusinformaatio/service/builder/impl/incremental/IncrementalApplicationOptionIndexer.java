@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +41,7 @@ public class IncrementalApplicationOptionIndexer {
         this.tarjontaService = tarjontaService;
     }
 
-    public void indexApplicationOptionData(HakukohdeV1RDTO aoDto, HakuV1RDTO asDto) throws Exception {
+    public void indexApplicationOptionData(HakukohdeV1RDTO aoDto) throws KISolrException, ResourceNotFoundException, KoodistoException, NoValidApplicationOptionsException, TarjontaParseException, OrganisaatioException {
         for (String koulutusOid : aoDto.getHakukohdeKoulutusOids()) {
             if (!tarjontaService.hasAlreadyProcessedOid(koulutusOid))
                 losIndexer.indexLoiData(koulutusOid);

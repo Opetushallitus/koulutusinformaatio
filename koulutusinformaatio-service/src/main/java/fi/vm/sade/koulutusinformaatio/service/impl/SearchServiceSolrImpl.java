@@ -470,7 +470,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
-    private ArticleResult createArticleSearchResult(SolrDocument doc) throws Exception {
+    private ArticleResult createArticleSearchResult(SolrDocument doc)  {
         String imageUrl = doc.getFieldValue(LearningOpportunity.ARTICLE_PICTURE) != null
                 ? doc.getFieldValue(LearningOpportunity.ARTICLE_PICTURE).toString() : null;
         ArticleResult article = new ArticleResult(doc.getFieldValue(LearningOpportunity.TYPE).toString(),
@@ -481,7 +481,7 @@ public class SearchServiceSolrImpl implements SearchService {
         return article;
     }
 
-    private LOSearchResult createLOSearchResult(SolrDocument doc, String lang) throws Exception {
+    private LOSearchResult createLOSearchResult(SolrDocument doc, String lang)  {
         String parentId = doc.get(LearningOpportunity.PARENT_ID) != null ? doc.get(LearningOpportunity.PARENT_ID).toString() : null;
         String losId = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : null;
         String id = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : doc.get(LearningOpportunity.ID).toString();

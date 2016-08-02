@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,7 @@ public class IncrementalLOSIndexer {
     }
 
     //Indexes changed loi data
-    public void indexLoiData(String komotoOid) throws Exception {
+    public void indexLoiData(String komotoOid) throws KISolrException, ResourceNotFoundException, KoodistoException, NoValidApplicationOptionsException, TarjontaParseException, OrganisaatioException {
 
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> dto = this.tarjontaRawService.searchEducation(komotoOid);
@@ -185,11 +186,11 @@ public class IncrementalLOSIndexer {
         //return komo != null && komo.getKoulutustyyppi() != null && komo.getKoulutustyyppi().equals("KORKEAKOULUTUS");
     }
 
-    public void indexHigherEdKomo(String komoOid) throws Exception {
+    public void indexHigherEdKomo(String komoOid) throws KISolrException {
         this.higherEdLOSIndexer.indexHigherEdKomo(komoOid);
     }
 
-    public void indexKoulutusLos(String komotoOid) throws Exception {
+    public void indexKoulutusLos(String komotoOid) throws KISolrException, ResourceNotFoundException, KoodistoException, NoValidApplicationOptionsException, TarjontaParseException, OrganisaatioException {
         if (!tarjontaService.hasAlreadyProcessedOid(komotoOid))
             indexLoiData(komotoOid);
     }

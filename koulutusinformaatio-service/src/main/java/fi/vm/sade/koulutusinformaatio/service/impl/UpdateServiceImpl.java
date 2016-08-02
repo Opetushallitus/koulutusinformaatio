@@ -18,9 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -30,7 +28,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -42,24 +40,16 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.LocationService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import org.springframework.util.StopWatch;
 
@@ -114,7 +104,7 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     @Async
-    public synchronized void updateAllEducationData() throws Exception {
+    public synchronized void updateAllEducationData()  {
         HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
@@ -259,8 +249,12 @@ public class UpdateServiceImpl implements UpdateService {
         }
     }
 
-    private void rollBackUpdate(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, String cause) throws IOException, SolrServerException {
-        this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+    private void rollBackUpdate(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, String cause) {
+        try {
+            this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+        } catch (KISolrException e) {
+            LOG.error("Rollback failed", e);
+        }
         educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", cause)));
     }
 
@@ -269,7 +263,7 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     private void indexToSolr(LOS curLOS,
-            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException {
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException {
         try {
             this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
@@ -279,7 +273,7 @@ public class UpdateServiceImpl implements UpdateService {
                 }
             }
         } catch (Exception e) {
-            throw new KICommitException("Indexing LOS " + curLOS.getId() + " to solr failed", e);
+            throw new KISolrException("Indexing LOS " + curLOS.getId() + " to solr failed", e);
         }
     }
 
@@ -295,7 +289,7 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     @Async
-    public void updateArticles() throws Exception {
+    public void updateArticles()  {
 
         if (this.running) {
             return;
@@ -315,7 +309,11 @@ public class UpdateServiceImpl implements UpdateService {
             //educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
             LOG.info("Articles succesfully indexed");
         } catch (Exception ex) {
-            indexerService.rollbackIncrementalSolrChanges();
+            try {
+                indexerService.rollbackIncrementalSolrChanges();
+            } catch (KISolrException e) {
+                LOG.error("Rollback failed", e);
+            }
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s",
                     ex.getMessage())));
             LOG.warn("Article update failed ", ex);

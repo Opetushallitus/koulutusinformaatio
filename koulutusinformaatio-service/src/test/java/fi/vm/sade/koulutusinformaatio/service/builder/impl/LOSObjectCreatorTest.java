@@ -3,6 +3,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.NoValidApplicationOptionsException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
@@ -67,7 +68,7 @@ public class LOSObjectCreatorTest extends TestCase {
         assertNotNull(los);
     }
 
-    @Test (expected = TarjontaParseException.class)
+    @Test (expected = NoValidApplicationOptionsException.class)
     public void doesNotCreateKansanopistoLOSWhenStatusCheckFails() throws Exception {
         creator.createKansanopistoLOS(givenValmistavaKoulutus(), true);
     }

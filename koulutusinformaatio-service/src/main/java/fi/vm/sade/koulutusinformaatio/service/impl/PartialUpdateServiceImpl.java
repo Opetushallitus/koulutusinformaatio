@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -128,7 +129,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         }
     }
 
-    private void runUpdate(String oid, Updater updater) throws Exception {
+    private void runUpdate(String oid, Updater updater) throws KISolrException {
         LOGGER.info(String.format("Running partial indexing for %s with oid: %s.", updater.getUpdateProcessName(), oid));
         tarjontaService.clearProcessedLists();
         updater.update(oid);
@@ -157,7 +158,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     }
     
     private abstract class Updater {
-        abstract void update(String oid) throws Exception;
+        abstract void update(String oid) ;
         abstract String getUpdateProcessName();
         
     }
@@ -165,9 +166,15 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private class ApplicationSystemUpdater extends Updater {
 
         @Override
-        void update(String oid) throws Exception {
+        void update(String oid)  {
             LOGGER.debug("Indexing " + this.getUpdateProcessName() + ": " + oid);
-            asIndexer.indexApplicationSystemData(oid);
+            try {
+                asIndexer.indexApplicationSystemData(oid);
+            } catch (KISolrException e) {
+                LOGGER.error("Solr failure", e);
+            } catch (ResourceNotFoundException | OrganisaatioException | NoValidApplicationOptionsException | KoodistoException | TarjontaParseException e) {
+                LOGGER.warn("Failed to update application system {}", oid, e);
+            }
         }
 
         @Override
@@ -180,9 +187,15 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private class EducationUpdater extends Updater {
 
         @Override
-        void update(String oid) throws Exception {
+        void update(String oid)  {
             LOGGER.debug("Indexing " + this.getUpdateProcessName() + ": " + oid);
-            losIndexer.indexLoiData(oid);
+            try {
+                losIndexer.indexLoiData(oid);
+            } catch (KISolrException e) {
+                LOGGER.error("Solr failure", e);
+            } catch (ResourceNotFoundException | OrganisaatioException | KoodistoException | NoValidApplicationOptionsException | TarjontaParseException e) {
+                LOGGER.warn("Failed to update loi {}", oid, e);
+            }
         }
 
         @Override
@@ -194,10 +207,15 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
     private class ApplicationOptionUpdater extends Updater {
 
         @Override
-        void update(String oid) throws Exception {
+        void update(String oid)  {
             HakukohdeV1RDTO aoDto = tarjontaRawService.getV1EducationHakukohde(oid).getResult();
-            HakuV1RDTO asDto = tarjontaRawService.getV1EducationHakuByOid(aoDto.getHakuOid()).getResult();
-            aoIndexer.indexApplicationOptionData(aoDto, asDto);
+            try {
+                aoIndexer.indexApplicationOptionData(aoDto);
+            } catch (KISolrException e) {
+                LOGGER.error("Solr failure", e);
+            } catch (ResourceNotFoundException | OrganisaatioException | NoValidApplicationOptionsException | KoodistoException | TarjontaParseException e) {
+                LOGGER.warn("Failed to update application option {}", oid, e);
+            }
         }
 
         @Override

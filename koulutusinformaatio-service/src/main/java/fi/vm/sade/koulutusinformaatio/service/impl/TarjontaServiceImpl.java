@@ -25,7 +25,9 @@ import java.util.Map;
 import java.util.Set;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +43,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
@@ -155,15 +154,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                     parentOids.add(los.getKomoOid());
                     updateAOLosReferences(los, aoToEducationsMap);
 
-                } catch (TarjontaParseException ex) {
-                    LOG.warn("Problem with higher eductaion: " + koulutusDTO.getOid() + ", " + ex.getMessage());
-                    continue;
-                } catch (KoodistoException ex) {
-                    LOG.error("Problem with higher education: " + koulutusDTO.getOid(), ex);
-                    continue;
-                } catch (Exception exc) {
-                    LOG.error("Problem indexing higher education los: " + koulutusDTO.getOid(), exc);
-                    throw new KoodistoException(exc);
+                } catch (TarjontaParseException | KoodistoException | OrganisaatioException | NoValidApplicationOptionsException ex) {
+                    LOG.warn("Problem with higher education: " + koulutusDTO.getOid(), ex);
                 }
 
             }
@@ -307,7 +299,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public HigherEducationLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
+    public HigherEducationLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException {
         if (this.providerService != null) {
             this.providerService.clearCache();
         }
@@ -338,7 +330,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid) throws TarjontaParseException, KoodistoException,
-            ResourceNotFoundException {
+            ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException {
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
         LOG.debug(" Koulutustila: {}", koulutusDTO.getTila().toString());
@@ -448,15 +440,15 @@ public class TarjontaServiceImpl implements TarjontaService {
                         continue;
                     }
 
-                    if (fullRelatives && koulutusDTO.getTila().equals(TarjontaTila.JULKAISTU)) {
+                    if (fullRelatives && koulutusDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
 
                         try {
 
                             HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
                             relatives.add(los);
 
-                        } catch (TarjontaParseException ex) {
-                            LOG.warn("Skipping non published higher education");
+                        } catch (TarjontaParseException | OrganisaatioException | NoValidApplicationOptionsException ex) {
+                            LOG.warn("Skipping non published higher education {}, cause: {}", koulutusDTO.getOid(), ex.getMessage());
                         }
                     } else if (!fullRelatives) {
                         HigherEducationLOS los = creator.createHigherEducationLOSReference(koulutusDTO, false);
@@ -483,7 +475,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<KoulutusLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException {
+    public List<KoulutusLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException, TarjontaParseException, OrganisaatioException {
 
         List<KoulutusLOS> koulutukset = new ArrayList<KoulutusLOS>();
 
@@ -523,8 +515,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                     updateAOLosReferences(los, aoToEducationsMap);
                     LOG.debug("Updated aolos references for: {}", los.getId());
 
-                } catch (TarjontaParseException ex) {
-                    continue;
+                } catch (NoValidApplicationOptionsException ex) {
+                    //Ignore
                 }
 
             }
@@ -542,7 +534,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<KoulutusLOS> findValmistavaKoulutusEducations() throws KoodistoException {
+    public List<KoulutusLOS> findValmistavaKoulutusEducations() {
 
         List<KoulutusLOS> losList = new ArrayList<KoulutusLOS>();
 
@@ -581,15 +573,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                         updateAOLosReferences(los, aoToEducationsMap);
                     }
 
-                } catch (TarjontaParseException ex) {
-                    LOG.warn("Problem with Valmistava education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
-                    continue;
-                } catch (KoodistoException ex) {
-                    LOG.error("Problem with Valmistava education: " + koulutusDTO.getOid(), ex);
-                    continue;
-                } catch (Exception exc) {
-                    LOG.error("Problem indexing Valmistava education los: " + koulutusDTO.getOid(), exc);
-                    throw new KoodistoException(exc);
+                } catch (TarjontaParseException | KoodistoException | ResourceNotFoundException | NoValidApplicationOptionsException | OrganisaatioException ex) {
+                    LOG.warn("Problem with Valmistava education: " + koulutusDTO.getOid(), ex);
                 }
             }
         }
@@ -626,9 +611,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     updateAOLosReferences(newLos, aoToEducationsMap);
                     LOG.debug("Updated aolos references for: {}", newLos.getId());
 
-                } catch (TarjontaParseException ex) {
-                    ex.printStackTrace();
-                } catch (ResourceNotFoundException ex) {
+                } catch (TarjontaParseException | ResourceNotFoundException ex) {
                     ex.printStackTrace();
                 }
 
@@ -659,12 +642,12 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException {
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException {
         KoulutusV1RDTO dto = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid).getResult();
         return createKoulutusLOS(dto, checkStatus);
     }
 
-    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, ResourceNotFoundException, TarjontaParseException {
+    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, ResourceNotFoundException, TarjontaParseException, NoValidApplicationOptionsException, OrganisaatioException {
         KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
         case KORKEAKOULUTUS:
@@ -905,14 +888,10 @@ public class TarjontaServiceImpl implements TarjontaService {
 
             addProcessedTutkinto(tutkinto);
             return losses;
-        } catch (KoodistoException e) {
+        } catch (KoodistoException | TarjontaParseException | NoValidApplicationOptionsException | OrganisaatioException e) {
             LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
             addProcessedOid(koulutusDTO.getOid());
-            return new ArrayList<KoulutusLOS>();
-        } catch (TarjontaParseException e) {
-            LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
-            addProcessedOid(koulutusDTO.getOid());
-            return new ArrayList<KoulutusLOS>();
+            return new ArrayList<>();
         }
     }
 
@@ -920,10 +899,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     public KoulutusLOS createLukioKoulutusLOS(KoulutusHakutulosV1RDTO koulutusDTO) {
         try {
             return creator.createLukioLOS(koulutusDTO.getOid(), true);
-        } catch (KoodistoException e) {
-            LOG.warn("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
-            return null;
-        } catch (TarjontaParseException e) {
+        } catch (KoodistoException | TarjontaParseException | NoValidApplicationOptionsException | OrganisaatioException e) {
             LOG.warn("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
             return null;
         }

@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -79,7 +79,7 @@ public class IncrementalHigherEducationLOSIndexer {
 
     }
     
-    public void indexHigherEdKomo(String curKomoOid) throws Exception {
+    public void indexHigherEdKomo(String curKomoOid) throws KISolrException {
 
         LOG.debug("Indexing higher ed komo: {}", curKomoOid);
 
@@ -105,7 +105,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         HigherEducationLOS createdLos = null;
                         try {
                             createdLos = this.tarjontaService.createHigherEducationLearningOpportunityTree(curKoul.getOid());
-                        } catch (TarjontaParseException tpe) {
+                        } catch (TarjontaParseException | ResourceNotFoundException | OrganisaatioException | NoValidApplicationOptionsException | KoodistoException tpe) {
                             createdLos = null;
                         }
 
@@ -148,7 +148,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         }
 
 
-                        if (parentEds != null && !parentEds.isEmpty()) {
+                        if (!parentEds.isEmpty()) {
                             for (HigherEducationLOS curParent : parentEds) {
                                 LOG.debug("Saving parent: {}", curParent.getId());
                                 this.indexToSolr(curParent);
@@ -168,7 +168,7 @@ public class IncrementalHigherEducationLOSIndexer {
         }   
     }
 
-    private void removeHigherEd(String educationOid, String curKomoOid) throws Exception {
+    private void removeHigherEd(String educationOid, String curKomoOid) throws KISolrException {
 
 
         LOS existingLos = this.dataQueryService.getLos(educationOid);
@@ -192,7 +192,7 @@ public class IncrementalHigherEducationLOSIndexer {
 
     }
 
-    private void pruneChild(HigherEducationLOS curChild, String educationOid) throws Exception {
+    private void pruneChild(HigherEducationLOS curChild, String educationOid) throws KISolrException {
 
         if (curChild.getParents() != null) {
             List<HigherEducationLOS> remainingParents = new ArrayList<HigherEducationLOS>();
@@ -208,7 +208,7 @@ public class IncrementalHigherEducationLOSIndexer {
 
     }
 
-    private void pruneParent(HigherEducationLOS curParent, String educationOid) throws Exception {
+    private void pruneParent(HigherEducationLOS curParent, String educationOid) throws KISolrException {
         if (curParent.getChildren() != null) {
             List<HigherEducationLOS> remainingChildren = new ArrayList<HigherEducationLOS>();
             for (HigherEducationLOS curChild : curParent.getChildren()) {
@@ -321,14 +321,14 @@ public class IncrementalHigherEducationLOSIndexer {
      * Indexing of an added higher education to solr
      */
     private void indexToSolr(HigherEducationLOS curLOS,
-            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         for (HigherEducationLOS curChild: curLOS.getChildren()) {
             indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         }
     }
     
-    private void indexToSolr(HigherEducationLOS curLOS) throws Exception {
+    private void indexToSolr(HigherEducationLOS curLOS) throws KISolrException {
         LOG.debug("Indexing higher ed: {}", curLOS.getId());
         LOG.debug("Indexing higher ed: {}", curLOS.getShortTitle());
         this.indexerService.removeLos(curLOS, loHttpSolrServer);

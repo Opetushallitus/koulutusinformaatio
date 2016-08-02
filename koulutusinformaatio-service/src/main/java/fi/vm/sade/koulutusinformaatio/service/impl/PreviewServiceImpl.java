@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,6 @@ import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentL
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 
@@ -56,10 +53,7 @@ public class PreviewServiceImpl implements PreviewService {
                 throw new ResourceNotFoundException("Resource: " + oid + " not found");
             }
             return los;
-        } catch (TarjontaParseException e) {
-            e.printStackTrace();
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
-        } catch (KoodistoException e) {
+        } catch (TarjontaParseException | KoodistoException | OrganisaatioException | NoValidApplicationOptionsException e) {
             e.printStackTrace();
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
         }
@@ -68,16 +62,9 @@ public class PreviewServiceImpl implements PreviewService {
     @Override
     public CompetenceBasedQualificationParentLOS previewAdultVocationaParentLearningOpportunity(String oid)
             throws ResourceNotFoundException {
-        
         try {
-            
-            CompetenceBasedQualificationParentLOS los = this.tarjontaService.createCBQPLOS(oid, false);
-            return los;
-            
-        } catch (TarjontaParseException e) {
-            e.printStackTrace();
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
-        } catch (KoodistoException e) {
+            return this.tarjontaService.createCBQPLOS(oid, false);
+        } catch (TarjontaParseException | KoodistoException e) {
             e.printStackTrace();
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
         }

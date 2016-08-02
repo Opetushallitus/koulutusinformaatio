@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
@@ -65,7 +66,7 @@ public class GeneralUpdateServiceImpl {
         }
         s.start(task);
     }
-    public synchronized void updateGeneralData(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException, KIException {
+    public synchronized void updateGeneralData(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException, KIException {
         StopWatch stopwatch = new StopWatch();
         try{
             stopwatch.start("Tarjoatiedot");
@@ -119,7 +120,7 @@ public class GeneralUpdateServiceImpl {
      * are not providers of learning opportunities.
      * 
      */
-    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException, KIException {
+    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws KIException {
 
         List<OrganisaatioPerustieto> orgBasics = this.providerService.fetchOpplaitokset();
         LOG.debug("Oppilaitokset fetched");
@@ -139,7 +140,7 @@ public class GeneralUpdateServiceImpl {
      * Indexes and saves the given list of organizations. 
      */
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
-                                        HttpSolrServer lopUpdateSolr) throws IOException, SolrServerException, KIException {
+                                        HttpSolrServer lopUpdateSolr) throws KIException {
         LOG.debug("organisations length: {}", orgBasics.size());
         for (OrganisaatioPerustieto curOrg : orgBasics) {
 

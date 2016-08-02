@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -33,7 +34,7 @@ public interface IndexerService {
      * The data is not committed to index.
      */
     void addLearningOpportunitySpecification(LOS los,
-                                             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws IOException, SolrServerException;
+                                             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws KISolrException;
 
     /**
      * Commits learning opportunities from memory to index.
@@ -41,9 +42,9 @@ public interface IndexerService {
      * @param loUpdateSolr 
      */
     void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, 
-                         boolean createTimestamp) throws IOException, SolrServerException;
+                         boolean createTimestamp) throws KISolrException;
     
-    void addLocations(List<Location> locations, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
+    void addLocations(List<Location> locations, HttpSolrServer locationUpdateSolr) throws KISolrException;
     
     HttpSolrServer getLoCollectionToUpdate();
 
@@ -51,19 +52,19 @@ public interface IndexerService {
 
 	HttpSolrServer getLocationCollectionToUpdate(HttpSolrServer loUpdateSolr);
 
-    void addFacetCodes(List<Code> edTypeCodes, HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
+    void addFacetCodes(List<Code> edTypeCodes, HttpSolrServer loUpdateSolr) throws KISolrException;
     
-    void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws IOException, SolrServerException;
+    void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws KISolrException;
 
-    void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException;
+    void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws KISolrException;
 
-    void removeArticles() throws SearchException, IOException;
+    void removeArticles() throws KISolrException, SearchException;
 
-    void addArticles(List<Article> articles) throws IOException, SolrServerException;
+    void addArticles(List<Article> articles) throws KISolrException;
 
-    void rollbackIncrementalSolrChanges() throws SolrServerException, IOException;
+    void rollbackIncrementalSolrChanges() throws KISolrException;
 
-    void indexASToSolr(CalendarApplicationSystem curAs, HttpSolrServer loUpdateSolr) throws SolrServerException, IOException;
+    void indexASToSolr(CalendarApplicationSystem curAs, HttpSolrServer loUpdateSolr) throws KISolrException;
     
     /**
      * Tests whether a document with give id is in the solr given as parameter.
@@ -92,6 +93,6 @@ public interface IndexerService {
             Set<String> requiredBaseEducations, 
             Set<String> vocationalAsIds,
             Set<String> nonVocationalAsIds,
-            Set<String> providerAsIds) throws SolrServerException, IOException;
+            Set<String> providerAsIds) throws KISolrException;
 
 }

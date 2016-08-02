@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -31,7 +32,6 @@ import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -78,7 +78,7 @@ public class IncrementalKoulutusLOSIndexer {
 
     }
 
-    private void indexToSolr(LOS createdLos) throws IOException, SolrServerException {
+    private void indexToSolr(LOS createdLos) throws KISolrException {
         LOG.debug("Indexing los: {}", createdLos.getId());
         LOG.debug("Indexing los: {}", createdLos.getName().get("fi"));
         this.indexerService.removeLos(createdLos, loHttpSolrServer);
@@ -86,15 +86,19 @@ public class IncrementalKoulutusLOSIndexer {
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
 
-    private void removeKoulutusLOS(String oid) throws Exception {
-        loHttpSolrServer.deleteById(oid);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        KoulutusLOS toDeleteLos = new KoulutusLOS();
-        toDeleteLos.setId(oid);
-        this.dataUpdateService.deleteLos(toDeleteLos);
+    private void removeKoulutusLOS(String oid) throws KISolrException {
+        try {
+            loHttpSolrServer.deleteById(oid);
+            this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+            KoulutusLOS toDeleteLos = new KoulutusLOS();
+            toDeleteLos.setId(oid);
+            this.dataUpdateService.deleteLos(toDeleteLos);
+        } catch (SolrServerException | IOException e) {
+            throw new KISolrException(e);
+        }
     }
 
-    private void removeTutkintoLOS(String oid) throws Exception {
+    private void removeTutkintoLOS(String oid)  {
         try {
             TutkintoLOS curLos = this.dataQueryService.getTutkinto(oid);
             curLos.getChildEducations();
@@ -106,10 +110,12 @@ public class IncrementalKoulutusLOSIndexer {
             this.dataUpdateService.deleteLos(toDeleteLos);
         } catch (ResourceNotFoundException e) {
             LOG.debug("There was no existing Tutkinto to be removed: {}", oid);
+        } catch (KISolrException e) {
+            LOG.error("Solr failure", e);
         }
     }
 
-    public void indexAmmatillinenKoulutusKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
+    public void indexAmmatillinenKoulutusKomoto(KoulutusHakutulosV1RDTO dto) throws KoodistoException, ResourceNotFoundException, TarjontaParseException, KISolrException {
         ToteutustyyppiEnum toteutusTyyppi = dto.getToteutustyyppiEnum();
         String tarjoaja = dto.getTarjoajat().get(0);
         String koulutusKoodi = dto.getKoulutuskoodi().split("#")[0];
@@ -150,7 +156,7 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
-    public void indexSingleKoulutusWithoutRelations(KoulutusHakutulosV1RDTO dto) throws Exception {
+    public void indexSingleKoulutusWithoutRelations(KoulutusHakutulosV1RDTO dto) throws ResourceNotFoundException, KoodistoException, NoValidApplicationOptionsException, TarjontaParseException, OrganisaatioException, KISolrException {
         KoulutusLOS los = tarjontaService.createKoulutusLOS(dto.getOid(), true);
         if (los == null) {
             removeKoulutusLOS(dto.getOid());
@@ -160,7 +166,7 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
-    public void indexKorkeakouluopintoKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
+    public void indexKorkeakouluopintoKomoto(KoulutusHakutulosV1RDTO dto) throws KISolrException {
         KoulutusLOS los = tarjontaService.createKorkeakouluopinto(dto);
 
         KoulutusLOS losToRemove = (KoulutusLOS) dataQueryService.getLos(dto.getOid());

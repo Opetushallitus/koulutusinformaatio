@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -70,9 +71,9 @@ public class SitemapBuilder {
      * elements and csv list of collections. Syntax for list is urlprefix:mongocollection:restriction.
      * Restriction is a field name and + or - at the start describing must field exist or not.
      * @return byte array of XML document 
-     * @throws Exception In case something went wrong.
+     * @ In case something went wrong.
      */
-    public byte[] buildSitemap(Datastore datastore, Map<String,String> properties) throws Exception{
+    public byte[] buildSitemap(Datastore datastore, Map<String,String> properties) throws TransformerException {
         LOG.debug("Starting sitemap building");
         String[] sitemapCollections = properties.get(PROPERTY_COLLECTIONS).split(COLLECTION_SEPARATOR);
         String collection = null;

@@ -18,13 +18,9 @@ package fi.vm.sade.koulutusinformaatio.exception;
 
 import javax.ws.rs.core.Response;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 /**
  * Provides utility methods that turn {@link fi.vm.sade.koulutusinformaatio.domain.exception.KIException} objects thrown by the service layer into {@link javax.ws.rs.WebApplicationException} objects that can be thrown from resource methods.
@@ -43,7 +39,7 @@ public class KIExceptionHandler {
         }
         HTTPException webException = null;
         if (e instanceof KIException) {
-            if (e instanceof SearchException) {
+            if (e instanceof SearchException || e instanceof KISolrException) {
                 webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Error occurred while searching");
             } else if (e instanceof ResourceNotFoundException) {
                 webException = new HTTPException(Response.Status.NOT_FOUND, e.getMessage());

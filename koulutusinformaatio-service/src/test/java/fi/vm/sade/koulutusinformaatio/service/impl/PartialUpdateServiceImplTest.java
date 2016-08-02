@@ -79,7 +79,7 @@ public class PartialUpdateServiceImplTest {
         };
         doAnswer(delayedAnswer).when(indexer).indexApplicationSystemData(APPLICATION_OID);
         doAnswer(delayedAnswer).when(losIndexer).indexLoiData(EDUCATION_OID);
-        doAnswer(delayedAnswer).when(aoIndexer).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
+        doAnswer(delayedAnswer).when(aoIndexer).indexApplicationOptionData(any(HakukohdeV1RDTO.class));
         
         HakukohdeV1RDTO ao = new HakukohdeV1RDTO();
         ao.setOid(APPLICATION_OPTION_OID);
@@ -127,7 +127,7 @@ public class PartialUpdateServiceImplTest {
     @Test
     public void indexesApplicationOption() throws Exception {
         service.updateApplicationOption(APPLICATION_OPTION_OID);
-        verify(aoIndexer).indexApplicationOptionData(any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class));
+        verify(aoIndexer).indexApplicationOptionData(any(HakukohdeV1RDTO.class));
     }
     
     private void assertServiceIsRunning() {

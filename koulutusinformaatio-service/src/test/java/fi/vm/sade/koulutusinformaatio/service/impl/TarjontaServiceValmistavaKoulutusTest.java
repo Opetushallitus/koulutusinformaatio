@@ -17,6 +17,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.NoValidApplicationOptionsException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
@@ -104,14 +106,14 @@ public class TarjontaServiceValmistavaKoulutusTest {
         when(rawService.getV1KoulutusLearningOpportunity(CIVILIZING_OID)).thenReturn(givenValmistavaResult());
     }
 
-    @Test(expected = KoodistoException.class)
-    public void throwsExceptionWhenFailsToCreateKoulutusLOS() throws TarjontaParseException, KoodistoException {
+    @Test(expected = NullPointerException.class)
+    public void throwsExceptionWhenFailsToCreateKoulutusLOS() throws TarjontaParseException, KoodistoException, NoValidApplicationOptionsException, OrganisaatioException {
         when(creator.createKansanopistoLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenThrow(new NullPointerException());
         service.findValmistavaKoulutusEducations();
     }
     
     @Test
-    public void returnsStandAloneLOS() throws TarjontaParseException, KoodistoException {
+    public void returnsStandAloneLOS() throws TarjontaParseException, KoodistoException, NoValidApplicationOptionsException, OrganisaatioException {
         when(creator.createKansanopistoLOS(any(ValmistavaKoulutusV1RDTO.class), eq(true))).thenReturn(new KoulutusLOS());
         List<KoulutusLOS> losses = service.findValmistavaKoulutusEducations();
         assertEquals(1, losses.size());
