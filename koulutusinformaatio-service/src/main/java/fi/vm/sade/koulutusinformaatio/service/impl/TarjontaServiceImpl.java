@@ -31,7 +31,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
-import fi.vm.sade.tarjonta.service.types.TarjontaTila;
+import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
