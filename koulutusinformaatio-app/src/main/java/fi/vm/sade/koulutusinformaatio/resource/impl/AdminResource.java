@@ -45,8 +45,6 @@ import java.util.Date;
 @Component
 @Path("/admin")
 public class AdminResource {
-    private static final Logger LOG = LoggerFactory.getLogger(AdminResource.class);
-
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private LearningOpportunityService learningOpportunityService;
