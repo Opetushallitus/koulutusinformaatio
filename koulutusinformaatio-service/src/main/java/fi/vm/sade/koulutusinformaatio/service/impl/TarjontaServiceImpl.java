@@ -338,8 +338,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                         curChild.getParents().add(los);
                         children.add(curChild);
                     }
-                } catch (TarjontaParseException tpe) {
-                    LOG.warn("Child to add was not valid: " + curKoulutusOid);
+                } catch (NoValidApplicationOptionsException e) {
+                    LOG.warn("Child to add was not valid: {}, reason {}", curKoulutusOid, e.getMessage());
                 }
             }
         }
