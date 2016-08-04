@@ -100,7 +100,8 @@ public class IncrementalHigherEducationLOSIndexer {
                         HigherEducationLOS createdLos = null;
                         try {
                             createdLos = this.tarjontaService.createHigherEducationLearningOpportunityTree(curKoul.getOid());
-                        } catch (TarjontaParseException | ResourceNotFoundException | OrganisaatioException | NoValidApplicationOptionsException | KoodistoException tpe) {
+                        } catch (TarjontaParseException | ResourceNotFoundException | OrganisaatioException | NoValidApplicationOptionsException | KoodistoException e) {
+                            LOG.warn("Failed to create highered, oid {}, reason {}", curKoul.getOid(), e.getMessage());
                             createdLos = null;
                         }
 

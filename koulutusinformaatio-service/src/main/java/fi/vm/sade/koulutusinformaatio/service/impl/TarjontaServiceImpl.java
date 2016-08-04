@@ -549,7 +549,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 } catch (TarjontaParseException | KoodistoException | ResourceNotFoundException | OrganisaatioException ex) {
                     LOG.warn("Problem with Valmistava education: " + koulutusDTO.getOid(), ex);
                 } catch (NoValidApplicationOptionsException e) {
-                    LOG.info("Problem with Valmistava education: {}, reason: {}", koulutusDTO.getOid(), e.getMessage());
+                    LOG.info("No valid applications for valimastava koulutus: {}, reason: {}", koulutusDTO.getOid(), e.getMessage());
                 }
             }
         }
