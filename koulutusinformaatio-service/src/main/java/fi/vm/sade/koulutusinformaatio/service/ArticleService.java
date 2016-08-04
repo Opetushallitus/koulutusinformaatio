@@ -15,18 +15,16 @@
  */
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.io.IOException;
-import java.util.List;
-
 import fi.vm.sade.koulutusinformaatio.domain.Article;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+
+import java.util.List;
 
 /**
  * 
  * @author Markus
  */
 public interface ArticleService {
-    
-    List<Article> fetchArticles() throws IOException, KoodistoException;
+
+    List<Article> fetchArticles();
 
 }

@@ -1,30 +1,25 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
+import com.mongodb.*;
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /*
  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -70,9 +65,9 @@ public class SitemapBuilder {
      * elements and csv list of collections. Syntax for list is urlprefix:mongocollection:restriction.
      * Restriction is a field name and + or - at the start describing must field exist or not.
      * @return byte array of XML document 
-     * @throws Exception In case something went wrong.
+     * @ In case something went wrong.
      */
-    public byte[] buildSitemap(Datastore datastore, Map<String,String> properties) throws Exception{
+    public byte[] buildSitemap(Datastore datastore, Map<String, String> properties) throws TransformerException {
         LOG.debug("Starting sitemap building");
         String[] sitemapCollections = properties.get(PROPERTY_COLLECTIONS).split(COLLECTION_SEPARATOR);
         String collection = null;

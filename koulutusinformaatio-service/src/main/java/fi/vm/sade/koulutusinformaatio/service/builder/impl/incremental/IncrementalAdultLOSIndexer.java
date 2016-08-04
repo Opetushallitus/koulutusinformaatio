@@ -15,24 +15,24 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class IncrementalAdultLOSIndexer {
 
     }
 
-    private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS) throws IOException, SolrServerException {
+    private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS) throws KISolrException {
         LOG.debug("Indexing adult vocational ed: {}", curLOS.getId());
         LOG.debug("Indexing adult vocational ed: {}", curLOS.getShortTitle());
         this.indexerService.removeLos(curLOS, loHttpSolrServer);
@@ -77,7 +77,7 @@ public class IncrementalAdultLOSIndexer {
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
 
-    private void removeAdultVocationalEd(String oid) throws Exception {
+    private void removeAdultVocationalEd(String oid) throws IOException, SolrServerException, KISolrException {
         loHttpSolrServer.deleteById(oid);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
         CompetenceBasedQualificationParentLOS toDeleteLos = new CompetenceBasedQualificationParentLOS();
@@ -86,7 +86,7 @@ public class IncrementalAdultLOSIndexer {
 
     }
 
-    public void indexAdultVocationalKomoto(String curKomoOid) throws Exception {
+    public void indexAdultVocationalKomoto(String curKomoOid) throws KISolrException {
         LOG.debug("Indexing adult vocational ed komo: {}", curKomoOid);
 
         CompetenceBasedQualificationParentLOS createdLos = null;
@@ -94,7 +94,7 @@ public class IncrementalAdultLOSIndexer {
         try {
             createdLos = this.tarjontaService.createCBQPLOS(curKomoOid, true);//createKoulutusLOS(curKoul.getOid(), true);//createHigherEducationLearningOpportunityTree(curKoul.getOid());
 
-        } catch (TarjontaParseException tpe) {
+        } catch (TarjontaParseException | ResourceNotFoundException | KoodistoException tpe) {
             createdLos = null;
         }
 
@@ -102,7 +102,11 @@ public class IncrementalAdultLOSIndexer {
 
         if (createdLos == null) {
             LOG.debug("Created los is to be removed");
-            removeAdultVocationalEd(curKomoOid);
+            try {
+                removeAdultVocationalEd(curKomoOid);
+            } catch (IOException | SolrServerException | KISolrException e) {
+                throw new KISolrException(e);
+            }
         } else {
 
             for (ApplicationOption curAo : createdLos.getApplicationOptions()) {

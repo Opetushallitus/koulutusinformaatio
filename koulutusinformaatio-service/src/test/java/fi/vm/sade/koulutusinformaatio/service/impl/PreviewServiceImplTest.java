@@ -15,19 +15,16 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
+import fi.vm.sade.koulutusinformaatio.service.PreviewService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import org.junit.Before;
 import org.junit.Test;
 
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.PreviewService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -40,8 +37,8 @@ public class PreviewServiceImplTest {
 	private PreviewService service;
 	
 	@Before
-    public void setup() throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
-		tarjontaService = mock(TarjontaService.class);
+    public void setup() throws TarjontaParseException, KoodistoException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException {
+        tarjontaService = mock(TarjontaService.class);
 
 		HigherEducationLOS heLOS = new HigherEducationLOS();
 		heLOS.setId("1.2.3.4");

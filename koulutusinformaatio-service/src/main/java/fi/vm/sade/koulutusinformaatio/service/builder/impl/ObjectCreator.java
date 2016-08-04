@@ -16,18 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.base.Strings;
-
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -36,6 +25,9 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -88,17 +80,15 @@ public abstract class ObjectCreator {
         final Map<String, String> texts = (rawMaterial != null) ? rawMaterial.getTekstis() : null;
         if (texts != null && !texts.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();
-            Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();
-            while (i.hasNext()) {
-                Map.Entry<String, String> entry = i.next();
+            for (Map.Entry<String, String> entry : texts.entrySet()) {
                 if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
                     try {
-                        String key = rawMaterial.getMeta().get(entry.getKey()).getArvo();//koodistoService.searchFirstCodeValue(entry.getKey());
+                        String key = rawMaterial.getMeta().get(entry.getKey()).getArvo();
                         key = (key == null) ? rawMaterial.getMeta().get(entry.getKey()).getKieliArvo() : key;
                         String val = entry.getValue() != null ? entry.getValue() : "";
                         translations.put(key.toLowerCase(), val);
                     } catch (Exception ex) {
-                        throw new KoodistoException(ex.getMessage());
+                        throw new KoodistoException("Malformed i18nText", ex);
                     }
 
                 }
@@ -139,16 +129,14 @@ public abstract class ObjectCreator {
     protected I18nText getI18nTextEnriched(Map<String, KoodiV1RDTO> meta) throws KoodistoException {
         if (meta != null && !meta.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();
-            Iterator<Map.Entry<String, KoodiV1RDTO>> i = meta.entrySet().iterator();
-            while (i.hasNext()) {
-                Map.Entry<String, KoodiV1RDTO> entry = i.next();
+            for (Map.Entry<String, KoodiV1RDTO> entry : meta.entrySet()) {
                 if (!Strings.isNullOrEmpty(entry.getKey()) && (entry.getValue() != null)) {
                     try {
                         String key = entry.getValue().getKieliArvo();
                         String kielikaannos = entry.getValue().getNimi() != null ? entry.getValue().getNimi() : "";
                         translations.put(key.toLowerCase(), kielikaannos);
                     } catch (Exception ex) {
-                        throw new KoodistoException(ex.getMessage());
+                        throw new KoodistoException("Malformed i18nText", ex);
                     }
 
                 }

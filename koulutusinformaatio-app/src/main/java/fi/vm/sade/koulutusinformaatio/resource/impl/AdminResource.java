@@ -16,9 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
+import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
+import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,22 +35,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
-import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
-import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
-import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.SEOService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
-import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
 
 /**
  * @author Hannu Lyytikainen
@@ -49,7 +45,6 @@ import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
 @Component
 @Path("/admin")
 public class AdminResource {
-
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private LearningOpportunityService learningOpportunityService;
@@ -86,7 +81,6 @@ public class AdminResource {
                 updateService.updateAllEducationData();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();
@@ -100,7 +94,6 @@ public class AdminResource {
                 updateService.updateArticles();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();
@@ -114,7 +107,6 @@ public class AdminResource {
                 incrementalUpdateService.updateChangedEducationData();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             throw KIExceptionHandler.resolveException(e);
         }
         return Response.seeOther(new URI("admin/status")).build();

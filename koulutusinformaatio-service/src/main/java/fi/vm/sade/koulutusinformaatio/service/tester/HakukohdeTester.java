@@ -59,6 +59,7 @@ public class HakukohdeTester {
                     || rawRes.getResult() == null
                     || rawRes.getResult().getTulokset() == null
                     || rawRes.getResult().getTulokset().isEmpty()) {
+                LOG.warn("Tarjonnasta ei löytynyt hakukohteita. Päätetään hakukohdetesti.");
                 running = false;
                 return;
             }
@@ -105,14 +106,12 @@ public class HakukohdeTester {
         missingFromKanta.removeAll(hakukohdeOiditTarjonnasta);
 
         if (!missingFromTarjonta.isEmpty()) {
-            LOG.warn("Tarjonnasta puuttuvat oidit, jotka on indeksoitu:");
-            LOG.warn(StringUtils.join(missingFromTarjonta, ", "));
+            LOG.warn("Tarjonnasta puuttuvat oidit, jotka on indeksoitu: " + StringUtils.join(missingFromTarjonta, ", "));
         } else {
             LOG.info("Kaikki tarjonnan oidit löytyivät indeksistä.");
         }
         if (!missingFromKanta.isEmpty()) {
-            LOG.warn("Indeksistä puuttuvat oidit, jotka ovat julkaistuja tarjonnassa:");
-            LOG.warn(StringUtils.join(missingFromKanta, ", "));
+            LOG.warn("Indeksistä puuttuvat oidit, jotka ovat julkaistuja tarjonnassa: " + StringUtils.join(missingFromKanta, ", "));
         } else {
             LOG.info("Kaikki indeksin oidit löytyivät tarjonnasta.");
         }

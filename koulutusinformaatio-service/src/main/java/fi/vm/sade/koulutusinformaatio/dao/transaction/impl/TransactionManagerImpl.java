@@ -16,12 +16,19 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
-import java.io.IOException;
-
+import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
+import com.mongodb.MongoClient;
 import fi.vm.sade.javautils.httpclient.OphHttpClient;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
 import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
 import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ParameterService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -32,23 +39,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
-import com.mongodb.MongoClient;
-
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ParameterService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import java.io.IOException;
 
 /**
  * @author Mikko Majapuro
@@ -189,7 +180,7 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException {
+    public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException {
         //CollectionAdminRequest
         //If solr is not in cloud mode doing swap using CoreAdminRequest
         try {
@@ -213,7 +204,7 @@ public class TransactionManagerImpl implements TransactionManager {
             CommandResult result = mongo.getDB("admin").command(cmd);
             if (!result.ok()) {
                 LOG.error("Collection copy failed, transactiondb left intact: " + result.getErrorMessage());
-                throw new KICommitException("Collection copy failed: " + result.getErrorMessage());
+                throw new KISolrException("Collection copy failed: " + result.getErrorMessage());
             }
             dropTransactionDbCollections();
             this.koodistoService.clearCache();
@@ -221,8 +212,8 @@ public class TransactionManagerImpl implements TransactionManager {
             this.parameterService.clearCache();
             
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new KICommitException(ex);
+            LOG.error("Commiting failed", ex);
+            throw new KISolrException(ex);
         }
     }
 
@@ -241,7 +232,7 @@ public class TransactionManagerImpl implements TransactionManager {
             locationUpdateSolr.optimize();
 
         } catch (Exception e) {
-            LOG.warn(e.getMessage());
+            LOG.error("Failed dropping update data", e);
         }
     }
 
@@ -276,7 +267,7 @@ public class TransactionManagerImpl implements TransactionManager {
         return car;
     }
 
-    private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException {
+    private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException {
 
 
         boolean ok = swapAlias(getCollectionName(lopUpdateSolr), lopHttpAliasName);
@@ -295,11 +286,11 @@ public class TransactionManagerImpl implements TransactionManager {
                 swapAlias(this.locationCoreName, locationHttpAliasName);
             }
 
-            throw new KICommitException("Alias swap failed");
+            throw new KISolrException("Alias swap failed");
         }
     }
 
-    private boolean swapAlias(String solrToSwapName, String aliasName) throws KICommitException {
+    private boolean swapAlias(String solrToSwapName, String aliasName) throws KISolrException {
         try {
             return httpclient.get("solr.swap", aliasName, solrToSwapName).skipResponseAssertions().execute(new OphHttpResponseHandler<Boolean>() {
                 @Override
@@ -308,7 +299,8 @@ public class TransactionManagerImpl implements TransactionManager {
                 }
             });
         } catch (Exception ex) {
-            throw new KICommitException(ex);
+            LOG.error("Failed alias swap", ex);
+            throw new KISolrException(ex);
         }
     }
 
