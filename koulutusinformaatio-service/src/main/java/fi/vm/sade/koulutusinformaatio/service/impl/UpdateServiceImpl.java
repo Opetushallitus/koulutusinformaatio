@@ -19,10 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -30,6 +27,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -184,13 +182,17 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Löytyi {} opintojaksoa.", opintojaksot.size());
             for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
                 LOG.debug("Luodaan ja tallennetaan opintojakso: {}", dto.getOid());
-                KoulutusLOS los = tarjontaService.createKorkeakouluopinto(dto);
-                if (los != null) {
-                    indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                    this.educationDataUpdateService.save(los);
-                    for (KoulutusLOS child : los.getOpintojaksos()) {
-                        indexToSolr(child, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                        this.educationDataUpdateService.save(child);
+                KoulutusLOS rootLos = tarjontaService.createKorkeakouluopinto(dto);
+                List<KoulutusLOS> allLoses = Lists.newArrayList(rootLos.getCousins());
+                if (allLoses != null) {
+                    allLoses.add(rootLos);
+                    for (KoulutusLOS los : allLoses) {
+                        indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                        this.educationDataUpdateService.save(los);
+                        for (KoulutusLOS child : los.getOpintojaksos()) {
+                            indexToSolr(child, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                            this.educationDataUpdateService.save(child);
+                        }
                     }
                 }
             }

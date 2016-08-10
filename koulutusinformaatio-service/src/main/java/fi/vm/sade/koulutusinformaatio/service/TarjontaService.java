@@ -26,10 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentL
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 
 /**
@@ -118,8 +115,8 @@ public interface TarjontaService {
      * @return
      * @throws KIException 
      */
-    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto);
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws TarjontaParseException, OrganisaatioException, KoodistoException;
 
-    KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException;
+    KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException, OrganisaatioException;
 
 }

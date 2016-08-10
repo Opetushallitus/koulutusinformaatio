@@ -24,7 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationOptionCreator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +39,6 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -659,12 +658,12 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException {
+    public KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException, OrganisaatioException {
         KoulutusV1RDTO dto = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid).getResult();
         return createKoulutusLOS(dto, checkStatus);
     }
 
-    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, ResourceNotFoundException, TarjontaParseException {
+    private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, ResourceNotFoundException, TarjontaParseException, OrganisaatioException {
         KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
         case KORKEAKOULUTUS:
@@ -706,7 +705,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             los = creator.createIbRfIshLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
             break;
         case KORKEAKOULUOPINTO: // Opintokokonaisuus ja opintojakso
-            los = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus, false);
+            los = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus);
             break;
         default:
             break;
@@ -996,9 +995,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) {
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws TarjontaParseException, OrganisaatioException, KoodistoException {
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
         KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
-        return creator.createKorkeakouluopinto(koulutusDTO, true, false);
+        return creator.createKorkeakouluopinto(koulutusDTO, true);
     }
 }

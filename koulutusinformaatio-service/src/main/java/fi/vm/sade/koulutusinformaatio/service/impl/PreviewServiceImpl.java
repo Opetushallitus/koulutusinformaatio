@@ -82,11 +82,25 @@ public class PreviewServiceImpl implements PreviewService {
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
         }
     }
+
+    private KoulutusLOS findLosToPreview(KoulutusLOS rootLos, String oid) {
+        if (rootLos.getId() == oid) return rootLos;
+        else {
+            for (KoulutusLOS child : rootLos.getOpintojaksos()) {
+                if (child.getId() == oid) return child;
+            }
+            for (KoulutusLOS cousin : rootLos.getCousins()) {
+                return findLosToPreview(cousin, oid);
+            }
+        }
+        return null;
+    }
     
     @Override
     public KoulutusLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
-            KoulutusLOS los = this.tarjontaService.createKoulutusLOS(oid, false);
+            KoulutusLOS rootLos = this.tarjontaService.createKoulutusLOS(oid, false);
+            KoulutusLOS los = findLosToPreview(rootLos, oid);
             if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
                 TutkintoLOS tutkinto = new TutkintoLOS();
                 tutkinto.setName(los.getEducationCode().getName());

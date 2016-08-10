@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -161,33 +162,52 @@ public class IncrementalKoulutusLOSIndexer {
     }
 
     public void indexKorkeakouluopintoKomoto(KoulutusHakutulosV1RDTO dto) throws Exception {
-        KoulutusLOS los = tarjontaService.createKorkeakouluopinto(dto);
+        KoulutusLOS rootLos = tarjontaService.createKorkeakouluopinto(dto);
 
-        KoulutusLOS losToRemove = (KoulutusLOS) dataQueryService.getLos(dto.getOid());
-        if (losToRemove != null) {
-            removeKorkeakouluOpintoAndRelatives(losToRemove);
+        if (rootLos == null) return;
+
+        Set<KoulutusLOS> allLoses = Sets.newHashSet(rootLos.getCousins());
+        allLoses.add(rootLos);
+
+        for (KoulutusLOS los : allLoses) {
+            KoulutusLOS losToRemove = (KoulutusLOS) dataQueryService.getLos(los.getId());
+            if (losToRemove != null) {
+                removeKorkeakouluOpintoAndRelatives(losToRemove, Sets.<String>newHashSet());
+            }
         }
 
-        if(los != null) {
-            this.indexToSolr(los);
-            this.dataUpdateService.updateKoulutusLos(los);
+        for (KoulutusLOS los : allLoses) {
+            if (los != null) {
+                this.indexToSolr(los);
+                this.dataUpdateService.updateKoulutusLos(los);
 
-            for (KoulutusLOS child : los.getOpintojaksos()) {
-                this.indexToSolr(child);
-                this.dataUpdateService.updateKoulutusLos(child);
+                for (KoulutusLOS child : los.getOpintojaksos()) {
+                    this.indexToSolr(child);
+                    this.dataUpdateService.updateKoulutusLos(child);
+                }
             }
         }
     }
 
-    private void removeKorkeakouluOpintoAndRelatives(KoulutusLOS los) {
-        if (los.getOpintokokonaisuus() != null) {
-            removeKorkeakouluOpintoAndRelatives(los.getOpintokokonaisuus());
+    private void removeKorkeakouluOpintoAndRelatives(KoulutusLOS los, Set<String> deletedOids) {
+        if (!los.getOpintokokonaisuudet().isEmpty()) {
+            deleteKoulutusLOSParents(los, deletedOids);
         } else {
             for (KoulutusLOS child : los.getOpintojaksos()) {
+                deleteKoulutusLOSParents(child, deletedOids);
                 dataUpdateService.deleteLos(child);
             }
             dataUpdateService.deleteLos(los);
         }
 
+    }
+
+    private void deleteKoulutusLOSParents(KoulutusLOS los, Set<String> deletedOids) {
+        for (KoulutusLOS parent : los.getOpintokokonaisuudet()) {
+            if (!deletedOids.contains(parent.getId())) {
+                deletedOids.add(parent.getId());
+                removeKorkeakouluOpintoAndRelatives(parent, deletedOids);
+            }
+        }
     }
 }
