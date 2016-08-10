@@ -247,10 +247,10 @@ public class IncrementalIndexerTest {
         opintokokonaisuus = koulutusLOSDAO.get(opintokokonaisuusId);
         assertNotNull(opintojakso);
         assertNotNull(opintokokonaisuus);
-        assertNull(opintokokonaisuus.getOpintokokonaisuus());
+        assertEquals(0, opintokokonaisuus.getOpintokokonaisuudet().size());
         assertEquals(1, opintokokonaisuus.getOpintojaksos().size());
         assertEquals(0, opintojakso.getOpintojaksos().size());
-        assertEquals(opintokokonaisuusId, opintojakso.getOpintokokonaisuus().getId());
+        assertEquals(opintokokonaisuusId, opintojakso.getOpintokokonaisuudet().iterator().next().getId());
         assertEquals(opintojaksoId, opintokokonaisuus.getOpintojaksos().get(0).getId());
 
     }
