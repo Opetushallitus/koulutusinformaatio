@@ -664,7 +664,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             los = creator.createIbRfIshLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
             break;
         case KORKEAKOULUOPINTO: // Opintokokonaisuus ja opintojakso
-            los = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus, false);
+            los = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus);
             break;
         default:
             break;
@@ -953,9 +953,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) {
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws TarjontaParseException, OrganisaatioException, KoodistoException, NoValidApplicationOptionsException {
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
         KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
-        return creator.createKorkeakouluopinto(koulutusDTO, true, false);
+        return creator.createKorkeakouluopinto(koulutusDTO, true);
     }
 }
