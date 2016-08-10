@@ -359,16 +359,14 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.NAME_FI,
                 LearningOpportunity.NAME_SV,
                 LearningOpportunity.NAME_EN,
-                LearningOpportunity.NAME_FI,
-                "ORGANISAATIO");
+                LearningOpportunity.NAME_FI);
         result.setName(name);
         result.setId(doc.getFieldValue("id").toString());
         String descr = getTranslatedValue(doc, lang,
                 "address_fi_str_display",
                 "address_sv_str_display",
                 "address_en_str_display",
-                "address_fi_str_display",
-                "ORGANISAATIO");
+                "address_fi_str_display");
         result.setAddress(descr);
 
         List<String> asIds = (List<String>) (doc.getFieldValue("asIds"));
@@ -598,8 +596,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.EDUCATION_DEGREE_FI,
                 LearningOpportunity.EDUCATION_DEGREE_SV,
                 LearningOpportunity.EDUCATION_DEGREE_EN,
-                LearningOpportunity.EDUCATION_DEGREE,
-                TarjontaConstants.TYPE_KK);
+                LearningOpportunity.EDUCATION_DEGREE);
     }
 
     private String getName(SolrDocument doc, String lang) {
@@ -607,8 +604,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.NAME_DISPLAY_FI,
                 LearningOpportunity.NAME_DISPLAY_SV,
                 LearningOpportunity.NAME_DISPLAY_EN,
-                LearningOpportunity.NAME,
-                TarjontaConstants.TYPE_KK);
+                LearningOpportunity.NAME);
     }
 
     private String getCredits(SolrDocument doc, String lang) {
@@ -616,8 +612,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.CREDITS_FI,
                 LearningOpportunity.CREDITS_SV,
                 LearningOpportunity.CREDITS_EN,
-                LearningOpportunity.CREDITS,
-                TarjontaConstants.TYPE_KK);
+                LearningOpportunity.CREDITS);
     }
 
     @SuppressWarnings("unchecked")
@@ -640,22 +635,16 @@ public class SearchServiceSolrImpl implements SearchService {
         return new ArrayList<String>();
     }
 
-    private String getTranslatedValue(SolrDocument doc, String lang, String fieldFi, String fieldSv, String fieldEn, String field, String type) {
-        if (doc.getFieldValue(LearningOpportunity.TYPE) != null
-                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(type)//TarjontaConstants.TYPE_KK)
-                && lang.equalsIgnoreCase("fi")
+    private String getTranslatedValue(SolrDocument doc, String lang, String fieldFi, String fieldSv, String fieldEn, String field) {
+        if (lang.equalsIgnoreCase("fi")
                 && doc.getFieldValue(fieldFi) != null) {
             return doc.getFieldValue(fieldFi).toString();
         }
-        if (doc.getFieldValue(LearningOpportunity.TYPE) != null
-                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(type)
-                && lang.equalsIgnoreCase("sv")
+        if (lang.equalsIgnoreCase("sv")
                 && doc.getFieldValue(fieldSv) != null) {
             return doc.getFieldValue(fieldSv).toString();
         }
-        if (doc.getFieldValue(LearningOpportunity.TYPE) != null
-                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(type)
-                && lang.equalsIgnoreCase("en")
+        if (lang.equalsIgnoreCase("en")
                 && doc.getFieldValue(fieldEn) != null) {
             return doc.getFieldValue(fieldEn).toString();
         }
