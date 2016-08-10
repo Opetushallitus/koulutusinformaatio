@@ -133,16 +133,18 @@ public class KoulutusLOSToDTO {
             parentLos.setId(tutkintoLOS.getId());
             parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(tutkintoLOS.getName(), lang));
             parentLos.setType(tutkintoLOS.getType());
-            dto.setParentLos(parentLos);
+            dto.appendParentLos(parentLos);
         }
 
-        KoulutusLOS opintokokonaisuus = los.getOpintokokonaisuus();
-        if (opintokokonaisuus != null) {
-            ParentLOSRefDTO parentLos = new ParentLOSRefDTO();
-            parentLos.setId(opintokokonaisuus.getId());
-            parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(opintokokonaisuus.getName(), lang));
-            parentLos.setType(opintokokonaisuus.getType());
-            dto.setParentLos(parentLos);
+        Set<KoulutusLOS> opintokokonaisuudet = los.getOpintokokonaisuudet();
+        for (KoulutusLOS opintokokonaisuus : opintokokonaisuudet) {
+            if (opintokokonaisuus != null) {
+                ParentLOSRefDTO parentLos = new ParentLOSRefDTO();
+                parentLos.setId(opintokokonaisuus.getId());
+                parentLos.setName(ConverterUtil.getTextByLanguageUseFallbackLang(opintokokonaisuus.getName(), lang));
+                parentLos.setType(opintokokonaisuus.getType());
+                dto.appendParentLos(parentLos);
+            }
         }
 
         if (!los.getOpintojaksos().isEmpty()) {
@@ -155,7 +157,7 @@ public class KoulutusLOSToDTO {
                 opintojaksoDto.setType(koulutusLOS.getType());
                 opintojaksoDtos.add(opintojaksoDto);
             }
-            if (los.getOpintokokonaisuus() != null) {
+            if (los.getOpintokokonaisuudet() != null) {
                 dto.setSiblings(opintojaksoDtos);
             } else {
                 dto.setOpintojaksos(opintojaksoDtos);

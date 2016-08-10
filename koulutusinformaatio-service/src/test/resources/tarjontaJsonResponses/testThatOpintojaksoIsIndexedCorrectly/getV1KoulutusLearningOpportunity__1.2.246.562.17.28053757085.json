@@ -467,6 +467,12 @@
     "opinnonTyyppiUri" : null,
     "tarjoajanKoulutus" : null,
     "opintokokonaisuusOid" : "1.2.246.562.17.52083499963",
+    "sisaltyyKoulutuksiin" : [
+      {
+        "oid": "1.2.246.562.17.52083499963",
+        "uniqueExternalId": "1111111"
+      }
+    ],
     "opintojaksoOids" : [ ],
     "koulutusasteTyyppi" : "KORKEAKOULUTUS"
   },
