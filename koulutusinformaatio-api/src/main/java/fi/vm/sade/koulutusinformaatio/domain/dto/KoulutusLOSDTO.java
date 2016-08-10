@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.common.collect.Sets;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -78,7 +80,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String linkToCurriculum;
     private Set<ChildLOIRefDTO> opintojaksos;
     private Set<ChildLOIRefDTO> siblings;
-    private ParentLOSRefDTO parentLos;
+    private Set<ParentLOSRefDTO> parentLos = Sets.newHashSet();
     private CodeDTO koulutusPrerequisite;
     private List<String> subjects;
     private String opettaja;
@@ -516,12 +518,12 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
         this.siblings = siblings;
     }
 
-    public ParentLOSRefDTO getParentLos() {
+    public Set<ParentLOSRefDTO> getParentLos() {
         return parentLos;
     }
 
-    public void setParentLos(ParentLOSRefDTO parentLos) {
-        this.parentLos = parentLos;
+    public void appendParentLos(ParentLOSRefDTO parentLos) {
+        this.parentLos.add(parentLos);
     }
 
     public CodeDTO getKoulutusPrerequisite() {

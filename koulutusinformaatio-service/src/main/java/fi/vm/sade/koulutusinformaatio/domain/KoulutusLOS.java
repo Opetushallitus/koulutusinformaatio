@@ -1,11 +1,9 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class KoulutusLOS extends LOS {
 
@@ -89,8 +87,11 @@ public class KoulutusLOS extends LOS {
 
     //Tutkintoon johtamattoman LOSin kentät
 
-    private KoulutusLOS opintokokonaisuus;
+    private Set<KoulutusLOS> opintokokonaisuudet = Sets.newHashSet();
     private List<KoulutusLOS> opintojaksos = Lists.newArrayList();
+
+    //Does not persist to database, used for creating korkeakoulututkinto LOS.
+    private Set<KoulutusLOS> cousins = Sets.newHashSet();
 
     private String opettaja;
     private String opinnonTyyppiUri;
@@ -565,12 +566,16 @@ public class KoulutusLOS extends LOS {
         this.osaamisalaton = osaamisalaton;
     }
 
-    public KoulutusLOS getOpintokokonaisuus() {
-        return opintokokonaisuus;
+    public Set<KoulutusLOS> getOpintokokonaisuudet() {
+        return opintokokonaisuudet;
     }
 
-    public void setOpintokokonaisuus(KoulutusLOS opintokokonaisuus) {
-        this.opintokokonaisuus = opintokokonaisuus;
+    public void setOpintokokonaisuudet(Set<KoulutusLOS> opintokokonaisuudet) {
+        this.opintokokonaisuudet = opintokokonaisuudet;
+    }
+
+    public void appendOpintokokonaisuus(KoulutusLOS opintokokonaisuus) {
+        this.opintokokonaisuudet.add(opintokokonaisuus);
     }
 
     public List<KoulutusLOS> getOpintojaksos() {
@@ -580,6 +585,10 @@ public class KoulutusLOS extends LOS {
     public void setOpintojaksos(List<KoulutusLOS> opintojaksos) {
         this.opintojaksos = opintojaksos;
     }
+
+    public Set<KoulutusLOS> getCousins() { return cousins; }
+
+    public void setCousins(Set<KoulutusLOS> cousins) { this.cousins = cousins; }
 
     public String getOpettaja() {
         return opettaja;
