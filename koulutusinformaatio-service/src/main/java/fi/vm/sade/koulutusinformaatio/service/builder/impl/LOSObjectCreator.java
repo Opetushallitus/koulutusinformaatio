@@ -1383,7 +1383,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     private KoulutusLOS createKorkeakouluopintoKoulutus(boolean checkStatus, KorkeakouluOpintoV1RDTO dto) throws KoodistoException, TarjontaParseException, OrganisaatioException {
-        boolean needsAOsToBeValid = dto.getSisaltyyKoulutuksiin() == null;
+        boolean needsAOsToBeValid = dto.getSisaltyyKoulutuksiin() == null || dto.getSisaltyyKoulutuksiin().isEmpty();
 
         KoulutusLOS korkeakouluOpinto = new KoulutusLOS();
         korkeakouluOpinto.setType(TarjontaConstants.TYPE_KOULUTUS);
@@ -1437,14 +1437,16 @@ public class LOSObjectCreator extends ObjectCreator {
         opintojakso.appendOpintokokonaisuus(parentLos);
         opintojakso.getApplicationOptions().addAll(parentLos.getApplicationOptions());
 
-        for (KoulutusIdentification parent : dto.getSisaltyyKoulutuksiin()) {
-            String parentOid = parent.getOid();
-            if (!parentOid.equals(parentLos.getId())) {
-                if (createdKorkeakouluOpintos.containsKey(parentOid)) {
-                    opintojakso.appendOpintokokonaisuus(createdKorkeakouluOpintos.get(parentOid));
-                    opintojakso.getApplicationOptions().addAll(createdKorkeakouluOpintos.get(parentOid).getApplicationOptions());
-                } else {
-                    createKorkeakouluOpintoKokonaisuus(root, parentOid, checkStatus);
+        if (dto.getSisaltyyKoulutuksiin() != null) {
+            for (KoulutusIdentification parent : dto.getSisaltyyKoulutuksiin()) {
+                String parentOid = parent.getOid();
+                if (!parentOid.equals(parentLos.getId())) {
+                    if (createdKorkeakouluOpintos.containsKey(parentOid)) {
+                        opintojakso.appendOpintokokonaisuus(createdKorkeakouluOpintos.get(parentOid));
+                        opintojakso.getApplicationOptions().addAll(createdKorkeakouluOpintos.get(parentOid).getApplicationOptions());
+                    } else {
+                        createKorkeakouluOpintoKokonaisuus(root, parentOid, checkStatus);
+                    }
                 }
             }
         }
@@ -1462,7 +1464,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public KoulutusLOS createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus) throws TarjontaParseException, OrganisaatioException, KoodistoException {
         if (alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) return null;
-        if (dto.getSisaltyyKoulutuksiin() != null) {
+        if (dto.getSisaltyyKoulutuksiin() != null && !dto.getSisaltyyKoulutuksiin().isEmpty()) {
             LOG.debug("Opintojakso kuuluu opintokokonaisuuksiin -> luodaan opintokokonaisuudet opintojaksoineen.");
             return createKorkeakouluopinto(dto.getSisaltyyKoulutuksiin().iterator().next().getOid(), checkStatus);
         } else {
@@ -1483,6 +1485,7 @@ public class LOSObjectCreator extends ObjectCreator {
             }
             for (KoulutusLOS child : childOpintojaksos) {
                 child.getSiblings().addAll(childOpintojaksos);
+                child.setSiblings(Lists.newArrayList(Sets.newHashSet(child.getSiblings())));
             }
             root.setOpintojaksos(childOpintojaksos);
 
