@@ -958,4 +958,20 @@ public class TarjontaServiceImpl implements TarjontaService {
         KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
         return creator.createKorkeakouluopinto(koulutusDTO, true);
     }
+
+    @Override
+    public KoulutusLOS createKorkeakouluopintoFullIndexing(KoulutusHakutulosV1RDTO dto){
+        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
+        KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
+        KoulutusLOS los = null;
+        try {
+            los = creator.createKorkeakouluopinto(koulutusDTO, true);
+        } catch (TarjontaParseException | OrganisaatioException | KoodistoException | NoValidApplicationOptionsException e) {
+            LOG.error("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage());
+        } catch (Exception e) {
+            LOG.error("Uknown issue when creating korkeakouluopinto {} during full indexing.", dto.getOid());
+        }
+        return los;
+    }
+
 }

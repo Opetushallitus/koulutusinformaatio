@@ -111,5 +111,7 @@ public interface TarjontaService {
      */
     public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws TarjontaParseException, OrganisaatioException, KoodistoException, NoValidApplicationOptionsException;
 
+    public KoulutusLOS createKorkeakouluopintoFullIndexing(KoulutusHakutulosV1RDTO dto);
+
     KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException;
 }
