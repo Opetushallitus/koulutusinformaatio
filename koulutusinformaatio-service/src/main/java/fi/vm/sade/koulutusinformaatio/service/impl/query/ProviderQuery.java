@@ -50,9 +50,18 @@ public class ProviderQuery extends SolrQuery {
     private final static String NEG_VOCATIONAL = "-vocationalAsIds";
     private final static String NEG_NON_VOCATIONAL = "-nonVocationalAsIds";
 
+    private static String formatSearchTerm(String q, String lang, boolean prefix){
+        if(q.isEmpty()){
+            q = q + "*";
+        } else {
+            q = "(" + Joiner.on("* AND ").join(q.split(" ")) + "*)";
+        }
+        return Joiner.on(":").join(resolveNameField(lang, prefix), q);
+    }
+
     public ProviderQuery(String q, String asId, List<String> baseEducations, int start, int rows, boolean vocational,
                          boolean nonVocational, String lang, boolean prefix, String type) {
-        super(Joiner.on(":").join(resolveNameField(lang, prefix), "(" + q + "*" + ")"));
+        super(formatSearchTerm(q, lang, prefix));
 
         this.setStart(start);
         this.setRows(rows);
