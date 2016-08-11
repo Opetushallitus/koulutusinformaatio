@@ -35,8 +35,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PreviewServiceImpl implements PreviewService {
 
-    private TarjontaService tarjontaService;
     private static final Logger LOG = LoggerFactory.getLogger(PreviewServiceImpl.class);
+    private TarjontaService tarjontaService;
 
     @Autowired
     public PreviewServiceImpl (TarjontaService tarjontaService) {
@@ -73,17 +73,22 @@ public class PreviewServiceImpl implements PreviewService {
         }
     }
 
-    private KoulutusLOS findLosToPreview(KoulutusLOS rootLos, String oid) {
-        if (rootLos.getId() == oid) return rootLos;
-        else {
-            for (KoulutusLOS child : rootLos.getOpintojaksos()) {
-                if (child.getId() == oid) return child;
+    private KoulutusLOS findLosToPreview(KoulutusLOS rootLos, String oid) throws ResourceNotFoundException {
+        if (rootLos != null) {
+            if (rootLos.getId().equals(oid)) {
+                return rootLos;
+            } else {
+                for (KoulutusLOS child : rootLos.getOpintojaksos()) {
+                    if (child.getId().equals(oid)) return child;
+                }
+                for (KoulutusLOS cousin : rootLos.getCousins()) {
+                    KoulutusLOS matchingChild = findLosToPreview(cousin, oid);
+                    if(matchingChild != null) return matchingChild;
+                }
             }
-            for (KoulutusLOS cousin : rootLos.getCousins()) {
-                return findLosToPreview(cousin, oid);
-            }
+            return null;
         }
-        return null;
+        throw new ResourceNotFoundException("Got null for oid " + oid);
     }
     
     @Override
@@ -91,6 +96,8 @@ public class PreviewServiceImpl implements PreviewService {
         try {
             KoulutusLOS rootLos = this.tarjontaService.createKoulutusLOS(oid, false);
             KoulutusLOS los = findLosToPreview(rootLos, oid);
+            if(los == null) throw new ResourceNotFoundException("No child matching oid " + oid);
+
             if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
                 TutkintoLOS tutkinto = new TutkintoLOS();
                 tutkinto.setName(los.getEducationCode().getName());
