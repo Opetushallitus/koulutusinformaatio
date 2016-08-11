@@ -11,11 +11,10 @@
         </span>
     </div>
 
-    <span data-ng-if="lo.parentLos" data-ng-repeat="parent in lo.parentLos">
-        <span data-ng-if="!(lo.qualifications.length == 1)">{{lo.educationDomain}}</span>
-        <span data-ng-if="lo.qualifications.length == 1">{{lo.educationDomain}}, {{lo.qualifications[0]}}</span>
+    <span data-ng-if="!(lo.qualifications.length == 1)">{{lo.educationDomain}}</span>
+    <span data-ng-if="lo.qualifications.length == 1">{{lo.educationDomain}}, {{lo.qualifications[0]}}<br></span>
 
-        <br>
+    <span data-ng-if="lo.parentLos" data-ng-repeat="parent in lo.parentLos">
 
         <a data-ng-if="!lo.preview && parent.type == 'TUTKINTO'" href="{{parent.url}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{parent.name}}</a>
         <a data-ng-if="!lo.preview && parent.type == 'KOULUTUS'" href="{{parent.url}}">{{parent.name}}</a>
