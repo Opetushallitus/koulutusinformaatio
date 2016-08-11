@@ -1438,7 +1438,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public KoulutusLOS createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus) throws TarjontaParseException, OrganisaatioException, KoodistoException, NoValidApplicationOptionsException {
-        if (alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) return null;
+        if (alreadyCreatedKorkeakouluOpintos.contains(dto.getOid()) && !checkStatus) return null;
         if (dto.getSisaltyyKoulutuksiin() != null && !dto.getSisaltyyKoulutuksiin().isEmpty()) {
             LOG.debug("Opintojakso kuuluu opintokokonaisuuksiin -> luodaan opintokokonaisuudet opintojaksoineen.");
             return createKorkeakouluopinto(dto.getSisaltyyKoulutuksiin().iterator().next().getOid(), checkStatus);
