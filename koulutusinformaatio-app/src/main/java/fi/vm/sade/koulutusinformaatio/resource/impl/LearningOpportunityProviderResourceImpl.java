@@ -84,8 +84,6 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
             if (key.equals("*")) {
                 key = "";
-            } else {
-                key = Joiner.on("* AND ").join(key.split(" "));
             }
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducations, vocational,
                     nonVocational, start, rows, lang, false, type);

@@ -17,6 +17,7 @@ public class ProviderQueryTest {
     private final String EMPTY_TERM = "";
     private final String ASTERISK = "*";
     private final String SIMPLE_TERM = "term";
+    private final String SECOND_TERM = "another";
     private final String AS_ID = "asId";
     private final String BASE_EDUCATION = "base_education";
     private final String TYPE = "provider_type";
@@ -24,9 +25,19 @@ public class ProviderQueryTest {
     private static final String ORDER = "asc";
 
     @Test
+    public void testProviderQueryMultipleTerm() {
+        ProviderQuery pq = new ProviderQuery(SIMPLE_TERM + " " + SECOND_TERM, AS_ID, Arrays.asList(BASE_EDUCATION), 0, 100, true, true, "fi", false, TYPE);
+        assertEquals("name_fi:" + "(" + SIMPLE_TERM + "* AND " + SECOND_TERM + "*)", pq.getQuery());
+        assertEquals(4, pq.getFilterQueries().length);
+        assertEquals("type:ORGANISAATIO", pq.getFilterQueries()[0]);
+        assertEquals("asIds:asId", pq.getFilterQueries()[1]);
+        assertEquals(String.format("%s:%s", SolrUtil.ProviderFields.TYPE_VALUE, TYPE), pq.getFilterQueries()[3]);
+    }
+
+    @Test
     public void testProviderQuerySimpleTerm() {
         ProviderQuery pq = new ProviderQuery(SIMPLE_TERM, AS_ID, Arrays.asList(BASE_EDUCATION), 0, 100, true, true, "fi", false, TYPE);
-        assertEquals("name_fi:" + SIMPLE_TERM + "*", pq.getQuery());
+        assertEquals("name_fi:" + "(" + SIMPLE_TERM + "*)", pq.getQuery());
         assertEquals(4, pq.getFilterQueries().length);
         assertEquals("type:ORGANISAATIO", pq.getFilterQueries()[0]);
         assertEquals("asIds:asId", pq.getFilterQueries()[1]);
@@ -36,7 +47,7 @@ public class ProviderQueryTest {
     @Test
     public void testProviderQuerySingleCharacterTerm() {
         ProviderQuery pq = new ProviderQuery(SINGLE_CHARACTER_TERM, AS_ID, Arrays.asList(BASE_EDUCATION), 0, 100, true, true, "fi", false, TYPE);
-        assertEquals("name_fi:" + SINGLE_CHARACTER_TERM + "*", pq.getQuery());
+        assertEquals("name_fi:" + "(" + SINGLE_CHARACTER_TERM + "*)", pq.getQuery());
         assertEquals(4, pq.getFilterQueries().length);
         assertEquals("type:ORGANISAATIO", pq.getFilterQueries()[0]);
         assertEquals("asIds:asId", pq.getFilterQueries()[1]);
