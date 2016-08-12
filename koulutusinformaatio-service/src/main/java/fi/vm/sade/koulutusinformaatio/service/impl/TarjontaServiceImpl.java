@@ -953,10 +953,18 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws TarjontaParseException, OrganisaatioException, KoodistoException, NoValidApplicationOptionsException {
+    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KoodistoException, TarjontaParseException, OrganisaatioException, NoValidApplicationOptionsException {
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
         KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
-        return creator.createKorkeakouluopinto(koulutusDTO, true);
+        try {
+            return creator.createKorkeakouluopinto(koulutusDTO, true);
+        } catch (TarjontaParseException | OrganisaatioException | KoodistoException e) {
+            LOG.warn("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage(), e);
+            throw e;
+        } catch (NoValidApplicationOptionsException e) {
+            LOG.info("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage());
+            throw e;
+        }
     }
 
     @Override
@@ -966,10 +974,10 @@ public class TarjontaServiceImpl implements TarjontaService {
         KoulutusLOS los = null;
         try {
             los = creator.createKorkeakouluopinto(koulutusDTO, true);
-        } catch (TarjontaParseException | OrganisaatioException | KoodistoException | NoValidApplicationOptionsException e) {
-            LOG.error("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage());
-        } catch (Exception e) {
-            LOG.error("Uknown issue when creating korkeakouluopinto {} during full indexing.", dto.getOid());
+        } catch (TarjontaParseException | OrganisaatioException | KoodistoException e) {
+            LOG.warn("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage(), e);
+        } catch (NoValidApplicationOptionsException e) {
+            LOG.info("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage());
         }
         return los;
     }
