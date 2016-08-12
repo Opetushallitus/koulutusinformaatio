@@ -162,7 +162,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Löytyi {} opintojaksoa.", opintojaksot.size());
             for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
                 LOG.debug("Luodaan ja tallennetaan opintojakso: {}", dto.getOid());
-                KoulutusLOS rootLos = tarjontaService.createKorkeakouluopinto(dto);
+                KoulutusLOS rootLos = tarjontaService.createKorkeakouluopintoFullIndexing(dto);
                 List<KoulutusLOS> allLoses = Lists.newArrayList();
                 if (rootLos != null) {
                     allLoses.add(rootLos);
