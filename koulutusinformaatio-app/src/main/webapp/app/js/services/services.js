@@ -381,7 +381,7 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
     return {
         transform: function(result) {
 
-            if(result.parentLos.length){
+            if(result.parentLos != null && result.parentLos.length){
                 _.each(result.parentLos, function(parent) {
                     if (parent.type == 'TUTKINTO') {
                         parent.url = '#!/tutkinto/' + parent.id;
