@@ -381,12 +381,14 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
     return {
         transform: function(result) {
 
-            if(result.parentLos){
-                if(result.parentLos.type == 'TUTKINTO'){
-                    result.parentLos.url = '#!/tutkinto/' + result.parentLos.id;
-                } else if (result.parentLos.type == 'KOULUTUS') {
-                    result.parentLos.url = '#!/koulutus/' + result.parentLos.id;
-                }
+            if(result.parentLos.length){
+                _.each(result.parentLos, function(parent) {
+                    if (parent.type == 'TUTKINTO') {
+                        parent.url = '#!/tutkinto/' + parent.id;
+                    } else if (parent.type == 'KOULUTUS') {
+                        parent.url = '#!/koulutus/' + parent.id;
+                    }
+                });
             }
             
             if (result && result.translationLanguage) {
