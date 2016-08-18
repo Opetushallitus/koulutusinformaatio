@@ -128,7 +128,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 } catch (TarjontaParseException | KoodistoException | OrganisaatioException ex) {
                     LOG.warn("Problem with higher education: " + koulutusDTO.getOid(), ex);
                 } catch (NoValidApplicationOptionsException e) {
-                    LOG.info("Problem with higher education: {}, reason: {}", koulutusDTO.getOid(), e.getMessage());
+                    LOG.debug("Problem with higher education: {}, reason: {}", koulutusDTO.getOid(), e.getMessage());
                 }
 
             }
@@ -549,7 +549,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 } catch (TarjontaParseException | KoodistoException | ResourceNotFoundException | OrganisaatioException ex) {
                     LOG.warn("Problem with Valmistava education: " + koulutusDTO.getOid(), ex);
                 } catch (NoValidApplicationOptionsException e) {
-                    LOG.info("No valid applications for valimastava koulutus: {}, reason: {}", koulutusDTO.getOid(), e.getMessage());
+                    LOG.debug("No valid applications for valimastava koulutus: {}, reason: {}", koulutusDTO.getOid(), e.getMessage());
                 }
             }
         }
@@ -859,7 +859,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             addProcessedOid(koulutusDTO.getOid());
             return new ArrayList<>();
         } catch (NoValidApplicationOptionsException e) {
-            LOG.info("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            LOG.debug("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -872,7 +872,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             LOG.warn("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
             return null;
         } catch (NoValidApplicationOptionsException e) {
-            LOG.info("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            LOG.debug("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
             return null;
         }
     }
