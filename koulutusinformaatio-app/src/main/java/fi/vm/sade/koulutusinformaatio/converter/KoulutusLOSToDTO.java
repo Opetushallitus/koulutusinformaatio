@@ -7,6 +7,7 @@ import java.util.Set;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
+import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
@@ -149,7 +150,9 @@ public class KoulutusLOSToDTO {
 
         if (!los.getOpintojaksos().isEmpty()) {
             Set<ChildLOIRefDTO> opintojaksoDtos = new HashSet<ChildLOIRefDTO>();
-            for (KoulutusLOS koulutusLOS : los.getOpintojaksos()) {
+            Set<KoulutusLOS> losDecendants = Sets.newHashSet();
+            getAllLosDecendants(los, losDecendants);
+            for (KoulutusLOS koulutusLOS : losDecendants) {
                 ChildLOIRefDTO opintojaksoDto = new ChildLOIRefDTO();
                 opintojaksoDto.setId(koulutusLOS.getId());
                 opintojaksoDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(koulutusLOS.getName(), lang));
@@ -171,8 +174,8 @@ public class KoulutusLOSToDTO {
         if (los.getSubjects() != null) {
             dto.setSubjects(
                     los.getSubjects().get(uiLang) != null
-                        ? los.getSubjects().get(uiLang)
-                        : los.getSubjects().get(ConverterUtil.FALLBACK_LANG)
+                            ? los.getSubjects().get(uiLang)
+                            : los.getSubjects().get(ConverterUtil.FALLBACK_LANG)
             );
         }
 
@@ -194,4 +197,10 @@ public class KoulutusLOSToDTO {
         return dto;
     }
 
+    private static void getAllLosDecendants(KoulutusLOS los, Set<KoulutusLOS> decendants) {
+        for (KoulutusLOS decendant : los.getOpintojaksos()) {
+            decendants.add(decendant);
+            getAllLosDecendants(decendant, decendants);
+        }
+    }
 }
