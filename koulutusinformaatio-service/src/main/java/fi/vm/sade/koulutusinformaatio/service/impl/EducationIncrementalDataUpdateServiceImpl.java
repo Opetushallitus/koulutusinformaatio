@@ -129,7 +129,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     @Override
     public void deleteLos(LOS los) {
         String type = los.getToteutustyyppi() != null ? los.getToteutustyyppi().name() : los.getType();
-        LOG.info("Deleted {} koulutus: {}", type != null ? type : "by oid", los.getId());
+        LOG.debug("Deleted {} koulutus: {}", type != null ? type : "by oid", los.getId());
         if (los instanceof HigherEducationLOS) {
             this.higherEducationLOSDAO.deleteById(los.getId());
         } else if (los instanceof CompetenceBasedQualificationParentLOS) {
