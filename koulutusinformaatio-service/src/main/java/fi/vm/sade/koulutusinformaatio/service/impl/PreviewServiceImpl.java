@@ -73,29 +73,10 @@ public class PreviewServiceImpl implements PreviewService {
         }
     }
 
-    private KoulutusLOS findLosToPreview(KoulutusLOS rootLos, String oid) throws ResourceNotFoundException {
-        if (rootLos != null) {
-            if (rootLos.getId().equals(oid)) {
-                return rootLos;
-            } else {
-                for (KoulutusLOS child : rootLos.getOpintojaksos()) {
-                    if (child.getId().equals(oid)) return child;
-                }
-                for (KoulutusLOS cousin : rootLos.getCousins()) {
-                    KoulutusLOS matchingChild = findLosToPreview(cousin, oid);
-                    if(matchingChild != null) return matchingChild;
-                }
-            }
-            return null;
-        }
-        throw new ResourceNotFoundException("Got null for oid " + oid);
-    }
-    
     @Override
     public KoulutusLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
-            KoulutusLOS rootLos = this.tarjontaService.createKoulutusLOS(oid, false);
-            KoulutusLOS los = findLosToPreview(rootLos, oid);
+            KoulutusLOS los = this.tarjontaService.createKoulutusLOS(oid, false);
             if(los == null) throw new ResourceNotFoundException("No matching oid " + oid);
 
             if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {

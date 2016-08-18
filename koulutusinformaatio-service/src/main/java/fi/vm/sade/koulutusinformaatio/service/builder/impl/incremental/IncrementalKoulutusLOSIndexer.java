@@ -165,29 +165,17 @@ public class IncrementalKoulutusLOSIndexer {
     }
 
     public void indexKorkeakouluopintoKomoto(KoulutusHakutulosV1RDTO dto) throws KISolrException, KoodistoException, TarjontaParseException, OrganisaatioException, NoValidApplicationOptionsException {
-        KoulutusLOS rootLos = tarjontaService.createKorkeakouluopinto(dto);
-
-        if (rootLos == null) return;
-
-        Set<KoulutusLOS> allLoses = Sets.newHashSet(rootLos.getCousins());
-        allLoses.add(rootLos);
+        List<KoulutusLOS> allLoses = tarjontaService.createKorkeakouluopinto(dto);
 
         for (KoulutusLOS los : allLoses) {
-            KoulutusLOS losToRemove = (KoulutusLOS) dataQueryService.getLos(los.getId());
-            if (losToRemove != null) {
-                removeKorkeakouluOpintoAndRelatives(losToRemove, Sets.<String>newHashSet());
-            }
+            LOG.debug("getting los: {}", los.getId());
+            dataUpdateService.deleteLos(los);
         }
 
         for (KoulutusLOS los : allLoses) {
             if (los != null) {
                 this.indexToSolr(los);
                 this.dataUpdateService.updateKoulutusLos(los);
-
-                for (KoulutusLOS child : los.getOpintojaksos()) {
-                    this.indexToSolr(child);
-                    this.dataUpdateService.updateKoulutusLos(child);
-                }
             }
         }
     }

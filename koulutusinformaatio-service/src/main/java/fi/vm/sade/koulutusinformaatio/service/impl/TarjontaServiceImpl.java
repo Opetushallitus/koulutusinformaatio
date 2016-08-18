@@ -623,53 +623,44 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     private KoulutusLOS createKoulutusLOS(KoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException, ResourceNotFoundException, TarjontaParseException, NoValidApplicationOptionsException, OrganisaatioException {
-        KoulutusLOS los = null;
         switch (koulutusDTO.getToteutustyyppi()) {
         case KORKEAKOULUTUS:
-            los = creator.createHigherEducationLOS((KoulutusKorkeakouluV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createHigherEducationLOS((KoulutusKorkeakouluV1RDTO) koulutusDTO, checkStatus);
         case AMMATILLINEN_PERUSTUTKINTO:
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
-            los = creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
-            los = creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
-            los = creator.createValmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createValmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
         case VALMENTAVA_JA_KUNTOUTTAVA_OPETUS_JA_OHJAUS:
             if (koulutusDTO.getKoulutuskoodi().getVersio() == 1) {
-                los = creator.createValmentavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                return creator.createValmentavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
             } else {
-                los = creator.createTelmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
+                return creator.createTelmaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
             }
-            break;
         case PERUSOPETUKSEN_LISAOPETUS:
-            los = creator.createKymppiluokkaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createKymppiluokkaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-            los = creator.createMMLukioonValmistavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createMMLukioonValmistavaLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
         case VAPAAN_SIVISTYSTYON_KOULUTUS:
-            los = creator.createKansanopistoLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createKansanopistoLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
         case LUKIOKOULUTUS:
-            los = creator.createLukioLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createLukioLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
         case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
-            los = creator.createAdultUpperSeconcaryLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createAdultUpperSeconcaryLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
         case EB_RP_ISH:
-            los = creator.createIbRfIshLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
-            break;
+            return creator.createIbRfIshLOS((KoulutusLukioV1RDTO) koulutusDTO, checkStatus);
         case KORKEAKOULUOPINTO: // Opintokokonaisuus ja opintojakso
-            los = creator.createKorkeakouluopinto((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus);
-            break;
+            List<KoulutusLOS> allLoses = creator.createKorkeakouluOpintos((KorkeakouluOpintoV1RDTO) koulutusDTO, checkStatus);
+            for (KoulutusLOS temp : allLoses) {
+                if (temp.getId().equals(koulutusDTO.getOid())) {
+                    return temp;
+                }
+            }
         default:
-            break;
+            return null;
         }
-        return los;
     }
 
     @Override
@@ -953,33 +944,13 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public KoulutusLOS createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KoodistoException, TarjontaParseException, OrganisaatioException, NoValidApplicationOptionsException {
+    public List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws KoodistoException, TarjontaParseException, OrganisaatioException, NoValidApplicationOptionsException {
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
         KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
-        try {
-            return creator.createKorkeakouluopinto(koulutusDTO, true);
-        } catch (TarjontaParseException | OrganisaatioException | KoodistoException e) {
-            LOG.warn("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage(), e);
-            throw e;
-        } catch (NoValidApplicationOptionsException e) {
-            LOG.info("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage());
-            throw e;
+        List<KoulutusLOS> result = creator.createKorkeakouluOpintos(koulutusDTO, true);
+        for (KoulutusLOS los : result) {
+            addProcessedOid(los.getId());
         }
+        return result;
     }
-
-    @Override
-    public KoulutusLOS createKorkeakouluopintoFullIndexing(KoulutusHakutulosV1RDTO dto){
-        ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(dto.getOid());
-        KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) koulutusRes.getResult();
-        KoulutusLOS los = null;
-        try {
-            los = creator.createKorkeakouluopinto(koulutusDTO, true);
-        } catch (TarjontaParseException | OrganisaatioException | KoodistoException e) {
-            LOG.warn("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage(), e);
-        } catch (NoValidApplicationOptionsException e) {
-            LOG.info("Failed to create korkeakouluopinto {} during full indexing. Reason: {}.", dto.getOid(), e.getMessage());
-        }
-        return los;
-    }
-
 }
