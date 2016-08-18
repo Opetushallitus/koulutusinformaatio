@@ -194,7 +194,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
 
-            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
+            LOG.debug("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.higherEducationLOSDAO.deleteById(plos.getId());
             this.higherEducationLOSDAO.save(plos);
         }
@@ -241,7 +241,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
 
-            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
+            LOG.debug("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.adultVocationalLOSDAO.deleteById(plos.getId());
             this.adultVocationalLOSDAO.save(plos);
         }
@@ -305,7 +305,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                     save(ao);
                 }
             }
-            LOG.info("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
+            LOG.debug("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.koulutusLOSDAO.deleteById(plos.getId());
             this.koulutusLOSDAO.save(plos);
         }
@@ -333,7 +333,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
 
-            LOG.info("Updated {} tutkinto: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
+            LOG.debug("Updated {} tutkinto: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.tutkintoLOSDAO.deleteById(plos.getId());
             this.tutkintoLOSDAO.save(plos);
         }
