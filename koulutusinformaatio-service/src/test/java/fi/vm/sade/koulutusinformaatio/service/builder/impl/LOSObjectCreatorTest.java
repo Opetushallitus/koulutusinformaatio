@@ -173,15 +173,15 @@ public class LOSObjectCreatorTest extends TestCase {
          * First los should have startSeason as 'Summer', because of extraParams.
          * Second los should have startSeason as 'Spring'.
          */
-        KoulutusLOS los = creator.createKorkeakouluopinto(dto, false);
-        KoulutusLOS los2 = creator.createKorkeakouluopinto(dto2, false);
+        List<KoulutusLOS> los = creator.createKorkeakouluOpintos(dto, false);
+        List<KoulutusLOS> los2 = creator.createKorkeakouluOpintos(dto2, false);
 
-        assertEquals(I18NKesa.get("fi"), los.getStartSeason().get("fi"));
-        assertEquals(I18NKesa.get("sv"), los.getStartSeason().get("sv"));
-        assertEquals(I18NKesa.get("en"), los.getStartSeason().get("en"));
-        assertEquals(I18NKevat.get("fi"), los2.getStartSeason().get("fi"));
-        assertEquals(I18NKevat.get("sv"), los2.getStartSeason().get("sv"));
-        assertEquals(I18NKevat.get("en"), los2.getStartSeason().get("en"));
+        assertEquals(I18NKesa.get("fi"), los.get(0).getStartSeason().get("fi"));
+        assertEquals(I18NKesa.get("sv"), los.get(0).getStartSeason().get("sv"));
+        assertEquals(I18NKesa.get("en"), los.get(0).getStartSeason().get("en"));
+        assertEquals(I18NKevat.get("fi"), los2.get(0).getStartSeason().get("fi"));
+        assertEquals(I18NKevat.get("sv"), los2.get(0).getStartSeason().get("sv"));
+        assertEquals(I18NKevat.get("en"), los2.get(0).getStartSeason().get("en"));
     }
 
 

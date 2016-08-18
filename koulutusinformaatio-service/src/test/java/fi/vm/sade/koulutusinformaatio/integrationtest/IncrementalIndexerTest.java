@@ -8,7 +8,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,7 +100,7 @@ public class IncrementalIndexerTest {
 
         LearningOpportunityProviderEntity provider = new LearningOpportunityProviderEntity();
         provider.setId("1.2.246.562.10.10779357598");
-        
+
         TutkintoLOSEntity tutkinto1 = new TutkintoLOSEntity();
         tutkinto1.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy");
         tutkinto1.setProvider(provider);
@@ -107,7 +109,7 @@ public class IncrementalIndexerTest {
                 getkoulutusLosEntity("1.2.246.562.17.27586825005", tutkinto1, "koulutus_321101", provider),
                 getkoulutusLosEntity("1.2.246.562.17.165818280810", tutkinto1, "koulutus_321101", provider),
                 getkoulutusLosEntity("1.2.246.562.17.25298814663", tutkinto1, "koulutus_321101", provider)
-                );
+        );
         for (KoulutusLOSEntity child : children1) {
             child.setSiblings(children1);
         }
@@ -120,7 +122,7 @@ public class IncrementalIndexerTest {
         List<KoulutusLOSEntity> children2 = Lists.newArrayList(
                 getkoulutusLosEntity("1.2.246.562.17.61486530712", tutkinto2, "koulutus_321101", provider), // <--- tämä palautuu las modified vastauksessa
                 getkoulutusLosEntity("1.2.246.562.17.64285210601", tutkinto2, "koulutus_321101", provider) // <--- peruttu
-                );
+        );
         for (KoulutusLOSEntity child : children2) {
             child.setSiblings(children2);
         }
@@ -235,8 +237,8 @@ public class IncrementalIndexerTest {
 
         tarjontaRawServiceMock.setTestCase("testThatOpintojaksoIsIndexedCorrectly");
         String opintojaksoId = "1.2.246.562.17.28053757085";
-        KoulutusLOSEntity opintojakso = koulutusLOSDAO.get(opintojaksoId);
         String opintokokonaisuusId = "1.2.246.562.17.52083499963";
+        KoulutusLOSEntity opintojakso = koulutusLOSDAO.get(opintojaksoId);
         KoulutusLOSEntity opintokokonaisuus = koulutusLOSDAO.get(opintokokonaisuusId);
         assertNull(opintojakso);
         assertNull(opintokokonaisuus);
@@ -253,6 +255,52 @@ public class IncrementalIndexerTest {
         assertEquals(opintokokonaisuusId, opintojakso.getOpintokokonaisuudet().iterator().next().getId());
         assertEquals(opintojaksoId, opintokokonaisuus.getOpintojaksos().get(0).getId());
 
+        String opintokokonaisuusId1 = "1.2.246.562.17.26568957778";
+        String opintokokonaisuusId2 = "1.2.246.562.17.68150415666";
+        String opintokokonaisuusId3 = "1.2.246.562.17.21796457501";
+
+        String nestedKokonaisuusId1 = "1.2.246.562.17.92024584614";
+        String nestedKokonaisuusId2 = "1.2.246.562.17.19043044304";
+
+        String opintojaksoId1 = "1.2.246.562.17.31558622242";
+        String opintojaksoId2 = "1.2.246.562.17.99417213412";
+        String opintojaksoId3 = "1.2.246.562.17.59572704654";
+
+        KoulutusLOSEntity opintokokonaisuus1 = koulutusLOSDAO.get(opintokokonaisuusId1);
+        KoulutusLOSEntity opintokokonaisuus2 = koulutusLOSDAO.get(opintokokonaisuusId2);
+        KoulutusLOSEntity opintokokonaisuus3 = koulutusLOSDAO.get(opintokokonaisuusId3);
+
+        KoulutusLOSEntity nestedKokonaisuus1 = koulutusLOSDAO.get(nestedKokonaisuusId1);
+        KoulutusLOSEntity nestedKokonaisuus2 = koulutusLOSDAO.get(nestedKokonaisuusId2);
+
+        KoulutusLOSEntity opintojakso1 = koulutusLOSDAO.get(opintojaksoId1);
+        KoulutusLOSEntity opintojakso2 = koulutusLOSDAO.get(opintojaksoId2);
+        KoulutusLOSEntity opintojakso3 = koulutusLOSDAO.get(opintojaksoId3);
+
+        assertNotNull(opintokokonaisuus1);
+        assertNotNull(opintokokonaisuus2);
+        assertNotNull(opintokokonaisuus3);
+
+        assertNotNull(nestedKokonaisuus1);
+        assertNotNull(nestedKokonaisuus2);
+
+        assertNotNull(opintojakso1);
+        assertNotNull(opintojakso2);
+        assertNotNull(opintojakso3);
+
+        assertEquals(getLosOpintojaksoIds(opintokokonaisuus3), Lists.newArrayList(nestedKokonaisuusId1));
+        assertEquals(getLosOpintojaksoIds(opintokokonaisuus2), Lists.newArrayList(nestedKokonaisuusId1, nestedKokonaisuusId2));
+        assertEquals(getLosOpintojaksoIds(opintokokonaisuus1), Lists.newArrayList(nestedKokonaisuusId2));
+
+        assertEquals(getLosOpintokokonaisuusIds(nestedKokonaisuus1), Lists.newArrayList(opintokokonaisuusId2, opintokokonaisuusId3));
+        assertEquals(getLosOpintokokonaisuusIds(nestedKokonaisuus2), Lists.newArrayList(opintokokonaisuusId2, opintokokonaisuusId1));
+
+        assertEquals(getLosOpintojaksoIds(nestedKokonaisuus1), Lists.newArrayList(opintojaksoId1, opintojaksoId2));
+        assertEquals(getLosOpintojaksoIds(nestedKokonaisuus2), Lists.newArrayList(opintojaksoId1, opintojaksoId3));
+
+        assertEquals(getLosOpintokokonaisuusIds(opintojakso1), Lists.newArrayList(nestedKokonaisuusId2, nestedKokonaisuusId1));
+        assertEquals(getLosOpintokokonaisuusIds(opintojakso2), Lists.newArrayList(nestedKokonaisuusId1));
+        assertEquals(getLosOpintokokonaisuusIds(opintojakso3), Lists.newArrayList(nestedKokonaisuusId2));
     }
 
     @Test
@@ -320,4 +368,11 @@ public class IncrementalIndexerTest {
         return e;
     }
 
+    private List<String> getLosOpintojaksoIds(KoulutusLOSEntity los) {
+        return los.getOpintojaksos().stream().map(s -> s.getId()).collect(Collectors.toList());
+    }
+
+    private List<String> getLosOpintokokonaisuusIds(KoulutusLOSEntity los) {
+        return los.getOpintokokonaisuudet().stream().map(s -> s.getId()).collect(Collectors.toList());
+    }
 }
