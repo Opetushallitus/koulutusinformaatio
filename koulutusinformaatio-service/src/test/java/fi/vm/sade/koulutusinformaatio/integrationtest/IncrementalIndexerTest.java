@@ -1,16 +1,10 @@
 package fi.vm.sade.koulutusinformaatio.integrationtest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,23 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.common.collect.Lists;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
-import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
-import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
@@ -289,16 +275,16 @@ public class IncrementalIndexerTest {
         assertNotNull(opintojakso3);
 
         assertEquals(getLosOpintojaksoIds(opintokokonaisuus3), Lists.newArrayList(nestedKokonaisuusId1));
-        assertEquals(getLosOpintojaksoIds(opintokokonaisuus2), Lists.newArrayList(nestedKokonaisuusId1, nestedKokonaisuusId2));
+        assertThat(getLosOpintojaksoIds(opintokokonaisuus2), containsInAnyOrder(nestedKokonaisuusId1, nestedKokonaisuusId2));
         assertEquals(getLosOpintojaksoIds(opintokokonaisuus1), Lists.newArrayList(nestedKokonaisuusId2));
 
-        assertEquals(getLosOpintokokonaisuusIds(nestedKokonaisuus1), Lists.newArrayList(opintokokonaisuusId2, opintokokonaisuusId3));
-        assertEquals(getLosOpintokokonaisuusIds(nestedKokonaisuus2), Lists.newArrayList(opintokokonaisuusId2, opintokokonaisuusId1));
+        assertThat(getLosOpintokokonaisuusIds(nestedKokonaisuus1), containsInAnyOrder(opintokokonaisuusId2, opintokokonaisuusId3));
+        assertThat(getLosOpintokokonaisuusIds(nestedKokonaisuus2), containsInAnyOrder(opintokokonaisuusId2, opintokokonaisuusId1));
 
-        assertEquals(getLosOpintojaksoIds(nestedKokonaisuus1), Lists.newArrayList(opintojaksoId1, opintojaksoId2));
-        assertEquals(getLosOpintojaksoIds(nestedKokonaisuus2), Lists.newArrayList(opintojaksoId1, opintojaksoId3));
+        assertThat(getLosOpintojaksoIds(nestedKokonaisuus1), containsInAnyOrder(opintojaksoId1, opintojaksoId2));
+        assertThat(getLosOpintojaksoIds(nestedKokonaisuus2), containsInAnyOrder(opintojaksoId1, opintojaksoId3));
 
-        assertEquals(getLosOpintokokonaisuusIds(opintojakso1), Lists.newArrayList(nestedKokonaisuusId2, nestedKokonaisuusId1));
+        assertThat(getLosOpintokokonaisuusIds(opintojakso1), containsInAnyOrder(nestedKokonaisuusId2, nestedKokonaisuusId1));
         assertEquals(getLosOpintokokonaisuusIds(opintojakso2), Lists.newArrayList(nestedKokonaisuusId1));
         assertEquals(getLosOpintokokonaisuusIds(opintojakso3), Lists.newArrayList(nestedKokonaisuusId2));
     }
