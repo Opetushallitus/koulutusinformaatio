@@ -177,6 +177,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
 
     private void indexKomotoChanges(Set<String> komotoChanges) {
+        int indexed = 0;
         for (String curOid : komotoChanges) {
             try {
                 if (!tarjontaService.hasAlreadyProcessedOid(curOid)) {
@@ -187,6 +188,11 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 }
             } catch (Exception ex) {
                 LOG.warn("problem indexing komoto: " + curOid, ex);
+            } finally {
+                indexed++;
+                if(indexed % 100 == 0) {
+                    LOG.info("Indexed {}/{} komotos", indexed, komotoChanges.size());
+                }
             }
         }
     }
