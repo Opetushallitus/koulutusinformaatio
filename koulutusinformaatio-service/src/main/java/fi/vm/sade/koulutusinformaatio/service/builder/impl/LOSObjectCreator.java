@@ -1373,13 +1373,15 @@ public class LOSObjectCreator extends ObjectCreator {
 
         for (String parentId : childOids.keySet()) {
             KoulutusLOS parent = createdOpintos.get(parentId);
-            recursiveAddApplicationOptions(parent, parent.getApplicationOptions());
+            if (parent != null) {
+                recursiveAddApplicationOptions(parent, parent.getApplicationOptions());
+            }
         }
 
-        for (String oid : createdOpintos.keySet()) {
-            KoulutusLOS los = createdOpintos.get(oid);
-            if (losIsInvalid(los)) {
-                createdOpintos.remove(oid);
+        for (Iterator<Map.Entry<String, KoulutusLOS>> it = createdOpintos.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, KoulutusLOS> entry = it.next();
+            if (losIsInvalid(entry.getValue())) {
+                it.remove();
             }
         }
 
@@ -1389,18 +1391,16 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     private boolean losIsInvalid(KoulutusLOS los) {
-        // TODO: Näytetäänkö kokonaisuudet ilman jaksoja?
+        // Myös kokonaisuudet ilman opintojaksoja näytetään!
         return los == null || los.getApplicationOptions().isEmpty();
     }
 
     private void recursiveAddApplicationOptions(KoulutusLOS parent, List<ApplicationOption> aos) {
-        if (parent != null) {
-            for (KoulutusLOS child : parent.getOpintojaksos()) {
-                Set<ApplicationOption> childAos = Sets.newHashSet(child.getApplicationOptions());
-                childAos.addAll(aos);
-                child.setApplicationOptions(Lists.newArrayList(childAos));
-                recursiveAddApplicationOptions(child, aos);
-            }
+        for (KoulutusLOS child : parent.getOpintojaksos()) {
+            Set<ApplicationOption> childAos = Sets.newHashSet(child.getApplicationOptions());
+            childAos.addAll(aos);
+            child.setApplicationOptions(Lists.newArrayList(childAos));
+            recursiveAddApplicationOptions(child, aos);
         }
     }
 
