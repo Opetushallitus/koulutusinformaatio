@@ -35,8 +35,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PreviewServiceImpl implements PreviewService {
 
-    private TarjontaService tarjontaService;
     private static final Logger LOG = LoggerFactory.getLogger(PreviewServiceImpl.class);
+    private TarjontaService tarjontaService;
 
     @Autowired
     public PreviewServiceImpl (TarjontaService tarjontaService) {
@@ -49,15 +49,15 @@ public class PreviewServiceImpl implements PreviewService {
         try {
             HigherEducationLOS los = this.tarjontaService.findHigherEducationLearningOpportunity(oid);
             if (los == null) {
-                throw new ResourceNotFoundException("Resource: " + oid + " not found");
+                throw new ResourceNotFoundException("Resource: " + oid + " not found, got null");
             }
             return los;
         } catch (TarjontaParseException | KoodistoException | OrganisaatioException e) {
             e.printStackTrace();
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+            throw new ResourceNotFoundException("Resource: " + oid + " not found", e);
         } catch (NoValidApplicationOptionsException e) {
             LOG.error("preview failed due to missing hakukohdes. This should no happen.");
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+            throw new ResourceNotFoundException("Resource: " + oid + " not found", e);
 
         }
     }
@@ -69,14 +69,16 @@ public class PreviewServiceImpl implements PreviewService {
             return this.tarjontaService.createCBQPLOS(oid, false);
         } catch (TarjontaParseException | KoodistoException e) {
             e.printStackTrace();
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+            throw new ResourceNotFoundException("Resource: " + oid + " not found", e);
         }
     }
-    
+
     @Override
     public KoulutusLOS previewKoulutusLearningOpportunity(String oid) throws ResourceNotFoundException {
         try {
             KoulutusLOS los = this.tarjontaService.createKoulutusLOS(oid, false);
+            if(los == null) throw new ResourceNotFoundException("No matching oid " + oid);
+
             if (SolrConstants.ED_TYPE_AMMATILLINEN.equals(los.getEducationType())) {
                 TutkintoLOS tutkinto = new TutkintoLOS();
                 tutkinto.setName(los.getEducationCode().getName());
@@ -85,7 +87,7 @@ public class PreviewServiceImpl implements PreviewService {
             return los;
         } catch (KIException e) {
             LOG.warn("Resource: " + oid + " not found", e);
-            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+            throw new ResourceNotFoundException("Resource: " + oid + " not found", e);
         }
     }
 

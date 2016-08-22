@@ -121,6 +121,7 @@ public class LOSObjectCreatorTest extends TestCase {
         when(providerService.getByOID(any(String.class))).thenReturn(new Provider());
         when(aoCreator.createV1EducationApplicationOption(any(KoulutusLOS.class), any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class)))
                 .thenReturn(givenApplicationOption());
+        when(koodistoService.searchNames(any(String.class))).thenReturn(Collections.singletonList(new I18nText(ImmutableMap.of("kieli_fi", "Hakukohde"))));
         KoulutusLOS los = creator.createKansanopistoLOS(koulutus, false);
         assertEquals(los.getName(), los.getApplicationOptions().get(0).getName());
         assertEquals(los.getShortTitle(), los.getApplicationOptions().get(0).getName());
@@ -128,7 +129,6 @@ public class LOSObjectCreatorTest extends TestCase {
 
     @Test
     public void createKorkeakouluopintoLOSOverwritesSeasonIfExtraParams() throws Exception{
-
         when(providerService.getOppilaitosTyyppiByOID(any(String.class))).thenReturn(TarjontaConstants.OPPILAITOSTYYPPI_AMK);
         when(tarjontaRawService.getV1EducationHakukohde(any(String.class))).thenReturn(givenV1Hakukohde());
         when(tarjontaRawService.findHakukohdesByEducationOid(any(String.class), anyBoolean())).thenReturn(givenHakukohdeResult());
@@ -158,8 +158,8 @@ public class LOSObjectCreatorTest extends TestCase {
         KoodiV1RDTO syksy = new KoodiV1RDTO("syksyUri", 1, "Syksy");
         KoodiV1RDTO kevat = givenKevatKoodiV1RDTOWithMeta();
 
-        KorkeakouluOpintoV1RDTO dto = givenKorkeakouluOpintoDTO();
-        KorkeakouluOpintoV1RDTO dto2 = givenKorkeakouluOpintoDTO();
+        KorkeakouluOpintoV1RDTO dto = givenKorkeakouluOpintoDTO("921.00.123.12");
+        KorkeakouluOpintoV1RDTO dto2 = givenKorkeakouluOpintoDTO("921.00.123.13");
 
         // LO with starting season overwrite using extraParams
         dto.setOpintopolkuAlkamiskausi(kesaMap);
@@ -173,15 +173,15 @@ public class LOSObjectCreatorTest extends TestCase {
          * First los should have startSeason as 'Summer', because of extraParams.
          * Second los should have startSeason as 'Spring'.
          */
-        KoulutusLOS los = creator.createKorkeakouluopinto(dto, false, false);
-        KoulutusLOS los2 = creator.createKorkeakouluopinto(dto2, false, false);
+        List<KoulutusLOS> los = creator.createKorkeakouluOpintos(dto, false);
+        List<KoulutusLOS> los2 = creator.createKorkeakouluOpintos(dto2, false);
 
-        assertEquals(I18NKesa.get("fi"), los.getStartSeason().get("fi"));
-        assertEquals(I18NKesa.get("sv"), los.getStartSeason().get("sv"));
-        assertEquals(I18NKesa.get("en"), los.getStartSeason().get("en"));
-        assertEquals(I18NKevat.get("fi"), los2.getStartSeason().get("fi"));
-        assertEquals(I18NKevat.get("sv"), los2.getStartSeason().get("sv"));
-        assertEquals(I18NKevat.get("en"), los2.getStartSeason().get("en"));
+        assertEquals(I18NKesa.get("fi"), los.get(0).getStartSeason().get("fi"));
+        assertEquals(I18NKesa.get("sv"), los.get(0).getStartSeason().get("sv"));
+        assertEquals(I18NKesa.get("en"), los.get(0).getStartSeason().get("en"));
+        assertEquals(I18NKevat.get("fi"), los2.get(0).getStartSeason().get("fi"));
+        assertEquals(I18NKevat.get("sv"), los2.get(0).getStartSeason().get("sv"));
+        assertEquals(I18NKevat.get("en"), los2.get(0).getStartSeason().get("en"));
     }
 
 
@@ -300,7 +300,7 @@ public class LOSObjectCreatorTest extends TestCase {
         return codeMap;
     }
 
-    private KorkeakouluOpintoV1RDTO givenKorkeakouluOpintoDTO () {
+    private KorkeakouluOpintoV1RDTO givenKorkeakouluOpintoDTO(String oid) {
         KorkeakouluOpintoV1RDTO dto = new KorkeakouluOpintoV1RDTO();
 
         dto.setKoulutusmoduuliTyyppi(KoulutusmoduuliTyyppi.OPINTOKOKONAISUUS);
@@ -310,7 +310,7 @@ public class LOSObjectCreatorTest extends TestCase {
         dto.setKoulutusmoduuliTyyppi(KoulutusmoduuliTyyppi.OPINTOKOKONAISUUS);
         dto.setModified(new Date());
         dto.setModifiedBy("Teppo Testaaja");
-        dto.setOid("921.00.123.12");
+        dto.setOid(oid);
         dto.setOrganisaatio(new OrganisaatioV1RDTO("orgOid"));
         dto.setTila(TarjontaTila.JULKAISTU);
         dto.setKoulutuksenAlkamisPvms(Sets.newHashSet(new Date()));

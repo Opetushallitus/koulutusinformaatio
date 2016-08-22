@@ -1,9 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -150,7 +147,7 @@ public class KoulutusLOSEntity {
     private ToteutustyyppiEnum toteutustyyppi;
 
     @Reference
-    private KoulutusLOSEntity opintokokonaisuus;
+    private Set<KoulutusLOSEntity> opintokokonaisuudet;
     @Reference
     private List<KoulutusLOSEntity> opintojaksos = Lists.newArrayList();
 
@@ -660,12 +657,12 @@ public class KoulutusLOSEntity {
         this.toteutustyyppi = toteutustyyppi;
     }
 
-    public KoulutusLOSEntity getOpintokokonaisuus() {
-        return opintokokonaisuus;
+    public Set<KoulutusLOSEntity> getOpintokokonaisuudet() {
+        return opintokokonaisuudet;
     }
 
-    public void setOpintokokonaisuus(KoulutusLOSEntity opintokokonaisuus) {
-        this.opintokokonaisuus = opintokokonaisuus;
+    public void setOpintokokonaisuudet(Set<KoulutusLOSEntity> opintokokonaisuudet) {
+        this.opintokokonaisuudet = opintokokonaisuudet;
     }
 
     public List<KoulutusLOSEntity> getOpintojaksos() {

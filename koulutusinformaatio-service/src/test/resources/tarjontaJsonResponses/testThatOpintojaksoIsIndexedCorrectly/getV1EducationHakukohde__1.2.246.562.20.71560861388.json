@@ -1,0 +1,138 @@
+{
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : 1470303190524,
+    "modifiedBy" : "1.2.246.562.24.10599831916",
+    "oid" : "1.2.246.562.20.71560861388",
+    "version" : 15,
+    "hakukohteenNimi" : null,
+    "hakukohteenNimiUri" : null,
+    "hakukohteenNimet" : {
+      "kieli_fi" : "1050 testihakukohde"
+    },
+    "tarjoajaNimet" : {
+      "fi" : "Aalto-yliopisto, Avoin yliopisto",
+      "sv" : "Aalto-universitetet, Öppna universitetet",
+      "en" : "Aalto University, Open University"
+    },
+    "koulutusmoduuliToteutusTarjoajatiedot" : {
+      "1.2.246.562.17.68150415666" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.60811147247" ]
+      },
+      "1.2.246.562.17.19043044304" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.60811147247" ]
+      },
+      "1.2.246.562.17.21796457501" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.60811147247" ]
+      },
+      "1.2.246.562.17.92024584614" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.60811147247" ]
+      },
+      "1.2.246.562.17.26568957778" : {
+        "tarjoajaOids" : [ "1.2.246.562.10.60811147247" ]
+      }
+    },
+    "tarjoajaOids" : [ "1.2.246.562.10.60811147247" ],
+    "hakuOid" : "1.2.246.562.29.34904810545",
+    "hakuaikaId" : "8055011",
+    "hakukelpoisuusvaatimusUris" : [ ],
+    "opintoOikeusUris" : [ ],
+    "hakukohdeKoulutusOids" : [ "1.2.246.562.17.92024584614", "1.2.246.562.17.26568957778", "1.2.246.562.17.68150415666", "1.2.246.562.17.21796457501", "1.2.246.562.17.19043044304" ],
+    "koulutukset" : [ {
+      "oid" : "1.2.246.562.17.26568957778",
+      "uniqueExternalId" : null
+    }, {
+      "oid" : "1.2.246.562.17.19043044304",
+      "uniqueExternalId" : null
+    }, {
+      "oid" : "1.2.246.562.17.92024584614",
+      "uniqueExternalId" : null
+    }, {
+      "oid" : "1.2.246.562.17.68150415666",
+      "uniqueExternalId" : null
+    }, {
+      "oid" : "1.2.246.562.17.21796457501",
+      "uniqueExternalId" : null
+    } ],
+    "hakuaikaAlkuPvm" : null,
+    "hakuaikaLoppuPvm" : null,
+    "alinHyvaksyttavaKeskiarvo" : 0.0,
+    "alinValintaPistemaara" : 0,
+    "ylinValintapistemaara" : 0,
+    "aloituspaikatLkm" : 0,
+    "edellisenVuodenHakijatLkm" : 0,
+    "valintojenAloituspaikatLkm" : 0,
+    "sahkoinenToimitusOsoite" : null,
+    "soraKuvausKoodiUri" : null,
+    "tila" : "JULKAISTU",
+    "valintaperustekuvausKoodiUri" : null,
+    "liitteidenToimitusPvm" : null,
+    "ulkoinenTunniste" : null,
+    "uniqueExternalId" : null,
+    "koulutusAsteTyyppi" : "KORKEAKOULUTUS",
+    "toteutusTyyppi" : "KORKEAKOULUOPINTO",
+    "koulutusmoduuliTyyppi" : "OPINTOKOKONAISUUS",
+    "koulutuslaji" : null,
+    "lisatiedot" : {
+      "kieli_sv" : "",
+      "kieli_fi" : "",
+      "kieli_en" : ""
+    },
+    "valintaperusteKuvaukset" : null,
+    "soraKuvaukset" : null,
+    "hakukelpoisuusVaatimusKuvaukset" : { },
+    "aloituspaikatKuvaukset" : null,
+    "kaytetaanJarjestelmanValintaPalvelua" : true,
+    "kaytetaanHaunPaattymisenAikaa" : false,
+    "kaytetaanHakukohdekohtaistaHakuaikaa" : false,
+    "hakukohteenLiitteet" : [ ],
+    "yhteystiedot" : [ ],
+    "liitteidenToimitusOsoite" : {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : null,
+      "version" : 0,
+      "osoiterivi1" : "PL 11110",
+      "osoiterivi2" : null,
+      "postinumero" : "posti_00076",
+      "postinumeroArvo" : "00076",
+      "postitoimipaikka" : "AALTO"
+    },
+    "valintakokeet" : [ ],
+    "valintaPerusteKuvausTunniste" : null,
+    "kaksoisTutkinto" : false,
+    "soraKuvausTunniste" : null,
+    "opetusKielet" : [ "kieli_se", "kieli_fi", "kieli_sm" ],
+    "valintaPerusteKuvausKielet" : [ ],
+    "soraKuvausKielet" : [ ],
+    "painotettavatOppiaineet" : [ ],
+    "hakuMenettelyKuvaukset" : {
+      "kieli_sv" : "",
+      "kieli_fi" : "",
+      "kieli_en" : ""
+    },
+    "peruutusEhdotKuvaukset" : {
+      "kieli_sv" : "",
+      "kieli_fi" : "",
+      "kieli_en" : ""
+    },
+    "ryhmaliitokset" : [ ],
+    "organisaatioRyhmaOids" : [ ],
+    "ylioppilastutkintoAntaaHakukelpoisuuden" : false,
+    "kelaLinjaKoodi" : null,
+    "kelaLinjaTarkenne" : null,
+    "ensikertalaistenAloituspaikat" : null,
+    "pohjakoulutusliitteet" : [ ],
+    "josYoEiMuitaLiitepyyntoja" : false,
+    "hakulomakeUrl" : null,
+    "overridesHaunHakulomakeUrl" : false,
+    "ohjeetUudelleOpiskelijalle" : null
+  },
+  "status" : "OK",
+  "errors" : null,
+  "accessRights" : { },
+  "params" : null
+}

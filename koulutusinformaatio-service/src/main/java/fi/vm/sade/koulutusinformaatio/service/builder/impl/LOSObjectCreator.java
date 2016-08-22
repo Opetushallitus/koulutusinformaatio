@@ -57,7 +57,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private ApplicationOptionCreator applicationOptionCreator;
 
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
-            ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService, List<String> overriddenASOids) {
+                            ProviderService providerService, OrganisaatioRawService organisaatioRawService, ParameterService parameterService, List<String> overriddenASOids) {
         super(koodistoService);
         applicationOptionCreator = new ApplicationOptionCreator(koodistoService, organisaatioRawService, parameterService, overriddenASOids);
         this.koodistoService = koodistoService;
@@ -417,7 +417,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (Code curQual : quals)
                 if (curQual != null)
                     qualifications.add(curQual.getName());
-        } else if(koulutus.getTutkintonimike() != null) {
+        } else if (koulutus.getTutkintonimike() != null) {
             qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike()));
         }
 
@@ -441,8 +441,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (result == null
                 || result.getResult() == null
                 || result.getResult().getTulokset() == null
-                || result.getResult().getTulokset().isEmpty())
-        {
+                || result.getResult().getTulokset().isEmpty()) {
             return false;
         }
         List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> hakukohdeTarjoajat = result.getResult().getTulokset();
@@ -478,7 +477,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
                 if (checkStatus
                         && (hakukohdeDTO == null || hakukohdeDTO.getTila() == null || !hakukohdeDTO.getTila().toString()
-                                .equals(TarjontaTila.JULKAISTU.toString()))) {
+                        .equals(TarjontaTila.JULKAISTU.toString()))) {
                     invalidOids.add(aoId);
                     continue;
                 }
@@ -859,8 +858,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         if (koulutus.getAihees() != null && koulutus.getAihees().getUris() != null && !koulutus.getAihees().getUris().isEmpty()) {
             los.setTopics(createCodes(koulutus.getAihees()));
-        }
-        else if (koulutus.getOpintoala() != null) {
+        } else if (koulutus.getOpintoala() != null) {
             los.setTopics(getTopics(koulutus.getOpintoala().getUri()));
         }
         if (los.getTopics() != null) {
@@ -869,7 +867,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getAmmattinimikkeet() != null) {
             los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
         }
-        
+
         los.setKomoOid(koulutus.getKomoOid());
 
         Map<String, Code> availableLanguagesMap = new HashMap<>();
@@ -1016,7 +1014,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
 
         if (koulutus.getOpintojenLaajuusyksikko() != null
-            && !StringUtils.isBlank(koulutus.getOpintojenLaajuusyksikko().getUri())) {
+                && !StringUtils.isBlank(koulutus.getOpintojenLaajuusyksikko().getUri())) {
             los.setCreditUnitShort(koodistoService.searchFirst(koulutus.getOpintojenLaajuusyksikko().getUri()).getShortTitle());
         }
 
@@ -1062,7 +1060,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (!checkStatus) {
             los.setStatus(koulutus.getTila().toString());
         }
-        
+
     }
 
     private <S extends KoulutusAmmatillinenPerustutkintoV1RDTO, T extends KoulutusLOS> void addKoulutusAmmatillinenPerustutkintoV1Fields(S koulutus, T los)
@@ -1344,66 +1342,100 @@ public class LOSObjectCreator extends ObjectCreator {
         this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
     }
 
-    private KoulutusLOS createKorkeakouluopinto(String oid, boolean checkStatus, boolean isRecursiveCall) {
-        ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
-        if (result != null) {
-            KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) result.getResult();
-            return createKorkeakouluopinto(koulutusDTO, checkStatus, isRecursiveCall);
-        }
-        return null;
-    }
-
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
 
-    public KoulutusLOS createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, boolean isRecursiveCallForOpintojakso) {
-        if (checkStatus && alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) {
-            LOG.debug("Korkeakouluopinto on jo käsitelty aiemmin.");
-            return null;
-        }
-        if (!StringUtils.isBlank(dto.getOpintokokonaisuusOid()) && !isRecursiveCallForOpintojakso) {
-            LOG.debug("Opintojakso kuuluu opintokokonaisuuteen {} -> luodaan opintokokonaisuus.", dto.getOpintokokonaisuusOid());
-            KoulutusLOS opintokokonaisuus = createKorkeakouluopinto(dto.getOpintokokonaisuusOid(), checkStatus, false);
-            if (opintokokonaisuus != null) {
-                alreadyCreatedKorkeakouluOpintos.add(opintokokonaisuus.getId());
-            }
-            return opintokokonaisuus;
-        }
-        LOG.debug("Luodaan korkeakouluopinto {} {}", dto.getKoulutusmoduuliTyyppi().name(), dto.getOid());
+    public List<KoulutusLOS> createKorkeakouluOpintos(KorkeakouluOpintoV1RDTO dto, boolean checkStatus) {
+        HashMap<String, KoulutusLOS> createdOpintos = Maps.newHashMap();
+        HashMap<String, Set<String>> childOids = Maps.newHashMap();
+        createKorkeakouluopinto(dto, checkStatus, createdOpintos, childOids);
 
-        // Jos opintojakso kuuluu kokonaisuuteen, kokonaisuudella on hakukohde ja opintojakso voi olla ilman.
-        boolean needsAOsToBeValid = StringUtils.isEmpty(dto.getOpintokokonaisuusOid());
+        for (String parentId : childOids.keySet()) {
+            KoulutusLOS parent = createdOpintos.get(parentId);
+            if (parent != null) {
+                Set<KoulutusLOS> childOpintojaksos = Sets.newHashSet();
+                for (String childId : childOids.get(parentId)) {
+                    KoulutusLOS child = createdOpintos.get(childId);
+                    if (child != null) {
+                        child.appendOpintokokonaisuus(parent);
+                        childOpintojaksos.add(child);
+                    }
+                }
 
-        KoulutusLOS los = new KoulutusLOS();
-        los.setType(TarjontaConstants.TYPE_KOULUTUS);
+                for (KoulutusLOS child : childOpintojaksos) {
+                    Set<KoulutusLOS> siblings = Sets.newHashSet(child.getSiblings());
+                    siblings.addAll(childOpintojaksos);
+                    child.setSiblings(Lists.newArrayList(siblings));
+                }
 
-        try {
-            addKorkeakouluopintoEducationType(dto, los);
-            addKoulutusV1Fields(dto, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, needsAOsToBeValid);
-            addTutkintoonJohtamatonKoulutusFields(dto, los);
-        } catch (KoodistoException | OrganisaatioException | TarjontaParseException e) {
-            LOG.warn("Failed to create korkeakouluopinto {}", dto.getOid(), e);
-            return null;
-        } catch (NoValidApplicationOptionsException e) {
-            LOG.info("Korkeakouluopinto required application options and didn't have them {}, reason: {}", dto.getOid(), e.getMessage());
-            return null;
-        }
-
-        List<KoulutusLOS> childOpintojaksos = Lists.newArrayList();
-        alreadyCreatedKorkeakouluOpintos.add(los.getId());
-        for (String opintojaksoOid : dto.getOpintojaksoOids()) {
-            KoulutusLOS opintojakso = createKorkeakouluopinto(opintojaksoOid, checkStatus, true);
-            if (opintojakso != null) {
-                alreadyCreatedKorkeakouluOpintos.add(opintojakso.getId());
-                opintojakso.setOpintokokonaisuus(los);
-                opintojakso.getApplicationOptions().addAll(los.getApplicationOptions());
-                childOpintojaksos.add(opintojakso);
+                parent.getOpintojaksos().addAll(childOpintojaksos);
             }
         }
-        for (KoulutusLOS child : childOpintojaksos) {
-            child.setSiblings(childOpintojaksos);
+
+        for (String parentId : childOids.keySet()) {
+            KoulutusLOS parent = createdOpintos.get(parentId);
+            if (parent != null) {
+                recursiveAddApplicationOptions(parent, parent.getApplicationOptions());
+            }
         }
-        los.setOpintojaksos(childOpintojaksos);
-        return los;
+
+        for (Iterator<Map.Entry<String, KoulutusLOS>> it = createdOpintos.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, KoulutusLOS> entry = it.next();
+            if (losIsInvalid(entry.getValue())) {
+                it.remove();
+            }
+        }
+
+        alreadyCreatedKorkeakouluOpintos.addAll(createdOpintos.keySet());
+
+        return Lists.newArrayList(createdOpintos.values());
+    }
+
+    private boolean losIsInvalid(KoulutusLOS los) {
+        // Myös kokonaisuudet ilman opintojaksoja näytetään!
+        return los == null || los.getApplicationOptions().isEmpty();
+    }
+
+    private void recursiveAddApplicationOptions(KoulutusLOS parent, List<ApplicationOption> aos) {
+        for (KoulutusLOS child : parent.getOpintojaksos()) {
+            Set<ApplicationOption> childAos = Sets.newHashSet(child.getApplicationOptions());
+            childAos.addAll(aos);
+            child.setApplicationOptions(Lists.newArrayList(childAos));
+            recursiveAddApplicationOptions(child, aos);
+        }
+    }
+
+    private void createKorkeakouluopinto(String oid, boolean checkStatus, HashMap<String, KoulutusLOS> createdOpintos, HashMap<String, Set<String>> childOids) {
+        if (!createdOpintos.containsKey(oid)) {
+            ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
+            if (result != null) {
+                KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) result.getResult();
+                createKorkeakouluopinto(koulutusDTO, checkStatus, createdOpintos, childOids);
+            }
+        }
+    }
+
+    private void createKorkeakouluopinto(KorkeakouluOpintoV1RDTO dto, boolean checkStatus, HashMap<String, KoulutusLOS> createdOpintos, HashMap<String, Set<String>> childOids) {
+        KoulutusLOS los = createKorkeakouluOpintoKoulutus(dto, checkStatus);
+
+        createdOpintos.put(dto.getOid(), los);
+
+        if (!childOids.containsKey(dto.getOid())) {
+            childOids.put(dto.getOid(), Sets.<String>newHashSet());
+        }
+
+        childOids.get(dto.getOid()).addAll(dto.getOpintojaksoOids());
+
+        if (dto.getOpintojaksoOids() != null) {
+            for (String opintojaksoOid : dto.getOpintojaksoOids()) {
+                createKorkeakouluopinto(opintojaksoOid, checkStatus, createdOpintos, childOids);
+            }
+        }
+
+        if (dto.getSisaltyyKoulutuksiin() != null){
+            for (KoulutusIdentification opinto : dto.getSisaltyyKoulutuksiin()) {
+                createKorkeakouluopinto(opinto.getOid(), checkStatus, createdOpintos, childOids);
+            }
+        }
     }
 
     private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws OrganisaatioException {
@@ -1426,6 +1458,34 @@ public class LOSObjectCreator extends ObjectCreator {
                     tyypinMaarittavaOrganisaatioOid);
             throw new OrganisaatioException(String.format("Tuntematon oppilaitostyyppi %s koulutuksella %s", oppilaitostyyppi, dto.getOid()));
         }
+    }
+
+    /**
+     * @param dto
+     * @param checkStatus
+     * @return Koulutuslos tai null jos virheellinen
+     */
+    private KoulutusLOS createKorkeakouluOpintoKoulutus(KorkeakouluOpintoV1RDTO dto, boolean checkStatus) {
+        LOG.debug("Luodaan korkeakouluopinto {} {}", dto.getKoulutusmoduuliTyyppi().name(), dto.getOid());
+
+        // Jos opintojakso kuuluu kokonaisuuteen, kokonaisuudella on hakukohde ja opintojakso voi olla ilman.
+        boolean needsAOsToBeValid = StringUtils.isEmpty(dto.getOpintokokonaisuusOid());
+
+        KoulutusLOS los = new KoulutusLOS();
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
+
+        try {
+            addKorkeakouluopintoEducationType(dto, los);
+            addKoulutusV1Fields(dto, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, needsAOsToBeValid);
+            addTutkintoonJohtamatonKoulutusFields(dto, los);
+        } catch (KoodistoException | OrganisaatioException | TarjontaParseException e) {
+            LOG.warn("Failed to create korkeakouluopinto {}", dto.getOid(), e);
+            return null;
+        } catch (NoValidApplicationOptionsException e) {
+            LOG.info("Korkeakouluopinto required application options and didn't have them {}, reason: {}", dto.getOid(), e.getMessage());
+            return null;
+        }
+        return los;
     }
 
 }

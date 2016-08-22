@@ -1,0 +1,74 @@
+{
+  "result" : {
+    "created" : null,
+    "createdBy" : null,
+    "modified" : null,
+    "modifiedBy" : null,
+    "oid" : null,
+    "version" : null,
+    "tulokset" : [ {
+      "created" : null,
+      "createdBy" : null,
+      "modified" : null,
+      "modifiedBy" : null,
+      "oid" : "1.2.246.562.10.60811147247",
+      "version" : 0,
+      "nimi" : {
+        "fi" : "Aalto-yliopisto, Avoin yliopisto",
+        "sv" : "Aalto-universitetet, Öppna universitetet",
+        "en" : "Aalto University, Open University"
+      },
+      "tulokset" : [ {
+        "created" : null,
+        "createdBy" : null,
+        "modified" : null,
+        "modifiedBy" : null,
+        "oid" : "1.2.246.562.20.71560861388",
+        "version" : null,
+        "nimi" : {
+          "fi" : "1050 testihakukohde"
+        },
+        "kausi" : {
+          "fi" : "Syksy",
+          "sv" : "Höst",
+          "en" : "Autumn"
+        },
+        "kausiUri" : null,
+        "vuosi" : 2016,
+        "koulutuslajiUri" : null,
+        "tila" : "JULKAISTU",
+        "koulutusasteTyyppi" : "KORKEAKOULUTUS",
+        "toteutustyyppiEnum" : "KORKEAKOULUOPINTO",
+        "pohjakoulutusvaatimus" : null,
+        "koulutuskoodi" : null,
+        "koulutuksenAlkamisPvmMin" : null,
+        "koulutuksenAlkamisPvmMax" : null,
+        "tarjoajat" : null,
+        "koulutusmoduuliTyyppi" : "OPINTOKOKONAISUUS",
+        "komoOid" : null,
+        "opetuskielet" : [ "kieli_se", "kieli_fi", "kieli_sm" ],
+        "koulutuksenTarjoajaKomoto" : null,
+        "parentKomoOid" : null,
+        "siblingKomotos" : null,
+        "hakutapa" : {
+          "fi" : "Erillishaku",
+          "sv" : "Separata antagningar",
+          "en" : "Erillishaku"
+        },
+        "aloituspaikatKuvaukset" : null,
+        "hakuaikaString" : null,
+        "hakuaikaRyhma" : "(2016-08-02 13:21 - 2016-08-08 13:21)",
+        "aloituspaikat" : 0,
+        "hakuOid" : "1.2.246.562.29.34904810545",
+        "ryhmaliitokset" : [ ],
+        "ensikertalaistenAloituspaikat" : null,
+        "koulutuslaji" : { }
+      } ]
+    } ],
+    "tuloksia" : 1
+  },
+  "status" : "OK",
+  "errors" : null,
+  "accessRights" : { },
+  "params" : null
+}

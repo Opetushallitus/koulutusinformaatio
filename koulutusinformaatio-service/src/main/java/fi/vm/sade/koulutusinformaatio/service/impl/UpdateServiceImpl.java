@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
@@ -161,16 +162,13 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Löytyi {} opintojaksoa.", opintojaksot.size());
             for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
                 LOG.debug("Luodaan ja tallennetaan opintojakso: {}", dto.getOid());
-                KoulutusLOS los = tarjontaService.createKorkeakouluopinto(dto);
-                if (los != null) {
+                List<KoulutusLOS> allLoses = tarjontaService.createKorkeakouluopinto(dto);
+                for (KoulutusLOS los : allLoses) {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(los);
-                    for (KoulutusLOS child : los.getOpintojaksos()) {
-                        indexToSolr(child, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                        this.educationDataUpdateService.save(child);
-                    }
                 }
             }
+
             LOG.info("Korkeakouluopinnot tallennettu.");
             tarjontaService.clearProcessedLists();
             switchTask(stopwatch, "Aikuislukio ja aikuisten perusopetus");

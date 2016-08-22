@@ -164,34 +164,41 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
-    public void indexKorkeakouluopintoKomoto(KoulutusHakutulosV1RDTO dto) throws KISolrException {
-        KoulutusLOS los = tarjontaService.createKorkeakouluopinto(dto);
+    public void indexKorkeakouluopintoKomoto(KoulutusHakutulosV1RDTO dto) throws KISolrException, KoodistoException, TarjontaParseException, OrganisaatioException, NoValidApplicationOptionsException {
+        List<KoulutusLOS> allLoses = tarjontaService.createKorkeakouluopinto(dto);
 
-        KoulutusLOS losToRemove = (KoulutusLOS) dataQueryService.getLos(dto.getOid());
-        if (losToRemove != null) {
-            removeKorkeakouluOpintoAndRelatives(losToRemove);
+        for (KoulutusLOS los : allLoses) {
+            LOG.debug("getting los: {}", los.getId());
+            dataUpdateService.deleteLos(los);
         }
 
-        if(los != null) {
-            this.indexToSolr(los);
-            this.dataUpdateService.updateKoulutusLos(los);
-
-            for (KoulutusLOS child : los.getOpintojaksos()) {
-                this.indexToSolr(child);
-                this.dataUpdateService.updateKoulutusLos(child);
+        for (KoulutusLOS los : allLoses) {
+            if (los != null) {
+                this.indexToSolr(los);
+                this.dataUpdateService.updateKoulutusLos(los);
             }
         }
     }
 
-    private void removeKorkeakouluOpintoAndRelatives(KoulutusLOS los) {
-        if (los.getOpintokokonaisuus() != null) {
-            removeKorkeakouluOpintoAndRelatives(los.getOpintokokonaisuus());
+    private void removeKorkeakouluOpintoAndRelatives(KoulutusLOS los, Set<String> deletedOids) {
+        if (!los.getOpintokokonaisuudet().isEmpty()) {
+            deleteKoulutusLOSParents(los, deletedOids);
         } else {
             for (KoulutusLOS child : los.getOpintojaksos()) {
+                deleteKoulutusLOSParents(child, deletedOids);
                 dataUpdateService.deleteLos(child);
             }
             dataUpdateService.deleteLos(los);
         }
 
+    }
+
+    private void deleteKoulutusLOSParents(KoulutusLOS los, Set<String> deletedOids) {
+        for (KoulutusLOS parent : los.getOpintokokonaisuudet()) {
+            if (!deletedOids.contains(parent.getId())) {
+                deletedOids.add(parent.getId());
+                removeKorkeakouluOpintoAndRelatives(parent, deletedOids);
+            }
+        }
     }
 }

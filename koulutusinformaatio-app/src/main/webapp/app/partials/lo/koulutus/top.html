@@ -11,17 +11,21 @@
         </span>
     </div>
 
-    <div data-ng-if="lo.parentLos">
-        <div data-ng-if="!(lo.qualifications.length == 1)">{{lo.educationDomain}}</div>
-        <div data-ng-if="lo.qualifications.length == 1">{{lo.educationDomain}}, {{lo.qualifications[0]}}</span></div>
+    <span data-ng-if="!(lo.qualifications.length == 1)">{{lo.educationDomain}}</span>
+    <span data-ng-if="lo.qualifications.length == 1">{{lo.educationDomain}}, {{lo.qualifications[0]}}<br></span>
 
-        <a data-ng-if="!lo.preview && lo.parentLos.type == 'TUTKINTO'" href="{{lo.parentLos.url}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{lo.parentLos.name}}</a>
-        <a data-ng-if="!lo.preview && lo.parentLos.type == 'KOULUTUS'" href="{{lo.parentLos.url}}">{{lo.parentLos.name}}</a>
+    <span data-ng-if="lo.parentLos" data-ng-repeat="parent in lo.parentLos">
+
+        <a data-ng-if="!lo.preview && parent.type == 'TUTKINTO'" href="{{parent.url}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{parent.name}}</a>
+        <a data-ng-if="!lo.preview && parent.type == 'KOULUTUS'" href="{{parent.url}}">{{parent.name}}</a>
         <!-- PREVIEW -->
-        <a data-ng-if="lo.preview && lo.parentLos.type == 'TUTKINTO'">{{lo.parentLos.name}}</a>
-        <a data-ng-if="lo.preview && lo.parentLos.type == 'KOULUTUS'" href="{{lo.parentLos.url}}">{{lo.parentLos.name}}</a>
+        <a data-ng-if="lo.preview && parent.type == 'TUTKINTO'">{{parent.name}}</a>
+        <a data-ng-if="lo.preview && parent.type == 'KOULUTUS'" href="{{parent.url}}">{{parent.name}}</a>
         <!-- END PREVIEW -->
-    </div>
+        <span ng-if="!$last">|</span>
+    </span>
+
+    <br>
 
     <h1 data-ng-if="lo.educationDegree != 'koulutusasteoph2002_31'" class="inline">
         {{lo.name}}<span data-ng-show="lo.creditValue">, {{lo.creditValue}} {{lo.toteutustyyppi == 'KORKEAKOULUOPINTO' ? lo.creditUnitShort : lo.creditUnit}}</span>

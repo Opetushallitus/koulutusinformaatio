@@ -1,13 +1,10 @@
 {
-  "status" : "OK",
-  "params" : null,
   "result" : {
-    "toteutustyyppi": "KORKEAKOULUOPINTO",
     "created" : null,
     "createdBy" : null,
-    "modified" : 1445515344207,
-    "modifiedBy" : "1.2.246.562.24.00000000001",
-    "oid" : "1.2.246.562.17.28053757085",
+    "modified" : 1471342991538,
+    "modifiedBy" : "1.2.246.562.24.10599831916",
+    "oid" : "1.2.246.562.17.68150415666",
     "version" : 1,
     "koulutuskoodi" : null,
     "koulutusaste" : null,
@@ -46,13 +43,24 @@
       "arvo" : "2",
       "nimi" : "opintopistettä",
       "meta" : {
+        "kieli_fi" : {
+          "kieliUri" : "kieli_fi",
+          "kieliVersio" : 1,
+          "kieliArvo" : "FI",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : 1,
+          "arvo" : null,
+          "nimi" : "opintopistettä",
+          "meta" : null
+        },
         "kieli_sv" : {
           "kieliUri" : "kieli_sv",
           "kieliVersio" : 1,
           "kieliArvo" : "SV",
           "kieliKaannos" : null,
           "uri" : null,
-          "versio" : null,
+          "versio" : 1,
           "arvo" : null,
           "nimi" : "studiepoäng",
           "meta" : null
@@ -63,20 +71,9 @@
           "kieliArvo" : "EN",
           "kieliKaannos" : null,
           "uri" : null,
-          "versio" : null,
+          "versio" : 1,
           "arvo" : null,
           "nimi" : "ECTS credits",
-          "meta" : null
-        },
-        "kieli_fi" : {
-          "kieliUri" : "kieli_fi",
-          "kieliVersio" : 1,
-          "kieliArvo" : "FI",
-          "kieliKaannos" : null,
-          "uri" : null,
-          "versio" : null,
-          "arvo" : null,
-          "nimi" : "opintopistettä",
           "meta" : null
         }
       }
@@ -97,7 +94,7 @@
           "kieliArvo" : "SV",
           "kieliKaannos" : null,
           "uri" : null,
-          "versio" : null,
+          "versio" : 1,
           "arvo" : null,
           "nimi" : "Högskoleexamen",
           "meta" : null
@@ -108,7 +105,7 @@
           "kieliArvo" : "FI",
           "kieliKaannos" : null,
           "uri" : null,
-          "versio" : null,
+          "versio" : 1,
           "arvo" : null,
           "nimi" : "Korkeakoulutus",
           "meta" : null
@@ -121,23 +118,24 @@
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : null,
       "uris" : { }
     },
+    "toteutustyyppi" : "KORKEAKOULUOPINTO",
     "moduulityyppi" : "KORKEAKOULUTUS",
-    "komoOid" : "1.2.246.562.13.98222067427",
-    "komotoOid" : "1.2.246.562.17.28053757085",
+    "komoOid" : "1.2.246.562.13.31302175943",
+    "komotoOid" : "1.2.246.562.17.68150415666",
     "organisaatio" : {
       "created" : null,
       "createdBy" : null,
       "modified" : null,
       "modifiedBy" : null,
-      "oid" : "1.2.246.562.10.82388989657",
+      "oid" : "1.2.246.562.10.60811147247",
       "version" : null,
-      "nimi" : "Aalto-korkeakoulusäätiö",
+      "nimi" : "Aalto-yliopisto, Avoin yliopisto",
       "nimet" : [ ]
     },
     "koulutusohjelma" : {
@@ -146,7 +144,7 @@
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : {
@@ -160,13 +158,24 @@
           "arvo" : "FI",
           "nimi" : "suomi",
           "meta" : {
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : 1,
+              "arvo" : null,
+              "nimi" : "suomi",
+              "meta" : null
+            },
             "kieli_sv" : {
               "kieliUri" : "kieli_sv",
               "kieliVersio" : 1,
               "kieliArvo" : "SV",
               "kieliKaannos" : null,
               "uri" : null,
-              "versio" : null,
+              "versio" : 1,
               "arvo" : null,
               "nimi" : "finska",
               "meta" : null
@@ -177,33 +186,23 @@
               "kieliArvo" : "EN",
               "kieliKaannos" : null,
               "uri" : null,
-              "versio" : null,
+              "versio" : 1,
               "arvo" : null,
               "nimi" : "Finnish",
-              "meta" : null
-            },
-            "kieli_fi" : {
-              "kieliUri" : "kieli_fi",
-              "kieliVersio" : 1,
-              "kieliArvo" : "FI",
-              "kieliKaannos" : null,
-              "uri" : null,
-              "versio" : null,
-              "arvo" : null,
-              "nimi" : "suomi",
               "meta" : null
             }
           }
         }
       },
       "tekstis" : {
-        "kieli_fi" : "Opintojakso 1"
+        "kieli_fi" : "1050 nestedkokonaisuus2"
       }
     },
     "tunniste" : "",
+    "uniqueExternalId" : null,
     "hakijalleNaytettavaTunniste" : null,
     "tila" : "JULKAISTU",
-    "koulutusmoduuliTyyppi" : "OPINTOJAKSO",
+    "koulutusmoduuliTyyppi" : "OPINTOKOKONAISUUS",
     "kuvausKomo" : { },
     "kuvausKomoto" : { },
     "suunniteltuKestoArvo" : null,
@@ -224,20 +223,9 @@
           "kieliArvo" : "SV",
           "kieliKaannos" : null,
           "uri" : null,
-          "versio" : null,
+          "versio" : 1,
           "arvo" : null,
           "nimi" : "Höst",
-          "meta" : null
-        },
-        "kieli_en" : {
-          "kieliUri" : "kieli_en",
-          "kieliVersio" : 1,
-          "kieliArvo" : "EN",
-          "kieliKaannos" : null,
-          "uri" : null,
-          "versio" : null,
-          "arvo" : null,
-          "nimi" : "Autumn",
           "meta" : null
         },
         "kieli_fi" : {
@@ -246,22 +234,33 @@
           "kieliArvo" : "FI",
           "kieliKaannos" : null,
           "uri" : null,
-          "versio" : null,
+          "versio" : 1,
           "arvo" : null,
           "nimi" : "Syksy",
+          "meta" : null
+        },
+        "kieli_en" : {
+          "kieliUri" : "kieli_en",
+          "kieliVersio" : 1,
+          "kieliArvo" : "EN",
+          "kieliKaannos" : null,
+          "uri" : null,
+          "versio" : 1,
+          "arvo" : null,
+          "nimi" : "Autumn",
           "meta" : null
         }
       }
     },
-    "koulutuksenAlkamisvuosi" : 2015,
-    "koulutuksenAlkamisPvms" : [ 1446069600000 ],
+    "koulutuksenAlkamisvuosi" : 2016,
+    "koulutuksenAlkamisPvms" : [ 1472590800000 ],
     "opetuskielis" : {
       "kieliUri" : null,
       "kieliVersio" : null,
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : {
@@ -275,13 +274,24 @@
           "arvo" : "FI",
           "nimi" : "suomi",
           "meta" : {
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : 1,
+              "arvo" : null,
+              "nimi" : "suomi",
+              "meta" : null
+            },
             "kieli_sv" : {
               "kieliUri" : "kieli_sv",
               "kieliVersio" : 1,
               "kieliArvo" : "SV",
               "kieliKaannos" : null,
               "uri" : null,
-              "versio" : null,
+              "versio" : 1,
               "arvo" : null,
               "nimi" : "finska",
               "meta" : null
@@ -292,20 +302,9 @@
               "kieliArvo" : "EN",
               "kieliKaannos" : null,
               "uri" : null,
-              "versio" : null,
+              "versio" : 1,
               "arvo" : null,
               "nimi" : "Finnish",
-              "meta" : null
-            },
-            "kieli_fi" : {
-              "kieliUri" : "kieli_fi",
-              "kieliVersio" : 1,
-              "kieliArvo" : "FI",
-              "kieliKaannos" : null,
-              "uri" : null,
-              "versio" : null,
-              "arvo" : null,
-              "nimi" : "suomi",
               "meta" : null
             }
           }
@@ -321,7 +320,7 @@
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : null,
@@ -333,7 +332,7 @@
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : null,
@@ -345,7 +344,7 @@
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : null,
@@ -363,14 +362,14 @@
       "meta" : null
     },
     "opetusJarjestajat" : [ ],
-    "opetusTarjoajat" : [ "1.2.246.562.10.82388989657" ],
+    "opetusTarjoajat" : [ "1.2.246.562.10.60811147247" ],
     "ammattinimikkeet" : {
       "kieliUri" : null,
       "kieliVersio" : null,
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : null,
@@ -382,29 +381,40 @@
       "kieliArvo" : null,
       "kieliKaannos" : null,
       "uri" : null,
-      "versio" : null,
+      "versio" : 1,
       "arvo" : null,
       "nimi" : null,
       "meta" : {
-        "aiheet_34" : {
+        "aiheet_15" : {
           "kieliUri" : null,
           "kieliVersio" : null,
           "kieliArvo" : null,
           "kieliKaannos" : null,
-          "uri" : "aiheet_34",
+          "uri" : "aiheet_15",
           "versio" : 1,
-          "arvo" : " 34",
-          "nimi" : "Markkinointi",
+          "arvo" : " 15",
+          "nimi" : "Filosofia",
           "meta" : {
+            "kieli_fi" : {
+              "kieliUri" : "kieli_fi",
+              "kieliVersio" : 1,
+              "kieliArvo" : "FI",
+              "kieliKaannos" : null,
+              "uri" : null,
+              "versio" : 1,
+              "arvo" : null,
+              "nimi" : "Filosofia",
+              "meta" : null
+            },
             "kieli_sv" : {
               "kieliUri" : "kieli_sv",
               "kieliVersio" : 1,
               "kieliArvo" : "SV",
               "kieliKaannos" : null,
               "uri" : null,
-              "versio" : null,
+              "versio" : 1,
               "arvo" : null,
-              "nimi" : "Marknadsföring",
+              "nimi" : "Filosofi",
               "meta" : null
             },
             "kieli_en" : {
@@ -413,31 +423,20 @@
               "kieliArvo" : "EN",
               "kieliKaannos" : null,
               "uri" : null,
-              "versio" : null,
+              "versio" : 1,
               "arvo" : null,
-              "nimi" : "Marketing",
-              "meta" : null
-            },
-            "kieli_fi" : {
-              "kieliUri" : "kieli_fi",
-              "kieliVersio" : 1,
-              "kieliArvo" : "FI",
-              "kieliKaannos" : null,
-              "uri" : null,
-              "versio" : null,
-              "arvo" : null,
-              "nimi" : "Markkinointi",
+              "nimi" : "Philosophy",
               "meta" : null
             }
           }
         }
       },
       "uris" : {
-        "aiheet_34" : 1
+        "aiheet_15" : 1
       }
     },
-    "parents" : [ "1.2.246.562.13.50124886206" ],
-    "children" : [ ],
+    "parents" : [ ],
+    "children" : [ "1.2.246.562.13.56671246918", "1.2.246.562.13.26949728351" ],
     "hintaString" : "",
     "hinta" : null,
     "opintojenMaksullisuus" : false,
@@ -446,36 +445,21 @@
     "opintopolkuAlkamiskausi" : null,
     "extraParams" : { },
     "sisaltyvatKoulutuskoodit" : null,
+    "sisaltyyKoulutuksiin" : [ ],
+    "koulutuslaji" : null,
     "yhteyshenkilos" : [ ],
-    "pohjakoulutusvaatimukset" : {
-      "kieliUri" : null,
-      "kieliVersio" : null,
-      "kieliArvo" : null,
-      "kieliKaannos" : null,
-      "uri" : null,
-      "versio" : null,
-      "arvo" : null,
-      "nimi" : null,
-      "meta" : null,
-      "uris" : { }
-    },
     "koulutuksenLoppumisPvm" : null,
-    "opintojenLaajuusPistetta" : "10",
+    "opintojenLaajuusPistetta" : "1",
     "opettaja" : null,
     "oppiaine" : null,
     "koulutusRyhmaOids" : [ ],
     "opinnonTyyppiUri" : null,
     "tarjoajanKoulutus" : null,
-    "opintokokonaisuusOid" : "1.2.246.562.17.52083499963",
-    "sisaltyyKoulutuksiin" : [
-      {
-        "oid": "1.2.246.562.17.52083499963",
-        "uniqueExternalId": "1111111"
-      }
-    ],
-    "opintojaksoOids" : [ ],
-    "koulutusasteTyyppi" : "KORKEAKOULUTUS"
+    "opintokokonaisuusOid" : null,
+    "opintojaksoOids" : [ "1.2.246.562.17.19043044304", "1.2.246.562.17.92024584614" ]
   },
+  "status" : "OK",
+  "errors" : null,
   "accessRights" : { },
-  "errors" : null
+  "params" : null
 }
