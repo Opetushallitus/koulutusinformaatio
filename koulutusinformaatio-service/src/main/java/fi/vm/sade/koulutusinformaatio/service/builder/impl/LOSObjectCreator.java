@@ -1345,6 +1345,8 @@ public class LOSObjectCreator extends ObjectCreator {
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
 
     public List<KoulutusLOS> createKorkeakouluOpintos(KorkeakouluOpintoV1RDTO dto, boolean checkStatus) {
+        if (alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) return Lists.newArrayList();
+
         HashMap<String, KoulutusLOS> createdOpintos = Maps.newHashMap();
         HashMap<String, Set<String>> childOids = Maps.newHashMap();
         createKorkeakouluopinto(dto, checkStatus, createdOpintos, childOids);
