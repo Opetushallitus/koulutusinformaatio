@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -107,7 +108,7 @@ public class LearningOpportunityServiceImplTest {
         heLOS.setStructure(createI18Text("StructureDiagram"));
         heLOS.setEducationDomain(createI18Text("EducationDomain"));
         heLOS.setStartDate(new Date());
-        heLOS.setApplicationOptions(Lists.newArrayList(aos));
+        heLOS.setApplicationOptions(Sets.newHashSet(aos));
         heLOS.setFormOfTeaching(Lists.newArrayList(createI18Text("FormOfTeaching"), createI18Text("FormOfTeaching2")));
         heLOS.setTeachingLanguages(Lists.newArrayList(c));
 

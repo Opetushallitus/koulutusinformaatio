@@ -446,7 +446,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> hakukohdeTarjoajat = result.getResult().getTulokset();
 
-        List<ApplicationOption> aos = Lists.newArrayList();
+        Set<ApplicationOption> aos = Sets.newHashSet();
 
         for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> curProvider : hakukohdeTarjoajat) {
             for (HakukohdeHakutulosV1RDTO curHakukoh : curProvider.getTulokset()) {
@@ -608,7 +608,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setThemes(new ArrayList<>(themeMap.values()));
 
         if (!aoMap.isEmpty()) {
-            los.setApplicationOptions(new ArrayList<>(aoMap.values()));
+            los.setApplicationOptions(new HashSet<>(aoMap.values()));
         }
 
         return los;
@@ -709,7 +709,7 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_KANSANOPISTO);
         if ((koulutusDTO.getKoulutusohjelmanNimiKannassa() == null || koulutusDTO.getKoulutusohjelmanNimiKannassa().isEmpty())
                 && !(los.getApplicationOptions() == null || los.getApplicationOptions().isEmpty())) {
-            ApplicationOption ao = los.getApplicationOptions().get(0);
+            ApplicationOption ao = los.getApplicationOptions().iterator().next();
             los.setName(ao.getName());
             los.setShortTitle(ao.getName());
         }
@@ -1397,11 +1397,11 @@ public class LOSObjectCreator extends ObjectCreator {
         return los == null || los.getApplicationOptions().isEmpty();
     }
 
-    private void recursiveAddApplicationOptions(KoulutusLOS parent, List<ApplicationOption> aos) {
+    private void recursiveAddApplicationOptions(KoulutusLOS parent, Set<ApplicationOption> aos) {
         for (KoulutusLOS child : parent.getOpintojaksos()) {
             Set<ApplicationOption> childAos = Sets.newHashSet(child.getApplicationOptions());
             childAos.addAll(aos);
-            child.setApplicationOptions(Lists.newArrayList(childAos));
+            child.setApplicationOptions(Sets.newHashSet(childAos));
             recursiveAddApplicationOptions(child, aos);
         }
     }
