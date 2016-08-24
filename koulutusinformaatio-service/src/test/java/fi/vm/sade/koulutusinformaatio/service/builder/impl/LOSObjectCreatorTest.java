@@ -116,8 +116,8 @@ public class LOSObjectCreatorTest extends TestCase {
         ValmistavaKoulutusV1RDTO koulutus = givenValmistavaKoulutus();
         koulutus.setKoulutusohjelmanNimiKannassa(null);
         when(tarjontaRawService.findHakukohdesByEducationOid(any(String.class), anyBoolean())).thenReturn(givenHakukohdeResult());
-        when(tarjontaRawService.getV1EducationHakukohde(any(String.class))).thenReturn(givenV1Hakukohde());
-        when(tarjontaRawService.getV1EducationHakuByOid(any(String.class))).thenReturn(givenV1Haku());
+        when(tarjontaRawService.getV1Hakukohde(any(String.class))).thenReturn(givenV1Hakukohde());
+        when(tarjontaRawService.getV1HakuByOid(any(String.class))).thenReturn(givenV1Haku());
         when(providerService.getByOID(any(String.class))).thenReturn(new Provider());
         when(aoCreator.createV1EducationApplicationOption(any(KoulutusLOS.class), any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class)))
                 .thenReturn(givenApplicationOption());
@@ -130,9 +130,9 @@ public class LOSObjectCreatorTest extends TestCase {
     @Test
     public void createKorkeakouluopintoLOSOverwritesSeasonIfExtraParams() throws Exception{
         when(providerService.getOppilaitosTyyppiByOID(any(String.class))).thenReturn(TarjontaConstants.OPPILAITOSTYYPPI_AMK);
-        when(tarjontaRawService.getV1EducationHakukohde(any(String.class))).thenReturn(givenV1Hakukohde());
+        when(tarjontaRawService.getV1Hakukohde(any(String.class))).thenReturn(givenV1Hakukohde());
         when(tarjontaRawService.findHakukohdesByEducationOid(any(String.class), anyBoolean())).thenReturn(givenHakukohdeResult());
-        when(tarjontaRawService.getV1EducationHakuByOid(any(String.class))).thenReturn(givenV1Haku());
+        when(tarjontaRawService.getV1HakuByOid(any(String.class))).thenReturn(givenV1Haku());
         when(aoCreator.createV1EducationApplicationOption(any(KoulutusLOS.class), any(HakukohdeV1RDTO.class), any(HakuV1RDTO.class)))
                 .thenReturn(givenApplicationOption());
         when(providerService.getByOID(any(String.class))).thenReturn(new Provider());

@@ -77,8 +77,8 @@ public class PartialUpdateServiceImplTest {
         HakukohdeV1RDTO ao = new HakukohdeV1RDTO();
         ao.setOid(APPLICATION_OPTION_OID);
         ao.setHakuOid(APPLICATION_OID);
-        when(tarjontaRawService.getV1EducationHakukohde(APPLICATION_OPTION_OID)).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>(ao));
-        when(tarjontaRawService.getV1EducationHakuByOid(APPLICATION_OID)).thenReturn(new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO()));
+        when(tarjontaRawService.getV1Hakukohde(APPLICATION_OPTION_OID)).thenReturn(new ResultV1RDTO<HakukohdeV1RDTO>(ao));
+        when(tarjontaRawService.getV1HakuByOid(APPLICATION_OID)).thenReturn(new ResultV1RDTO<HakuV1RDTO>(new HakuV1RDTO()));
     }
     
     @Test
