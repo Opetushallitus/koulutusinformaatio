@@ -9,7 +9,7 @@
     </div>
     <div data-ng-repeat="ao in as.applicationOptions" class="panel-body">
         <div data-ng-include data-src="partialUrl + 'as/asspecific/ao-info.html'"></div>
-        <form name="levelSelectionForm-{{$id}}" id="application-form-{{as.id}}-{{$id}}" action="{{hakuAppUrl + 'lomake/' + as.id}}" method="POST" target="hakulomake">
+        <form name="levelSelectionForm-{{$id}}" id="application-form-{{as.id}}-{{$id}}" action="{{hakuAppUrl(as.id)}}" method="POST" target="hakulomake">
             <div data-ng-include="partialCommonUrl + 'as/ao-inputs.html'"></div>
             <div data-ng-include="partialUrl + 'as/asspecific/ao-actions.html'"></div>
         </form>

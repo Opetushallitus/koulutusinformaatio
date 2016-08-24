@@ -1,7 +1,7 @@
 <a href="javascript:void(0)" class="remove" data-ng-click="removeItem(item.id)" title="{{tooltips.removeApplicationOption}}"></a>
 
 <div data-ng-if="isErikseenHaettava(as)" class="disc basket-table-cell-block">
-    <form data-ng-if="item.useSystemApplicationForm" action="{{hakuAppUrl + 'lomake/' + item.asId}}" id="application-form-{{item.asId}}" method="post" target="hakulomake">
+    <form data-ng-if="item.useSystemApplicationForm" action="{{hakuAppUrl(item.asId)}}" id="application-form-{{item.asId}}" method="post" target="hakulomake">
         <input type="hidden" name="preference1-Opetuspiste" value="{{item.providerName}}"/>
         <input type="hidden" name="preference1-Opetuspiste-id" value="{{item.providerId}}"/>
         <input type="hidden" name="preference1-Koulutus-id-athlete" value="{{item.athleteEducation}}"/>
