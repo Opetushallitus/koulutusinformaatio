@@ -6,7 +6,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -65,7 +67,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     public void testSaveHigherEducationLOS() {
         ApplicationOption ao = new ApplicationOption();
         ao.setId("aoid");
-        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        Set<ApplicationOption> aos = Sets.newHashSet(ao);
         Provider p = new Provider("providerid", TestUtil.createI18nText("name", "name", "name"));
         HigherEducationLOS los = new HigherEducationLOS();
         los.setApplicationOptions(aos);

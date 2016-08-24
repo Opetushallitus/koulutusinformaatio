@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.common.collect.Sets;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.SolrInputField;
 import org.junit.Test;
@@ -160,7 +161,7 @@ public class KoulutusLOSToSolrInputDocmentTest {
         ApplicationOption ao = new ApplicationOption();
         ao.setSpecificApplicationDates(false);
         ao.setApplicationSystem(as);
-        los.setApplicationOptions(Arrays.asList(ao));
+        los.setApplicationOptions(Sets.newHashSet(ao));
         
         Date edStart = new Date();
         los.setStartDate(edStart);
@@ -205,7 +206,7 @@ public class KoulutusLOSToSolrInputDocmentTest {
     @Test
     public void testBUG555() {
         KoulutusLOS los = createLos("losId", "koulutus_someRandom");
-        los.getApplicationOptions().get(0).setKaksoistutkinto(true);
+        los.getApplicationOptions().iterator().next().setKaksoistutkinto(true);
         List<SolrInputDocument> docs = converter.convert(los);
         assertEquals(SolrConstants.ED_TYPE_KAKSOIS, docs.get(0).get(LearningOpportunity.EDUCATION_TYPE).getValue());
     }
