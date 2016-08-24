@@ -1,7 +1,7 @@
 <div class="row margin-vertical-small">
     <div class="col-xs-16">
         <div class="pull-left margin-right-small margin-vertical-small">
-            <form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl + 'lomake/' + applicationsystem.id}}" method="POST" target="hakulomake">
+            <form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl(applicationsystem.id)}}" method="POST" target="hakulomake">
                 <input type="hidden" name="preference1-Opetuspiste" value="{{extendedLO.lo.provider.name}}" />
                 <input type="hidden" name="preference1-Opetuspiste-id" value="{{extendedLO.lo.provider.id}}" />
                 <input type="hidden" name="preference1-Koulutus" value="{{applicationoption.name}}" />
