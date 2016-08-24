@@ -1,0 +1,8 @@
+{
+  "piwik.url": "https://analytiikka.opintopolku.fi/piwik/",
+  "tarjonta-app.koulutus": "/tarjonta-app/#/koulutus/$1",
+  "tarjonta-app.koulutusEdit": "/tarjonta-app/#/koulutus/$1/edit?$2",
+  "tarjonta-app.hakukohdeEdit": "/tarjonta-app/#/hakukohde/$1/edit?$2",
+  "omatsivut.login": "/omatsivut/login",
+  "haku-app.lomake": "/haku-app/lomake/$1"
+}
