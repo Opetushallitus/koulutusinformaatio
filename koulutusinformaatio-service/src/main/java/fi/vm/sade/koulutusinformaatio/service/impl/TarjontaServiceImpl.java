@@ -369,7 +369,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private void createEducationreReferencesForAo(ApplicationOption curAo, boolean validating) throws TarjontaParseException, KoodistoException {
 
-        ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO = this.tarjontaRawService.getV1EducationHakukohde(curAo.getId());
+        ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO = this.tarjontaRawService.getV1Hakukohde(curAo.getId());
         HakukohdeV1RDTO hakukohdeDTO = hakukohdeResDTO.getResult();
         for (String curEduOid : hakukohdeDTO.getHakukohdeKoulutusOids()) {
 
@@ -682,7 +682,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
                 LOG.debug("fetching application system: {}", curOid);
 
-                ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(curOid);
+                ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1HakuByOid(curOid);
                 HakuV1RDTO curHaku = curHakuResult.getResult();
 
                 CalendarApplicationSystem applicationSystemForCalendar = this.creator.createApplicationSystemForCalendar(curHaku, isValidCalendarHaku(curHaku));
@@ -708,7 +708,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public CalendarApplicationSystem createCalendarApplicationSystem(
             String hakuOid) throws KoodistoException {
-        ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(hakuOid);
+        ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1HakuByOid(hakuOid);
         HakuV1RDTO curHaku = curHakuResult.getResult();
         if (curHaku != null) {
             return this.creator.createApplicationSystemForCalendar(curHaku, isValidCalendarHaku(curHaku));

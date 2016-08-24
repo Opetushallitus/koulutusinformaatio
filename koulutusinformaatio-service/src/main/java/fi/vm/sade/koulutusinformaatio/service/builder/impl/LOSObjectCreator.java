@@ -462,14 +462,14 @@ public class LOSObjectCreator extends ObjectCreator {
                     continue;
                 }
 
-                ResultV1RDTO<HakuV1RDTO> hakuRes = tarjontaRawService.getV1EducationHakuByOid(curHakukoh.getHakuOid());
+                ResultV1RDTO<HakuV1RDTO> hakuRes = tarjontaRawService.getV1HakuByOid(curHakukoh.getHakuOid());
                 HakuV1RDTO hakuDTO = hakuRes.getResult();
 
                 if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().equals(TarjontaTila.JULKAISTU.toString()))) {
                     invalidOids.add(curHakukoh.getHakuOid());
                 }
 
-                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1EducationHakukohde(aoId);
+                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1Hakukohde(aoId);
                 HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
 
                 if (checkStatus

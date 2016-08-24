@@ -203,7 +203,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
 
         @Override
         void update(String oid) {
-            HakukohdeV1RDTO aoDto = tarjontaRawService.getV1EducationHakukohde(oid).getResult();
+            HakukohdeV1RDTO aoDto = tarjontaRawService.getV1Hakukohde(oid).getResult();
             try {
                 aoIndexer.indexApplicationOptionData(aoDto);
             } catch (KISolrException e) {

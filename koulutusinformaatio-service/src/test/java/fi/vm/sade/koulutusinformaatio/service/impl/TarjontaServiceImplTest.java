@@ -131,7 +131,7 @@ public class TarjontaServiceImplTest {
         rawRes.setResult(resOids);
         when(this.tarjontaRawService.searchHakus(TarjontaConstants.HAKUTAPA_YHTEISHAKUV1)).thenReturn(rawRes);
         
-        ResultV1RDTO<HakuV1RDTO> curHakuResult = new ResultV1RDTO<HakuV1RDTO>();//this.tarjontaRawService.getV1EducationHakuByOid(curOid);
+        ResultV1RDTO<HakuV1RDTO> curHakuResult = new ResultV1RDTO<HakuV1RDTO>();//this.tarjontaRawService.getV1HakuByOid(curOid);
         HakuV1RDTO curHaku = new HakuV1RDTO();
         curHaku.setOid(CALENDAR_APPLICATION_SYSTEM_OID);
         curHaku.setTila(TarjontaConstants.STATE_PUBLISHED);
@@ -139,7 +139,7 @@ public class TarjontaServiceImplTest {
         curHaku.setHakutapaUri(TarjontaConstants.HAKUTAPA_YHTEISHAKU);
         
         curHakuResult.setResult(curHaku);
-        when(this.tarjontaRawService.getV1EducationHakuByOid(CALENDAR_APPLICATION_SYSTEM_OID)).thenReturn(curHakuResult);
+        when(this.tarjontaRawService.getV1HakuByOid(CALENDAR_APPLICATION_SYSTEM_OID)).thenReturn(curHakuResult);
         
         CalendarApplicationSystem calendarAs = new CalendarApplicationSystem();
         calendarAs.setId(CALENDAR_APPLICATION_SYSTEM_OID);
