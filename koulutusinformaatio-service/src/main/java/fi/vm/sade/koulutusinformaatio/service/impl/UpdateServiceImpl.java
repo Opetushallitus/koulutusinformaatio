@@ -118,6 +118,9 @@ public class UpdateServiceImpl implements UpdateService {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(los);
                 }
+                if(i % 100 == 0) {
+                    LOG.info("Indexed {}/{} lukio educations", i, lukioEducations.size());
+                }
             }
             LOG.info("Lukio educations saved.");
             tarjontaService.clearProcessedLists();
@@ -140,6 +143,9 @@ public class UpdateServiceImpl implements UpdateService {
                         }
                     }
                 }
+                if(i % 100 == 0) {
+                    LOG.info("Indexed {}/{} vocational educations", i, vocationalEducations.size());
+                }
             }
             LOG.info("Vocational educations saved.");
             tarjontaService.clearProcessedLists();
@@ -147,12 +153,15 @@ public class UpdateServiceImpl implements UpdateService {
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.info("Found higher educations: {}", higherEducations.size());
-
+            i = 0;
             for (HigherEducationLOS curLOS : higherEducations) {
-                LOG.debug("Saving highed education: {}", curLOS.getId());
+                LOG.debug("{}/{} Saving higher education: {}", ++i, higherEducations.size(), curLOS.getId());
 
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
+                if(i % 100 == 0) {
+                    LOG.info("Saved {}/{} higher educations", i, higherEducations.size());
+                }
             }
             LOG.info("Higher educations saved.");
             tarjontaService.clearProcessedLists();
@@ -160,12 +169,16 @@ public class UpdateServiceImpl implements UpdateService {
 
             List<KoulutusHakutulosV1RDTO> opintojaksot = this.tarjontaService.findKorkeakouluOpinnot();
             LOG.info("Löytyi {} opintojaksoa.", opintojaksot.size());
+            i = 0;
             for (KoulutusHakutulosV1RDTO dto : opintojaksot) {
-                LOG.debug("Luodaan ja tallennetaan opintojakso: {}", dto.getOid());
+                LOG.debug("{}/{} Luodaan ja tallennetaan opintojakso: {}", ++i, opintojaksot.size(), dto.getOid());
                 List<KoulutusLOS> allLoses = tarjontaService.createKorkeakouluopinto(dto);
                 for (KoulutusLOS los : allLoses) {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(los);
+                }
+                if(i % 100 == 0) {
+                    LOG.info("Tallennettu {}/{} opintojaksoa", i, opintojaksot.size());
                 }
             }
 
@@ -175,7 +188,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             // Includes Aikuisten lukiokoulutus and Aikuisten perusopetus
             List<KoulutusLOS> adultEducations = this.tarjontaService.findAdultUpperSecondariesAndBaseEducation();
-            LOG.info("Found adult upper secondary  and base educations: {}", adultEducations.size());
+            LOG.info("Found adult upper secondary and base educations: {}", adultEducations.size());
 
             for (KoulutusLOS curLOS : adultEducations) {
                 LOG.debug("Saving adult education: {}", curLOS.getId());
@@ -187,10 +200,14 @@ public class UpdateServiceImpl implements UpdateService {
 
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             LOG.info("Found adult vocational educations: {}", adultVocationals.size());
+            i = 0;
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
-                LOG.debug("Saving adult vocational los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
+                LOG.debug("{}/{} Saving adult vocational los: {} with name: {}",  ++i, adultVocationals.size(), curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
+                if(i % 100 == 0) {
+                    LOG.info("Saved {}/{} adult vocational educations", i, adultVocationals.size());
+                }
             }
             LOG.info("Adult vocational educations saved.");
             switchTask(stopwatch, "Valmistava koulutus");
