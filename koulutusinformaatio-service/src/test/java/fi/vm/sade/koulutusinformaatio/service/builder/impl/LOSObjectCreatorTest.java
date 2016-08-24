@@ -123,8 +123,8 @@ public class LOSObjectCreatorTest extends TestCase {
                 .thenReturn(givenApplicationOption());
         when(koodistoService.searchNames(any(String.class))).thenReturn(Collections.singletonList(new I18nText(ImmutableMap.of("kieli_fi", "Hakukohde"))));
         KoulutusLOS los = creator.createKansanopistoLOS(koulutus, false);
-        assertEquals(los.getName(), los.getApplicationOptions().get(0).getName());
-        assertEquals(los.getShortTitle(), los.getApplicationOptions().get(0).getName());
+        assertEquals(los.getName(), los.getApplicationOptions().iterator().next().getName());
+        assertEquals(los.getShortTitle(), los.getApplicationOptions().iterator().next().getName());
     }
 
     @Test

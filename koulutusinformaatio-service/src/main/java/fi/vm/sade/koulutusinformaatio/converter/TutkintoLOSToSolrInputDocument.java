@@ -16,12 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.google.common.collect.Sets;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -170,7 +167,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             }
         }
 
-        List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        Set<ApplicationOption> applicationOptions = Sets.newHashSet();
         String aoNameFi = "";
         String aoNameSv = "";
         String aoNameEn = "";

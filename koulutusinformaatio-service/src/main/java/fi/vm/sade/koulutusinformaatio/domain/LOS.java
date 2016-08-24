@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
+import com.google.common.collect.Sets;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,7 +36,7 @@ public abstract class LOS {
     private List<Code> themes; // teemat
     private List<I18nText> professionalTitles;
     private ToteutustyyppiEnum toteutustyyppi;
-    private List<ApplicationOption> applicationOptions = Lists.newArrayList();
+    private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
 
     
     public String getId() {
@@ -113,11 +113,11 @@ public abstract class LOS {
         this.toteutustyyppi = toteutustyyppi;
     }
 
-    public List<ApplicationOption> getApplicationOptions() {
+    public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 }

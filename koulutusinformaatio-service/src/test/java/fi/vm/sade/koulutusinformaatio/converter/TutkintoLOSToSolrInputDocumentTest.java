@@ -130,7 +130,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         koulutus.setTeachingLanguages(Arrays.asList(lang));
         koulutus.setProfessionalTitles(Arrays.asList(TestUtil.createI18nText("profession fi", "profession sv", "profession en")));
         koulutus.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
-        koulutus.setApplicationOptions(Arrays.asList(ao));
+        koulutus.setApplicationOptions(Sets.newHashSet(ao));
         koulutus.setDegreeTitle(TestUtil.createI18nText("tutkintonimike1"));
         tutkintonimikkeet = new ArrayList<I18nText>();
         tutkintonimikkeet.add(TestUtil.createI18nText("tutkintonimike1"));
@@ -162,7 +162,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
 
     @Test
     public void testConvertKaksoistutkinto() {
-        los.getChildEducations().get(0).getApplicationOptions().get(0).setKaksoistutkinto(true);
+        los.getChildEducations().get(0).getApplicationOptions().iterator().next().setKaksoistutkinto(true);
         List<SolrInputDocument> docs = converter.convert(los);
         assertEquals(7, docs.size());
         SolrInputDocument doc = docs.get(0);
@@ -186,7 +186,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         koulutus.setTeachingLanguages(Arrays.asList(lang));
         koulutus.setProfessionalTitles(Arrays.asList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
         koulutus.setContent(TestUtil.createI18nText("Content1 fi", "Content1 sv", "Content1 en"));
-        koulutus.setApplicationOptions(Arrays.asList(ao));
+        koulutus.setApplicationOptions(Sets.newHashSet(ao));
         los.getChildEducations().add(koulutus);
         List<SolrInputDocument> docs = converter.convert(los);
 
