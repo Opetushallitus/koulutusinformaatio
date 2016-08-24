@@ -18,7 +18,7 @@ directive('kiAppBasketApplicationsystemTable', function() {
         templateUrl: 'js/directives/AppBasket/appBasketApplicationsystemTable.html',
         controller: function($scope, ApplicationBasketService, TranslationService, Config) {
 
-            $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+            $scope.hakuAppUrl = function(id){return window.url("haku-app.lomake", id)};
             $scope.tooltips = {
                 externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form'),
                 removeApplicationOption: TranslationService.getTranslation('tooltip:application-basket-remove')

@@ -209,7 +209,7 @@ directive('srExtendedOptions', ['TranslationService','Config', function (Transla
         require: '^extendedSearchresultData',
         templateUrl: 'js/directives/SearchResult/searchResultOptions.html',
         controller: function($scope) {
-            $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+            $scope.hakuAppUrl = function(id){return window.url("haku-app.lomake", id)};
             $scope.locales = {
                 hakuaika: TranslationService.getTranslation('application-period'),
                 hakukaynnissa: TranslationService.getTranslation('application-system-active-present'),
