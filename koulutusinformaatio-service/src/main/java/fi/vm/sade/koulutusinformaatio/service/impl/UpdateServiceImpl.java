@@ -61,6 +61,10 @@ public class UpdateServiceImpl implements UpdateService {
     private long runningSince = 0;
     private long fullIndexingStartTime;
 
+    // Prevent multiple saves to mongo and solr
+    private Set<String> mongoCache;
+    private Set<String> solrCache;
+
     @Value("${koulutusinformaatio.error.report.recipients}")
     private String RECIPIENTS;
 
@@ -98,6 +102,8 @@ public class UpdateServiceImpl implements UpdateService {
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
         fullIndexingStartTime = System.currentTimeMillis();
+        mongoCache = Sets.newHashSet();
+        solrCache = Sets.newHashSet();
 
         StopWatch stopwatch = new StopWatch("Full indexing");
         stopwatch.start("Lukio koulutukset");
@@ -108,6 +114,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             tarjontaService.clearProcessedLists();
+            educationDataUpdateService.resetCache();
 
             List<KoulutusHakutulosV1RDTO> lukioEducations = this.tarjontaService.findLukioKoulutusDTOs();
             LOG.info("Found lukio educations: " + lukioEducations.size());
@@ -117,7 +124,7 @@ public class UpdateServiceImpl implements UpdateService {
                 KoulutusLOS los = tarjontaService.createLukioKoulutusLOS(curDTO);
                 if (los != null) {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                    this.educationDataUpdateService.save(los);
+                    saveToMongo(los);
                 }
                 if(i % 100 == 0) {
                     LOG.info("Indexed {}/{} lukio educations", i, lukioEducations.size());
@@ -136,12 +143,12 @@ public class UpdateServiceImpl implements UpdateService {
                 List<KoulutusLOS> losses = tarjontaService.createAmmatillinenKoulutusLOS(curDTO);
                 if (losses != null && !losses.isEmpty()) {
                     for (KoulutusLOS curLOS : losses) {
-                        this.educationDataUpdateService.save(curLOS);
+                        saveToMongo(curLOS);
                         if (curLOS.getTutkinto() == null) {
                             indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                         } else if(!savedTutkintos.contains(curLOS.getTutkinto().getId())){
                             indexToSolr(curLOS.getTutkinto(), loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                            this.educationDataUpdateService.save(curLOS.getTutkinto());
+                            saveToMongo(curLOS.getTutkinto());
                             savedTutkintos.add(curLOS.getTutkinto().getId());
                         }
                     }
@@ -161,7 +168,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("{}/{} Saving higher education: {}", ++i, higherEducations.size(), curLOS.getId());
 
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(curLOS);
+                saveToMongo(curLOS);
                 if(i % 100 == 0) {
                     LOG.info("Saved {}/{} higher educations", i, higherEducations.size());
                 }
@@ -178,7 +185,7 @@ public class UpdateServiceImpl implements UpdateService {
                 List<KoulutusLOS> allLoses = tarjontaService.createKorkeakouluopinto(dto);
                 for (KoulutusLOS los : allLoses) {
                     indexToSolr(los, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                    this.educationDataUpdateService.save(los);
+                    saveToMongo(los);
                 }
                 if(i % 100 == 0) {
                     LOG.info("Tallennettu {}/{} opintojaksoa", i, opintojaksot.size());
@@ -196,7 +203,7 @@ public class UpdateServiceImpl implements UpdateService {
             for (KoulutusLOS curLOS : adultEducations) {
                 LOG.debug("Saving adult education: {}", curLOS.getId());
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(curLOS);
+                saveToMongo(curLOS);
             }
             LOG.info("Adult upper secondary and base educations saved.");
             switchTask(stopwatch, "Aikuisten ammaillinen koulutus");
@@ -207,7 +214,7 @@ public class UpdateServiceImpl implements UpdateService {
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
                 LOG.debug("{}/{} Saving adult vocational los: {} with name: {}",  ++i, adultVocationals.size(), curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(curLOS);
+                saveToMongo(curLOS);
                 if(i % 100 == 0) {
                     LOG.info("Saved {}/{} adult vocational educations", i, adultVocationals.size());
                 }
@@ -220,7 +227,7 @@ public class UpdateServiceImpl implements UpdateService {
             for (KoulutusLOS curLOS : valmistavaList) {
                 LOG.debug("Saving adult valmistava los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(curLOS);
+                saveToMongo(curLOS);
             }
             LOG.info("Valmistava educations saved.");
             switchTask(stopwatch, "Yleiskäyttöinen indeksointi");
@@ -267,20 +274,30 @@ public class UpdateServiceImpl implements UpdateService {
         return System.currentTimeMillis() - fullIndexingStartTime;
     }
 
-    private void indexToSolr(LOS curLOS,
+    private void indexToSolr(LOS los,
                              HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException {
+        if(los == null || solrCache.contains(los.getId())) return;
+        solrCache.add(los.getId());
+
         try {
-            this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+            this.indexerService.addLearningOpportunitySpecification(los, loUpdateSolr, lopUpdateSolr);
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-            if (curLOS instanceof HigherEducationLOS) {
-                for (HigherEducationLOS curChild : ((HigherEducationLOS) curLOS).getChildren()) {
+            if (los instanceof HigherEducationLOS) {
+                for (HigherEducationLOS curChild : ((HigherEducationLOS) los).getChildren()) {
                     indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 }
             }
         } catch (Exception e) {
-            throw new KISolrException("Indexing LOS " + curLOS.getId() + " to solr failed", e);
+            throw new KISolrException("Indexing LOS " + los.getId() + " to solr failed", e);
         }
     }
+    private void saveToMongo(LOS los) {
+        if(los == null || mongoCache.contains(los.getId())) return;
+        mongoCache.add(los.getId());
+
+        this.educationDataUpdateService.save(los);
+    }
+
 
     @Override
     public boolean isRunning() {
@@ -311,7 +328,6 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Articles fetched");
             indexerService.addArticles(articles);
 
-            //educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
             LOG.info("Articles succesfully indexed");
         } catch (Exception ex) {
             try {

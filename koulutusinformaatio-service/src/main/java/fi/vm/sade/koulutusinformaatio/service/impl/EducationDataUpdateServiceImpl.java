@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Sets;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
@@ -51,6 +52,8 @@ import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 
+import java.util.Set;
+
 /**
  * @author Mikko Majapuro
  */
@@ -66,6 +69,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private KoulutusLOSDAO koulutusLOSTransactionDAO;
     private TutkintoLOSDAO tutkintoLOSTransactionDAO;
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
+    private Set<String> providerCache = Sets.newHashSet();
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EducationDataUpdateServiceImpl.class);
 
@@ -170,16 +175,21 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
     }
 
-    private void save(final LearningOpportunityProviderEntity learningOpportunityProvider) {
-        if (learningOpportunityProvider != null) {
-            save(learningOpportunityProvider.getPicture());
+    public void resetCache(){
+        providerCache = Sets.newHashSet();
+    }
 
-            LearningOpportunityProviderEntity old = learningOpportunityProviderTransactionDAO.get(learningOpportunityProvider.getId());
+    private void save(final LearningOpportunityProviderEntity p) {
+        if (p != null && !providerCache.contains(p.getId())) {
+            providerCache.add(p.getId());
+            save(p.getPicture());
+
+            LearningOpportunityProviderEntity old = learningOpportunityProviderTransactionDAO.get(p.getId());
             if (old != null && old.getApplicationSystemIds() != null) {
-                learningOpportunityProvider.getApplicationSystemIds().addAll(old.getApplicationSystemIds());
+                p.getApplicationSystemIds().addAll(old.getApplicationSystemIds());
             }
 
-            learningOpportunityProviderTransactionDAO.save(learningOpportunityProvider);
+            learningOpportunityProviderTransactionDAO.save(p);
         }
     }
 
