@@ -15,7 +15,7 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
@@ -40,6 +40,7 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -126,6 +127,7 @@ public class UpdateServiceImpl implements UpdateService {
             tarjontaService.clearProcessedLists();
             switchTask(stopwatch, "Ammatilliset koulutukset");
 
+            Set<String> savedTutkintos = Sets.newHashSet();
             List<KoulutusHakutulosV1RDTO> vocationalEducations = this.tarjontaService.findAmmatillinenKoulutusDTOs();
             LOG.info("Found vocational educations: " + vocationalEducations.size());
             i = 0;
@@ -137,9 +139,10 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(curLOS);
                         if (curLOS.getTutkinto() == null) {
                             indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                        } else {
+                        } else if(!savedTutkintos.contains(curLOS.getTutkinto().getId())){
                             indexToSolr(curLOS.getTutkinto(), loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                             this.educationDataUpdateService.save(curLOS.getTutkinto());
+                            savedTutkintos.add(curLOS.getTutkinto().getId());
                         }
                     }
                 }
