@@ -230,7 +230,7 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = 0;
             if(stopwatch.isRunning())
                 stopwatch.stop();
-            LOG.info("Koulutusindeksoinnin vaiheet: " + stopwatch.toString());
+            LOG.info("Koulutusindeksointi on valmis. Vaiheiden kestot:\n" + stopwatch.prettyPrint());
         }
     }
 
