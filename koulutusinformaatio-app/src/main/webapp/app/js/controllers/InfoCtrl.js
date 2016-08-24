@@ -6,7 +6,7 @@
 
     $scope.queryString = SearchService.getTerm();
     //$scope.descriptionLanguage = 'fi';
-    $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+    $scope.hakuAppUrl = function(id){return window.url("haku-app.lomake", id)};
     $scope.uiLang = LanguageService.getLanguage();
     $scope.virkailijaLang = VirkailijaLanguageService.getLanguage();
 
@@ -202,7 +202,7 @@
             prerequisite: $routeParams.prerequisite
         }).then(function(loResult) {
             $scope.lo = loResult.lo;
-            $scope.tarjontaViewUrl = Config.get('tarjontaUrl') + '/koulutus/' + $scope.lo.id;
+            $scope.tarjontaViewUrl = window.url("tarjonta-app.koulutus", $scope.lo.id);
             $scope.parent = loResult.parent;
             $scope.provider = loResult.provider;
             $scope.lois = loResult.lo.lois;

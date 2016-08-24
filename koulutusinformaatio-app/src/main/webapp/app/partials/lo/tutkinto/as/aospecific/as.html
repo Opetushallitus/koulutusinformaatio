@@ -4,7 +4,7 @@
     </div>
     <div data-ng-repeat="ao in as.applicationOptions" class="panel-body">
         <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-info.html'"></div>
-        <form name="levelSelectionForm" id="application-form-{{as.id}}" action="{{hakuAppUrl + 'lomake/' + as.id}}" method="POST" target="hakulomake">
+        <form name="levelSelectionForm" id="application-form-{{as.id}}" action="{{hakuAppUrl(as.id)}}" method="POST" target="hakulomake">
             <div data-ng-include data-src="partialCommonUrl + 'as/ao-inputs.html'"></div>
             <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-actions.html'"></div>
         </form>
