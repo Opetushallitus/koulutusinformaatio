@@ -70,7 +70,7 @@ public class Scheduler {
         if (enabled) {
             try {
                 if (!runningServiceChecker.isAnyServiceRunning()) {
-                    LOG.info("Starting scheduled data update {}", new Date());
+                    LOG.debug("Starting scheduled data update {}", new Date());
                     updateService.updateAllEducationData();
                 }
             } catch (Exception e) {
@@ -82,7 +82,7 @@ public class Scheduler {
     @Scheduled(cron = "${scheduling.seo.cron}")
     public void runSEOUpdate() {
         if (seoEnabled) {
-            LOG.info("Starting scheduled SEO update {}", new Date());
+            LOG.debug("Starting scheduled SEO update {}", new Date());
             try {
                 if (!seoService.isRunning()) {
                     seoService.update();
@@ -96,14 +96,14 @@ public class Scheduler {
     @Scheduled(cron = "${scheduling.data.incremental.cron}")
     public void runIncrementalDataUpdate() {
         if (incrementalEnabled) {
-            LOG.info("Starting scheduled incremental data update {}", new Date());
+            LOG.debug("Starting scheduled incremental data update {}", new Date());
             
             try {
                 if (!runningServiceChecker.isAnyServiceRunning()) {
                     LOG.debug("indexing is not running, starting incremental indexing.");
                     this.incrementalUpdateService.updateChangedEducationData();
                 } else {
-                    LOG.info("indexing is running, not starting incremental indexing.");
+                    LOG.debug("indexing is running, not starting incremental indexing.");
                 }
             } catch (Exception e) {
                 LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());
@@ -114,7 +114,7 @@ public class Scheduler {
     @Scheduled(cron = "${scheduling.data.articles.cron}")
     public void runArticleUpdate() {
         if (this.articlesEnabled) {
-            LOG.info("Starting scheduled article update {}", new Date());
+            LOG.debug("Starting scheduled article update {}", new Date());
             
             try {
                 if (!runningServiceChecker.isAnyServiceRunning()) {
