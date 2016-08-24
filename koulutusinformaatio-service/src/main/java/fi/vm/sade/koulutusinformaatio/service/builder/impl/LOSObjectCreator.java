@@ -466,10 +466,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 HakuV1RDTO hakuDTO = hakuRes.getResult();
 
                 if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().equals(TarjontaTila.JULKAISTU.toString()))) {
-                    if (hakuDTO != null) {
-                        invalidOids.add(hakuDTO.getOid());
-                    }
-                    continue;
+                    invalidOids.add(curHakukoh.getHakuOid());
                 }
 
                 ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1EducationHakukohde(aoId);
@@ -483,7 +480,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 }
 
                 try {
-                    ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
+                    ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuDTO);
                     // If fetching for preview, the status of the application option is added
                     if (!checkStatus) {
                         ao.setStatus(hakukohdeDTO.getTila().name());
