@@ -107,7 +107,7 @@ public class GeneralUpdateServiceImpl {
         } finally {
             if(stopwatch.isRunning())
                 stopwatch.stop();
-            LOG.info("Yleinen indeksointi on valmis. Vaiheiden kestot:\n" + stopwatch.prettyPrint());
+            LOG.info("Yleisen indeksoinnin vaiheet: " + stopwatch.toString());
         }
     }
 
