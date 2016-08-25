@@ -94,70 +94,47 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
             $rootScope.isLoading = true;
 
             var deferred = $q.defer();
-            var cities = '';
-            
+
+            var qParams = {
+                start: params.start,
+                rows: params.rows,
+                prerequisite: params.prerequisite,
+                ongoing: params.ongoing,
+                upcoming: params.upcoming,
+                upcomingLater: params.upcomingLater,
+                lang: params.lang,
+                lopFilter: params.lopFilter,
+                educationCodeFilter: params.educationCodeFilter,
+                searchType: params.searchType || 'LO',
+                text: params.queryString || ' ',
+                facetFilters: params.facetFilters,
+                articleFacetFilters: params.articleFacetFilters,
+                providerFacetFilters: params.organisationFacetFilters,
+                excludes: params.excludes,
+                cities: []
+            };
+
             if (params.locations) {
                 for (var index = 0; index < params.locations.length; index++) {
                     if (params.locations.hasOwnProperty(index)) {
-                        cities += '&city=' + params.locations[index];
+                        qParams.cities.push(params.locations[index]);
                     }
                 }
-
-                cities = cities.substring(1, cities.length);
             }
 
-            var qParams = '?';
 
-            qParams += (params.start != undefined) ? ('start=' + params.start) : '';
-            qParams += (params.rows != undefined) ? ('&rows=' + params.rows) : '';
-            qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
-            qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
-            qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
-            qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
-            qParams += (params.upcomingLater != undefined) ? ('&upcomingLater=' + params.upcomingLater) : '';
-            qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
-            qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + $filter('encodeURIComponent')(params.lopFilter)) : '';
-            qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
-            qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
-            qParams += (params.queryString != undefined) ? ('&text=' + $filter('encodeURIComponent')(params.queryString)) : '&text= ';
-            
-            if (params.facetFilters != undefined) {
-                angular.forEach(params.facetFilters, function(facetFilter, key) {
-                    qParams += '&facetFilters=' + facetFilter;
-                });
-            }
-            
-            if (params.articleFacetFilters != undefined) {
-                angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
-                    qParams += '&articleFacetFilters=' + facetFilter;
-                });
-            }
-
-            if (params.organisationFacetFilters != undefined) {
-                angular.forEach(params.organisationFacetFilters, function(facetFilter, key) {
-                    qParams += '&providerFacetFilters=' + facetFilter;
-                });
-            }
-            
-            if (params.excludes != undefined) {
-                angular.forEach(params.excludes, function(exclude, key) {
-                    qParams += '&excludes=' + exclude;
-                });
-            }
-            
-            var sortField = '';
             if (params.sortCriteria != undefined) {
                 if (params.sortCriteria == 1 || params.sortCriteria == 2) {
-                    sortField = 'name_ssort';
+                    qParams.sort = 'name_ssort';
                 } else if (params.sortCriteria == 3 || params.sortCriteria == 4) {
-                    sortField = 'duration_isort';
+                    qParams.sort= 'duration_isort';
                 }
-            } 
-            
-            qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
-            qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
+                if( params.sortCriteria == 2 || params.sortCriteria == 4) {
+                    qParams.order = 'desc';
+                }
+            }
 
-            $http.get('../lo/search' + qParams, {}).
+            $http.get(window.urls().omitEmptyValuesFromQuerystring().url("koulutusinformaatio-service.lo.search", qParams)).
             success(function(result) {
                 LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);
