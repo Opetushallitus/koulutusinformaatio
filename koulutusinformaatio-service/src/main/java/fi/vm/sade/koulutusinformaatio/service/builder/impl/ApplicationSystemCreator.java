@@ -50,6 +50,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
 
     private static final String VARSINAINEN_HAKU = "hakutyyppi_01";
     private ParameterService parameterService;
+    private Map<String, ApplicationSystem> asCache = Maps.newHashMap();
 
     private List<String> overriddenASOids;
 
@@ -60,44 +61,47 @@ public class ApplicationSystemCreator extends ObjectCreator {
     }
 
     public ApplicationSystem createApplicationSystemForAo(HakuV1RDTO hakuDto, HakukohdeV1RDTO hakukohdeDto) throws KoodistoException {
-        if (hakuDto != null) {
-            ApplicationSystem as = new ApplicationSystem();
-            as.setId(hakuDto.getOid());
-            as.setMaxApplications(hakuDto.getMaxHakukohdes());
-            as.setName(getI18nText(hakuDto.getNimi()));
-            as.setApplicationFormLink(hakukohdeDto.getHakulomakeUrl());
-            as.setHakutapaUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutapaUri()));
-            as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutyyppiUri()));
-            if (hakuDto.getHakuaikas() != null) {
-                for (HakuaikaV1RDTO ha : hakuDto.getHakuaikas()) {
-                    DateRange range = new DateRange();
-                    range.setStartDate(ha.getAlkuPvm());
-                    range.setEndDate(ha.getLoppuPvm());
-                    as.getApplicationDates().add(range);
-                }
-
-            }
-            if (hakuDto.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
-                HandleHakuParameters(as);
-            } else {
-                as.setShownAsFacet(false);
-            }
-            as.setShowEducationsUntil(hakuDto.getOpintopolunNayttaminenLoppuu());
-            as.setUseSystemApplicationForm(hakuDto.isJarjestelmanHakulomake());
-            as.setSiirtohaku(isSiirtohaku(hakuDto));
-
-            // Demoympäristöä varten pakotetaan haku näkyviin.
-            if (overriddenASOids != null && overriddenASOids.contains(hakuDto.getOid())) {
-                LOG.warn("Puukotetaan demohaku {} näkyviin!", as.getId());
-                as.getApplicationDates().add(getDemoRange(hakuDto));
-                as.setShownAsFacet(true);
-                as.setShowEducationsUntil(getModifiedDate(hakuDto.getHakuaikas().get(0).getLoppuPvm(), 12));
-            }
-            return as;
-        } else {
+        if (hakuDto == null)
             return null;
+
+        if(asCache.containsKey(hakuDto.getOid()))
+            return asCache.get(hakuDto.getOid());
+
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId(hakuDto.getOid());
+        as.setMaxApplications(hakuDto.getMaxHakukohdes());
+        as.setName(getI18nText(hakuDto.getNimi()));
+        as.setApplicationFormLink(hakukohdeDto.getHakulomakeUrl());
+        as.setHakutapaUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutapaUri()));
+        as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutyyppiUri()));
+        if (hakuDto.getHakuaikas() != null) {
+            for (HakuaikaV1RDTO ha : hakuDto.getHakuaikas()) {
+                DateRange range = new DateRange();
+                range.setStartDate(ha.getAlkuPvm());
+                range.setEndDate(ha.getLoppuPvm());
+                as.getApplicationDates().add(range);
+            }
+
         }
-    }
+        if (hakuDto.getHakutapaUri().contains(TarjontaConstants.HAKUTAPA_YHTEISHAKU)) {
+            HandleHakuParameters(as);
+        } else {
+            as.setShownAsFacet(false);
+        }
+        as.setShowEducationsUntil(hakuDto.getOpintopolunNayttaminenLoppuu());
+        as.setUseSystemApplicationForm(hakuDto.isJarjestelmanHakulomake());
+        as.setSiirtohaku(isSiirtohaku(hakuDto));
+
+        // Demoympäristöä varten pakotetaan haku näkyviin.
+        if (overriddenASOids != null && overriddenASOids.contains(hakuDto.getOid())) {
+            LOG.warn("Puukotetaan demohaku {} näkyviin!", as.getId());
+            as.getApplicationDates().add(getDemoRange(hakuDto));
+            as.setShownAsFacet(true);
+            as.setShowEducationsUntil(getModifiedDate(hakuDto.getHakuaikas().get(0).getLoppuPvm(), 12));
+        }
+        asCache.put(hakuDto.getOid(), as);
+        return as;
+}
 
     private boolean isSiirtohaku(HakuV1RDTO hakuDto) {
         return nullsafeCodeUriEquals(hakuDto.getHakutapaUri(), TarjontaConstants.HAKUTAPA_ERILLIS)
@@ -181,5 +185,9 @@ public class ApplicationSystemCreator extends ObjectCreator {
         start.setTime(date);
         start.add(Calendar.MONTH, months);
         return start.getTime();
+    }
+    
+    public void clearProcessedLists() {
+        this.asCache = Maps.newHashMap();
     }
 }
