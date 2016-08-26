@@ -62,7 +62,7 @@ public class ParameterServiceImpl implements ParameterService {
         }
         
         try {
-            client.get("ohjausparametrit-service.parametri", oid).expectStatus(200).execute(new OphHttpResponseHandler<ApplicationSystemParameters>() {
+            return client.get("ohjausparametrit-service.parametri", oid).expectStatus(200).execute(new OphHttpResponseHandler<ApplicationSystemParameters>() {
                 @Override
                 public ApplicationSystemParameters handleResponse(OphHttpResponse response) throws IOException {
                     ApplicationSystemParameters params = mapper.readValue(response.asInputStream(), ApplicationSystemParameters.class);
