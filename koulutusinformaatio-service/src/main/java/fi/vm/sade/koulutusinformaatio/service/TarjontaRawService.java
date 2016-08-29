@@ -48,9 +48,9 @@ public interface TarjontaRawService {
 
     ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> findHakukohdesByEducationOid(String oid, boolean onlyPublished);
 
-    ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid);
+    ResultV1RDTO<HakukohdeV1RDTO> getV1Hakukohde(String oid);
 
-    ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid);
+    ResultV1RDTO<HakuV1RDTO> getV1HakuByOid(String oid);
 
     ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
 

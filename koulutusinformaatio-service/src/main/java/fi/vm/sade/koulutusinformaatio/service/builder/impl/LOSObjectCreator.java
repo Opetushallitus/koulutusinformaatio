@@ -446,7 +446,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         List<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>> hakukohdeTarjoajat = result.getResult().getTulokset();
 
-        List<ApplicationOption> aos = Lists.newArrayList();
+        Set<ApplicationOption> aos = Sets.newHashSet();
 
         for (TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> curProvider : hakukohdeTarjoajat) {
             for (HakukohdeHakutulosV1RDTO curHakukoh : curProvider.getTulokset()) {
@@ -462,17 +462,14 @@ public class LOSObjectCreator extends ObjectCreator {
                     continue;
                 }
 
-                ResultV1RDTO<HakuV1RDTO> hakuRes = tarjontaRawService.getV1EducationHakuByOid(curHakukoh.getHakuOid());
+                ResultV1RDTO<HakuV1RDTO> hakuRes = tarjontaRawService.getV1HakuByOid(curHakukoh.getHakuOid());
                 HakuV1RDTO hakuDTO = hakuRes.getResult();
 
                 if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().equals(TarjontaTila.JULKAISTU.toString()))) {
-                    if (hakuDTO != null) {
-                        invalidOids.add(hakuDTO.getOid());
-                    }
-                    continue;
+                    invalidOids.add(curHakukoh.getHakuOid());
                 }
 
-                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1EducationHakukohde(aoId);
+                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1Hakukohde(aoId);
                 HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
 
                 if (checkStatus
@@ -483,7 +480,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 }
 
                 try {
-                    ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
+                    ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuDTO);
                     // If fetching for preview, the status of the application option is added
                     if (!checkStatus) {
                         ao.setStatus(hakukohdeDTO.getTila().name());
@@ -608,7 +605,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setThemes(new ArrayList<>(themeMap.values()));
 
         if (!aoMap.isEmpty()) {
-            los.setApplicationOptions(new ArrayList<>(aoMap.values()));
+            los.setApplicationOptions(new HashSet<>(aoMap.values()));
         }
 
         return los;
@@ -709,7 +706,7 @@ public class LOSObjectCreator extends ObjectCreator {
         KoulutusLOS los = createValmistavaLOS(koulutusDTO, checkStatus, SolrConstants.ED_TYPE_KANSANOPISTO);
         if ((koulutusDTO.getKoulutusohjelmanNimiKannassa() == null || koulutusDTO.getKoulutusohjelmanNimiKannassa().isEmpty())
                 && !(los.getApplicationOptions() == null || los.getApplicationOptions().isEmpty())) {
-            ApplicationOption ao = los.getApplicationOptions().get(0);
+            ApplicationOption ao = los.getApplicationOptions().iterator().next();
             los.setName(ao.getName());
             los.setShortTitle(ao.getName());
         }
@@ -1340,6 +1337,8 @@ public class LOSObjectCreator extends ObjectCreator {
         this.cachedApplicationOptionResults = Maps.newHashMap();
         this.invalidOids = Sets.newHashSet();
         this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
+        if(this.applicationOptionCreator != null)
+            applicationOptionCreator.clearProcessedLists();
     }
 
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
@@ -1397,11 +1396,11 @@ public class LOSObjectCreator extends ObjectCreator {
         return los == null || los.getApplicationOptions().isEmpty();
     }
 
-    private void recursiveAddApplicationOptions(KoulutusLOS parent, List<ApplicationOption> aos) {
+    private void recursiveAddApplicationOptions(KoulutusLOS parent, Set<ApplicationOption> aos) {
         for (KoulutusLOS child : parent.getOpintojaksos()) {
             Set<ApplicationOption> childAos = Sets.newHashSet(child.getApplicationOptions());
             childAos.addAll(aos);
-            child.setApplicationOptions(Lists.newArrayList(childAos));
+            child.setApplicationOptions(Sets.newHashSet(childAos));
             recursiveAddApplicationOptions(child, aos);
         }
     }

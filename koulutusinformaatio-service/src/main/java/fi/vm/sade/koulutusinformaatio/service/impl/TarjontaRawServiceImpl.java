@@ -142,7 +142,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid) {
+    public ResultV1RDTO<HakukohdeV1RDTO> getV1Hakukohde(String oid) {
         return executeWithRetries(
                 get("tarjonta-service.hakukohde", oid), new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>() {
                 }
@@ -150,7 +150,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
+    public ResultV1RDTO<HakuV1RDTO> getV1HakuByOid(String oid) {
         return executeWithRetries(
                 get("tarjonta-service.haku", oid), new TypeReference<ResultV1RDTO<HakuV1RDTO>>() {
                 }

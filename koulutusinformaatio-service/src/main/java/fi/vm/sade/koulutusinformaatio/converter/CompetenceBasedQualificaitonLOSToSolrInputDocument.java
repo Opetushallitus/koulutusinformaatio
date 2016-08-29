@@ -3,7 +3,9 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.Sets;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -112,7 +114,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             }
         }
         
-        List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        Set<ApplicationOption> applicationOptions = Sets.newHashSet();
         
         for (AdultVocationalLOS curChild : los.getChildren()) {
             applicationOptions.addAll(curChild.getApplicationOptions());

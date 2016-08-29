@@ -28,6 +28,7 @@ import org.apache.solr.common.params.DisMaxParams;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -122,7 +123,7 @@ public final class SolrUtil {
         return translation;
     }
 
-    public static void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
+    public static void addApplicationDates(SolrInputDocument doc, Set<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
         for (ApplicationOption ao : applicationOptions) {
             doc.addField(new StringBuilder().append("asStart").append("_").append(String.valueOf(parentApplicationDateRangeIndex)).toString(),

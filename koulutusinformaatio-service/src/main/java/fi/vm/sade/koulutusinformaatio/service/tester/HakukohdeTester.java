@@ -76,7 +76,7 @@ public class HakukohdeTester {
 
             Set<String> hakukohdeOiditTarjonnasta = Sets.newHashSet();
             for (String oid : hakukohdehakutuloksetToOidSet(rawRes)) {
-                HakukohdeV1RDTO hakukohde = tarjontaRawService.getV1EducationHakukohde(oid).getResult();
+                HakukohdeV1RDTO hakukohde = tarjontaRawService.getV1Hakukohde(oid).getResult();
                 if (isAoOngoing(hakukohde)) {
                     hakukohdeOiditTarjonnasta.add(oid);
                     if (!hakukohdeOiditKannasta.contains(oid)) {
@@ -123,7 +123,7 @@ public class HakukohdeTester {
             return false;
         }
 
-        HakuV1RDTO haku = tarjontaRawService.getV1EducationHakuByOid(hakukohde.getHakuOid()).getResult();
+        HakuV1RDTO haku = tarjontaRawService.getV1HakuByOid(hakukohde.getHakuOid()).getResult();
         if (!haku.getTila().equals("JULKAISTU") || haku.getHakuaikas().isEmpty())
             return false;
         HakuaikaV1RDTO aoHakuaika = haku.getHakuaikas().get(0);

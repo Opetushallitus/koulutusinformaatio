@@ -80,14 +80,14 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohde(String oid) {
-        File jsonFile = new File(getJsonPath("getV1EducationHakukohde", oid));
+    public ResultV1RDTO<HakukohdeV1RDTO> getV1Hakukohde(String oid) {
+        File jsonFile = new File(getJsonPath("getV1Hakukohde", oid));
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>() {});
         } catch (Exception e) {
             checkIfFetchingIsAllowed();
             try {
-                ResultV1RDTO<HakukohdeV1RDTO> realResult = tarjontaRawServiceImpl.getV1EducationHakukohde(oid);
+                ResultV1RDTO<HakukohdeV1RDTO> realResult = tarjontaRawServiceImpl.getV1Hakukohde(oid);
                 mapper.writeValue(jsonFile, realResult);
                 return realResult;
             } catch (IOException e1) {
@@ -98,14 +98,14 @@ public class TarjontaRawServiceMock implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
-        File jsonFile = new File(getJsonPath("getV1EducationHakuByOid", oid));
+    public ResultV1RDTO<HakuV1RDTO> getV1HakuByOid(String oid) {
+        File jsonFile = new File(getJsonPath("getV1HakuByOid", oid));
         try {
             return mapper.readValue(jsonFile, new TypeReference<ResultV1RDTO<HakuV1RDTO>>() {});
         } catch (Exception e) {
             checkIfFetchingIsAllowed();
             try {
-                ResultV1RDTO<HakuV1RDTO> realResult = tarjontaRawServiceImpl.getV1EducationHakuByOid(oid);
+                ResultV1RDTO<HakuV1RDTO> realResult = tarjontaRawServiceImpl.getV1HakuByOid(oid);
                 mapper.writeValue(jsonFile, realResult);
                 return realResult;
             } catch (IOException e1) {
