@@ -811,7 +811,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                         } else {
                             addProcessedOid(oid);
                         }
-                    } catch (TarjontaParseException e) {
+                    } catch (KoodistoException | TarjontaParseException | NoValidApplicationOptionsException | OrganisaatioException e) {
                         addProcessedOid(oid);
                         LOG.warn("Vocational sibling " + oid + " was not valid: " + e.getMessage());
                         // Invalid sibling should be skipped
