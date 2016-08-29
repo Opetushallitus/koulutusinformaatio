@@ -37,6 +37,6 @@ public class RaamitResource {
                 .append("    }\n")
                 .append("}\n");
 
-        return Response.ok(b.toString(), MediaType.APPLICATION_JSON).build();
+        return Response.ok(b.toString(), "application/javascript").build();
     }
 }
