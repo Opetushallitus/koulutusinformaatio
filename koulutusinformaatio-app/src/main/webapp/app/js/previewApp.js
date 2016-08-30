@@ -1,13 +1,5 @@
 /*  Preview application module */
 
-window.urls.loadFromUrls("koulutusinformaatio-app-oph.json", "rest/frontProperties").success(function() {
-    // bootstrap angular application manually after properties are loaded
-    angular.element(document).ready(function() {
-        angular.bootstrap(document, ['previewApp'])
-    })
-})
-
-
 var kiApp = angular.module('previewApp', 
     [
         'kiApp.filters',
