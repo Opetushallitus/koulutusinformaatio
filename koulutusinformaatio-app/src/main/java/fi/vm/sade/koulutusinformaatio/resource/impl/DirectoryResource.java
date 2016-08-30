@@ -32,7 +32,6 @@ import javax.ws.rs.core.UriInfo;
 
 import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
@@ -75,7 +74,7 @@ public class DirectoryResource {
                              OphProperties urlProperties) {
         this.learningOpportunityService = learningOpportunityService;
         this.learningOpportunityProviderService = learningOpportunityProviderService;
-        this.ngBaseUrl = urlProperties.url("koulutusinformaatio.learningopportunity.base");
+        this.ngBaseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
         this.resourceBundleHelper = new ResourceBundleHelper();
     }
 
