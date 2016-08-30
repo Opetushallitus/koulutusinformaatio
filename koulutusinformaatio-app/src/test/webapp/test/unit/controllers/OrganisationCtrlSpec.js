@@ -14,8 +14,8 @@ describe('OrganisationCtrl', function() {
             scope = $rootScope.$new();
             controller = $controller;
             httpBackend = $httpBackend;
-            httpBackend.when('GET', '../lop/123?lang=fi').respond('{"id": "123", "name": "organisation name", "pictureFound": "true", "applicationSystemIds": ["abc"]}');
-            httpBackend.when('GET', '../lop/123/picture').respond('{}');
+            httpBackend.when('GET', '/lop/123?lang=fi').respond('{"id": "123", "name": "organisation name", "pictureFound": "true", "applicationSystemIds": ["abc"]}');
+            httpBackend.when('GET', '/lop/123/picture').respond('{}');
 
             ctrl = controller('OrganisationCtrl', { $scope: scope, $routeParams: {id: 123} });
             httpBackend.flush();
