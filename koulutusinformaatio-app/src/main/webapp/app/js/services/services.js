@@ -19,7 +19,7 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
         query: function(queryParam) {
             var deferred = $q.defer();
 
-            $http.get(window.url("koulutusinformaatio-service.location.search", queryParam, {
+            $http.get(window.url("koulutusinformaatio-app.location.search", queryParam, {
                 lang: LanguageService.getLanguage()
             })).
             success(function(result) {
@@ -40,7 +40,7 @@ service('AutocompleteService', ['$http', '$timeout', '$q', 'LanguageService', fu
         query: function(queryParam) {
             var deferred = $q.defer();
 
-            $http.get(window.url("koulutusinformaatio-service.lo.autocomplete", {
+            $http.get(window.url("koulutusinformaatio-app.lo.autocomplete", {
                 term: queryParam,
                 lang: LanguageService.getLanguage()
             })).
@@ -65,7 +65,7 @@ service('DistrictService', ['$http', '$timeout', '$q', 'LanguageService', functi
         query: function() {
             var deferred = $q.defer();
 
-            $http.get(window.url("koulutusinformaatio-service.location.districts", {
+            $http.get(window.url("koulutusinformaatio-app.location.districts", {
                 lang: LanguageService.getLanguage()
             })).
             success(function(result) {
@@ -98,7 +98,7 @@ service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', 
                 params.districts.push(districtVal[i].code);
             }
             
-            $http.get(window.url("koulutusinformaatio-service.location.childlocations", params)).
+            $http.get(window.url("koulutusinformaatio-app.location.childlocations", params)).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -118,7 +118,7 @@ service('ParentLOService', ['GeneralLOService', 'ParentLOTransformer', function(
     
     return {
         query: function(options) {
-            return GeneralLOService.query(options, "koulutusinformaatio-service.lo.tutkinto", ParentLOTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.tutkinto", ParentLOTransformer);
         }
     }
 }]).
@@ -140,7 +140,7 @@ service('ChildLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSer
 
             var url = '../lo/child/';
 
-            $http.get(window.url("koulutusinformaatio-service.lo.child", options.id, queryParams)).
+            $http.get(window.url("koulutusinformaatio-app.lo.child", options.id, queryParams)).
             success(function(result) {
                 ChildLOTransformer.transform(result);
                 ParentLOService.query({
@@ -172,7 +172,7 @@ service('ChildLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSer
 service('SpecialLOService', ['GeneralLOService', 'ChildLOTransformer', function(GeneralLOService, ChildLOTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, 'koulutusinformaatio-service.lo.special', ChildLOTransformer);
+            return GeneralLOService.query(options, 'koulutusinformaatio-app.lo.special', ChildLOTransformer);
         }
     }
 }]).
@@ -183,7 +183,7 @@ service('SpecialLOService', ['GeneralLOService', 'ChildLOTransformer', function(
 service('UpperSecondaryLOService', ['GeneralLOService', 'ChildLOTransformer', function(GeneralLOService, ChildLOTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, "koulutusinformaatio-service.lo.upsec", ChildLOTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.upsec", ChildLOTransformer);
         }
     }
 }]).
@@ -194,7 +194,7 @@ service('UpperSecondaryLOService', ['GeneralLOService', 'ChildLOTransformer', fu
 service('HigherEducationLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, "koulutusinformaatio-service.lo.highered", HigherEducationTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.highered", HigherEducationTransformer);
         }
     }
 }]).
@@ -205,7 +205,7 @@ service('HigherEducationLOService', ['GeneralLOService', 'HigherEducationTransfo
 service('KoulutusLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, "koulutusinformaatio-service.lo.koulutus", HigherEducationTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.koulutus", HigherEducationTransformer);
         }
     }
 }]).
@@ -217,7 +217,7 @@ service('KoulutusLOService', ['GeneralLOService', 'HigherEducationTransformer', 
 service('AdultVocationalLOService', ['GeneralLOService', 'AdultVocationalTransformer', function(GeneralLOService, AdultVocationalTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, "koulutusinformaatio-service.lo.adultvocational", AdultVocationalTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.adultvocational", AdultVocationalTransformer);
         }
     }
 }]).
@@ -278,7 +278,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
                 queryParams.lang = options.lang
             }
 
-            $http.get(window.url("koulutusinformaatio-service.lo.preview", options.id, queryParams)).
+            $http.get(window.url("koulutusinformaatio-app.lo.preview", options.id, queryParams)).
             success(function(result) {
                 if (options.loType == 'ammatillinenaikuiskoulutus') {
                     AdultVocationalTransformer.transform(result, options.id);
@@ -941,7 +941,7 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
         query: function(options) {
             var deferred = $q.defer();
 
-            $http.get(window.url("koulutusinformaatio-service.lop.picture", options.providerId)).
+            $http.get(window.url("koulutusinformaatio-app.lop.picture", options.providerId)).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -962,7 +962,7 @@ service('LearningOpportunityPictureService', ['$http', '$timeout', '$q', functio
         query: function(options) {
             var deferred = $q.defer();
             
-            $http.get(window.url("koulutusinformaatio-service.lo.picture", options.pictureId)).
+            $http.get(window.url("koulutusinformaatio-app.lo.picture", options.pictureId)).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -1189,7 +1189,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 }
             }
 
-            $http.get(window.url("koulutusinformaatio-service.basket.items", qParams)).
+            $http.get(window.url("koulutusinformaatio-app.basket.items", qParams)).
             success(function(result) {
                 result = transformData(result);
                 $rootScope.isLoading = false;
@@ -1278,7 +1278,7 @@ service('FilterService', [
 
             var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : queryParams.locations || [];
             if (locationCodes.length > 0) {
-                $http.get(window.url("koulutusinformaatio-service.location", {
+                $http.get(window.url("koulutusinformaatio-app.location", {
                     lang: LanguageService.getLanguage(),
                     code: locationCodes
                 })).

@@ -60,7 +60,7 @@ public class SEOServiceImpl implements SEOService {
         this.mongoDatastore = primaryDatastore;
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
-        this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, urlProperties.url("koulutusinformaatio.learningopportunity.base"));
+        this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base"));
         String collections = "tutkinto:tutkintoLOS," +
                 "koulutus:koulutusLOS," +
                 "koulutusohjelma:childLearningOpportunities," +
