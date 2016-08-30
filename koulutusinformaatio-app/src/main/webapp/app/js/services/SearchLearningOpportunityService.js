@@ -134,7 +134,7 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
                 }
             }
 
-            $http.get(window.urls().omitEmptyValuesFromQuerystring().url("koulutusinformaatio-service.lo.search", qParams)).
+            $http.get(window.urls().omitEmptyValuesFromQuerystring().url("koulutusinformaatio-app.lo.search", qParams)).
             success(function(result) {
                 LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);

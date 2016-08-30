@@ -73,7 +73,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
         this.snapshotFolder = prerenderFolder;
-        this.baseUrl = urlProperties.url("koulutusinformaatio.learningopportunity.base");
+        this.baseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
     }
 
     @Override

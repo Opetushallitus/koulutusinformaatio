@@ -15,10 +15,10 @@ public class UrlConfiguration extends OphProperties {
 
     public UrlConfiguration(String activeSpringProfile) {
         //debugMode();
-        addFiles("/koulutusinformaatio-service-oph.properties");
+        addFiles("/koulutusinformaatio-app-oph.properties");
         if(!SPRING_IT_PROFILE.equals(activeSpringProfile)) {
             addOptionalFiles(Paths.get(System.getProperties().getProperty("user.home"), "/oph-configuration/common.properties").toString());
         }
+        frontProperties.put("front.tarjonta-app.baseUrl", "${url-virkailija}");
     }
-
 }
