@@ -10,7 +10,7 @@ service('OrganisationService', ['$http', '$rootScope', '$q', 'LanguageService', 
             $rootScope.isLoading = true;
             var deferred = $q.defer();
 
-            $http.get(window.url("koulutusinformaatio-service.lop", id, {
+            $http.get(window.url("koulutusinformaatio-app.lop", id, {
                 lang: LanguageService.getLanguage()
             })).
             success(function(result) {
