@@ -26,7 +26,6 @@ import javax.ws.rs.Produces;
 
 import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
@@ -58,7 +57,7 @@ public class SitemapResource {
         Date lastModified = seoService.getSitemapTimestamp();
         Map<String, Object> model = Maps.newHashMap();
         model.put("sitemapLastModified", SDF.format(lastModified));
-        model.put("sitemapUrl", urlProperties.url("koulutusinformaatio.sitemap"));
+        model.put("sitemapUrl", urlProperties.url("koulutusinformaatio-app-web.sitemap"));
         model.put("wpSitemapUrl", urlProperties.url("wp.sitemap"));
         model.put("wpSitemapLastModified", SDF.format(new Date()));
         return new Viewable("/sitemap.ftl", model);
