@@ -21,7 +21,7 @@ describe('SearchBySubjectCtrl', function() {
             location = $location;
             themes = themeFacet;
 
-            httpBackend.when('GET', '../lo/search?start=0&rows=0&lang=fi&searchType=LO&text=*').respond(themes);
+            httpBackend.when('GET', '/lo/search?start=0&rows=0&lang=fi&searchType=LO&text=*').respond(themes);
             httpBackend.when('GET', 'partials/search/search.html').respond(''); // for some unknown reason this gets requested
             ctrl = controller('SearchBySubjectCtrl', { $scope: scope });
             httpBackend.flush();
