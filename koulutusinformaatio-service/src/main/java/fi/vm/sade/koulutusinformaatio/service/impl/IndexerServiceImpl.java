@@ -108,56 +108,21 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     private void addLearningOpportunitySpecificationInner(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws SolrServerException, IOException, KISolrException {
-        Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
         Set<String> vocationalAsIds = Sets.newHashSet();
         Set<String> nonVocationalAsIds = Sets.newHashSet();
-        // Adding Tutkinto (replaces the old V0 ParentLOS)
-        if (los instanceof TutkintoLOS) {
-            TutkintoLOS tutkinto = (TutkintoLOS) los;
-            provider = tutkinto.getProvider();
-            for (KoulutusLOS childLOS : tutkinto.getChildEducations()) {
-                for (ApplicationOption ao : childLOS.getApplicationOptions()) {
-                    providerAsIds.add(ao.getApplicationSystem().getId());
-                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
-                    if (ao.isVocational()) {
-                        vocationalAsIds.add(ao.getApplicationSystem().getId());
-                    } else {
-                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
-                    }
-                }
-            }
-            // Adding higher education los
-        } else if (los instanceof KoulutusLOS) {
-            KoulutusLOS uas = (KoulutusLOS) los;
-            provider = uas.getProvider();
 
-            if (uas.getApplicationOptions() != null) {
-                for (ApplicationOption ao : uas.getApplicationOptions()) {
-                    providerAsIds.add(ao.getApplicationSystem().getId());
-                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
-                    if (ao.isVocational()) {
-                        vocationalAsIds.add(ao.getApplicationSystem().getId());
-                    } else {
-                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
-                    }
-                }
-            }
+        Provider provider = los.getProvider();
 
-        } else if (los instanceof CompetenceBasedQualificationParentLOS) {
-            CompetenceBasedQualificationParentLOS cbqpLos = (CompetenceBasedQualificationParentLOS) los;
-            provider = cbqpLos.getProvider();
-
-            if (cbqpLos.getApplicationOptions() != null) {
-                for (ApplicationOption ao : cbqpLos.getApplicationOptions()) {
-                    providerAsIds.add(ao.getApplicationSystem().getId());
-                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
-                    if (ao.isVocational()) {
-                        vocationalAsIds.add(ao.getApplicationSystem().getId());
-                    } else {
-                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
-                    }
+        if (los.getApplicationOptions() != null) {
+            for (ApplicationOption ao : los.getApplicationOptions()) {
+                providerAsIds.add(ao.getApplicationSystem().getId());
+                requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                if (ao.isVocational()) {
+                    vocationalAsIds.add(ao.getApplicationSystem().getId());
+                } else {
+                    nonVocationalAsIds.add(ao.getApplicationSystem().getId());
                 }
             }
         }

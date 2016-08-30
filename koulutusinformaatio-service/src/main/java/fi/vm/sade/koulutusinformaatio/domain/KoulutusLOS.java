@@ -42,7 +42,6 @@ public class KoulutusLOS extends LOS {
     private Code educationCode;
     private List<Code> teachingLanguages;
 
-    private Provider provider;
     private List<Provider> additionalProviders = Lists.newArrayList();
 
     private String komoOid;
@@ -137,14 +136,6 @@ public class KoulutusLOS extends LOS {
 
     public I18nText getGoals() {
         return goals;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
-    }
-
-    public Provider getProvider() {
-        return this.provider;
     }
 
     public void setStructure(I18nText structure) {
