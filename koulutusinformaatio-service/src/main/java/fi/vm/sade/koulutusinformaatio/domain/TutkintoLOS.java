@@ -40,7 +40,6 @@ public class TutkintoLOS extends LOS {
     private List<Code> themes;
 
     // BasicLOS
-    private Provider provider; // tarjoaja, koulutuksen luoja
     private List<Provider> additionalProviders = new ArrayList<Provider>(); // muut tarjoajat
     private I18nText structure; // rakenne
     private I18nText accessToFurtherStudies; // jatko-opintomahdollisuudet
@@ -135,14 +134,6 @@ public class TutkintoLOS extends LOS {
 
     public void setThemes(List<Code> themes) {
         this.themes = themes;
-    }
-
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
     }
 
     public List<Provider> getAdditionalProviders() {
