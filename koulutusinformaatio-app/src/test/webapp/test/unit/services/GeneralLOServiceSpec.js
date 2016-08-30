@@ -25,8 +25,8 @@ describe('GeneralLOService', function() {
     });
 
     it('should transform the response', function() {
-        httpBackend.when('GET', '../lo/parent/123?uiLang=fi').respond(200, {});
-        service.query({id: '123'}, '../lo/parent/', transformer).then(function(result) {
+        httpBackend.when('GET', '/lo/koulutus/123?uiLang=fi').respond(200, {});
+        service.query({id: '123'}, 'koulutusinformaatio-service.lo.koulutus', transformer).then(function(result) {
             expect(spy).toHaveBeenCalled();
             expect(result).toBeDefined();
         });
@@ -34,8 +34,8 @@ describe('GeneralLOService', function() {
     });
 
     it('should set the error flag in rootscope when request fails', function() {
-        httpBackend.when('GET', '../lo/parent/123?uiLang=fi').respond(404, {});
-        service.query({id: '123'}, '../lo/parent/', transformer).then(function(result) {},
+        httpBackend.when('GET', '/lo/koulutus/123?uiLang=fi').respond(404, {});
+        service.query({id: '123'}, 'koulutusinformaatio-service.lo.koulutus', transformer).then(function(result) {},
         function(error) {
             expect(rs.error).toBeTruthy();
         });

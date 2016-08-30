@@ -19,10 +19,10 @@ describe('InfoCtrl', function() {
             httpBackend = $httpBackend;
             location = $location;
 
-            httpBackend.when('GET', '../lo/tutkinto/123?prerequisite=PK&uiLang=fi').respond(parentLO);
-            httpBackend.when('GET', '../lop/123_provider/picture').respond('imagedata');
-            httpBackend.when('GET', '../lo/picture/structure_image_id').respond('structureimagedata');
-            httpBackend.when('GET', '../lop/additional_provider_id/picture').respond('additional_provider_image_data');
+            httpBackend.when('GET', '/lo/tutkinto/123?uiLang=fi&prerequisite=PK').respond(parentLO);
+            httpBackend.when('GET', '/lop/123_provider/picture').respond('imagedata');
+            httpBackend.when('GET', '/lo/picture/structure_image_id').respond('structureimagedata');
+            httpBackend.when('GET', '/lop/additional_provider_id/picture').respond('additional_provider_image_data');
 
             ctrl = controller('InfoCtrl', { $scope: scope, $routeParams: {id: '123'}, loResource: ParentLOService });
             httpBackend.flush();
