@@ -46,7 +46,7 @@ describe('AppBasketCtrl', function() {
     describe('basket with items in it', function() {
 
         beforeEach(function() {
-            httpBackend.when('GET', '../basket/items?uiLang=fi&aoId=aoId1').respond('["aoId1"]');
+            httpBackend.when('GET', '/basket/items?uiLang=fi&aoId=aoId1').respond('["aoId1"]');
             appBasketService.addItem('aoId1');
             ctrl = controller('AppBasketCtrl', { $scope: scope });
             httpBackend.flush();
