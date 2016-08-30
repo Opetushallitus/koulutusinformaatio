@@ -201,6 +201,7 @@
                 jsonProperties.splice(index, 0, data)
                 checkfulfill()
             }, function() {
+                console.log("Failed to download ", url)
                 fulfillFailed = true
                 checkfulfill()
             })
@@ -256,6 +257,7 @@
 })(typeof window === 'undefined' ? module.exports : window);
 
 // polyfills for IE
+
 
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function(searchString, position){

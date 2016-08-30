@@ -1,4 +1,4 @@
-{
+window.urls.properties={
   "piwik.url": "https://analytiikka.opintopolku.fi/piwik/",
   "tarjonta-app.koulutus": "/tarjonta-app/#/koulutus/$1",
   "tarjonta-app.koulutusEdit": "/tarjonta-app/#/koulutus/$1/edit?$2",
