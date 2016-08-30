@@ -17,10 +17,19 @@ window.Config.app.common = {
     },
 };
 
+window.Config.app.prod = {
+};
+
 /* Configurations for demo environment */
 window.Config.app.demo = {
     frontpageUrl: '/app/demo.html',
     introUrl: 'https://opintopolku.fi/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext'
+};
+
+window.Config.app.koulutus = {
+};
+
+window.Config.app.qa = {
 };
 
 /* Configurations for luokka environment */
