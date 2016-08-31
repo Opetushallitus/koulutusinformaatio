@@ -1,10 +1,11 @@
 package fi.vm.sade.koulutusinformaatio.service.tester;
 
-import com.google.common.collect.Sets;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.mongodb.morphia.query.Query;
 import org.slf4j.Logger;
@@ -13,25 +14,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+
+import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 
 @Service
 @Profile("default")
 public class HakukohdeTester {
     private static final Logger LOG = LoggerFactory.getLogger(HakukohdeTester.class);
 
-    private final TarjontaRawService tarjontaRawService;
-
-    private final ApplicationOptionDAO applicationOptionDAO;
-
-    private boolean running = false;
+    @Autowired
+    private TarjontaRawService tarjontaRawService;
 
     @Autowired
-    public HakukohdeTester(TarjontaRawService tarjontaRawService, ApplicationOptionDAO applicationOptionDAO) {
-        this.tarjontaRawService = tarjontaRawService;
-        this.applicationOptionDAO = applicationOptionDAO;
-    }
+    private ApplicationOptionDAO applicationOptionDAO;
+
+    private boolean running = false;
 
     public void testHakukohteet() {
         try {
@@ -53,11 +64,12 @@ public class HakukohdeTester {
                 return;
             }
 
+            Set<String> hakukohdeOiditKannasta = Sets.newHashSet();
             Query<ApplicationOptionEntity> q = applicationOptionDAO.createQuery().retrievedFields(true, "_id");
             List<ApplicationOptionEntity> indexedAos = applicationOptionDAO.find(q).asList();
-            Set<String> hakukohdeOiditKannasta = Sets.newHashSet(indexedAos.stream()
-                    .map(ApplicationOptionEntity::getId)
-                    .collect(Collectors.toList()));
+            for (ApplicationOptionEntity ao : indexedAos) {
+                hakukohdeOiditKannasta.add(ao.getId());
+            }
 
             LOG.debug("Kannasta löytyi {} hakukohdetta.", hakukohdeOiditKannasta.size());
             LOG.debug("Tarjonnasta löytyi {} julkaistua hakukohdetta.", rawRes.getResult().getTuloksia());
@@ -88,9 +100,9 @@ public class HakukohdeTester {
 
     private void logMissingAos(Set<String> hakukohdeOiditKannasta, Set<String> hakukohdeOiditTarjonnasta) {
         LOG.info("Verrataan tarjonnan julkaistuja hakukohteita indeksistä löytyviin:");
-        HashSet<String> missingFromTarjonta = new HashSet<>(hakukohdeOiditTarjonnasta);
+        HashSet<String> missingFromTarjonta = new HashSet<String>(hakukohdeOiditTarjonnasta);
         missingFromTarjonta.removeAll(hakukohdeOiditKannasta);
-        HashSet<String> missingFromKanta = new HashSet<>(hakukohdeOiditKannasta);
+        HashSet<String> missingFromKanta = new HashSet<String>(hakukohdeOiditKannasta);
         missingFromKanta.removeAll(hakukohdeOiditTarjonnasta);
 
         if (!missingFromTarjonta.isEmpty()) {
@@ -128,17 +140,7 @@ public class HakukohdeTester {
 
     private boolean isJulkaistu(HakukohdeV1RDTO hakukohde) {
         for (String oid : hakukohde.getHakukohdeKoulutusOids()) {
-            ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawResult = tarjontaRawService.searchEducation(oid);
-            if(rawResult == null ||
-                    rawResult.getResult() == null ||
-                    rawResult.getResult().getTulokset() == null ||
-                    rawResult.getResult().getTulokset().isEmpty() ||
-                    rawResult.getResult().getTulokset().get(0) == null ||
-                    rawResult.getResult().getTulokset().get(0).getTulokset() == null ||
-                    rawResult.getResult().getTulokset().get(0).getTulokset().isEmpty() ||
-                    rawResult.getResult().getTulokset().get(0).getTulokset().get(0) == null)
-                return false;
-            KoulutusHakutulosV1RDTO koulutus = rawResult.getResult().getTulokset().get(0).getTulokset().get(0);
+            KoulutusHakutulosV1RDTO koulutus = tarjontaRawService.searchEducation(oid).getResult().getTulokset().get(0).getTulokset().get(0);
             if (koulutus.getTila().name().equals("JULKAISTU") && koulutusIsValidType(koulutus))
                 return true;
         }
@@ -151,7 +153,17 @@ public class HakukohdeTester {
 
     private boolean isOngoing(Date alkuPvm, Date loppuPvm, Date hakuEnd) {
         Date now = new Date();
-        return alkuPvm.after(now) || loppuPvm == null || loppuPvm.after(now) || getLastDayToShow(loppuPvm, hakuEnd).after(now);
+        if (alkuPvm.after(now)) { // In Future
+            return true;
+        }
+        if (loppuPvm == null || loppuPvm.after(now)) {
+            return true;
+        }
+
+        if (getLastDayToShow(loppuPvm, hakuEnd).after(now)) {
+            return true;
+        }
+        return false;
     }
 
     private Date getLastDayToShow(Date endDate, Date hakuEnd) {
@@ -172,12 +184,18 @@ public class HakukohdeTester {
         return cal.getTime();
     }
 
-    private Set<String> hakukohdehakutuloksetToOidSet(ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> rawRes) {
-        return rawRes.getResult().getTulokset().stream()
-                .flatMap(input -> input.getTulokset().stream()
-                        .map(KoulutusHakutulosV1RDTO::getOid)
-                        .collect(Collectors.toSet()).stream())
-                .collect(Collectors.toSet());
+    private ImmutableSet<String> hakukohdehakutuloksetToOidSet(ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> rawRes) {
+        return FluentIterable.from(rawRes.getResult().getTulokset())
+                .transformAndConcat(new Function<TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO>, Set<String>>() {
+                    public Set<String> apply(TarjoajaHakutulosV1RDTO<HakukohdeHakutulosV1RDTO> input) {
+                        return FluentIterable.from(input.getTulokset())
+                                .transform(new Function<HakukohdeHakutulosV1RDTO, String>() {
+                                    public String apply(HakukohdeHakutulosV1RDTO input) {
+                                        return input.getOid();
+                                    }
+                                }).toSet();
+                    }
+                }).toSet();
     }
 
 }
