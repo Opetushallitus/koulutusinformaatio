@@ -82,6 +82,7 @@ public class ApplicationOptionDTO {
     private boolean isJosYoEiMuitaLiitepyyntoja;
     private boolean kysytaanHarkinnanvaraiset;
     private String applicationFormLink;
+    private ApplicationSystemDTO applicationSystem;
 
 
     public boolean isJosYoEiMuitaLiitepyyntoja() {
@@ -505,5 +506,14 @@ public class ApplicationOptionDTO {
 
     public void setApplicationFormLink(String applicationFormLink) {
         this.applicationFormLink = applicationFormLink;
+    }
+
+
+    public ApplicationSystemDTO getApplicationSystem() {
+        return applicationSystem;
+    }
+
+    public void setApplicationSystem(ApplicationSystemDTO applicationSystem) {
+        this.applicationSystem = applicationSystem;
     }
 }

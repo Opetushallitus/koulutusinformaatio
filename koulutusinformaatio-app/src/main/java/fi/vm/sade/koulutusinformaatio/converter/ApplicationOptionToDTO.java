@@ -104,6 +104,7 @@ public final class ApplicationOptionToDTO {
             dto.setPeruutusEhdotKuvaukset(ConverterUtil.getTextByLanguage(applicationOption.getPeruutusEhdotKuvaukset(), lang));
 
             dto.setApplicationFormLink(applicationOption.getApplicationSystem().getApplicationFormLink());
+            dto.setApplicationSystem(ApplicationSystemToDTO.convert(applicationOption.getApplicationSystem(), lang));
 
             return dto;
         }
