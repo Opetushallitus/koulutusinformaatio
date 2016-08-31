@@ -27,6 +27,7 @@ import java.util.Set;
  */
 public abstract class LOS {
 
+    protected Provider provider;
     private String id;
     private I18nText name;
     private I18nText shortTitle;
@@ -120,4 +121,13 @@ public abstract class LOS {
     public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
+
+    public Provider getProvider() {
+        return provider;
+    }
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+
 }

@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class BasicLOS<T extends LOI> extends InstantiatedLOS<T> {
 
-    private Provider provider;                  // tarjoaja, koulutuksen luoja
     private List<Provider> additionalProviders = new ArrayList<Provider>(); //muut tarjoajat
     private I18nText structure;                 // rakenne
     private I18nText accessToFurtherStudies;    // jatko-opintomahdollisuudet
@@ -38,14 +37,6 @@ public class BasicLOS<T extends LOI> extends InstantiatedLOS<T> {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
-    }
-
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
     }
 
     public I18nText getStructure() {
