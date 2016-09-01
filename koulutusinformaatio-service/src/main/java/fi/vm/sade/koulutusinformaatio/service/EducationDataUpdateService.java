@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 
 /**
  * @author Mikko Majapuro
@@ -31,6 +30,4 @@ public interface EducationDataUpdateService {
     void save(final DataStatus dataStatus);
     
     void save(final Provider provider);
-
-    void resetCache();
 }

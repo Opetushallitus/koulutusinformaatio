@@ -114,7 +114,6 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             tarjontaService.clearProcessedLists();
-            educationDataUpdateService.resetCache();
 
             List<KoulutusHakutulosV1RDTO> lukioEducations = this.tarjontaService.findLukioKoulutusDTOs();
             LOG.info("Found lukio educations: " + lukioEducations.size());
