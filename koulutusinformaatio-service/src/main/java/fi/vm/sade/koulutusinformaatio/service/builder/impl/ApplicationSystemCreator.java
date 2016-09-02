@@ -64,8 +64,12 @@ public class ApplicationSystemCreator extends ObjectCreator {
         if (hakuDto == null)
             return null;
 
-        if(asCache.containsKey(hakuDto.getOid()))
-            return asCache.get(hakuDto.getOid());
+        if(asCache.containsKey(hakuDto.getOid())) {
+            // FIXME BUG-1099
+            ApplicationSystem as = asCache.get(hakuDto.getOid());
+            as.setApplicationFormLink(hakukohdeDto.getHakulomakeUrl());
+            return as;
+        }
 
         ApplicationSystem as = new ApplicationSystem();
         as.setId(hakuDto.getOid());
