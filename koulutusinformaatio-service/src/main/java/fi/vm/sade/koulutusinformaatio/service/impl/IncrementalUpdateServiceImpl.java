@@ -121,7 +121,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             isRunning = true;
             Map<String, List<String>> result = listChangedLearningOpportunities(updatePeriod);
             if (!hasChanges(result)) {
-                LOG.info("No incremental changes. Stopping now.");
+                LOG.debug("No incremental changes. Stopping now.");
                 isRunning = false;
                 runningSince = 0;
                 return;
