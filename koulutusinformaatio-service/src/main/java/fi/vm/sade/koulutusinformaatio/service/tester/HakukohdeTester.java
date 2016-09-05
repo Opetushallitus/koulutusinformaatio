@@ -1,11 +1,13 @@
 package fi.vm.sade.koulutusinformaatio.service.tester;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.apache.commons.lang3.StringUtils;
 import org.mongodb.morphia.query.Query;
 import org.slf4j.Logger;
@@ -14,22 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
+import java.util.*;
 
 @Service
 @Profile("default")
@@ -140,7 +127,17 @@ public class HakukohdeTester {
 
     private boolean isJulkaistu(HakukohdeV1RDTO hakukohde) {
         for (String oid : hakukohde.getHakukohdeKoulutusOids()) {
-            KoulutusHakutulosV1RDTO koulutus = tarjontaRawService.searchEducation(oid).getResult().getTulokset().get(0).getTulokset().get(0);
+            ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawResult = tarjontaRawService.searchEducation(oid);
+            if (rawResult == null ||
+                    rawResult.getResult() == null ||
+                    rawResult.getResult().getTulokset() == null ||
+                    rawResult.getResult().getTulokset().isEmpty() ||
+                    rawResult.getResult().getTulokset().get(0) == null ||
+                    rawResult.getResult().getTulokset().get(0).getTulokset() == null ||
+                    rawResult.getResult().getTulokset().get(0).getTulokset().isEmpty() ||
+                    rawResult.getResult().getTulokset().get(0).getTulokset().get(0) == null)
+                return false;
+            KoulutusHakutulosV1RDTO koulutus = rawResult.getResult().getTulokset().get(0).getTulokset().get(0);
             if (koulutus.getTila().name().equals("JULKAISTU") && koulutusIsValidType(koulutus))
                 return true;
         }
