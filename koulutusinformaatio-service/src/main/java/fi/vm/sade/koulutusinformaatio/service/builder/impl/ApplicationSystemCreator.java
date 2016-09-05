@@ -50,9 +50,6 @@ public class ApplicationSystemCreator extends ObjectCreator {
 
     private static final String VARSINAINEN_HAKU = "hakutyyppi_01";
     private ParameterService parameterService;
-    private Map<String, ApplicationSystemParameters> parametersCache = Maps.newHashMap();
-    private Map<String, String> hakutapaCache = Maps.newHashMap();
-    private Map<String, String> hakutyyppiCache = Maps.newHashMap();
 
     private List<String> overriddenASOids;
 
@@ -70,16 +67,9 @@ public class ApplicationSystemCreator extends ObjectCreator {
         as.setId(hakuDto.getOid());
         as.setMaxApplications(hakuDto.getMaxHakukohdes());
         as.setName(getI18nText(hakuDto.getNimi()));
-        // FIXME BUG-1099
         as.setApplicationFormLink(hakukohdeDto.getHakulomakeUrl());
-        if (!hakutapaCache.containsKey(hakuDto.getHakutapaUri())) {
-            hakutapaCache.put(hakuDto.getHakutapaUri(), koodistoService.searchFirstCodeValue(hakuDto.getHakutapaUri()));
-        }
-        if (!hakutyyppiCache.containsKey(hakuDto.getHakutyyppiUri())) {
-            hakutyyppiCache.put(hakuDto.getHakutyyppiUri(), koodistoService.searchFirstCodeValue(hakuDto.getHakutyyppiUri()));
-        }
-        as.setHakutapaUri(hakutapaCache.get(hakuDto.getHakutapaUri()));
-        as.setHakutyyppiUri(hakutyyppiCache.get(hakuDto.getHakutyyppiUri()));
+        as.setHakutapaUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutapaUri()));
+        as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(hakuDto.getHakutyyppiUri()));
         if (hakuDto.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : hakuDto.getHakuaikas()) {
                 DateRange range = new DateRange();
@@ -106,7 +96,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
             as.setShowEducationsUntil(getModifiedDate(hakuDto.getHakuaikas().get(0).getLoppuPvm(), 12));
         }
         return as;
-}
+    }
 
     private boolean isSiirtohaku(HakuV1RDTO hakuDto) {
         return nullsafeCodeUriEquals(hakuDto.getHakutapaUri(), TarjontaConstants.HAKUTAPA_ERILLIS)
@@ -124,10 +114,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
      * as a facet filter in faceted search.
      */
     private void HandleHakuParameters(ApplicationSystem as) {
-        if (!parametersCache.containsKey(as.getId())) {
-            parametersCache.put(as.getId(), this.parameterService.getParametersForHaku(as.getId()));
-        }
-        ApplicationSystemParameters params = parametersCache.get(as.getId());
+        ApplicationSystemParameters params = this.parameterService.getParametersForHaku(as.getId());
         Date now = Calendar.getInstance().getTime();
         if (params != null
                 && params.getShownInFacetedSearch() != null
@@ -193,11 +180,5 @@ public class ApplicationSystemCreator extends ObjectCreator {
         start.setTime(date);
         start.add(Calendar.MONTH, months);
         return start.getTime();
-    }
-    
-    public void clearProcessedLists() {
-        this.parametersCache = Maps.newHashMap();
-        this.hakutapaCache = Maps.newHashMap();
-        this.hakutyyppiCache = Maps.newHashMap();
     }
 }

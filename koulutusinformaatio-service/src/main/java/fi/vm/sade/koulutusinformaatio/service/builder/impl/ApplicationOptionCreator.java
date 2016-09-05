@@ -436,9 +436,4 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         return false;
     }
-
-    public void clearProcessedLists() {
-        this.applicationSystemCreator.clearProcessedLists();
-    }
-
 }

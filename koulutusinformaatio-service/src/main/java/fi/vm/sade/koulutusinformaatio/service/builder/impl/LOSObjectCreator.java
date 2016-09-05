@@ -1337,8 +1337,6 @@ public class LOSObjectCreator extends ObjectCreator {
         this.cachedApplicationOptionResults = Maps.newHashMap();
         this.invalidOids = Sets.newHashSet();
         this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
-        if(this.applicationOptionCreator != null)
-            applicationOptionCreator.clearProcessedLists();
     }
 
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
