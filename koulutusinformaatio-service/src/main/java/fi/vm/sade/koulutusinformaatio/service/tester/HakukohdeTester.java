@@ -47,7 +47,6 @@ public class HakukohdeTester {
                     || rawRes.getResult().getTulokset() == null
                     || rawRes.getResult().getTulokset().isEmpty()) {
                 LOG.warn("Tarjonnasta ei löytynyt hakukohteita. Päätetään hakukohdetesti.");
-                running = false;
                 return;
             }
 
@@ -76,31 +75,29 @@ public class HakukohdeTester {
             LOG.debug("Karsinnan jälkeen jäi {} oidia.", hakukohdeOiditTarjonnasta.size());
 
             logMissingAos(hakukohdeOiditKannasta, hakukohdeOiditTarjonnasta);
-
-            running = false;
-
         } catch (Exception e) {
-            running = false;
             LOG.error("Hakukohteiden testaaminen epäonnistui.", e);
+        } finally {
+            running = false;
         }
     }
 
     private void logMissingAos(Set<String> hakukohdeOiditKannasta, Set<String> hakukohdeOiditTarjonnasta) {
         LOG.info("Verrataan tarjonnan julkaistuja hakukohteita indeksistä löytyviin:");
-        HashSet<String> missingFromTarjonta = new HashSet<String>(hakukohdeOiditTarjonnasta);
+        HashSet<String> missingFromTarjonta = new HashSet<>(hakukohdeOiditTarjonnasta);
         missingFromTarjonta.removeAll(hakukohdeOiditKannasta);
-        HashSet<String> missingFromKanta = new HashSet<String>(hakukohdeOiditKannasta);
+        HashSet<String> missingFromKanta = new HashSet<>(hakukohdeOiditKannasta);
         missingFromKanta.removeAll(hakukohdeOiditTarjonnasta);
 
         if (!missingFromTarjonta.isEmpty()) {
-            LOG.warn("Tarjonnasta puuttuvat oidit, jotka on indeksoitu: " + StringUtils.join(missingFromTarjonta, ", "));
+            LOG.warn("Tarjonnasta puuttuvat hakukohdeoidit, jotka on indeksoitu koulutusinformaatioon: " + StringUtils.join(missingFromTarjonta, ", "));
         } else {
-            LOG.info("Kaikki tarjonnan oidit löytyivät indeksistä.");
+            LOG.info("Kaikki indeksin hakukohdeoidit löytyivät tarjonnasta. Koulutusinformaatiossa ei näy ylimääräisiä hakukohteita.");
         }
         if (!missingFromKanta.isEmpty()) {
-            LOG.warn("Indeksistä puuttuvat oidit, jotka ovat julkaistuja tarjonnassa: " + StringUtils.join(missingFromKanta, ", "));
+            LOG.warn("Indeksistä puuttuvat hakukohteiden oidit, jotka on julkaistu tarjonnassa: " + StringUtils.join(missingFromKanta, ", "));
         } else {
-            LOG.info("Kaikki indeksin oidit löytyivät tarjonnasta.");
+            LOG.info("Kaikki tarjonnan hakukohteiden oidit löytyivät indeksistä. Tarjonnassa ei ole julkaistuja hakukohteita, joiden pitäisi näkyä koulutusinformaatiossa.");
         }
 
     }
@@ -156,7 +153,6 @@ public class HakukohdeTester {
         if (loppuPvm == null || loppuPvm.after(now)) {
             return true;
         }
-
         if (getLastDayToShow(loppuPvm, hakuEnd).after(now)) {
             return true;
         }
