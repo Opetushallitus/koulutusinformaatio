@@ -565,8 +565,10 @@ public class LOSObjectCreator extends ObjectCreator {
 
                 newLos.setParent(new ParentLOSRef(los.getId(), los.getName()));
 
-            } catch (TarjontaParseException | NoValidApplicationOptionsException | OrganisaatioException e) {
+            } catch (TarjontaParseException | OrganisaatioException e) {
                 LOG.info("Failed to parse AdultVocationalLOS {} for komo {}: {}", curKomotoOid, parentKomoOid, e.getMessage());
+            } catch (NoValidApplicationOptionsException e) {
+                LOG.debug("Failed to parse AdultVocationalLOS {} for komo {}: {}", curKomotoOid, parentKomoOid, e.getMessage());
             }
         }
 
@@ -1481,7 +1483,7 @@ public class LOSObjectCreator extends ObjectCreator {
             LOG.warn("Failed to create korkeakouluopinto {}", dto.getOid(), e);
             return null;
         } catch (NoValidApplicationOptionsException e) {
-            LOG.info("Korkeakouluopinto required application options and didn't have them {}, reason: {}", dto.getOid(), e.getMessage());
+            LOG.debug("Korkeakouluopinto required application options and didn't have them {}, reason: {}", dto.getOid(), e.getMessage());
             return null;
         }
         return los;
