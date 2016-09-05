@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.exception.*;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
@@ -186,8 +187,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 } else {
                     LOG.debug("Koulutus {} already indexed, skipping.", curOid);
                 }
-            } catch (Exception ex) {
-                LOG.warn("problem indexing komoto: " + curOid, ex);
+
+            } catch (NoValidApplicationOptionsException e) {
+                LOG.debug("problem indexing komoto: " + curOid, e);
+            } catch (TarjontaParseException | KISolrException | ResourceNotFoundException | KoodistoException | OrganisaatioException e) {
+                LOG.warn("problem indexing komoto: " + curOid, e);
+            } catch (Exception e) {
+                LOG.error("problem indexing komoto: " + curOid, e);
             } finally {
                 indexed++;
                 if(indexed % 100 == 0) {
@@ -203,8 +209,10 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 if (this.losIndexer.isHigherEdKomo(curKomoOid)) { 
                     this.losIndexer.indexHigherEdKomo(curKomoOid);
                 }
-            } catch (Exception ex) {
-                LOG.warn("Error indexing komo: " + curKomoOid, ex);
+            } catch (KISolrException e) {
+                LOG.warn("Error indexing komo: " + curKomoOid, e);
+            } catch (Exception e) {
+                LOG.error("Error indexing komo: " + curKomoOid, e);
             }
         }
     }
@@ -235,8 +243,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private long getUpdatePeriod() {
         DataStatus status = this.dataQueryService.getLatestSuccessDataStatus();
         if (status != null) {
-            long period = (System.currentTimeMillis() - status.getLastUpdateFinished().getTime()) + status.getLastUpdateDuration();
-            return period;
+            return (System.currentTimeMillis() - status.getLastUpdateFinished().getTime()) + status.getLastUpdateDuration();
         }
         return 0;
     }
