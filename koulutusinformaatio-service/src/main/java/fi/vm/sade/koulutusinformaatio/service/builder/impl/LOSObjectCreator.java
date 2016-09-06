@@ -207,7 +207,13 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko()));
+
         los.setChargeable(koulutus.getOpintojenMaksullisuus());
+        if (koulutus.getHinta() != null) {
+            los.setHinta("" + koulutus.getHinta());
+        } else {
+            los.setHinta(koulutus.getHintaString());
+        }
 
         Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
         los.setProvider(provider);
