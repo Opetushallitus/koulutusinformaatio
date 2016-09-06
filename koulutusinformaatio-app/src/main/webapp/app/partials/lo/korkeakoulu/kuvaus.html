@@ -45,9 +45,10 @@
                         <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
                         <strong>{{lo.plannedDuration}} {{lo.plannedDurationUnit}}</strong>
                     </li>
-                    <li data-ng-show="lo.charge">
+                    <li>
                         <span data-ki-i18n="chargeable" data-show-colon="true"></span>
-                        <strong>{{lo.charge}} <span data-ki-i18n="euro"></span></strong>
+                        <strong data-ng-show="lo.charge">{{lo.charge}} <span data-ki-i18n="euro"></span></strong>
+                        <strong data-ng-show="!lo.charge" data-ki-i18n="chargeable-{{lo.chargeable}}"></strong>
                     </li>
                     <li>
                         <span data-ki-i18n="qualifications" data-show-colon="true"></span>
