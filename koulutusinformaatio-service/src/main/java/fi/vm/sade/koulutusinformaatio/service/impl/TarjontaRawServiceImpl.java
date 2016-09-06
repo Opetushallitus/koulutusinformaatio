@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.javautils.httpclient.OphHttpClient.JSON;
 
@@ -47,7 +48,8 @@ import static fi.vm.sade.javautils.httpclient.OphHttpClient.JSON;
 public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     private static final int RETRY_DELAY_MS = 2500;
-    private static final int MAX_RETRY_COUNT = 10 * 60 * 1000 / RETRY_DELAY_MS; // 10 min
+    private static final int MAX_RETRY_TIME = (int) TimeUnit.MINUTES.toMillis(10);
+    private static final int MAX_RETRY_COUNT = MAX_RETRY_TIME / RETRY_DELAY_MS;
     private final OphHttpClient httpclient;
     private final ObjectMapper mapper;
 
