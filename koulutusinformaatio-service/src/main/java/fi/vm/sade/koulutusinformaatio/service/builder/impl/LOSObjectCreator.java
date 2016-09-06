@@ -467,6 +467,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
                 if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().equals(TarjontaTila.JULKAISTU.toString()))) {
                     invalidOids.add(curHakukoh.getHakuOid());
+                    continue;
                 }
 
                 ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1Hakukohde(aoId);
