@@ -93,6 +93,7 @@ public class HigherEducationLOSEntity {
     @Embedded
     private List<I18nTextEntity> qualifications;
     private Boolean chargeable;
+    private String hinta;
     @Embedded
     private CodeEntity educationCode;
     @Embedded
@@ -518,4 +519,11 @@ public class HigherEducationLOSEntity {
         this.subjects = subjects;
     }
 
+    public String getHinta() {
+        return hinta;
+    }
+
+    public void setHinta(String hinta) {
+        this.hinta = hinta;
+    }
 }
