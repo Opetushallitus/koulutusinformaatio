@@ -16,16 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import fi.vm.sade.javautils.httpclient.OphHttpClient;
 import fi.vm.sade.javautils.httpclient.OphHttpRequest;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
 import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
 import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -34,19 +33,11 @@ import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusAikuistenPerusopetusV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static fi.vm.sade.javautils.httpclient.OphHttpClient.JSON;
 
@@ -56,6 +47,9 @@ import static fi.vm.sade.javautils.httpclient.OphHttpClient.JSON;
 @Service
 public class TarjontaRawServiceImpl implements TarjontaRawService {
 
+    private static final int RETRY_DELAY_MS = 2500;
+    private static final int MAX_RETRY_TIME = (int) TimeUnit.MINUTES.toMillis(10);
+    private static final int MAX_RETRY_COUNT = MAX_RETRY_TIME / RETRY_DELAY_MS;
     private final OphHttpClient httpclient;
     private final ObjectMapper mapper;
 
@@ -73,7 +67,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     private <T> T executeWithRetries(OphHttpRequest resource, final TypeReference<T> type) {
-        return execute(resource.retryOnError(3, 2500), type);
+        return execute(resource.retryOnError(MAX_RETRY_COUNT, RETRY_DELAY_MS), type);
     }
 
     private <T> T execute(OphHttpRequest resource, final TypeReference<T> type) {

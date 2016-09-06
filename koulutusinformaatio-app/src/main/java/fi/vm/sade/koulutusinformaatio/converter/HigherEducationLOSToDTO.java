@@ -101,6 +101,7 @@ public class HigherEducationLOSToDTO {
             }
         }
         dto.setChargeable(los.getChargeable());
+        dto.setCharge(los.getHinta());
         dto.setChildren(convertReferences(los.getChildren(), uiLang));
         dto.setParents(convertReferences(los.getParents(), uiLang));
         dto.setStatus(los.getStatus());
