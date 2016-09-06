@@ -82,6 +82,7 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO implements Articled 
     private String startSeason;
     private int startYear;
     private String status;
+    private String charge;
 
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
@@ -537,5 +538,13 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO implements Articled 
 
     public void setSubjects(List<String> subjects) {
         this.subjects = subjects;
+    }
+
+    public String getCharge() {
+        return charge;
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
     }
 }
