@@ -26,6 +26,8 @@ module.exports = function(config) {
             moduleName: 'kiTemplates'
         },
         files: [
+            appPath + 'app/lib/oph_urls.js/index.js',
+            appPath + 'app/koulutusinformaatio-app-web-oph.js',
             appPath + 'app/lib/angular/1.2.13/angular.min.js',
             //testPath + 'test/lib/angular/angular.js',
             appPath + 'app/lib/angular/1.2.13/angular-resource.min.js',

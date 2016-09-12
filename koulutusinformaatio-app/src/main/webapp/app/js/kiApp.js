@@ -1,5 +1,4 @@
-
-var kiApp = angular.module('kiApp', 
+var kiApp = angular.module('kiApp',
     [
         'kiApp.filters',
         'kiApp.services',
@@ -65,7 +64,7 @@ var kiApp = angular.module('kiApp',
 }])
 // initialize piwik analytics tool
 .config(['$analyticsProvider', function( $analyticsProvider) {
-    OPH.Common.initPiwik(window.Config.app.common.piwikUrl);
+    OPH.Common.initPiwik();
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
 }])
@@ -235,7 +234,7 @@ var kiApp = angular.module('kiApp',
 // Piwik analytics
 var OPH = OPH || {};
 OPH.Common = {
-    initPiwik: function(piwikUrl) {
+    initPiwik: function() {
         var siteDomain = document.domain;
         var piwikSiteId = 2;
         if(siteDomain=='opintopolku.fi'){
@@ -255,7 +254,7 @@ OPH.Common = {
         _paq.push(["enableLinkTracking"]);
 
         (function() {
-            var u = piwikUrl;
+            var u = window.url("piwik.url");
             _paq.push(["setTrackerUrl", u+"piwik.php"]);
             _paq.push(["setSiteId", piwikSiteId]);
             var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";

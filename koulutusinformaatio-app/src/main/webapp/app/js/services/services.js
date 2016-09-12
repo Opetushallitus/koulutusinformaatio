@@ -19,11 +19,9 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
         query: function(queryParam) {
             var deferred = $q.defer();
 
-            $http.get('../location/search/' + queryParam, {
-                params: {
-                    lang: LanguageService.getLanguage()
-                }
-            }).
+            $http.get(window.url("koulutusinformaatio-app.location.search", queryParam, {
+                lang: LanguageService.getLanguage()
+            })).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -42,12 +40,10 @@ service('AutocompleteService', ['$http', '$timeout', '$q', 'LanguageService', fu
         query: function(queryParam) {
             var deferred = $q.defer();
 
-            $http.get('../lo/autocomplete', {
-                params: {
-                    term: queryParam,
-                    lang: LanguageService.getLanguage()
-                }
-            }).
+            $http.get(window.url("koulutusinformaatio-app.lo.autocomplete", {
+                term: queryParam,
+                lang: LanguageService.getLanguage()
+            })).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -69,13 +65,9 @@ service('DistrictService', ['$http', '$timeout', '$q', 'LanguageService', functi
         query: function() {
             var deferred = $q.defer();
 
-         
-            
-            $http.get('../location/districts', {
-                params: {
-                    lang: LanguageService.getLanguage()
-                }
-            }).
+            $http.get(window.url("koulutusinformaatio-app.location.districts", {
+                lang: LanguageService.getLanguage()
+            })).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -101,12 +93,12 @@ service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', 
             }
             var deferred = $q.defer();
 
-            var params = '?lang=' + lang;
+            var params = {lang: lang, districts: []};
             for (var i = 0; i < districtVal.length; i++) {
-                params += '&districts=' + districtVal[i].code;
+                params.districts.push(districtVal[i].code);
             }
             
-            $http.get('../location/child-locations' + params, {}).
+            $http.get(window.url("koulutusinformaatio-app.location.childlocations", params)).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -126,7 +118,7 @@ service('ParentLOService', ['GeneralLOService', 'ParentLOTransformer', function(
     
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/tutkinto/', ParentLOTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.tutkinto", ParentLOTransformer);
         }
     }
 }]).
@@ -148,9 +140,7 @@ service('ChildLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSer
 
             var url = '../lo/child/';
 
-            $http.get(url + options.id, {
-                params: queryParams
-            }).
+            $http.get(window.url("koulutusinformaatio-app.lo.child", options.id, queryParams)).
             success(function(result) {
                 ChildLOTransformer.transform(result);
                 ParentLOService.query({
@@ -182,7 +172,7 @@ service('ChildLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSer
 service('SpecialLOService', ['GeneralLOService', 'ChildLOTransformer', function(GeneralLOService, ChildLOTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/special/', ChildLOTransformer);
+            return GeneralLOService.query(options, 'koulutusinformaatio-app.lo.special', ChildLOTransformer);
         }
     }
 }]).
@@ -193,7 +183,7 @@ service('SpecialLOService', ['GeneralLOService', 'ChildLOTransformer', function(
 service('UpperSecondaryLOService', ['GeneralLOService', 'ChildLOTransformer', function(GeneralLOService, ChildLOTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/upsec/', ChildLOTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.upsec", ChildLOTransformer);
         }
     }
 }]).
@@ -204,7 +194,7 @@ service('UpperSecondaryLOService', ['GeneralLOService', 'ChildLOTransformer', fu
 service('HigherEducationLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/highered/', HigherEducationTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.highered", HigherEducationTransformer);
         }
     }
 }]).
@@ -215,7 +205,7 @@ service('HigherEducationLOService', ['GeneralLOService', 'HigherEducationTransfo
 service('KoulutusLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/koulutus/', HigherEducationTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.koulutus", HigherEducationTransformer);
         }
     }
 }]).
@@ -227,7 +217,7 @@ service('KoulutusLOService', ['GeneralLOService', 'HigherEducationTransformer', 
 service('AdultVocationalLOService', ['GeneralLOService', 'AdultVocationalTransformer', function(GeneralLOService, AdultVocationalTransformer) {
     return {
         query: function(options) {
-            return GeneralLOService.query(options, '../lo/adultvocational/', AdultVocationalTransformer);
+            return GeneralLOService.query(options, "koulutusinformaatio-app.lo.adultvocational", AdultVocationalTransformer);
         }
     }
 }]).
@@ -237,7 +227,7 @@ service('AdultVocationalLOService', ['GeneralLOService', 'AdultVocationalTransfo
  */
 service('GeneralLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', function($http, $timeout, $q, $rootScope, LanguageService) {
     return {
-        query: function(options, serviceUrl, transformer) {
+        query: function(options, urlKey, transformer) {
             var deferred = $q.defer();
             var queryParams = {
                 uiLang: LanguageService.getLanguage()
@@ -250,9 +240,7 @@ service('GeneralLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageS
                 queryParams.prerequisite = options.prerequisite;
             }
             
-            $http.get(serviceUrl + options.id, {
-                params: queryParams
-            }).
+            $http.get(window.url(urlKey, options.id, queryParams)).
             success(function(result) {
                 transformer.transform(result, options.id);
                 var loResult = {
@@ -290,12 +278,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
                 queryParams.lang = options.lang
             }
 
-            var url = '../lo/preview/';
-            
-            $http.get(url + options.id, {
-                params: queryParams
-            }).
-            
+            $http.get(window.url("koulutusinformaatio-app.lo.preview", options.id, queryParams)).
             success(function(result) {
                 if (options.loType == 'ammatillinenaikuiskoulutus') {
                     AdultVocationalTransformer.transform(result, options.id);
@@ -303,7 +286,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
                     HigherEducationTransformer.transform(result);
                 }
                 result.preview = true;
-                result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit?' + Date.now();
+                result.tarjontaEditUrl = window.url("tarjonta-app.koulutusEdit", result.id, Date.now());
                 if (result.children) {
                     for (var i = 0; i < result.children.length; ++i) {
                         result.children[i].preview = true;
@@ -317,7 +300,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
                             for (var j = 0; j < as.applicationOptions.length; ++j) {
                                 var ao = as.applicationOptions[j];
                                 ao.preview = true;
-                                ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit?' + Date.now();
+                                ao.editUrl =  window.url("tarjonta-app.hakukohdeEdit", ao.id, Date.now());
                             }
                         }
                     } 
@@ -958,7 +941,7 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
         query: function(options) {
             var deferred = $q.defer();
 
-            $http.get('../lop/' + options.providerId + '/picture').
+            $http.get(window.url("koulutusinformaatio-app.lop.picture", options.providerId)).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -979,7 +962,7 @@ service('LearningOpportunityPictureService', ['$http', '$timeout', '$q', functio
         query: function(options) {
             var deferred = $q.defer();
             
-            $http.get('../lo/picture/' + options.pictureId).
+            $http.get(window.url("koulutusinformaatio-app.lo.picture", options.pictureId)).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -1195,16 +1178,18 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             var deferred = $q.defer();
             var basketItems = this.getItems();
 
-            var qParams = 'uiLang=' + LanguageService.getLanguage();
+            var qParams = {
+                uiLang: LanguageService.getLanguage(),
+                aoId: []
+            };
 
-            
             for (var index = 0; index < basketItems.length; index++) {
                 if (basketItems.hasOwnProperty(index)) {
-                    qParams += '&aoId=' + basketItems[index];
+                    qParams.aoId.push(basketItems[index]);
                 }
             }
 
-            $http.get('../basket/items?' + qParams).
+            $http.get(window.url("koulutusinformaatio-app.basket.items", qParams)).
             success(function(result) {
                 result = transformData(result);
                 $rootScope.isLoading = false;
@@ -1230,7 +1215,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             };
             var aoIds = this.getItems();
             emailData.koids = aoIds == null ? [] : aoIds;
-            $http.post('/omatsivut/muistilista', emailData).
+            $http.post(window.url("omatsivut.muistilista"), emailData).
                 success(function(result) {
                     $rootScope.isLoading = false;
                     deferred.resolve(result);
@@ -1290,18 +1275,13 @@ service('FilterService', [
     return {
         query: function(queryParams) {
             var deferred = $q.defer();
-            var codes = ''
+
             var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : queryParams.locations || [];
-
-            angular.forEach(locationCodes, function(value, key){
-                codes += '&code=' + value;
-            });
-
-            var uiLang = LanguageService.getLanguage();
-
             if (locationCodes.length > 0) {
-                $http.get('../location?lang=' + uiLang + codes, {
-                }).
+                $http.get(window.url("koulutusinformaatio-app.location", {
+                    lang: LanguageService.getLanguage(),
+                    code: locationCodes
+                })).
                 success(function(result) {
                     queryParams.locations = result;
                     set(queryParams);

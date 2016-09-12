@@ -27,7 +27,7 @@ var kiApp = angular.module('previewApp',
 
 // initialize piwik analytics tool
 .config(['$analyticsProvider', function( $analyticsProvider) {
-    OPH.Common.initPiwik(window.Config.app.common.piwikUrl);
+    OPH.Common.initPiwik();
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
 }])
@@ -152,7 +152,7 @@ var kiApp = angular.module('previewApp',
 var OPH = OPH || {};
 OPH.Common = {
     initHeader: function() {},
-    initPiwik: function(piwikUrl) {
+    initPiwik: function() {
         var siteDomain = document.domain;
         var piwikSiteId = 2;
         if(siteDomain=='opintopolku.fi'){
@@ -172,7 +172,7 @@ OPH.Common = {
         _paq.push(["enableLinkTracking"]);
 
         (function() {
-            var u = piwikUrl;
+            var u = window.url("piwik.url");
             _paq.push(["setTrackerUrl", u+"piwik.php"]);
             _paq.push(["setSiteId", piwikSiteId]);
             var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
