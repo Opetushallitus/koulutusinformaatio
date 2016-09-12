@@ -774,7 +774,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public KoulutusLOS createLukioLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, NoValidApplicationOptionsException, OrganisaatioException {
         ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
-        if (result != null) {
+        if (result != null && result.getResult() != null) {
             KoulutusLukioV1RDTO koulutusDTO = (KoulutusLukioV1RDTO) result.getResult();
             return createLukioLOS(koulutusDTO, checkStatus);
         }
@@ -1415,7 +1415,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private void createKorkeakouluopinto(String oid, boolean checkStatus, HashMap<String, KoulutusLOS> createdOpintos, HashMap<String, Set<String>> childOids) {
         if (!createdOpintos.containsKey(oid)) {
             ResultV1RDTO<KoulutusV1RDTO> result = tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
-            if (result != null) {
+            if (result != null && result.getResult() != null) {
                 KorkeakouluOpintoV1RDTO koulutusDTO = (KorkeakouluOpintoV1RDTO) result.getResult();
                 createKorkeakouluopinto(koulutusDTO, checkStatus, createdOpintos, childOids);
             }
