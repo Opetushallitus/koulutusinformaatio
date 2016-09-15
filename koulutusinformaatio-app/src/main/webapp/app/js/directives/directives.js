@@ -292,12 +292,24 @@ directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'Translat
  *  Creates a human readable date from timestamp
  */
 directive('kiTimestamp', ['TranslationService', 'UtilityService', function(TranslationService, UtilityService) {
+    var valintakoeAjankohtaToCurrentTime = function(ajankohta) {
+        //Split to get date parts in fin locale
+        //Example of split: ["2016", "09", "14", "13", "27", "47", "03", "00"]
+        var t = moment.tz(ajankohta, "Europe/Helsinki").format().split(/[^0-9]/),
+          year = t[0],
+          month = t[1],
+          day = t[2],
+          hours = t[3],
+          minutes = t[4];
+        return new Date(year, month, day, hours, minutes).getTime();
+    };
+
     return function(scope, element, attrs) {
         attrs.$observe('kiTimestamp', function(value) {
             if (value) {
+                var currentLocaleTimestamp = valintakoeAjankohtaToCurrentTime(parseInt(value));
                 $(element).empty();
-                value = parseInt(value);
-                var date = new Date(value);
+                var date = new Date(currentLocaleTimestamp);
                 element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
                 element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(date.getHours()) + ':' + UtilityService.padWithZero(date.getMinutes()));
             }
