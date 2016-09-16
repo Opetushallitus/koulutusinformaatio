@@ -1811,6 +1811,23 @@ service('UtilityService', function() {
             };
             
             return map[type] || type;
+        },
+        /**
+         * Use this to convert exam or other dates from finnish time to
+         * current timezone time WITH the same date and hours. This is
+         * needed to show exam dartes with the same date and hour in every
+         * timezone.
+         */
+        convertTimestampToCurrentTime: function(time) {
+            //Split to get date parts in fin locale
+            //Example of split: ["2016", "09", "14", "13", "27", "47", "03", "00"]
+            var t = moment.tz(time, "Europe/Helsinki").format().split(/[^0-9]/),
+              year = t[0],
+              month = t[1],
+              day = t[2],
+              hours = t[3],
+              minutes = t[4];
+            return new Date(year, month, day, hours, minutes).getTime();
         }
     };
 });

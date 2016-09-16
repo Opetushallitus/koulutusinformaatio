@@ -292,22 +292,10 @@ directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'Translat
  *  Creates a human readable date from timestamp
  */
 directive('kiTimestamp', ['TranslationService', 'UtilityService', function(TranslationService, UtilityService) {
-    var valintakoeAjankohtaToCurrentTime = function(ajankohta) {
-        //Split to get date parts in fin locale
-        //Example of split: ["2016", "09", "14", "13", "27", "47", "03", "00"]
-        var t = moment.tz(ajankohta, "Europe/Helsinki").format().split(/[^0-9]/),
-          year = t[0],
-          month = t[1],
-          day = t[2],
-          hours = t[3],
-          minutes = t[4];
-        return new Date(year, month, day, hours, minutes).getTime();
-    };
-
     return function(scope, element, attrs) {
         attrs.$observe('kiTimestamp', function(value) {
             if (value) {
-                var currentLocaleTimestamp = valintakoeAjankohtaToCurrentTime(parseInt(value));
+                var currentLocaleTimestamp = UtilityService.convertTimestampToCurrentTime(parseInt(value));
                 $(element).empty();
                 var date = new Date(currentLocaleTimestamp);
                 element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
@@ -341,8 +329,8 @@ directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(Ut
             showTime: '='
         },
         link: function($scope, element, attrs) {
-            var start = new Date($scope.startTs);
-            var end = new Date($scope.endTs);
+            var start = new Date(UtilityService.convertTimestampToCurrentTime($scope.startTs));
+            var end = new Date(UtilityService.convertTimestampToCurrentTime($scope.endTs));
 
             // do not repeat date information if both timestamp are in same day
             if (isSameDay(start, end)) {
