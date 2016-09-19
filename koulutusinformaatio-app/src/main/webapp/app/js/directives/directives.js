@@ -295,9 +295,8 @@ directive('kiTimestamp', ['TranslationService', 'UtilityService', function(Trans
     return function(scope, element, attrs) {
         attrs.$observe('kiTimestamp', function(value) {
             if (value) {
-                var currentLocaleTimestamp = UtilityService.convertTimestampToCurrentTime(parseInt(value));
+                var date = UtilityService.convertTimestampToCurrentTime(parseInt(value));
                 $(element).empty();
-                var date = new Date(currentLocaleTimestamp);
                 element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
                 element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(date.getHours()) + ':' + UtilityService.padWithZero(date.getMinutes()));
             }
@@ -329,8 +328,8 @@ directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(Ut
             showTime: '='
         },
         link: function($scope, element, attrs) {
-            var start = new Date(UtilityService.convertTimestampToCurrentTime($scope.startTs));
-            var end = new Date(UtilityService.convertTimestampToCurrentTime($scope.endTs));
+            var start = UtilityService.convertTimestampToCurrentTime($scope.startTs);
+            var end = UtilityService.convertTimestampToCurrentTime($scope.endTs);
 
             // do not repeat date information if both timestamp are in same day
             if (isSameDay(start, end)) {
