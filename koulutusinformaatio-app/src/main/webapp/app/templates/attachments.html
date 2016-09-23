@@ -19,6 +19,7 @@
         <tr data-ng-repeat="att in attachments" data-ng-class="{first: $first, last: $last}">
             <td>{{att.type}}</td>
             <td>
+                <span data-ng-show="att.recipient">{{att.recipient}}<br /></span>
                 <span data-ng-show="att.address.streetAddress">{{att.address.streetAddress}}<br /></span>
                 <span data-ng-show="att.address.streetAddress2">{{att.address.streetAddress2}}<br /></span>
                 <span data-ng-show="att.address.postalCode">{{att.address.postalCode}}</span>
