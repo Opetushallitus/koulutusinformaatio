@@ -40,6 +40,7 @@ public final class ApplicationOptionAttachmentToDTO {
             dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getType(), lang));
             dto.setUsedInApplicationForm(aoa.isUsedInApplicationForm());
             dto.setDescreption(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getDescreption(), lang));
+            dto.setRecipient(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getRecipient(), lang));
             dto.setAddress(AddressToDTO.convert(aoa.getAddress(), lang));
             dto.setEmailAddr(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getEmailAddr(), lang));
             return dto;
