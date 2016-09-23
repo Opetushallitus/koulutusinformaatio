@@ -202,6 +202,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     if (!StringUtils.isEmpty(liite.getLiitteenNimi()))
                         attach.setType(mergeI18nTexts(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
                     attach.setDescreption(mergeI18nTexts(getI18nText(liite.getLiitteenKuvaukset()), attach.getDescreption()));
+                    attach.setRecipient(mergeI18nTexts(getI18nText(liite.getLiitteenVastaanottaja(), liite.getKieliUri()), attach.getRecipient()));
                     attach.setEmailAddr(mergeI18nTexts(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()), attach.getEmailAddr()));
 
                     Address a1 = attach.getAddress();
@@ -226,6 +227,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     attach.setDueDate(liite.getToimitettavaMennessa());
                     attach.setUsedInApplicationForm(liite.isKaytetaanHakulomakkeella());
                     attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
+                    attach.setRecipient(mergeI18nTexts(getI18nText(liite.getLiitteenVastaanottaja(), liite.getKieliUri()), attach.getRecipient()));
                     attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri()));
 
                     attach.setEmailAddr(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()));

@@ -33,6 +33,8 @@ public class ApplicationOptionAttachmentEntity {
     @Embedded
     private I18nText type;
     @Embedded
+    private I18nText recipient;
+    @Embedded
     private I18nText descreption;
     @Embedded
     private Address address;
@@ -87,5 +89,13 @@ public class ApplicationOptionAttachmentEntity {
 
     public void setUsedInApplicationForm(boolean usedInApplicationForm) {
         this.usedInApplicationForm = usedInApplicationForm;
+    }
+
+    public I18nText getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(I18nText recipient) {
+        this.recipient = recipient;
     }
 }
