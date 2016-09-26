@@ -111,13 +111,13 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
                 articleFacetFilters: params.articleFacetFilters,
                 providerFacetFilters: params.organisationFacetFilters,
                 excludes: params.excludes,
-                cities: []
+                city: []
             };
 
             if (params.locations) {
                 for (var index = 0; index < params.locations.length; index++) {
                     if (params.locations.hasOwnProperty(index)) {
-                        qParams.cities.push(params.locations[index]);
+                        qParams.city.push(params.locations[index]);
                     }
                 }
             }
