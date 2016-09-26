@@ -202,6 +202,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     if (!StringUtils.isEmpty(liite.getLiitteenNimi()))
                         attach.setType(mergeI18nTexts(getI18nText(liite.getLiitteenNimi(), liite.getKieliUri()), attach.getType()));
                     attach.setDescreption(mergeI18nTexts(getI18nText(liite.getLiitteenKuvaukset()), attach.getDescreption()));
+                    LOG.info("Setting {} recipient {} for {} of {} (current value: {})", liite.getKieliUri(), liite.getLiitteenVastaanottaja(), attach.getType(), hakukohde.getOid(), attach.getRecipient());
                     attach.setRecipient(mergeI18nTexts(getI18nText(liite.getLiitteenVastaanottaja(), liite.getKieliUri()), attach.getRecipient()));
                     attach.setEmailAddr(mergeI18nTexts(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()), attach.getEmailAddr()));
 
