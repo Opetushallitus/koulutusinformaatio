@@ -114,7 +114,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             tarjontaService.clearProcessedLists();
-
+/*
             List<KoulutusHakutulosV1RDTO> lukioEducations = this.tarjontaService.findLukioKoulutusDTOs();
             LOG.info("Found lukio educations: " + lukioEducations.size());
             int i = 0;
@@ -158,11 +158,12 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Vocational educations saved.");
             tarjontaService.clearProcessedLists();
+            */
             switchTask(stopwatch, "Korkeakoulujen koulutukset");
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.info("Found higher educations: {}", higherEducations.size());
-            i = 0;
+            int i = 0;
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("{}/{} Saving higher education: {}", ++i, higherEducations.size(), curLOS.getId());
 
