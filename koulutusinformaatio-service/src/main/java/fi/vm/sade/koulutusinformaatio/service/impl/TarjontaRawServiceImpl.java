@@ -146,10 +146,14 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                             @Override
                             public HakukohdeV1RDTO handleError(OphRequestParameters ophRequestParameters, OphHttpResponse ophHttpResponse, RuntimeException e) {
                                 //Yhden paikan säännön virheiden logitus TODO: Poista koko onError kun virheet on korjattu
-                                String errorReqExp = "'java\\.lang\\.IllegalStateException: Hakukohteen .* koulutusten \\[.*\\] koulutusten alkamiskaudet eivät ole yhtenevät\\.'";
-                                Matcher matcher = Pattern.compile(errorReqExp).matcher(ophHttpResponse.asText());
+                                String koulutuksetRegExp = "Hakukohteen .* koulutuksilla .* ristiriitaiset koulutuksen alkamiskaudet";
+                                String eiKoulutuksiaRegExp = "IllegalStateException";
+                                Matcher matcher = Pattern.compile(koulutuksetRegExp).matcher(ophHttpResponse.asText());
+                                Matcher mm = Pattern.compile(eiKoulutuksiaRegExp).matcher(ophHttpResponse.asText());
                                 if (matcher.find()) {
-                                    LOG.error(matcher.group(1));
+                                    LOG.error(matcher.group(0));
+                                } else if (mm.find()) {
+                                    LOG.error("Hakukohde {} rikki", oid);
                                 }
                                 throw e;
                             }
