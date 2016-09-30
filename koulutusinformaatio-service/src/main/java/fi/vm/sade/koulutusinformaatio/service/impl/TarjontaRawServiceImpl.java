@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.javautils.httpclient.OphHttpClient;
-import fi.vm.sade.javautils.httpclient.OphHttpRequest;
-import fi.vm.sade.javautils.httpclient.OphHttpResponse;
-import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
+import fi.vm.sade.javautils.httpclient.*;
 import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
@@ -30,6 +27,8 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.codehaus.jackson.type.TypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static fi.vm.sade.javautils.httpclient.OphHttpClient.JSON;
 
@@ -52,6 +53,8 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private static final int MAX_RETRY_COUNT = MAX_RETRY_TIME / RETRY_DELAY_MS;
     private final OphHttpClient httpclient;
     private final ObjectMapper mapper;
+    private static final Logger LOG = LoggerFactory.getLogger(TarjontaRawServiceImpl.class);
+
 
     @Autowired
     public TarjontaRawServiceImpl(HttpClient client) {
@@ -138,7 +141,20 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     @Override
     public ResultV1RDTO<HakukohdeV1RDTO> getV1Hakukohde(String oid) {
         return executeWithRetries(
-                get("tarjonta-service.hakukohde", oid), new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>() {
+                get("tarjonta-service.hakukohde", oid)
+                        .onError(new OphHttpRequestErrorHandler<HakukohdeV1RDTO>() {
+                            @Override
+                            public HakukohdeV1RDTO handleError(OphRequestParameters ophRequestParameters, OphHttpResponse ophHttpResponse, RuntimeException e) {
+                                //Yhden paikan säännön virheiden logitus TODO: Poista koko onError kun virheet on korjattu
+                                String errorReqExp = "'java\\.lang\\.IllegalStateException: Hakukohteen .* koulutusten \\[.*\\] koulutusten alkamiskaudet eivät ole yhtenevät\\.'";
+                                Matcher matcher = Pattern.compile(errorReqExp).matcher(ophHttpResponse.asText());
+                                if (matcher.find()) {
+                                    LOG.error(matcher.group(1));
+                                }
+                                throw e;
+                            }
+                        })
+                , new TypeReference<ResultV1RDTO<HakukohdeV1RDTO>>() {
                 }
         );
     }

@@ -476,17 +476,17 @@ public class LOSObjectCreator extends ObjectCreator {
                     continue;
                 }
 
-                ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1Hakukohde(aoId);
-                HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
-
-                if (checkStatus
-                        && (hakukohdeDTO == null || hakukohdeDTO.getTila() == null || !hakukohdeDTO.getTila().toString()
-                        .equals(TarjontaTila.JULKAISTU.toString()))) {
-                    invalidOids.add(aoId);
-                    continue;
-                }
-
                 try {
+                    ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = tarjontaRawService.getV1Hakukohde(aoId);
+                    HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
+
+                    if (checkStatus
+                            && (hakukohdeDTO == null || hakukohdeDTO.getTila() == null || !hakukohdeDTO.getTila().toString()
+                            .equals(TarjontaTila.JULKAISTU.toString()))) {
+                        invalidOids.add(aoId);
+                        continue;
+                    }
+
                     ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuDTO);
                     // If fetching for preview, the status of the application option is added
                     if (!checkStatus) {
