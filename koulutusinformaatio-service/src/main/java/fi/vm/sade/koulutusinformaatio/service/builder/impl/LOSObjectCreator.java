@@ -439,6 +439,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     private Map<String, ApplicationOption> cachedApplicationOptionResults = Maps.newHashMap();
+    private Map<String, HakuV1RDTO> cachedApplicationSystemResults = Maps.newHashMap();
     private Set<String> invalidOids = Sets.newHashSet();
 
     private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) {
@@ -468,8 +469,11 @@ public class LOSObjectCreator extends ObjectCreator {
                     continue;
                 }
 
-                ResultV1RDTO<HakuV1RDTO> hakuRes = tarjontaRawService.getV1HakuByOid(curHakukoh.getHakuOid());
-                HakuV1RDTO hakuDTO = hakuRes.getResult();
+                HakuV1RDTO hakuDTO = cachedApplicationSystemResults.get(curHakukoh.getHakuOid());
+                if(hakuDTO == null){
+                    hakuDTO = tarjontaRawService.getV1HakuByOid(curHakukoh.getHakuOid()).getResult();
+                    cachedApplicationSystemResults.put(curHakukoh.getHakuOid(), hakuDTO);
+                }
 
                 if (checkStatus && (hakuDTO == null || hakuDTO.getTila() == null || !hakuDTO.getTila().equals(TarjontaTila.JULKAISTU.toString()))) {
                     invalidOids.add(curHakukoh.getHakuOid());
@@ -1343,6 +1347,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public void clearProcessedLists() {
+        this.cachedApplicationSystemResults = Maps.newHashMap();
         this.cachedApplicationOptionResults = Maps.newHashMap();
         this.invalidOids = Sets.newHashSet();
         this.alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
