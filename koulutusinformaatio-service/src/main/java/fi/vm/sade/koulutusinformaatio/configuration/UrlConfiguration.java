@@ -19,6 +19,6 @@ public class UrlConfiguration extends OphProperties {
         if(!SPRING_IT_PROFILE.equals(activeSpringProfile)) {
             addOptionalFiles(Paths.get(System.getProperties().getProperty("user.home"), "/oph-configuration/common.properties").toString());
         }
-        frontProperties.put("front.tarjonta-app.baseUrl", "${url-virkailija}");
+        frontProperties.put("tarjonta-app.baseUrl", "${url-virkailija}");
     }
 }
