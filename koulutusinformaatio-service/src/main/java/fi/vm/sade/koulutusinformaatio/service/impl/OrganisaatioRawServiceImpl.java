@@ -16,12 +16,16 @@ import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
 
     private final OphHttpClient client;
     private ObjectMapper mapper = HttpClient.createJacksonMapper();
+    private static final int RETRY_DELAY_MS = 2500;
+    private static final int MAX_RETRY_TIME = (int) TimeUnit.MINUTES.toMillis(10);
+    private static final int MAX_RETRY_COUNT = MAX_RETRY_TIME / RETRY_DELAY_MS;
 
     @Autowired
     public OrganisaatioRawServiceImpl(HttpClient httpClient) {
@@ -37,6 +41,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
 
     private <R> R parseJson(final Class<R> clazz, OphHttpRequest request) {
         return request.accept(OphHttpClient.JSON)
+                .retryOnError(MAX_RETRY_COUNT, RETRY_DELAY_MS)
                 .execute(new OphHttpResponseHandler<R>() {
                     @Override
                     public R handleResponse(OphHttpResponse response) throws IOException {
