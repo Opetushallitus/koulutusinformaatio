@@ -37,7 +37,11 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
     }, true);    
     
     // Perform search using LearningOpportunity service
-    $scope.search = function() {
+    $scope.search = function(item) {
+        if (item.group) {
+          $scope.queryString = "";
+          return;
+        }
 
         if (!$scope.queryString || $scope.queryString === '') {
             $scope.queryString = '*';

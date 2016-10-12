@@ -1614,6 +1614,11 @@ input[type=text]:focus {
     .app-container {
       margin: 20px 0 40px 0; } }
 
+.match-header {
+  background-color: #e4e1e1 !important;
+  border-bottom: none !important;
+}
+
 .search-field {
   margin-bottom: 40px; }
   @media (max-width: 768px) {
