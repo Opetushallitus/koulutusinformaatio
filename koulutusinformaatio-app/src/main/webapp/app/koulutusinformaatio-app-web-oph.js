@@ -1,4 +1,4 @@
-window.urls.properties={
+var properties={
   "piwik.url": "https://analytiikka.opintopolku.fi/piwik/",
   "tarjonta-app.koulutus": "/tarjonta-app/#/koulutus/$1",
   "tarjonta-app.koulutusEdit": "/tarjonta-app/#/koulutus/$1/edit?$2",
@@ -23,5 +23,6 @@ window.urls.properties={
   "koulutusinformaatio-app.location.childlocations": "/location/child-locations",
   "koulutusinformaatio-app.lop": "/lop/$1",
   "koulutusinformaatio-app.lop.picture": "/lop/$1/picture",
-  "koulutusinformaatio-app.basket.items": "/basket/items",
-}
+  "koulutusinformaatio-app.basket.items": "/basket/items"
+};
+for (var attrname in properties) { window.urls.properties[attrname] = properties[attrname]; }
