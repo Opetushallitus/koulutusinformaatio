@@ -1,7 +1,10 @@
 <script type="text/ng-template" id="/searchbar.typeahead.match.html">
-    <span data-ng-if="match.model.group"
-          data-ng-bind-html="match.label"
-          data-ng-attr-title="{{match.label}}"></span>
+    <a class="match-header"
+       data-ng-if="match.model.group"
+       data-ng-bind-html="match.label"
+       data-ng-attr-title="{{match.label}}"
+       ng-click="$event.stopPropagation();"
+       ng-mouseenter="$event.stopPropagation();"></a>
     <a data-ng-if="!match.model.group"
        href
        tabindex="-1"
@@ -16,7 +19,7 @@
                 <div class="col-xs-12 col-sm-8 margin-vertical-small">
                     <input type="text"
                         aria-label="{{searchFieldAriaLabel}}"
-                        class="form-control input-lg  ki-search-intro-step1" 
+                        class="form-control input-lg ki-search-intro-step1"
                         id="search-field" 
                         name="search-field" 
                         placeholder="{{searchFieldPlaceholder}}" 
@@ -24,7 +27,7 @@
                         data-ng-model="queryString" 
                         data-typeahead="suggestion.value for suggestion in suggestions" 
                         data-typeahead-wait-ms="500" 
-                        data-typeahead-on-select="search()"
+                        data-typeahead-on-select="search($item)"
                         data-typeahead-focus-first="false"
                         data-typeahead-template-url="/searchbar.typeahead.match.html"
                         autocomplete="off" />
