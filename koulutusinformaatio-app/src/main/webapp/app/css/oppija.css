@@ -1615,8 +1615,7 @@ input[type=text]:focus {
       margin: 20px 0 40px 0; } }
 
 .match-header {
-  background-color: #e4e1e1 !important;
-  border-bottom: none !important;
+  background-color: #fff;
 }
 
 .search-field {
