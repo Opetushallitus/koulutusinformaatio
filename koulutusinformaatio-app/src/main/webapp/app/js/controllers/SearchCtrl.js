@@ -20,25 +20,24 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
     	AutocompleteService.query($scope.queryString).then(function(result) {
     		$scope.suggestions.length = 0;
     		if (result.keywords != undefined && result.keywords.length > 0) {
-                $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-keyword'), group: true});
+                var translation = TranslationService.getTranslation('autocomplete-keyword');
     			for (var i = 0; i < result.keywords.length; i++) {
-    				$scope.suggestions.push({value: result.keywords[i]});
+                    $scope.suggestions.push({value: result.keywords[i], group: translation, firstInGroup: (i == 0)});
     			}
     		} 
     		
     		if (result.loNames != undefined && result.loNames.length > 0) {
-                $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-loname'), group: true});
+                var translation = TranslationService.getTranslation('autocomplete-loname');
     			for (var i = 0; i < result.loNames.length; i++) {
-    				$scope.suggestions.push({value: result.loNames[i]});
+                    $scope.suggestions.push({value: result.loNames[i], group: translation, firstInGroup: (i == 0)});
     			}
     		}
     	});
     	}
-    }, true);    
+    }, true);
     
     // Perform search using LearningOpportunity service
     $scope.search = function() {
-
         if (!$scope.queryString || $scope.queryString === '') {
             $scope.queryString = '*';
         }
