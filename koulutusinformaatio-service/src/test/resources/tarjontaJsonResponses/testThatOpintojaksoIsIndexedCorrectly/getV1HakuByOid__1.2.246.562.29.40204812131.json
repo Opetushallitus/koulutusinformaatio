@@ -46,7 +46,8 @@
     "organisaatioryhmat" : [ ],
     "koulutusmoduuliTyyppi" : "OPINTOKOKONAISUUS",
     "opintopolunNayttaminenLoppuu" : null,
-    "maksumuuriKaytossa" : false
+    "maksumuuriKaytossa" : false,
+    "tunnistusKaytossa" : true
   },
   "status" : "OK",
   "errors" : null,

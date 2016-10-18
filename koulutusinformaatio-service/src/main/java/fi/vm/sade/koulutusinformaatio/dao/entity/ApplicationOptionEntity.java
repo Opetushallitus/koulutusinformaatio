@@ -101,6 +101,7 @@ public class ApplicationOptionEntity {
     private List<OrganizationGroupEntity> organizationGroups;
     private boolean isPseudo;
     private boolean paid;
+    private boolean tunnistusKaytossa;
     @Embedded
     private I18nTextEntity hakuMenettelyKuvaukset;
     @Embedded
@@ -497,6 +498,14 @@ public class ApplicationOptionEntity {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public boolean isTunnistusKaytossa() {
+        return tunnistusKaytossa;
+    }
+
+    public void setTunnistusKaytossa(boolean tunnistusKaytossa) {
+        this.tunnistusKaytossa = tunnistusKaytossa;
     }
 
     public I18nTextEntity getHakuMenettelyKuvaukset() {

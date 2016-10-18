@@ -46,6 +46,7 @@
     "koulutusmoduuliTyyppi" : "OPINTOKOKONAISUUS",
     "opintopolunNayttaminenLoppuu" : null,
     "maksumuuriKaytossa" : false,
+    "tunnistusKaytossa" : false,
     "yhdenPaikanSaanto" : {
       "voimassa" : true,
       "syy" : "Korkeakouluhaku ilman kohdejoukon tarkennetta"

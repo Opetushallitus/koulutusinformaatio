@@ -89,6 +89,7 @@ public class ApplicationOption {
     private boolean isPseudo;
     private List<String> komotoOids = new ArrayList<String>();
     private boolean paid;
+    private boolean tunnistusKaytossa;
     private boolean isJosYoEiMuitaLiitepyyntoja;
     private boolean kysytaanHarkinnanvaraiset;
     private List<String> pohjakoulutusLiitteet = new ArrayList<>();
@@ -562,6 +563,14 @@ public class ApplicationOption {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public boolean isTunnistusKaytossa() {
+        return tunnistusKaytossa;
+    }
+
+    public void setTunnistusKaytossa(boolean tunnistusKaytossa) {
+        this.tunnistusKaytossa = tunnistusKaytossa;
     }
 
     public I18nText getHakuMenettelyKuvaukset() {
