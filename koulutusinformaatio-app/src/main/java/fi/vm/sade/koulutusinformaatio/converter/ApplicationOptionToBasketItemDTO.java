@@ -88,6 +88,7 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setHakuaikaId(ao.getInternalASDateRef());
                 aoDTO.setPseudo(ao.isPseudo());
                 aoDTO.setPaid(ao.isPaid());
+                aoDTO.setTunnistusKaytossa(ao.isTunnistusKaytossa());
                 aoDTO.setKysytaanHarkinnanvaraiset(ao.isKysytaanHarkinnanvaraiset());
 
                 List<String> requiredBaseEducations = ao.getRequiredBaseEducations() == null ? Lists.<String>newArrayList() : ao.getRequiredBaseEducations();
