@@ -138,6 +138,26 @@
         exportDest.urls.debug = true;
         return this;
     }
+    exportDest.urls.addProperties = function (props) {
+        mergePropertiesWithWarning(props, exportDest.urls.properties)
+    }
+    exportDest.urls.addDefaults = function (props) {
+        mergePropertiesWithWarning(props, exportDest.urls.defaults)
+    }
+    exportDest.urls.addOverride = function (props) {
+        mergePropertiesWithWarning(props, exportDest.urls.override)
+    }
+    function mergePropertiesWithWarning(props, destProps) {
+        var existsAlready = Object.keys(props).filter(function (k) {
+            return k in destProps
+        })
+        if(existsAlready.length == 0) {
+            merge(destProps, props)
+        } else {
+            console.log("Url properties already contains following keys:", existsAlready, "existing properties:", destProps, "new properties:", props)
+            alert("Url properties conflict. Check console log")
+        }
+    }
 
     function debug() {
         var args = Array.prototype.slice.call(arguments)
@@ -201,7 +221,6 @@
                 jsonProperties.splice(index, 0, data)
                 checkfulfill()
             }, function() {
-                console.log("Failed to download ", url)
                 fulfillFailed = true
                 checkfulfill()
             })
@@ -257,7 +276,6 @@
 })(typeof window === 'undefined' ? module.exports : window);
 
 // polyfills for IE
-
 
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function(searchString, position){

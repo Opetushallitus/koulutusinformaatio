@@ -1,4 +1,4 @@
-var properties={
+window.urls.addProperties({
   "piwik.url": "https://analytiikka.opintopolku.fi/piwik/",
   "tarjonta-app.koulutus": "/tarjonta-app/#/koulutus/$1",
   "tarjonta-app.koulutusEdit": "/tarjonta-app/#/koulutus/$1/edit?$2",
@@ -24,5 +24,4 @@ var properties={
   "koulutusinformaatio-app.lop": "/lop/$1",
   "koulutusinformaatio-app.lop.picture": "/lop/$1/picture",
   "koulutusinformaatio-app.basket.items": "/basket/items"
-};
-for (var attrname in properties) { window.urls.properties[attrname] = properties[attrname]; }
+})
