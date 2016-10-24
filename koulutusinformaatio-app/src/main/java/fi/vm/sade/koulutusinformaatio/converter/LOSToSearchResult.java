@@ -21,6 +21,8 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public final class LOSToSearchResult {
+    private static final Logger LOG = LoggerFactory.getLogger(LOSToSearchResult.class);
     private LOSToSearchResult() {
     }
 
@@ -46,8 +49,14 @@ public final class LOSToSearchResult {
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
         if (los instanceof KoulutusLOS) {
             dto.setType(TarjontaConstants.TYPE_KOULUTUS);
-        } else {
+        } else if( los instanceof TutkintoLOS){
+            dto.setType(TarjontaConstants.TYPE_PARENT);
+        } else if( los instanceof HigherEducationLOS){
             dto.setType(TarjontaConstants.TYPE_KK);
+        } else if( los instanceof CompetenceBasedQualificationParentLOS){
+            dto.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);
+        } else {
+            LOG.warn("Ei osattu päätellä tyyppiä koulutukselle: " + los.getId());
         }
         return dto;
     }
