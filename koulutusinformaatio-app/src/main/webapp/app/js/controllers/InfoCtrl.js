@@ -4,6 +4,12 @@
  function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityPictureService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, ChildLOService, LanguageService, VirkailijaLanguageService, _) {
     $scope.loType = $routeParams.loType;
 
+    // redirect to koulutus
+    if("erityisopetus" == $scope.loType){
+        var koulutusOid = $routeParams.id.split('_')[2];
+        return $location.path("/koulutus/"+koulutusOid).replace;
+    }
+
     $scope.queryString = SearchService.getTerm();
     //$scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = function(id){return window.url("haku-app.lomake", id)};
