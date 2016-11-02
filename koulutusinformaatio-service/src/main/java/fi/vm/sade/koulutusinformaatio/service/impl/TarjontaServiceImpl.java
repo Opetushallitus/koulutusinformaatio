@@ -33,6 +33,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.*;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -659,7 +660,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }
             }
         default:
-            return null;
+            throw new NotImplementedException("No creator mapping for koulutustyyppi: " + koulutusDTO.getToteutustyyppi());
         }
     }
 
