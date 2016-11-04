@@ -76,6 +76,7 @@ public class ApplicationOptionDTO {
     private String hakuaikaId;
     private List<OrganizationGroupDTO> organizationGroups;
     private boolean paid;
+    private boolean tunnistusKaytossa;
     private String hakuMenettelyKuvaukset;
     private String peruutusEhdotKuvaukset;
     private List<String> pohjakoulutusLiitteet;
@@ -474,6 +475,14 @@ public class ApplicationOptionDTO {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public boolean isTunnistusKaytossa() {
+        return tunnistusKaytossa;
+    }
+
+    public void setTunnistusKaytossa(boolean tunnistusKaytossa) {
+        this.tunnistusKaytossa = tunnistusKaytossa;
     }
 
     public String getHakuMenettelyKuvaukset() {

@@ -255,6 +255,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
 
         ao.setPaid(haku.isMaksumuuriKaytossa());
+        ao.setTunnistusKaytossa(haku.isTunnistusKaytossa());
         if (hakukohde.getPainotettavatOppiaineet() != null) {
             List<EmphasizedSubject> emphasizedSubjects = Lists.newArrayList();
             List<PainotettavaOppiaineV1RDTO> painotettavat = hakukohde.getPainotettavatOppiaineet();

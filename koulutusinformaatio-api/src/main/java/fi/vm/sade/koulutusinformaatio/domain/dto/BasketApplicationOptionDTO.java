@@ -65,6 +65,7 @@ public class BasketApplicationOptionDTO {
     private boolean useSystemApplicationForm;
     private boolean isPseudo;
     private boolean isPaid;
+    private boolean tunnistusKaytossa;
     private boolean kysytaanHarkinnanvaraiset;
 
 
@@ -360,6 +361,14 @@ public class BasketApplicationOptionDTO {
 
     public void setPaid(boolean isPaid) {
         this.isPaid = isPaid;
+    }
+
+    public boolean isTunnistusKaytossa() {
+        return tunnistusKaytossa;
+    }
+
+    public void setTunnistusKaytossa(boolean tunnistusKaytossa) {
+        this.isPaid = tunnistusKaytossa;
     }
 
     public boolean isKysytaanHarkinnanvaraiset() {
