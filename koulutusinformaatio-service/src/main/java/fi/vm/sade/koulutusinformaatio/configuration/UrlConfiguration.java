@@ -20,5 +20,6 @@ public class UrlConfiguration extends OphProperties {
             addOptionalFiles(Paths.get(System.getProperties().getProperty("user.home"), "/oph-configuration/common.properties").toString());
         }
         frontProperties.put("tarjonta-app.baseUrl", "${url-virkailija}");
+        frontProperties.put("ataru-app.baseUrl", "${url-oppija}");
     }
 }
