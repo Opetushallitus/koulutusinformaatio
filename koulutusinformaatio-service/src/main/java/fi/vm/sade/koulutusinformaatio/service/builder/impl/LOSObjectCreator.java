@@ -1356,7 +1356,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private Set<String> alreadyCreatedKorkeakouluOpintos = Sets.newHashSet();
 
     public List<KoulutusLOS> createKorkeakouluOpintos(KorkeakouluOpintoV1RDTO dto, boolean checkStatus) {
-        if (dto == null || dto.getOid() == null || alreadyCreatedKorkeakouluOpintos.contains(dto.getOid())) return Lists.newArrayList();
+        if (checkStatus && (dto == null || dto.getOid() == null || alreadyCreatedKorkeakouluOpintos.contains(dto.getOid()))) return Lists.newArrayList();
 
         HashMap<String, KoulutusLOS> createdOpintos = Maps.newHashMap();
         HashMap<String, Set<String>> childOids = Maps.newHashMap();
@@ -1393,7 +1393,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         for (Iterator<Map.Entry<String, KoulutusLOS>> it = createdOpintos.entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, KoulutusLOS> entry = it.next();
-            if (losIsInvalid(entry.getValue())) {
+            if (losIsInvalid(entry.getValue(), checkStatus)) {
                 it.remove();
             }
         }
@@ -1403,9 +1403,9 @@ public class LOSObjectCreator extends ObjectCreator {
         return Lists.newArrayList(createdOpintos.values());
     }
 
-    private boolean losIsInvalid(KoulutusLOS los) {
+    private boolean losIsInvalid(KoulutusLOS los, boolean checkStatus) {
         // Myös kokonaisuudet ilman opintojaksoja näytetään!
-        return los == null || los.getApplicationOptions().isEmpty();
+        return checkStatus && (los == null || los.getApplicationOptions().isEmpty());
     }
 
     private void recursiveAddApplicationOptions(KoulutusLOS parent, Set<ApplicationOption> aos) {
