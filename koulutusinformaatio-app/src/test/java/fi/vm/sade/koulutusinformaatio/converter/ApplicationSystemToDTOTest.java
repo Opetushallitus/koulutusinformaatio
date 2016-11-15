@@ -112,8 +112,39 @@ public class ApplicationSystemToDTOTest {
         assertFalse(dto.isAsOngoing());
         assertNotNull(dto.getNextApplicationPeriodStarts());
         assertEquals(calStart.getTime(), dto.getNextApplicationPeriodStarts());
+    }
 
+    @Test
+    public void testUseAtaruForm() {
+        String key = "1.2.3.4";
+        ApplicationSystem as1 = initApplicationSystem();
+        ApplicationSystem as2 = initApplicationSystem();
+        as1.setAtaruFormKey(key);
 
+        ApplicationSystemDTO dto1 = ApplicationSystemToDTO.convert(as1, "fi");
+        assertEquals(key, dto1.getAtaruFormKey());
+
+        ApplicationSystemDTO dto2 = ApplicationSystemToDTO.convert(as2, "fi");
+        assertEquals(null, dto2.getAtaruFormKey());
+    }
+
+    private ApplicationSystem initApplicationSystem() {
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId("1234");
+        Map<String, String> translations = Maps.newHashMap();
+        translations.put("fi", "Yhteishaku");
+        as.setName(new I18nText(translations));
+        Calendar calStart = new GregorianCalendar();
+        calStart.set(Calendar.YEAR, 2000);
+        calStart.set(Calendar.MONTH, Calendar.JANUARY);
+        calStart.set(Calendar.DATE, 1);
+        Calendar calEnd = new GregorianCalendar();
+        calEnd.set(Calendar.YEAR, 2030);
+        calEnd.set(Calendar.MONTH, Calendar.JANUARY);
+        calEnd.set(Calendar.DATE, 1);
+        DateRange dr = new DateRange(calStart.getTime(), calEnd.getTime());
+        as.setApplicationDates(Lists.newArrayList(dr));
+        return as;
     }
 
 }

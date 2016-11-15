@@ -70,6 +70,7 @@ public class ApplicationSystemCreatorTest extends KoodistoAwareTest {
         hakuaika.setLoppuPvm(end);
         dto.setHakuaikas(Lists.newArrayList(hakuaika));
         dto.setHakutapaUri(TarjontaConstants.HAKUTAPA_YHTEISHAKUV1);
+        dto.setAtaruLomakeAvain("1.2.3.4");
 
         creator = new ApplicationSystemCreator(koodistoService, mock(ParameterService.class), Lists.<String> newArrayList());
     }
@@ -92,6 +93,7 @@ public class ApplicationSystemCreatorTest extends KoodistoAwareTest {
         DateRange dr = as.getApplicationDates().get(0);
         assertEquals(start, dr.getStartDate());
         assertEquals(end, dr.getEndDate());
+        assertEquals("1.2.3.4", as.getAtaruFormKey());
     }
 
     @Test
