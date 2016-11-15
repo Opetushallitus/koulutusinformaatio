@@ -86,6 +86,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
         }
         as.setShowEducationsUntil(hakuDto.getOpintopolunNayttaminenLoppuu());
         as.setUseSystemApplicationForm(hakuDto.isJarjestelmanHakulomake());
+        as.setAtaruFormKey(hakuDto.getAtaruLomakeAvain());
         as.setSiirtohaku(isSiirtohaku(hakuDto));
 
         // Demoympäristöä varten pakotetaan haku näkyviin.

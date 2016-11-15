@@ -36,6 +36,7 @@ public class ApplicationSystem {
     private boolean shownAsFacet;
     private DateRange facetRange;
     private boolean useSystemApplicationForm;
+    private String ataruFormKey;
 
     private Date showEducationsUntil;
     private boolean siirtohaku;
@@ -143,6 +144,14 @@ public class ApplicationSystem {
 
     public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
         this.useSystemApplicationForm = useSystemApplicationForm;
+    }
+
+    public String getAtaruFormKey() {
+        return ataruFormKey;
+    }
+
+    public void setAtaruFormKey(String key) {
+        this.ataruFormKey = key;
     }
 
     public Date getShowEducationsUntil() {

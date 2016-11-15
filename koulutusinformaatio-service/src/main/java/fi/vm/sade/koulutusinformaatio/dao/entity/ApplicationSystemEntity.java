@@ -42,6 +42,7 @@ public class ApplicationSystemEntity {
     private DateRangeEntity facetRange;
     private boolean useSystemApplicationForm;
     private boolean siirtohaku;
+    private String ataruFormKey;
 
     public ApplicationSystemEntity() {}
 
@@ -131,5 +132,13 @@ public class ApplicationSystemEntity {
 
     public void setSiirtohaku(boolean siirtohaku) {
         this.siirtohaku = siirtohaku;
+    }
+
+    public String getAtaruFormKey() {
+        return ataruFormKey;
+    }
+
+    public void setAtaruFormKey(String key) {
+        this.ataruFormKey = key;
     }
 }

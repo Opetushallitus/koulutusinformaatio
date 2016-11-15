@@ -40,6 +40,7 @@ public class ApplicationSystemDTO {
     private String hakutapa;
     private String hakutyyppi;
     private boolean useSystemApplicationForm;
+    private String ataruFormKey;
 
     public String getId() {
         return id;
@@ -129,5 +130,13 @@ public class ApplicationSystemDTO {
 
     public void setUseSystemApplicationForm(boolean useSystemApplicationForm) {
         this.useSystemApplicationForm = useSystemApplicationForm;
+    }
+
+    public String getAtaruFormKey() {
+        return ataruFormKey;
+    }
+
+    public void setAtaruFormKey(String ataruFormKey) {
+        this.ataruFormKey = ataruFormKey;
     }
 }
