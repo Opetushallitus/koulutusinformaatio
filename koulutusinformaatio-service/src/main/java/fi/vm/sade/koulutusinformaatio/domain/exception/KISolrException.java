@@ -15,7 +15,7 @@ public class KISolrException extends KIException {
     }
 
     public KISolrException(Exception ex) {
-        super(ex.getMessage());
+        super(ex.getMessage(), ex);
     }
 
    
