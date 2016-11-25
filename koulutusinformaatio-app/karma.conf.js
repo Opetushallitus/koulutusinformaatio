@@ -3,7 +3,7 @@ var testPath = 'test/webapp/';
 
 module.exports = function(config) {
     config.set({
-        basePath: '../../../',
+        basePath: 'src',
         frameworks: ['jasmine', 'sinon'],
         plugins: [
             'karma-jasmine',
@@ -59,18 +59,18 @@ module.exports = function(config) {
             testPath + 'test/lib/angular/angular-mocks.js',
             testPath + 'test/unit/**/*.js',
         ],
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
         logLevel: config.LOG_DEBUG,
         autoWatch: true,
-        singleRun: false,
+        singleRun: true,
         reporters: ['progress', 'junit', 'coverage'],
         junitReporter: {
             //outputFile: 'test_out/unit.xml',
-	    outputDir: testPath + '../../test_out'
+	    outputDir: '../target/karma_test_out'
         },
         coverageReporter: {
             type: 'html',
-            dir: testPath + 'coverage/'
+            dir: '../target/karma_coverage/'
         }
     });
 };

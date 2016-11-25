@@ -281,6 +281,43 @@
                     <uriEncoding>UTF-8</uriEncoding>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>0.0.29</version>
+                <executions>
+                    <execution>
+                        <id>::install node and npm::</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>::npm install::</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>update</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>::karma start::</id>
+                        <goals>
+                            <goal>karma</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <karmaConfPath>karma.conf.js</karmaConfPath>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <nodeVersion>v6.9.1</nodeVersion>
+                    <npmVersion>3.10.6</npmVersion>
+                    <workingDirectory>.</workingDirectory>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <profiles>
