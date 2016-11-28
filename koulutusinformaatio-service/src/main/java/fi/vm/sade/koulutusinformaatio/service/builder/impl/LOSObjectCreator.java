@@ -496,8 +496,8 @@ public class LOSObjectCreator extends ObjectCreator {
                     if (!checkStatus) {
                         ao.setStatus(hakukohdeDTO.getTila().name());
                         ao.getApplicationSystem().setStatus(hakuDTO.getTila());
-                    }
-                    if (ao.showInOpintopolku()) {
+                        aos.add(ao);
+                    } else if (ao.showInOpintopolku()) {
                         aos.add(ao);
                         cachedApplicationOptionResults.put(ao.getId(), ao);
                     } else {
