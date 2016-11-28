@@ -71,9 +71,13 @@ var kiApp = angular.module('kiApp',
 
 // routes provided by kiApp
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/haku/:queryString?', {
-    	templateUrl: 'partials/search/search.html', 
-    	controller: SearchCtrl,
+    $routeProvider.when('/haku', {
+        redirectTo: '/haku/*'
+    });
+
+    $routeProvider.when('/haku/:queryString*', {
+        templateUrl: 'partials/search/search.html',
+        controller: SearchCtrl,
         reloadOnSearch: false
     });
 
