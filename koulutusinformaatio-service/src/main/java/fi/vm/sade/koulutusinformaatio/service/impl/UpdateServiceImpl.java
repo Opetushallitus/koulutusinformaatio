@@ -230,6 +230,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.info("Valmistava educations saved.");
             switchTask(stopwatch, "Yleiskäyttöinen indeksointi");
+            tarjontaService.clearProcessedLists();
 
             generalUpdateService.updateGeneralData(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.info("General information saved.");
