@@ -418,7 +418,7 @@ public final class SolrUtil {
 
     public static class SolrConstants {
         //value constants
-        //public static final String ED_TYPE_TUTKINTOON = "et01";
+        public static final String ED_TYPE_TUTKINTOON = "et01";
         public static final String ED_TYPE_LUKIO = "et01.01";
         public static final String ED_TYPE_AIKUISLUKIO = "et01.01.02";
         public static final String ED_TYPE_NUORTENLUKIO = "et01.01.01";

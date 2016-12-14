@@ -21,6 +21,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -29,7 +30,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -854,7 +854,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
                 String[] splits = curC.getName().split("\\.");
 
-                if ((splits.length >= 2 && !splits[0].equals("et01")) || (splits.length >= 3 && splits[0].equals("et01"))) {
+                if ((splits.length >= 2 && !splits[0].equals(SolrConstants.ED_TYPE_TUTKINTOON)) || (splits.length >= 3 && splits[0].equals(SolrConstants.ED_TYPE_TUTKINTOON))) {
                     int endIndex = curC.getName().lastIndexOf('.');
                     String parentStr = curC.getName().substring(0, endIndex);
                     if (resMap.containsKey(parentStr)) {
