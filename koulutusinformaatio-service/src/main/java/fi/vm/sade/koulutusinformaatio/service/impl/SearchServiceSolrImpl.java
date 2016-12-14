@@ -56,6 +56,7 @@ import java.util.*;
 public class SearchServiceSolrImpl implements SearchService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchServiceSolrImpl.class);
+    private static final YosChildSorter YOS_CHILD_SORTER = new YosChildSorter();
 
     private static final String AS_START_DATE_PREFIX = "asStart_";
     private static final String AS_END_DATE_PREFIX = "asEnd_";
@@ -872,8 +873,12 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         for (FacetValue curVal : values) {
-            curVal.setChildValues(resMap.get(curVal.getValueId()));
-            if (curVal.getChildValues() != null) {
+            List<FacetValue> childValues = resMap.get(curVal.getValueId());
+            if (SolrUtil.SolrConstants.ED_TYPE_YOS.equals(curVal.getValueId())) {
+                Collections.sort(childValues, YOS_CHILD_SORTER);
+            }
+            curVal.setChildValues(childValues);
+            if (childValues != null) {
                 for (FacetValue curChild : curVal.getChildValues()) {
                     curChild.setParentId(curVal.getValueId());
                 }
@@ -1450,4 +1455,21 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
+    private static class YosChildSorter implements Comparator<FacetValue> {
+        private static List<String> YOS_CHILD_ORDER = Lists.newArrayList(
+                SolrConstants.ED_TYPE_KANDIDAATTI,
+                SolrConstants.ED_TYPE_MAISTERI,
+                SolrConstants.ED_TYPE_JATKOKOULUTUS,
+                SolrConstants.ED_TYPE_AVOIN_YO
+        );
+
+        @Override
+        public int compare(FacetValue o1, FacetValue o2) {
+            int diff = YOS_CHILD_ORDER.indexOf(o1.getValueId()) - YOS_CHILD_ORDER.indexOf(o2.getValueId());
+            if(diff == 0) {
+                diff = o1.getValueId().compareTo(o2.getValueId());
+            }
+            return diff;
+        }
+    }
 }
