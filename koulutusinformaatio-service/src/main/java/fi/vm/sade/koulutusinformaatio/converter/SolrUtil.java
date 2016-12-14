@@ -439,7 +439,8 @@ public final class SolrUtil {
         public static final String ED_TYPE_KANDIDAATTI = "et01.05.01";
         public static final String ED_TYPE_MAISTERI = "et01.05.02";
         public static final String ED_TYPE_AVOIN_YO = "et01.05.03";
-        
+        public static final String ED_TYPE_JATKOKOULUTUS = "et01.05.04";
+
         public static final String ED_TYPE_MUU = "et02";
         public static final String ED_TYPE_PK_JALK = "et02.01";
         public static final String ED_TYPE_TENTH_GRADE = "et02.01.01";
