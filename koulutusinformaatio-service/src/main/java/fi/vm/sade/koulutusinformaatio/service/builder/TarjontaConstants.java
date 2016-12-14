@@ -17,6 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
 
+import com.google.common.collect.Sets;
+
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -58,6 +63,10 @@ public class TarjontaConstants {
     public static final String ED_DEGREE_URI_YLEMPI_AMK = "koulutusasteoph2002_71";
     public static final String ED_DEGREE_URI_KANDI = "koulutusasteoph2002_63";
     public static final String ED_DEGREE_URI_MAISTERI = "koulutusasteoph2002_72";
+    public static final String ED_DEGREE_URI_TUTKIJA = "koulutusasteoph2002_80";
+    public static final String ED_DEGREE_URI_LISENSIAATTI = "koulutusasteoph2002_81";
+    public static final String ED_DEGREE_URI_TOHTORI = "koulutusasteoph2002_82";
+    public static final Set<String> ED_DEGREE_URIS_JATKOKOULUTUS = Collections.unmodifiableSet(Sets.newHashSet(ED_DEGREE_URI_TUTKIJA, ED_DEGREE_URI_LISENSIAATTI, ED_DEGREE_URI_TOHTORI));
 
     public static final String TUTKINTONIMIKE_KK_KOODISTO_URI =  "tutkintonimikekk";
     public static final String TUTKINTONIMIKEET_KOODISTO_URI =  "tutkintonimikkeet";
