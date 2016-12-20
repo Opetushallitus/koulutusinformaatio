@@ -10,9 +10,14 @@
         return $location.path("/koulutus/"+koulutusOid).replace;
     }
 
+    var getUrl = function(key) {
+      return function(id) { return window.url(key, id) };
+    };
+
     $scope.queryString = SearchService.getTerm();
     //$scope.descriptionLanguage = 'fi';
-    $scope.hakuAppUrl = function(id){return window.url("haku-app.lomake", id)};
+    $scope.hakuAppUrl = getUrl('haku-app.lomake');
+    $scope.ataruAppUrl = getUrl('ataru-app.hakemus');
     $scope.uiLang = LanguageService.getLanguage();
     $scope.virkailijaLang = VirkailijaLanguageService.getLanguage();
 

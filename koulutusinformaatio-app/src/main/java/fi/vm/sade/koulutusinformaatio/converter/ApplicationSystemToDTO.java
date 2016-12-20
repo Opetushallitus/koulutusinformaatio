@@ -39,6 +39,7 @@ public final class ApplicationSystemToDTO {
             ao.setHakutapa( applicationSystem.getHakutapaUri() );
             ao.setHakutyyppi(applicationSystem.getHakutyyppiUri());
             ao.setUseSystemApplicationForm(applicationSystem.isUseSystemApplicationForm());
+            ao.setAtaruFormKey(applicationSystem.getAtaruFormKey());
             return ao;
         } else {
             return null;
