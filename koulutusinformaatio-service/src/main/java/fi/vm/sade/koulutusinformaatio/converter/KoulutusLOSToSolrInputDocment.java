@@ -563,6 +563,13 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
             }
         }
+
+        if (los.getAdditionalEducationTypes() != null) {
+            for (Code edType : los.getAdditionalEducationTypes()) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, edType.getValue());
+            }
+        }
+
         if (los.getType().equals(TarjontaConstants.TYPE_KOULUTUS)) {
             if (los.getEducationType().equals(SolrConstants.ED_TYPE_LUKIO)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_LUKIO);
