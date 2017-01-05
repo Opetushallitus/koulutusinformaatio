@@ -562,6 +562,11 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
             } else if (TarjontaConstants.ED_DEGREE_URIS_JATKOKOULUTUS.contains(los.getEducationDegree())) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YOS);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_JATKOKOULUTUS);
+                for (Code edType : los.getAdditionalEducationTypes()){
+                    if(edType.getValue() != SolrConstants.ED_TYPE_YOS && edType.getValue() != SolrConstants.ED_TYPE_JATKOKOULUTUS) {
+                        doc.addField(LearningOpportunity.EDUCATION_TYPE, edType.getValue());
+                    }
+                }
             } else if (los.getType().equals(TarjontaConstants.TYPE_ADULT_UPSEC)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AIKUISLUKIO);
