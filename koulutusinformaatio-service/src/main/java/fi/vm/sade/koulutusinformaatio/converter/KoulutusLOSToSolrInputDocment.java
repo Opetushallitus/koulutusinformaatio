@@ -546,27 +546,12 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
             } else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_KANDI)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YOS);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KANDIDAATTI);
-                for (Code edType : los.getAdditionalEducationTypes()){
-                    if(edType.getValue() != SolrConstants.ED_TYPE_YOS && edType.getValue() != SolrConstants.ED_TYPE_KANDIDAATTI) {
-                        doc.addField(LearningOpportunity.EDUCATION_TYPE, edType.getValue());
-                    }
-                }
             } else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_MAISTERI)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YOS);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MAISTERI);
-                for (Code edType : los.getAdditionalEducationTypes()){
-                    if(edType.getValue() != SolrConstants.ED_TYPE_YOS && edType.getValue() != SolrConstants.ED_TYPE_MAISTERI) {
-                        doc.addField(LearningOpportunity.EDUCATION_TYPE, edType.getValue());
-                    }
-                }
             } else if (TarjontaConstants.ED_DEGREE_URIS_JATKOKOULUTUS.contains(los.getEducationDegree())) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YOS);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_JATKOKOULUTUS);
-                for (Code edType : los.getAdditionalEducationTypes()){
-                    if(edType.getValue() != SolrConstants.ED_TYPE_YOS && edType.getValue() != SolrConstants.ED_TYPE_JATKOKOULUTUS) {
-                        doc.addField(LearningOpportunity.EDUCATION_TYPE, edType.getValue());
-                    }
-                }
             } else if (los.getType().equals(TarjontaConstants.TYPE_ADULT_UPSEC)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AIKUISLUKIO);
@@ -578,6 +563,13 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
             }
         }
+
+        if (los.getAdditionalEducationTypes() != null) {
+            for (Code edType : los.getAdditionalEducationTypes()) {
+                doc.addField(LearningOpportunity.EDUCATION_TYPE, edType.getValue());
+            }
+        }
+
         if (los.getType().equals(TarjontaConstants.TYPE_KOULUTUS)) {
             if (los.getEducationType().equals(SolrConstants.ED_TYPE_LUKIO)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_LUKIO);
