@@ -249,6 +249,8 @@ OPH.Common = {
             piwikSiteId = 1;
         }else if(siteDomain=='testi.virkailija.opintopolku.fi'){
             piwikSiteId = 5;
+        }else if(siteDomain=='demo.opintopolku.fi'){
+            piwikSiteId = 15;
         }else{
             piwikSiteId = 2;
         }
