@@ -166,8 +166,6 @@ OPH.Common = {
                 piwikSiteId = 14;
                 break;
             case "virkailija.opintopolku.fi":
-            case "virkailija.studieinfo.fi":
-            case "virkailija.studyinfo.fi":
                 piwikSiteId = 3;
                 break;
             case "testi.opintopolku.fi":
@@ -176,8 +174,6 @@ OPH.Common = {
                 piwikSiteId = 1;
                 break;
             case "testi.virkailija.opintopolku.fi":
-            case "testi.virkailija.studieinfo.fi":
-            case "testi.virkailija.studyinfo.fi":
                 piwikSiteId = 5;
                 break;
             case "demo.opintopolku.fi":
