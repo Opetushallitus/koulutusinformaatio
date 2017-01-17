@@ -1457,11 +1457,11 @@ public class SearchServiceSolrImpl implements SearchService {
 
     private static class YosChildSorter implements Comparator<FacetValue> {
         private static List<String> YOS_CHILD_ORDER = Lists.newArrayList(
+                SolrConstants.ED_TYPE_KANDI_JA_MAISTERI,
                 SolrConstants.ED_TYPE_KANDIDAATTI,
                 SolrConstants.ED_TYPE_MAISTERI,
                 SolrConstants.ED_TYPE_JATKOKOULUTUS,
-                SolrConstants.ED_TYPE_AVOIN_YO,
-                SolrConstants.ED_TYPE_KANDI_JA_MAISTERI
+                SolrConstants.ED_TYPE_AVOIN_YO
         );
 
         @Override
