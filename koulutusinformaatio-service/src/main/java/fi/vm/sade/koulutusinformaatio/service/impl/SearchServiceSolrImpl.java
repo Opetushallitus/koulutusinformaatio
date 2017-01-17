@@ -501,6 +501,10 @@ public class SearchServiceSolrImpl implements SearchService {
         List<String> subjects = getSubjects(doc, lang);
         String responsibleProvider = getResponsibleProvider(doc, lang);
 
+        if (doc.get(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY) != null){
+            edDegree = getAdditionlaEducationType(doc, lang);
+        }
+
         LOG.debug("gathered info now creating search result: {}", id);
 
         LOSearchResult lo = new LOSearchResult(
@@ -598,6 +602,14 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.EDUCATION_DEGREE_SV,
                 LearningOpportunity.EDUCATION_DEGREE_EN,
                 LearningOpportunity.EDUCATION_DEGREE);
+    }
+
+    private String getAdditionlaEducationType(SolrDocument doc, String lang) {
+        return getTranslatedValue(doc, lang,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_FI,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_SV,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_EN,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY);
     }
 
     private String getName(SolrDocument doc, String lang) {
@@ -1457,11 +1469,11 @@ public class SearchServiceSolrImpl implements SearchService {
 
     private static class YosChildSorter implements Comparator<FacetValue> {
         private static List<String> YOS_CHILD_ORDER = Lists.newArrayList(
+                SolrConstants.ED_TYPE_KANDI_JA_MAISTERI,
                 SolrConstants.ED_TYPE_KANDIDAATTI,
                 SolrConstants.ED_TYPE_MAISTERI,
                 SolrConstants.ED_TYPE_JATKOKOULUTUS,
-                SolrConstants.ED_TYPE_AVOIN_YO,
-                SolrConstants.ED_TYPE_KANDI_JA_MAISTERI
+                SolrConstants.ED_TYPE_AVOIN_YO
         );
 
         @Override

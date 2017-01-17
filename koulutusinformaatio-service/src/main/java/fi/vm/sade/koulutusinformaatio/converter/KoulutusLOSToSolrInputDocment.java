@@ -61,7 +61,6 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
      * Creates a higher education learning opportunity solr document.
      */
     private SolrInputDocument createDoc(KoulutusLOS los) {
-
         SolrInputDocument doc = new SolrInputDocument();
 
         doc.addField(LearningOpportunity.TYPE, los.getType());
@@ -536,7 +535,11 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
         if (los.getAdditionalEducationType() != null) {
             Code edType = los.getAdditionalEducationType();
             if(edType != null){
-                doc.addField(LearningOpportunity.EDUCATION_TYPE, edType.getValue());
+                doc.addField(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY, edType.getName());
+                I18nText name = edType.getName();
+                doc.addField(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv", name.getTranslations()));
+                doc.addField(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en", name.getTranslations()));
+                doc.addField(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi", name.getTranslations()));
                 skipEdType = true;
             }
         }
