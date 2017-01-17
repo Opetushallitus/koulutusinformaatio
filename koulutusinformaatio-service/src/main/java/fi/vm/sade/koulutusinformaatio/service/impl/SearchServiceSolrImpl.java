@@ -1460,7 +1460,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 SolrConstants.ED_TYPE_KANDIDAATTI,
                 SolrConstants.ED_TYPE_MAISTERI,
                 SolrConstants.ED_TYPE_JATKOKOULUTUS,
-                SolrConstants.ED_TYPE_AVOIN_YO
+                SolrConstants.ED_TYPE_AVOIN_YO,
+                SolrConstants.ED_TYPE_KANDI_JA_MAISTERI
         );
 
         @Override
