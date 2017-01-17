@@ -63,7 +63,7 @@ public class KoulutusLOS extends LOS {
     private List<Code> facetPrerequisites = new ArrayList<Code>();
     private String educationType;
 
-    private List<Code> additionalEducationTypes = new ArrayList<Code>();
+    private Code additionalEducationType;
 
     private List<Code> fotFacet = new ArrayList<Code>();
 
@@ -382,12 +382,12 @@ public class KoulutusLOS extends LOS {
         return educationType;
     }
 
-    public List<Code> getAdditionalEducationTypes() {
-        return additionalEducationTypes;
+    public Code getAdditionalEducationType() {
+        return additionalEducationType;
     }
 
-    public void setAdditionalEducationTypes(List<Code> additionalEducationTypes) {
-        this.additionalEducationTypes = additionalEducationTypes;
+    public void setAdditionalEducationType(Code additionalEducationType) {
+        this.additionalEducationType = additionalEducationType;
     }
 
     public List<Code> getFotFacet() {
