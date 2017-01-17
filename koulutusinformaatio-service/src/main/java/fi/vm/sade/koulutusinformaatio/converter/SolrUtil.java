@@ -300,6 +300,10 @@ public final class SolrUtil {
         public static final String PREREQUISITE_DISPLAY_FI = "prerequisite_fi_ss";
         public static final String PREREQUISITE_DISPLAY_SV = "prerequisite_sv_ss";
         public static final String PREREQUISITE_DISPLAY = "prerequisite_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY = "additionaleducationtype_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY_FI = "additionaleducationtype_fi_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY_EN= "additionaleducationtype_en_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY_SV = "additionaleducationtype_sv_ss";
         public static final String DEGREE_TITLE_FI = "degreeTitles_fi";
         public static final String DEGREE_TITLE_SV = "degreeTitles_sv";
         public static final String DEGREE_TITLE_EN = "degreeTitles_en";
