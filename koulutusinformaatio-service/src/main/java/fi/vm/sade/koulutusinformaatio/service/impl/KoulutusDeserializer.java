@@ -40,6 +40,7 @@ public class KoulutusDeserializer extends JsonDeserializer<KoulutusV1RDTO> {
     private static final String MAAHANM_LUKIO_VALMISTAVA_KOULUTUS = "MAAHANM_LUKIO_VALMISTAVA_KOULUTUS";
     private static final String MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS = "MAAHANMUUTTAJIEN_AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMISTAVA_KOULUTUS";
     private static final String MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS = "MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS";
+    private static final String PELASTUSALAN_KOULUTUS = "PELASTUSALAN_KOULUTUS";
     private static final String PERUSOPETUKSEN_LISAOPETUS = "PERUSOPETUKSEN_LISAOPETUS";
     private static final String TUNTEMATON = "TUNTEMATON";
     private static final String VALMENTAVA_JA_KUNTOUTTAVA_OPETUS = "VALMENTAVA_JA_KUNTOUTTAVA_OPETUS";
@@ -108,6 +109,9 @@ public class KoulutusDeserializer extends JsonDeserializer<KoulutusV1RDTO> {
             }
             if (AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.equals(toteutustyyppi)) {
                 return new KoulutusAmmatillinenPerustutkintoNayttotutkintonaV1RDTO();
+            }
+            if (PELASTUSALAN_KOULUTUS.equals(toteutustyyppi)) {
+                return new PelastusalanKoulutusV1RDTO();
             }
         }
 
