@@ -145,6 +145,7 @@ public class IncrementalLOSIndexer {
             
         case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA: // Ammatillinen
+        case PELASTUSALAN_KOULUTUS:
             LOG.debug("Ammatillinen koulutus: {}", koulutusDTO.getOid());
             koulutusIndexer.indexAmmatillinenKoulutusKomoto(koulutusDTO);
             break;
