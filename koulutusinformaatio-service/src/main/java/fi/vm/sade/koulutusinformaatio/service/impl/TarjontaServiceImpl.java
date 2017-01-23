@@ -660,7 +660,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }
             }
         case PELASTUSALAN_KOULUTUS:
-            return creator.createAmmatillinenLOS((PelastusalanKoulutusV1RDTO) koulutusDTO, checkStatus);
+            return creator.createPelastusalanKoulutusLOS((PelastusalanKoulutusV1RDTO) koulutusDTO, checkStatus);
         default:
             throw new NotImplementedException("No creator mapping for koulutustyyppi: " + koulutusDTO.getToteutustyyppi());
         }
