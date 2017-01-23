@@ -42,21 +42,21 @@ public class TarjontaConstants {
     public static final String TYPE_ADULT_UPSEC = "AIKUISLUKIO";
     public static final String TYPE_ADULT_VOCATIONAL = "AMMATILLINENAIKUISKOULUTUS";
     public static final String TYPE_ADULT_BASE = "AIKUISTENPERUSOPETUS";
-    public static final String TYPE_KOULUTUS = "KOULUTUS"; 
+    public static final String TYPE_KOULUTUS = "KOULUTUS";
 
     public static final String PREPARATORY_VOCATIONAL_EDUCATION_TYPE = "AmmOhjaavaJaValmistavaKoulutus";
     public static final String TENTH_GRADE_EDUCATION_TYPE = "PerusopetuksenLisaopetus";
     public static final String IMMIGRANT_PREPARATORY_VOCATIONAL = "MaahanmAmmValmistavaKoulutus";
     public static final String IMMIGRANT_PREPARATORY_UPSEC = "MaahanmLukioValmistavaKoulutus";
     public static final String KANSANOPISTO_TYPE = "VapaanSivistystyonKoulutus";
-    
-    
+
+
     public static final String NUORTEN_KOULUTUS = "koulutuslaji_n";
     public static final String AIKUISKOULUTUS = "koulutuslaji_a";
     public static final String AVOIN_KAIKILLE = "koulutuslaji_av";
-    
+
     public static final String KOTITALOUSKOODI = "koulutus_038411";
-    
+
     public static final String KANDI_TUNTEMATON = "699999";
 
     public static final String ED_DEGREE_URI_AMK = "koulutusasteoph2002_62";
@@ -72,7 +72,7 @@ public class TarjontaConstants {
     public static final String TUTKINTONIMIKEET_KOODISTO_URI =  "tutkintonimikkeet";
     public static final String KOULUTUSTYYPPIFASETTI_KOODISTO_URI =  "koulutustyyppifasetti";
     public static final String POHJAKOULUTUSFASETTI_KOODISTO_URI =  "pohjakoulutusfasetti";
-    
+
     public static final String HAKUTAPA_YHTEISHAKUV1 = "hakutapa_01#1";
     public static final String HAKUTAPA_YHTEISHAKU = "hakutapa_01";
     public static final String HAKUTAPA_ERILLIS = "hakutapa_02";
