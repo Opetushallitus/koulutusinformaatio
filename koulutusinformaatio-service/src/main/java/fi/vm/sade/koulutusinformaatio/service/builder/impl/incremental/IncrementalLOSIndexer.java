@@ -30,42 +30,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * 
+ *
  * @author Markus
  *
  */
 @Component
 public class IncrementalLOSIndexer {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(IncrementalLOSIndexer.class);
-    
+
     private TarjontaRawService tarjontaRawService;
     private TarjontaService tarjontaService;
     private EducationIncrementalDataUpdateService dataUpdateService;
     private EducationIncrementalDataQueryService dataQueryService;
     private IndexerService indexerService;
-    
+
     private final HttpSolrServer loHttpSolrServer;
     // solr client for learning opportunity provider index
     private final HttpSolrServer lopHttpSolrServer;
 
     private final HttpSolrServer locationHttpSolrServer;
-    
+
     private IncrementalHigherEducationLOSIndexer higherEdLOSIndexer;
     private IncrementalAdultLOSIndexer adultLosIndexer;
 
     private IncrementalKoulutusLOSIndexer koulutusIndexer;
-    
+
     @Autowired
-    public IncrementalLOSIndexer (TarjontaRawService tarjontaRawService, 
-                                    TarjontaService tarjontaService, 
+    public IncrementalLOSIndexer (TarjontaRawService tarjontaRawService,
+                                    TarjontaService tarjontaService,
                                     EducationIncrementalDataUpdateService dataUpdateService,
                                     EducationIncrementalDataQueryService dataQueryService,
                                     IndexerService indexerService,
                                     HttpSolrServer loHttpSolrServer,
                                     HttpSolrServer lopHttpSolrServer,
                                     HttpSolrServer locationHttpSolrServer) {
-        
+
         this.tarjontaRawService = tarjontaRawService;
         this.tarjontaService = tarjontaService;
         this.dataUpdateService = dataUpdateService;
@@ -75,19 +75,19 @@ public class IncrementalLOSIndexer {
         this.lopHttpSolrServer = lopHttpSolrServer;
         this.locationHttpSolrServer = locationHttpSolrServer;
         this.higherEdLOSIndexer = new IncrementalHigherEducationLOSIndexer(this.tarjontaRawService,
-                                                                            this.tarjontaService, 
-                                                                            this.dataUpdateService, 
-                                                                            this.dataQueryService, 
-                                                                            this.indexerService, 
-                                                                            this.loHttpSolrServer, 
-                                                                            this.lopHttpSolrServer, 
-                                                                            this.locationHttpSolrServer);      
+                                                                            this.tarjontaService,
+                                                                            this.dataUpdateService,
+                                                                            this.dataQueryService,
+                                                                            this.indexerService,
+                                                                            this.loHttpSolrServer,
+                                                                            this.lopHttpSolrServer,
+                                                                            this.locationHttpSolrServer);
         this.adultLosIndexer = new IncrementalAdultLOSIndexer(this.tarjontaService,
-                this.dataUpdateService, 
+                this.dataUpdateService,
                 this.indexerService,
-                this.loHttpSolrServer, 
-                this.lopHttpSolrServer, 
-                this.locationHttpSolrServer);  
+                this.loHttpSolrServer,
+                this.lopHttpSolrServer,
+                this.locationHttpSolrServer);
         this.koulutusIndexer = new IncrementalKoulutusLOSIndexer(tarjontaService, dataUpdateService, dataQueryService, indexerService,
                 loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
@@ -97,21 +97,21 @@ public class IncrementalLOSIndexer {
 
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> dto = this.tarjontaRawService.searchEducation(komotoOid);
-        if (dto == null || 
-                dto.getResult() == null || 
-                dto.getResult().getTulokset() == null || 
-                dto.getResult().getTulokset().isEmpty() || 
-                dto.getResult().getTulokset().get(0) == null || 
-                dto.getResult().getTulokset().get(0).getTulokset() == null || 
-                dto.getResult().getTulokset().get(0).getTulokset().isEmpty() || 
+        if (dto == null ||
+                dto.getResult() == null ||
+                dto.getResult().getTulokset() == null ||
+                dto.getResult().getTulokset().isEmpty() ||
+                dto.getResult().getTulokset().get(0) == null ||
+                dto.getResult().getTulokset().get(0).getTulokset() == null ||
+                dto.getResult().getTulokset().get(0).getTulokset().isEmpty() ||
                 dto.getResult().getTulokset().get(0).getTulokset().get(0) == null) {
             return;
         }
         KoulutusHakutulosV1RDTO koulutusDTO = dto.getResult().getTulokset().get(0).getTulokset().get(0);
         LOG.debug(String.format("Loi: %s, status: %s", komotoOid, koulutusDTO.getTila()));
-        
+
         switch (koulutusDTO.getToteutustyyppiEnum()) {
-        
+
         case KORKEAKOULUTUS:
             LOG.debug(String.format("It is higer education komoto: %s", komotoOid));
             ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(komotoOid);
@@ -119,7 +119,7 @@ public class IncrementalLOSIndexer {
                 this.higherEdLOSIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
             }
             break;
-        
+
         case LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA:
         case EB_RP_ISH:
             LOG.debug("Aikuislukio ja Yhteishaun ulkopuolinen lukiokoulutus: {}", koulutusDTO.getKomoOid());
@@ -138,14 +138,14 @@ public class IncrementalLOSIndexer {
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
         case VAPAAN_SIVISTYSTYON_KOULUTUS: // Kansanopistot
+        case PELASTUSALAN_KOULUTUS:
         case MAAHANMUUTTAJIEN_JA_VIERASKIELISTEN_LUKIOKOULUTUKSEEN_VALMISTAVA_KOULUTUS:
-            LOG.debug("Valma/Telma koulutus: {}", koulutusDTO.getKomoOid());
+            LOG.debug("Valma/Telma/VaSi/Pelastusalan koulutus: {}", koulutusDTO.getKomoOid());
             this.koulutusIndexer.indexSingleKoulutusWithoutRelations(koulutusDTO);
             break;
-            
+
         case AMMATILLINEN_PERUSTUTKINTO: // Ammatillinen
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA: // Ammatillinen
-        case PELASTUSALAN_KOULUTUS:
             LOG.debug("Ammatillinen koulutus: {}", koulutusDTO.getOid());
             koulutusIndexer.indexAmmatillinenKoulutusKomoto(koulutusDTO);
             break;
@@ -175,10 +175,10 @@ public class IncrementalLOSIndexer {
     public boolean isHigherEdKomo(String komoOid) {
         //this.tarjontaRawService.getHigherEducationByKomo(curKomoOid)
         //KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
-        
+
         ResultV1RDTO<KomoV1RDTO> komoRes = this.tarjontaRawService.getV1Komo(komoOid);
         return komoRes != null && komoRes.getResult() != null && komoRes.getResult().getKoulutusasteTyyppi().value().equals(KoulutusasteTyyppi.KORKEAKOULUTUS.value());
-        
+
         //return komo != null && komo.getKoulutustyyppi() != null && komo.getKoulutustyyppi().equals("KORKEAKOULUTUS");
     }
 
