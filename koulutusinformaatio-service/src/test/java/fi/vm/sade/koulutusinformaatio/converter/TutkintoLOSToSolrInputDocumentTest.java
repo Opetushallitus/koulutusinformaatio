@@ -180,11 +180,11 @@ public class TutkintoLOSToSolrInputDocumentTest {
 
         Code prerequisite1 = new Code();
         prerequisite1.setName(TestUtil.createI18nText("Ylioppilas fi", "Ylioppilas sv", "Ylioppilas en"));
-        prerequisite1.setValue("yo");
-        prerequisite1.setUri("yo_uri");
-        koulutus.setPrerequisites(Arrays.asList(prerequisite1));
-        koulutus.setTeachingLanguages(Arrays.asList(lang));
-        koulutus.setProfessionalTitles(Arrays.asList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
+        prerequisite1.setValue("YO");
+        prerequisite1.setUri("YO_uri");
+        koulutus.setPrerequisites(Collections.singletonList(prerequisite1));
+        koulutus.setTeachingLanguages(Collections.singletonList(lang));
+        koulutus.setProfessionalTitles(Collections.singletonList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
         koulutus.setContent(TestUtil.createI18nText("Content1 fi", "Content1 sv", "Content1 en"));
         koulutus.setApplicationOptions(Sets.newHashSet(ao));
         los.getChildEducations().add(koulutus);
@@ -195,20 +195,46 @@ public class TutkintoLOSToSolrInputDocumentTest {
         SolrInputDocument doc1 = docs.get(0);
         SolrInputDocument doc2 = docs.get(1);
 
-        assertTrue(doc1.get(LearningOpportunity.ID).getValue().toString() != doc2.get(LearningOpportunity.ID).getValue().toString());
-        assertTrue(validatePrerequisites(doc1, doc2, prerequisite1));
+        assertTrue(!Objects.equals(doc1.get(LearningOpportunity.ID).getValue().toString(), doc2.get(LearningOpportunity.ID).getValue().toString()));
+        validatePrerequisites(doc1, doc2, prerequisite1);
     }
 
-    private boolean validatePrerequisites(SolrInputDocument doc1, SolrInputDocument doc2, Code prerequisite1) {
+    @Test
+    public void testMultiplePrerequisitesWithER() {
+        KoulutusLOS koulutus = new KoulutusLOS();
+        koulutus.setStartDate(new Date());
+
+        Code prerequisite1 = new Code();
+        prerequisite1.setName(TestUtil.createI18nText("Erityis", "Erityis sv", "Erityis en"));
+        prerequisite1.setValue("ER");
+        prerequisite1.setUri("ER_uri");
+        koulutus.setPrerequisites(Collections.singletonList(prerequisite1));
+        koulutus.setTeachingLanguages(Collections.singletonList(lang));
+        koulutus.setProfessionalTitles(Collections.singletonList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
+        koulutus.setContent(TestUtil.createI18nText("Content1 fi", "Content1 sv", "Content1 en"));
+        koulutus.setApplicationOptions(Sets.newHashSet(ao));
+        los.getChildEducations().add(koulutus);
+        List<SolrInputDocument> docs = converter.convert(los);
+
+        assertEquals(10, docs.size());
+
+        SolrInputDocument doc1 = docs.get(0);
+        SolrInputDocument doc2 = docs.get(1);
+
+        assertTrue(!Objects.equals(doc1.get(LearningOpportunity.ID).getValue().toString(), doc2.get(LearningOpportunity.ID).getValue().toString()));
+        validatePrerequisites(doc1, doc2, prerequisite1);
+    }
+
+    private void validatePrerequisites(SolrInputDocument doc1, SolrInputDocument doc2, Code prerequisite1) {
 
         String id1 = los.getId() + "#" + prerequisite1.getValue();
         String id2 = los.getId() + "#" + prerequisite.getValue();
 
         if (id1.equals(doc1.get(LearningOpportunity.ID).getValue().toString())) {
-            return id2.equals(doc2.get(LearningOpportunity.ID).getValue().toString());
+            assertTrue(id2.equals(doc2.get(LearningOpportunity.ID).getValue().toString()));
         } else {
-            return id2.equals(doc1.get(LearningOpportunity.ID).getValue().toString())
-                    && id1.equals(doc2.get(LearningOpportunity.ID).getValue().toString());
+            assertTrue(id2.equals(doc1.get(LearningOpportunity.ID).getValue().toString())
+                    && id1.equals(doc2.get(LearningOpportunity.ID).getValue().toString()));
         }
     }
 

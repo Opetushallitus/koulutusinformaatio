@@ -88,7 +88,7 @@ public class IncrementalIndexerTest {
         provider.setId("1.2.246.562.10.10779357598");
 
         TutkintoLOSEntity tutkinto1 = new TutkintoLOSEntity();
-        tutkinto1.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy");
+        tutkinto1.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy_PKYO");
         tutkinto1.setProvider(provider);
         List<KoulutusLOSEntity> children1 = Lists.newArrayList(
                 getkoulutusLosEntity("1.2.246.562.17.61512976061", tutkinto1, "koulutus_321101", provider),
@@ -102,7 +102,7 @@ public class IncrementalIndexerTest {
         tutkinto1.setChildEducations(children1);
 
         TutkintoLOSEntity tutkinto2 = new TutkintoLOSEntity();
-        tutkinto2.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2016_Kevät");
+        tutkinto2.setId("1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2016_Kevät_PKYO");
         tutkinto2.setProvider(provider);
 
         List<KoulutusLOSEntity> children2 = Lists.newArrayList(
@@ -138,8 +138,8 @@ public class IncrementalIndexerTest {
         List<ApplicationOptionEntity> aos = applicationOptionDAO.find().asList();
 
         List<String> allowedTutkintoIDs = Lists.newArrayList(
-                "1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy",
-                "1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2016_Kevät");
+                "1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2015_Syksy_PKYO",
+                "1.2.246.562.5.2013061010184190024479_1.2.246.562.10.10779357598_2016_Kevät_PKYO");
         for (TutkintoLOSEntity tutkinto : tutkintos) {
             validateTutkinto(tutkinto, allowedTutkintoIDs);
         }
@@ -190,7 +190,7 @@ public class IncrementalIndexerTest {
         List<ApplicationOptionEntity> aos = applicationOptionDAO.find().asList();
 
         List<String> allowedTutkintoIDs = Lists.newArrayList(
-                "1.2.246.562.5.2013061010190957797211_1.2.246.562.10.23856923257_2015_Syksy");
+                "1.2.246.562.5.2013061010190957797211_1.2.246.562.10.23856923257_2015_Syksy_PKYO");
         assertEquals(allowedTutkintoIDs.size(), tutkintos.size());
 
         List<String> allowedKoulutusIDs = Lists.newArrayList(
@@ -346,9 +346,12 @@ public class IncrementalIndexerTest {
         KoulutusLOSEntity e = new KoulutusLOSEntity();
         e.setId(oid);
         e.setTutkinto(tutkinto);
-        CodeEntity koulutusPrerequisite = new CodeEntity();
-        koulutusPrerequisite.setUri(koulutuskoodi);
-        e.setEducationCode(koulutusPrerequisite);
+        CodeEntity koulutuscode = new CodeEntity();
+        koulutuscode.setUri(koulutuskoodi);
+        e.setEducationCode(koulutuscode);
+        CodeEntity prerequisiteCode = new CodeEntity();
+        prerequisiteCode.setValue("PK");
+        e.setKoulutusPrerequisite(prerequisiteCode);
         e.setToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
         e.setProvider(provider);
         return e;

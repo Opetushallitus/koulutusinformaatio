@@ -120,7 +120,7 @@ public class ConverterUtilTest {
     public void testRegex() {
         String regex = "^.*\\?_escaped_fragment_=.*$";
         Pattern pattern = Pattern.compile(regex);
-        String url = "http://localhost:8080/koulutusinformaatio-app/app/?_escaped_fragment_=/tutkinto/1.2.246.562.5.2013111213020035175870_1.2.246.562.10.77155748245#PK";
+        String url = "http://localhost:8080/koulutusinformaatio-app/app/?_escaped_fragment_=/tutkinto/1.2.246.562.5.2013111213020035175870_1.2.246.562.10.77155748245_PKYO#PK";
         assertTrue(pattern.matcher(url).matches());
     }
 
