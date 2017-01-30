@@ -80,13 +80,13 @@ public class TutkintoLOSToSolrInputDocumentTest {
         DateRange dr = new DateRange();
         dr.setStartDate(asStart);
         dr.setEndDate(asEnd);
-        as.setApplicationDates(Arrays.asList(dr));
+        as.setApplicationDates(Collections.singletonList(dr));
         ao = new ApplicationOption();
         ao.setSpecificApplicationDates(false);
         ao.setApplicationSystem(as);
         ao.setKaksoistutkinto(false);
 
-        List<Code> topics = new ArrayList<Code>();
+        List<Code> topics = new ArrayList<>();
         Code topic1 = new Code();
         topic1.setName(TestUtil.createI18nText("topiikii 1 fi", "topiikki 1 sv", "topiikki 1 en"));
         topic1.setValue("top1");
@@ -100,7 +100,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         topics.add(topic2);
         los.setTopics(topics);
 
-        List<Code> themes = new ArrayList<Code>();
+        List<Code> themes = new ArrayList<>();
         Code theme1 = new Code();
         theme1.setName(TestUtil.createI18nText("theme 1 fi", "theme 1 sv", "theme 1 en"));
         theme1.setValue("theme1");
@@ -117,7 +117,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         KoulutusLOS koulutus = new KoulutusLOS();
         koulutus.setName(TestUtil.createI18nText("child los name fi", "child los name sv", "child los name en"));
         koulutus.setShortTitle(TestUtil.createI18nText("child los short name fi", "child los short name sv", "child los short name en"));
-        koulutus.setQualifications(Arrays.asList(TestUtil.createI18nText("quali fi", "quali sv", "quali en")));
+        koulutus.setQualifications(Collections.singletonList(TestUtil.createI18nText("quali fi", "quali sv", "quali en")));
         koulutus.setGoals(TestUtil.createI18nText("Goals child fi", "Goals child sv", "Goals child en"));
 
         koulutus.setStartDate(new Date());
@@ -126,17 +126,17 @@ public class TutkintoLOSToSolrInputDocumentTest {
         prerequisite.setName(TestUtil.createI18nText("Peruskoulu", "Peruskoulu sv", "Peruskoulu en"));
         prerequisite.setValue("pk");
         prerequisite.setUri("pk_uri");
-        koulutus.setPrerequisites(Arrays.asList(prerequisite));
-        koulutus.setTeachingLanguages(Arrays.asList(lang));
-        koulutus.setProfessionalTitles(Arrays.asList(TestUtil.createI18nText("profession fi", "profession sv", "profession en")));
+        koulutus.setPrerequisites(Collections.singletonList(prerequisite));
+        koulutus.setTeachingLanguages(Collections.singletonList(lang));
+        koulutus.setProfessionalTitles(Collections.singletonList(TestUtil.createI18nText("profession fi", "profession sv", "profession en")));
         koulutus.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
         koulutus.setApplicationOptions(Sets.newHashSet(ao));
         koulutus.setDegreeTitle(TestUtil.createI18nText("tutkintonimike1"));
-        tutkintonimikkeet = new ArrayList<I18nText>();
+        tutkintonimikkeet = new ArrayList<>();
         tutkintonimikkeet.add(TestUtil.createI18nText("tutkintonimike1"));
         tutkintonimikkeet.add(TestUtil.createI18nText("tutkintonimike2"));
         koulutus.setDegreeTitles(tutkintonimikkeet);
-        ArrayList<KoulutusLOS> losses = new ArrayList<KoulutusLOS>();
+        ArrayList<KoulutusLOS> losses = new ArrayList<>();
         losses.add(koulutus);
         los.setChildEducations(losses);
 
