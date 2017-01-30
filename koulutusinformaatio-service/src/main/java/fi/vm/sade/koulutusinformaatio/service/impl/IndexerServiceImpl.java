@@ -539,8 +539,12 @@ public class IndexerServiceImpl implements IndexerService {
         try {
             loHttpSolrServer.deleteById(curLos.getId());
             if (curLos instanceof TutkintoLOS) {
-                loHttpSolrServer.deleteById(curLos.getId() + "#PK");
-                loHttpSolrServer.deleteById(curLos.getId() + "#YO");
+                if( curLos.getId().contains("_PKYO")) {
+                    loHttpSolrServer.deleteById(curLos.getId() + "#PK");
+                    loHttpSolrServer.deleteById(curLos.getId() + "#YO");
+                } else {
+                    loHttpSolrServer.deleteById(curLos.getId() + "#ER");
+                }
             }
         } catch (SolrServerException | IOException e) {
             throw new KISolrException(e);
