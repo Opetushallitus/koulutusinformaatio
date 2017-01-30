@@ -239,7 +239,7 @@ public class UpdateServiceImpl implements UpdateService {
             switchTask(stopwatch, "Pelastusalan koulutus");
             List<KoulutusLOS> PAList = this.tarjontaService.findPelastusalanEducations();
             LOG.info("Found Pelastusalan educations: {}", PAList.size());
-            for (KoulutusLOS curLOS : valmistavaList) {
+            for (KoulutusLOS curLOS : PAList) {
                 LOG.debug("Saving Pelastusalan los: {} with name: {}", curLOS.getId(), curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 saveToMongo(curLOS);
