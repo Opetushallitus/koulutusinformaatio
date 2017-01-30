@@ -432,6 +432,7 @@ public final class SolrUtil {
         public static final String ED_TYPE_AMM_ER = "et01.03.02";
         public static final String ED_TYPE_AMM_TUTK = "et01.03.03";
         public static final String ED_TYPE_AMM_TUTK_ER = "et01.03.04";
+        public static final String ED_TYPE_MUU_AMM_TUTK = "et01.03.05";
 
         public static final String ED_TYPE_AMMATILLINEN_SHORT = "et3";
 
@@ -460,7 +461,6 @@ public final class SolrUtil {
         public static final String ED_TYPE_VALMA = "et02.01.06";
         public static final String ED_TYPE_VALMA_ER = "et02.12.02";
         public static final String ED_TYPE_TELMA = "et02.12.01";
-        public static final String ED_TYPE_PELASTUSALAN_KOULUTUS = "et02.13";
 
         public static final String ED_CODE_AMM_OPETTAJA = "koulutus_000001";
         public static final String ED_CODE_AMM_ER_OPETTAJA = "koulutus_000002";

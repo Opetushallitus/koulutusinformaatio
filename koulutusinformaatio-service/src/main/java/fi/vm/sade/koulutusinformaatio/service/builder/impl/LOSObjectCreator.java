@@ -784,7 +784,7 @@ public class LOSObjectCreator extends ObjectCreator {
     public KoulutusLOS createPelastusalanKoulutusLOS(PelastusalanKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
             TarjontaParseException, NoValidApplicationOptionsException, OrganisaatioException {
 
-        String edType = SolrConstants.ED_TYPE_PELASTUSALAN_KOULUTUS;
+        String edType = SolrConstants.ED_TYPE_MUU_AMM_TUTK;
 
         KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, edType);
         addKoulutus2AsteV1Fields(koulutusDTO, los);
