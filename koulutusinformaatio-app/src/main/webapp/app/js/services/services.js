@@ -118,6 +118,14 @@ service('ParentLOService', ['GeneralLOService', 'ParentLOTransformer', function(
     
     return {
         query: function(options) {
+            // BUG-1273: If the tutkinto id has no PKYO / ER ending, append one based on prerequisite
+            if(options.id && (options.id.indexOf("_PKYO") < 0 && options.id.indexOf("_ER") < 0)){
+                if(options.prerequisite == "ER") {
+                    options.id = options.id + "_ER"
+                } else {
+                    options.id = options.id + "_PKYO"
+                }
+            }
             return GeneralLOService.query(options, "koulutusinformaatio-app.lo.tutkinto", ParentLOTransformer);
         }
     }
