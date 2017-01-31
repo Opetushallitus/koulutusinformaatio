@@ -21,6 +21,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -29,7 +30,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -56,6 +56,7 @@ import java.util.*;
 public class SearchServiceSolrImpl implements SearchService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SearchServiceSolrImpl.class);
+    private static final YosChildSorter YOS_CHILD_SORTER = new YosChildSorter();
 
     private static final String AS_START_DATE_PREFIX = "asStart_";
     private static final String AS_END_DATE_PREFIX = "asEnd_";
@@ -500,6 +501,10 @@ public class SearchServiceSolrImpl implements SearchService {
         List<String> subjects = getSubjects(doc, lang);
         String responsibleProvider = getResponsibleProvider(doc, lang);
 
+        if (doc.get(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY) != null){
+            edDegree = getAdditionlaEducationType(doc, lang);
+        }
+
         LOG.debug("gathered info now creating search result: {}", id);
 
         LOSearchResult lo = new LOSearchResult(
@@ -597,6 +602,14 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.EDUCATION_DEGREE_SV,
                 LearningOpportunity.EDUCATION_DEGREE_EN,
                 LearningOpportunity.EDUCATION_DEGREE);
+    }
+
+    private String getAdditionlaEducationType(SolrDocument doc, String lang) {
+        return getTranslatedValue(doc, lang,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_FI,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_SV,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY_EN,
+                LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY);
     }
 
     private String getName(SolrDocument doc, String lang) {
@@ -854,7 +867,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
                 String[] splits = curC.getName().split("\\.");
 
-                if ((splits.length >= 2 && !splits[0].equals("et01")) || (splits.length >= 3 && splits[0].equals("et01"))) {
+                if ((splits.length >= 2 && !splits[0].equals(SolrConstants.ED_TYPE_TUTKINTOON)) || (splits.length >= 3 && splits[0].equals(SolrConstants.ED_TYPE_TUTKINTOON))) {
                     int endIndex = curC.getName().lastIndexOf('.');
                     String parentStr = curC.getName().substring(0, endIndex);
                     if (resMap.containsKey(parentStr)) {
@@ -872,8 +885,12 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         for (FacetValue curVal : values) {
-            curVal.setChildValues(resMap.get(curVal.getValueId()));
-            if (curVal.getChildValues() != null) {
+            List<FacetValue> childValues = resMap.get(curVal.getValueId());
+            if (SolrUtil.SolrConstants.ED_TYPE_YOS.equals(curVal.getValueId())) {
+                Collections.sort(childValues, YOS_CHILD_SORTER);
+            }
+            curVal.setChildValues(childValues);
+            if (childValues != null) {
                 for (FacetValue curChild : curVal.getChildValues()) {
                     curChild.setParentId(curVal.getValueId());
                 }
@@ -1450,4 +1467,22 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
+    private static class YosChildSorter implements Comparator<FacetValue> {
+        private static List<String> YOS_CHILD_ORDER = Lists.newArrayList(
+                SolrConstants.ED_TYPE_KANDI_JA_MAISTERI,
+                SolrConstants.ED_TYPE_KANDIDAATTI,
+                SolrConstants.ED_TYPE_MAISTERI,
+                SolrConstants.ED_TYPE_JATKOKOULUTUS,
+                SolrConstants.ED_TYPE_AVOIN_YO
+        );
+
+        @Override
+        public int compare(FacetValue o1, FacetValue o2) {
+            int diff = YOS_CHILD_ORDER.indexOf(o1.getValueId()) - YOS_CHILD_ORDER.indexOf(o2.getValueId());
+            if(diff == 0) {
+                diff = o1.getValueId().compareTo(o2.getValueId());
+            }
+            return diff;
+        }
+    }
 }

@@ -300,6 +300,10 @@ public final class SolrUtil {
         public static final String PREREQUISITE_DISPLAY_FI = "prerequisite_fi_ss";
         public static final String PREREQUISITE_DISPLAY_SV = "prerequisite_sv_ss";
         public static final String PREREQUISITE_DISPLAY = "prerequisite_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY = "additionaleducationtype_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY_FI = "additionaleducationtype_fi_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY_EN= "additionaleducationtype_en_ss";
+        public static final String ADDITIONALEDUCATIONTYPE_DISPLAY_SV = "additionaleducationtype_sv_ss";
         public static final String DEGREE_TITLE_FI = "degreeTitles_fi";
         public static final String DEGREE_TITLE_SV = "degreeTitles_sv";
         public static final String DEGREE_TITLE_EN = "degreeTitles_en";
@@ -418,7 +422,7 @@ public final class SolrUtil {
 
     public static class SolrConstants {
         //value constants
-        //public static final String ED_TYPE_TUTKINTOON = "et01";
+        public static final String ED_TYPE_TUTKINTOON = "et01";
         public static final String ED_TYPE_LUKIO = "et01.01";
         public static final String ED_TYPE_AIKUISLUKIO = "et01.01.02";
         public static final String ED_TYPE_NUORTENLUKIO = "et01.01.01";
@@ -438,8 +442,10 @@ public final class SolrUtil {
         public static final String ED_TYPE_YOS = "et01.05";
         public static final String ED_TYPE_KANDIDAATTI = "et01.05.01";
         public static final String ED_TYPE_MAISTERI = "et01.05.02";
+        public static final String ED_TYPE_KANDI_JA_MAISTERI = "et01.05.05";
         public static final String ED_TYPE_AVOIN_YO = "et01.05.03";
-        
+        public static final String ED_TYPE_JATKOKOULUTUS = "et01.05.04";
+
         public static final String ED_TYPE_MUU = "et02";
         public static final String ED_TYPE_PK_JALK = "et02.01";
         public static final String ED_TYPE_TENTH_GRADE = "et02.01.01";
