@@ -28,6 +28,7 @@
             location="classpath:common.properties"
             ignore-resource-not-found="true"/>
 
+    <bean class="fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger"/>
     <bean id="incrementalUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl" />
     <bean id="tarjontaRawService" class="fi.vm.sade.koulutusinformaatio.integrationtest.TarjontaRawServiceMock"/>
     <bean id="tarjontaRawServiceImpl" class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaRawServiceImpl"/>

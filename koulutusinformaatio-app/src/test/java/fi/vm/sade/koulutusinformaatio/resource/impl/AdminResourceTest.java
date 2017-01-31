@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,7 +63,7 @@ public class AdminResourceTest {
         when(learningOpportunityService.getLastDataStatus()).thenReturn(new DataStatus(new Date(), 5l, 
                 "SUCCESS"));
         adminResource = new AdminResource(updateService, learningOpportunityService, modelMapper, 
-                seoService, incrementalUpdateService, partialUpdateService, checker, hakukohdeTester);
+                seoService, incrementalUpdateService, partialUpdateService, checker, hakukohdeTester, new RollingAverageLogger());
     }
     
     @Test

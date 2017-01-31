@@ -6,6 +6,7 @@ import fi.vm.sade.javautils.httpclient.OphHttpRequest;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
 import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
 import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
+import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +23,16 @@ import java.util.concurrent.TimeUnit;
 public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
 
     private final OphHttpClient client;
+    private final RollingAverageLogger rollingAverageLogger;
     private ObjectMapper mapper = HttpClient.createJacksonMapper();
     private static final int RETRY_DELAY_MS = 2500;
     private static final int MAX_RETRY_TIME = (int) TimeUnit.MINUTES.toMillis(10);
     private static final int MAX_RETRY_COUNT = MAX_RETRY_TIME / RETRY_DELAY_MS;
 
     @Autowired
-    public OrganisaatioRawServiceImpl(HttpClient httpClient) {
+    public OrganisaatioRawServiceImpl(HttpClient httpClient, RollingAverageLogger rollingAverageLogger) {
         this.client = httpClient.getClient();
+        this.rollingAverageLogger = rollingAverageLogger;
     }
 
     @Override
@@ -52,7 +55,8 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
 
     @Override
     public OrganisaatioHakutulos findOrganisaatio(String oid) {
-        return parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
+        rollingAverageLogger.start("findOrganisaatio");
+        OrganisaatioHakutulos result = parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
                 .param("noCache", System.currentTimeMillis())
                 .param("aktiiviset", "true")
                 .param("lakkautetut", "false")
@@ -60,11 +64,14 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
                 .param("oid", oid)
                 .param("searchstr", "")
         );
+        rollingAverageLogger.stop("findOrganisaatio");
+        return result;
     }
 
     @Override
     public OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType) {
-        return parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
+        rollingAverageLogger.start("fetchOrganisaatiosByType");
+        OrganisaatioHakutulos result = parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
                 .param("noCache", System.currentTimeMillis())
                 .param("aktiiviset", "true")
                 .param("lakkautetut", "false")
@@ -72,5 +79,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
                 .param("organisaatiotyyppi", organisaatioType)
                 .param("searchstr", "")
         );
+        rollingAverageLogger.stop("fetchOrganisaatiosByType");
+        return result;
     }
 }
