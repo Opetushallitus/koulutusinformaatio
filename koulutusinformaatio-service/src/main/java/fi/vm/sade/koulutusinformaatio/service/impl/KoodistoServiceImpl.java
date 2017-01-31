@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,11 +63,13 @@ public class KoodistoServiceImpl implements KoodistoService {
     private final Pattern pattern;
     private static final String KOODI_URI_WITH_VERSION_PATTERN = "^[^#]+#\\d+$";
     private static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
+    private final RollingAverageLogger rollingAverageLogger;
 
     @Autowired
-    public KoodistoServiceImpl(final KoodistoClient koodiService) {
+    public KoodistoServiceImpl(final KoodistoClient koodiService, RollingAverageLogger rollingAverageLogger) {
         this.koodiService = koodiService;
         this.pattern = Pattern.compile(KOODI_URI_WITH_VERSION_PATTERN);
+        this.rollingAverageLogger = rollingAverageLogger;
     }
 
     @Override
@@ -117,7 +120,9 @@ public class KoodistoServiceImpl implements KoodistoService {
             if (koodisByKoodistoMap.containsKey(key)) {
                 codes = koodisByKoodistoMap.get(key);
             } else {
+               rollingAverageLogger.start("getKoodisForKoodisto");
                codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+               rollingAverageLogger.stop("getKoodisForKoodisto");
                koodisByKoodistoMap.put(key, codes);
             }
             if (codes == null || codes.isEmpty()) {
@@ -197,7 +202,9 @@ public class KoodistoServiceImpl implements KoodistoService {
         }
         
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
+        rollingAverageLogger.start("getAlakoodis");
         List<KoodiType> alakoodis = koodiService.getAlakoodis(codeUriAndVersion.getUri());
+        rollingAverageLogger.stop("getAlakoodis");
         if (alakoodis == null || alakoodis.isEmpty()) {
             LOGGER.warn(String.format("No sub koodis found with koodi uri and version %s", koodiUriAndVersion));
         }
@@ -220,7 +227,10 @@ public class KoodistoServiceImpl implements KoodistoService {
         }
         
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
+        rollingAverageLogger.start("getYlakoodis");
         List<KoodiType> ylakoodis = koodiService.getYlakoodis(codeUriAndVersion.getUri());
+        rollingAverageLogger.stop("getYlakoodis");
+
         if (ylakoodis == null || ylakoodis.isEmpty()) {
             LOGGER.warn(String.format("No super koodis found with koodi uri and version %s", koodiUriAndVersion));
         }
@@ -266,8 +276,9 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private List<KoodiType> searchKoodis(final SearchKoodisCriteriaType criteria) throws KoodistoException {
         try {
-            
+            rollingAverageLogger.start("searchKoodis");
             List<KoodiType> codes = koodiService.searchKoodis(criteria);
+            rollingAverageLogger.stop("searchKoodis");
             if (codes == null || codes.isEmpty()) {
                 LOGGER.warn(String.format("No koodis found with search criteria: %s", searchCriteriaToString(criteria)));
             }

@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KISolrException;
 import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -55,6 +56,7 @@ public class UpdateServiceImpl implements UpdateService {
     private EducationDataUpdateService educationDataUpdateService;
     private ArticleService articleService;
     private GeneralUpdateServiceImpl generalUpdateService;
+    private RollingAverageLogger rollingAverageLogger;
 
     private TransactionManager transactionManager;
     private boolean running = false;
@@ -79,13 +81,15 @@ public class UpdateServiceImpl implements UpdateService {
                              EducationDataUpdateService educationDataUpdateService,
                              TransactionManager transactionManager,
                              ArticleService articleService,
-                             GeneralUpdateServiceImpl generalUpdateService) {
+                             GeneralUpdateServiceImpl generalUpdateService,
+                             RollingAverageLogger rollingAverageLogger) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
         this.transactionManager = transactionManager;
         this.articleService = articleService;
         this.generalUpdateService = generalUpdateService;
+        this.rollingAverageLogger = rollingAverageLogger;
     }
 
     private void switchTask(StopWatch s, String task){
@@ -104,6 +108,7 @@ public class UpdateServiceImpl implements UpdateService {
         fullIndexingStartTime = System.currentTimeMillis();
         mongoCache = Sets.newHashSet();
         solrCache = Sets.newHashSet();
+        rollingAverageLogger.reset();
 
         StopWatch stopwatch = new StopWatch("Full indexing");
         stopwatch.start("Lukio koulutukset");
@@ -258,6 +263,7 @@ public class UpdateServiceImpl implements UpdateService {
             if(stopwatch.isRunning())
                 stopwatch.stop();
             LOG.info("Koulutusindeksointi on valmis. Vaiheiden kestot: " + stopwatch.toString());
+            LOG.info("Rajapintakutsujen kestot: " + rollingAverageLogger);
         }
     }
 

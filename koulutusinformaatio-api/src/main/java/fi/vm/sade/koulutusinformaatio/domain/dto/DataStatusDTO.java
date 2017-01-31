@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -41,6 +42,7 @@ public class DataStatusDTO {
     private String lastSuccessfulFinishedStr;
     private String lastSuccessfulDurationStr;
     private String fullUpdateProgressStr;
+    private List<String> rollingAverages;
 
     public Date getLastUpdateFinished() {
         return lastUpdateFinished;
@@ -160,5 +162,13 @@ public class DataStatusDTO {
 
     public void setFullUpdateProgressStr(String fullUpdateProgressStr) {
         this.fullUpdateProgressStr = fullUpdateProgressStr;
+    }
+
+    public List<String> getRollingAverages() {
+        return rollingAverages;
+    }
+
+    public void setRollingAverages(List<String> rollingAverages) {
+        this.rollingAverages = rollingAverages;
     }
 }

@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,11 +51,10 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 public class KoodistoServiceImplTest {
 
     private KoodistoService koodistoService;
-    private KoodistoClient koodiService;
 
     @Before
     public void setUp() {
-        koodiService = mock(KoodistoClient.class);
+        KoodistoClient koodiService = mock(KoodistoClient.class);
         KoodiType koodi = new KoodiType();
         koodi.setKoodiArvo("1234");
         koodi.setKoodiUri("test_1234");
@@ -76,7 +76,7 @@ public class KoodistoServiceImplTest {
         when(koodiService.searchKoodis(any(SearchKoodisCriteriaType.class))).thenReturn(koodit);
         KoodiTypeToI18nText converter = new KoodiTypeToI18nText();
         KoodiTypeToCode koodiTypeToCode = new KoodiTypeToCode();
-        koodistoService = new KoodistoServiceImpl(koodiService);
+        koodistoService = new KoodistoServiceImpl(koodiService, new RollingAverageLogger());
     }
 
     @Test

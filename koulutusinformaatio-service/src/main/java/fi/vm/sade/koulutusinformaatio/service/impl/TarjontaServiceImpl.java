@@ -791,9 +791,9 @@ public class TarjontaServiceImpl implements TarjontaService {
                 return losses;
             }
             TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(Joiner.on("_").join(parentoid, providerOid, koulutus.getStartYear(),
-                    koulutus.getStartSeason().get("fi")));
+                    koulutus.getStartSeason().get("fi"), koulutus.getKoulutusPrerequisite().getValue()));
             if (tutkinto == null) {
-                tutkinto = creator.createTutkintoLOS(parentoid, providerOid, "" + koulutus.getStartYear(), koulutus.getStartSeason().get("fi"));
+                tutkinto = creator.createTutkintoLOS(parentoid, providerOid, "" + koulutus.getStartYear(), koulutus.getStartSeason().get("fi"), koulutus.getKoulutusPrerequisite());
             }
             if (koulutus.isOsaamisalaton()) {
                 koulutus.setSiblings(new ArrayList<KoulutusLOS>());

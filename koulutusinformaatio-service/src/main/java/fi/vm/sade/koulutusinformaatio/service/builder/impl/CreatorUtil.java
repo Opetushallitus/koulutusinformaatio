@@ -26,8 +26,8 @@ public final class CreatorUtil {
     private CreatorUtil() {
     }
 
-    protected static String resolveLOSId(String komoId, String providerId, String year, String season) {
-        return Joiner.on("_").join(komoId, providerId, year, season);
+    protected static String resolveLOSId(String komoId, String providerId, String year, String season, String prerequisite) {
+        return Joiner.on("_").join(komoId, providerId, year, season, prerequisite);
 
     }
 }

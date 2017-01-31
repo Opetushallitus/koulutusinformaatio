@@ -21,6 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
+import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -45,11 +46,11 @@ import java.util.Date;
 @Component
 @Path("/admin")
 public class AdminResource {
+    private final RollingAverageLogger rollingAverageLogger;
     private UpdateService updateService;
     private IncrementalUpdateService incrementalUpdateService;
     private LearningOpportunityService learningOpportunityService;
     private PartialUpdateService partialUpdateService;
-    private ModelMapper modelMapper;
     private SEOService seoService;
     private RunningServiceChecker runningServiceChecker;
     private HakukohdeTester hakukohdeTester;
@@ -61,16 +62,17 @@ public class AdminResource {
                          IncrementalUpdateService incrementalUpdateService,
                          PartialUpdateService partialUpdateService,
                          RunningServiceChecker runningServiceChecker,
-                         HakukohdeTester hakukohdeTester) {
+                         HakukohdeTester hakukohdeTester,
+                         RollingAverageLogger rollingAverageLogger) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
-        this.modelMapper = modelMapper;
         this.seoService = seoService;
         this.incrementalUpdateService = incrementalUpdateService;
         this.partialUpdateService = partialUpdateService;
-        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         this.runningServiceChecker = runningServiceChecker;
         this.hakukohdeTester = hakukohdeTester;
+        this.rollingAverageLogger = rollingAverageLogger;
     }
 
     @GET
@@ -187,6 +189,7 @@ public class AdminResource {
         dto.setRunningSince(runningSince);
         dto.setRunningSinceStr(runningSince != null ? runningSince.toString() : null);
         dto.setSnapshotRenderingRunning(seoService.isRunning());
+        dto.setRollingAverages(rollingAverageLogger.entries());
         DataStatus succStatus = learningOpportunityService.getLastSuccesfulDataStatus();
         if (succStatus != null) {
             dto.setLastSuccessfulFinished(succStatus.getLastUpdateFinished());
