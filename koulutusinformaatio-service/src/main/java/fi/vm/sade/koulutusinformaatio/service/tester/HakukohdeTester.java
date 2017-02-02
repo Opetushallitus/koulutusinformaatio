@@ -6,7 +6,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.domain.AoSolrSearchResult;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.impl.SearchServiceSolrImpl;
+import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import org.apache.commons.lang3.StringUtils;
 import org.mongodb.morphia.query.Query;
@@ -28,6 +31,9 @@ public class HakukohdeTester {
 
     @Autowired
     private ApplicationOptionDAO applicationOptionDAO;
+
+    @Autowired
+    private SearchServiceSolrImpl searchServiceSolr;
 
     private boolean running = false;
 
@@ -52,8 +58,8 @@ public class HakukohdeTester {
 
             Set<String> hakukohdeOiditKannasta = Sets.newHashSet();
             Query<ApplicationOptionEntity> q = applicationOptionDAO.createQuery().retrievedFields(true, "_id");
-            List<ApplicationOptionEntity> indexedAos = applicationOptionDAO.find(q).asList();
-            for (ApplicationOptionEntity ao : indexedAos) {
+            List<AoSolrSearchResult> indexedAos = searchServiceSolr.searchOngoingApplicationOptions(null, null, null);
+            for (AoSolrSearchResult ao : indexedAos) {
                 hakukohdeOiditKannasta.add(ao.getId());
             }
 
@@ -63,7 +69,7 @@ public class HakukohdeTester {
             Set<String> hakukohdeOiditTarjonnasta = Sets.newHashSet();
             for (String oid : hakukohdehakutuloksetToOidSet(rawRes)) {
                 HakukohdeV1RDTO hakukohde = tarjontaRawService.getV1Hakukohde(oid).getResult();
-                if (isAoOngoing(hakukohde)) {
+                if (isAoOngoing(hakukohde) && atLastOneKoulutusIsJulkaistuForHakukohde(hakukohde.getOid())) {
                     hakukohdeOiditTarjonnasta.add(oid);
                     if (!hakukohdeOiditKannasta.contains(oid)) {
                         LOG.debug("HakukohdeOid {} puuttuu KIsta!", oid);
@@ -79,6 +85,22 @@ public class HakukohdeTester {
             LOG.error("Hakukohteiden testaaminen epäonnistui.", e);
         } finally {
             running = false;
+        }
+    }
+
+    private boolean atLastOneKoulutusIsJulkaistuForHakukohde(String oid) {
+        try {
+            List<NimiJaOidRDTO> koulutusByAoId = tarjontaRawService.getV1KoulutusByAoId(oid).getResult();
+            for (NimiJaOidRDTO nimiJaOidRDTO : koulutusByAoId) {
+                List<KoulutusHakutulosV1RDTO> koulutusList = tarjontaRawService.searchEducation(nimiJaOidRDTO.getOid()).getResult().getTulokset().get(0).getTulokset();
+                for (KoulutusHakutulosV1RDTO koulutus : koulutusList) {
+                    if ("JULKAISTU".equals(koulutus.getTila().toString()))
+                        return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            return false; // ignore for test, propably NPE from searchEducation...
         }
     }
 
