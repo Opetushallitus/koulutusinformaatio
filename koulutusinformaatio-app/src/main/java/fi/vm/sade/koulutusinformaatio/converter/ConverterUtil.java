@@ -16,28 +16,24 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
-
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
 public final class ConverterUtil {
-
-    private ConverterUtil() {
-    }
 
     public static String FALLBACK_LANG = "fi";
 
@@ -64,7 +60,7 @@ public final class ConverterUtil {
 
     public static List<String> getTextsByLanguage(final List<I18nText> list, String lang) {
         lang = lang.toLowerCase();
-        List<String> texts = new ArrayList<String>();
+        List<String> texts = new ArrayList<>();
         if (list != null) {
             for (I18nText text : list) {
                 String value = getTextByLanguage(text, lang);
@@ -75,10 +71,10 @@ public final class ConverterUtil {
         }
         return texts;
     }
-    
+
     public static List<String> getTextsByLanguageUseFallbackLang(final List<I18nText> list, String lang) {
         lang = lang.toLowerCase();
-        List<String> texts = new ArrayList<String>();
+        List<String> texts = new ArrayList<>();
         if (list != null) {
             for (I18nText text : list) {
                 String value = getTextByLanguageUseFallbackLang(text, lang);
@@ -98,7 +94,7 @@ public final class ConverterUtil {
         }
         return false;
     }
-    
+
     public static boolean isCalendarApplicationsystemOngoing(List<ApplicationPeriod> applicationPeriods) {
         for (ApplicationPeriod ap : applicationPeriods) {
             if (isOngoing(ap.getDateRange())) {
@@ -119,8 +115,8 @@ public final class ConverterUtil {
 
     public static boolean isOngoing(DateRange dateRange) {
         Date now = new Date();
-        if (dateRange != null ) {
-            if (dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+        if (dateRange != null) {
+            if (dateRange.getStartDate() != null && dateRange.getEndDate() != null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
                 return true;
             } else if (dateRange.getStartDate() != null && dateRange.getEndDate() == null && dateRange.getStartDate().before(now)) {
                 return true;
@@ -133,10 +129,10 @@ public final class ConverterUtil {
 
     private static boolean isOngoingDTO(DateRangeDTO dateRange) {
         Date now = new Date();
-        if (dateRange != null ) {
-            if (dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+        if (dateRange != null) {
+            if (dateRange.getStartDate() != null && dateRange.getEndDate() != null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
                 return true;
-            } else if (dateRange.getStartDate() != null && dateRange.getEndDate() ==null && dateRange.getStartDate().before(now)) {
+            } else if (dateRange.getStartDate() != null && dateRange.getEndDate() == null && dateRange.getStartDate().before(now)) {
                 return true;
             }
             return false;
@@ -150,7 +146,7 @@ public final class ConverterUtil {
         Date now = new Date();
         for (DateRange dateRange : dateRanges) {
             if ((nextStarts == null && dateRange.getStartDate().after(now)) ||
-                    (dateRange.getStartDate().after(now) && dateRange.getStartDate().before(nextStarts))) {
+                    (nextStarts != null && dateRange.getStartDate().after(now) && dateRange.getStartDate().before(nextStarts))) {
                 nextStarts = dateRange.getStartDate();
             }
         }
@@ -173,7 +169,7 @@ public final class ConverterUtil {
                 .onResultOf(new Function<ApplicationSystemDTO, Boolean>() {
                     @Override
                     public Boolean apply(ApplicationSystemDTO input) {
-                        return (input != null) ? isOngoingDTO(input.getApplicationDates()) : false;
+                        return (input != null) && isOngoingDTO(input.getApplicationDates());
                     }
                 }).compound(
                         Ordering.natural().reverse()

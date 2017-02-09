@@ -16,12 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.Date;
-
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+
+import java.util.Date;
 
 /**
  * @author Mikko Majapuro
@@ -44,8 +44,8 @@ public final class ApplicationOptionToDTO {
             dto.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
             dto.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
             dto.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
-            if (applicationOption.getStartingQuotaDescription() != null 
-                    && applicationOption.getStartingQuotaDescription().getTranslations() != null 
+            if (applicationOption.getStartingQuotaDescription() != null
+                    && applicationOption.getStartingQuotaDescription().getTranslations() != null
                     && !applicationOption.getStartingQuotaDescription().getTranslations().isEmpty()) {
                 dto.setStartingQuotaDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getStartingQuotaDescription(), uiLang));
             }
@@ -71,11 +71,11 @@ public final class ApplicationOptionToDTO {
 
             if (applicationOption.getApplicationStartDate() != null && applicationOption.getApplicationEndDate() != null) {
                 dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
-                    applicationOption.getApplicationEndDate())));
+                        applicationOption.getApplicationEndDate())));
             } else {
                 dto.setCanBeApplied(ConverterUtil.isOngoing(applicationOption.getApplicationSystem().getApplicationDates()));
             }
-            if (applicationOption.getApplicationStartDate() != null 
+            if (applicationOption.getApplicationStartDate() != null
                     && applicationOption.getApplicationStartDate().after(new Date())) {
                 dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
             }
@@ -112,10 +112,10 @@ public final class ApplicationOptionToDTO {
         return null;
     }
 
-    public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption, 
-            final String lang, 
-            final String uiLang, 
-            String defaultLang) {
+    public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption,
+                                                              final String lang,
+                                                              final String uiLang,
+                                                              String defaultLang) {
         if (applicationOption == null) {
             return null;
         }
@@ -124,12 +124,11 @@ public final class ApplicationOptionToDTO {
             return null;
         }
         if (applicationOption.getEligibilityDescription() != null) {
-            dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), lang));            
+            dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), lang));
         }
         dto.setSelectionCriteria(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSelectionCriteria(), lang));
         dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));
         dto.setAdditionalInfo(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getAdditionalInfo(), lang));
-        dto.setExams(ExamToDTO.convertAllHigherEducation(applicationOption.getExams(), lang));
         return dto;
     }
 
