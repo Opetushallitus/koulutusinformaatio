@@ -763,7 +763,6 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         return null;
     }
-
     public KoulutusLOS createAmmatillinenLOS(KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
             TarjontaParseException, NoValidApplicationOptionsException, OrganisaatioException {
 
@@ -779,6 +778,18 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setAccessToFurtherStudies(null); // Ammatillisilla koulutuksilla jatko-opinnot näytetään tutkinnon sivulla
         }
         los.setStructure(null); // Ammatillisilla perustutkinnoilla ei haluta näyttää opintojen rakennetta
+        return los;
+    }
+
+    public KoulutusLOS createPelastusalanKoulutusLOS(PelastusalanKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
+            TarjontaParseException, NoValidApplicationOptionsException, OrganisaatioException {
+
+        String edType = SolrConstants.ED_TYPE_MUU_AMM_TUTK;
+
+        KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, edType);
+        addKoulutus2AsteV1Fields(koulutusDTO, los);
+        addKoulutusAmmatillinenPerustutkintoV1Fields(koulutusDTO, los);
+        los.setStructure(null); // Ammatillisilla perustutkinnoilla ei haluta näyttää opintojen rakennetta (?)
         return los;
     }
 

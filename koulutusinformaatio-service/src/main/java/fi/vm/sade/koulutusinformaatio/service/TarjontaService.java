@@ -39,8 +39,8 @@ public interface TarjontaService {
     /**
      * Retrieves (from tarjonta) and returns one higher level learning opportunity. This
      * method is intended to be used in preview.
-     * 
-     * @param oid the oid of the learning opportunity to retrieve. 
+     *
+     * @param oid the oid of the learning opportunity to retrieve.
      * @return the retrieved higher education learning opportunity
      * @throws TarjontaParseException
      * @throws KoodistoException
@@ -56,7 +56,7 @@ public interface TarjontaService {
             throws TarjontaParseException, KoodistoException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException;
 
     public List<KoulutusLOS> findAdultUpperSecondariesAndBaseEducation() throws KoodistoException, TarjontaParseException, OrganisaatioException;
-    
+
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 
     List<KoulutusLOS> findValmistavaKoulutusEducations() throws KoodistoException;
@@ -66,16 +66,16 @@ public interface TarjontaService {
     public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo);
 
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException;
-    
+
     public CalendarApplicationSystem createCalendarApplicationSystem(String hakuOid) throws KoodistoException;
-    
+
     List<Code> getEdBaseEducationCodes() throws KoodistoException;
 
     List<KoulutusHakutulosV1RDTO> findAmmatillinenKoulutusDTOs() throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
     /**
      * Creates a KoulutusLOS from given DTO. Additionally creates all siblingLOSes.
-     * 
+     *
      * @param curDTO
      * @return List of created LOSes
      * @throws TarjontaParseException
@@ -103,13 +103,16 @@ public interface TarjontaService {
 
     public Set<String> findKoulutusOidsByAo(String aoOid);
 
+    List<KoulutusLOS> findPelastusalanEducations();
+
     /**
      * Luo korkeakouluopinnon annetusta DTOsta. Jos dto on opintojakso, luo opintokokonaisuuden ja kaikki sen opintojaksot.
      * @param dto
      * @return
-     * @throws KIException 
+     * @throws KIException
      */
     List<KoulutusLOS> createKorkeakouluopinto(KoulutusHakutulosV1RDTO dto) throws TarjontaParseException, OrganisaatioException, KoodistoException, NoValidApplicationOptionsException;
 
     KoulutusLOS createKoulutusLOS(String oid, boolean checkStatus) throws KoodistoException, TarjontaParseException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException;
+
 }

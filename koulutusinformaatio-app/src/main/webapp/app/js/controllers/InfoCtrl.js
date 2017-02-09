@@ -138,7 +138,16 @@
         // use hash if present
         return $location.hash() ? $location.hash() : $location.search().prerequisite
     }
-    
+
+    var objPropNotIn = function (prop, excluded) {
+      return function (obj) {
+        return obj && obj[prop] ? !_.contains(excluded, obj[prop]) : false;
+      }
+    };
+
+    $scope.shouldShowEducationDomain = objPropNotIn('toteutustyyppi', ['PELASTUSALAN_KOULUTUS']);
+    $scope.shouldShowQualifications = objPropNotIn('toteutustyyppi', ['PELASTUSALAN_KOULUTUS']);
+
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
         setMetaDescription($scope.parent, $scope.lo);

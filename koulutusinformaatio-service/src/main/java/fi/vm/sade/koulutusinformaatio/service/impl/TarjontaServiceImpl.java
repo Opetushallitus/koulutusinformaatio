@@ -558,6 +558,51 @@ public class TarjontaServiceImpl implements TarjontaService {
         return losList;
     }
 
+    public List<KoulutusLOS> findPelastusalanEducations() {
+
+        List<KoulutusLOS> losList = new ArrayList<>();
+
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
+                ToteutustyyppiEnum.PELASTUSALAN_KOULUTUS.name());
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+
+        Map<String, Set<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<>();
+
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+            LOG.debug("Cur Pelastusalan tarjoaja result: {}", curRes.getOid());
+
+            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                LOG.debug("cur Pelastusalan koulutus result: {}", curKoulutus.getOid());
+                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    LOG.debug("koulutus not published, discarding");
+                    continue;
+                }
+
+                ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(curKoulutus.getOid());
+                PelastusalanKoulutusV1RDTO koulutusDTO = (PelastusalanKoulutusV1RDTO) koulutusRes.getResult();
+                if (koulutusDTO == null) {
+                    continue;
+                }
+                try {
+                    LOG.debug("Indexing Pelastusalan education: {}", koulutusDTO.getOid());
+                    KoulutusLOS los;
+                    los = createKoulutusLOS(koulutusDTO, true);
+                    if (los != null) {
+                        losList.add(los);
+                        updateAOLosReferences(los, aoToEducationsMap);
+                    }
+
+                } catch (TarjontaParseException | KoodistoException | ResourceNotFoundException | OrganisaatioException ex) {
+                    LOG.warn("Problem with Pelastusalan education: " + koulutusDTO.getOid(), ex);
+                } catch (NoValidApplicationOptionsException e) {
+                    LOG.debug("No valid applications for Pelastusalan koulutus: {}, reason: {}", koulutusDTO.getOid(), e.getMessage());
+                }
+            }
+        }
+
+        return losList;
+    }
+
     @Override
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException {
 
@@ -659,6 +704,8 @@ public class TarjontaServiceImpl implements TarjontaService {
                     return temp;
                 }
             }
+        case PELASTUSALAN_KOULUTUS:
+            return creator.createPelastusalanKoulutusLOS((PelastusalanKoulutusV1RDTO) koulutusDTO, checkStatus);
         default:
             throw new NotImplementedException("No creator mapping for koulutustyyppi: " + koulutusDTO.getToteutustyyppi());
         }
