@@ -16,26 +16,24 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.Exam;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ExamDTO;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
 public final class ExamToDTO {
 
-    private ExamToDTO() {
-    }
-
-    public static ExamDTO convert(Exam exam, String lang) {
-        if (exam != null && I18nText.hasTranslationForLanguage(exam.getDescription(), lang))  {
+    private static ExamDTO convert(final Exam exam, final String lang) {
+        if (exam != null && I18nText.hasTranslationForLanguage(exam.getDescription(), lang)) {
             ExamDTO dto = new ExamDTO();
             dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getType(), lang));
             dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getDescription(), lang));
@@ -46,54 +44,33 @@ public final class ExamToDTO {
             return null;
         }
     }
-    
 
-    public static List<ExamDTO> convertAll(final List<Exam> exams, final String lang) {
-        if (exams == null) {
-            return null;
-        }
-        else {
-            return Lists.transform(exams, new Function<Exam, ExamDTO>() {
+    private static List<ExamDTO> convertAllForLang(final List<Exam> exams, final String lang) {
+        List<ExamDTO> converted = new ArrayList<>(Lists.transform(exams, new Function<Exam, ExamDTO>() {
             @Override
             public ExamDTO apply(Exam input) {
                 return convert(input, lang);
             }
-        });
-        }
+        }));
+        converted.removeAll(Collections.singleton((ExamDTO) null));
+        return CollectionUtils.isEmpty(converted) ? null : converted;
     }
-    
-    public static List<ExamDTO> convertAllHigherEducation(final List<Exam> exams, final String lang) {
-        if (exams == null || exams.isEmpty()) {
-            return null;
-        }
-        else {
-            
-            List<ExamDTO> convertedExams = convertHigherEdExamsByLang(lang, exams);
-            
-            if (convertedExams == null || convertedExams.isEmpty()) {
-                convertedExams = convertHigherEdExamsByLang(ConverterUtil.FALLBACK_LANG, exams);
-            }
-            if (convertedExams == null || convertedExams.isEmpty()) {
-                convertedExams = convertHigherEdExamsByLang(lang, exams);
-            }
-            
-            return convertedExams != null && !convertedExams.isEmpty() ? convertedExams : null;
 
-        }
-    }
-    
-    private static List<ExamDTO> convertHigherEdExamsByLang(String lang, final List<Exam> exams) {
-        List<ExamDTO> convertedExams = new ArrayList<ExamDTO>();
-        for (Exam curExam : exams) {
-            ExamDTO exam = null;
-            if (curExam != null) {
-                exam = convert(curExam, lang);
+    // Jos koe on vain suomeksi tai ruotsiksi, näytetään koe kummankin kielisessä kälissä.
+    // Jos koe on englanniksi, sitä ei näytetä suomen- tai ruotsinkielilissä käleissä.
+    public static List<ExamDTO> convertAll(final List<Exam> exams, final String lang) {
+        if (CollectionUtils.isEmpty(exams)) {
+            return null;
+        } else {
+            List<ExamDTO> convertedExams = convertAllForLang(exams, lang);
+
+            if (CollectionUtils.isEmpty(convertedExams) && "sv".equals(lang)) {
+                convertedExams = convertAllForLang(exams, "fi");
+            } else if(CollectionUtils.isEmpty(convertedExams) && "fi".equals(lang)){
+                convertedExams = convertAllForLang(exams, "sv");
             }
-            if (exam != null) {
-                convertedExams.add(exam);
-            }
+
+            return convertedExams;
         }
-        
-        return !convertedExams.isEmpty() ? convertedExams : null;
     }
 }

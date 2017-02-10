@@ -16,23 +16,19 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.Exam;
 import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.ScoreLimit;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ExamDTO;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -56,14 +52,16 @@ public class ExamToDTOTest {
 
     @Test
     public void testConvert() {
-        ExamDTO dto = ExamToDTO.convert(exam, "fi");
-        verifyDTO(dto);
+        List<ExamDTO> dto = ExamToDTO.convertAll(Lists.newArrayList(exam), "fi");
+        assertNotNull(dto);
+        assertEquals(1, dto.size());
+        verifyDTO(dto.get(0));
     }
 
     @Test
     public void testConvertNull() {
-        exam = null;
-        assertNull(ExamToDTO.convert(exam, "fi"));
+        assertNull(ExamToDTO.convertAll(new ArrayList<Exam>(), "fi"));
+        assertNull(ExamToDTO.convertAll(Lists.newArrayList((Exam) null), "fi"));
     }
 
     @Test
@@ -76,8 +74,8 @@ public class ExamToDTOTest {
 
     @Test
     public void testConvertAllNull() {
-        List<Exam> exams = null;
-        assertNull(ExamToDTO.convertAll(exams, "fi"));
+        assertNull(ExamToDTO.convertAll(null, "fi"));
+        assertNull(ExamToDTO.convertAll(new ArrayList<Exam>(), "fi"));
     }
 
     private void verifyDTO(ExamDTO dto) {

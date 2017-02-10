@@ -16,25 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.*;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -60,7 +52,7 @@ public class ApplicationOptionToDTOTest {
         ao.setApplicationSystem(new ApplicationSystem());
         ao.setAthleteEducation(false);
         ao.setAttachmentDeliveryAddress(new Address());
-        Map<String, String> translation = new HashMap<String, String>();
+        Map<String, String> translation = new HashMap<>();
         translation.put("fi", "addrss");
         ao.getAttachmentDeliveryAddress().setStreetAddress(new I18nText(translation));
         attachmentsDue = new Date();
@@ -93,6 +85,11 @@ public class ApplicationOptionToDTOTest {
         ao.setVocational(true);
         ao.setKaksoistutkinto(false);
         ao.setStatus("status");
+        Exam exam = new Exam();
+        Map<String, String> descriptionTranslations = ImmutableMap.of("sv", "kuvaussv");
+        I18nText description = new I18nText(descriptionTranslations);
+        exam.setDescription(description);
+        ao.setExams(Lists.newArrayList(exam));
     }
 
     @Test
@@ -122,6 +119,8 @@ public class ApplicationOptionToDTOTest {
         assertEquals("PK", dto.getPrerequisite().getValue());
         assertEquals("peruskoulu", dto.getPrerequisite().getDescription());
         assertNotNull(dto.getExams());
+        assertEquals(1, dto.getExams().size());
+        assertEquals("kuvaussv", dto.getExams().get(0).getDescription());
         assertNotNull(dto.getProvider());
         assertNotNull(dto.getChildRefs());
         assertFalse(dto.isSpecificApplicationDates());
@@ -165,9 +164,9 @@ public class ApplicationOptionToDTOTest {
     public void testSpecificDatesPast() {
         ao.setSpecificApplicationDates(true);
         Calendar startCal = Calendar.getInstance();
-        startCal.add(Calendar.MONTH,  -2);
+        startCal.add(Calendar.MONTH, -2);
         Calendar endCal = Calendar.getInstance();
-        endCal.add(Calendar.MONTH,  -1);
+        endCal.add(Calendar.MONTH, -1);
         ao.setApplicationStartDate(startCal.getTime());
         ao.setApplicationEndDate(endCal.getTime());
         ApplicationOptionDTO dto = ApplicationOptionToDTO.convert(ao, "fi", "fi", "fi");

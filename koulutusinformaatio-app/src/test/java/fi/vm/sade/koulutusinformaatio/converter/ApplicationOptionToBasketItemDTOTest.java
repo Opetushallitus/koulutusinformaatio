@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -57,7 +58,10 @@ public class ApplicationOptionToBasketItemDTOTest {
         ao.setChildLOIRefs(new ArrayList<ChildLOIRef>());
         ao.setAttachmentDeliveryDeadline(attachmentDeadline);
         ao.setAttachments(new ArrayList<ApplicationOptionAttachment>());
-        ao.setExams(new ArrayList<Exam>());
+        Exam exam = new Exam();
+        I18nText description = new I18nText(ImmutableMap.of("sv", "kuvaussv"));
+        exam.setDescription(description);
+        ao.setExams(Lists.newArrayList(exam));
         ao.setAoIdentifier("123");
         ao.setKaksoistutkinto(false);
         ao.setVocational(true);
@@ -110,8 +114,8 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertNotNull(baoDTO.getParent());
         assertNotNull(baoDTO.getChildren());
         assertEquals(attachmentDeadline, baoDTO.getAttachmentDeliveryDeadline());
-        //assertNotNull(baoDTO.getAttachments());
         assertNotNull(baoDTO.getExams());
+        assertEquals("kuvaussv", baoDTO.getExams().get(0).getDescription());
         assertEquals("123", baoDTO.getAoIdentifier());
         assertFalse(baoDTO.isKaksoistutkinto());
         assertTrue(baoDTO.isVocational());
@@ -123,7 +127,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertTrue(baoDTO.isAthleteEducation());
         assertEquals("providerName", baoDTO.getProviderName());
     }
-    
+
     @Test
     public void testMaxAoCount() {
         as.setMaxApplications(1);
@@ -131,10 +135,10 @@ public class ApplicationOptionToBasketItemDTOTest {
         List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "fi");
         assertEquals("erikseenHaettavatHakukohteet", basketItems.get(0).getApplicationSystemId());
     }
-    
+
     @Test
     public void testHakutapaJatkuva() {
-        
+
         as.setHakutapaUri("03");
         List<ApplicationOption> aos = Lists.newArrayList(ao);
         List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "fi");
@@ -143,7 +147,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
         assertEquals("03", baoDTO.getHakutapaUri());
     }
-    
+
     @Test
     public void testUlkoinenHakulomake() {
         as.setApplicationFormLink("formLink");
@@ -154,7 +158,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
         assertEquals("formLink", baoDTO.getApplicationFormLink());
     }
-    
+
     @Test
     public void testAoSpecificDates() {
         ao.setSpecificApplicationDates(true);
@@ -165,7 +169,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
         assertEquals(baoDTO.getAsId(), as.getId());
     }
-    
+
     @Test
     public void testAsSpecificDates() {
         ao.setSpecificApplicationDates(false);
