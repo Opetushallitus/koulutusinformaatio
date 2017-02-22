@@ -35,13 +35,20 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.*;
 
 /**
@@ -52,6 +59,7 @@ import java.util.*;
 public class TarjontaServiceImpl implements TarjontaService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
+    private static final int MAX_IMAGE_WIDTH = 800;
 
     private KoodistoService koodistoService;
     private ProviderService providerService;
@@ -163,11 +171,45 @@ public class TarjontaServiceImpl implements TarjontaService {
                 String kielikoodi = this.koodistoService.searchFirstCodeValue(curDto.getKieliUri());
                 Picture pict = new Picture();
                 pict.setId(String.format("%s_%s", oid, kielikoodi.toLowerCase()));
-                pict.setPictureEncoded(curDto.getBase64data());
+                pict.setPictureEncoded(resizePicture(curDto.getBase64data(), oid));
                 structureImage.getPictureTranslations().put(kielikoodi.toLowerCase(), pict);
             }
         }
         return structureImage;
+    }
+
+    private BASE64Decoder decoder = new BASE64Decoder();
+    private BASE64Encoder encoder = new BASE64Encoder();
+
+    private String resizePicture(String kuvaEncoded, String koulutusOid) {
+        LOG.debug("Resizing picture");
+        if (kuvaEncoded == null) {
+            return null;
+        }
+        try {
+            byte[] imageByte = decoder.decodeBuffer(kuvaEncoded);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            BufferedImage image = ImageIO.read(bis);
+            bis.close();
+
+            if(image.getWidth() < MAX_IMAGE_WIDTH)
+                return kuvaEncoded;
+
+            double ratio = MAX_IMAGE_WIDTH / image.getWidth();
+            int height = (int) (ratio * image.getHeight());
+            BufferedImage scaledImage = Scalr.resize(image, MAX_IMAGE_WIDTH, height);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(scaledImage, "jpeg", bos);
+            imageByte = bos.toByteArray();
+
+            String resizedString = encoder.encode(imageByte);
+            bos.close();
+            return resizedString;
+        } catch (Exception ex) {
+            LOG.warn("problem resizing picture for koulutus " + koulutusOid, ex);
+            return null;
+        }
     }
 
     private void updateAOLosReferences(KoulutusLOS los,
