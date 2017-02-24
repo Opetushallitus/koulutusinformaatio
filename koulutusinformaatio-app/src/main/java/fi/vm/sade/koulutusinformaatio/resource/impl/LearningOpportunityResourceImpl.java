@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import org.modelmapper.ModelMapper;
@@ -196,6 +197,10 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             }
 
             setArticles(uiLang, dto, dto.getKoulutuskoodi(), dto.getEducationType());
+
+            if (dto.getQualifications() != null) {
+                dto.setQualifications(dto.getQualifications().stream().distinct().collect(Collectors.<String>toList()));
+            }
 
             return dto;
         } catch (ResourceNotFoundException e) {
