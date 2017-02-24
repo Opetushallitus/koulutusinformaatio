@@ -364,39 +364,43 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         if (metadata != null && !Strings.isNullOrEmpty(metadata.getKuvaEncoded())) {
             Picture pic = new Picture();
             pic.setId(o.getOid());
-            pic.setPictureEncoded(metadata.getKuvaEncoded());
-            pic.setThumbnailEncoded(createThumbnail(metadata.getKuvaEncoded(), o.getOid()));
+            pic.setPictureEncoded(resizePicture(800, metadata.getKuvaEncoded(), o.getOid()));
+            pic.setThumbnailEncoded(resizePicture(104, metadata.getKuvaEncoded(), o.getOid()));
             return pic;
         }
         return null;
     }
 
-    private String createThumbnail(String kuvaEncoded, String orgOid) {
-        LOG.debug("Creating thumbnail");
+    private BASE64Decoder decoder = new BASE64Decoder();
+    private BASE64Encoder encoder = new BASE64Encoder();
+
+    private String resizePicture(int width, String kuvaEncoded, String orgOid) {
+        LOG.debug("Resizing picture to " + width);
         if (kuvaEncoded == null || orgOid == null) {
             return null;
         }
         try {
-            BASE64Decoder decoder = new BASE64Decoder();
             byte[] imageByte = decoder.decodeBuffer(kuvaEncoded);
             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
             BufferedImage image = ImageIO.read(bis);
             bis.close();
-            double ratio = 104 / image.getWidth();
+
+            if(image.getWidth() < width){
+                return kuvaEncoded;
+            }
+
+            double ratio = width / image.getWidth();
             int height = (int)(ratio * image.getHeight());
-            BufferedImage thumbnail = Scalr.resize(image, 104, height);
+            BufferedImage resizedPicture = Scalr.resize(image, width, height);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ImageIO.write(thumbnail, "jpeg", bos);
+            ImageIO.write(resizedPicture, "jpeg", bos);
             imageByte = bos.toByteArray();
-            BASE64Encoder encoder = new BASE64Encoder();
-            String thumbnailString = encoder.encode(imageByte);
+            String encoded = encoder.encode(imageByte);
             bos.close();
-            LOG.debug("thumbnail created");
-            return thumbnailString;
-            
+            LOG.debug("Picture resized");
+            return encoded;
         } catch (Exception ex) {
-            LOG.warn("problem creating thumbnail for: " + orgOid);
-            LOG.warn(ex.getMessage());
+            LOG.warn("Problem resizing picture for: " + orgOid, ex);
         }
         return null;
     }

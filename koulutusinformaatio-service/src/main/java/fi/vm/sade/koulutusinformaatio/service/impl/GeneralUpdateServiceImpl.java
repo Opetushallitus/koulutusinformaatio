@@ -148,15 +148,14 @@ public class GeneralUpdateServiceImpl {
                 Provider curProv = null;
                 try {
                     curProv = this.providerService.getByOID(curOrg.getOid());
+                    if (curProv.getOlTypeFacets() != null && !curProv.getOlTypeFacets().isEmpty()) {
+                        this.educationDataUpdateService.save(curProv);
+                        this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(),
+                                new HashSet<String>());
+                        LOG.debug("Indexed and saved organisaatio: {}", curOrg.getOid());
+                    }
                 } catch (Exception ex) {
                     LOG.warn("Problem indexing organization: " + curOrg.getOid(), ex);
-                    continue;
-                }
-                if (curProv.getOlTypeFacets() != null && !curProv.getOlTypeFacets().isEmpty()) {
-                    this.educationDataUpdateService.save(curProv);
-                    this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(),
-                            new HashSet<String>());
-                    LOG.debug("Indexed and saved organisaatio: {}", curOrg.getOid());
                 }
 
             }
