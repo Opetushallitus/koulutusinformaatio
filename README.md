@@ -59,7 +59,7 @@ If the solr server starts, but the localhost:8312/solr shows error message, chec
 is unchanged (TODO: Check WHY the file changes sometimes). If the file is chaged, revert changes.
 
 ### Start education update (indexing) manually
-To see status of indexing process visin
+To see status of indexing process visit
 
     localhost:8080/admin/status
 
