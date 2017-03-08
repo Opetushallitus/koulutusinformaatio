@@ -1469,10 +1469,14 @@ public class LOSObjectCreator extends ObjectCreator {
         }
     }
 
-    private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws OrganisaatioException {
+    private void addKorkeakouluopintoEducationType(KorkeakouluOpintoV1RDTO dto, KoulutusLOS los) throws OrganisaatioException, TarjontaParseException {
         String tyypinMaarittavaOrganisaatioOid;
         if (dto.getTarjoajanKoulutus() != null) { // Koulutustyyppi määräytyy opinnon tarjoajan mukaan
-            tyypinMaarittavaOrganisaatioOid = tarjontaRawService.searchEducation(dto.getTarjoajanKoulutus()).getResult().getTulokset().get(0).getOid();
+            try{
+                tyypinMaarittavaOrganisaatioOid = tarjontaRawService.searchEducation(dto.getTarjoajanKoulutus()).getResult().getTulokset().get(0).getOid();
+            } catch (Exception e){
+                throw new TarjontaParseException(String.format("Tarjonnasta ei löytynyt Tarjoajan koulutus oidilla ei-poistettua koulutusta. Koulutus oid %s, tarjoajan koulutus %s", dto.getOid(), dto.getTarjoajanKoulutus()), e);
+            }
         } else { // tai suoraan organisaation mukaan jos tarjoaja itse järjestää opinnon
             tyypinMaarittavaOrganisaatioOid = dto.getOrganisaatio().getOid();
         }
