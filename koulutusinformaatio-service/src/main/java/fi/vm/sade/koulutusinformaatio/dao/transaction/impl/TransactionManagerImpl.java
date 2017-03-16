@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Mikko Majapuro
@@ -94,6 +95,10 @@ public class TransactionManagerImpl implements TransactionManager {
 
     @Value("${solr.learningopportunity.url:learning_opportunity}")
     private String loHttpSolrName;
+
+    private static final int RETRY_DELAY_MS = 30000;
+    private static final int MAX_RETRY_TIME = (int) TimeUnit.MINUTES.toMillis(10);
+    private static final int MAX_RETRY_COUNT = MAX_RETRY_TIME / RETRY_DELAY_MS;
 
     @Autowired
     public TransactionManagerImpl(MongoClient mongo, @Value("${mongo.transaction-db.name}") String transactionDbName,
@@ -292,12 +297,15 @@ public class TransactionManagerImpl implements TransactionManager {
 
     private boolean swapAlias(String solrToSwapName, String aliasName) throws KISolrException {
         try {
-            return httpclient.get("solr.swap", aliasName, solrToSwapName).skipResponseAssertions().execute(new OphHttpResponseHandler<Boolean>() {
-                @Override
-                public Boolean handleResponse(OphHttpResponse response) throws IOException {
-                    return response.getStatusCode() < 400;
-                }
-            });
+            return httpclient.get("solr.swap", aliasName, solrToSwapName)
+                    .skipResponseAssertions()
+                    .retryOnError(MAX_RETRY_COUNT, RETRY_DELAY_MS)
+                    .execute(new OphHttpResponseHandler<Boolean>() {
+                        @Override
+                        public Boolean handleResponse(OphHttpResponse response) throws IOException {
+                            return response.getStatusCode() < 400;
+                        }
+                    });
         } catch (Exception ex) {
             LOG.error("Failed alias swap", ex);
             throw new KISolrException(ex);
