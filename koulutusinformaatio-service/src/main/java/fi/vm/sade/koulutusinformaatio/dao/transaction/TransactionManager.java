@@ -28,5 +28,7 @@ public interface TransactionManager {
 
     void rollBack(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException;
 
+    void zookeeperHealthCheck() throws KISolrException;
+
     void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KISolrException;
 }

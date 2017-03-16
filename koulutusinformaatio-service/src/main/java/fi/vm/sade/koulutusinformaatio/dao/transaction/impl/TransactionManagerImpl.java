@@ -181,7 +181,18 @@ public class TransactionManagerImpl implements TransactionManager {
         this.koodistoService.clearCache();
         this.providerService.clearCache();
         this.parameterService.clearCache();
-        
+    }
+
+    @Override
+    public void zookeeperHealthCheck() throws KISolrException {
+        try {
+            swapAlias("test_collection", "test_alias");
+            httpclient.get("solr.delete-alias", "test_alias")
+                    .execute();
+        } catch (Exception ex) {
+            LOG.error("Failed zookeeper health check", ex);
+            throw new KISolrException("Failed zookeeper health check", ex);
+        }
     }
 
     @Override

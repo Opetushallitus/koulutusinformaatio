@@ -102,6 +102,14 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public synchronized void updateAllEducationData() {
+        try {
+            this.transactionManager.zookeeperHealthCheck();
+        } catch (KISolrException e) {
+            LOG.error("Zookeeper health check failed. Aborting full indexing.", e);
+            sendMailOnException(e);
+            return;
+        }
+
         HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
