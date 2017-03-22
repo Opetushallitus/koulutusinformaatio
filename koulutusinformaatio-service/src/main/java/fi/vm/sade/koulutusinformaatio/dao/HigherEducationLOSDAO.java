@@ -40,6 +40,7 @@ public class HigherEducationLOSDAO extends BasicDAO<HigherEducationLOSEntity, St
     public List<HigherEducationLOSEntity> findByProviderId(String providerId) {
         Query<HigherEducationLOSEntity> query = createQuery();
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, providerId));
+        query.retrievedFields(true, "id", "name");
         return find(query).asList();
     }
 }
