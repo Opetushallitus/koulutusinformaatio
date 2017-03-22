@@ -7,7 +7,6 @@ import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,7 +172,6 @@ public class IncrementalIndexerTest {
 
     }
 
-    @Ignore
     @Test
     public void testBug451() throws Exception {
         tarjontaRawServiceMock.setTestCase("testBug451");
