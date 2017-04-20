@@ -17,13 +17,14 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -40,6 +41,7 @@ import org.apache.solr.client.solrj.response.Group;
 import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,7 @@ public class SearchServiceSolrImpl implements SearchService {
     private static final String DISTRICT = "maakunta";
     private static final String SOLR_ERROR = "Solr search error occured.";
     private static final String S_FNAME = "%s_fname";
+    private static final String LANG_FI = "fi";
 
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer loHttpSolrServer;
@@ -100,8 +103,8 @@ public class SearchServiceSolrImpl implements SearchService {
         QueryResponse queryResponse = null;
         try {
             queryResponse = lopHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
+        } catch (SolrServerException | SolrException e) {
+            throw new SearchException(SOLR_ERROR, e);
         }
 
         for (SolrDocument result : queryResponse.getResults()) {
@@ -142,8 +145,8 @@ public class SearchServiceSolrImpl implements SearchService {
         QueryResponse queryResponse = null;
         try {
             queryResponse = lopHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
+        } catch (SolrServerException | SolrException e) {
+            throw new SearchException(SOLR_ERROR, e);
         }
         for (SolrDocument result : queryResponse.getResults()) {
             String id = (String) result.getFieldValue(SolrUtil.AoFields.ID);
@@ -185,8 +188,8 @@ public class SearchServiceSolrImpl implements SearchService {
         QueryResponse queryResponse = null;
         try {
             queryResponse = loHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
+        } catch (SolrServerException | SolrException e) {
+            throw new SearchException(SOLR_ERROR, e);
         }
 
         LOG.debug("Response size: {}", queryResponse.getResults().size());
@@ -275,8 +278,8 @@ public class SearchServiceSolrImpl implements SearchService {
                     response = lopHttpSolrServer.query(query);
                 }
                 setResultCount(searchResultList, response, searchType);
-            } catch (SolrServerException e) {
-                throw new SearchException(SOLR_ERROR);
+            } catch (Exception e) {
+                throw new SearchException(SOLR_ERROR, e);
             }
 
             if (response != null) {
@@ -401,8 +404,8 @@ public class SearchServiceSolrImpl implements SearchService {
             try {
                 QueryResponse response = loHttpSolrServer.query(query);
                 setResultCount(searchResultList, response, SearchType.LO);
-            } catch (SolrServerException e) {
-                throw new SearchException(SOLR_ERROR);
+            } catch (SolrServerException | SolrException e) {
+                throw new SearchException(SOLR_ERROR, e);
             }
 
             query = new ArticleQuery(term, lang,
@@ -412,8 +415,8 @@ public class SearchServiceSolrImpl implements SearchService {
             try {
                 QueryResponse response = loHttpSolrServer.query(query);
                 setResultCount(searchResultList, response, SearchType.ARTICLE);
-            } catch (SolrServerException e) {
-                throw new SearchException(SOLR_ERROR);
+            } catch (SolrServerException | SolrException e) {
+                throw new SearchException(SOLR_ERROR, e);
             }
 
         } else {
@@ -433,8 +436,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 try {
                     QueryResponse response = loHttpSolrServer.query(query);
                     setResultCount(searchResultList, response, searchType);
-                } catch (SolrServerException e) {
-                    throw new SearchException(SOLR_ERROR);
+                } catch (SolrServerException | SolrException e) {
+                    throw new SearchException(SOLR_ERROR, e);
                 }
             } else {
                 searchResultList.setArticleCount(0);
@@ -444,8 +447,8 @@ public class SearchServiceSolrImpl implements SearchService {
             try {
                 QueryResponse response = lopHttpSolrServer.query(query);
                 setResultCount(searchResultList, response, SearchType.PROVIDER);
-            } catch (SolrServerException ex) {
-                throw new SearchException(SOLR_ERROR);
+            } catch (SolrServerException | SolrException ex) {
+                throw new SearchException(SOLR_ERROR, ex);
             }
         }
 
@@ -1245,8 +1248,8 @@ public class SearchServiceSolrImpl implements SearchService {
         QueryResponse queryResponse = null;
         try {
             queryResponse = locationHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            throw new SearchException("Solr search error occured.");
+        } catch (SolrServerException | SolrException e) {
+            throw new SearchException("Solr search error occured.", e);
         }
 
         for (SolrDocument result : queryResponse.getResults()) {
@@ -1275,7 +1278,9 @@ public class SearchServiceSolrImpl implements SearchService {
     public SuggestedTermsResult searchSuggestedTerms(String term, String lang)
             throws SearchException {
 
-        SolrQuery query = new AutocompleteQuery(term, lang);
+        SolrQuery query = Strings.isNullOrEmpty(lang) ?
+                new AutocompleteQuery(term, LANG_FI) :
+                new AutocompleteQuery(term, lang);
 
         SuggestedTermsResult result = new SuggestedTermsResult();
 
@@ -1305,8 +1310,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 result.setKeywords(terms);
             }
 
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
+        } catch (SolrServerException | SolrException e) {
+            throw new SearchException(SOLR_ERROR, e);
         }
 
         return result;
@@ -1318,8 +1323,8 @@ public class SearchServiceSolrImpl implements SearchService {
         QueryResponse response = null;
         try {
             response = lopHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            throw new SearchException(e.getMessage());
+        } catch (SolrServerException | SolrException e) {
+            throw new SearchException(e.getMessage(), e);
         }
         List<String> characters = Lists.newArrayList();
         for (GroupCommand gc : response.getGroupResponse().getValues()) {
@@ -1339,8 +1344,8 @@ public class SearchServiceSolrImpl implements SearchService {
         QueryResponse response = null;
         try {
             response = lopHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            throw new SearchException(e.getMessage());
+        } catch (SolrServerException | SolrException e) {
+            throw new SearchException(e.getMessage(), e);
         }
         List<Code> types = Lists.newArrayList();
         for (GroupCommand gc : response.getGroupResponse().getValues()) {
@@ -1420,8 +1425,8 @@ public class SearchServiceSolrImpl implements SearchService {
 
             }
 
-        } catch (SolrServerException ex) {
-            throw new SearchException(ex.getMessage());
+        } catch (SolrServerException | SolrException ex) {
+            throw new SearchException(ex.getMessage(), ex);
         }
 
         return results;

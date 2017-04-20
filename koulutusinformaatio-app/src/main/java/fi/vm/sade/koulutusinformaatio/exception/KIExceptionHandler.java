@@ -33,7 +33,7 @@ public class KIExceptionHandler {
 
     public static HTTPException resolveException(Exception e) {
         if (e instanceof ResourceNotFoundException) {
-            LOGGER.warn(e.getMessage()); // Propably invalid oid
+            LOGGER.info(e.getMessage()); // Propably invalid oid
         } else {
             LOGGER.error(e.getMessage(), e);
         }

@@ -14,6 +14,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +94,7 @@ public class IndexerServiceImpl implements IndexerService {
             throws KISolrException {
         try {
             addLearningOpportunitySpecificationInner(los, loSolr, lopSolr);
-        } catch (IOException | SolrServerException e) {
+        } catch (IOException | SolrServerException | SolrException e) {
             throw new KISolrException(e);
         } catch (Exception e) {
             if (los != null) {
@@ -233,7 +234,7 @@ public class IndexerServiceImpl implements IndexerService {
             QueryResponse response = null;//lopUpdateHttpSolrServer.query(query);
             try {
                 response = lopSolr.query(query);
-            } catch (SolrServerException e) {
+            } catch (SolrServerException | SolrException e) {
                 throw new KISolrException(e);
             }
             List<SolrDocument> results = response.getResults();
@@ -313,7 +314,7 @@ public class IndexerServiceImpl implements IndexerService {
         if (!providerDocs.isEmpty()) {
             try {
                 lopSolr.add(providerDocs);
-            } catch (SolrServerException | IOException e) {
+            } catch (SolrServerException | SolrException | IOException e) {
                 throw new KISolrException(e);
             }
         }
@@ -363,7 +364,7 @@ public class IndexerServiceImpl implements IndexerService {
             loUpdateSolr.commit();
             lopUpdateSolr.commit();
             locationUpdateSolr.commit();
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
     }
@@ -392,7 +393,7 @@ public class IndexerServiceImpl implements IndexerService {
         }
         try {
             locationUpdateSolr.add(locationDocs);
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
 
@@ -514,7 +515,7 @@ public class IndexerServiceImpl implements IndexerService {
         }
         try {
             loUpdateSolr.add(edTypeDocs);
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
 
@@ -527,7 +528,7 @@ public class IndexerServiceImpl implements IndexerService {
             List<SolrInputDocument> docs = conversionService.convert(curArticle, List.class);
             try {
                 loUpdateSolr.add(docs);
-            } catch (SolrServerException | IOException e) {
+            } catch (SolrServerException | SolrException | IOException e) {
                 throw new KISolrException(e);
             }
         }
@@ -546,7 +547,7 @@ public class IndexerServiceImpl implements IndexerService {
                     loHttpSolrServer.deleteById(curLos.getId() + "#ER");
                 }
             }
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
 
@@ -569,7 +570,7 @@ public class IndexerServiceImpl implements IndexerService {
                     this.loAliasHttpSolrServer.deleteById(articleId);
                 }
             }
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
 
@@ -589,7 +590,7 @@ public class IndexerServiceImpl implements IndexerService {
             loAliasHttpSolrServer.rollback();
             lopAliasHttpSolrServer.rollback();
             locationAliasHttpSolrServer.rollback();
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
     }
@@ -665,7 +666,7 @@ public class IndexerServiceImpl implements IndexerService {
 
         try {
             loUpdateSolr.add(asDoc);
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
 

@@ -16,35 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.google.common.base.Strings;
-
+import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.Articled;
-import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -52,6 +32,16 @@ import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Hannu Lyytikainen
@@ -102,6 +92,27 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                     lopFilter, educationCodeFilter, excludes, asId, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
+            Map<String, Object> paramMap = Maps.newHashMap();
+            paramMap.put("text", text);
+            paramMap.put("prerequisite", prerequisite);
+            paramMap.put("cities", cities);
+            paramMap.put("facetFilters", facetFilters);
+            paramMap.put("articleFilters", articleFilters);
+            paramMap.put("providerFilters", providerFilters);
+            paramMap.put("lang", lang);
+            paramMap.put("ongoing", ongoing);
+            paramMap.put("upcoming", upcoming);
+            paramMap.put("upcomingLater", upcomingLater);
+            paramMap.put("start", start);
+            paramMap.put("rows", rows);
+            paramMap.put("sort", sort);
+            paramMap.put("order", order);
+            paramMap.put("lopFilter", lopFilter);
+            paramMap.put("educationCodeFilter", educationCodeFilter);
+            paramMap.put("excludes", excludes);
+            paramMap.put("asId", asId);
+            paramMap.put("searchType", searchType);
+            LOGGER.warn("Search failed to exception {}. Parameters: {}", e.getMessage(), paramMap);
             throw KIExceptionHandler.resolveException(e);
         }
     }
