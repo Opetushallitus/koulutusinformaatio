@@ -143,6 +143,8 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         for (String curFilter : facetFilters) {
             if (curFilter.startsWith(PREREQUISITES + ":")) {
+                if(curFilter.length() == (PREREQUISITES + ":").length()) continue; // Skip empty keyword.
+
                 // Prerequisite should match or be empty
                 this.addFilterQuery("-(-" + curFilter + " AND " + PREREQUISITES + ":[* TO *])");
             } else {

@@ -17,13 +17,14 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -63,6 +64,7 @@ public class SearchServiceSolrImpl implements SearchService {
     private static final String DISTRICT = "maakunta";
     private static final String SOLR_ERROR = "Solr search error occured.";
     private static final String S_FNAME = "%s_fname";
+    private static final String LANG_FI = "fi";
 
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer loHttpSolrServer;
@@ -1275,7 +1277,9 @@ public class SearchServiceSolrImpl implements SearchService {
     public SuggestedTermsResult searchSuggestedTerms(String term, String lang)
             throws SearchException {
 
-        SolrQuery query = new AutocompleteQuery(term, lang);
+        SolrQuery query = Strings.isNullOrEmpty(lang) ?
+                new AutocompleteQuery(term, LANG_FI) :
+                new AutocompleteQuery(term, lang);
 
         SuggestedTermsResult result = new SuggestedTermsResult();
 
