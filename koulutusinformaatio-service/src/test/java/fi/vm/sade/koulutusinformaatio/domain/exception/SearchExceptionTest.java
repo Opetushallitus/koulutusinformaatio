@@ -26,11 +26,11 @@ public class SearchExceptionTest {
 
     @Test(expected = SearchException.class)
     public void test() throws Exception {
-        throw new SearchException("foo");
+        throw new SearchException("foo", null);
     }
 
     @Test(expected = SearchException.class)
     public void testExeption() throws Exception {
-        throw new SearchException("foo");
+        throw new SearchException("foo", null);
     }
 }

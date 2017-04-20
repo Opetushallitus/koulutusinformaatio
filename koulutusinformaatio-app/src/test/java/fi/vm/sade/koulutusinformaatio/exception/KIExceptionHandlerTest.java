@@ -34,7 +34,7 @@ public class KIExceptionHandlerTest {
 
     @Test
     public void testSearchException() {
-        SearchException se = new SearchException("search exception");
+        SearchException se = new SearchException("search exception", null);
         HTTPException e = KIExceptionHandler.resolveException(se);
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getResponse().getStatus());
     }
