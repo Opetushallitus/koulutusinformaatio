@@ -277,7 +277,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     response = lopHttpSolrServer.query(query);
                 }
                 setResultCount(searchResultList, response, searchType);
-            } catch (SolrServerException e) {
+            } catch (Exception e) {
                 throw new SearchException(SOLR_ERROR, e);
             }
 
