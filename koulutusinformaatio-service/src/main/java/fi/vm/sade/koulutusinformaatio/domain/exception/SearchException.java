@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain.exception;
 
 public class SearchException extends KIException {
-    public SearchException(String message) {
-        super(message);
+    public SearchException(String message, Throwable e) {
+        super(message, e);
     }
 }
