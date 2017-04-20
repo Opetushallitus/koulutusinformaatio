@@ -28,6 +28,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.common.SolrException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,7 +92,7 @@ public class IncrementalKoulutusLOSIndexer {
             KoulutusLOS toDeleteLos = new KoulutusLOS();
             toDeleteLos.setId(oid);
             this.dataUpdateService.deleteLos(toDeleteLos);
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
     }

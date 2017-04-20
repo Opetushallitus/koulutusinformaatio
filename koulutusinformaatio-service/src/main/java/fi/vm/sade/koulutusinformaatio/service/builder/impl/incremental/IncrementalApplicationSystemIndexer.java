@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.common.SolrException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class IncrementalApplicationSystemIndexer {
         CalendarApplicationSystem calAS = this.tarjontaService.createCalendarApplicationSystem(asOid);
         try {
             loHttpSolrServer.deleteById(asOid);
-        } catch (SolrServerException | IOException e) {
+        } catch (SolrServerException | SolrException | IOException e) {
             throw new KISolrException(e);
         }
         if (calAS != null) {
