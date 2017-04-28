@@ -81,7 +81,7 @@ log4j.properties.file=${user.home.conf}/log4j.properties
 mongo.db.name=koulutusinformaatio
 mongodb.url={{ mongodb_koulutusinformaatio_cluster | default("${mongodb.ki.uri}") }}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 mongo.transaction-db.name=koulutusinformaatio-transaction
-mongodb.transaction.url=${mongodb.ki.uri}/${mongo.transaction-db.name}?maxpoolsize=${mongo.db.maxpoolsize}
+mongodb.transaction.url={{ mongodb_koulutusinformaatio_cluster | default("${mongodb.ki.uri}") }}/${mongo.transaction-db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 mongo.test-db.name=koulutusinformaatio-test-db
 mongodb.test.url=mongodb://taulu.hard.ware.fi:57017/${mongo.test-db.name}
 preview.cas.koulutusinformaatio-app=https\://${host.oppija}
