@@ -20,7 +20,7 @@ ldap.manager.password={{ldap_manager_password}}
 ldap.manager-password={{ldap_manager_password}}
 ldap.manager.userdn={{ldap_manager_userdn}}
 mongo.db.maxpoolsize=100
-mongodb.ki.uri=mongodb://{{mongodb_ki_host | default(mongodb_koulutusinformaatio_host)}}:{{mongodb_ki_port | default(mongodb_koulutusinformaatio_port)}}
+mongodb.ki.uri=mongodb://{{mongodb_koulutusinformaatio_host}}:{{mongodb_koulutusinformaatio_port}}
 server.name={{ansible_hostname}}
 solr.base.url={{solr_base_url}}
 # Workaround, user.home propertyn pitäisi tulla systeemistä kuten muissakin, mutta ei toimi tässä palvelussa 
@@ -79,7 +79,7 @@ ldap.url=ldap://${host.ldap}
 ldap.url.with.base=ldap\://${host.ldap}/dc\=opintopolku,dc\=fi
 log4j.properties.file=${user.home.conf}/log4j.properties
 mongo.db.name=koulutusinformaatio
-mongodb.url=${mongodb.ki.uri}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
+mongodb.url={{ mongodb_koulutusinformaatio_cluster | default(mongodb.ki.uri) }}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 mongo.transaction-db.name=koulutusinformaatio-transaction
 mongodb.transaction.url=${mongodb.ki.uri}/${mongo.transaction-db.name}?maxpoolsize=${mongo.db.maxpoolsize}
 mongo.test-db.name=koulutusinformaatio-test-db
