@@ -21,7 +21,7 @@ public class KoulutusLOSDAO extends LearningOpportunitySpecificationDAO<Koulutus
     public List<KoulutusLOSEntity> getKoulutusLos(ToteutustyyppiEnum toteutusTyyppi, String tarjoaja, String koulutusKoodi)
             throws ResourceNotFoundException {
         Query<KoulutusLOSEntity> q = this.getDatastore().createQuery(KoulutusLOSEntity.class)
-                .filter("provider", new Key(LearningOpportunityProviderEntity.class, tarjoaja))
+                .filter("provider", new Key<>(LearningOpportunityProviderEntity.class, "learningOpportunityProviders", tarjoaja))
                 .filter("toteutustyyppi = ", toteutusTyyppi)
                 .filter("educationCode.uri = ", koulutusKoodi);
         return this.find(q).asList();

@@ -36,8 +36,9 @@ public abstract class LearningOpportunitySpecificationDAO<T, K> extends Secondar
 
     public List<T> findByProviderId(String providerId) {
         Query<T> query = createQuery();
-        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, providerId));
-        query.retrievedFields(true, "id", "name");
+        query.field("provider").equal(new Key<>(LearningOpportunityProviderEntity.class, "learningOpportunityProviders", providerId));
+        query.project("id", true);
+        query.project("name", true);
         return find(query).asList();
     }
     

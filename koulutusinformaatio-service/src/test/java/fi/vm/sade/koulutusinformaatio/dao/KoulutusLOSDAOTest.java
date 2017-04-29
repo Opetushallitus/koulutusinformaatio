@@ -99,12 +99,12 @@ public class KoulutusLOSDAOTest {
     @Test
     public void testDeleteKoulutus() {
         WriteResult result = koulutusLOSDAO.deleteById("nonexistentkoulutusoid");
-        assertEquals("Non existent oid was deleted", 0, result.getLastError().get("n"));
+        assertEquals("Non existent oid was deleted", 0, result.getN());
 
         long count = koulutusLOSDAO.count();
         Key<KoulutusLOSEntity> saved = saveTestKoulutus("6", "tarjoaja", "koodi_2", ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
         WriteResult result2 = koulutusLOSDAO.deleteById((String) saved.getId());
-        assertEquals("Koulutus was not deleted", 1, result2.getLastError().get("n"));
+        assertEquals("Koulutus was not deleted", 1, result2.getN());
         long count2 = koulutusLOSDAO.count();
 
         assertEquals("Delete did not succeed", count, count2);

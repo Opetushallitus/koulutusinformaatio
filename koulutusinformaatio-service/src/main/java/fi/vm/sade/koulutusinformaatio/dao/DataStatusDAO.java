@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import java.util.Arrays;
 
+import com.mongodb.MongoClient;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
@@ -32,7 +33,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
  */
 public class DataStatusDAO extends BasicDAO<DataStatusEntity, ObjectId> {
 
-    public DataStatusDAO(Mongo mongo, Morphia morphia, String dbName) {
+    public DataStatusDAO(MongoClient mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
     }
 
