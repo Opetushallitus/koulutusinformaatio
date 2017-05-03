@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import com.mongodb.MongoClient;
 import org.mongodb.morphia.DatastoreImpl;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.Mapper;
@@ -30,7 +31,7 @@ import com.mongodb.ReadPreference;
  */
 public class SecondaryDatastoreImpl extends DatastoreImpl {
 
-    public SecondaryDatastoreImpl(Morphia morphia, Mongo mongo, String dbName) {
+    public SecondaryDatastoreImpl(Morphia morphia, MongoClient mongo, String dbName) {
         super(morphia, mongo, dbName);
     }
 

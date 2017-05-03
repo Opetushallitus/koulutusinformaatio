@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import com.mongodb.MongoClient;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
 
@@ -28,7 +29,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEnti
  */
 public class LearningOpportunityProviderDAO extends BasicDAO<LearningOpportunityProviderEntity, String> {
 
-    public LearningOpportunityProviderDAO(Mongo mongo, Morphia morphia, String dbName) {
+    public LearningOpportunityProviderDAO(MongoClient mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
     }
 }
