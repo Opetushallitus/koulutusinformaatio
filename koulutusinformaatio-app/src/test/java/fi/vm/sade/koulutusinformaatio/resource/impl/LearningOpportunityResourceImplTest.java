@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.exception.ErrorPayload;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,13 +121,30 @@ public class LearningOpportunityResourceImplTest {
         resource.searchLearningOpportunities(INVALID_TERM, "", new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(),
                 new ArrayList<String>(), "", false, false, false, 0, 0, "0", "asc", "", "", new ArrayList<String>(), null, SearchType.LO);
     }
-    
+
     @Test
     public void testSuggestedTermsSearch() {
         SuggestedTermsResultDTO strDTO = this.resource.getSuggestedTerms("term1", "fi");
         assertEquals(2, strDTO.getLoNames().size());
     }
-    
+
+    @Test
+    public void testSuggestedTermsSearchBroken() {
+        try{
+            this.resource.getSuggestedTerms("term1", null);
+            fail();
+        } catch(HTTPException e){
+            assertEquals("Lang param null must be in [fi, sv, en]", ((ErrorPayload) e.getResponse().getEntity()).getMessage());
+        }
+
+        try{
+            this.resource.getSuggestedTerms("term1", "null");
+            fail();
+        } catch(HTTPException e){
+            assertEquals("Lang param null must be in [fi, sv, en]", ((ErrorPayload) e.getResponse().getEntity()).getMessage());
+        }
+    }
+
     @Test
     public void testGetHigherEducationLearningOpportunity() {
         HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);

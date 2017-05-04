@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.ArticleResultToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
@@ -25,6 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -181,9 +183,10 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public SuggestedTermsResultDTO getSuggestedTerms(String term, String lang) {
         try {
+            sanitizeLang(lang);
             SuggestedTermsResult suggestedTerms = this.searchService.searchSuggestedTerms(term, lang);
             return modelMapper.map(suggestedTerms, SuggestedTermsResultDTO.class);
-        } catch (SearchException e) {
+        } catch (SearchException | InvalidParametersException e) {
             throw KIExceptionHandler.resolveException(e);
         }
     }
@@ -305,5 +308,11 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public KoulutusLOSDTO getAdultUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) {
         return getKoulutusLearningOpportunity(id, lang, uiLang);
+    }
+
+    private List<String> ALLOWED_LANGS = ImmutableList.of("fi", "sv", "en");
+    private void sanitizeLang(String lang) throws InvalidParametersException {
+        if(lang == null || !ALLOWED_LANGS.contains(lang.toLowerCase()))
+            throw new InvalidParametersException(String.format("Lang param %s must be in %s", lang, ALLOWED_LANGS));
     }
 }
