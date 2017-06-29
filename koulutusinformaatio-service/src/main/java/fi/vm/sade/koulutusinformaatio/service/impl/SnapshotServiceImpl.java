@@ -16,13 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
-import fi.vm.sade.koulutusinformaatio.util.StreamReaderHelper;
 import fi.vm.sade.properties.OphProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -121,42 +124,45 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
     
     private String generatePhantomJSCommand(String type, String id) {
-        return String.format("%s %s %s%s/%s %s/%s.html",
+        return String.format("%s %s \"%s%s/%s\" %s/%s.html",
                 phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id);
     }
     
     private String generatePhantomJSCommand(String type, String id, String lang) {
-        return String.format("%s %s %s%s/%s?%s=%s %s/%s_%s.html",
+        return String.format("%s %s \"%s%s/%s?%s=%s\" %s/%s_%s.html",
                 phantomjs, snapshotScript, baseUrl, type, id, QUERY_PARAM_LANG, lang, snapshotFolder, id, lang);
     }
-    
-    
+
 
     private void invokePhantomJS(String cmd, String id) throws IndexingException {
-
         try {
-            // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"            
-            Process process = Runtime.getRuntime().exec(cmd);
-            
-            //Set up two threads to read on the output of the external process.
-            Thread stdout = new Thread(new StreamReaderHelper(process.getInputStream()));
-            Thread stderr = new Thread(new StreamReaderHelper(process.getErrorStream()));
-            
-            stdout.start();
-            stderr.start();
-            
-            int exitStatus = process.waitFor();
-            process.destroy();
-            
-            if (exitStatus != 0) {
+            cmd = cmd.replace("!", "\\!");
+            LOG.debug(cmd);
+
+            // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"
+            ProcessBuilder ps = new ProcessBuilder(cmd.split(" "));
+
+            ps.redirectErrorStream(true);
+
+            Process pr = ps.start();
+            BufferedReader phantomOutput = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            String line;
+            while((line = phantomOutput.readLine()) != null) {
+                LOG.info(line);
+            }
+            int exitStatus = pr.waitFor();
+
+            phantomOutput.close();
+
+            if(exitStatus != 0) {
                 throw new IndexingException(String.format("Rendering snapshot for learning opportunity %s failed with exit status: %d",
                         id, exitStatus));
             }
 
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new IndexingException(String.format("Rendering learning opportunity %s failed due to IOException: %s",
                     id, e.getMessage()));
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new IndexingException(String.format("Rendering learning opportunity %s failed due to InterruptedException: %s",
                     id, e.getMessage()));
         }
