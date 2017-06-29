@@ -16,23 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.filter;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 /**
  * @author Hannu Lyytikainen
@@ -48,79 +42,66 @@ public class SearchEngineFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        
-        String lang = request.getParameter(language);
 
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            String fragmentPath = httpRequest.getParameter(escapedFragment);
-            fragmentPath = URLDecoder.decode(fragmentPath, "UTF-8");
-            
-            String path = null;
-            String query = null;
-            URI uri = null;
-            String newUri;
-            
+            String fragmentPath = URLDecoder.decode(httpRequest.getParameter(escapedFragment), "UTF-8");
+
+            URI uri;
             try {
                 uri = new URI(fragmentPath);
-                path = uri.getPath();
-                query = uri.getQuery();
             } catch (URISyntaxException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new ServletException("Malformed url", e);
             }
-            
-            path = path.split("/")[2];
-            
-            if (lang == null) {
-                List<NameValuePair> params = parseQueryParams(query);
-                lang = getLangParam(params);
-            }
-            
-            if (lang != null) {
-                newUri = String.format("snapshot/%s_%s.html", path, lang);
-            } else {
-                newUri = String.format("snapshot/%s.html", path);
-            }
-            
-            //String newUri = String.format("/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
+
+            String oid = uri.getPath().split("/")[2];
+            String lang = getLang(request, uri.getQuery());
+
+            String newUri = lang != null ?
+                    String.format("/app/snapshot/%s_%s.html", oid, lang)
+                    : String.format("/app/snapshot/%s.html", oid);
             httpRequest.getRequestDispatcher(newUri).forward(request, response);
-            //FileInputStream snapshot = new FileInputStream(String.format("/Users/klu/cases/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]));
-            //IOUtils.copy(snapshot, response.getOutputStream());
-        }
-        else {
+        } else {
             filterChain.doFilter(request, response);
         }
+    }
+
+    private String getLang(ServletRequest request, String query) {
+        String lang = request.getParameter(language);
+        if (lang == null) {
+            List<NameValuePair> params = parseQueryParams(query);
+            lang = getLangParam(params);
+        }
+        return lang;
     }
 
     @Override
     public void destroy() {
 
     }
-    
+
     private String getLangParam(List<NameValuePair> params) {
         for (NameValuePair pair : params) {
-            if (pair.getName().equals(language)) {
+            if (pair.getName().equalsIgnoreCase(language)) {
                 return pair.getValue();
             }
         }
-        
         return null;
     }
-    
+
     private List<NameValuePair> parseQueryParams(String query) {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        
+
         if (query != null) {
             String[] queryParams = query.split("&");
-            for (String param: queryParams) {
+            for (String param : queryParams) {
                 String[] pair = param.split("=");
                 if (pair.length >= 2) {
-                    params.add( new BasicNameValuePair(pair[0], pair[1]) );
+                    params.add(new BasicNameValuePair(pair[0], pair[1]));
                 }
             }
         }
-        
+
         return params;
     }
 }
