@@ -1,9 +1,19 @@
-<script src="${baseUrl}app/lib/jquery.enhanced.cookie.js" type="text/javascript"></script>
 <script type="text/javascript">
-var cfg = {useLocalStorage: false, path: "/" },
-    lang = jQuery.cookie('i18next', cfg),
+var lang = getLanguageFromHost(),
     rgx = new RegExp('\/' + lang + '\/', 'g'),
     res = window.location.href.search(rgx);
+
+function getLanguageFromHost() {
+    var x = window.location.host.split('.')
+    if (x.length < 2)
+        return 'fi'
+    switch (x[x.length - 2]) {
+        case 'opintopolku': return 'fi'
+        case 'studieinfo': return 'sv'
+        case 'studyinfo': return 'en'
+    }
+    return 'fi'
+}
 
 if (res < 0) {
     window.location.href = '${baseUrl}' + lang + '/hakemisto/oppilaitokset';
