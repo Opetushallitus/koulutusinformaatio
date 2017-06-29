@@ -61,12 +61,9 @@ public class SEOServiceImpl implements SEOService {
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
         this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base"));
-        String collections = "tutkinto:tutkintoLOS," +
+        String collections =
+                "tutkinto:tutkintoLOS," +
                 "koulutus:koulutusLOS," +
-                "koulutusohjelma:childLearningOpportunities," +
-                "lukio:upperSecondaryLearningOpportunitySpecifications," +
-                "valmentava:specialLearningOpportunitySpecifications:-creditValue," +
-                "erityisopetus:specialLearningOpportunitySpecifications:+creditValue," +
                 "korkeakoulu:universityAppliedScienceLOS," +
                 "ammatillinenaikuiskoulutus:competenceBasedQualificationParentLOS," +
                 "aikuislukio:koulutusLOS";
