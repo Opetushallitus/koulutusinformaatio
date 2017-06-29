@@ -31,6 +31,7 @@ import java.util.List;
  */
 public final class LOSToSearchResult {
     private static final Logger LOG = LoggerFactory.getLogger(LOSToSearchResult.class);
+
     private LOSToSearchResult() {
     }
 
@@ -47,14 +48,14 @@ public final class LOSToSearchResult {
         LearningOpportunitySearchResultDTO dto = new LearningOpportunitySearchResultDTO();
         dto.setId(los.getId());
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
-        if (los instanceof KoulutusLOS) {
-            dto.setType(TarjontaConstants.TYPE_KOULUTUS);
-        } else if( los instanceof TutkintoLOS){
+        if (los instanceof TutkintoLOS) {
             dto.setType(TarjontaConstants.TYPE_PARENT);
-        } else if( los instanceof HigherEducationLOS){
+        } else if (los instanceof HigherEducationLOS) {
             dto.setType(TarjontaConstants.TYPE_KK);
-        } else if( los instanceof CompetenceBasedQualificationParentLOS){
+        } else if (los instanceof CompetenceBasedQualificationParentLOS) {
             dto.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);
+        } else if (los instanceof KoulutusLOS) {
+            dto.setType(TarjontaConstants.TYPE_KOULUTUS); // Must be last since HigherEducationLOS is subclass of koulutus
         } else {
             LOG.warn("Ei osattu päätellä tyyppiä koulutukselle: " + los.getId());
         }
