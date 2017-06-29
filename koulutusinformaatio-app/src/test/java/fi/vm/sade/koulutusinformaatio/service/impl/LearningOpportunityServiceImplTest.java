@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -51,11 +53,6 @@ import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -67,7 +64,6 @@ import fi.vm.sade.koulutusinformaatio.service.PreviewService;
 * @author Mikko Majapuro
 */
 public class LearningOpportunityServiceImplTest {
-
     private LearningOpportunityService learningOpportunityService;
     private EducationDataQueryService educationDataQueryService;
     private ApplicationOption applicationOption;
@@ -125,6 +121,7 @@ public class LearningOpportunityServiceImplTest {
         when(previewService.previewHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
         when(educationDataQueryService.getApplicationOptions(anyListOf(String.class))).thenReturn(aos);
         when(educationDataQueryService.findApplicationOptions("as123", "", "", true, true)).thenReturn(aos);
+        when(educationDataQueryService.findLearningOpportunitiesByProviderId("1.3.2.4He")).thenReturn(Lists.<LOS>newArrayList(heLOS));
 
         List<LOS> losses = new ArrayList<LOS>();
 
@@ -227,6 +224,12 @@ public class LearningOpportunityServiceImplTest {
 
     }
 
+    @Test
+    public void findLearningOpportunitiesByProviderIdConvertsType() throws Exception {
+        List<LearningOpportunitySearchResultDTO> list = learningOpportunityService.findLearningOpportunitiesByProviderId("1.3.2.4He", "fi");
+        assertEquals(1, list.size());
+        assertEquals(TarjontaConstants.TYPE_KK, list.get(0).getType());
+    }
 
     private void checkResult(String lang, String defaultLang, ApplicationOptionDTO result) {
         assertNotNull(result);
