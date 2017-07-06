@@ -28,6 +28,11 @@ page.open(url, function() {
     var start = new Date().getTime();
     var intervalId = setInterval(function() {
         if (document.querySelectorAll('h1').length || new Date().getTime() - start >= maxInterval) {
+            if(document.querySelectorAll('h1').length){
+                console.log("Rendering url " + url)
+            } else {
+                console.log("Timed out url " + url)
+            }
             clearInterval(intervalId);
             writeHtmlToFile();
         }
