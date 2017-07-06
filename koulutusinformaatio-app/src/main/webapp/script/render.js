@@ -27,16 +27,10 @@ page.open(url, function() {
     var maxInterval = 10000; // 10 sec
     var start = new Date().getTime();
     var intervalId = setInterval(function() {
-
-        var body = page.evaluate(function(s) {
-            return document.querySelector(s).style.display;
-        }, 'body');
-
-        if (body !== 'none' || new Date().getTime() - start >= maxInterval) {
+        if (document.querySelectorAll('h1').length || new Date().getTime() - start >= maxInterval) {
             clearInterval(intervalId);
             writeHtmlToFile();
         }
-
     }, 500);
 });
 

@@ -127,19 +127,18 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
     
     private String generatePhantomJSCommand(String type, String id) {
-        return String.format("%s %s \"%s%s/%s\" %s/%s.html",
+        return String.format("%s %s '%s%s/%s' %s/%s.html",
                 phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id);
     }
     
     private String generatePhantomJSCommand(String type, String id, String lang) {
-        return String.format("%s %s \"%s%s/%s?%s=%s\" %s/%s_%s.html",
+        return String.format("%s %s '%s%s/%s?%s=%s' %s/%s_%s.html",
                 phantomjs, snapshotScript, baseUrl, type, id, QUERY_PARAM_LANG, lang, snapshotFolder, id, lang);
     }
 
 
     private void invokePhantomJS(String cmd, String id) throws IndexingException {
         try {
-            cmd = cmd.replace("!", "\\!");
             LOG.debug(cmd);
 
             // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"
