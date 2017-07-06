@@ -49,8 +49,6 @@ public class SEOServiceImpl implements SEOService {
     private Map<String, String> sitemapParams;
     private String sitemapLocation;
 
-    //FIXME: SEO service on korjattava ja päivitettävä uusia koulutustyyppejä ja urleja vastaavaksi
-
     @Autowired
     public SEOServiceImpl(SnapshotService snapshotService,
                           Datastore primaryDatastore,

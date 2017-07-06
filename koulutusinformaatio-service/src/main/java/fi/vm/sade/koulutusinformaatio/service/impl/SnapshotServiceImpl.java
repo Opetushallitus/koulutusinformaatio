@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
@@ -45,18 +46,17 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
 
-    private static final String TYPE_SPECIAL = "erityisopetus";
-    private static final String TYPE_PARENT = "tutkinto";
-    private static final String TYPE_CHILD = "koulutusohjelma";
-    private static final String TYPE_UPSEC = "lukio";
     private static final String TYPE_HIGHERED = "korkeakoulu";
     private static final String TYPE_ADULT_VOCATIONAL = "ammatillinenaikuiskoulutus";
-    private static final String TYPE_ADULT_UPSEC = "aikuislukio";
+    private static final String TYPE_KOULUTUS = "koulutus";
+    private static final String TYPE_TUTKINTO = "tutkinto";
     private static final String QUERY_PARAM_LANG = "descriptionLang";
 
     private HigherEducationLOSDAO higheredDAO;
     private AdultVocationalLOSDAO adultvocDAO;
-    private KoulutusLOSDAO adultupecDAO;
+    private KoulutusLOSDAO koulutusDAO;
+    private TutkintoLOSDAO tutkintoLOSDAO;
+
     private String phantomjs;
     private String snapshotScript;
     private String snapshotFolder;
@@ -65,14 +65,16 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Autowired
     public SnapshotServiceImpl(@Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
                                @Qualifier("adultVocationalLOSDAO") AdultVocationalLOSDAO adultvocDAO,
-                               @Qualifier("koulutusLOSDAO") KoulutusLOSDAO adultupsecDAO,
+                               @Qualifier("koulutusLOSDAO") KoulutusLOSDAO koulutusDAO,
+                               @Qualifier("tutkintoLOSDAO") TutkintoLOSDAO tutkintoLOSDAO,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
-        this.adultupecDAO = adultupsecDAO;
+        this.koulutusDAO = koulutusDAO;
+        this.tutkintoLOSDAO = tutkintoLOSDAO;
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
         this.snapshotFolder = prerenderFolder;
@@ -86,9 +88,10 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.debug("HigherEd LOs rendered");
         prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
         LOG.debug("Adult vocational LOs rendered");
-        prerender(TYPE_ADULT_UPSEC, adultupecDAO.findIds());
-        LOG.debug("Adult upper secondary LOs rendered");
-        // todo: handle rehabilitating separately
+        prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
+        LOG.debug("Koulutus LOs rendered");
+        prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+        LOG.debug("Tutkinto LOs rendered");
         LOG.info("Rendering html snapshots finished");
     }
     
