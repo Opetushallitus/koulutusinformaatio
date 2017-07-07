@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ApplicationOptionNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -47,7 +48,7 @@ public interface EducationDataQueryService {
 
     List<ApplicationOption> getApplicationOptions(final List<String> aoIds) throws InvalidParametersException;
 
-    ApplicationOption getApplicationOption(final String aoId) throws ResourceNotFoundException;
+    ApplicationOption getApplicationOption(final String aoId) throws ApplicationOptionNotFoundException;
 
     DataStatus getLatestDataStatus();
 
