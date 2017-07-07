@@ -97,29 +97,30 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.debug("Tutkinto LOs rendered");
         LOG.info("Rendering html snapshots finished");
     }
-    
+
     private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
-        int count = 0;
-        for (String id : ids) {
-            if(count++/ids.size() % 5 == 0){
-                LOG.info("Rendering {} {}%", type, count/ids.size());
+        double toLog = ids.size() / 20.0, count = toLog; int fivePercents = 0;
+        for(String id : ids) {
+            if(--count < 0) { //Log progress every 5 %
+                count = toLog;
+                LOG.info("Rendering {} {}%", type, ++fivePercents);
             }
             HigherEducationLOSEntity los = higheredDAO.get(id);
-            
+
             // generate snapshot for each teaching language
-            for (CodeEntity teachingLang : los.getTeachingLanguages()) {
+            for(CodeEntity teachingLang : los.getTeachingLanguages()) {
                 try {
                     String lang = "";
-                    if (teachingLang != null && teachingLang.getValue() != null) {
+                    if(teachingLang != null && teachingLang.getValue() != null) {
                         lang = teachingLang.getValue().toLowerCase();
                     }
                     String[] cmd = generatePhantomJSCommand(type, id, lang);
                     invokePhantomJS(cmd, id);
-                } catch (KIException e) {
+                } catch(KIException e) {
                     LOG.error(e.getMessage());
                 }
             }
-            
+
             // generate default snapshot
             String[] cmd = generatePhantomJSCommand(type, id);
             invokePhantomJS(cmd, id);
@@ -127,22 +128,23 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     private void prerender(String type, List<String> ids) throws IndexingException {
-        int count = 0;
-        for (String id : ids) {
-            if(count++/ids.size() % 5 == 0){
-                LOG.info("Rendering {} {}%", type, count/ids.size());
+        double toLog = ids.size() / 20.0, count = toLog; int fivePercents = 0;
+        for(String id : ids) {
+            if(--count < 0) { //Log progress every 5 %
+                count = toLog;
+                LOG.info("Rendering {} {}%", type, ++fivePercents);
             }
             String[] cmd = generatePhantomJSCommand(type, id);
             invokePhantomJS(cmd, id);
         }
     }
-    
+
     private String[] generatePhantomJSCommand(String type, String id) {
         String url = format("%s%s/%s", baseUrl, type, id);
         String filename = format("%s/%s.html", snapshotFolder, id);
         return new String[]{phantomjs, snapshotScript, url, filename};
     }
-    
+
     private String[] generatePhantomJSCommand(String type, String id, String lang) {
         String url = format("%s%s/%s?%s=%s", baseUrl, type, id, QUERY_PARAM_LANG, lang);
         String filename = format("%s/%s_%s.html", snapshotFolder, id, lang);
