@@ -49,7 +49,7 @@ page.open(url, function(status) {
             return document.querySelectorAll('h1')
         });
         if (h1s.length) {
-            console.log("Rendering url " + url)
+//            console.log("Rendering url " + url + " to file " + filename);
             clearInterval(intervalId);
             writeHtmlToFile();
         }

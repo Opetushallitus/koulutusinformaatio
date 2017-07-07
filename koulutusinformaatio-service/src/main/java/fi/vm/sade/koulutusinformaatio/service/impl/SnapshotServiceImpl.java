@@ -36,7 +36,10 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
+
+import static java.lang.String.format;
 
 /**
  * @author Hannu Lyytikainen
@@ -96,7 +99,11 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
     
     private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
+        int count = 0;
         for (String id : ids) {
+            if(count++/ids.size() % 5 == 0){
+                LOG.info("Rendering {} {}%", type, count/ids.size());
+            }
             HigherEducationLOSEntity los = higheredDAO.get(id);
             
             // generate snapshot for each teaching language
@@ -106,7 +113,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                     if (teachingLang != null && teachingLang.getValue() != null) {
                         lang = teachingLang.getValue().toLowerCase();
                     }
-                    String cmd = generatePhantomJSCommand(type, id, lang);
+                    String[] cmd = generatePhantomJSCommand(type, id, lang);
                     invokePhantomJS(cmd, id);
                 } catch (KIException e) {
                     LOG.error(e.getMessage());
@@ -114,35 +121,41 @@ public class SnapshotServiceImpl implements SnapshotService {
             }
             
             // generate default snapshot
-            String cmd = generatePhantomJSCommand(type, id);
+            String[] cmd = generatePhantomJSCommand(type, id);
             invokePhantomJS(cmd, id);
         }
     }
 
     private void prerender(String type, List<String> ids) throws IndexingException {
+        int count = 0;
         for (String id : ids) {
-            String cmd = generatePhantomJSCommand(type, id);
+            if(count++/ids.size() % 5 == 0){
+                LOG.info("Rendering {} {}%", type, count/ids.size());
+            }
+            String[] cmd = generatePhantomJSCommand(type, id);
             invokePhantomJS(cmd, id);
         }
     }
     
-    private String generatePhantomJSCommand(String type, String id) {
-        return String.format("%s %s %s%s/%s %s/%s.html",
-                phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id);
+    private String[] generatePhantomJSCommand(String type, String id) {
+        String url = format("%s%s/%s", baseUrl, type, id);
+        String filename = format("%s/%s.html", snapshotFolder, id);
+        return new String[]{phantomjs, snapshotScript, url, filename};
     }
     
-    private String generatePhantomJSCommand(String type, String id, String lang) {
-        return String.format("%s %s %s%s/%s?%s=%s %s/%s_%s.html",
-                phantomjs, snapshotScript, baseUrl, type, id, QUERY_PARAM_LANG, lang, snapshotFolder, id, lang);
+    private String[] generatePhantomJSCommand(String type, String id, String lang) {
+        String url = format("%s%s/%s?%s=%s", baseUrl, type, id, QUERY_PARAM_LANG, lang);
+        String filename = format("%s/%s_%s.html", snapshotFolder, id, lang);
+        return new String[]{phantomjs, snapshotScript, url, filename};
     }
 
 
-    private void invokePhantomJS(String cmd, String id) throws IndexingException {
+    private void invokePhantomJS(String[] cmd, String id) throws IndexingException {
         try {
-            LOG.debug(cmd);
+            LOG.debug(Arrays.toString(cmd));
 
-            // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"
-            ProcessBuilder ps = new ProcessBuilder(cmd.split(" "));
+            // "/usr/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/app/#!/koulutus/1.2.3.4.5 /path/to/file"
+            ProcessBuilder ps = new ProcessBuilder(cmd);
 
             ps.redirectErrorStream(true);
 
@@ -157,15 +170,15 @@ public class SnapshotServiceImpl implements SnapshotService {
             phantomOutput.close();
 
             if(exitStatus != 0) {
-                throw new IndexingException(String.format("Rendering snapshot for learning opportunity %s failed with exit status: %d",
+                throw new IndexingException(format("Rendering snapshot for learning opportunity %s failed with exit status: %d",
                         id, exitStatus));
             }
 
         } catch(IOException e) {
-            throw new IndexingException(String.format("Rendering learning opportunity %s failed due to IOException: %s",
+            throw new IndexingException(format("Rendering learning opportunity %s failed due to IOException: %s",
                     id, e.getMessage()));
         } catch(InterruptedException e) {
-            throw new IndexingException(String.format("Rendering learning opportunity %s failed due to InterruptedException: %s",
+            throw new IndexingException(format("Rendering learning opportunity %s failed due to InterruptedException: %s",
                     id, e.getMessage()));
         }
     }
