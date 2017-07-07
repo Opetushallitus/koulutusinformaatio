@@ -16,28 +16,26 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ApplicatioOptionNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
+import fi.vm.sade.koulutusinformaatio.exception.HTTPException;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatcher;
-
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.exception.HTTPException;
-import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 
 /**
  * @author Mikko Majapuro
@@ -52,7 +50,7 @@ public class ApplicationOptionResourceImplTest {
     private final String aoId = "1.1.2";
     private final List<String> aoIds = Lists.newArrayList(aoId);
     private final String invalidAoId = "INVALID";
-    private final ResourceNotFoundException notFoundException = new ResourceNotFoundException("Not found");
+    private final ApplicatioOptionNotFoundException notFoundException = new ApplicatioOptionNotFoundException("Not found");
     private final InvalidParametersException invalidParametersException =
             new InvalidParametersException("Invalid parameters");
 

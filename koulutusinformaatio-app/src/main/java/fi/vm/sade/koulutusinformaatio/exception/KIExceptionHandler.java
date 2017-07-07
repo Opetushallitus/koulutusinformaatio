@@ -32,15 +32,17 @@ public class KIExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(KIExceptionHandler.class);
 
     public static HTTPException resolveException(Exception e) {
-        if (e instanceof ResourceNotFoundException) {
-            LOGGER.info(e.getMessage()); // Propably invalid oid
+        if (e instanceof ApplicatioOptionNotFoundException) {
+            LOGGER.debug(e.getMessage()); // Opening old hakemus in haku-app makes these calls
         } else {
             LOGGER.error(e.getMessage(), e);
         }
-        HTTPException webException = null;
+        HTTPException webException;
         if (e instanceof KIException) {
             if (e instanceof SearchException || e instanceof KISolrException) {
                 webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Error occurred while searching");
+            } else if (e instanceof ApplicatioOptionNotFoundException) {
+                webException = new HTTPException(Response.Status.NOT_FOUND, e.getMessage());
             } else if (e instanceof ResourceNotFoundException) {
                 webException = new HTTPException(Response.Status.NOT_FOUND, e.getMessage());
             } else if (e instanceof InvalidParametersException) {

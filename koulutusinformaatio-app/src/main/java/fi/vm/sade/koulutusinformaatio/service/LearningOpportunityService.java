@@ -30,6 +30,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResult
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ApplicatioOptionNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -79,7 +80,7 @@ public interface LearningOpportunityService {
     List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational,
             boolean ongoing, String uiLang);
 
-    ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;
+    ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ApplicatioOptionNotFoundException;
 
     List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang, String uiLang) throws InvalidParametersException;
 
