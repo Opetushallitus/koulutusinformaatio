@@ -127,12 +127,12 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
     
     private String generatePhantomJSCommand(String type, String id) {
-        return String.format("%s %s '%s%s/%s' %s/%s.html",
+        return String.format("%s %s %s%s/%s %s/%s.html",
                 phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id);
     }
     
     private String generatePhantomJSCommand(String type, String id, String lang) {
-        return String.format("%s %s '%s%s/%s?%s=%s' %s/%s_%s.html",
+        return String.format("%s %s %s%s/%s?%s=%s %s/%s_%s.html",
                 phantomjs, snapshotScript, baseUrl, type, id, QUERY_PARAM_LANG, lang, snapshotFolder, id, lang);
     }
 

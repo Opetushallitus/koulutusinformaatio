@@ -45,12 +45,16 @@ page.open(url, function(status) {
     var maxInterval = 10000; // 10 sec
     var start = new Date().getTime();
     var intervalId = setInterval(function() {
-        if (document.querySelectorAll('h1').length || new Date().getTime() - start >= maxInterval) {
-            if(document.querySelectorAll('h1').length){
-                console.log("Rendering url " + url)
-            } else {
-                console.log("Timed out url " + url)
-            }
+        var h1s = page.evaluate(function(){
+            return document.querySelectorAll('h1')
+        });
+        if (h1s.length) {
+            console.log("Rendering url " + url)
+            clearInterval(intervalId);
+            writeHtmlToFile();
+        }
+        if(new Date().getTime() - start >= maxInterval){
+            console.log("Timed out url " + url)
             clearInterval(intervalId);
             writeHtmlToFile();
         }
