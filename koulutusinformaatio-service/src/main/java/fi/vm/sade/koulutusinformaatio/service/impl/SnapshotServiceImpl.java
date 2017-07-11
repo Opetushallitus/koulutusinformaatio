@@ -152,6 +152,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     private void invokePhantomJS(List<String[]> cmds) throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for(String[] cmd : cmds) {
+            Thread.sleep(500); // Ease down the initial 20 requests.
             InvokePhantomJs worker = new InvokePhantomJs(cmd);
             executor.execute(worker);
         }
