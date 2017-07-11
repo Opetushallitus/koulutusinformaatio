@@ -99,11 +99,10 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
-        double toLog = ids.size() / 20.0, count = toLog; int fivePercents = 0;
+        double count = 0; int percents = 0;
         for(String id : ids) {
-            if(--count < 0) { //Log progress every 5 %
-                count = toLog;
-                LOG.info("Rendering {} {}%", type, ++fivePercents);
+            if(++count / ids.size() > percents) { //Log progress once per %
+                LOG.info("Rendering {} {}%", type, ++percents);
             }
             HigherEducationLOSEntity los = higheredDAO.get(id);
 
