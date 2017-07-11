@@ -29,34 +29,21 @@ page.onConsoleMessage = function(msg) {
 //    console.log(msg);
 };
 
-page.open(url, function(status) {
 
-    if (status === 'fail') {
-        console.log("Failed url " + url);
-        phantom.exit();
-    }
-
+page.open(url, function (status) {
     var writeHtmlToFile = function() {
         var html = stripScriptTags(page.content);
         fs.write(filename, html);
-        phantom.exit();
     };
 
-    var maxInterval = 10000; // 10 sec
-    var start = new Date().getTime();
-    var intervalId = setInterval(function() {
-        var h1s = page.evaluate(function(){
-            return document.querySelectorAll('h1')
-        });
-        if (h1s.length) {
+    if (status !== 'success') {
+        console.log("Failed url " + url);
+    } else {
+        page.evaluate(function () {
+                return $("#main-info > h1").text();
+            });
 //            console.log("Rendering url " + url + " to file " + filename);
-            clearInterval(intervalId);
-            writeHtmlToFile();
-        }
-        if(new Date().getTime() - start >= maxInterval){
-            console.log("Timed out url " + url)
-            clearInterval(intervalId);
-            writeHtmlToFile();
-        }
-    }, 500);
+        writeHtmlToFile();
+    }
+    phantom.exit();
 });

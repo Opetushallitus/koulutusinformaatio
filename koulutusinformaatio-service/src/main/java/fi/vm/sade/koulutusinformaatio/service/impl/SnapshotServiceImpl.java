@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
@@ -23,7 +24,6 @@ import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.properties.OphProperties;
 import org.slf4j.Logger;
@@ -38,8 +38,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
+
 
 /**
  * @author Hannu Lyytikainen
@@ -48,6 +52,7 @@ import static java.lang.String.format;
 public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
+    private static final int THREADS_TO_RUN_PHANTOMJS = 20;
 
     private static final String TYPE_HIGHERED = "korkeakoulu";
     private static final String TYPE_ADULT_VOCATIONAL = "ammatillinenaikuiskoulutus";
@@ -86,56 +91,50 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public void renderSnapshots() throws IndexingException {
-        LOG.info("Rendering html snapshots");
-        prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
-        LOG.debug("HigherEd LOs rendered");
-        prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
-        LOG.debug("Adult vocational LOs rendered");
-        prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
-        LOG.debug("Koulutus LOs rendered");
-        prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
-        LOG.debug("Tutkinto LOs rendered");
-        LOG.info("Rendering html snapshots finished");
+        try {
+            LOG.info("Rendering html snapshots");
+            prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
+            LOG.debug("HigherEd LOs rendered");
+            prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
+            LOG.debug("Adult vocational LOs rendered");
+            prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
+            LOG.debug("Koulutus LOs rendered");
+            prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+            LOG.debug("Tutkinto LOs rendered");
+            LOG.info("Rendering html snapshots finished");
+        } catch(InterruptedException e) {
+            LOG.error("Failed to render snapshots in time", e);
+
+        }
     }
 
-    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
-        double count = 0; int percents = 0;
+    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws InterruptedException {
+        List<String[]> cmds = Lists.newArrayList();
         for(String id : ids) {
-            if(++count / ids.size() > percents) { //Log progress once per %
-                LOG.info("Rendering {} {}%", type, ++percents);
-            }
             HigherEducationLOSEntity los = higheredDAO.get(id);
 
             // generate snapshot for each teaching language
             for(CodeEntity teachingLang : los.getTeachingLanguages()) {
-                try {
                     String lang = "";
                     if(teachingLang != null && teachingLang.getValue() != null) {
                         lang = teachingLang.getValue().toLowerCase();
                     }
                     String[] cmd = generatePhantomJSCommand(type, id, lang);
-                    invokePhantomJS(cmd, id);
-                } catch(KIException e) {
-                    LOG.error(e.getMessage());
-                }
+                cmds.add(cmd);
             }
-
             // generate default snapshot
             String[] cmd = generatePhantomJSCommand(type, id);
-            invokePhantomJS(cmd, id);
+            cmds.add(cmd);
         }
+        invokePhantomJS(cmds);
     }
 
-    private void prerender(String type, List<String> ids) throws IndexingException {
-        double toLog = ids.size() / 20.0, count = toLog; int fivePercents = 0;
+    private void prerender(String type, List<String> ids) throws InterruptedException {
+        List<String[]> cmds = Lists.newArrayList();
         for(String id : ids) {
-            if(--count < 0) { //Log progress every 5 %
-                count = toLog;
-                LOG.info("Rendering {} {}%", type, ++fivePercents);
-            }
-            String[] cmd = generatePhantomJSCommand(type, id);
-            invokePhantomJS(cmd, id);
+            cmds.add(generatePhantomJSCommand(type, id));
         }
+        invokePhantomJS(cmds);
     }
 
     private String[] generatePhantomJSCommand(String type, String id) {
@@ -150,37 +149,49 @@ public class SnapshotServiceImpl implements SnapshotService {
         return new String[]{phantomjs, snapshotScript, url, filename};
     }
 
+    private void invokePhantomJS(List<String[]> cmds) throws InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
+        for(String[] cmd : cmds) {
+            InvokePhantomJs worker = new InvokePhantomJs(cmd);
+            executor.execute(worker);
+        }
+        executor.shutdown();
+        executor.awaitTermination(1, TimeUnit.DAYS);
+    }
 
-    private void invokePhantomJS(String[] cmd, String id) throws IndexingException {
-        try {
-            LOG.debug(Arrays.toString(cmd));
+    private class InvokePhantomJs implements Runnable {
+        private String[] cmd;
 
-            // "/usr/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/app/#!/koulutus/1.2.3.4.5 /path/to/file"
-            ProcessBuilder ps = new ProcessBuilder(cmd);
+        public InvokePhantomJs(String[] cmd) {
+            this.cmd = cmd;
+        }
 
-            ps.redirectErrorStream(true);
+        @Override
+        public void run() {
+            try {
+                LOG.debug(Arrays.toString(cmd));
+                // "/usr/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/app/#!/koulutus/1.2.3.4.5 /path/to/file"
+                ProcessBuilder ps = new ProcessBuilder(cmd);
 
-            Process pr = ps.start();
-            BufferedReader phantomOutput = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            String line;
-            while((line = phantomOutput.readLine()) != null) {
-                LOG.info(line);
+                ps.redirectErrorStream(true);
+
+                Process pr = ps.start();
+                BufferedReader phantomOutput = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+                String line;
+                while((line = phantomOutput.readLine()) != null) {
+                    LOG.info(line);
+                }
+                int exitStatus = pr.waitFor();
+
+                phantomOutput.close();
+
+                if(exitStatus != 0) {
+                    LOG.warn(format("Rendering %s failed with exit status: %d.",
+                            Arrays.toString(cmd), exitStatus));
+                }
+            } catch(IOException | InterruptedException e) {
+                LOG.warn(format("Rendering %s failed.", Arrays.toString(cmd)), e);
             }
-            int exitStatus = pr.waitFor();
-
-            phantomOutput.close();
-
-            if(exitStatus != 0) {
-                throw new IndexingException(format("Rendering snapshot for learning opportunity %s failed with exit status: %d",
-                        id, exitStatus));
-            }
-
-        } catch(IOException e) {
-            throw new IndexingException(format("Rendering learning opportunity %s failed due to IOException: %s",
-                    id, e.getMessage()));
-        } catch(InterruptedException e) {
-            throw new IndexingException(format("Rendering learning opportunity %s failed due to InterruptedException: %s",
-                    id, e.getMessage()));
         }
     }
 }
