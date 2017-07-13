@@ -1,18 +1,13 @@
 var page = require("webpage").create(),
-fs = require("fs"),
-system = require("system"),
-scriptTagRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-url, filename;
+    fs = require("fs"),
+    system = require("system"),
+    scriptTagRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    cssTagRegex = /<link(.*?).css(.*?)>/gi,
+    url, filename;
 
-var myConsole = {
-    log: function(file, content) {
-        fs.write(file, new Date().toString() + ' - ' + content + '\n', 'a');
-    }
-}
-
-var stripScriptTags = function(html) {
-    return html.replace(scriptTagRegex, '');
-}
+var stripScriptTags = function (html) {
+    return html.replace(scriptTagRegex, '').replace(cssTagRegex, '');
+};
 
 if (system.args.length < 3) {
     console.log("Invalid params");
@@ -22,27 +17,33 @@ if (system.args.length < 3) {
 url = system.args[1];
 filename = system.args[2];
 
-page.open(url, function() {
+page.settings.loadImages = false;
 
-    var writeHtmlToFile = function() {
+page.onResourceRequested = function (request) {
+//    console.log('Request ' + JSON.stringify(request, undefined, 4));
+};
+page.onResourceReceived = function (response) {
+//    console.log('Receive ' + JSON.stringify(response, undefined, 4));
+};
+page.onConsoleMessage = function (msg) {
+//    console.log(msg);
+};
+
+
+page.open(url, function (status) {
+    var writeHtmlToFile = function () {
         var html = stripScriptTags(page.content);
         fs.write(filename, html);
-        phantom.exit();
     };
 
-    var maxInterval = 10000; // 10 sec
-    var start = new Date().getTime();
-    var intervalId = setInterval(function() {
-
-        var body = page.evaluate(function(s) {
-            return document.querySelector(s).style.display;
-        }, 'body');
-
-        if (body !== 'none' || new Date().getTime() - start >= maxInterval) {
-            clearInterval(intervalId);
-            writeHtmlToFile();
-        }
-
-    }, 500);
+    if (status !== 'success') {
+        console.log("Failed url " + url);
+    } else {
+        page.evaluate(function () {
+            return $("#main-info > h1").text();
+        });
+//            console.log("Rendering url " + url + " to file " + filename);
+        writeHtmlToFile();
+    }
+    phantom.exit();
 });
-

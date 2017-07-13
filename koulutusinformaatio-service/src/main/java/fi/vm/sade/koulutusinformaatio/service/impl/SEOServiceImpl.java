@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.File;
-import java.util.Date;
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.properties.OphProperties;
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
@@ -29,11 +29,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Maps;
-import com.google.common.io.Files;
-
-import fi.vm.sade.koulutusinformaatio.service.SEOService;
-import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
+import java.io.File;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -49,8 +47,6 @@ public class SEOServiceImpl implements SEOService {
     private Map<String, String> sitemapParams;
     private String sitemapLocation;
 
-    //FIXME: SEO service on korjattava ja päivitettävä uusia koulutustyyppejä ja urleja vastaavaksi
-
     @Autowired
     public SEOServiceImpl(SnapshotService snapshotService,
                           Datastore primaryDatastore,
@@ -61,12 +57,9 @@ public class SEOServiceImpl implements SEOService {
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
         this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base"));
-        String collections = "tutkinto:tutkintoLOS," +
+        String collections =
+                "tutkinto:tutkintoLOS," +
                 "koulutus:koulutusLOS," +
-                "koulutusohjelma:childLearningOpportunities," +
-                "lukio:upperSecondaryLearningOpportunitySpecifications," +
-                "valmentava:specialLearningOpportunitySpecifications:-creditValue," +
-                "erityisopetus:specialLearningOpportunitySpecifications:+creditValue," +
                 "korkeakoulu:universityAppliedScienceLOS," +
                 "ammatillinenaikuiskoulutus:competenceBasedQualificationParentLOS," +
                 "aikuislukio:koulutusLOS";
@@ -80,7 +73,7 @@ public class SEOServiceImpl implements SEOService {
         try {
             running = true;
             snapshotService.renderSnapshots();
-            byte[] sitemapBytes= sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
+            byte[] sitemapBytes = sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
             File dest = new File(this.sitemapLocation);
             Files.write(sitemapBytes, dest);
         } catch (Exception e) {
