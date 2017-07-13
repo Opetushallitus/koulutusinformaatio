@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ApplicationOptionNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -95,12 +96,12 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public ApplicationOption getApplicationOption(String aoId) throws ResourceNotFoundException {
+    public ApplicationOption getApplicationOption(String aoId) throws ApplicationOptionNotFoundException {
         ApplicationOptionEntity ao = applicationOptionDAO.get(aoId);
         if (ao != null) {
             return modelMapper.map(ao, ApplicationOption.class);
         } else {
-            throw new ResourceNotFoundException("Application option not found: " + aoId);
+            throw new ApplicationOptionNotFoundException("Application option not found: " + aoId);
         }
     }
 

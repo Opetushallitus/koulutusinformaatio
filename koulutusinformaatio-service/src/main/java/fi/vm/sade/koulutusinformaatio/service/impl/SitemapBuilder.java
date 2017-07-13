@@ -36,10 +36,9 @@ import java.util.Map;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
+
 /**
- * 
  * @author Tero Ahonen
- *
  */
 public class SitemapBuilder {
     public final static String PROPERTY_COLLECTIONS = "sitemap.collections";
@@ -48,6 +47,7 @@ public class SitemapBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(SitemapBuilder.class);
     private static final DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
     private static DocumentBuilder builder;
+
     static {
         try {
             xmlFactory.setNamespaceAware(true);
@@ -58,13 +58,15 @@ public class SitemapBuilder {
         }
 
     }
+
     /**
      * Utilitys function for creating sitemap xml and returning it as byte array.
-     * @param datastore Morphia datastore
-     * @param properties Map<String,String> of properties. Code uses two properties; base url of loc 
-     * elements and csv list of collections. Syntax for list is urlprefix:mongocollection:restriction.
-     * Restriction is a field name and + or - at the start describing must field exist or not.
-     * @return byte array of XML document 
+     *
+     * @param datastore  Morphia datastore
+     * @param properties Map<String,String> of properties. Code uses two properties; base url of loc
+     *                   elements and csv list of collections. Syntax for list is urlprefix:mongocollection:restriction.
+     *                   Restriction is a field name and + or - at the start describing must field exist or not.
+     * @return byte array of XML document
      * @ In case something went wrong.
      */
     public byte[] buildSitemap(Datastore datastore, Map<String, String> properties) throws TransformerException {
@@ -76,7 +78,7 @@ public class SitemapBuilder {
         fields.put(FIELD_ID, 1);
         fields.put(TEACHING_LANGUAGES, 2);
         Document dom = builder.newDocument();
-        Element root  = createNode(dom, ELEMENT_URLSET, null);
+        Element root = createNode(dom, ELEMENT_URLSET, null);
         root.setAttribute(ATTRIBUTE_XMLNS, NAMESPACE);
         int counter = 0;
         int counterByCollection = 0;
@@ -86,48 +88,49 @@ public class SitemapBuilder {
         DBObject query = null;
         for (int i = 0; i < sitemapCollections.length; i++) {
             //value must contains :
-            if (sitemapCollections[i].indexOf(PREFIX_COLLECTION_SEPARATOR) > 0){
+            if (sitemapCollections[i].indexOf(PREFIX_COLLECTION_SEPARATOR) > 0) {
                 LOG.debug("Processing collection {}", sitemapCollections[i]);
                 collectionValues = sitemapCollections[i].split(PREFIX_COLLECTION_SEPARATOR);
                 idPrefix = collectionValues[0];
                 collection = collectionValues[1];
-                if (collectionValues.length > 2){
+                if (collectionValues.length > 2) {
                     restriction = collectionValues[2];
-                    if (restriction.length() > 1 && restriction.startsWith(RESTICTION_CONTAINS)){
+                    if (restriction.length() > 1 && restriction.startsWith(RESTICTION_CONTAINS)) {
                         //remove + or - char at the start of the field name
                         query = new BasicDBObject(restriction.substring(1), new BasicDBObject(QUERY_EXISTS, true));
-                    }else{
+                    } else {
                         query = new BasicDBObject(restriction.substring(1), new BasicDBObject(QUERY_EXISTS, false));
                     }
-                }else{
+                } else {
                     query = new BasicDBObject();
                 }
                 DBCollection col = datastore.getDB().getCollection(collection);
-                DBCursor cursor = col.find(query,fields);
-                while (cursor.hasNext()){
+                DBCursor cursor = col.find(query, fields);
+                while (cursor.hasNext()) {
                     counter++;
                     counterByCollection++;
                     DBObject dbo = cursor.next();
-                    lastModifiedDate = this.getDate(dbo);
-                    List<String> teachingLanguages = getTeachingLanguageCodes( (BasicDBList)dbo.get(TEACHING_LANGUAGES) );
-                    
+                    //using System.currentTimeMillist until proper date can be found from DBOjbect
+                    lastModifiedDate = new Date();
+                    List<String> teachingLanguages = getTeachingLanguageCodes((BasicDBList) dbo.get(TEACHING_LANGUAGES));
+
                     // separate node for each higher education teaching language
                     if (idPrefix.equals(ID_PREFIX_HIGHERED) && !teachingLanguages.isEmpty()) {
-                        for(String lang: teachingLanguages) {
-                            root.appendChild(this.createUrlElement(dom, (String)dbo.get(FIELD_ID), lastModifiedDate, idPrefix, lang, properties.get(PROPERTY_BASE_URL)));
+                        for (String lang : teachingLanguages) {
+                            root.appendChild(this.createUrlElement(dom, (String) dbo.get(FIELD_ID), lastModifiedDate, idPrefix, lang, properties.get(PROPERTY_BASE_URL)));
                         }
                     } else {
-                        root.appendChild(this.createUrlElement(dom, (String)dbo.get(FIELD_ID), lastModifiedDate, idPrefix, null, properties.get(PROPERTY_BASE_URL)));
+                        root.appendChild(this.createUrlElement(dom, (String) dbo.get(FIELD_ID), lastModifiedDate, idPrefix, null, properties.get(PROPERTY_BASE_URL)));
                     }
                 }
                 LOG.debug("Processed " + counterByCollection + " entities for {}", idPrefix);
                 counterByCollection = 0;
-            }else{
-                LOG.warn("Collection name value pair is not well formed, "+sitemapCollections[i]);
+            } else {
+                LOG.warn("Collection name value pair is not well formed, " + sitemapCollections[i]);
             }
         }
         dom.appendChild(root);
-        LOG.info("Processed "+counter+" entities for entire sitemap");
+        LOG.info("Processed " + counter + " entities for entire sitemap");
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -139,41 +142,36 @@ public class SitemapBuilder {
         return out.toByteArray();
 
     }
-    
+
     private List<String> getTeachingLanguageCodes(BasicDBList languages) {
         List<String> result = new ArrayList<String>();
         if (languages != null) {
-            for (Object language: languages) {
-               String lang = (String)((DBObject)language).get("value");
-               result.add(lang.toLowerCase());
+            for (Object language : languages) {
+                String lang = (String) ((DBObject) language).get("value");
+                result.add(lang.toLowerCase());
             }
         }
-        
+
         return result;
     }
-    
-    private Date getDate(DBObject dbo){
-        //using System.currentTimeMillist until proper date can be found from DBOjbect
-        return new Date();
-    }
-    
-    private Element createUrlElement(Document dom, String id, Date lastModified, String idPrefix, String lang, String baseUrl){
+
+    private Element createUrlElement(Document dom, String id, Date lastModified, String idPrefix, String lang, String baseUrl) {
         Element url = this.createNode(dom, ELEMENT_URL, null);
-        
+
         String locationUrl = baseUrl.concat(idPrefix).concat(CHAR_SLASH).concat(id);
         if (lang != null) {
             locationUrl = locationUrl.concat("?").concat(QUERY_PARAM_LANG).concat("=").concat(lang);
         }
-        
+
         url.appendChild(this.createNode(dom, ELEMENT_LOC, locationUrl));
-        if (lastModified != null){
-            url.appendChild(this.createNode(dom,ELEMENT_LASTMOD,SDF.format(lastModified)));
+        if (lastModified != null) {
+            url.appendChild(this.createNode(dom, ELEMENT_LASTMOD, SDF.format(lastModified)));
         }
-        url.appendChild(this.createNode(dom,ELEMENT_CHANGEFREQ,CHANGEFREQ_VALUE));
-        url.appendChild(this.createNode(dom,ELEMENT_PRIORITY,PRIORITY_VALUE));
+        url.appendChild(this.createNode(dom, ELEMENT_CHANGEFREQ, CHANGEFREQ_VALUE));
+        url.appendChild(this.createNode(dom, ELEMENT_PRIORITY, PRIORITY_VALUE));
         return url;
     }
-    
+
     private Element createNode(Document dom, String name, String value) {
         Element e = dom.createElement(name);
         if (value != null) {
@@ -181,7 +179,7 @@ public class SitemapBuilder {
         }
         return e;
     }
-    
+
     private static final String ELEMENT_URLSET = "urlset";
     private static final String ELEMENT_URL = "url";
     private static final String ELEMENT_LASTMOD = "lastmod";

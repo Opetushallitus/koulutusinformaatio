@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.ApplicationOptionNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,7 +125,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException {
+    public ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ApplicationOptionNotFoundException {
         ApplicationOption ao = educationDataQueryService.getApplicationOption(aoId);
         String defaultLang = resolveDefaultLanguage(ao, lang);
         return ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang);

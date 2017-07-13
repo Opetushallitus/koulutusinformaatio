@@ -41,13 +41,6 @@ public abstract class LearningOpportunitySpecificationDAO<T, K> extends Secondar
         query.project("name", true);
         return find(query).asList();
     }
-    
-    public List<T> findByLoiId(String loiId) {
-        Query<T> q = createQuery();
-        q.field("lois.id").equal(loiId);
-        return find(q).asList();
-    }
-
 }
 
 
