@@ -519,12 +519,16 @@ directive('kiAoApplicationTime', function() {
             enddate: '=',
             hakutapa: '=',
             label: '@',
-            periodName: '='
+            periodName: '=',
+            asenddate: '='
         },
         controller: function($scope) {
             $scope.isJatkuva = function() {
                 // code for jatkuva haku is 03
                 return $scope.hakutapa == '03';
+            }
+            $scope.smallerDate = function(dateOne, dateTwo) {
+                return (dateOne > dateTwo) ? dateTwo : dateOne;
             }
         }
     };
