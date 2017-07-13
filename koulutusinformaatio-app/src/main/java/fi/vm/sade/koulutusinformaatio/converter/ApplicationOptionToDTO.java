@@ -69,11 +69,12 @@ public final class ApplicationOptionToDTO {
             dto.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
             dto.setVocational(applicationOption.isVocational());
 
+            boolean canBeAppliedBasedOnApplicationSystem = ConverterUtil.isOngoing(applicationOption.getApplicationSystem().getApplicationDates());
+
             if (applicationOption.getApplicationStartDate() != null && applicationOption.getApplicationEndDate() != null) {
-                dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
-                        applicationOption.getApplicationEndDate())));
+                dto.setCanBeApplied(canBeAppliedBasedOnApplicationSystem && ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(), applicationOption.getApplicationEndDate())));
             } else {
-                dto.setCanBeApplied(ConverterUtil.isOngoing(applicationOption.getApplicationSystem().getApplicationDates()));
+                dto.setCanBeApplied(canBeAppliedBasedOnApplicationSystem);
             }
             if (applicationOption.getApplicationStartDate() != null
                     && applicationOption.getApplicationStartDate().after(new Date())) {

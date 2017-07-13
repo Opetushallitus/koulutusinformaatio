@@ -50,6 +50,14 @@ public class ApplicationOptionToDTOTest {
         ao.setAdditionalProof(new AdditionalProof());
         ao.setAoIdentifier("aoIdentifier");
         ao.setApplicationSystem(new ApplicationSystem());
+        Calendar startCal = Calendar.getInstance();
+        startCal.set(Calendar.MONTH, startCal.get(Calendar.MONTH) - 1);
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(Calendar.MONTH, endCal.get(Calendar.MONTH) + 1);
+        DateRange dateRange = new DateRange(startCal.getTime(), endCal.getTime());
+        List<DateRange> rangeList = Lists.newArrayList();
+        rangeList.add(dateRange);
+        ao.getApplicationSystem().setApplicationDates(rangeList);
         ao.setAthleteEducation(false);
         ao.setAttachmentDeliveryAddress(new Address());
         Map<String, String> translation = new HashMap<>();
@@ -169,6 +177,26 @@ public class ApplicationOptionToDTOTest {
         endCal.add(Calendar.MONTH, -1);
         ao.setApplicationStartDate(startCal.getTime());
         ao.setApplicationEndDate(endCal.getTime());
+        ApplicationOptionDTO dto = ApplicationOptionToDTO.convert(ao, "fi", "fi", "fi");
+        assertTrue(dto.isSpecificApplicationDates());
+        assertFalse(dto.isCanBeApplied());
+    }
+
+    @Test
+    public void testApplicationSystemIsPastApplicationCurrent() {
+        ao.setSpecificApplicationDates(true);
+        Calendar startCal = Calendar.getInstance();
+        startCal.set(Calendar.MONTH, startCal.get(Calendar.MONTH) - 1);
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(Calendar.MONTH, endCal.get(Calendar.MONTH) + 1);
+        ao.setApplicationStartDate(startCal.getTime());
+        ao.setApplicationEndDate(endCal.getTime());
+        Calendar endCalas = Calendar.getInstance();
+        endCalas.add(Calendar.MONTH, -1);
+        DateRange dateRange = new DateRange(startCal.getTime(), endCalas.getTime());
+        List<DateRange> rangeList = Lists.newArrayList();
+        rangeList.add(dateRange);
+        ao.getApplicationSystem().setApplicationDates(rangeList);
         ApplicationOptionDTO dto = ApplicationOptionToDTO.convert(ao, "fi", "fi", "fi");
         assertTrue(dto.isSpecificApplicationDates());
         assertFalse(dto.isCanBeApplied());
