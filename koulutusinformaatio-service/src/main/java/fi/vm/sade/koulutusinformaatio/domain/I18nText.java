@@ -82,4 +82,19 @@ public class I18nText {
     public String toString() {
         return translations.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        I18nText i18nText = (I18nText) o;
+
+        return translations.equals(i18nText.translations);
+    }
+
+    @Override
+    public int hashCode() {
+        return translations.hashCode();
+    }
 }
