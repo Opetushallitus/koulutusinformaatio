@@ -447,7 +447,7 @@ directive('kiApplicationStatusLabel', function() {
         template: '<span data-ng-switch="active" class="text-muted">' +
                     '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
-                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
+                    '<span data-ng-switch-when="present" data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
         scope: {
             applicationSystem: '=as',
@@ -520,14 +520,23 @@ directive('kiAoApplicationTime', function() {
             hakutapa: '=',
             label: '@',
             periodName: '=',
-            asenddate: '='
+            asenddates: '='
         },
         controller: function($scope) {
-            $scope.isJatkuva = function() {
+            $scope.isJatkuva = function () {
                 // code for jatkuva haku is 03
-                return $scope.hakutapa == '03';
+                return $scope.hakutapa === '03';
+            };
+
+            var asEndDateThatIncludesAoDate = _.find($scope.asenddates, function(daterange) {
+                return (daterange.startdate < $scope.enddate && daterange.enddate > $scope.enddate)
+            });
+
+            if (!asEndDateThatIncludesAoDate) {
+                asEndDateThatIncludesAoDate = $scope.asenddates[0].enddate;
             }
-            $scope.smallerDate = ($scope.enddate > $scope.asenddate) ? $scope.asenddate : $scope.enddate;
+
+            $scope.smallerDate = ($scope.enddate > asEndDateThatIncludesAoDate) ? asEndDateThatIncludesAoDate : $scope.enddate;
         }
     };
 }).
