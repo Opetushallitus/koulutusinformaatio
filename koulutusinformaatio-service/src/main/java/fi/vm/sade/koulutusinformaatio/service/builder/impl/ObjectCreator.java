@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -170,14 +171,10 @@ public abstract class ObjectCreator {
         return new ArrayList<Code>(set);
     }
 
-    protected List<I18nText> getI18nTextMultiple(KoodiUrisV1RDTO opetusmuodos) throws KoodistoException {
-        List<I18nText> opetusmuodot = new ArrayList<I18nText>();
-        if (opetusmuodos != null && opetusmuodos.getMeta() != null && !opetusmuodos.getMeta().isEmpty()) {
-
-            Iterator<Map.Entry<String, KoodiV1RDTO>> i = opetusmuodos.getMeta().entrySet().iterator();
-
-            while (i.hasNext()) {
-                Map.Entry<String, KoodiV1RDTO> entry = i.next();
+    protected List<I18nText> getI18nTextMultiple(KoodiUrisV1RDTO koodiUris) throws KoodistoException {
+        Set<I18nText> opetusmuodot = new HashSet<>();
+        if (koodiUris != null && koodiUris.getMeta() != null && !koodiUris.getMeta().isEmpty()) {
+            for (Map.Entry<String, KoodiV1RDTO> entry : koodiUris.getMeta().entrySet()) {
                 if (entry.getValue() != null && entry.getValue().getMeta() != null) {
                     I18nText text = this.getI18nTextEnriched(entry.getValue().getMeta());
                     if (text != null) {
@@ -185,10 +182,8 @@ public abstract class ObjectCreator {
                     }
                 }
             }
-
-
         }
-        return opetusmuodot;
+        return Lists.newArrayList(opetusmuodot);
     }
 
     protected List<Code> createCodes(KoodiUrisV1RDTO opetuskielis) throws KoodistoException {
