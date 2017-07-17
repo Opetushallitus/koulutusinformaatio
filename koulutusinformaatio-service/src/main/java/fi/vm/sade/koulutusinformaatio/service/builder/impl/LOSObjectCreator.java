@@ -389,7 +389,7 @@ public class LOSObjectCreator extends ObjectCreator {
     // tutkintonimike
     private List<I18nText> getQualifications(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
 
-        List<I18nText> qualifications = new ArrayList<>();
+        Set<I18nText> qualifications = Sets.newHashSet();
 
         KoodiV1RDTO kandKoul = koulutus.getKandidaatinKoulutuskoodi();
 
@@ -409,13 +409,13 @@ public class LOSObjectCreator extends ObjectCreator {
 
         qualifications.addAll(getI18nTextMultiple(koulutus.getTutkintonimikes()));
 
-        return qualifications;
+        return Lists.newArrayList(qualifications);
     }
 
     // tutkintonimike
     private List<I18nText> getQualificationsForAikuAmm(NayttotutkintoV1RDTO koulutus) throws KoodistoException {
 
-        List<I18nText> qualifications = new ArrayList<>();
+        Set<I18nText> qualifications = Sets.newHashSet();
 
         String osaamisalalUri = koulutus.getKoulutusohjelma().getUri();// getKandidaatinKoulutuskoodi();
 
@@ -433,7 +433,7 @@ public class LOSObjectCreator extends ObjectCreator {
             qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike()));
         }
 
-        return qualifications;
+        return Lists.newArrayList(qualifications);
     }
 
     private <S extends KoulutusLOS> ParentLOSRef createParentLosRef(S los) {
