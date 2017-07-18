@@ -79,7 +79,7 @@ public class SEOServiceImpl implements SEOService {
             byte[] sitemapBytes = sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
             File dest = new File(this.sitemapLocation);
             Files.write(sitemapBytes, dest);
-        } catch (Exception e) {
+        } catch (TransformerException | IOException | IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {
             running = false;

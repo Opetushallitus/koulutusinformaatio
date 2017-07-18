@@ -53,8 +53,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
 
-    @Value("${koulutusinformaatio.phantomjs.threads} ?: 2")
-    private static int THREADS_TO_RUN_PHANTOMJS;
+    private final int THREADS_TO_RUN_PHANTOMJS;
 
     private static final String TYPE_HIGHERED = "korkeakoulu";
     private static final String TYPE_ADULT_VOCATIONAL = "ammatillinenaikuiskoulutus";
@@ -80,6 +79,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
+                               @Value("${koulutusinformaatio.phantomjs.threads ?: 2}") int threadsToRunPhantomjs,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
@@ -89,6 +89,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.snapshotScript = script;
         this.snapshotFolder = prerenderFolder;
         this.baseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
+        this.THREADS_TO_RUN_PHANTOMJS = threadsToRunPhantomjs;
     }
 
     @Override
@@ -189,12 +190,13 @@ public class SnapshotServiceImpl implements SnapshotService {
                                 Arrays.toString(cmd), exitStatus));
                     }
                 } catch (InterruptedException e) {
-                    LOG.error("Failed to render snapshots in time", e);
+                    LOG.error("Error waiting for phantomJS", e);
+                    Thread.currentThread().interrupt();
                 } finally {
                     phantomOutput.close();
                 }
             } catch (IOException e) {
-                LOG.warn(format("Rendering %s failed.", Arrays.toString(cmd)), e);
+                LOG.error(format("Rendering %s failed.", Arrays.toString(cmd)), e);
             }
         }
     }
