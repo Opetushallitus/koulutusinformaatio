@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.String.format;
 
@@ -79,7 +80,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
-                               @Value("${koulutusinformaatio.phantomjs.threads ?: 2}") int threadsToRunPhantomjs,
+                               @Value("${koulutusinformaatio.phantomjs.threads ?: 4}") int threadsToRunPhantomjs,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
@@ -96,13 +97,13 @@ public class SnapshotServiceImpl implements SnapshotService {
     public void renderSnapshots() throws IndexingException {
         LOG.info("Rendering html snapshots");
         prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
-        LOG.debug("HigherEd LOs rendered");
+        LOG.info("HigherEd LOs rendered");
         prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
-        LOG.debug("Adult vocational LOs rendered");
+        LOG.info("Adult vocational LOs rendered");
         prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
-        LOG.debug("Koulutus LOs rendered");
+        LOG.info("Koulutus LOs rendered");
         prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
-        LOG.debug("Tutkinto LOs rendered");
+        LOG.info("Tutkinto LOs rendered");
         LOG.info("Rendering html snapshots finished");
     }
 
@@ -147,7 +148,13 @@ public class SnapshotServiceImpl implements SnapshotService {
         return new String[]{phantomjs, snapshotScript, url, filename};
     }
 
+    private final AtomicInteger previousPercent = new AtomicInteger(0);
+    private final AtomicInteger count = new AtomicInteger(0);
+    private final AtomicInteger total = new AtomicInteger(0);
+
     private void invokePhantomJS(List<String[]> cmds) throws IndexingException {
+        count.set(0);
+        total.set(cmds.size());
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
             InvokePhantomJs worker = new InvokePhantomJs(cmd);
@@ -157,6 +164,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         try {
             executor.awaitTermination(1, TimeUnit.DAYS);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new IndexingException("Failed to render snapshots in time", e);
         }
     }
@@ -194,6 +202,12 @@ public class SnapshotServiceImpl implements SnapshotService {
                     Thread.currentThread().interrupt();
                 } finally {
                     phantomOutput.close();
+                    int percent = (int) Math.floor(count.incrementAndGet() * 100f / total.get());
+
+                    synchronized (previousPercent) {
+                        if (percent > previousPercent.get())
+                            LOG.info(previousPercent.incrementAndGet() + " % done.");
+                    }
                 }
             } catch (IOException e) {
                 LOG.error(format("Rendering %s failed.", Arrays.toString(cmd)), e);
