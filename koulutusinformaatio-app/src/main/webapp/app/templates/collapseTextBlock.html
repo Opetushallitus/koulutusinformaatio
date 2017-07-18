@@ -8,7 +8,7 @@
     </div>
     <div class="panel-body">
         <div class="tarjonta-content" data-collapse="isClose" id="{{title}}">
-            <div data-ng-bind-html="content | tarjontaFilter"></div>
+            <div data-bind-html-if-safe="content | tarjontaFilter"></div>
         </div>
     </div>
 </div>
