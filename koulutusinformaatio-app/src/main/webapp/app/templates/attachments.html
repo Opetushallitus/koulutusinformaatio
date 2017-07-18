@@ -1,6 +1,6 @@
 <div data-ng-repeat="att in attachments" data-ng-show="att.descreption">
     <h3>{{att.type}}</h3>
-    <div data-ng-bind-html="att.descreption | tarjontaFilter"></div>
+    <div data-bind-html-if-safe="att.descreption | tarjontaFilter"></div>
 </div>
 <table class="table table-striped table-condensed table-responsive">
     <colgroup>
