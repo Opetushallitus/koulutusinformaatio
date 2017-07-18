@@ -80,7 +80,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
-                               @Value("${koulutusinformaatio.phantomjs.threads ?: 4}") int threadsToRunPhantomjs,
+                               @Value("${koulutusinformaatio.phantomjs.threads ?: 3}") int threadsToRunPhantomjs,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
@@ -96,14 +96,14 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public void renderSnapshots() throws IndexingException {
         LOG.info("Rendering html snapshots");
+        LOG.info("Rendering HigherEd LOs");
         prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
-        LOG.info("HigherEd LOs rendered");
+        LOG.info("Rendering Adult vocational LOs");
         prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
-        LOG.info("Adult vocational LOs rendered");
+        LOG.info("rendering Koulutus LOs");
         prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
-        LOG.info("Koulutus LOs rendered");
+        LOG.info("Rendering Tutkinto LOs");
         prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
-        LOG.info("Tutkinto LOs rendered");
         LOG.info("Rendering html snapshots finished");
     }
 
@@ -125,7 +125,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             String[] cmd = generatePhantomJSCommand(type, id);
             cmds.add(cmd);
         }
-        invokePhantomJS(cmds);
+        invokePhantomJS(type, cmds);
     }
 
     private void prerender(String type, List<String> ids) throws IndexingException {
@@ -133,7 +133,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         for (String id : ids) {
             cmds.add(generatePhantomJSCommand(type, id));
         }
-        invokePhantomJS(cmds);
+        invokePhantomJS(type, cmds);
     }
 
     private String[] generatePhantomJSCommand(String type, String id) {
@@ -152,12 +152,12 @@ public class SnapshotServiceImpl implements SnapshotService {
     private final AtomicInteger count = new AtomicInteger(0);
     private final AtomicInteger total = new AtomicInteger(0);
 
-    private void invokePhantomJS(List<String[]> cmds) throws IndexingException {
+    private void invokePhantomJS(String type, List<String[]> cmds) throws IndexingException {
         count.set(0);
         total.set(cmds.size());
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
-            InvokePhantomJs worker = new InvokePhantomJs(cmd);
+            InvokePhantomJs worker = new InvokePhantomJs(type, cmd);
             executor.execute(worker);
         }
         executor.shutdown();
@@ -170,9 +170,11 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     private class InvokePhantomJs implements Runnable {
+        private final String type;
         private String[] cmd;
 
-        public InvokePhantomJs(String[] cmd) {
+        public InvokePhantomJs(String type, String[] cmd) {
+            this.type = type;
             this.cmd = cmd;
         }
 
@@ -206,7 +208,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
                     synchronized (previousPercent) {
                         if (percent > previousPercent.get())
-                            LOG.info(previousPercent.incrementAndGet() + " % done.");
+                            LOG.info(type + " " + previousPercent.incrementAndGet() + " % done.");
                     }
                 }
             } catch (IOException e) {
