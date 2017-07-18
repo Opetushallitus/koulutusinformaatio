@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
+import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.properties.OphProperties;
@@ -29,7 +30,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.xml.transform.TransformerException;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -76,8 +79,8 @@ public class SEOServiceImpl implements SEOService {
             byte[] sitemapBytes = sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
             File dest = new File(this.sitemapLocation);
             Files.write(sitemapBytes, dest);
-        } catch (Exception e) {
-            LOG.error(String.format("SEO batch execution error: %s", e.getMessage()));
+        } catch (TransformerException | IOException | IndexingException e) {
+            LOG.error("SEO batch execution error", e);
         } finally {
             running = false;
         }
