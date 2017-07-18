@@ -93,25 +93,19 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public void renderSnapshots() throws IndexingException {
-        try {
-            LOG.info("Rendering html snapshots");
-            prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
-            LOG.debug("HigherEd LOs rendered");
-            prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
-            LOG.debug("Adult vocational LOs rendered");
-            prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
-            LOG.debug("Koulutus LOs rendered");
-            prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
-            LOG.debug("Tutkinto LOs rendered");
-            LOG.info("Rendering html snapshots finished");
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            LOG.error("Failed to render snapshots in time", e);
-
-        }
+        LOG.info("Rendering html snapshots");
+        prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
+        LOG.debug("HigherEd LOs rendered");
+        prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
+        LOG.debug("Adult vocational LOs rendered");
+        prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
+        LOG.debug("Koulutus LOs rendered");
+        prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+        LOG.debug("Tutkinto LOs rendered");
+        LOG.info("Rendering html snapshots finished");
     }
 
-    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws InterruptedException {
+    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
         List<String[]> cmds = Lists.newArrayList();
         for (String id : ids) {
             HigherEducationLOSEntity los = higheredDAO.get(id);
@@ -132,7 +126,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         invokePhantomJS(cmds);
     }
 
-    private void prerender(String type, List<String> ids) throws InterruptedException {
+    private void prerender(String type, List<String> ids) throws IndexingException {
         List<String[]> cmds = Lists.newArrayList();
         for (String id : ids) {
             cmds.add(generatePhantomJSCommand(type, id));
@@ -152,15 +146,18 @@ public class SnapshotServiceImpl implements SnapshotService {
         return new String[]{phantomjs, snapshotScript, url, filename};
     }
 
-    private void invokePhantomJS(List<String[]> cmds) throws InterruptedException {
+    private void invokePhantomJS(List<String[]> cmds) throws IndexingException {
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
-            Thread.sleep(500); // Ease down the initial requests.
             InvokePhantomJs worker = new InvokePhantomJs(cmd);
             executor.execute(worker);
         }
         executor.shutdown();
-        executor.awaitTermination(1, TimeUnit.DAYS);
+        try {
+            executor.awaitTermination(1, TimeUnit.DAYS);
+        } catch (InterruptedException e) {
+            throw new IndexingException("Failed to render snapshots in time", e);
+        }
     }
 
     private class InvokePhantomJs implements Runnable {
@@ -185,18 +182,18 @@ public class SnapshotServiceImpl implements SnapshotService {
                 while ((line = phantomOutput.readLine()) != null) {
                     LOG.info(line);
                 }
-                int exitStatus = pr.waitFor();
-
-                phantomOutput.close();
-
-                if (exitStatus != 0) {
-                    LOG.warn(format("Rendering %s failed with exit status: %d.",
-                            Arrays.toString(cmd), exitStatus));
+                try {
+                    int exitStatus = pr.waitFor();
+                    if (exitStatus != 0) {
+                        LOG.warn(format("Rendering %s failed with exit status: %d.",
+                                Arrays.toString(cmd), exitStatus));
+                    }
+                } catch (InterruptedException e) {
+                    LOG.error("Failed to render snapshots in time", e);
+                } finally {
+                    phantomOutput.close();
                 }
             } catch (IOException e) {
-                LOG.warn(format("Rendering %s failed.", Arrays.toString(cmd)), e);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
                 LOG.warn(format("Rendering %s failed.", Arrays.toString(cmd)), e);
             }
         }
