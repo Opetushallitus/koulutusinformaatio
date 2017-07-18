@@ -52,7 +52,9 @@ import static java.lang.String.format;
 public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
-    private static final int THREADS_TO_RUN_PHANTOMJS = 4;
+
+    @Value("${koulutusinformaatio.phantomjs.threads} ?: 2")
+    private static int THREADS_TO_RUN_PHANTOMJS;
 
     private static final String TYPE_HIGHERED = "korkeakoulu";
     private static final String TYPE_ADULT_VOCATIONAL = "ammatillinenaikuiskoulutus";
@@ -103,6 +105,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             LOG.debug("Tutkinto LOs rendered");
             LOG.info("Rendering html snapshots finished");
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             LOG.error("Failed to render snapshots in time", e);
 
         }
@@ -190,7 +193,10 @@ public class SnapshotServiceImpl implements SnapshotService {
                     LOG.warn(format("Rendering %s failed with exit status: %d.",
                             Arrays.toString(cmd), exitStatus));
                 }
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
+                LOG.warn(format("Rendering %s failed.", Arrays.toString(cmd)), e);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 LOG.warn(format("Rendering %s failed.", Arrays.toString(cmd)), e);
             }
         }
