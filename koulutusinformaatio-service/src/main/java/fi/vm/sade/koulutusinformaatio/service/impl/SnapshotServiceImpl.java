@@ -53,7 +53,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
 
-    @Value("${koulutusinformaatio.phantomjs.threads} ?: 2")
+    @Value("${koulutusinformaatio.phantomjs.threads ?: 2}")
     private static int THREADS_TO_RUN_PHANTOMJS;
 
     private static final String TYPE_HIGHERED = "korkeakoulu";
