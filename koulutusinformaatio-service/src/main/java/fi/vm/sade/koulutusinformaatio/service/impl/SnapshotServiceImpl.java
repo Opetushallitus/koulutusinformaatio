@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.String.format;
 
@@ -125,7 +124,7 @@ public class SnapshotServiceImpl implements SnapshotService {
             String[] cmd = generatePhantomJSCommand(type, id);
             cmds.add(cmd);
         }
-        invokePhantomJS(type, cmds);
+        invokePhantomJS(cmds);
     }
 
     private void prerender(String type, List<String> ids) throws IndexingException {
@@ -133,7 +132,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         for (String id : ids) {
             cmds.add(generatePhantomJSCommand(type, id));
         }
-        invokePhantomJS(type, cmds);
+        invokePhantomJS(cmds);
     }
 
     private String[] generatePhantomJSCommand(String type, String id) {
@@ -148,17 +147,11 @@ public class SnapshotServiceImpl implements SnapshotService {
         return new String[]{phantomjs, snapshotScript, url, filename};
     }
 
-    private final AtomicInteger previousPercent = new AtomicInteger(0);
-    private final AtomicInteger count = new AtomicInteger(0);
-    private final AtomicInteger total = new AtomicInteger(0);
-
-    private void invokePhantomJS(String type, List<String[]> cmds) throws IndexingException {
-        count.set(0);
-        total.set(cmds.size());
+    private void invokePhantomJS(List<String[]> cmds) throws IndexingException {
+        LOG.info("Invoking phantomjs for {} commands", cmds.size());
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
-            InvokePhantomJs worker = new InvokePhantomJs(type, cmd);
-            executor.execute(worker);
+            executor.execute(new InvokePhantomJs(cmd));
         }
         executor.shutdown();
         try {
@@ -170,11 +163,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     private class InvokePhantomJs implements Runnable {
-        private final String type;
         private String[] cmd;
 
-        public InvokePhantomJs(String type, String[] cmd) {
-            this.type = type;
+        public InvokePhantomJs(String[] cmd) {
             this.cmd = cmd;
         }
 
@@ -204,12 +195,6 @@ public class SnapshotServiceImpl implements SnapshotService {
                     Thread.currentThread().interrupt();
                 } finally {
                     phantomOutput.close();
-                    int percent = (int) Math.floor(count.incrementAndGet() * 100f / total.get());
-
-                    synchronized (previousPercent) {
-                        if (percent > previousPercent.get())
-                            LOG.info(type + " " + previousPercent.incrementAndGet() + " % done.");
-                    }
                 }
             } catch (IOException e) {
                 LOG.error(format("Rendering %s failed.", Arrays.toString(cmd)), e);
