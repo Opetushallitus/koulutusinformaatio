@@ -447,7 +447,7 @@ directive('kiApplicationStatusLabel', function() {
         template: '<span data-ng-switch="active" class="text-muted">' +
                     '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
-                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
+                    '<span data-ng-switch-when="present" data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
         scope: {
             applicationSystem: '=as',
@@ -519,12 +519,21 @@ directive('kiAoApplicationTime', function() {
             enddate: '=',
             hakutapa: '=',
             label: '@',
-            periodName: '='
+            periodName: '=',
+            asenddates: '='
         },
         controller: function($scope) {
-            $scope.isJatkuva = function() {
+            $scope.isJatkuva = function () {
                 // code for jatkuva haku is 03
-                return $scope.hakutapa == '03';
+                return $scope.hakutapa === '03';
+            };
+
+            if($scope.asenddates) {
+                var asEndDateThatIncludesAoDate = _.find($scope.asenddates, function (daterange) {
+                    return (daterange.startDate < $scope.enddate && daterange.endDate > $scope.enddate)
+                });
+                var asEndDate = asEndDateThatIncludesAoDate ? asEndDateThatIncludesAoDate.endDate : $scope.asenddates[0].enddate;
+                $scope.smallerDate = ($scope.enddate > asEndDate) ? asEndDate : $scope.enddate;
             }
         }
     };
@@ -616,4 +625,34 @@ directive('setFocusHere', function(){
                 element[0].focus();
             }
         };
-});
+}).
+/**
+ * Kuvaukseen voi olla syötettynä rikkinäistä html:ää. Tällöin näytetään teksti rikkinäisenä.
+ * https://github.com/shaunbowe/ngBindHtmlIfSafe
+ */
+directive("bindHtmlIfSafe", ['$compile', '$sce', function ($compile, $sce) {
+    return function (scope, element, attrs) {
+        scope.$watch(
+            function (scope) {
+                return scope.$eval(attrs.bindHtmlIfSafe);
+            },
+            function (value) {
+                if(value) {
+                    var sanitizedHtml = null;
+                    try {
+                        sanitizedHtml = $sce.getTrustedHtml(value);
+                    } catch (ignore) {}
+
+                    if (sanitizedHtml != null) {
+                        element.html(sanitizedHtml);
+                    } else {
+                        console.error("Passing through invalid html. Url: " + window.location + " html: " + value);
+                        element.text(value);
+                    }
+
+                    $compile(element.contents())(scope);
+                }
+            }
+        );
+    }
+}]);

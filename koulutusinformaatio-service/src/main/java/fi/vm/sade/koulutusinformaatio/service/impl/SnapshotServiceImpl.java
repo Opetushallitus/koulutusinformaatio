@@ -52,7 +52,8 @@ import static java.lang.String.format;
 public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
-    private static final int THREADS_TO_RUN_PHANTOMJS = 4;
+
+    private final int THREADS_TO_RUN_PHANTOMJS;
 
     private static final String TYPE_HIGHERED = "korkeakoulu";
     private static final String TYPE_ADULT_VOCATIONAL = "ammatillinenaikuiskoulutus";
@@ -78,6 +79,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
+                               @Value("${koulutusinformaatio.phantomjs.threads ?: 3}") int threadsToRunPhantomjs,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
@@ -87,28 +89,24 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.snapshotScript = script;
         this.snapshotFolder = prerenderFolder;
         this.baseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
+        this.THREADS_TO_RUN_PHANTOMJS = threadsToRunPhantomjs;
     }
 
     @Override
     public void renderSnapshots() throws IndexingException {
-        try {
-            LOG.info("Rendering html snapshots");
-            prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
-            LOG.debug("HigherEd LOs rendered");
-            prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
-            LOG.debug("Adult vocational LOs rendered");
-            prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
-            LOG.debug("Koulutus LOs rendered");
-            prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
-            LOG.debug("Tutkinto LOs rendered");
-            LOG.info("Rendering html snapshots finished");
-        } catch (InterruptedException e) {
-            LOG.error("Failed to render snapshots in time", e);
-
-        }
+        LOG.info("Rendering html snapshots");
+        LOG.info("Rendering HigherEd LOs");
+        prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
+        LOG.info("Rendering Adult vocational LOs");
+        prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
+        LOG.info("rendering Koulutus LOs");
+        prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
+        LOG.info("Rendering Tutkinto LOs");
+        prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+        LOG.info("Rendering html snapshots finished");
     }
 
-    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws InterruptedException {
+    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
         List<String[]> cmds = Lists.newArrayList();
         for (String id : ids) {
             HigherEducationLOSEntity los = higheredDAO.get(id);
@@ -129,7 +127,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         invokePhantomJS(cmds);
     }
 
-    private void prerender(String type, List<String> ids) throws InterruptedException {
+    private void prerender(String type, List<String> ids) throws IndexingException {
         List<String[]> cmds = Lists.newArrayList();
         for (String id : ids) {
             cmds.add(generatePhantomJSCommand(type, id));
@@ -149,15 +147,19 @@ public class SnapshotServiceImpl implements SnapshotService {
         return new String[]{phantomjs, snapshotScript, url, filename};
     }
 
-    private void invokePhantomJS(List<String[]> cmds) throws InterruptedException {
+    private void invokePhantomJS(List<String[]> cmds) throws IndexingException {
+        LOG.info("Invoking phantomjs for {} commands", cmds.size());
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
-            Thread.sleep(500); // Ease down the initial requests.
-            InvokePhantomJs worker = new InvokePhantomJs(cmd);
-            executor.execute(worker);
+            executor.execute(new InvokePhantomJs(cmd));
         }
         executor.shutdown();
-        executor.awaitTermination(1, TimeUnit.DAYS);
+        try {
+            executor.awaitTermination(1, TimeUnit.DAYS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IndexingException("Failed to render snapshots in time", e);
+        }
     }
 
     private class InvokePhantomJs implements Runnable {
@@ -182,16 +184,20 @@ public class SnapshotServiceImpl implements SnapshotService {
                 while ((line = phantomOutput.readLine()) != null) {
                     LOG.info(line);
                 }
-                int exitStatus = pr.waitFor();
-
-                phantomOutput.close();
-
-                if (exitStatus != 0) {
-                    LOG.warn(format("Rendering %s failed with exit status: %d.",
-                            Arrays.toString(cmd), exitStatus));
+                try {
+                    int exitStatus = pr.waitFor();
+                    if (exitStatus != 0) {
+                        LOG.warn(format("Rendering %s failed with exit status: %d.",
+                                Arrays.toString(cmd), exitStatus));
+                    }
+                } catch (InterruptedException e) {
+                    LOG.error("Error waiting for phantomJS", e);
+                    Thread.currentThread().interrupt();
+                } finally {
+                    phantomOutput.close();
                 }
-            } catch (IOException | InterruptedException e) {
-                LOG.warn(format("Rendering %s failed.", Arrays.toString(cmd)), e);
+            } catch (IOException e) {
+                LOG.error(format("Rendering %s failed.", Arrays.toString(cmd)), e);
             }
         }
     }

@@ -60,6 +60,7 @@ cas.user-search-filter=(|(mail\={0})(uid\={0}))
 customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
 flyway.initOnMigrate=true
 koulutusinformaatio.phantomjs=/usr/bin/phantomjs
+koulutusinformaatio.phantomjs.threads=3
 koulutusinformaatio.snapshot.script=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/script/render.js
 koulutusinformaatio.snapshot.folder=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/app/snapshot
 koulutusinformaatio.sitemap.filename=sitemap-learningopportunity.xml

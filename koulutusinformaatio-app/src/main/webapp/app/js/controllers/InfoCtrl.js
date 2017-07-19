@@ -69,9 +69,15 @@
 
         // use goals (Tavoitteet) to generate description content if exists
         if (lo.goals) {
-            var goalsAsText = $(lo.goals).contents().filter(function() { 
-                return this.nodeType === 3; // Node.TEXT_NODE;
-            }).text();
+
+            var goalsAsText;
+            try {
+                goalsAsText = $(lo.goals).contents().filter(function () {
+                    return this.nodeType === 3; // Node.TEXT_NODE;
+                }).text();
+            } catch (ignoreExceptionNonHtmlGoalsText) {
+                goalsAsText = lo.goals;
+            }
 
             if (goalsAsText) {
                 description = _.first(goalsAsText.split('.'));
