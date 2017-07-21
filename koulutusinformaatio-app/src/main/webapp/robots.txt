@@ -1,5 +1,5 @@
 User-agent: *
-Sitemap: /sitemap.xml
+Sitemap: https://opintopolku.fi/sitemap.xml
 Disallow: /haku-app/
 Disallow: /etusivu/
 Disallow: /m/
