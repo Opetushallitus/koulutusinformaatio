@@ -32,6 +32,7 @@ public class DataStatusEntity {
     @Id
     private org.bson.types.ObjectId id;
     private Date lastUpdateFinished = new Date();
+    private Date lastSEOIndexingUpdateFinished = new Date();
     private long lastUpdateDuration;
     private String lastUpdateOutcome;
     private long progressCounter;
@@ -81,5 +82,13 @@ public class DataStatusEntity {
 
     public void setProgressCounter(long progressCounter) {
         this.progressCounter = progressCounter;
+    }
+
+    public Date getLastSEOIndexingUpdateFinished() {
+        return lastSEOIndexingUpdateFinished;
+    }
+
+    public void setLastSEOIndexingUpdateFinished(Date lastSEOIndexingUpdateFinished) {
+        this.lastSEOIndexingUpdateFinished = lastSEOIndexingUpdateFinished;
     }
 }

@@ -84,7 +84,22 @@ public class SEOServiceImpl implements SEOService {
         } finally {
             running = false;
         }
+    }
 
+    @Async
+    @Override
+    public void updateLastModified() {
+        try {
+            running = true;
+            snapshotService.renderLastModifiedSnapshots();
+            byte[] sitemapBytes = sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
+            File dest = new File(this.sitemapLocation);
+            Files.write(sitemapBytes, dest);
+        } catch (TransformerException | IOException | IndexingException e) {
+            LOG.error("SEO batch execution error", e);
+        } finally {
+            running = false;
+        }
     }
 
     @Override

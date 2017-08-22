@@ -37,6 +37,7 @@
     <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.integrationtest.ProviderServiceMock"/>
     <bean id="dataUpdateService" class="fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataUpdateServiceImpl"/>
     <bean id="dataQueryService" class="fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDataQueryServiceImpl"/>
+    <bean id="seoSnapshotService" class="fi.vm.sade.koulutusinformaatio.integrationtest.SEOSnapshotServiceMock"/>
     <bean class="fi.vm.sade.koulutusinformaatio.configuration.UrlConfiguration"/>
     <bean class="fi.vm.sade.koulutusinformaatio.configuration.HttpClient"/>
 
@@ -49,6 +50,7 @@
     <mockito:mock id="lopAliasSolrServer" class="org.apache.solr.client.solrj.impl.HttpSolrServer"/>
     <mockito:mock id="pictureDAO" class="fi.vm.sade.koulutusinformaatio.dao.PictureDAO"/>
     <mockito:mock id="dataStatusDAO" class="fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO"/>
+    <mockito:mock id="snapshotDAO" class="fi.vm.sade.koulutusinformaatio.dao.SnapshotDAO"/>
 
     <bean id="mongodFactory" class="de.flapdoodle.embed.mongo.tests.MongodForTestsFactory" destroy-method="shutdown"/>
     <bean id="mongo" class="com.mongodb.MongoClient" factory-bean="mongodFactory" factory-method="newMongo"/>

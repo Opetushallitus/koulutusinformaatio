@@ -114,7 +114,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
             runUpdate(oid, updater);
         } catch (Exception e) {
             LOGGER.error("Error indexing " + updater.getUpdateProcessName() + ": " + oid, e);
-            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
+            dataUpdateService.save(new DataStatus(new Date(), new Date(),System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
         } finally {
             running = false;
         }
@@ -127,7 +127,7 @@ public class PartialUpdateServiceImpl implements PartialUpdateService {
         LOGGER.debug("Committing to solr");
         indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
         LOGGER.debug("Saving successful status");
-        dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS-PARTIAL"));
+        dataUpdateService.save(new DataStatus(new Date(), new Date(),System.currentTimeMillis() - runningSince, "SUCCESS-PARTIAL"));
         LOGGER.info(String.format("Partial indexing finished for %s with oid: %s. Indexing took %s", updater.getUpdateProcessName(),
                 oid, System.currentTimeMillis() - runningSince));
         tarjontaService.clearProcessedLists();

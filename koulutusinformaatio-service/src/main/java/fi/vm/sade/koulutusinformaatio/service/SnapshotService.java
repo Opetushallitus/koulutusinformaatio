@@ -23,6 +23,17 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
  */
 public interface SnapshotService {
 
+    /**
+     * Render all html snapshots of all learning opportunity views.
+     *
+     * @throws IndexingException
+     */
     void renderSnapshots() throws IndexingException;
 
+    /**
+     * Render last modified html snapshots of all learning opportunity views.
+     *
+     * @throws IndexingException
+     */
+    void renderLastModifiedSnapshots() throws IndexingException;
 }

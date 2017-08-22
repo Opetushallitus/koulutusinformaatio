@@ -265,7 +265,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.debug("Transaction completed");
-            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS", getProgressCounter()));
+            educationDataUpdateService.save(new DataStatus(new Date(), new Date(),System.currentTimeMillis() - runningSince, "SUCCESS", getProgressCounter()));
 
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
@@ -293,7 +293,7 @@ public class UpdateServiceImpl implements UpdateService {
         } catch (KISolrException e) {
             LOG.error("Rollback failed", e);
         }
-        educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", cause)));
+        educationDataUpdateService.save(new DataStatus(new Date(), new Date(),System.currentTimeMillis() - runningSince, String.format("FAIL: %s", cause)));
     }
 
     public long getProgressCounter() {
@@ -361,7 +361,7 @@ public class UpdateServiceImpl implements UpdateService {
             } catch (KISolrException e) {
                 LOG.error("Rollback failed", e);
             }
-            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s",
+            educationDataUpdateService.save(new DataStatus(new Date(), new Date(),System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s",
                     ex.getMessage())));
             LOG.warn("Article update failed ", ex);
 

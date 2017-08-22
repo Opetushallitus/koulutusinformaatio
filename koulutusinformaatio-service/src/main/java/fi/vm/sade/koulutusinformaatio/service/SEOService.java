@@ -27,11 +27,14 @@ import java.util.Date;
 public interface SEOService {
 
     /**
-     * Update koulutusinformaatio sitemap and
-     * render html snapshots of all learning opportunity
-     * views.
+     * Update koulutusinformaatio sitemap and render all html snapshots of all learning opportunity views.
      */
     public void update();
+
+    /**
+     * Update koulutusinformaatio sitemap and render modified html snapshots of all learning opportunity views.
+     */
+    public void updateLastModified();
 
     /**
      * Is update operation running.
