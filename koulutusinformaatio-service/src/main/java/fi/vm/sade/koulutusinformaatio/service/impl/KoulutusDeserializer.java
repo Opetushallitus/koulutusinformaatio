@@ -25,6 +25,7 @@ public class KoulutusDeserializer extends JsonDeserializer<KoulutusV1RDTO> {
     private static final String AMMATILLINEN_PERUSKOULUTUS = "AMMATILLINEN_PERUSKOULUTUS";
     private static final String AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA = "AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA";
     private static final String AMMATILLINEN_PERUSTUTKINTO = "AMMATILLINEN_PERUSTUTKINTO";
+    private static final String AMMATILLINEN_PERUSTUTKINTO_ALK_2018 = "AMMATILLINEN_PERUSTUTKINTO_ALK_2018";
     private static final String AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA = "AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA";
     private static final String AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS = "AMMATILLISEEN_PERUSKOULUTUKSEEN_OHJAAVA_JA_VALMISTAVA_KOULUTUS";
     private static final String AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA = "AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA";
@@ -106,6 +107,9 @@ public class KoulutusDeserializer extends JsonDeserializer<KoulutusV1RDTO> {
             }
             if (AMMATILLINEN_PERUSTUTKINTO.equals(toteutustyyppi)) {
                 return new KoulutusAmmatillinenPerustutkintoV1RDTO();
+            }
+            if (AMMATILLINEN_PERUSTUTKINTO_ALK_2018.equals(toteutustyyppi)) {
+                return new KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO();
             }
             if (AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.equals(toteutustyyppi)) {
                 return new KoulutusAmmatillinenPerustutkintoNayttotutkintonaV1RDTO();

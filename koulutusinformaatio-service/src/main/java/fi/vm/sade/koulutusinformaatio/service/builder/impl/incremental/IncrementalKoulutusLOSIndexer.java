@@ -155,6 +155,47 @@ public class IncrementalKoulutusLOSIndexer {
         }
     }
 
+    public void indexAmmatillinenKoulutusALK2018Komoto(KoulutusHakutulosV1RDTO dto) throws KoodistoException, ResourceNotFoundException, TarjontaParseException, KISolrException {
+        ToteutustyyppiEnum toteutusTyyppi = dto.getToteutustyyppiEnum();
+        String tarjoaja = dto.getTarjoajat().get(0);
+        String koulutusKoodi = dto.getKoulutuskoodi().split("#")[0];
+        List<KoulutusHakutulosV1RDTO> dtosToBeUpdated = tarjontaService.findKoulutus(toteutusTyyppi.name(), tarjoaja, koulutusKoodi);
+        List<KoulutusLOS> losses = new ArrayList<KoulutusLOS>();
+        for (KoulutusHakutulosV1RDTO koulutusHakutulosV1RDTO : dtosToBeUpdated) {
+            List<KoulutusLOS> result = tarjontaService.createAmmatillinenKoulutusLOS(koulutusHakutulosV1RDTO);
+            losses.addAll(result);
+        }
+
+        Set<String> tutkintoOidsToBeRemoved = new HashSet<String>();
+        Set<String> koulutusOidsToBeRemoved = new HashSet<String>();
+        List<KoulutusLOS> lossesToBeRemoved = dataQueryService.getKoulutusLos(toteutusTyyppi, tarjoaja, koulutusKoodi);
+        for (KoulutusLOS los : lossesToBeRemoved) {
+            if (los.getTutkinto() != null) {
+                tutkintoOidsToBeRemoved.add(los.getTutkinto().getId());
+            } else {
+                koulutusOidsToBeRemoved.add(los.getId());
+            }
+        }
+        for (String oid : tutkintoOidsToBeRemoved) {
+            removeTutkintoLOS(oid);
+        }
+        for (String oid : koulutusOidsToBeRemoved) {
+            removeKoulutusLOS(oid);
+        }
+
+        Set<String> updatedTutkintos = Sets.newHashSet();
+        for (KoulutusLOS los : losses) {
+            this.dataUpdateService.updateKoulutusLos(los);
+            if (los.getTutkinto() == null) {
+                indexToSolr(los);
+            } else if (!updatedTutkintos.contains(los.getTutkinto().getId())) {
+                indexToSolr(los.getTutkinto());
+                dataUpdateService.updateTutkintoLos(los.getTutkinto());
+                updatedTutkintos.add(los.getTutkinto().getId());
+            }
+        }
+    }
+
     public void indexSingleKoulutusWithoutRelations(KoulutusHakutulosV1RDTO dto) throws ResourceNotFoundException, KoodistoException, NoValidApplicationOptionsException, TarjontaParseException, OrganisaatioException, KISolrException {
         KoulutusLOS los = tarjontaService.createKoulutusLOS(dto.getOid(), true);
         if (los == null) {

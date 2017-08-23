@@ -756,6 +756,9 @@ public class LOSObjectCreator extends ObjectCreator {
             if (KoulutusAmmatillinenPerustutkintoV1RDTO.class.isAssignableFrom(result.getResult().getClass())) {
                 KoulutusAmmatillinenPerustutkintoV1RDTO koulutusDTO = (KoulutusAmmatillinenPerustutkintoV1RDTO) result.getResult();
                 return createAmmatillinenLOS(koulutusDTO, checkStatus);
+            } else if (KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO.class.isAssignableFrom(result.getResult().getClass())) {
+                KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO koulutusDTO = (KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO) result.getResult();
+                return createAmmatillinenLOS(koulutusDTO, checkStatus);
             } else if (NayttotutkintoV1RDTO.class.isAssignableFrom(result.getResult().getClass())) {
                 NayttotutkintoV1RDTO koulutusDTO = (NayttotutkintoV1RDTO) result.getResult();
                 return createAdultVocationalLOS(koulutusDTO, checkStatus);
@@ -770,6 +773,21 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutusDTO.getKoulutustyyppi().getUri().contains("koulutustyyppi_4")) {
             edType = SolrConstants.ED_TYPE_AMM_ER;
         }
+
+        KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, edType);
+        addKoulutus2AsteV1Fields(koulutusDTO, los);
+        addKoulutusAmmatillinenPerustutkintoV1Fields(koulutusDTO, los);
+        if (!los.isOsaamisalaton()) {
+            los.setAccessToFurtherStudies(null); // Ammatillisilla koulutuksilla jatko-opinnot näytetään tutkinnon sivulla
+        }
+        los.setStructure(null); // Ammatillisilla perustutkinnoilla ei haluta näyttää opintojen rakennetta
+        return los;
+    }
+
+    public KoulutusLOS createAmmatillinenLOS(KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,
+            TarjontaParseException, NoValidApplicationOptionsException, OrganisaatioException {
+
+        String edType = SolrConstants.ED_TYPE_AMMATILLINEN;
 
         KoulutusLOS los = createKoulutusGenericV1LOS(koulutusDTO, checkStatus, edType);
         addKoulutus2AsteV1Fields(koulutusDTO, los);
@@ -1099,6 +1117,15 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));
     }
 
+    private <S extends KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO, T extends KoulutusLOS> void addKoulutusAmmatillinenPerustutkintoV1Fields(S koulutus, T los)
+            throws KoodistoException {
+        if (koulutus.getKoulutuksenTavoitteet() != null) {
+            los.setGoals(getI18nText(koulutus.getKoulutuksenTavoitteet()));
+        }
+        los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes()));
+        los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));
+    }
+
     // Tämä täytyy ajaa ennen addKoulutusV1Fields, koska pohjakoulutus asetetaan täällä.
     private <S extends KoulutusGenericV1RDTO, T extends KoulutusLOS> void addKoulutusGenericV1Fields(S koulutus, T los)
             throws KoodistoException {
@@ -1340,7 +1367,10 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         tutkintoLOS.setEducationDegree(komo.getKoulutusaste().getArvo());
 
-        String prerequisiteString = prerequisite.getValue().equals("ER") ? "ER" : "PKYO";
+        String prerequisiteString = "";
+        if(prerequisite != null){
+            prerequisiteString = prerequisite.getValue().equals("ER") ? "ER" : "PKYO";
+        }
         tutkintoLOS.setId(CreatorUtil.resolveLOSId(komo.getOid(), providerOid, year, season, prerequisiteString));
         tutkintoLOS.setName(getI18nTextEnriched(komo.getKoulutuskoodi()));
         tutkintoLOS.setShortTitle(getI18nTextEnriched(komo.getKoulutuskoodi()));
