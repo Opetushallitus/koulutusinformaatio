@@ -150,6 +150,11 @@ public class IncrementalLOSIndexer {
             koulutusIndexer.indexAmmatillinenKoulutusKomoto(koulutusDTO);
             break;
 
+        case AMMATILLINEN_PERUSTUTKINTO_ALK_2018: // Ammatillinen
+            LOG.debug("Ammatillinen koulutus ALK 2018: {}", koulutusDTO.getOid());
+            koulutusIndexer.indexAmmatillinenKoulutusALK2018Komoto(koulutusDTO);
+            break;
+
         case LUKIOKOULUTUS: // Lukiokoulutus
             LOG.debug("Lukiokoulutus: {}", koulutusDTO.getKomoOid());
             koulutusIndexer.indexSingleKoulutusWithoutRelations(koulutusDTO);

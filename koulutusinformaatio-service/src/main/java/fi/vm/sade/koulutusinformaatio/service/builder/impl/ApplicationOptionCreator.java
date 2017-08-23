@@ -146,6 +146,16 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 baseEducations.add(subCode.getValue());
             }
         }
+        if(hakukohde.getPohjakoulutusvaatimus() != null){
+            baseEducations.add(hakukohde.getPohjakoulutusvaatimus());
+            List<Code> subCodes = koodistoService.searchSubCodes(
+                    hakukohde.getPohjakoulutusvaatimus(),
+                    TarjontaConstants.BASE_EDUCATION_KOODISTO_URI
+            );
+            for (Code subCode : subCodes) {
+                baseEducations.add(subCode.getValue());
+            }
+        }
         ao.setRequiredBaseEducations(baseEducations);
 
         ApplicationSystem as = applicationSystemCreator.createApplicationSystemForAo(haku, hakukohde);
