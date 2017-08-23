@@ -82,7 +82,6 @@ public interface TarjontaService {
      * @throws KoodistoException
      */
     public List<KoulutusLOS> createAmmatillinenKoulutusLOS(KoulutusHakutulosV1RDTO curDTO) throws KoodistoException, TarjontaParseException;
-
     /**
      * Helper method to reset duplicate sibling creation in createAmmatillinenKoulutusLOS
      */
