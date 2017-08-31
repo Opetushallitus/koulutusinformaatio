@@ -814,6 +814,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
                 ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO.name(),
+                ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018.name(),
                 ToteutustyyppiEnum.AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
