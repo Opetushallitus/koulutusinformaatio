@@ -68,7 +68,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
     private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
     private DataStatusDAO dataStatusTransactionDAO;
-    private SnapshotDAO snapshotTransactionDAO;
     private KoulutusLOSDAO koulutusLOSTransactionDAO;
     private TutkintoLOSDAO tutkintoLOSTransactionDAO;
 
@@ -123,7 +122,6 @@ public class TransactionManagerImpl implements TransactionManager {
             KoulutusLOSDAO koulutusLOSTransactionDAO,
             TutkintoLOSDAO tutkintoLOSTransactionDAO,
             DataStatusDAO dataStatusTransactionDAO,
-            SnapshotDAO snapshotTransactionDAO,
             ApplicationOptionDAO applicationOptionDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             DataStatusDAO dataStatusDAO,
@@ -168,7 +166,6 @@ public class TransactionManagerImpl implements TransactionManager {
         this.providerService = providerService;
         this.parameterService = parameterService;
         this.dataStatusTransactionDAO = dataStatusTransactionDAO;
-        this.snapshotTransactionDAO = snapshotTransactionDAO;
         this.httpclient = client.getClient();
     }
 
@@ -265,7 +262,6 @@ public class TransactionManagerImpl implements TransactionManager {
         higherEducationLOSTransactionDAO.getCollection().drop();
         adultVocationalLOSTransactionDAO.getCollection().drop();
         dataStatusTransactionDAO.getCollection().drop();
-        snapshotTransactionDAO.getCollection().drop();
         koulutusLOSTransactionDAO.getCollection().drop();
         tutkintoLOSTransactionDAO.getCollection().drop();
     }
