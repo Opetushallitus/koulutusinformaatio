@@ -44,11 +44,11 @@ page.onError = function (msg, trace) {
 };
 
 page.onResourceError = function (request) {
-    console.error('ResourceError ' + JSON.stringify(request));
+    // console.error('ResourceError ' + JSON.stringify(request));
 };
 
 page.onResourceTimeout = function (request) {
-    console.error('ResourceTimeout ' + JSON.stringify(request));
+    // console.error('ResourceTimeout ' + JSON.stringify(request));
 };
 
 page.onUrlChanged = function (targetUrl) {
