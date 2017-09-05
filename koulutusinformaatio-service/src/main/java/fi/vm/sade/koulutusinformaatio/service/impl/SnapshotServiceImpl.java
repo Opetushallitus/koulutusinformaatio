@@ -30,6 +30,7 @@ import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.properties.OphProperties;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,9 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -65,6 +68,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String TYPE_KOULUTUS = "koulutus";
     private static final String TYPE_TUTKINTO = "tutkinto";
     private static final String QUERY_PARAM_LANG = "descriptionLang";
+    private final SimpleDateFormat STOPWATCH_TIME_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     private HigherEducationLOSDAO higheredDAO;
     private AdultVocationalLOSDAO adultvocDAO;
@@ -91,7 +95,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
-                               @Value("${koulutusinformaatio.phantomjs.threads ?: 3}") int threadsToRunPhantomjs,
+                               @Value("${koulutusinformaatio.phantomjs.threads:3}") int threadsToRunPhantomjs,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
@@ -110,27 +114,33 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public void renderSnapshots() throws IndexingException {
-        LOG.info("Rendering html snapshots started");
+        StopWatch stopwatch = new StopWatch();
 
-        LOG.info("Rendering HigherEd LOs");
-        prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
+        try {
+            LOG.info("Rendering html snapshots started at " + formatStartTime());
+            stopwatch.start();
 
-        LOG.info("Rendering Adult vocational LOs");
-        prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
+            LOG.info("Rendering HigherEd LOs");
+            prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
 
-        LOG.info("Rendering Koulutus LOs");
-        prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
+            LOG.info("Rendering Adult vocational LOs");
+            prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
 
-        LOG.info("Rendering Tutkinto LOs");
-        prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+            LOG.info("Rendering Koulutus LOs");
+            prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
 
-        LOG.info("Rendering html snapshots finished");
+            LOG.info("Rendering Tutkinto LOs");
+            prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+        }
+        finally {
+            stopwatch.stop();
+            LOG.info("Rendering html snapshots finished at " + stopwatch.toSplitString());
+        }
     }
 
     @Override
     public void renderLastModifiedSnapshots() throws IndexingException {
         long updatePeriod = getUpdatePeriod();
-
         Map<String, List<String>> updatedLearningOpportunities = tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
 
         if (updatedLearningOpportunities == null || updatedLearningOpportunities.isEmpty() ||
@@ -138,23 +148,30 @@ public class SnapshotServiceImpl implements SnapshotService {
             return;
         }
 
-        final List<String> hakukohteet = updatedLearningOpportunities.get("hakukohde");
+        StopWatch stopwatch = new StopWatch();
 
-        LOG.info("Rendering html snapshots using updatePeriod {} started", updatePeriod);
+        try {
+            final List<String> hakukohteet = updatedLearningOpportunities.get("hakukohde");
 
-        LOG.info("Rendering HigherEd LOs using updatePeriod {}", updatePeriod);
-        prerenderWithTeachingLanguages(TYPE_HIGHERED, hakukohteet);
+            LOG.info("Rendering html snapshots using updatePeriod {} started at {}", updatePeriod, formatStartTime());
+            stopwatch.start();
 
-        LOG.info("Rendering Adult vocational LOs using updatePeriod {}", updatePeriod);
-        prerender(TYPE_ADULT_VOCATIONAL, hakukohteet);
+            LOG.info("Rendering HigherEd LOs using updatePeriod {}", updatePeriod);
+            prerenderWithTeachingLanguages(TYPE_HIGHERED, hakukohteet);
 
-        LOG.info("Rendering Koulutus LOs using updatePeriod {}", updatePeriod);
-        prerender(TYPE_KOULUTUS, hakukohteet);
+            LOG.info("Rendering Adult vocational LOs using updatePeriod {}", updatePeriod);
+            prerender(TYPE_ADULT_VOCATIONAL, hakukohteet);
 
-        LOG.info("Rendering Tutkinto LOs using updatePeriod {}", updatePeriod);
-        prerender(TYPE_TUTKINTO, hakukohteet);
+            LOG.info("Rendering Koulutus LOs using updatePeriod {}", updatePeriod);
+            prerender(TYPE_KOULUTUS, hakukohteet);
 
-        LOG.info("Rendering html snapshots using updatePeriod {} finished", updatePeriod);
+            LOG.info("Rendering Tutkinto LOs using updatePeriod {}", updatePeriod);
+            prerender(TYPE_TUTKINTO, hakukohteet);
+        }
+        finally {
+            stopwatch.stop();
+            LOG.info("Rendering html snapshots using updatePeriod {} finished at {}", updatePeriod, stopwatch.toSplitString());
+        }
     }
 
     private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
@@ -200,15 +217,23 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.info("Invoking phantomjs for {} commands", cmds.size());
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
+            LOG.debug("Adding command {} to queue", cmd);
             executor.execute(new InvokePhantomJs(cmd));
         }
+        LOG.debug("Shutdown instructed");
         executor.shutdown();
         try {
+            LOG.debug("AwaitTermination instructed");
             executor.awaitTermination(1, TimeUnit.DAYS);
         } catch (InterruptedException e) {
+            LOG.debug("InterruptedException occured");
             Thread.currentThread().interrupt();
             throw new IndexingException("Failed to render snapshots in time", e);
         }
+    }
+
+    private String formatStartTime() {
+        return STOPWATCH_TIME_FORMAT.format(new Date().getTime());
     }
 
     private class InvokePhantomJs implements Runnable {
@@ -221,7 +246,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         @Override
         public void run() {
             try {
-                LOG.debug(Arrays.toString(cmd));
+                LOG.debug("Executing command {}", Arrays.toString(cmd));
 
                 // "/usr/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/app/#!/koulutus/1.2.3.4.5 1.2.3.4.5 /path/to/save/snapshot/service"
                 ProcessBuilder ps = new ProcessBuilder(cmd);
