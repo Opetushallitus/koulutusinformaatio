@@ -195,7 +195,7 @@ var kiApp = angular.module('kiApp',
 })
 
 // initialize i18n and recaptcha libraries
-.run(['$location', '$rootScope', 'LanguageService', function($location, $rootScope, LanguageService) {
+.run(['$location', '$rootScope', 'LanguageService', 'vcRecaptchaService', function($location, $rootScope, LanguageService, recaptcha) {
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
@@ -213,6 +213,10 @@ var kiApp = angular.module('kiApp',
 
     // set global flag when ui language is English
     $rootScope.isStudyInfo = LanguageService.getLanguage() === 'en';
+
+    if(!recaptcha && !vcRecapthaApiLoaded){
+        console.error("vcRecaptchaService is not defined on load.")
+    }
 
     var recaptchaElem = document.createElement("script");
     recaptchaElem.src =  "https://www.google.com/recaptcha/api.js?onload=vcRecapthaApiLoaded&render=explicit&hl=" + LanguageService.getLanguage();
