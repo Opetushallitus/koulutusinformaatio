@@ -1367,7 +1367,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         tutkintoLOS.setEducationDegree(komo.getKoulutusaste().getArvo());
 
-        String prerequisiteString = "";
+        String prerequisiteString = "UUSI";
         if(prerequisite != null){
             prerequisiteString = prerequisite.getValue().equals("ER") ? "ER" : "PKYO";
         }
