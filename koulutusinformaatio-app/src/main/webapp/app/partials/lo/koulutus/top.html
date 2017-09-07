@@ -16,7 +16,7 @@
 
     <span data-ng-if="lo.parentLos" data-ng-repeat="parent in lo.parentLos">
 
-        <a data-ng-if="!lo.preview && parent.type == 'TUTKINTO'" href="{{parent.url}}?prerequisite={{lo.koulutusPrerequisite.value}}">{{parent.name}}</a>
+        <a data-ng-if="!lo.preview && parent.type == 'TUTKINTO'" href="{{parent.url}}?prerequisite={{parent.koulutusPrerequisite}}">{{parent.name}}</a>
         <a data-ng-if="!lo.preview && parent.type == 'KOULUTUS'" href="{{parent.url}}">{{parent.name}}</a>
         <!-- PREVIEW -->
         <a data-ng-if="lo.preview && parent.type == 'TUTKINTO'">{{parent.name}}</a>
