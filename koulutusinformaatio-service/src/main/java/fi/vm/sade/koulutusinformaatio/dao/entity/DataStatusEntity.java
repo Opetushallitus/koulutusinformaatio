@@ -42,6 +42,7 @@ public class DataStatusEntity {
     @PrePersist
     void prePersist() {
         lastUpdateFinished = new Date();
+        lastSEOIndexingUpdateFinished = new Date();
     }
 
     public ObjectId getId() {

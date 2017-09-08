@@ -26,7 +26,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.properties.OphProperties;
@@ -76,11 +75,9 @@ public class SnapshotServiceImpl implements SnapshotService {
     private TutkintoLOSDAO tutkintoLOSDAO;
     private TarjontaRawService tarjontaRawService;
     private EducationIncrementalDataQueryService dataQueryService;
-    private SEOSnapshotService seoSnapshotService;
 
     private String phantomjs;
     private String snapshotScript;
-    private String snapshotFolder;
     private String baseUrl;
     private String snapshotTallennaUrl;
 
@@ -91,10 +88,8 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Qualifier("tutkintoLOSDAO") TutkintoLOSDAO tutkintoLOSDAO,
                                TarjontaRawService tarjontaRawService,
                                EducationIncrementalDataQueryService dataQueryService,
-                               SEOSnapshotService seoSnapshotService,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
-                               @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
                                @Value("${koulutusinformaatio.phantomjs.threads:3}") int threadsToRunPhantomjs,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
@@ -103,10 +98,8 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.tutkintoLOSDAO = tutkintoLOSDAO;
         this.tarjontaRawService = tarjontaRawService;
         this.dataQueryService = dataQueryService;
-        this.seoSnapshotService = seoSnapshotService;
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
-        this.snapshotFolder = prerenderFolder;
         this.baseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
         this.snapshotTallennaUrl = urlProperties.url("koulutusinformaatio-service.snapshot.tallenna");
         this.THREADS_TO_RUN_PHANTOMJS = threadsToRunPhantomjs;
@@ -140,7 +133,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     @Override
     public void renderLastModifiedSnapshots() throws IndexingException {
-        long updatePeriod = getUpdatePeriod();
+        long updatePeriod = getSEOIndexingUpdatePeriod();
         Map<String, List<String>> updatedLearningOpportunities = tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
 
         if (updatedLearningOpportunities == null || updatedLearningOpportunities.isEmpty() ||
@@ -277,7 +270,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         }
     }
 
-    private long getUpdatePeriod() {
+    public long getSEOIndexingUpdatePeriod() {
         DataStatus status = dataQueryService.getLatestSEOIndexingSuccessDataStatus();
 
         if (status != null && status.getLastSEOIndexingFinished() != null) {

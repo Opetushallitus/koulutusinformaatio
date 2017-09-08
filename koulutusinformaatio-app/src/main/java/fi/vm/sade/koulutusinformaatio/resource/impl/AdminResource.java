@@ -52,6 +52,7 @@ public class AdminResource {
     private SEOService seoService;
     private RunningServiceChecker runningServiceChecker;
     private HakukohdeTester hakukohdeTester;
+    private SnapshotService snapshotService;
 
     @Autowired
     public AdminResource(UpdateService updateService,
@@ -61,7 +62,8 @@ public class AdminResource {
                          PartialUpdateService partialUpdateService,
                          RunningServiceChecker runningServiceChecker,
                          HakukohdeTester hakukohdeTester,
-                         RollingAverageLogger rollingAverageLogger) {
+                         RollingAverageLogger rollingAverageLogger,
+                         SnapshotService snapshotService) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.seoService = seoService;
@@ -71,6 +73,7 @@ public class AdminResource {
         this.runningServiceChecker = runningServiceChecker;
         this.hakukohdeTester = hakukohdeTester;
         this.rollingAverageLogger = rollingAverageLogger;
+        this.snapshotService = snapshotService;
     }
 
     @GET
@@ -177,7 +180,13 @@ public class AdminResource {
         }
         DataStatusDTO dto = new DataStatusDTO();
         dto.setLastUpdateFinished(status.getLastUpdateFinished());
-        dto.setLastSEOIndexingUpdateFinished(status.getLastSEOIndexingFinished());
+        if (status.getLastSEOIndexingFinished() != null) {
+            dto.setLastSEOIndexingUpdateFinished(status.getLastSEOIndexingFinished());
+        }
+        else {
+            Date lastSEOIndexingUpdateFinished = new Date(snapshotService.getSEOIndexingUpdatePeriod());
+            dto.setLastSEOIndexingUpdateFinished(lastSEOIndexingUpdateFinished);
+        }
         dto.setLastUpdateFinishedStr(status.getLastUpdateFinished().toString());
         long millis = status.getLastUpdateDuration();
         dto.setLastUpdateDuration(millis);

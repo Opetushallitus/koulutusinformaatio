@@ -36,4 +36,10 @@ public interface SnapshotService {
      * @throws IndexingException
      */
     void renderLastModifiedSnapshots() throws IndexingException;
+
+    /**
+     *
+     * @return
+     */
+    long getSEOIndexingUpdatePeriod();
 }
