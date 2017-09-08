@@ -884,6 +884,8 @@ public class TarjontaServiceImpl implements TarjontaService {
             String tutkintokey = Joiner.on("_").join(parentoid, providerOid, koulutus.getStartYear(), koulutus.getStartSeason().get("fi"));
             if(koulutus.getKoulutusPrerequisite() != null){
                 tutkintokey = tutkintokey + "_" + koulutus.getKoulutusPrerequisite().getValue();
+            } else { // Ammatillinen perustutkinto alk 2018
+                tutkintokey = tutkintokey + "_UUSI";
             }
             TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(tutkintokey);
             if (tutkinto == null) {
