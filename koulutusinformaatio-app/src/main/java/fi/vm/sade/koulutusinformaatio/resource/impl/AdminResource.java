@@ -177,6 +177,7 @@ public class AdminResource {
         }
         DataStatusDTO dto = new DataStatusDTO();
         dto.setLastUpdateFinished(status.getLastUpdateFinished());
+        dto.setLastSEOIndexingUpdateFinished(status.getLastSEOIndexingFinished());
         dto.setLastUpdateFinishedStr(status.getLastUpdateFinished().toString());
         long millis = status.getLastUpdateDuration();
         dto.setLastUpdateDuration(millis);
