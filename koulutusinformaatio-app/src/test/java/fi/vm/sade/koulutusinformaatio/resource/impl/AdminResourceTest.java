@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PartialUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
 
@@ -56,6 +57,9 @@ public class AdminResourceTest {
     private HakukohdeTester hakukohdeTester;
     
     private AdminResource adminResource;
+
+    @Mock
+    private SnapshotService snapshotService;
     
     @Before
     public void init() {
@@ -63,7 +67,8 @@ public class AdminResourceTest {
         when(learningOpportunityService.getLastDataStatus()).thenReturn(new DataStatus(new Date(), new Date(), 5l,
                 "SUCCESS"));
         adminResource = new AdminResource(updateService, learningOpportunityService, modelMapper, 
-                seoService, incrementalUpdateService, partialUpdateService, checker, hakukohdeTester, new RollingAverageLogger());
+                seoService, incrementalUpdateService, partialUpdateService, checker, hakukohdeTester,
+                new RollingAverageLogger(), snapshotService);
     }
     
     @Test

@@ -28,6 +28,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class DataStatusDTO {
 
     private Date lastUpdateFinished;
+    private Date lastSEOIndexingUpdateFinished;
     private String lastUpdateFinishedStr;
     private long lastUpdateDuration;
     private String lastUpdateDurationStr;
@@ -50,6 +51,14 @@ public class DataStatusDTO {
 
     public void setLastUpdateFinished(Date lastUpdateFinished) {
         this.lastUpdateFinished = lastUpdateFinished;
+    }
+
+    public Date getLastSEOIndexingUpdateFinished() {
+        return lastSEOIndexingUpdateFinished;
+    }
+
+    public void setLastSEOIndexingUpdateFinished(Date lastSEOIndexingUpdateFinished) {
+        this.lastSEOIndexingUpdateFinished = lastSEOIndexingUpdateFinished;
     }
 
     public String getLastUpdateFinishedStr() {

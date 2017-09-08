@@ -49,7 +49,7 @@ public class DataStatusDAO extends BasicDAO<DataStatusEntity, ObjectId> {
     }
 
     public DataStatusEntity getLatestSEOIndexingSuccessOrIncremental() {
-        Query<DataStatusEntity> query = createQuery();
+        Query<DataStatusEntity> query = createQuery().disableValidation();
         query.field("lastUpdateOutcome").in(Arrays.asList("SUCCESS", "SUCCESS-INCREMENTAL"));
         query.order("-lastSEOIndexingFinished");
         return find(query).get();
