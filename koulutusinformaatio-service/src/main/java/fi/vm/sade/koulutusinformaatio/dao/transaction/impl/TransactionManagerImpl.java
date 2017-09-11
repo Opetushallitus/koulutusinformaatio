@@ -74,7 +74,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private DataStatusDAO dataStatusDAO;
-    private SnapshotDAO snapshotDAO;
     private PictureDAO pictureDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultVocationalLOSDAO adultVocationalLOSDAO;
@@ -156,7 +155,6 @@ public class TransactionManagerImpl implements TransactionManager {
         this.applicationOptionDAO = applicationOptionDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.dataStatusDAO = dataStatusDAO;
-        this.snapshotDAO = snapshotDAO;
         this.pictureDAO = pictureDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
@@ -269,7 +267,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private void dropDbCollections() {
         applicationOptionDAO.getCollection().drop();
         dataStatusDAO.getCollection().drop();
-        snapshotDAO.getCollection().drop();
         pictureDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
         higherEducationLOSDAO.getCollection().drop();
