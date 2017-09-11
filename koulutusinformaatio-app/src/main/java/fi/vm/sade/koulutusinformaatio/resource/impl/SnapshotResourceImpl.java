@@ -4,6 +4,8 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.SnapshotResource;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import java.net.URI;
 @Component
 public class SnapshotResourceImpl implements SnapshotResource {
     private final SEOSnapshotService seoSnapshotService;
+    private static final Logger LOG = LoggerFactory.getLogger(SnapshotResourceImpl.class);
 
     @Autowired
     public SnapshotResourceImpl(SEOSnapshotService seoSnapshotService) {
@@ -24,6 +27,7 @@ public class SnapshotResourceImpl implements SnapshotResource {
         try {
             SnapshotDTO snapshot = seoSnapshotService.getSnapshot(oid);
             if (snapshot == null) {
+                LOG.warn("No snapshot found for oid {}", oid);
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
             return Response.ok().entity(snapshot.getContent()).build();
