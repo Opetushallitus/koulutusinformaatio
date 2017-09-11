@@ -8,6 +8,9 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
  * @see fi.vm.sade.koulutusinformaatio.resource.SnapshotResource
  */
 public interface SEOSnapshotService {
+
+    String SITEMAP_OID = "sitemap";
+
     /**
      * Hakukohteen hakukoneoptimoidun HTML-muotoisen kuvauksen haku oid:llä.
      *
