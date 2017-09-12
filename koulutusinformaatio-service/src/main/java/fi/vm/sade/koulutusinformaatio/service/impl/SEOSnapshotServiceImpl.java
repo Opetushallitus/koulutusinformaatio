@@ -6,6 +6,9 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import org.modelmapper.ModelMapper;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.QueryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ public class SEOSnapshotServiceImpl implements SEOSnapshotService {
 
     private final String SITEMAP_OID = "sitemap";
     private final String TIMESTAMP_OID = "timestamp";
+    private static final Logger LOG = LoggerFactory.getLogger(SEOSnapshotServiceImpl.class);
 
 
     @Autowired
@@ -45,6 +49,7 @@ public class SEOSnapshotServiceImpl implements SEOSnapshotService {
 
     @Override
     public void setSitemap(String content) {
+        LOG.info("Saving sitemap");
         createSnapshot(new SnapshotDTO(SITEMAP_OID, content, new Date()));
     }
 
@@ -56,6 +61,7 @@ public class SEOSnapshotServiceImpl implements SEOSnapshotService {
 
     @Override
     public void setLastSeoIndexingDate(Date date) {
+        LOG.info("Saving seo indexing date {}", date);
         createSnapshot(new SnapshotDTO(TIMESTAMP_OID, TIMESTAMP_OID, date));
     }
 
@@ -67,8 +73,11 @@ public class SEOSnapshotServiceImpl implements SEOSnapshotService {
 
     @Override
     public void deleteOldSnapshots() {
+        Date dateTenMonthsAgo = dateTenMonthsAgo();
+        LOG.info("Deleting snaphosts that are older than {}", dateTenMonthsAgo);
+
         Query<SnapshotEntity> q = snapshotDAO.createQuery();
-        q.field("snapshotCreated").lessThan(dateTenMonthsAgo());
+        q.field("snapshotCreated").lessThan(dateTenMonthsAgo);
         snapshotDAO.deleteByQuery(q);
     }
 

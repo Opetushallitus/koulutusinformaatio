@@ -2,28 +2,33 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
-import fi.vm.sade.koulutusinformaatio.resource.SnapshotResource;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 
 @Component
-public class SnapshotResourceImpl implements SnapshotResource {
+@Path("/snapshot")
+public class SnapshotResource {
     private final SEOSnapshotService seoSnapshotService;
-    private static final Logger LOG = LoggerFactory.getLogger(SnapshotResourceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SnapshotResource.class);
 
     @Autowired
-    public SnapshotResourceImpl(SEOSnapshotService seoSnapshotService) {
+    public SnapshotResource(SEOSnapshotService seoSnapshotService) {
         this.seoSnapshotService = seoSnapshotService;
     }
 
-    @Override
-    public Response getSnapshotContent(final String oid) {
+    @GET
+    @Path("/{oid}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_HTML)
+    public Response getSnapshotContent(@PathParam("oid") String oid) {
         try {
             SnapshotDTO snapshot = seoSnapshotService.getSnapshot(oid);
             if (snapshot == null) {
@@ -36,7 +41,10 @@ public class SnapshotResourceImpl implements SnapshotResource {
         }
     }
 
-    @Override
+    @POST
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createSnapshot(final SnapshotDTO snapshot) {
         try {
             seoSnapshotService.createSnapshot(snapshot);

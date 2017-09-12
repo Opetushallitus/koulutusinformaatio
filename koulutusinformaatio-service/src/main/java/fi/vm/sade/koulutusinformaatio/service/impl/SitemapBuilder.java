@@ -9,12 +9,13 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,9 +53,8 @@ public class SitemapBuilder {
         try {
             xmlFactory.setNamespaceAware(true);
             builder = xmlFactory.newDocumentBuilder();
-
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Failed to initialize", e);
         }
 
     }
@@ -66,14 +66,14 @@ public class SitemapBuilder {
      * @param properties Map<String,String> of properties. Code uses two properties; base url of loc
      *                   elements and csv list of collections. Syntax for list is urlprefix:mongocollection:restriction.
      *                   Restriction is a field name and + or - at the start describing must field exist or not.
-     * @return byte array of XML document
+     * @return String of XML document
      * @ In case something went wrong.
      */
-    public byte[] buildSitemap(Datastore datastore, Map<String, String> properties) throws TransformerException {
+    public String buildSitemap(Datastore datastore, Map<String, String> properties) throws TransformerException {
         LOG.debug("Starting sitemap building");
         String[] sitemapCollections = properties.get(PROPERTY_COLLECTIONS).split(COLLECTION_SEPARATOR);
-        String collection = null;
-        String idPrefix = null;
+        String collection;
+        String idPrefix;
         DBObject fields = new BasicDBObject();
         fields.put(FIELD_ID, 1);
         fields.put(TEACHING_LANGUAGES, 2);
@@ -82,15 +82,15 @@ public class SitemapBuilder {
         root.setAttribute(ATTRIBUTE_XMLNS, NAMESPACE);
         int counter = 0;
         int counterByCollection = 0;
-        Date lastModifiedDate = null;
-        String[] collectionValues = null;
-        String restriction = null;
-        DBObject query = null;
-        for (int i = 0; i < sitemapCollections.length; i++) {
+        Date lastModifiedDate;
+        String[] collectionValues;
+        String restriction;
+        DBObject query;
+        for (String sitemapCollection : sitemapCollections) {
             //value must contains :
-            if (sitemapCollections[i].indexOf(PREFIX_COLLECTION_SEPARATOR) > 0) {
-                LOG.debug("Processing collection {}", sitemapCollections[i]);
-                collectionValues = sitemapCollections[i].split(PREFIX_COLLECTION_SEPARATOR);
+            if (sitemapCollection.indexOf(PREFIX_COLLECTION_SEPARATOR) > 0) {
+                LOG.debug("Processing collection {}", sitemapCollection);
+                collectionValues = sitemapCollection.split(PREFIX_COLLECTION_SEPARATOR);
                 idPrefix = collectionValues[0];
                 collection = collectionValues[1];
                 if (collectionValues.length > 2) {
@@ -126,25 +126,28 @@ public class SitemapBuilder {
                 LOG.debug("Processed " + counterByCollection + " entities for {}", idPrefix);
                 counterByCollection = 0;
             } else {
-                LOG.warn("Collection name value pair is not well formed, " + sitemapCollections[i]);
+                LOG.warn("Collection name value pair is not well formed, " + sitemapCollection);
             }
         }
         dom.appendChild(root);
         LOG.info("Processed " + counter + " entities for entire sitemap");
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(root);
-        StreamResult result = new StreamResult(out);
-        transformer.transform(source, result);
-        LOG.debug("Sitemap building done.");
-        return out.toByteArray();
+        StringWriter sw = new StringWriter();
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.INDENT, "no");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
+        transformer.transform(new DOMSource(root), new StreamResult(sw));
+
+        LOG.info("Sitemap building done.");
+        return sw.toString();
     }
 
     private List<String> getTeachingLanguageCodes(BasicDBList languages) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         if (languages != null) {
             for (Object language : languages) {
                 String lang = (String) ((DBObject) language).get("value");

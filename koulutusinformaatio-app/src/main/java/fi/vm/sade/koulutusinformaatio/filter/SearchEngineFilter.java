@@ -21,6 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -45,6 +46,8 @@ public class SearchEngineFilter implements Filter {
 
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+
             String fragmentPath = URLDecoder.decode(httpRequest.getParameter(escapedFragment), "UTF-8");
 
             URI uri;
@@ -58,9 +61,9 @@ public class SearchEngineFilter implements Filter {
             String lang = getLang(request, uri.getQuery());
 
             String newUri = lang != null ?
-                    String.format("/app/snapshot/%s_%s.html", oid, lang)
-                    : String.format("/app/snapshot/%s.html", oid);
-            httpRequest.getRequestDispatcher(newUri).forward(request, response);
+                    String.format("/snapshot/%s_%s", oid, lang)
+                    : String.format("/snapshot/%s", oid);
+            httpResponse.sendRedirect(newUri);
         } else {
             filterChain.doFilter(request, response);
         }

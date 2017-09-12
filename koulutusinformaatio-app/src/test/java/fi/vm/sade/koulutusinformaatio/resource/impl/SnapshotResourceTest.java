@@ -17,10 +17,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SnapshotResourceImplTest {
+public class SnapshotResourceTest {
     @Mock
     private SEOSnapshotService seoSnapshotService;
-    private SnapshotResourceImpl snapshotResource;
+    private SnapshotResource snapshotResource;
     private String snapshotContent;
     private SnapshotDTO snapshotDTO;
 
@@ -43,7 +43,7 @@ public class SnapshotResourceImplTest {
 
         when(seoSnapshotService.getSnapshot(anyString())).thenReturn(snapshotDTO);
 
-        snapshotResource = new SnapshotResourceImpl(seoSnapshotService);
+        snapshotResource = new SnapshotResource(seoSnapshotService);
     }
 
     @Test
