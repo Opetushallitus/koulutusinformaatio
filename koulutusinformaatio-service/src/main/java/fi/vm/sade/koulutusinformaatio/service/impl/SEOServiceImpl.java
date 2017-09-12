@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.xml.transform.TransformerException;
 import java.util.Date;
 import java.util.Map;
@@ -107,6 +108,7 @@ public class SEOServiceImpl implements SEOService {
     }
 
     @Override
+    @Nullable
     public Date getSitemapTimestamp() {
         SnapshotDTO sitemap = seoSnapshotService.getSitemap();
         return sitemap == null ? null : sitemap.getSnapshotCreated();

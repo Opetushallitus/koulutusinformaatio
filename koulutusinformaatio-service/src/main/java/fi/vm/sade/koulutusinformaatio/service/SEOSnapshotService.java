@@ -3,6 +3,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Date;
 
 /**
@@ -18,6 +19,7 @@ public interface SEOSnapshotService {
      * @param oid Oid, josta HTML-muotoinen kuvaus on generoitu
      * @return Oid:n mukainen HTML-muotoinen kuvaus
      */
+    @Nullable
     SnapshotDTO getSnapshot(final String oid);
 
     /**
@@ -27,10 +29,12 @@ public interface SEOSnapshotService {
      */
     void createSnapshot(final SnapshotDTO snapshot);
 
+    @Nullable
     SnapshotDTO getSitemap();
 
     void setSitemap(String content);
 
+    @Nullable
     Date getLastSeoIndexingDate();
 
     void setLastSeoIndexingDate(final Date date);
