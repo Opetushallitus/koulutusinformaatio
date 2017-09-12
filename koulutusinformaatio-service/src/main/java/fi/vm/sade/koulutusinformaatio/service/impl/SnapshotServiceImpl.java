@@ -17,15 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.properties.OphProperties;
@@ -68,13 +64,13 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String TYPE_TUTKINTO = "tutkinto";
     private static final String QUERY_PARAM_LANG = "descriptionLang";
     private final SimpleDateFormat STOPWATCH_TIME_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private final SEOSnapshotService seoSnapshotService;
 
     private HigherEducationLOSDAO higheredDAO;
     private AdultVocationalLOSDAO adultvocDAO;
     private KoulutusLOSDAO koulutusDAO;
     private TutkintoLOSDAO tutkintoLOSDAO;
     private TarjontaRawService tarjontaRawService;
-    private EducationIncrementalDataQueryService dataQueryService;
 
     private String phantomjs;
     private String snapshotScript;
@@ -87,7 +83,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Qualifier("koulutusLOSDAO") KoulutusLOSDAO koulutusDAO,
                                @Qualifier("tutkintoLOSDAO") TutkintoLOSDAO tutkintoLOSDAO,
                                TarjontaRawService tarjontaRawService,
-                               EducationIncrementalDataQueryService dataQueryService,
+                               SEOSnapshotService seoSnapshotService,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.phantomjs.threads:3}") int threadsToRunPhantomjs,
@@ -97,7 +93,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.koulutusDAO = koulutusDAO;
         this.tutkintoLOSDAO = tutkintoLOSDAO;
         this.tarjontaRawService = tarjontaRawService;
-        this.dataQueryService = dataQueryService;
+        this.seoSnapshotService = seoSnapshotService;
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
         this.baseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
@@ -108,6 +104,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public void renderSnapshots() throws IndexingException {
         StopWatch stopwatch = new StopWatch();
+        Date startTime = new Date();
 
         try {
             LOG.info("Rendering html snapshots started at " + formatStartTime());
@@ -124,6 +121,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
             LOG.info("Rendering Tutkinto LOs");
             prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+            seoSnapshotService.setLastSeoIndexingDate(startTime);
         }
         finally {
             stopwatch.stop();
@@ -134,6 +132,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public void renderLastModifiedSnapshots() throws IndexingException {
         long updatePeriod = getSEOIndexingUpdatePeriod();
+        Date startTime = new Date();
         Map<String, List<String>> updatedLearningOpportunities = tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
 
         if (updatedLearningOpportunities == null || updatedLearningOpportunities.isEmpty() ||
@@ -160,6 +159,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
             LOG.info("Rendering Tutkinto LOs using updatePeriod {}", updatePeriod);
             prerender(TYPE_TUTKINTO, hakukohteet);
+            seoSnapshotService.setLastSeoIndexingDate(startTime);
         }
         finally {
             stopwatch.stop();
@@ -210,7 +210,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.info("Invoking phantomjs for {} commands", cmds.size());
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
-            LOG.debug("Adding command {} to queue", cmd);
+            LOG.debug("Adding command {} to queue", Arrays.toString(cmd));
             executor.execute(new InvokePhantomJs(cmd));
         }
         LOG.debug("Shutdown instructed");
@@ -271,12 +271,10 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     public long getSEOIndexingUpdatePeriod() {
-        DataStatus status = dataQueryService.getLatestSEOIndexingSuccessDataStatus();
-
-        if (status != null && status.getLastSEOIndexingFinished() != null) {
-            return (System.currentTimeMillis() - status.getLastSEOIndexingFinished().getTime()) + status.getLastUpdateDuration();
+        Date lastIndexing = seoSnapshotService.getLastSeoIndexingDate();
+        if (lastIndexing != null) {
+            return System.currentTimeMillis() - lastIndexing.getTime();
         }
-
         return 0;
     }
 }

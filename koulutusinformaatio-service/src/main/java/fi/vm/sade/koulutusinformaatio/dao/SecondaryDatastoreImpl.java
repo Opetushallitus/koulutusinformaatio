@@ -21,7 +21,6 @@ import org.mongodb.morphia.DatastoreImpl;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.Mapper;
 
-import com.mongodb.Mongo;
 import com.mongodb.ReadPreference;
 
 /**

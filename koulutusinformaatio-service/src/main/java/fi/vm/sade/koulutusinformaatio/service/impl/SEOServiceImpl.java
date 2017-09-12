@@ -34,8 +34,6 @@ import javax.xml.transform.TransformerException;
 import java.util.Date;
 import java.util.Map;
 
-import static fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService.SITEMAP_OID;
-
 /**
  * @author Hannu Lyytikainen
  */
@@ -100,11 +98,7 @@ public class SEOServiceImpl implements SEOService {
 
     private void createSitemap() throws TransformerException {
         byte[] sitemapBytes = sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
-        SnapshotDTO sitemap = new SnapshotDTO();
-        sitemap.setOid(SITEMAP_OID);
-        sitemap.setContent(new String(sitemapBytes));
-        sitemap.setSnapshotCreated(new Date());
-        seoSnapshotService.createSnapshot(sitemap);
+        seoSnapshotService.setSitemap(new String(sitemapBytes));
     }
 
     @Override
@@ -114,7 +108,7 @@ public class SEOServiceImpl implements SEOService {
 
     @Override
     public Date getSitemapTimestamp() {
-        SnapshotDTO sitemap = seoSnapshotService.getSnapshot(SITEMAP_OID);
+        SnapshotDTO sitemap = seoSnapshotService.getSitemap();
         return sitemap == null ? null : sitemap.getSnapshotCreated();
     }
 }

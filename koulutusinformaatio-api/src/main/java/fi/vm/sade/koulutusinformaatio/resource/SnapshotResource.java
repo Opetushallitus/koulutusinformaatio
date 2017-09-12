@@ -19,7 +19,7 @@ public interface SnapshotResource {
             response = String.class)
     @ApiResponses({@ApiResponse(code = 200, message = "Haettu HTML-muotoinen kuvaus palautettu kutsujalle onnistuneesti"),
             @ApiResponse(code = 404, message = "Haettua HTML-muotoista kuvuasta ei löytynyt")})
-    public Response getSnapshotContent(@ApiParam(value = "Hakukohteen oid, josta HTML-muotoinen kuvaus on generoitu") @PathParam("oid") String oid);
+    Response getSnapshotContent(@ApiParam(value = "Hakukohteen oid, josta HTML-muotoinen kuvaus on generoitu") @PathParam("oid") String oid);
 
     @POST
     @Path("/")
@@ -29,5 +29,5 @@ public interface SnapshotResource {
             notes = "",
             response = SnapshotDTO.class)
     @ApiResponse(code = 201, message = "HTML-muotoisen kuvauksen tallennus onnistui")
-    public Response createSnapshot(@ApiParam("Hakukohteen HTML-muotoinen kuvaus") SnapshotDTO snapshot);
+    Response createSnapshot(@ApiParam("Hakukohteen HTML-muotoinen kuvaus") SnapshotDTO snapshot);
 }

@@ -2,14 +2,15 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 
+import javax.annotation.Nonnull;
+import java.util.Date;
+
 /**
  * Hakukohteiden hakukoneoptimoidun HTML-muotoisen kuvauksen tallennus ja haku
  *
  * @see fi.vm.sade.koulutusinformaatio.resource.SnapshotResource
  */
 public interface SEOSnapshotService {
-
-    String SITEMAP_OID = "sitemap";
 
     /**
      * Hakukohteen hakukoneoptimoidun HTML-muotoisen kuvauksen haku oid:llä.
@@ -25,4 +26,13 @@ public interface SEOSnapshotService {
      * @param snapshot Hakukohteen HTML-muotoinen kuvaus
      */
     void createSnapshot(final SnapshotDTO snapshot);
+
+    SnapshotDTO getSitemap();
+
+    void setSitemap(String content);
+
+    Date getLastSeoIndexingDate();
+
+    void setLastSeoIndexingDate(final Date date);
+
 }
