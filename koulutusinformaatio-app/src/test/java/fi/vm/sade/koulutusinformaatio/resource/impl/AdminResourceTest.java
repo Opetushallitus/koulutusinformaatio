@@ -64,7 +64,7 @@ public class AdminResourceTest {
     @Before
     public void init() {
         when(modelMapper.getConfiguration()).thenReturn(mock(Configuration.class));
-        when(learningOpportunityService.getLastDataStatus()).thenReturn(new DataStatus(new Date(), new Date(), 5l,
+        when(learningOpportunityService.getLastDataStatus()).thenReturn(new DataStatus(new Date(), 5l,
                 "SUCCESS"));
         adminResource = new AdminResource(updateService, learningOpportunityService, modelMapper, 
                 seoService, incrementalUpdateService, partialUpdateService, checker, hakukohdeTester,

@@ -180,13 +180,7 @@ public class AdminResource {
         }
         DataStatusDTO dto = new DataStatusDTO();
         dto.setLastUpdateFinished(status.getLastUpdateFinished());
-        if (status.getLastSEOIndexingFinished() != null) {
-            dto.setLastSEOIndexingUpdateFinished(status.getLastSEOIndexingFinished());
-        }
-        else {
-            Date lastSEOIndexingUpdateFinished = new Date(snapshotService.getSEOIndexingUpdatePeriod());
-            dto.setLastSEOIndexingUpdateFinished(lastSEOIndexingUpdateFinished);
-        }
+        dto.setLastSEOIndexingUpdateFinished(seoService.getSitemapTimestamp());
         dto.setLastUpdateFinishedStr(status.getLastUpdateFinished().toString());
         long millis = status.getLastUpdateDuration();
         dto.setLastUpdateDuration(millis);

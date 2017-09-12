@@ -29,24 +29,24 @@ public interface SEOService {
     /**
      * Update koulutusinformaatio sitemap and render all html snapshots of all learning opportunity views.
      */
-    public void update();
+    void update();
 
     /**
      * Update koulutusinformaatio sitemap and render modified html snapshots of all learning opportunity views.
      */
-    public void updateLastModified();
+    void updateLastModified();
 
     /**
      * Is update operation running.
      *
      * @return
      */
-    public boolean isRunning();
+    boolean isRunning();
 
     /**
      * Returns the last time the learning opportunity sitemap file has been changed.
      *
      * @return sitemap file timestamp
      */
-    public Date getSitemapTimestamp();
+    Date getSitemapTimestamp();
 }

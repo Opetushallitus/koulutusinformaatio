@@ -24,23 +24,21 @@ import java.util.Date;
 public class DataStatus {
 
     private Date lastUpdateFinished;
-    private Date lastSEOIndexingFinished;
     private long lastUpdateDuration;
     private String lastUpdateOutcome;
     private long progressCounter;
 
     public DataStatus() {}
     
-    public DataStatus(Date lastUpdateFinished, Date lastSEOIndexingFinished, long lastUpdateDuration, String lastUpdateOutcome, long progressCounter) {
+    public DataStatus(Date lastUpdateFinished, long lastUpdateDuration, String lastUpdateOutcome, long progressCounter) {
         this.lastUpdateFinished = lastUpdateFinished;
-        this.lastSEOIndexingFinished = lastSEOIndexingFinished;
         this.lastUpdateDuration = lastUpdateDuration;
         this.lastUpdateOutcome = lastUpdateOutcome;
         this.progressCounter = progressCounter;
     }
 
-    public DataStatus(Date lastUpdateFinished, Date lastSEOIndexingFinished, long lastUpdateDuration, String lastUpdateOutcome) {
-        this(lastUpdateFinished, lastSEOIndexingFinished, lastUpdateDuration, lastUpdateOutcome, 0);
+    public DataStatus(Date lastUpdateFinished, long lastUpdateDuration, String lastUpdateOutcome) {
+        this(lastUpdateFinished, lastUpdateDuration, lastUpdateOutcome, 0);
     }
 
     public Date getLastUpdateFinished() {
@@ -73,13 +71,5 @@ public class DataStatus {
 
     public void setProgressCounter(long progressCounter) {
         this.progressCounter = progressCounter;
-    }
-
-    public Date getLastSEOIndexingFinished() {
-        return lastSEOIndexingFinished;
-    }
-
-    public void setLastSEOIndexingFinished(Date lastSEOIndexingFinished) {
-        this.lastSEOIndexingFinished = lastSEOIndexingFinished;
     }
 }

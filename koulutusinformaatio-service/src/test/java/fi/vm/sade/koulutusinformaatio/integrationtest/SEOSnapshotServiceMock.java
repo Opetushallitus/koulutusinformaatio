@@ -2,7 +2,9 @@ package fi.vm.sade.koulutusinformaatio.integrationtest;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.annotation.Nonnull;
 import java.util.Date;
 
 public class SEOSnapshotServiceMock implements SEOSnapshotService {
@@ -23,7 +25,27 @@ public class SEOSnapshotServiceMock implements SEOSnapshotService {
     }
 
     @Override
-    public void createSnapshot(SnapshotDTO snapshot) {
+    public SnapshotDTO getSitemap() {
+        throw new NotImplementedException();
+    }
 
+    @Override
+    public void setSitemap(String content) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Date getLastSeoIndexingDate() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void setLastSeoIndexingDate(Date date) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void createSnapshot(SnapshotDTO snapshot) {
+        throw new NotImplementedException();
     }
 }
