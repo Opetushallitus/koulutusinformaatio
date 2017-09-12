@@ -76,6 +76,7 @@ public class SEOServiceImpl implements SEOService {
             running = true;
             snapshotService.renderAllSnapshots();
             createSitemap();
+            seoSnapshotService.deleteOldSnapshots();
         } catch (TransformerException | IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {
@@ -90,6 +91,7 @@ public class SEOServiceImpl implements SEOService {
             running = true;
             snapshotService.renderLastModifiedSnapshots();
             createSitemap();
+            seoSnapshotService.deleteOldSnapshots();
         } catch (TransformerException | IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {

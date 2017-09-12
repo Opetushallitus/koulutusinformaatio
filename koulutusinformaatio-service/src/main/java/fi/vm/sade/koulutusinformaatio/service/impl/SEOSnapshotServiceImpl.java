@@ -5,10 +5,12 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.SnapshotEntity;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import org.modelmapper.ModelMapper;
+import org.mongodb.morphia.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
+import java.util.Calendar;
 import java.util.Date;
 
 @Service
@@ -62,4 +64,18 @@ public class SEOSnapshotServiceImpl implements SEOSnapshotService {
         SnapshotEntity snapshotEntity = modelMapper.map(snapshot, SnapshotEntity.class);
         snapshotDAO.save(snapshotEntity);
     }
+
+    @Override
+    public void deleteOldSnapshots() {
+        Query<SnapshotEntity> q = snapshotDAO.createQuery();
+        q.field("snapshotCreated").lessThan(dateTenMonthsAgo());
+        snapshotDAO.deleteByQuery(q);
+    }
+
+    private Date dateTenMonthsAgo() {
+        Calendar i = Calendar.getInstance();
+        i.add(Calendar.MONTH, -10);
+        return i.getTime();
+    }
+
 }
