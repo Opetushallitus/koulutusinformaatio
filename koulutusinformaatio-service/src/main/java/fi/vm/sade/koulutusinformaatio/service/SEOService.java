@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import javax.annotation.Nullable;
 import java.util.Date;
 
 /**
@@ -48,5 +49,6 @@ public interface SEOService {
      *
      * @return sitemap file timestamp
      */
+    @Nullable
     Date getSitemapTimestamp();
 }
