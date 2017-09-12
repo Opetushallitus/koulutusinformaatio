@@ -48,7 +48,8 @@ public class SEOSnapshotServiceImpl implements SEOSnapshotService {
 
     @Override
     public Date getLastSeoIndexingDate() {
-        return getSnapshot(TIMESTAMP_OID).getSnapshotCreated();
+        SnapshotDTO timestamp = getSnapshot(TIMESTAMP_OID);
+        return timestamp == null ? null : timestamp.getSnapshotCreated();
     }
 
     @Override

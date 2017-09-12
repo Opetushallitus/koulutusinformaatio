@@ -73,7 +73,7 @@ public class SEOServiceImpl implements SEOService {
     public void update() {
         try {
             running = true;
-            snapshotService.renderSnapshots();
+            snapshotService.renderAllSnapshots();
             createSitemap();
         } catch (TransformerException | IndexingException e) {
             LOG.error("SEO batch execution error", e);

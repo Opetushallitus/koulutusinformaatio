@@ -102,7 +102,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     @Override
-    public void renderSnapshots() throws IndexingException {
+    public void renderAllSnapshots() throws IndexingException {
         StopWatch stopwatch = new StopWatch();
         Date startTime = new Date();
 
@@ -132,6 +132,10 @@ public class SnapshotServiceImpl implements SnapshotService {
     @Override
     public void renderLastModifiedSnapshots() throws IndexingException {
         long updatePeriod = getSEOIndexingUpdatePeriod();
+        if(updatePeriod == 0){
+            renderAllSnapshots();
+            return;
+        }
         Date startTime = new Date();
         Map<String, List<String>> updatedLearningOpportunities = tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
 

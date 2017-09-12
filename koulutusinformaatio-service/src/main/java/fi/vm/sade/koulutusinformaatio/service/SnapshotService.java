@@ -28,7 +28,7 @@ public interface SnapshotService {
      *
      * @throws IndexingException
      */
-    void renderSnapshots() throws IndexingException;
+    void renderAllSnapshots() throws IndexingException;
 
     /**
      * Render last modified html snapshots of all learning opportunity views.
