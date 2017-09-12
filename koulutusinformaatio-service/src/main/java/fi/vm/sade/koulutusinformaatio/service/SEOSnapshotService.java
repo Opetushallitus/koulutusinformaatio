@@ -39,4 +39,6 @@ public interface SEOSnapshotService {
 
     void setLastSeoIndexingDate(final Date date);
 
+    void deleteOldSnapshots();
+
 }

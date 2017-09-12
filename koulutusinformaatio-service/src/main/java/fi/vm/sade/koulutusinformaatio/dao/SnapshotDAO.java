@@ -26,4 +26,6 @@ public class SnapshotDAO extends BasicDAO<SnapshotEntity, String> {
     public SnapshotDAO(MongoClient mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
     }
+
+
 }

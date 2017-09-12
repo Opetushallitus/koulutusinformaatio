@@ -4,7 +4,6 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.annotation.Nonnull;
 import java.util.Date;
 
 public class SEOSnapshotServiceMock implements SEOSnapshotService {
@@ -41,6 +40,11 @@ public class SEOSnapshotServiceMock implements SEOSnapshotService {
 
     @Override
     public void setLastSeoIndexingDate(Date date) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void deleteOldSnapshots() {
         throw new NotImplementedException();
     }
 
