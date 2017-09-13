@@ -73,10 +73,12 @@ public class SEOServiceImpl implements SEOService {
     @Override
     public void update() {
         try {
+            LOG.info("Starting full snapshot crawling");
             running = true;
             snapshotService.renderAllSnapshots();
             createSitemap();
             seoSnapshotService.deleteOldSnapshots();
+            LOG.info("Full snapshot crawling finished");
         } catch (TransformerException | IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {
@@ -88,10 +90,12 @@ public class SEOServiceImpl implements SEOService {
     @Override
     public void updateLastModified() {
         try {
+            LOG.info("Starting crawling changed snapshots");
             running = true;
             snapshotService.renderLastModifiedSnapshots();
             createSitemap();
             seoSnapshotService.deleteOldSnapshots();
+            LOG.info("Finished crawling changed snapshots");
         } catch (TransformerException | IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {
@@ -100,7 +104,9 @@ public class SEOServiceImpl implements SEOService {
     }
 
     private void createSitemap() throws TransformerException {
+        LOG.info("Creating sitemap");
         seoSnapshotService.setSitemap(sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams));
+        LOG.info("Sitemap saved to mongo");
     }
 
     @Override
