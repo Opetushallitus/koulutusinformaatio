@@ -58,8 +58,8 @@ public class SearchEngineFilter implements Filter {
             String lang = getLang(request, uri.getQuery());
 
             String newUri = lang != null ?
-                    String.format("/app/snapshot/%s_%s.html", oid, lang)
-                    : String.format("/app/snapshot/%s.html", oid);
+                    String.format("/snapshot/%s_%s", oid, lang)
+                    : String.format("/snapshot/%s", oid);
             httpRequest.getRequestDispatcher(newUri).forward(request, response);
         } else {
             filterChain.doFilter(request, response);
