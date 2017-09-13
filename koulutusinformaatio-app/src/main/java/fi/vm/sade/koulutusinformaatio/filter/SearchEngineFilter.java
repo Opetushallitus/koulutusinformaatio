@@ -35,11 +35,9 @@ public class SearchEngineFilter implements Filter {
 
     private final String escapedFragment = "_escaped_fragment_";
     private final String language = "descriptionLang";
-    private FilterConfig config;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.config = filterConfig;
     }
 
     @Override
@@ -62,7 +60,7 @@ public class SearchEngineFilter implements Filter {
             String newUri = lang != null ?
                     String.format("/snapshot/%s_%s", oid, lang)
                     : String.format("/snapshot/%s", oid);
-            config.getServletContext().getRequestDispatcher(newUri).forward(request, response);
+            httpRequest.getRequestDispatcher(newUri).forward(request, response);
         } else {
             filterChain.doFilter(request, response);
         }
