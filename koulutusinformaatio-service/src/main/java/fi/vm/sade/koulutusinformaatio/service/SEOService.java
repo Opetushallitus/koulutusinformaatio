@@ -31,6 +31,7 @@ public interface SEOService {
      * Update koulutusinformaatio sitemap and render all html snapshots of all learning opportunity views.
      */
     void update();
+    void createSitemap();
 
     /**
      * Update koulutusinformaatio sitemap and render modified html snapshots of all learning opportunity views.

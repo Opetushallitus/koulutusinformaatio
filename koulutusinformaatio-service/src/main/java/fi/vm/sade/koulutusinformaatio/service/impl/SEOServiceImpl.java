@@ -79,7 +79,7 @@ public class SEOServiceImpl implements SEOService {
             createSitemap();
             seoSnapshotService.deleteOldSnapshots();
             LOG.info("Full snapshot crawling finished");
-        } catch (TransformerException | IndexingException e) {
+        } catch (IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {
             running = false;
@@ -96,17 +96,21 @@ public class SEOServiceImpl implements SEOService {
             createSitemap();
             seoSnapshotService.deleteOldSnapshots();
             LOG.info("Finished crawling changed snapshots");
-        } catch (TransformerException | IndexingException e) {
+        } catch (IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {
             running = false;
         }
     }
 
-    private void createSitemap() throws TransformerException {
-        LOG.info("Creating sitemap");
-        seoSnapshotService.setSitemap(sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams));
-        LOG.info("Sitemap saved to mongo");
+    public void createSitemap() {
+        try {
+            LOG.info("Creating sitemap");
+            seoSnapshotService.setSitemap(sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams));
+            LOG.info("Sitemap saved to mongo");
+        } catch (TransformerException e) {
+            LOG.error("Failed to generate sitemap", e);
+        }
     }
 
     @Override

@@ -220,7 +220,16 @@ public class AdminResource {
         }
         return Response.seeOther(new URI("admin/status")).build();
     }
-    
+
+    @GET
+    @Path("/sitemap")
+    public Response generateSitemap() throws URISyntaxException {
+        if (!seoService.isRunning()) {
+            seoService.createSitemap();
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+
     @GET
     @Path("/test")
     public Response test() throws URISyntaxException {
