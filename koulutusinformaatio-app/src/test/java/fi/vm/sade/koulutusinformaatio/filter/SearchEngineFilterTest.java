@@ -1,10 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.filter;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import org.eclipse.jetty.server.Request;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -61,7 +58,7 @@ public class SearchEngineFilterTest {
 
     @Test
     public void doFilterRedirects() throws Exception {
-        when(msc.getRequestDispatcher("/snapshot/meh")).thenReturn(mrd);
+        when(msc.getRequestDispatcher("/app/snapshot/meh")).thenReturn(mrd);
         when(req.getParameterMap()).thenReturn(ImmutableMap.of("_escaped_fragment_", "/tutkinto/meh"));
         when(req.getParameter("_escaped_fragment_")).thenReturn("/tutkinto/meh");
         filter.doFilter(req, res, fc);
