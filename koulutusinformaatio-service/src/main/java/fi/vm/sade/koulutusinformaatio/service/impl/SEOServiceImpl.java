@@ -100,8 +100,7 @@ public class SEOServiceImpl implements SEOService {
     }
 
     private void createSitemap() throws TransformerException {
-        byte[] sitemapBytes = sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
-        seoSnapshotService.setSitemap(new String(sitemapBytes));
+        seoSnapshotService.setSitemap(sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams));
     }
 
     @Override
