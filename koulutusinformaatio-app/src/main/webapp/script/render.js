@@ -4,7 +4,19 @@ var page = require('webpage').create(),
     system = require('system'),
     url,
     oid,
-    saveSnapshotUrl;
+    saveSnapshotUrl,
+    scriptTagRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    cssTagRegex = /<link(.*?).css(.*?)>/gi,
+    imgTagRegex = /<img(.*?)>/gi
+;
+
+
+var removeScriptsCssAndImages = function (html) {
+    return html
+        .replace(scriptTagRegex, '')
+        .replace(imgTagRegex, '')
+        .replace(cssTagRegex, '');
+};
 
 if (system.args.length < 4) {
     console.error("Invalid params: " + JSON.stringify(system.args));
@@ -99,8 +111,7 @@ page.open(url, function (status) {
         return $("#main-info > h1").text();
     });
 
-    var html = page.content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-        .replace(/<link(.*?).css(.*?)>/gi, '');
+    var html = removeScriptsCssAndImages(page.content);
 
     var settings = {
         operation: 'POST',
