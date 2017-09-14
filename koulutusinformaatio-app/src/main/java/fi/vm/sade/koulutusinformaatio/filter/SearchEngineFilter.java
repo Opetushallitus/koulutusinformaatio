@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
- *  
+ *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
  * of the EUPL (the "Licence");
- *  
+ *
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *  
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.filter;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +38,8 @@ public class SearchEngineFilter implements Filter {
 
     private final String escapedFragment = "_escaped_fragment_";
     private final String language = "descriptionLang";
+    private Logger LOG = LoggerFactory.getLogger(SearchEngineFilter.class);
+
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -44,7 +48,17 @@ public class SearchEngineFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
+        /**
+         * HUOM! DEVAAJA!
+         * Tämä on hoidettu nginx configuraatiossa. Kaikki _escaped_fragment_ sisältävät urlit rewritetaan /snapshot rajapintaan.
+         *
+         * Jos tähän tarvitsee tehdä muutoksia, kyselkää nginx vastaavilta. Jätän tämän filterin tähän varoituksena jälkipolville.
+         */
+
+
         if (request.getParameterMap().containsKey(escapedFragment)) {
+            LOG.error("Filteriin tuli kutsu, joka pitäisi olla hoidettu nginx configuraatiossa!");
+
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
