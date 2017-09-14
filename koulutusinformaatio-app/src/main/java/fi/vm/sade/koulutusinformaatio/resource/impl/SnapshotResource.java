@@ -55,38 +55,3 @@ public class SnapshotResource {
         }
     }
 }
-
-
-
-/*
-*
-*
-*
-*
-*
-@Path("/snapshot")
-@Api(value = "/snapshot", description = "Hakukohteiden hakukoneoptimoidun HTML-muotoisen kuvauksen tallennus ja haku")
-public interface SnapshotResource {
-    @GET
-    @Path("/{oid}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_HTML)
-    @ApiOperation(value = "Hakukohteen hakukoneoptimoidun HTML-muotoisen kuvauksen haku oid:llä",
-            notes = "",
-            response = String.class)
-    @ApiResponses({@ApiResponse(code = 200, message = "Haettu HTML-muotoinen kuvaus palautettu kutsujalle onnistuneesti"),
-            @ApiResponse(code = 404, message = "Haettua HTML-muotoista kuvuasta ei löytynyt")})
-    Response getSnapshotContent(@ApiParam(value = "Hakukohteen oid, josta HTML-muotoinen kuvaus on generoitu") @PathParam("oid") String oid);
-
-    @POST
-    @Path("/")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Tallentaa hakukohteen hakukoneoptimoidun HTML-kuvauksen tietokantaan",
-            notes = "",
-            response = SnapshotDTO.class)
-    @ApiResponse(code = 201, message = "HTML-muotoisen kuvauksen tallennus onnistui")
-    Response createSnapshot(@ApiParam("Hakukohteen HTML-muotoinen kuvaus") SnapshotDTO snapshot);
-
-
-*/
