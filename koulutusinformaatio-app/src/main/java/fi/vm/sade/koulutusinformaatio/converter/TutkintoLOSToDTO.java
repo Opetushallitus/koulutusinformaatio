@@ -78,7 +78,7 @@ public final class TutkintoLOSToDTO {
         }
 
         String fetchWithPrerequisite = prerequisite;
-        if(prerequisite.equals("UUSI")){
+        if(prerequisite != null && prerequisite.equals("UUSI")){
             fetchWithPrerequisite = null;
         }
 
