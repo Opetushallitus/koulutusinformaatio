@@ -75,7 +75,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     private String phantomjs;
     private String snapshotScript;
     private String baseUrl;
-    private String snapshotTallennaUrl;
+    private String snapshotSaveUrl;
 
     @Autowired
     public SnapshotServiceImpl(@Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
@@ -97,7 +97,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
         this.baseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
-        this.snapshotTallennaUrl = urlProperties.url("koulutusinformaatio-service.snapshot.tallenna");
+        this.snapshotSaveUrl = urlProperties.url("koulutusinformaatio-service.snapshot.save");
         this.THREADS_TO_RUN_PHANTOMJS = threadsToRunPhantomjs;
     }
 
@@ -202,12 +202,12 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private String[] generatePhantomJSCommand(String type, String id) {
         String url = format("%s%s/%s", baseUrl, type, id);
-        return new String[]{phantomjs, snapshotScript, url, id, snapshotTallennaUrl};
+        return new String[]{phantomjs, snapshotScript, url, id, snapshotSaveUrl};
     }
 
     private String[] generatePhantomJSCommand(String type, String id, String lang) {
         String url = format("%s%s/%s?%s=%s", baseUrl, type, id, QUERY_PARAM_LANG, lang);
-        return new String[]{phantomjs, snapshotScript, url, id, snapshotTallennaUrl};
+        return new String[]{phantomjs, snapshotScript, url, id, snapshotSaveUrl};
     }
 
     private void invokePhantomJS(List<String[]> cmds) throws IndexingException {
