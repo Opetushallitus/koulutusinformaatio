@@ -16,8 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.scheduling;
 
-import java.util.Date;
-
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.SEOService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
+import java.util.Date;
 
 /**
  * @author Mikko Majapuro
@@ -85,7 +84,7 @@ public class Scheduler {
             LOG.debug("Starting scheduled SEO update {}", new Date());
             try {
                 if (!seoService.isRunning()) {
-                    seoService.update();
+                    seoService.updateLastModified();
                 }
             } catch (Exception e) {
                 LOG.error("SEO execution failed: {}", e.getStackTrace().toString());

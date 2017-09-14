@@ -23,6 +23,23 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
  */
 public interface SnapshotService {
 
-    void renderSnapshots() throws IndexingException;
+    /**
+     * Render all html snapshots of all learning opportunity views.
+     *
+     * @throws IndexingException
+     */
+    void renderAllSnapshots() throws IndexingException;
 
+    /**
+     * Render last modified html snapshots of all learning opportunity views.
+     *
+     * @throws IndexingException
+     */
+    void renderLastModifiedSnapshots() throws IndexingException;
+
+    /**
+     *
+     * @return
+     */
+    long getSEOIndexingUpdatePeriod();
 }

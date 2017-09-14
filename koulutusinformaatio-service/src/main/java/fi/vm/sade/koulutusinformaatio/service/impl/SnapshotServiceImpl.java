@@ -17,15 +17,15 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
+import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.properties.OphProperties;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,11 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -60,50 +63,112 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String TYPE_KOULUTUS = "koulutus";
     private static final String TYPE_TUTKINTO = "tutkinto";
     private static final String QUERY_PARAM_LANG = "descriptionLang";
+    private final SimpleDateFormat STOPWATCH_TIME_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private final SEOSnapshotService seoSnapshotService;
 
     private HigherEducationLOSDAO higheredDAO;
     private AdultVocationalLOSDAO adultvocDAO;
     private KoulutusLOSDAO koulutusDAO;
     private TutkintoLOSDAO tutkintoLOSDAO;
+    private TarjontaRawService tarjontaRawService;
 
     private String phantomjs;
     private String snapshotScript;
-    private String snapshotFolder;
     private String baseUrl;
+    private String snapshotSaveUrl;
 
     @Autowired
     public SnapshotServiceImpl(@Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
                                @Qualifier("adultVocationalLOSDAO") AdultVocationalLOSDAO adultvocDAO,
                                @Qualifier("koulutusLOSDAO") KoulutusLOSDAO koulutusDAO,
                                @Qualifier("tutkintoLOSDAO") TutkintoLOSDAO tutkintoLOSDAO,
+                               TarjontaRawService tarjontaRawService,
+                               SEOSnapshotService seoSnapshotService,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
-                               @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
-                               @Value("${koulutusinformaatio.phantomjs.threads ?: 3}") int threadsToRunPhantomjs,
+                               @Value("${koulutusinformaatio.phantomjs.threads:3}") int threadsToRunPhantomjs,
                                OphProperties urlProperties) {
         this.higheredDAO = higheredDAO;
         this.adultvocDAO = adultvocDAO;
         this.koulutusDAO = koulutusDAO;
         this.tutkintoLOSDAO = tutkintoLOSDAO;
+        this.tarjontaRawService = tarjontaRawService;
+        this.seoSnapshotService = seoSnapshotService;
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
-        this.snapshotFolder = prerenderFolder;
         this.baseUrl = urlProperties.url("koulutusinformaatio-app-web.learningopportunity.base");
+        this.snapshotSaveUrl = urlProperties.url("koulutusinformaatio-service.snapshot.save");
         this.THREADS_TO_RUN_PHANTOMJS = threadsToRunPhantomjs;
     }
 
     @Override
-    public void renderSnapshots() throws IndexingException {
-        LOG.info("Rendering html snapshots");
-        LOG.info("Rendering HigherEd LOs");
-        prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
-        LOG.info("Rendering Adult vocational LOs");
-        prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
-        LOG.info("rendering Koulutus LOs");
-        prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
-        LOG.info("Rendering Tutkinto LOs");
-        prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
-        LOG.info("Rendering html snapshots finished");
+    public void renderAllSnapshots() throws IndexingException {
+        StopWatch stopwatch = new StopWatch();
+        Date startTime = new Date();
+
+        try {
+            LOG.info("Rendering html snapshots started at " + formatStartTime());
+            stopwatch.start();
+
+            LOG.info("Rendering HigherEd LOs");
+            prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
+
+            LOG.info("Rendering Adult vocational LOs");
+            prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
+
+            LOG.info("Rendering Koulutus LOs");
+            prerender(TYPE_KOULUTUS, koulutusDAO.findIds());
+
+            LOG.info("Rendering Tutkinto LOs");
+            prerender(TYPE_TUTKINTO, tutkintoLOSDAO.findIds());
+            seoSnapshotService.setLastSeoIndexingDate(startTime);
+        }
+        finally {
+            stopwatch.stop();
+            LOG.info("Rendering html snapshots finished at " + stopwatch.toSplitString());
+        }
+    }
+
+    @Override
+    public void renderLastModifiedSnapshots() throws IndexingException {
+        long updatePeriod = getSEOIndexingUpdatePeriod();
+        if(updatePeriod == 0){
+            renderAllSnapshots();
+            return;
+        }
+        Date startTime = new Date();
+        Map<String, List<String>> updatedLearningOpportunities = tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
+
+        if (updatedLearningOpportunities == null || updatedLearningOpportunities.isEmpty() ||
+                updatedLearningOpportunities.get("hakukohde") == null) {
+            return;
+        }
+
+        StopWatch stopwatch = new StopWatch();
+
+        try {
+            final List<String> hakukohteet = updatedLearningOpportunities.get("hakukohde");
+
+            LOG.info("Rendering html snapshots using updatePeriod {} started at {}", updatePeriod, formatStartTime());
+            stopwatch.start();
+
+            LOG.info("Rendering HigherEd LOs using updatePeriod {}", updatePeriod);
+            prerenderWithTeachingLanguages(TYPE_HIGHERED, hakukohteet);
+
+            LOG.info("Rendering Adult vocational LOs using updatePeriod {}", updatePeriod);
+            prerender(TYPE_ADULT_VOCATIONAL, hakukohteet);
+
+            LOG.info("Rendering Koulutus LOs using updatePeriod {}", updatePeriod);
+            prerender(TYPE_KOULUTUS, hakukohteet);
+
+            LOG.info("Rendering Tutkinto LOs using updatePeriod {}", updatePeriod);
+            prerender(TYPE_TUTKINTO, hakukohteet);
+            seoSnapshotService.setLastSeoIndexingDate(startTime);
+        }
+        finally {
+            stopwatch.stop();
+            LOG.info("Rendering html snapshots using updatePeriod {} finished at {}", updatePeriod, stopwatch.toSplitString());
+        }
     }
 
     private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
@@ -137,29 +202,35 @@ public class SnapshotServiceImpl implements SnapshotService {
 
     private String[] generatePhantomJSCommand(String type, String id) {
         String url = format("%s%s/%s", baseUrl, type, id);
-        String filename = format("%s/%s.html", snapshotFolder, id);
-        return new String[]{phantomjs, snapshotScript, url, filename};
+        return new String[]{phantomjs, snapshotScript, url, id, snapshotSaveUrl};
     }
 
     private String[] generatePhantomJSCommand(String type, String id, String lang) {
         String url = format("%s%s/%s?%s=%s", baseUrl, type, id, QUERY_PARAM_LANG, lang);
-        String filename = format("%s/%s_%s.html", snapshotFolder, id, lang);
-        return new String[]{phantomjs, snapshotScript, url, filename};
+        return new String[]{phantomjs, snapshotScript, url, id, snapshotSaveUrl};
     }
 
     private void invokePhantomJS(List<String[]> cmds) throws IndexingException {
         LOG.info("Invoking phantomjs for {} commands", cmds.size());
         ExecutorService executor = Executors.newFixedThreadPool(THREADS_TO_RUN_PHANTOMJS);
         for (String[] cmd : cmds) {
+            LOG.debug("Adding command {} to queue", Arrays.toString(cmd));
             executor.execute(new InvokePhantomJs(cmd));
         }
+        LOG.debug("Shutdown instructed");
         executor.shutdown();
         try {
+            LOG.debug("AwaitTermination instructed");
             executor.awaitTermination(1, TimeUnit.DAYS);
         } catch (InterruptedException e) {
+            LOG.debug("InterruptedException occured");
             Thread.currentThread().interrupt();
             throw new IndexingException("Failed to render snapshots in time", e);
         }
+    }
+
+    private String formatStartTime() {
+        return STOPWATCH_TIME_FORMAT.format(new Date().getTime());
     }
 
     private class InvokePhantomJs implements Runnable {
@@ -172,8 +243,9 @@ public class SnapshotServiceImpl implements SnapshotService {
         @Override
         public void run() {
             try {
-                LOG.debug(Arrays.toString(cmd));
-                // "/usr/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/app/#!/koulutus/1.2.3.4.5 /path/to/file"
+                LOG.debug("Executing command {}", Arrays.toString(cmd));
+
+                // "/usr/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/app/#!/koulutus/1.2.3.4.5 1.2.3.4.5 /path/to/save/snapshot/service"
                 ProcessBuilder ps = new ProcessBuilder(cmd);
 
                 ps.redirectErrorStream(true);
@@ -200,5 +272,13 @@ public class SnapshotServiceImpl implements SnapshotService {
                 LOG.error(format("Rendering %s failed.", Arrays.toString(cmd)), e);
             }
         }
+    }
+
+    public long getSEOIndexingUpdatePeriod() {
+        Date lastIndexing = seoSnapshotService.getLastSeoIndexingDate();
+        if (lastIndexing != null) {
+            return System.currentTimeMillis() - lastIndexing.getTime();
+        }
+        return 0;
     }
 }

@@ -124,6 +124,7 @@ public class TransactionManagerImpl implements TransactionManager {
             ApplicationOptionDAO applicationOptionDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             DataStatusDAO dataStatusDAO,
+            SnapshotDAO snapshotDAO,
             PictureDAO pictureDAO,
             HigherEducationLOSDAO higherEducationLOSDAO,
             AdultVocationalLOSDAO adultVocationalLOSDAO,

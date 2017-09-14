@@ -19,10 +19,9 @@ public interface EducationIncrementalDataQueryService {
     
     DataStatus getLatestSuccessDataStatus();
 
+    DataStatus getLatestSEOIndexingSuccessDataStatus();
+
     List<String> getLearningOpportunityIdsByAS(String asId);
 
-
     TutkintoLOS getTutkinto(String oid) throws ResourceNotFoundException;
-
-
 }

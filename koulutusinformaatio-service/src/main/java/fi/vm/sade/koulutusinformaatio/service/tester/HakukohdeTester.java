@@ -57,7 +57,6 @@ public class HakukohdeTester {
             }
 
             Set<String> hakukohdeOiditKannasta = Sets.newHashSet();
-            Query<ApplicationOptionEntity> q = applicationOptionDAO.createQuery().retrievedFields(true, "_id");
             List<AoSolrSearchResult> indexedAos = searchServiceSolr.searchOngoingApplicationOptions(null, null, null);
             for (AoSolrSearchResult ao : indexedAos) {
                 hakukohdeOiditKannasta.add(ao.getId());

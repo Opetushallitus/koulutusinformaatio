@@ -148,6 +148,16 @@ EducationIncrementalDataQueryService {
     }
 
     @Override
+    public DataStatus getLatestSEOIndexingSuccessDataStatus() {
+        DataStatusEntity dataStatusEntity = this.dataStatusDAO.getLatestSEOIndexingSuccessOrIncremental();
+        if (dataStatusEntity == null) {
+            return null;
+        }
+
+        return modelMapper.map(dataStatusEntity, DataStatus.class);
+    }
+
+    @Override
     public List<String> getLearningOpportunityIdsByAS(String asId) {
 
         List<String> loss = new ArrayList<String>();
