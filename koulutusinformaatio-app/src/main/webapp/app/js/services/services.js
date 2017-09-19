@@ -1221,9 +1221,12 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 vastaanottaja: to,
                 captcha: captcha
             };
+            var headers = {
+                'CSRF': CookieService.get('CSRF')
+            };
             var aoIds = this.getItems();
             emailData.koids = aoIds == null ? [] : aoIds;
-            $http.post(window.url("omatsivut.muistilista"), emailData).
+            $http.post(window.url("omatsivut.muistilista"), emailData, headers).
                 success(function(result) {
                     $rootScope.isLoading = false;
                     deferred.resolve(result);
