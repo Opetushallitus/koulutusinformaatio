@@ -17,22 +17,21 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Maps;
-import com.google.common.io.Files;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SnapshotDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.properties.OphProperties;
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.xml.transform.TransformerException;
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -48,14 +47,15 @@ public class SEOServiceImpl implements SEOService {
     private Datastore mongoDatastore;
     private boolean running = false;
     private Map<String, String> sitemapParams;
-    private String sitemapLocation;
+    private SEOSnapshotService seoSnapshotService;
 
     @Autowired
     public SEOServiceImpl(SnapshotService snapshotService,
                           Datastore primaryDatastore,
-                          @Value("${koulutusinformaatio.sitemap.filepath}") String sitemapLocation,
-                          OphProperties urlProperties) {
+                          OphProperties urlProperties,
+                          SEOSnapshotService seoSnapshotService) {
         this.snapshotService = snapshotService;
+        this.seoSnapshotService = seoSnapshotService;
         this.mongoDatastore = primaryDatastore;
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
@@ -67,24 +67,50 @@ public class SEOServiceImpl implements SEOService {
                 "ammatillinenaikuiskoulutus:competenceBasedQualificationParentLOS," +
                 "aikuislukio:koulutusLOS";
         this.sitemapParams.put(SitemapBuilder.PROPERTY_COLLECTIONS, collections);
-        this.sitemapLocation = sitemapLocation;
     }
 
     @Async
     @Override
     public void update() {
         try {
+            LOG.info("Starting full snapshot crawling");
             running = true;
-            snapshotService.renderSnapshots();
-            byte[] sitemapBytes = sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
-            File dest = new File(this.sitemapLocation);
-            Files.write(sitemapBytes, dest);
-        } catch (TransformerException | IOException | IndexingException e) {
+            snapshotService.renderAllSnapshots();
+            createSitemap();
+            seoSnapshotService.deleteOldSnapshots();
+            LOG.info("Full snapshot crawling finished");
+        } catch (IndexingException e) {
             LOG.error("SEO batch execution error", e);
         } finally {
             running = false;
         }
+    }
 
+    @Async
+    @Override
+    public void updateLastModified() {
+        try {
+            LOG.info("Starting crawling changed snapshots");
+            running = true;
+            snapshotService.renderLastModifiedSnapshots();
+            createSitemap();
+            seoSnapshotService.deleteOldSnapshots();
+            LOG.info("Finished crawling changed snapshots");
+        } catch (IndexingException e) {
+            LOG.error("SEO batch execution error", e);
+        } finally {
+            running = false;
+        }
+    }
+
+    public void createSitemap() {
+        try {
+            LOG.info("Creating sitemap");
+            seoSnapshotService.setSitemap(sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams));
+            LOG.info("Sitemap saved to mongo");
+        } catch (TransformerException e) {
+            LOG.error("Failed to generate sitemap", e);
+        }
     }
 
     @Override
@@ -93,8 +119,9 @@ public class SEOServiceImpl implements SEOService {
     }
 
     @Override
+    @Nullable
     public Date getSitemapTimestamp() {
-        File sitemap = new File(sitemapLocation);
-        return new Date(sitemap.lastModified());
+        SnapshotDTO sitemap = seoSnapshotService.getSitemap();
+        return sitemap == null ? null : sitemap.getSnapshotCreated();
     }
 }

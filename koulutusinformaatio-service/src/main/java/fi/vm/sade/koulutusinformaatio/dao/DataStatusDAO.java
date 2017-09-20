@@ -24,8 +24,6 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
-import com.mongodb.Mongo;
-
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 
 /**
@@ -47,6 +45,13 @@ public class DataStatusDAO extends BasicDAO<DataStatusEntity, ObjectId> {
         Query<DataStatusEntity> query = createQuery();
         query.field("lastUpdateOutcome").in(Arrays.asList("SUCCESS", "SUCCESS-INCREMENTAL"));
         query.order("-lastUpdateFinished");
+        return find(query).get();
+    }
+
+    public DataStatusEntity getLatestSEOIndexingSuccessOrIncremental() {
+        Query<DataStatusEntity> query = createQuery().disableValidation();
+        query.field("lastUpdateOutcome").in(Arrays.asList("SUCCESS", "SUCCESS-INCREMENTAL"));
+        query.order("-lastSEOIndexingFinished");
         return find(query).get();
     }
 

@@ -25,8 +25,6 @@ import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +52,7 @@ public class AdminResource {
     private SEOService seoService;
     private RunningServiceChecker runningServiceChecker;
     private HakukohdeTester hakukohdeTester;
+    private SnapshotService snapshotService;
 
     @Autowired
     public AdminResource(UpdateService updateService,
@@ -63,7 +62,8 @@ public class AdminResource {
                          PartialUpdateService partialUpdateService,
                          RunningServiceChecker runningServiceChecker,
                          HakukohdeTester hakukohdeTester,
-                         RollingAverageLogger rollingAverageLogger) {
+                         RollingAverageLogger rollingAverageLogger,
+                         SnapshotService snapshotService) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.seoService = seoService;
@@ -73,6 +73,7 @@ public class AdminResource {
         this.runningServiceChecker = runningServiceChecker;
         this.hakukohdeTester = hakukohdeTester;
         this.rollingAverageLogger = rollingAverageLogger;
+        this.snapshotService = snapshotService;
     }
 
     @GET
@@ -179,6 +180,7 @@ public class AdminResource {
         }
         DataStatusDTO dto = new DataStatusDTO();
         dto.setLastUpdateFinished(status.getLastUpdateFinished());
+        dto.setLastSEOIndexingUpdateFinished(seoService.getSitemapTimestamp());
         dto.setLastUpdateFinishedStr(status.getLastUpdateFinished().toString());
         long millis = status.getLastUpdateDuration();
         dto.setLastUpdateDuration(millis);
@@ -218,7 +220,16 @@ public class AdminResource {
         }
         return Response.seeOther(new URI("admin/status")).build();
     }
-    
+
+    @GET
+    @Path("/sitemap")
+    public Response generateSitemap() throws URISyntaxException {
+        if (!seoService.isRunning()) {
+            seoService.createSitemap();
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+
     @GET
     @Path("/test")
     public Response test() throws URISyntaxException {
