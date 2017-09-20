@@ -77,12 +77,17 @@ public final class TutkintoLOSToDTO {
             parent.setTopics(CodeToDTO.convertAll(tutkintoLOS.getTopics(), uiLang));
         }
 
+        String fetchWithPrerequisite = prerequisite;
+        if(prerequisite != null && prerequisite.equals("UUSI")){
+            fetchWithPrerequisite = null;
+        }
+
         if (!tutkintoLOS.getChildEducations().isEmpty()) {
 
             SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
 
             // Koulutusohjelman valinta on aina sama tutkinnon kaikille komotoille, joilla on sama PK-vaatimus
-            KoulutusLOS firstChild = getFirstLosWithMatchingPrerequisite(tutkintoLOS.getChildEducations(), prerequisite);
+            KoulutusLOS firstChild = getFirstLosWithMatchingPrerequisite(tutkintoLOS.getChildEducations(), fetchWithPrerequisite);
             if (firstChild == null) {
                 throw new KIConversionException("No matching child educations!");
             }
@@ -90,7 +95,7 @@ public final class TutkintoLOSToDTO {
 
             for (KoulutusLOS child : tutkintoLOS.getChildEducations()) {
 
-                if (!isSamePrerequisite(prerequisite, child)) {
+                if (!isSamePrerequisite(fetchWithPrerequisite, child)) {
                     continue;
                 }
 

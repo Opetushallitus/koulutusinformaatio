@@ -715,9 +715,10 @@ public class TarjontaServiceImpl implements TarjontaService {
         case KORKEAKOULUTUS:
             return creator.createHigherEducationLOS((KoulutusKorkeakouluV1RDTO) koulutusDTO, checkStatus);
         case AMMATILLINEN_PERUSTUTKINTO:
-        case AMMATILLINEN_PERUSTUTKINTO_ALK_2018:
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
             return creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
+        case AMMATILLINEN_PERUSTUTKINTO_ALK_2018:
+            return creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO) koulutusDTO, checkStatus);
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
             return creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
@@ -884,6 +885,8 @@ public class TarjontaServiceImpl implements TarjontaService {
             String tutkintokey = Joiner.on("_").join(parentoid, providerOid, koulutus.getStartYear(), koulutus.getStartSeason().get("fi"));
             if(koulutus.getKoulutusPrerequisite() != null){
                 tutkintokey = tutkintokey + "_" + koulutus.getKoulutusPrerequisite().getValue();
+            } else { // Ammatillinen perustutkinto alk 2018
+                tutkintokey = tutkintokey + "_UUSI";
             }
             TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(tutkintokey);
             if (tutkinto == null) {
