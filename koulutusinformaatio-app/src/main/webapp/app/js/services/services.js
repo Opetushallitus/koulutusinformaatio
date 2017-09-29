@@ -377,7 +377,7 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
                         parent.url = '#!/tutkinto/' + parent.id;
                         if(parent.id.indexOf("_UUSI") > 0){
                             parent.koulutusPrerequisite = "UUSI";
-                        } else if(result.koulutusPrerequisite != undefined && result.koulutusPrerequisite.value != undefined){
+                        } else if(result.koulutusPrerequisite && result.koulutusPrerequisite.value){
                             parent.koulutusPrerequisite = result.koulutusPrerequisite.value;
                         }
                     } else if (parent.type == 'KOULUTUS') {
