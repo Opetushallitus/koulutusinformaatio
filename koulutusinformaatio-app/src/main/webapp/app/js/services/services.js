@@ -119,7 +119,7 @@ service('ParentLOService', ['GeneralLOService', 'ParentLOTransformer', function(
     return {
         query: function(options) {
             // BUG-1273: If the tutkinto id has no PKYO / ER ending, append one based on prerequisite
-            if(options.id && (options.id.indexOf("_PKYO") < 0 && options.id.indexOf("_ER") < 0)){
+            if(options.id && (options.id.indexOf("_PKYO") < 0 && options.id.indexOf("_ER") < 0 && options.id.indexOf("_UUSI") < 0)){
                 if(options.prerequisite == "ER") {
                     options.id = options.id + "_ER"
                 } else {
@@ -371,11 +371,15 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 
     return {
         transform: function(result) {
-
             if(result.parentLos != null && result.parentLos.length){
                 _.each(result.parentLos, function(parent) {
                     if (parent.type == 'TUTKINTO') {
                         parent.url = '#!/tutkinto/' + parent.id;
+                        if(parent.id.indexOf("_UUSI") > 0){
+                            parent.koulutusPrerequisite = "UUSI";
+                        } else if(result.koulutusPrerequisite && result.koulutusPrerequisite.value){
+                            parent.koulutusPrerequisite = result.koulutusPrerequisite.value;
+                        }
                     } else if (parent.type == 'KOULUTUS') {
                         parent.url = '#!/koulutus/' + parent.id;
                     }

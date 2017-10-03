@@ -717,6 +717,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         case AMMATILLINEN_PERUSTUTKINTO:
         case AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA:
             return creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoV1RDTO) koulutusDTO, checkStatus);
+        case AMMATILLINEN_PERUSTUTKINTO_ALK_2018:
+            return creator.createAmmatillinenLOS((KoulutusAmmatillinenPerustutkintoAlk2018V1RDTO) koulutusDTO, checkStatus);
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA_ER:
             return creator.createValmaErLOS((ValmistavaKoulutusV1RDTO) koulutusDTO, checkStatus);
         case AMMATILLISEEN_PERUSKOULUTUKSEEN_VALMENTAVA:
@@ -813,6 +815,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducationsByToteutustyyppi(
                 ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO.name(),
+                ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018.name(),
                 ToteutustyyppiEnum.AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA.name());
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
@@ -879,8 +882,13 @@ public class TarjontaServiceImpl implements TarjontaService {
             if (koulutus == null) {
                 return losses;
             }
-            TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(Joiner.on("_").join(parentoid, providerOid, koulutus.getStartYear(),
-                    koulutus.getStartSeason().get("fi"), koulutus.getKoulutusPrerequisite().getValue()));
+            String tutkintokey = Joiner.on("_").join(parentoid, providerOid, koulutus.getStartYear(), koulutus.getStartSeason().get("fi"));
+            if(koulutus.getKoulutusPrerequisite() != null){
+                tutkintokey = tutkintokey + "_" + koulutus.getKoulutusPrerequisite().getValue();
+            } else { // Ammatillinen perustutkinto alk 2018
+                tutkintokey = tutkintokey + "_UUSI";
+            }
+            TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(tutkintokey);
             if (tutkinto == null) {
                 tutkinto = creator.createTutkintoLOS(parentoid, providerOid, "" + koulutus.getStartYear(), koulutus.getStartSeason().get("fi"), koulutus.getKoulutusPrerequisite());
             }

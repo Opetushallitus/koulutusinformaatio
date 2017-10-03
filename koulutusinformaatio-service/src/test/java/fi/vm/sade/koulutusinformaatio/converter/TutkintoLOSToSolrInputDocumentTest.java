@@ -19,6 +19,7 @@ import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
@@ -119,6 +120,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         koulutus.setShortTitle(TestUtil.createI18nText("child los short name fi", "child los short name sv", "child los short name en"));
         koulutus.setQualifications(Collections.singletonList(TestUtil.createI18nText("quali fi", "quali sv", "quali en")));
         koulutus.setGoals(TestUtil.createI18nText("Goals child fi", "Goals child sv", "Goals child en"));
+        koulutus.setToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
 
         koulutus.setStartDate(new Date());
 
@@ -187,6 +189,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         koulutus.setProfessionalTitles(Collections.singletonList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
         koulutus.setContent(TestUtil.createI18nText("Content1 fi", "Content1 sv", "Content1 en"));
         koulutus.setApplicationOptions(Sets.newHashSet(ao));
+        koulutus.setToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO);
         los.getChildEducations().add(koulutus);
         List<SolrInputDocument> docs = converter.convert(los);
 
@@ -213,6 +216,7 @@ public class TutkintoLOSToSolrInputDocumentTest {
         koulutus.setProfessionalTitles(Collections.singletonList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
         koulutus.setContent(TestUtil.createI18nText("Content1 fi", "Content1 sv", "Content1 en"));
         koulutus.setApplicationOptions(Sets.newHashSet(ao));
+        koulutus.setToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSKOULUTUS_ERITYISOPETUKSENA);
         los.getChildEducations().add(koulutus);
         List<SolrInputDocument> docs = converter.convert(los);
 

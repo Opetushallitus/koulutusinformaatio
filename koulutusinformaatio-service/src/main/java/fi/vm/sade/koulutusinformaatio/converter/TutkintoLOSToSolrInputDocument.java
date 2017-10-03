@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.*;
 
 import com.google.common.collect.Sets;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -56,6 +57,10 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 String prereqStr = prereq.getValue();
                 prerequisitesMap.put(prereqStr, prereq);
             }
+            // make one, if the prequisite does not exist;
+            if (koulutus.getToteutustyyppi() != null && koulutus.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018)) {
+                prerequisitesMap.put("UUSI", null);
+            }
         }
         for (Code curPrereq : prerequisitesMap.values()) {
             docs.add(createTutkintoDoc(tutkinto, curPrereq));
@@ -68,20 +73,24 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = tutkinto.getProvider();
         doc.addField(LearningOpportunity.TYPE, tutkinto.getType());
-        doc.addField(LearningOpportunity.ID, String.format("%s#%s", tutkinto.getId(), prerequisite.getValue()));
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
-        
-        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(prerequisite.getValue())
-                ? SolrConstants.PK : prerequisite.getValue());
-
         List<Code> languages = Lists.newArrayList(tutkinto.getTeachingLanguages());
-        String prerequisiteText = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                languages, prerequisite.getName().getTranslations()
-        );
 
-        doc.setField(LearningOpportunity.PREREQUISITE, prerequisiteText);
-        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, prerequisiteText);
-        doc.addField(LearningOpportunity.PREREQUISITE_CODE, prerequisite.getValue());
+        if(prerequisite != null) {
+            doc.addField(LearningOpportunity.ID, String.format("%s#%s", tutkinto.getId(), prerequisite.getValue()));
+
+            doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(prerequisite.getValue())
+                    ? SolrConstants.PK : prerequisite.getValue());
+            String prerequisiteText = SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                    languages, prerequisite.getName().getTranslations()
+            );
+
+            doc.setField(LearningOpportunity.PREREQUISITE, prerequisiteText);
+            doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, prerequisiteText);
+            doc.addField(LearningOpportunity.PREREQUISITE_CODE, prerequisite.getValue());
+        } else {
+            doc.addField(LearningOpportunity.ID, tutkinto.getId());
+        }
 
         String teachLang = tutkinto.getTeachingLanguages().isEmpty() ? "EXC" : tutkinto.getTeachingLanguages().iterator().next().getValue().toLowerCase();
 
@@ -91,7 +100,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         );
         doc.setField(LearningOpportunity.NAME, parentName);
 
-        
+
         try {
             KoulutusLOS latest = tutkinto.getLatestLoi();
             String cv = latest.getCreditValue();
@@ -127,7 +136,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             doc.addField(LearningOpportunity.NAME_FI, parentName);
             doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, parentName);
         }
-        
+
 
         SolrUtil.indexLopName(doc, provider, teachLang);
 
@@ -172,34 +181,57 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         String aoNameSv = "";
         String aoNameEn = "";
         for (KoulutusLOS koulutus : tutkinto.getChildEducations()) {
-            for (Code prereq : koulutus.getPrerequisites()) {
-                if (prereq.getValue().equals(prerequisite.getValue())) {
-                    applicationOptions.addAll(koulutus.getApplicationOptions());
-                    for (ApplicationOption ao : koulutus.getApplicationOptions()) {
-                        if (ao.getApplicationSystem() != null) {
-                            ApplicationSystem curAs = ao.getApplicationSystem();
-                            doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
-                            doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
-                            doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
+            if(koulutus.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018)){
+                // add all
+                applicationOptions.addAll(koulutus.getApplicationOptions());
+                for (ApplicationOption ao : koulutus.getApplicationOptions()) {
+                    if (ao.getApplicationSystem() != null) {
+                        ApplicationSystem curAs = ao.getApplicationSystem();
+                        doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
+                        doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
+                        doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
 
-                            if (curAs.isShownAsFacet()) {
-                                doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
-                            }
-                            doc.addField(LearningOpportunity.AS_ID, curAs.getId());
-                            if(curAs.isSiirtohaku())
-                                doc.addField(LearningOpportunity.SIIRTOHAKU, true);
-
+                        if (curAs.isShownAsFacet()) {
+                            doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
                         }
-                        if (ao.getName() != null) {
-                            aoNameFi = String.format("%s %s", aoNameFi, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
-                            aoNameSv = String.format("%s %s", aoNameSv, SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
-                            aoNameEn = String.format("%s %s", aoNameEn, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                        doc.addField(LearningOpportunity.AS_ID, curAs.getId());
+                        if (curAs.isSiirtohaku())
+                            doc.addField(LearningOpportunity.SIIRTOHAKU, true);
+                    }
+                    if (ao.getName() != null) {
+                        aoNameFi = String.format("%s %s", aoNameFi, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                        aoNameSv = String.format("%s %s", aoNameSv, SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                        aoNameEn = String.format("%s %s", aoNameEn, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                    }
+                }
+            } else {
+                for (Code prereq : koulutus.getPrerequisites()) {
+                    if (prereq.getValue().equals(prerequisite.getValue())) {
+                        applicationOptions.addAll(koulutus.getApplicationOptions());
+                        for (ApplicationOption ao : koulutus.getApplicationOptions()) {
+                            if (ao.getApplicationSystem() != null) {
+                                ApplicationSystem curAs = ao.getApplicationSystem();
+                                doc.addField(LearningOpportunity.AS_NAME_FI, curAs.getName().getTranslations().get("fi"));
+                                doc.addField(LearningOpportunity.AS_NAME_SV, curAs.getName().getTranslations().get("sv"));
+                                doc.addField(LearningOpportunity.AS_NAME_EN, curAs.getName().getTranslations().get("en"));
+
+                                if (curAs.isShownAsFacet()) {
+                                    doc.addField(LearningOpportunity.AS_FACET, curAs.getId());
+                                }
+                                doc.addField(LearningOpportunity.AS_ID, curAs.getId());
+                                if (curAs.isSiirtohaku())
+                                    doc.addField(LearningOpportunity.SIIRTOHAKU, true);
+
+                            }
+                            if (ao.getName() != null) {
+                                aoNameFi = String.format("%s %s", aoNameFi, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                                aoNameSv = String.format("%s %s", aoNameSv, SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                                aoNameEn = String.format("%s %s", aoNameEn, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                            }
                         }
                     }
                 }
-
             }
-
         }
         doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
         doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
@@ -216,12 +248,22 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 }
             }
         doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
-        
-        indexFacetFields(tutkinto, doc, prerequisite.getValue(), teachLang);
-        for (KoulutusLOS koulutus : tutkinto.getChildEducations()) {
-            for (Code prereq : koulutus.getPrerequisites()) {
-                if (prereq.getValue().equals(prerequisite.getValue())) {
-                    indexChildFields(doc, koulutus, teachLang);
+
+        String preValue = "";
+        if(prerequisite != null){
+            preValue = prerequisite.getValue();
+        }
+        indexFacetFields(tutkinto, doc, preValue, teachLang);
+        if(prerequisite == null){
+            for (KoulutusLOS koulutus : tutkinto.getChildEducations()) {
+                indexChildFields(doc, koulutus, teachLang);
+            }
+        } else {
+            for (KoulutusLOS koulutus : tutkinto.getChildEducations()) {
+                for (Code prereq : koulutus.getPrerequisites()) {
+                    if (prereq.getValue().equals(prerequisite.getValue())) {
+                        indexChildFields(doc, koulutus, teachLang);
+                    }
                 }
             }
         }
@@ -264,7 +306,6 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 }
             }
         }
-        
         if (koulutusLOS.getDegreeTitle() != null) {
             I18nText i18n = koulutusLOS.getDegreeTitle();
             if (teachLang.equals("sv")) {
@@ -278,13 +319,13 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
 
         if (koulutusLOS.getDegreeTitles() != null) {
             for (I18nText i18n : koulutusLOS.getDegreeTitles()) {
-	            if (teachLang.equals("sv")) {
-	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
-	            } else if (teachLang.equals("en")) {
-	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
-	            } else {
-	                doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
-	            }
+                if (teachLang.equals("sv")) {
+                    doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_SV, SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
+                } else if (teachLang.equals("en")) {
+                    doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_EN, SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
+                } else {
+                    doc.addField(SolrUtil.LearningOpportunity.DEGREE_TITLE_FI, SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
+                }
             }
         }
 
@@ -380,37 +421,12 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 usedVals.add(SolrConstants.ED_TYPE_KAKSOIS);
             }
 
-            for (Code prereq : koulutus.getPrerequisites()) {
-                if (prereq.getValue().equals(prerequisite)) {
-                    if (koulutus.getFotFacet() != null) {
-                        for (Code curCode : koulutus.getFotFacet()) {
-                            if (!usedVals.contains(curCode.getUri())) {
-                                doc.addField(LearningOpportunity.FORM_OF_TEACHING, curCode.getUri());
-                                usedVals.add(curCode.getUri());
-                            }
-                        }
-                    }
-
-                    if (koulutus.getTimeOfTeachingFacet() != null) {
-                        for (Code curCode : koulutus.getTimeOfTeachingFacet()) {
-                            if (!usedVals.contains(curCode.getUri())) {
-                                doc.addField(LearningOpportunity.TIME_OF_TEACHING, curCode.getUri());
-                                usedVals.add(curCode.getUri());
-                            }
-                        }
-                    }
-                    if (koulutus.getFormOfStudyFacet() != null) {
-                        for (Code curCode : koulutus.getFormOfStudyFacet()) {
-                            if (!usedVals.contains(curCode.getUri())) {
-                                doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
-                                usedVals.add(curCode.getUri());
-                            }
-                        }
-                    }
-                    if (koulutus.getKoulutuslaji() != null
-                            && !usedVals.contains(koulutus.getKoulutuslaji().getUri())) {
-                        SolrUtil.addKindOfEducationFields(koulutus, doc);
-                        usedVals.add(koulutus.getKoulutuslaji().getUri());
+            if(prerequisite.equals("")){
+                setAdditionalFacets(koulutus, usedVals, doc);
+            } else {
+                for (Code prereq : koulutus.getPrerequisites()) {
+                    if (prereq.getValue().equals(prerequisite)) {
+                        setAdditionalFacets(koulutus, usedVals, doc);
                     }
                 }
             }
@@ -444,6 +460,39 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             }
         }
 
+    }
+
+    private void setAdditionalFacets(KoulutusLOS koulutus, List<String> usedVals, SolrInputDocument doc) {
+        if (koulutus.getFotFacet() != null) {
+            for (Code curCode : koulutus.getFotFacet()) {
+                if (!usedVals.contains(curCode.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_TEACHING, curCode.getUri());
+                    usedVals.add(curCode.getUri());
+                }
+            }
+        }
+
+        if (koulutus.getTimeOfTeachingFacet() != null) {
+            for (Code curCode : koulutus.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curCode.getUri())) {
+                    doc.addField(LearningOpportunity.TIME_OF_TEACHING, curCode.getUri());
+                    usedVals.add(curCode.getUri());
+                }
+            }
+        }
+        if (koulutus.getFormOfStudyFacet() != null) {
+            for (Code curCode : koulutus.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curCode.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
+                    usedVals.add(curCode.getUri());
+                }
+            }
+        }
+        if (koulutus.getKoulutuslaji() != null
+                && !usedVals.contains(koulutus.getKoulutuslaji().getUri())) {
+            SolrUtil.addKindOfEducationFields(koulutus, doc);
+            usedVals.add(koulutus.getKoulutuslaji().getUri());
+        }
     }
 
 }

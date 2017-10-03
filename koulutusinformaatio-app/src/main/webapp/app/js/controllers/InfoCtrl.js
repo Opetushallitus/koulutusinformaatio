@@ -217,7 +217,9 @@
         } else if ($location.search().descriptionLang) {
             languageCode = $location.search().descriptionLang;
         }
-
+        if($routeParams.id.indexOf("_UUSI") > 0){
+            $routeParams.prerequisite = 'UUSI';
+        }
         $routeParams.prerequisite = $routeParams.prerequisite || 'PK';
         $scope.prerequisite = $routeParams.prerequisite;
 
