@@ -42,6 +42,7 @@
         <oph.koodisto.version>10.1-SNAPSHOT</oph.koodisto.version>
         <oph.tarjonta.version>2017-40-SNAPSHOT</oph.tarjonta.version>
         <javax.mail.version>1.4</javax.mail.version>
+        <versioneye-maven-plugin.version>3.11.4</versioneye-maven-plugin.version>
     </properties>
 
     <build>
@@ -56,6 +57,13 @@
                             <targetPath>WEB-INF/classes</targetPath>
                         </resource>
                     </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>${versioneye-maven-plugin.version}</version>
+                <configuration><apiKey>c8249153722ca5c79ea0</apiKey>
                 </configuration>
             </plugin>
         </plugins>
