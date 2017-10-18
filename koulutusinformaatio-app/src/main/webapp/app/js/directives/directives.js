@@ -523,6 +523,7 @@ directive('kiAoApplicationTime', function() {
             asenddates: '='
         },
         controller: function($scope) {
+            $scope.smallerDate = $scope.enddate;
             $scope.isJatkuva = function () {
                 // code for jatkuva haku is 03
                 return $scope.hakutapa === '03';
