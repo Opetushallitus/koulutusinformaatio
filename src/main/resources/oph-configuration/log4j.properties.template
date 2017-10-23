@@ -29,4 +29,5 @@ log4j.logger.org.apache.activemq.spring={{env_loglevel}}
 log4j.logger.org.jasig.cas.client.session=INFO
 # Indexing
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl=DEBUG
+log4j.logger.fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental=DEBUG
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester=DEBUG
