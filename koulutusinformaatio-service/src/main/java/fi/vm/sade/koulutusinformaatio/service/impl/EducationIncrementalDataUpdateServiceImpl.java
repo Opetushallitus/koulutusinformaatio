@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,12 +159,16 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             updateProviderReferences(los);
 
             HigherEducationLOSEntity plos = modelMapper.map(los, HigherEducationLOSEntity.class);
-            if(LOG.isTraceEnabled()) {
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                LOG.trace("los = {}", gson.toJson(los));
-                LOG.trace("plos = {}", gson.toJson(plos));
+            try {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("mapper result:");
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    LOG.trace("los = {}", gson.toJson(los));
+                    LOG.trace("plos = {}", gson.toJson(plos));
+                }
+            } catch (Exception e) {
+                LOG.error("Error printing trace log",e);
             }
-            //this.learningOpportunityProviderDAO.get(id)
 
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());

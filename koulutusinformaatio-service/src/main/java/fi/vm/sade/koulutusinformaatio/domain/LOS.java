@@ -28,14 +28,14 @@ import java.util.Set;
 public abstract class LOS {
 
     protected Provider provider;
-    private String id;
-    private I18nText name;
-    private I18nText shortTitle;
-    private I18nText goals;
-    private String type;
-    private List<Code> topics; // aiheet
-    private List<Code> themes; // teemat
-    private List<I18nText> professionalTitles;
+    protected String id;
+    protected I18nText name;
+    protected I18nText shortTitle;
+    protected I18nText goals;
+    protected String type;
+    protected List<Code> topics; // aiheet
+    protected List<Code> themes; // teemat
+    protected List<I18nText> professionalTitles;
     private ToteutustyyppiEnum toteutustyyppi;
     private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
 
