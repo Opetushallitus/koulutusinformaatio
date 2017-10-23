@@ -28,5 +28,5 @@ log4j.logger.org.apache.activemq.spring={{env_loglevel}}
 # cas session + singlelogout tracing
 log4j.logger.org.jasig.cas.client.session=INFO
 # Indexing
-log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl=DEBUG
+log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl=INFO
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester=DEBUG
