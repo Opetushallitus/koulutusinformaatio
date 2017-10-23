@@ -31,13 +31,13 @@ public class TutkintoLOS extends LOS {
     private static final Logger LOG = LoggerFactory.getLogger(TutkintoLOS.class);
 
     // InstantiatedLOS
-    private String id;
-    private I18nText name;
-    private I18nText shortTitle;
-    private I18nText goals;
-    private String type;
-    private List<Code> topics;
-    private List<Code> themes;
+    //private String id;
+    //private I18nText name;
+    //private I18nText shortTitle;
+    //private I18nText goals;
+    //private String type;
+    //private List<Code> topics;
+    //private List<Code> themes;
 
     // BasicLOS
     private List<Provider> additionalProviders = new ArrayList<Provider>(); // muut tarjoajat

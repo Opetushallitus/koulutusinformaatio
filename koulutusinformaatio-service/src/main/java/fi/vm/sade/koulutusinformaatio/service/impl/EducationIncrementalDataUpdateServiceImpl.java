@@ -15,41 +15,21 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
-import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.KoulutusLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
-import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 
 import java.util.List;
 
@@ -118,9 +98,10 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     private void save(final ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {
-            LOG.debug("Saved hakukohde: {}", applicationOption.getId());
             save(applicationOption.getProvider());
             applicationOptionDAO.save(applicationOption);
+            LOG.debug("Saved hakukohde: {}", applicationOption.getId());
+            LOG.trace("Name: {}", applicationOption.getName().getTranslations().toString());
         }
     }
 
@@ -150,7 +131,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     @Override
     public void updateHigherEdLos(HigherEducationLOS los) {
         if (los != null) {
-
+            LOG.trace("updateHigherEdLos {}, {}",los.getId(), los.getName().getTranslations().toString());
             for (HigherEducationLOS curChild : los.getChildren()) {
                 updateHigherEdLos(curChild);
             }
@@ -158,13 +139,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             updateProviderReferences(los);
 
             HigherEducationLOSEntity plos = modelMapper.map(los, HigherEducationLOSEntity.class);
-            if(LOG.isTraceEnabled()) {
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                LOG.trace("los = {}", gson.toJson(los));
-                LOG.trace("plos = {}", gson.toJson(plos));
-            }
-            //this.learningOpportunityProviderDAO.get(id)
-
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
 
@@ -177,7 +151,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             }
 
             updateLosRefs(plos);
-
 
             LOG.debug("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.higherEducationLOSDAO.deleteById(plos.getId());
@@ -272,7 +245,11 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     }
 
     private void updateLosRefs(List<ApplicationOptionEntity> ents, String losId) {
-        if(ents == null) return;
+        LOG.trace("Updating los {} refs", losId);
+        if(ents == null) {
+            LOG.trace("ents null, returning");
+            return;
+        }
         for (ApplicationOptionEntity ao : ents) {
             try {
                 ApplicationOptionEntity exAo = this.getAo(ao.getId());
@@ -314,5 +291,18 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             return false;
         }
         return true;
+    }
+
+    //for debugging purposes only
+    private static class TraceExclusionStrategy implements ExclusionStrategy {
+        @Override
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return fieldAttributes.getName().equals("parents") || fieldAttributes.getName().equals("children");
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> aClass) {
+            return false;
+        }
     }
 }
