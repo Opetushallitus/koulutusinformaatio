@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
@@ -48,6 +50,8 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
+
+import java.util.List;
 
 /**
  * 
@@ -142,6 +146,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     }
 
+
     @Override
     public void updateHigherEdLos(HigherEducationLOS los) {
         if (los != null) {
@@ -150,22 +155,14 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 updateHigherEdLos(curChild);
             }
 
-            try {
-                Provider existingProv = this.getProvider(los.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                    for (String curAsId : existingProv.getApplicationSystemIds()) {
-                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                            los.getProvider().getApplicationSystemIds().add(curAsId);
-                        }
-                    }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.warn("Problem updating provider's application system references");
+            updateProviderReferences(los);
+
+            HigherEducationLOSEntity plos = modelMapper.map(los, HigherEducationLOSEntity.class);
+            if(LOG.isTraceEnabled()) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                LOG.trace("los = {}", gson.toJson(los));
+                LOG.trace("plos = {}", gson.toJson(plos));
             }
-
-            HigherEducationLOSEntity plos =
-                    modelMapper.map(los, HigherEducationLOSEntity.class);
-
             //this.learningOpportunityProviderDAO.get(id)
 
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
@@ -179,20 +176,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
 
-            if (plos.getApplicationOptions() != null) {
-                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+            updateLosRefs(plos);
 
-                    try {
-                        ApplicationOptionEntity exAo = this.getAo(ao.getId());
-                        updateLosRefs(ao, exAo, plos.getId());
-                    } catch (ResourceNotFoundException ex) {
-                        LOG.debug("No existing ao");
-                    }
-
-                    this.applicationOptionDAO.deleteById(ao.getId());
-                    save(ao);
-                }
-            }
 
             LOG.debug("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.higherEducationLOSDAO.deleteById(plos.getId());
@@ -207,54 +192,19 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
         if (los != null) {
 
-            try {
-                Provider existingProv = this.getProvider(los.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                    for (String curAsId : existingProv.getApplicationSystemIds()) {
-                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                            los.getProvider().getApplicationSystemIds().add(curAsId);
-                        }
-                    }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.warn("Problem updating provider's application system references");
-            }
+            updateProviderReferences(los);
 
-            CompetenceBasedQualificationParentLOSEntity plos =
+            CompetenceBasedQualificationParentLOSEntity cplos =
                     modelMapper.map(los, CompetenceBasedQualificationParentLOSEntity.class);
 
-            this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
-            save(plos.getProvider());
+            this.learningOpportunityProviderDAO.deleteById(cplos.getProvider().getId());
+            save(cplos.getProvider());
 
-            if (plos.getApplicationOptions() != null) {
-                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-
-                    try {
-                        ApplicationOptionEntity exAo = this.getAo(ao.getId());
-                        updateLosRefs(ao, exAo, plos.getId());
-                    } catch (ResourceNotFoundException ex) {
-                        LOG.debug("No existing ao");
-                    }
-
-                    this.applicationOptionDAO.deleteById(ao.getId());
-                    save(ao);
-                }
-            }
+            updateLosRefs(cplos);
 
             LOG.debug("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
-            this.adultVocationalLOSDAO.deleteById(plos.getId());
-            this.adultVocationalLOSDAO.save(plos);
-        }
-    }
-
-    private void updateLosRefs(ApplicationOptionEntity ao, ApplicationOptionEntity existingAo, String curLosId) {
-        for (HigherEducationLOSRefEntity curRef : existingAo.getHigherEdLOSRefs()) {
-            if (this.adultVocationalLOSDAO.get(curRef.getId()) != null
-                    && !curRef.getId().equals(curLosId)) {
-
-                ao.getHigherEdLOSRefs().add(curRef);
-
-            }
+            this.adultVocationalLOSDAO.deleteById(cplos.getId());
+            this.adultVocationalLOSDAO.save(cplos);
         }
     }
 
@@ -281,18 +231,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     public void updateKoulutusLos(KoulutusLOS los) {
         if (los != null) {
 
-            try {
-                Provider existingProv = this.getProvider(los.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                    for (String curAsId : existingProv.getApplicationSystemIds()) {
-                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                            los.getProvider().getApplicationSystemIds().add(curAsId);
-                        }
-                    }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.warn("Problem updating provider's application system references");
-            }
+            updateProviderReferences(los);
 
             KoulutusLOSEntity plos = modelMapper.map(los, KoulutusLOSEntity.class);
 
@@ -315,18 +254,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     public void updateTutkintoLos(TutkintoLOS los) {
         if (los != null) {
 
-            try {
-                Provider existingProv = this.getProvider(los.getProvider().getId());
-                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
-                    for (String curAsId : existingProv.getApplicationSystemIds()) {
-                        if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                            los.getProvider().getApplicationSystemIds().add(curAsId);
-                        }
-                    }
-                }
-            } catch (ResourceNotFoundException ex) {
-                LOG.warn("Problem updating provider's application system references");
-            }
+            updateProviderReferences(los);
 
             TutkintoLOSEntity plos = modelMapper.map(los, TutkintoLOSEntity.class);
 
@@ -337,5 +265,54 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.tutkintoLOSDAO.deleteById(plos.getId());
             this.tutkintoLOSDAO.save(plos);
         }
+    }
+
+    private void updateLosRefs(CompetenceBasedQualificationParentLOSEntity cplos) {
+        updateLosRefs(cplos.getApplicationOptions(), cplos.getId());
+    }
+
+    private void updateLosRefs(List<ApplicationOptionEntity> ents, String losId) {
+        if(ents == null) return;
+        for (ApplicationOptionEntity ao : ents) {
+            try {
+                ApplicationOptionEntity exAo = this.getAo(ao.getId());
+                for (HigherEducationLOSRefEntity curRef : ao.getHigherEdLOSRefs()) {
+                    if (this.adultVocationalLOSDAO.get(curRef.getId()) != null && !curRef.getId().equals(losId)) {
+                        ao.getHigherEdLOSRefs().add(curRef);
+                    }
+                }
+            } catch (ResourceNotFoundException ex) {
+                LOG.debug("No existing ao");
+            }
+
+            this.applicationOptionDAO.deleteById(ao.getId());
+            save(ao);
+        }
+    }
+
+    private void updateLosRefs(HigherEducationLOSEntity cplos) {
+        updateLosRefs(cplos.getApplicationOptions(), cplos.getId());
+    }
+
+    /**
+     * Update LOS provider application system id references
+     * @param los
+     * @return true if success, false if not
+     */
+    private boolean updateProviderReferences(LOS los) {
+        try {
+            Provider existingProv = this.getProvider(los.getProvider().getId());
+            if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
+                for (String curAsId : existingProv.getApplicationSystemIds()) {
+                    if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
+                        los.getProvider().getApplicationSystemIds().add(curAsId);
+                    }
+                }
+            }
+        } catch (ResourceNotFoundException ex) {
+            LOG.warn("Problem updating provider's application system references");
+            return false;
+        }
+        return true;
     }
 }
