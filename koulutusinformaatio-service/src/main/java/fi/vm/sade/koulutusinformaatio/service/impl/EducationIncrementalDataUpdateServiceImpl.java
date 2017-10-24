@@ -98,9 +98,10 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     private void save(final ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {
-            LOG.debug("Saved hakukohde: {}", applicationOption.getId());
             save(applicationOption.getProvider());
             applicationOptionDAO.save(applicationOption);
+            LOG.debug("Saved hakukohde: {}", applicationOption.getId());
+            LOG.trace("Name: {}", applicationOption.getName().getTranslations().toString());
         }
     }
 
@@ -130,7 +131,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     @Override
     public void updateHigherEdLos(HigherEducationLOS los) {
         if (los != null) {
-
+            LOG.trace("updateHigherEdLos {}, {}",los.getId(), los.getName().getTranslations().toString());
             for (HigherEducationLOS curChild : los.getChildren()) {
                 updateHigherEdLos(curChild);
             }
@@ -138,17 +139,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             updateProviderReferences(los);
 
             HigherEducationLOSEntity plos = modelMapper.map(los, HigherEducationLOSEntity.class);
-            try {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("mapper result:");
-                    Gson gson = new GsonBuilder().setExclusionStrategies(new TraceExclusionStrategy()).setPrettyPrinting().create();
-                    LOG.trace("los = {}", gson.toJson(los));
-                    LOG.trace("plos = {}", gson.toJson(plos));
-                }
-            } catch (Exception e) {
-                LOG.error("Error printing trace log",e);
-            }
-
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
 
@@ -161,7 +151,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             }
 
             updateLosRefs(plos);
-
 
             LOG.debug("Updated {} koulutus: {}", los.getToteutustyyppi() != null ? los.getToteutustyyppi() : los.getType(), los.getId());
             this.higherEducationLOSDAO.deleteById(plos.getId());
@@ -256,7 +245,11 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     }
 
     private void updateLosRefs(List<ApplicationOptionEntity> ents, String losId) {
-        if(ents == null) return;
+        LOG.trace("Updating los {} refs", losId);
+        if(ents == null) {
+            LOG.trace("ents null, returning");
+            return;
+        }
         for (ApplicationOptionEntity ao : ents) {
             try {
                 ApplicationOptionEntity exAo = this.getAo(ao.getId());
