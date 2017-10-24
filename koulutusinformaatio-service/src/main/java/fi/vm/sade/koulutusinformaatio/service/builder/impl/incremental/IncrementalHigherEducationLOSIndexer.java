@@ -28,9 +28,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 
@@ -124,8 +122,10 @@ public class IncrementalHigherEducationLOSIndexer {
                             boolean wasCreatedInSiblings = false;
                             List<HigherEducationLOS> siblings = curParent.getChildren();
                             if (siblings != null) {
-                                for (HigherEducationLOS curSibling : siblings) {
+                                for (int i = 0, siblingsSize = siblings.size(); i < siblingsSize; i++) {
+                                    HigherEducationLOS curSibling = siblings.get(i);
                                     if (curSibling.getId().equals(createdLos.getId())) {
+                                        curParent.getChildren().set(i, createdLos);
                                         wasCreatedInSiblings = true;
                                     }
                                 }
