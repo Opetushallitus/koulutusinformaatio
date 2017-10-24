@@ -118,12 +118,12 @@ public class IncrementalHigherEducationLOSIndexer {
 
                         createdLos.setParents(parentEds);
 
-                        for (int i = 0, parentEdsSize = parentEds.size(); i < parentEdsSize; i++) {
-                            HigherEducationLOS curParent = parentEds.get(i);
+                        for (HigherEducationLOS curParent : parentEds) {
                             boolean wasCreatedInSiblings = false;
                             List<HigherEducationLOS> siblings = curParent.getChildren();
                             if (siblings != null) {
-                                for (HigherEducationLOS curSibling : siblings) {
+                                for (int i = 0, siblingsSize = siblings.size(); i < siblingsSize; i++) {
+                                    HigherEducationLOS curSibling = siblings.get(i);
                                     if (curSibling.getId().equals(createdLos.getId())) {
                                         curParent.getChildren().set(i, createdLos);
                                         wasCreatedInSiblings = true;
