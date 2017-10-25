@@ -15,10 +15,6 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -291,18 +287,5 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             return false;
         }
         return true;
-    }
-
-    //for debugging purposes only
-    private static class TraceExclusionStrategy implements ExclusionStrategy {
-        @Override
-        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-            return fieldAttributes.getName().equals("parents") || fieldAttributes.getName().equals("children");
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> aClass) {
-            return false;
-        }
     }
 }

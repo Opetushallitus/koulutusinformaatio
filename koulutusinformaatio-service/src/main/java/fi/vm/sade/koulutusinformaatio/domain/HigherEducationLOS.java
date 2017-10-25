@@ -29,9 +29,6 @@ public class HigherEducationLOS extends KoulutusLOS {
     private I18nText finalExam;
     private I18nText researchFocus;
     
-    
-    //private List<I18nText> professionalTitles;
-    
     private Boolean chargeable;
     
     private List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
