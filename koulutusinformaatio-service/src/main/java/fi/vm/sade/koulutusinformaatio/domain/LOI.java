@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.domain;
 import java.util.List;
 
 /**
- * An abstract superclass fror all LOIs.
+ * An abstract superclass fror all Learning Opportunity Instances (LOIs).
  *
  * @author Hannu Lyytikainen
  */

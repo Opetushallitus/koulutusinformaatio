@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Learning Opportunity Specification
  * @author Hannu Lyytikainen
  */
 public abstract class LOS {
