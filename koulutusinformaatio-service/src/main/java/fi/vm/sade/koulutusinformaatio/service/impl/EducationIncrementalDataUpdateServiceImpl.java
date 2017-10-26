@@ -240,6 +240,10 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         updateLosRefs(cplos.getApplicationOptions(), cplos.getId());
     }
 
+    private void updateLosRefs(HigherEducationLOSEntity cplos) {
+        updateLosRefs(cplos.getApplicationOptions(), cplos.getId());
+    }
+
     private void updateLosRefs(List<ApplicationOptionEntity> ents, String losId) {
         LOG.trace("Updating los {} refs", losId);
         if(ents == null) {
@@ -263,9 +267,6 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         }
     }
 
-    private void updateLosRefs(HigherEducationLOSEntity cplos) {
-        updateLosRefs(cplos.getApplicationOptions(), cplos.getId());
-    }
 
     /**
      * Update LOS provider application system id references
