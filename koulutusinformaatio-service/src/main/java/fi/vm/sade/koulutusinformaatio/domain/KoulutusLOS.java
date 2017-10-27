@@ -8,16 +8,13 @@ import com.google.common.collect.Sets;
 public class KoulutusLOS extends LOS {
 
     // Varmistetut
-    private String id;
     private I18nText content;
-    private I18nText goals;
     private I18nText structure;
     private I18nText internationalization;
     private I18nText cooperation;
     private I18nText accessToFurtherStudies;
     private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
     private I18nText educationDomain;
-    // private I18nText name;
     private I18nText koulutuskoodi;
     private String educationDegree;
     private I18nText educationDegreeLang;
