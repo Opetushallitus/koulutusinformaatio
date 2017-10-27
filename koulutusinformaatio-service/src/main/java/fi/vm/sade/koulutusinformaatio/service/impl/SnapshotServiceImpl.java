@@ -17,15 +17,16 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.properties.OphProperties;
 import org.apache.commons.lang3.time.StopWatch;
+import org.mongodb.morphia.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -140,29 +138,39 @@ public class SnapshotServiceImpl implements SnapshotService {
         Map<String, List<String>> updatedLearningOpportunities = tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
 
         if (updatedLearningOpportunities == null || updatedLearningOpportunities.isEmpty() ||
-                updatedLearningOpportunities.get("hakukohde") == null) {
+                updatedLearningOpportunities.get("koulutusmoduuliToteutus") == null ||
+                updatedLearningOpportunities.get("koulutusmoduuliToteutus").isEmpty()) {
             return;
         }
 
         StopWatch stopwatch = new StopWatch();
 
         try {
-            final List<String> hakukohteet = updatedLearningOpportunities.get("hakukohde");
+            final Set<String> allChangedKoulutusOids = Sets.newHashSet(updatedLearningOpportunities.get("koulutusmoduuliToteutus"));
 
-            LOG.info("Rendering html snapshots using updatePeriod {} started at {}", updatePeriod, formatStartTime());
+            LOG.info("Rendering html snapshots using updatePeriod {} started at {} for {} oids", updatePeriod, formatStartTime(), allChangedKoulutusOids.size());
             stopwatch.start();
 
             LOG.info("Rendering HigherEd LOs using updatePeriod {}", updatePeriod);
-            prerenderWithTeachingLanguages(TYPE_HIGHERED, hakukohteet);
+            Query<HigherEducationLOSEntity> changedHigheredQuery = higheredDAO.createQuery().field("_id").in(allChangedKoulutusOids);
+            List<String> changedHigheredOids = higheredDAO.findIds(changedHigheredQuery);
+            prerenderWithTeachingLanguages(TYPE_HIGHERED, changedHigheredOids);
 
             LOG.info("Rendering Adult vocational LOs using updatePeriod {}", updatePeriod);
-            prerender(TYPE_ADULT_VOCATIONAL, hakukohteet);
+            Query<CompetenceBasedQualificationParentLOSEntity> changedAdultvocQuery = adultvocDAO.createQuery().field("_id").in(allChangedKoulutusOids);
+            List<String> changedAdultvocOids = adultvocDAO.findIds(changedAdultvocQuery);
+            prerender(TYPE_ADULT_VOCATIONAL, changedAdultvocOids);
 
             LOG.info("Rendering Koulutus LOs using updatePeriod {}", updatePeriod);
-            prerender(TYPE_KOULUTUS, hakukohteet);
+            Query<KoulutusLOSEntity> changedKoulutusQuery = koulutusDAO.createQuery().field("_id").in(allChangedKoulutusOids);
+            List<String> changedKoulutusOids = koulutusDAO.findIds(changedKoulutusQuery);
+            prerender(TYPE_KOULUTUS, changedKoulutusOids);
 
             LOG.info("Rendering Tutkinto LOs using updatePeriod {}", updatePeriod);
-            prerender(TYPE_TUTKINTO, hakukohteet);
+            Query<TutkintoLOSEntity> changedTutkintoQuery = tutkintoLOSDAO.createQuery().field("childEducations.$id").in(allChangedKoulutusOids);
+            List<String> changedTutkintoOids = tutkintoLOSDAO.findIds(changedTutkintoQuery);
+            prerender(TYPE_TUTKINTO, changedTutkintoOids);
+
             seoSnapshotService.setLastSeoIndexingDate(startTime);
         }
         finally {
@@ -171,10 +179,11 @@ public class SnapshotServiceImpl implements SnapshotService {
         }
     }
 
-    private void prerenderWithTeachingLanguages(String type, List<String> ids) throws IndexingException {
+    private void prerenderWithTeachingLanguages(String type, Collection<String> ids) throws IndexingException {
         List<String[]> cmds = Lists.newArrayList();
         for (String id : ids) {
             HigherEducationLOSEntity los = higheredDAO.get(id);
+            if(los == null) continue;
 
             // generate snapshot for each teaching language
             for (CodeEntity teachingLang : los.getTeachingLanguages()) {
@@ -192,7 +201,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         invokePhantomJS(cmds);
     }
 
-    private void prerender(String type, List<String> ids) throws IndexingException {
+    private void prerender(String type, Collection<String> ids) throws IndexingException {
         List<String[]> cmds = Lists.newArrayList();
         for (String id : ids) {
             cmds.add(generatePhantomJSCommand(type, id));
