@@ -16,13 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.TutkintoLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.KoulutusLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.TutkintoLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.IndexingException;
 import fi.vm.sade.koulutusinformaatio.service.SEOSnapshotService;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
@@ -37,7 +37,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -142,7 +141,8 @@ public class SnapshotServiceImpl implements SnapshotService {
         Map<String, List<String>> updatedLearningOpportunities = tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
 
         if (updatedLearningOpportunities == null || updatedLearningOpportunities.isEmpty() ||
-                updatedLearningOpportunities.get("koulutusmoduuliToteutus") == null) {
+                updatedLearningOpportunities.get("koulutusmoduuliToteutus") == null ||
+                updatedLearningOpportunities.get("koulutusmoduuliToteutus").isEmpty()) {
             return;
         }
 
@@ -151,26 +151,29 @@ public class SnapshotServiceImpl implements SnapshotService {
         try {
             final Set<String> allChangedKoulutusOids = Sets.newHashSet(updatedLearningOpportunities.get("koulutusmoduuliToteutus"));
 
-            Set changedHigheredOids = Sets.intersection(Sets.newHashSet(higheredDAO.findIds()), allChangedKoulutusOids);
-            Set changedAdultvocOids = Sets.intersection(Sets.newHashSet(adultvocDAO.findIds()), allChangedKoulutusOids);
-            Set changedKoulutusOids = Sets.intersection(Sets.newHashSet(koulutusDAO.findIds()), allChangedKoulutusOids);
-            Query<TutkintoLOSEntity> query = tutkintoLOSDAO.createQuery().field("childEducations.$id").in(allChangedKoulutusOids);
-            List<String> changedTutkintoOids = tutkintoLOSDAO.findIds(query);
-
-            LOG.info("Rendering html snapshots using updatePeriod {} started at {} for {} hakukohdes", updatePeriod, formatStartTime(), changedKoulutusOids.size());
+            LOG.info("Rendering html snapshots using updatePeriod {} started at {} for {} oids", updatePeriod, formatStartTime(), allChangedKoulutusOids.size());
             stopwatch.start();
 
             LOG.info("Rendering HigherEd LOs using updatePeriod {}", updatePeriod);
+            Query<HigherEducationLOSEntity> changedHigheredQuery = higheredDAO.createQuery().field("_id").in(allChangedKoulutusOids);
+            List<String> changedHigheredOids = higheredDAO.findIds(changedHigheredQuery);
             prerenderWithTeachingLanguages(TYPE_HIGHERED, changedHigheredOids);
 
             LOG.info("Rendering Adult vocational LOs using updatePeriod {}", updatePeriod);
+            Query<CompetenceBasedQualificationParentLOSEntity> changedAdultvocQuery = adultvocDAO.createQuery().field("_id").in(allChangedKoulutusOids);
+            List<String> changedAdultvocOids = adultvocDAO.findIds(changedAdultvocQuery);
             prerender(TYPE_ADULT_VOCATIONAL, changedAdultvocOids);
 
             LOG.info("Rendering Koulutus LOs using updatePeriod {}", updatePeriod);
+            Query<KoulutusLOSEntity> changedKoulutusQuery = koulutusDAO.createQuery().field("_id").in(allChangedKoulutusOids);
+            List<String> changedKoulutusOids = koulutusDAO.findIds(changedKoulutusQuery);
             prerender(TYPE_KOULUTUS, changedKoulutusOids);
 
             LOG.info("Rendering Tutkinto LOs using updatePeriod {}", updatePeriod);
+            Query<TutkintoLOSEntity> changedTutkintoQuery = tutkintoLOSDAO.createQuery().field("childEducations.$id").in(allChangedKoulutusOids);
+            List<String> changedTutkintoOids = tutkintoLOSDAO.findIds(changedTutkintoQuery);
             prerender(TYPE_TUTKINTO, changedTutkintoOids);
+
             seoSnapshotService.setLastSeoIndexingDate(startTime);
         }
         finally {
