@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.filter;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,9 +58,13 @@ public class SearchEngineFilter implements Filter {
 
 
         if (request.getParameterMap().containsKey(escapedFragment)) {
-            LOG.error("Filteriin tuli kutsu, joka pitäisi olla hoidettu nginx configuraatiossa!");
-
             HttpServletRequest httpRequest = (HttpServletRequest) request;
+
+            String requestInfo= "Remote: " + httpRequest.getRemoteAddr() +
+                    ", User-Agent: " + httpRequest.getHeader("User-Agent") +
+                    ", URI: " + httpRequest.getRequestURI();
+            LOG.error("Filteriin tuli kutsu, joka pitäisi olla hoidettu nginx configuraatiossa Request [{}]", requestInfo);
+
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
             String fragmentPath = URLDecoder.decode(httpRequest.getParameter(escapedFragment), "UTF-8");
