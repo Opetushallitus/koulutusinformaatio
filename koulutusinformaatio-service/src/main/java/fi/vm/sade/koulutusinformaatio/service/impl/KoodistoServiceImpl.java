@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,7 +201,9 @@ public class KoodistoServiceImpl implements KoodistoService {
         if (subkoodisMap.containsKey(koodiUriAndVersion)) {
             return subkoodisMap.get(koodiUriAndVersion);
         }
-        
+        if(StringUtils.isBlank(koodiUriAndVersion)){
+            return Lists.newArrayList();
+        }
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
         rollingAverageLogger.start("getAlakoodis");
         List<KoodiType> alakoodis = koodiService.getAlakoodis(codeUriAndVersion.getUri());
@@ -225,7 +228,10 @@ public class KoodistoServiceImpl implements KoodistoService {
         if (superkoodisMap.containsKey(koodiUriAndVersion)) {
             return superkoodisMap.get(koodiUriAndVersion);
         }
-        
+
+        if(StringUtils.isBlank(koodiUriAndVersion)){
+            return Lists.newArrayList();
+        }
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
         rollingAverageLogger.start("getYlakoodis");
         List<KoodiType> ylakoodis = koodiService.getYlakoodis(codeUriAndVersion.getUri());
@@ -244,7 +250,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         if (koodiTypeMap.containsKey(koodiUri)) {
             return koodiTypeMap.get(koodiUri);
         }
-        
+
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUri);
         koodiTypeMap.put(koodiUri, getKoodiTypes(codeUriAndVersion));
         return koodiTypeMap.get(koodiUri);
