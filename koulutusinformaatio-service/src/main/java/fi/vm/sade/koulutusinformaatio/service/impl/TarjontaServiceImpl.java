@@ -890,7 +890,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
             TutkintoLOS tutkinto = getAlreadyProcessedTutkinto(tutkintokey);
             if (tutkinto == null) {
-                tutkinto = creator.createTutkintoLOS(parentoid, providerOid, "" + koulutus.getStartYear(), koulutus.getStartSeason().get("fi"), koulutus.getKoulutusPrerequisite());
+                tutkinto = creator.createTutkintoLOS(parentoid, providerOid, "" + koulutus.getStartYear(), koulutus.getStartSeason().get("fi"), koulutus.getKoulutusPrerequisite(), koulutus.getKoulutuskoodi());
             }
             if (koulutus.isOsaamisalaton()) {
                 koulutus.setSiblings(new ArrayList<KoulutusLOS>());
