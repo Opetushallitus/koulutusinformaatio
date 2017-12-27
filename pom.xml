@@ -41,7 +41,7 @@
         <oph.organisaatio.version>13.0-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>10.1-SNAPSHOT</oph.koodisto.version>
         <oph.tarjonta.version>2017-40-SNAPSHOT</oph.tarjonta.version>
-        <javax.mail.version>1.4</javax.mail.version>
+        <javax.mail.version>1.4.7</javax.mail.version>
         <versioneye-maven-plugin.version>3.11.4</versioneye-maven-plugin.version>
     </properties>
 
