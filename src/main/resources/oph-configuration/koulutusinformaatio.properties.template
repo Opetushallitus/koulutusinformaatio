@@ -112,4 +112,10 @@ web.url.cas=https\://${host.cas}/cas
 
 oppija-raamit.url={{oppija_raamit_url}}
 
-smtp.host=mta.i.ware.fi
+smtp.host={{ryhmasahkoposti_smtp_host}}
+smtp.port={{ryhmasahkoposti_smtp_port}}
+smtp.use_tls={{ryhmasahkoposti_smtp_use_tls}}
+smtp.authenticate={{ryhmasahkoposti_smtp_authenticate}}
+smtp.username={{ryhmasahkoposti_smtp_username}}
+smtp.password={{ryhmasahkoposti_smtp_password}}
+smtp.sender={{ryhmasahkoposti_smtp_sender}}

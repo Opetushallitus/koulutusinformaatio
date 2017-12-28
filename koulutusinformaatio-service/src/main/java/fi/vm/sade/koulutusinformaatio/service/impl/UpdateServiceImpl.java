@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
 import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -72,6 +73,18 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Value("${smtp.host:mta.i.ware.fi}")
     private String SMTP_HOST;
+    @Value("${smtp.port}")
+    private String SMTP_PORT;
+    @Value("${smtp.sender}")
+    private String SMTP_SENDER;
+    @Value("${smtp.use_tls}")
+    private boolean SMTP_USE_TLS;
+    @Value("${smtp.authenticate}")
+    private boolean SMTP_AUTHENTICATE;
+    @Value("${smtp.username}")
+    private String SMTP_USERNAME;
+    @Value("${smtp.password}")
+    private String SMTP_PASSWORD;
 
     @Value("${host.oppija:localhost}")
     private String ENVIRONMENT;
@@ -378,20 +391,37 @@ public class UpdateServiceImpl implements UpdateService {
         exception.printStackTrace(new PrintWriter(sw));
         body += sw.toString();
 
-        Properties props = new Properties();
-        props.put("mail.smtp.host", SMTP_HOST);
-        Session session = Session.getDefaultInstance(props, null);
+        Session session = createMailSession();
 
         try {
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("admin@oph.fi", "admin@oph.fi"));
+            msg.setFrom(new InternetAddress(SMTP_SENDER, SMTP_SENDER));
             msg.addRecipients(Message.RecipientType.TO, InternetAddress.parse(RECIPIENTS));
             msg.setSubject(subject);
             msg.setText(body);
+            
             Transport.send(msg);
             LOG.info("Error mail successfully sent");
         } catch (Exception e) {
             LOG.error("Failed to send error mail.", e);
+        }
+    }
+
+    private Session createMailSession() {
+        Properties mailProps = new Properties();
+        mailProps.put("mail.smtp.host", SMTP_HOST);
+        mailProps.put("mail.smtp.port", SMTP_PORT);
+        mailProps.put("mail.smtp.auth", SMTP_AUTHENTICATE);
+        mailProps.put("mail.starttls.enable", SMTP_USE_TLS);
+
+        if (SMTP_AUTHENTICATE) {
+            return Session.getInstance(mailProps, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(SMTP_USERNAME, SMTP_PASSWORD);
+                }
+            });
+        } else {
+            return Session.getInstance(mailProps);
         }
     }
 }
