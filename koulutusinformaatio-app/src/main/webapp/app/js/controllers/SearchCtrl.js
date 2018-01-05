@@ -306,7 +306,7 @@ function SearchCtrl($scope, $rootScope, $location, $routeParams, $route, SearchL
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
     $rootScope.description = $rootScope.title;
-
+    $scope.ataruAppUrl = window.url('ataru-app.hakemus', id);
     $scope.pageSizes = [25, 50, 100];
 
     $scope.sortCriterias = [

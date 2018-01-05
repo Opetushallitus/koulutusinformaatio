@@ -25,6 +25,7 @@ controller('AppBasketCtrl',
         $rootScope.title = TranslationService.getTranslation('title-application-basket') + ' - ' + TranslationService.getTranslation('sitename');
         $rootScope.description = $rootScope.title;
         $scope.hakuAppUrl = function(id){return window.url("haku-app.lomake", id)};
+        $scope.ataruAppUrl = function(id){return window.url('ataru-app.hakemus', id);};
         $scope.loginUrl = window.url("omatsivut.login");
 
         $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
