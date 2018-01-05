@@ -67,6 +67,7 @@ public class BasketApplicationOptionDTO {
     private boolean isPaid;
     private boolean tunnistusKaytossa;
     private boolean kysytaanHarkinnanvaraiset;
+    private String ataruFormKey;
 
 
     public String getId() {
@@ -377,5 +378,13 @@ public class BasketApplicationOptionDTO {
 
     public void setKysytaanHarkinnanvaraiset(boolean kysytaanHarkinnanvaraiset) {
         this.kysytaanHarkinnanvaraiset = kysytaanHarkinnanvaraiset;
+    }
+
+    public String getAtaruFormKey() {
+        return ataruFormKey;
+    }
+
+    public void setAtaruFormKey(String ataruFormKey) {
+        this.ataruFormKey = ataruFormKey;
     }
 }

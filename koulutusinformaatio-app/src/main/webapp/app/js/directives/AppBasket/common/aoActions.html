@@ -21,6 +21,7 @@
             type="submit"
             data-ki-i18n="application-basket-fill-form">
         </button>
+
     </form>
 
     <div data-ng-if="!item.useSystemApplicationForm && (item.applicationFormLink || item.paid || item.tunnistusKaytossa)">
@@ -38,5 +39,15 @@
             </a>
         </span>
     </div>
+
+    <!-- Lomake-editorin lomake -->
+    <a data-ng-if="item.ataruFormKey"
+       data-ng-href="{{ !isApplicationOptionDisabled(as) ? '' : ataruAppUrl(item.id) }}"
+       data-ng-disabled="!isApplicationOptionDisabled(as)"
+       class="btn btn-default"
+       target="_blank"
+       data-ki-i18n="apply-button-label">
+    </a>
+
     <div class="pull-right" data-ki-app-basket-application-status data-ao="item"></div>
 </div>
