@@ -25,6 +25,15 @@
                 </button>
 
                 <div data-ng-include="'partials/lo/common/externalApplicationFormLink.html'" data-onload="ao = applicationoption; as = applicationsystem;"></div>
+
+                <!-- Lomake-editorin lomake -->
+                <a data-ng-if="applicationsystem.ataruFormKey"
+                        data-ng-href="{{ applicationoption.canBeApplied ? ataruAppUrl(applicationoption.id) : '' }}"
+                        data-ng-disabled="!applicationoption.canBeApplied"
+                        class="btn btn-default"
+                        target="_blank"
+                        data-ki-i18n="apply-button-label">
+                </a>
             </form>
         </div>
     
