@@ -121,7 +121,9 @@ directive('kiAppBasketApplicationsystemTableInfo', function() {
                 return !ao.canBeApplied;
             };
 
-            $scope.ataruAppUrl = function(id){return window.url('ataru-app.hakemus', id);};
+            $scope.ataruAppUrl = function(id) {
+                return window.url('ataru-app.hakemus', id);
+            };
 
             $scope.applicationBasketIsOverflowing = function(as) {
                 var itemsInBasket = 0;

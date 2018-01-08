@@ -42,7 +42,7 @@
 
     <!-- Lomake-editorin lomake -->
     <a data-ng-if="item.ataruFormKey"
-       data-ng-href="{{ !isApplicationOptionDisabled(as) ? '' : ataruAppUrl(item.id) }}"
+       data-ng-href="{{ isApplicationOptionDisabled(as) ? ataruAppUrl(item.id) : '' }}"
        data-ng-disabled="!isApplicationOptionDisabled(as)"
        class="btn btn-default"
        target="_blank"
