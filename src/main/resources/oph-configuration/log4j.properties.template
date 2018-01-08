@@ -33,3 +33,6 @@ log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl.EducationIncrementalDat
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalHigherEducationLOSIndexer=INFO
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental=INFO
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester=DEBUG
+
+#OY-130 filter out cookie header warnings
+log4j.logger.org.apache.http.client.protocol.ResponseProcessCookies=ERROR
