@@ -11,8 +11,14 @@
         </span>
     </div>
 
-    <span data-ng-if="lo.qualifications.length != 1 && shouldShowEducationDomain(lo)">{{lo.educationDomain}}</span>
-    <span data-ng-if="lo.qualifications.length == 1 && (shouldShowEducationDomain(lo) && shouldShowQualifications(lo))">{{lo.educationDomain}}, {{lo.qualifications[0]}}<br></span>
+    <span data-ng-if="(['et01.03.01', 'et01.03.02', 'et01.03.03', 'et01.03.04'].indexOf(lo.educationType) !== -1)">
+        <!-- 2. aste -->
+        <span data-ng-if="lo.qualifications.length == 1 && (shouldShowEducationDomain(lo) && shouldShowQualifications(lo))">{{lo.qualifications[0]}}<br></span>
+    </span>
+    <span data-ng-if="(['et01.03.01', 'et01.03.02', 'et01.03.03', 'et01.03.04'].indexOf(lo.educationType) === -1)">
+        <span data-ng-if="lo.qualifications.length != 1 && shouldShowEducationDomain(lo)">{{lo.educationDomain}}</span>
+        <span data-ng-if="lo.qualifications.length == 1 && (shouldShowEducationDomain(lo) && shouldShowQualifications(lo))">{{lo.educationDomain}}, {{lo.qualifications[0]}}<br></span>
+    </span>
 
     <span data-ng-if="lo.parentLos" data-ng-repeat="parent in lo.parentLos">
 
