@@ -33,11 +33,6 @@ public class TarjontaConstants {
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
 
     public static final String TYPE_PARENT = "TUTKINTO";
-    public static final String TYPE_CHILD = "KOULUTUSOHJELMA";
-    public static final String TYPE_SPECIAL = "ERITYISOPETUS";
-    public static final String TYPE_REHAB = "VALMENTAVA";
-    public static final String TYPE_PREP = "VALMISTAVA";
-    public static final String TYPE_UPSEC = "LUKIO";
     public static final String TYPE_KK = "KORKEAKOULU";
     public static final String TYPE_ADULT_UPSEC = "AIKUISLUKIO";
     public static final String TYPE_ADULT_VOCATIONAL = "AMMATILLINENAIKUISKOULUTUS";
