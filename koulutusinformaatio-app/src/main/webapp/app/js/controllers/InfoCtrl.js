@@ -336,7 +336,7 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
             ApplicationBasketService.addItem(aoId);
         }
 
-        if ($scope.loType == LOTypes.TUTKINTO || $scope.loType == LOTypes.KOULUTUSOHJELMA ||  $scope.loType == LOTypes.LUKIO) {
+        if ($scope.loType == LOTypes.TUTKINTO) {
             addVocationalEdToBasket(aoId);
         } else {
             addEducationToBasket(aoId);
