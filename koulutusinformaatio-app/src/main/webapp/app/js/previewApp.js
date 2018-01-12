@@ -42,15 +42,7 @@ var kiApp = angular.module('previewApp',
         resolve: {
             loResource: function($route, $location, HigherEducationPreviewLOService) {
                 switch($route.current.params.loType) {
-                    case 'lukio':
-                        return HigherEducationPreviewLOService;
-                    case 'koulutusohjelma':
-                        return HigherEducationPreviewLOService;
                     case 'tutkinto':
-                        return HigherEducationPreviewLOService;
-                    case 'erityisopetus':
-                        return HigherEducationPreviewLOService;
-                    case 'valmentava':
                         return HigherEducationPreviewLOService;
                     case 'korkeakoulu':
                         return HigherEducationPreviewLOService;
@@ -94,12 +86,7 @@ var kiApp = angular.module('previewApp',
 // LO type constants
 .constant('LOTypes', {
     TUTKINTO: 'tutkinto',
-    KOULUTUSOHJELMA: 'koulutusohjelma',
-    LUKIO: 'lukio',
     KORKEAKOULU: 'korkeakoulu',
-    ERITYISOPETUS: 'erityisopetus',
-    VALMENTAVA: 'valmentava',
-    VALMISTAVA: 'valmistava',
     AMMATILLINENAIKUISKOULUTUS: 'ammatillinenaikuiskoulutus',
     KOULUTUS: 'koulutus',
     AIKUISLUKIO: 'aikuislukio'
