@@ -37,16 +37,16 @@ describe('ApplicationCtrl', function() {
     });
 
     it('should add vocational education to basket', function() {
-        scope.loType = lotypes.KOULUTUSOHJELMA;
-        scope.selectedLOI = createLOIWithPrerequisite('PK')
+        scope.loType = lotypes.TUTKINTO;
+        scope.selectedLOI = createLOIWithPrerequisite('PK');
         scope.addToBasket('ko_ao_id');
         expect(scope.isItemAddedToBasket('ko_ao_id')).toBeTruthy();
     });
 
     it('should not add vocational education with different prerequisite to basket', function() {
-        scope.loType = lotypes.KOULUTUSOHJELMA;
+        scope.loType = lotypes.TUTKINTO;
         scope.prerequisite = 'PK';
-        scope.selectedLOI = createLOIWithPrerequisite('PK')
+        scope.selectedLOI = createLOIWithPrerequisite('PK');
         scope.addToBasket('ko_ao_pk_id');
         expect(scope.isItemAddedToBasket('ko_ao_pk_id')).toBeTruthy();
 

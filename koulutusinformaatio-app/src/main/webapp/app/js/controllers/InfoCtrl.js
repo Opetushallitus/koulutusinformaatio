@@ -265,7 +265,11 @@
             });
         }
     });
-    
+
+    $scope.isToinenaste = function(lo){
+        return (['et01.03.01', 'et01.03.02', 'et01.03.03', 'et01.03.04'].indexOf(lo.educationType) !== -1);
+    }
+
     $scope.$watch('lo', function(data) {
         if (data && data.structureImageId) {
         	if (data.structureImage && data.structureImage != null) {
@@ -336,7 +340,7 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
             ApplicationBasketService.addItem(aoId);
         }
 
-        if ($scope.loType == LOTypes.TUTKINTO || $scope.loType == LOTypes.KOULUTUSOHJELMA ||  $scope.loType == LOTypes.LUKIO) {
+        if ($scope.loType == LOTypes.TUTKINTO) {
             addVocationalEdToBasket(aoId);
         } else {
             addEducationToBasket(aoId);

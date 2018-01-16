@@ -123,20 +123,12 @@ var kiApp = angular.module('kiApp',
                 switch($route.current.params.loType) {
                     case 'lukio':
                         return UpperSecondaryLOService;
-                    case 'koulutusohjelma':
-                        return ChildLOService;
                     case 'tutkinto':
                         return ParentLOService;
-                    case 'erityisopetus':
-                        return SpecialLOService;
-                    case 'valmentava':
-                        return SpecialLOService;
                     case 'koulutus':
                         return KoulutusLOService;
                     case 'korkeakoulu':
                         return HigherEducationLOService;
-                    case 'valmistava':
-                        return SpecialLOService;
                     case 'aikuislukio':
                         return KoulutusLOService;
                     case 'ammatillinenaikuiskoulutus':
@@ -182,12 +174,7 @@ var kiApp = angular.module('kiApp',
 // LO type constants
 .constant('LOTypes', {
     TUTKINTO: 'tutkinto',
-    KOULUTUSOHJELMA: 'koulutusohjelma',
-    LUKIO: 'lukio',
     KORKEAKOULU: 'korkeakoulu',
-    ERITYISOPETUS: 'erityisopetus',
-    VALMENTAVA: 'valmentava',
-    VALMISTAVA: 'valmistava',
     KOULUTUS: 'koulutus',
     AMMATILLINENAIKUISKOULUTUS: 'ammatillinenaikuiskoulutus',
     AIKUISLUKIO: 'aikuislukio',

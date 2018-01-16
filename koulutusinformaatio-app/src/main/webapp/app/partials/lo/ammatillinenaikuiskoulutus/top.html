@@ -1,7 +1,6 @@
 <section data-ng-show="lo.hasSelectedChild" id="main-info">
     <div>
         <h4>{{provider.name}}</h4>
-        <span class="block">{{lo.educationDomain}}</span><br/>
         <span data-ng-show="lo.parentId">
         	<a href="#!/ammatillinenaikuiskoulutus/{{lo.parentId}}">{{lo.name}}</a>
         		<!-- PREVIEW -->
@@ -28,7 +27,6 @@
     <div class="col-md-16">
         <div>
             <h4>{{provider.name}}</h4>
-            <span>{{lo.educationDomain}}</span>
         </div>
         <h1>{{lo.name}}, {{lo.educationKind}}</h1>
        <div data-ki-child-ribbon data-children="lo.children" type="loType" class="ribbon"></div>

@@ -107,12 +107,6 @@ directive('extendedSearchresultData',
 
                 if(iAttrs.extendedSearchresultData === LOTypes.TUTKINTO) {
                     LOService = ParentLOService;
-                } else if(iAttrs.extendedSearchresultData === LOTypes.VALMENTAVA || 
-                    iAttrs.extendedSearchresultData === LOTypes.ERITYISOPETUS ||
-                    iAttrs.extendedSearchresultData === LOTypes.VALMISTAVA ) {
-                    LOService = SpecialLOService;
-                } else if(iAttrs.extendedSearchresultData === LOTypes.LUKIO) {
-                    LOService = UpperSecondaryLOService;
                 } else if(iAttrs.extendedSearchresultData === LOTypes.KOULUTUS) {
                     LOService = KoulutusLOService;
                 } else if(iAttrs.extendedSearchresultData === LOTypes.KORKEAKOULU) {
@@ -179,7 +173,7 @@ directive('srApplicationBasket', [
                     ApplicationBasketService.addItem(aoId);
                 }
 
-                if ($scope.loType == LOTypes.TUTKINTO || $scope.loType == LOTypes.LUKIO) {
+                if ($scope.loType == LOTypes.TUTKINTO) {
                     addVocationalEdToBasket(applicationoptionId);
                 } else {
                     addEducationToBasket(applicationoptionId);
