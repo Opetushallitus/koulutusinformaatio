@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.impl.RunningServiceChecker;
 import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester;
+import org.apache.commons.lang.time.DateUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,6 +211,20 @@ public class AdminResource {
         
         
         return dto;
+    }
+
+    @GET
+    @Path("/indexingstatuscheck")
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean indexingStatusCheck() {
+        // Indexing must have completed in the last 30 hours
+        Date limit = DateUtils.addHours(new Date(), -30);
+
+        DataStatus succStatus = learningOpportunityService.getLastSuccesfulDataStatus();
+        if (succStatus == null) return false;
+
+        Date lastFinished = succStatus.getLastUpdateFinished();
+        return lastFinished != null && lastFinished.after(limit);
     }
 
     @GET
