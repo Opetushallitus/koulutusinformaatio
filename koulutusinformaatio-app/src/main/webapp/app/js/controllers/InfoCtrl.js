@@ -267,7 +267,11 @@
     });
 
     $scope.isToinenaste = function(lo){
-        return (['et01.03.01', 'et01.03.02', 'et01.03.03', 'et01.03.04'].indexOf(lo.educationType) !== -1);
+        if(lo) {
+            return (['et01.03.01', 'et01.03.02', 'et01.03.03', 'et01.03.04'].indexOf(lo.educationType) !== -1);
+        } else {
+            return false;
+        }
     }
 
     $scope.$watch('lo', function(data) {
