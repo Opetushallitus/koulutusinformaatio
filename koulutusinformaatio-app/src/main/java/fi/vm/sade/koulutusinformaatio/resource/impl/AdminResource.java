@@ -224,7 +224,7 @@ public class AdminResource {
         if (succStatus != null
                 && succStatus.getLastUpdateFinished() != null
                 && succStatus.getLastUpdateFinished().after(limit)) {
-            return Response.accepted(succStatus.getLastUpdateFinished().toString()).build();
+            return Response.ok(succStatus.getLastUpdateFinished().toString()).build();
         }
         return Response.serverError().build();
     }
