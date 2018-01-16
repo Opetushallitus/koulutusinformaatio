@@ -216,15 +216,15 @@ public class AdminResource {
     @GET
     @Path("/indexingstatuscheck")
     @Produces(MediaType.TEXT_PLAIN)
-    public boolean indexingStatusCheck() {
+    public String indexingStatusCheck() {
         // Indexing must have completed in the last 30 hours
         Date limit = DateUtils.addHours(new Date(), -30);
 
         DataStatus succStatus = learningOpportunityService.getLastSuccesfulDataStatus();
-        if (succStatus == null) return false;
+        if (succStatus == null) return Boolean.toString(false);
 
         Date lastFinished = succStatus.getLastUpdateFinished();
-        return lastFinished != null && lastFinished.after(limit);
+        return Boolean.toString(lastFinished != null && lastFinished.after(limit));
     }
 
     @GET
