@@ -119,6 +119,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KAKSOISTUTKINTO, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KYMPPILUOKKA, opt, SearchWizardConstants.educationKind.NUORTEN),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, undefined),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.MAAHANMUUTTAJIEN_LUKIOON_VALMISTAVA, opt, undefined),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.KANSANOPISTOJEN_PITKAT_LINJAT, opt, undefined, SearchWizardConstants.prerequisites.PK),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_ERITYISOPETUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.TELMA, opt, undefined),
@@ -178,8 +179,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.PK_AIKU) {
                     return [
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AIKUISLUKIO, opt),
-                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.PK),
-                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, undefined, SearchWizardConstants.prerequisites.PK),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.VALMA, opt, SearchWizardConstants.educationKind.AIKUIS),
@@ -195,8 +195,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.LUKIO_AIKU) {
                     return [
-                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),
-                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, SearchWizardConstants.educationKind.AIKUIS),
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, undefined, SearchWizardConstants.prerequisites.YO),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, SearchWizardConstants.educationKind.AIKUIS),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AVOIN_AMMATTIKORKEAKOULUTUTKINTO, opt),
