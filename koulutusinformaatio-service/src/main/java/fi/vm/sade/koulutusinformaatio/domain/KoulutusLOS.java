@@ -53,6 +53,8 @@ public class KoulutusLOS extends LOS {
     private I18nText startSeason;
     private int startYear;
 
+    private Set<String> ammatillinenPrerequisites = new HashSet<>();
+
     // Status of the lo. For preview
     private String status;
     private List<Code> availableTranslationLanguages;
@@ -682,5 +684,13 @@ public class KoulutusLOS extends LOS {
 
     public void setHakijalleNaytettavaTunniste(String hakijalleNaytettavaTunniste) {
         this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
+    }
+
+    public Set<String> getAmmatillinenPrerequisites() {
+        return ammatillinenPrerequisites;
+    }
+
+    public void setAmmatillinenPrerequisites(Set<String> ammatillinenPrerequisites) {
+        this.ammatillinenPrerequisites = ammatillinenPrerequisites;
     }
 }

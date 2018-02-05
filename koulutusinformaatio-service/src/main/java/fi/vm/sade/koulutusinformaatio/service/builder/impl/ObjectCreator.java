@@ -27,6 +27,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -213,18 +214,27 @@ public abstract class ObjectCreator {
         type.setTranslations(translations);
         return type;
     }
-    
+
     protected List<Code> getFacetPrequisites(List<Code> rawPrereqs) throws KoodistoException {
-        
+        if (null == rawPrereqs) {
+            return new ArrayList<>();
+        }
+        Set<String> prereqUris = new HashSet<>();
+        for (Code curRawPrereq : rawPrereqs) {
+            prereqUris.add(curRawPrereq.getUri());
+        }
+        return getFacetPrequisites(prereqUris);
+    }
+    
+    protected List<Code> getFacetPrequisites(Set<String> prereqUris) throws KoodistoException {
         List<Code> facetPrereqs = new ArrayList<Code>();
-        if (rawPrereqs != null) {
-            for (Code curRawPrereq : rawPrereqs) {
-                if (curRawPrereq != null && curRawPrereq.getUri() != null) {
-                    facetPrereqs.addAll(koodistoService.searchSuperCodes(curRawPrereq.getUri(), POHJAKOULUTUSFASETTI_KOODISTO_URI));
+        if (prereqUris != null) {
+            for (String prereqUri : prereqUris) {
+                if (prereqUri != null) {
+                    facetPrereqs.addAll(koodistoService.searchSuperCodes(prereqUri, POHJAKOULUTUSFASETTI_KOODISTO_URI));
                 }
             }
         }
         return facetPrereqs;
     }
-
 }

@@ -59,7 +59,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             }
             // make one, if the prequisite does not exist;
             if (koulutus.getToteutustyyppi() != null && koulutus.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018)) {
-                prerequisitesMap.put("UUSI", null);
+                docs.add(createAmmatillinenTutkintoDoc(tutkinto, koulutus.getAmmatillinenPrerequisites()));
             }
         }
         for (Code curPrereq : prerequisitesMap.values()) {
@@ -70,13 +70,21 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
     }
 
     private SolrInputDocument createTutkintoDoc(TutkintoLOS tutkinto, Code prerequisite) {
+        return createTutkintoDoc(tutkinto, prerequisite, null);
+    }
+
+    private SolrInputDocument createAmmatillinenTutkintoDoc(TutkintoLOS tutkinto, Set<String> ammatillinenPrerequisites) {
+        return createTutkintoDoc(tutkinto, null, ammatillinenPrerequisites);
+    }
+
+    private SolrInputDocument createTutkintoDoc(TutkintoLOS tutkinto, Code prerequisite, Set<String> ammatillinenPrerequisites) {
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = tutkinto.getProvider();
         doc.addField(LearningOpportunity.TYPE, tutkinto.getType());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         List<Code> languages = Lists.newArrayList(tutkinto.getTeachingLanguages());
 
-        if(prerequisite != null) {
+        if (prerequisite != null) {
             doc.addField(LearningOpportunity.ID, String.format("%s#%s", tutkinto.getId(), prerequisite.getValue()));
 
             doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(prerequisite.getValue())
@@ -90,6 +98,9 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             doc.addField(LearningOpportunity.PREREQUISITE_CODE, prerequisite.getValue());
         } else {
             doc.addField(LearningOpportunity.ID, tutkinto.getId());
+            if (null != ammatillinenPrerequisites) {
+                doc.setField(LearningOpportunity.PREREQUISITES, ammatillinenPrerequisites);
+            }
         }
 
         String teachLang = tutkinto.getTeachingLanguages().isEmpty() ? "EXC" : tutkinto.getTeachingLanguages().iterator().next().getValue().toLowerCase();
