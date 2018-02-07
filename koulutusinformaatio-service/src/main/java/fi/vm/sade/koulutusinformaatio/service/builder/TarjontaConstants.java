@@ -67,6 +67,7 @@ public class TarjontaConstants {
     public static final String TUTKINTONIMIKEET_KOODISTO_URI =  "tutkintonimikkeet";
     public static final String KOULUTUSTYYPPIFASETTI_KOODISTO_URI =  "koulutustyyppifasetti";
     public static final String POHJAKOULUTUSFASETTI_KOODISTO_URI =  "pohjakoulutusfasetti";
+    public static final String POHJAKOULUTUSVAATIMUSTOINENASTE_KOODISTO_URI = "pohjakoulutusvaatimustoinenaste";
 
     public static final String HAKUTAPA_YHTEISHAKUV1 = "hakutapa_01#1";
     public static final String HAKUTAPA_YHTEISHAKU = "hakutapa_01";

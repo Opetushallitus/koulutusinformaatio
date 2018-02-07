@@ -39,8 +39,11 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Hannu Lyytikainen
@@ -796,7 +799,51 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setAccessToFurtherStudies(null); // Ammatillisilla koulutuksilla jatko-opinnot näytetään tutkinnon sivulla
         }
         los.setStructure(null); // Ammatillisilla perustutkinnoilla ei haluta näyttää opintojen rakennetta
+        addAmmatillinenPohjakoulutusvaatimusFields(los);
         return los;
+    }
+
+    private void addAmmatillinenPohjakoulutusvaatimusFields(KoulutusLOS los) throws KoodistoException {
+        Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los.getApplicationOptions());
+        los.setAmmatillinenPrerequisites(getAmmatillinenPrerequisites(uniqueRequiredBaseEducations));
+    }
+
+    private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(Set<ApplicationOption> aos) {
+        Set<String> uniqueRequiredBaseEducations = new HashSet<>();
+        if (CollectionUtils.isEmpty(aos)) {
+            return uniqueRequiredBaseEducations;
+        }
+        for (ApplicationOption ao : aos) {
+            if (!CollectionUtils.isEmpty(ao.getRequiredBaseEducations())) {
+                uniqueRequiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+            }
+        }
+        return uniqueRequiredBaseEducations;
+    }
+
+    private Set<String> getPohjakoulutusvaatimusToinenAsteUris() throws KoodistoException {
+        Set<String> pohjakoulutusvaatimusToinenAsteUris = new HashSet<>();
+        List<Code> koodisto = koodistoService.searchByKoodisto(TarjontaConstants.POHJAKOULUTUSVAATIMUSTOINENASTE_KOODISTO_URI, 1);
+        for (Code koodi :koodisto) {
+            pohjakoulutusvaatimusToinenAsteUris.add(koodi.getUri());
+        }
+        return pohjakoulutusvaatimusToinenAsteUris;
+    }
+
+    private Set<String> getAmmatillinenPrerequisites(Set<String> uniqueRequiredBaseEducations) throws KoodistoException {
+        Set<String> searhableUris = new HashSet<>();
+        Set<String> pohjakoulutusvaatimusToinenAsteUris = getPohjakoulutusvaatimusToinenAsteUris();
+        for (String uri : pohjakoulutusvaatimusToinenAsteUris) {
+            if (uniqueRequiredBaseEducations.contains(uri)) {
+                searhableUris.add(uri);
+            }
+        }
+        Set<String> ammatillinenPrerequisites = new HashSet<>();
+        List<Code> parentFasettiKoodisto = getFacetPrequisites(searhableUris);
+        for (Code parentFasettiCode : parentFasettiKoodisto) {
+            ammatillinenPrerequisites.add(parentFasettiCode.getValue());
+        }
+        return ammatillinenPrerequisites;
     }
 
     public KoulutusLOS createPelastusalanKoulutusLOS(PelastusalanKoulutusV1RDTO koulutusDTO, boolean checkStatus) throws KoodistoException,

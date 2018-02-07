@@ -37,6 +37,7 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import org.springframework.util.CollectionUtils;
 
 /**
  *
@@ -88,6 +89,8 @@ public class KoulutusLOSToSolrInputDocment implements Converter<KoulutusLOS, Lis
                     los.getTeachingLanguages(), prerequisiteCode.getName().getTranslations()
                     ));
             doc.setField(LearningOpportunity.PREREQUISITE_CODE, prerequisiteCode.getValue());
+        } else if (!CollectionUtils.isEmpty(los.getAmmatillinenPrerequisites())) {
+            doc.addField(LearningOpportunity.PREREQUISITES, los.getAmmatillinenPrerequisites());
         }
 
         if (los.getCreditValue() != null && los.getCreditUnit() != null && los.getCreditUnit().getTranslations() != null
