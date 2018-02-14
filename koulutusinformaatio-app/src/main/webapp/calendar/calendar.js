@@ -17,11 +17,13 @@ var ApplicationSystemCalendar = (function() {
         var x = window.location.host.split('.')
         if (x.length < 2)
             return 'fi'
-        switch (x[x.length - 2]) {
-            case 'opintopolku': return 'fi'
-            case 'studieinfo': return 'sv'
-            case 'studyinfo': return 'en'
-            default: return 'fi'
+        var domain = x[x.length - 2];
+        if (domain.indexOf('studieinfo') > -1) {
+            return 'sv';
+        } else if (domain.indexOf('studyinfo') > -1) {
+            return 'en';
+        } else {
+            return 'fi'
         }
     }
     
