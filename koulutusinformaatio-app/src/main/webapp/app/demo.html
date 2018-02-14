@@ -125,9 +125,20 @@
                    
 <script src="/calendar/calendar.js"></script><script>// <![CDATA[
 (function() {
-    function getLanguageFromHost() {
-        var lang = jQuery.cookie(i18n.options.cookieName)
-        return lang != null ? lang : "fi"
+    function getLanguageFromHost(host) {
+        if (!host)
+            host = document.location.host;
+        var x = host.split('.');
+        if (x.length < 2) return 'fi';
+        var domain = x[x.length - 2];
+        if (domain.indexOf('opintopolku') > -1) {
+            return 'fi';
+        } else if (domain.indexOf('studieinfo') > -1) {
+            return 'sv';
+        } else if (domain.indexOf('studyinfo') > -1) {
+            return 'en'
+        }
+        return 'fi'
     }
     $("html").on("oppija-raamit-loaded", function() {
         ApplicationSystemCalendar.calendar({
