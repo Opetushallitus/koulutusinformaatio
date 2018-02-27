@@ -1086,7 +1086,13 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 for (var i in applicationOptions) {
                     if (applicationOptions.hasOwnProperty(i)) {
                         if (applicationOptions[i].children && applicationOptions[i].children.length > 0) {
-                            result[asIndex].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
+                            var childQualifications = Array.from(
+                                new Set(applicationOptions[i].children.map(
+                                    function getQualification(c) { return c.qualification }
+                                ))).filter(
+                                    function isDefined(q) { return q }
+                                );
+                            result[asIndex].applicationOptions[i].qualification = childQualifications.length > 0 ? childQualifications.join(', ') : null;
                         }
 
                         // set teaching languge as the first language in array
