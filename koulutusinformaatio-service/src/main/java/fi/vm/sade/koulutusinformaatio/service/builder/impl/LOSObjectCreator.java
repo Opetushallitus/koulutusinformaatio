@@ -1361,8 +1361,10 @@ public class LOSObjectCreator extends ObjectCreator {
         Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
         los.setProvider(provider);
 
-        Provider organizer = providerService.getByOID(koulutus.getJarjestavaOrganisaatio().getOid());
-        los.setOrganizer(organizer.getName());
+        if (koulutus.getJarjestavaOrganisaatio() != null) {
+            Provider organizer = providerService.getByOID(koulutus.getJarjestavaOrganisaatio().getOid());
+            los.setOrganizer(organizer.getName());
+        }
 
         boolean existsValidHakukohde = fetchAndCreateHakukohdeData(los, checkStatus);
 
