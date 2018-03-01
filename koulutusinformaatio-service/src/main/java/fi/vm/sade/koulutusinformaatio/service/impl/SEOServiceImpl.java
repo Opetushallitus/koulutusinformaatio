@@ -75,12 +75,12 @@ public class SEOServiceImpl implements SEOService {
         try {
             LOG.info("Starting full snapshot crawling");
             running = true;
-            snapshotService.renderAllSnapshots();
+//          snapshotService.renderAllSnapshots();
             createSitemap();
-            seoSnapshotService.deleteOldSnapshots();
+//          seoSnapshotService.deleteOldSnapshots();
             LOG.info("Full snapshot crawling finished");
-        } catch (IndexingException e) {
-            LOG.error("SEO batch execution error", e);
+//      } catch (IndexingException e) {
+//          LOG.error("SEO batch execution error", e);
         } finally {
             running = false;
         }
@@ -92,12 +92,12 @@ public class SEOServiceImpl implements SEOService {
         try {
             LOG.info("Starting crawling changed snapshots");
             running = true;
-            snapshotService.renderLastModifiedSnapshots();
+//          snapshotService.renderLastModifiedSnapshots();
             createSitemap();
-            seoSnapshotService.deleteOldSnapshots();
+//          seoSnapshotService.deleteOldSnapshots();
             LOG.info("Finished crawling changed snapshots");
-        } catch (IndexingException e) {
-            LOG.error("SEO batch execution error", e);
+//      } catch (IndexingException e) {
+//          LOG.error("SEO batch execution error", e);
         } finally {
             running = false;
         }
