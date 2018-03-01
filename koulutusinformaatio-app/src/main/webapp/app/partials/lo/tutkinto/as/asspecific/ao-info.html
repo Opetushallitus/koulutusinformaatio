@@ -12,7 +12,11 @@
         </span>
     </li>
     <li ng-show="ao.requiredBaseEducations.length" class="text-muted">
-        <span>{{ao.requiredBaseEducations}}</span>
+        <ul>
+            <li data-ng-repeat="baseed in ao.requiredBaseEducations">
+                <span>{{baseed}}</span>
+            </li>
+        </ul>
     </li>
     <li class="text-muted">
         <div data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-label="application-period" data-period-name="ao.applicationPeriodName" data-asenddates="as.applicationDates"></div>
