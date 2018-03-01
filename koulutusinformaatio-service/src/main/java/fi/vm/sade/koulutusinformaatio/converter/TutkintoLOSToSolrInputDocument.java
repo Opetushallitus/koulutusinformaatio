@@ -57,6 +57,13 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 String prereqStr = prereq.getValue();
                 prerequisitesMap.put(prereqStr, prereq);
             }
+
+            for(Map.Entry<String, Set<Code>> entry : koulutus.getAoToRequiredBaseEdCode().entrySet()) {
+                for(Code c : entry.getValue()) {
+                    prerequisitesMap.put(c.getValue(), c);
+                }
+            }
+
             // make one, if the prequisite does not exist;
             if (koulutus.getToteutustyyppi() != null && koulutus.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018)) {
                 docs.add(createAmmatillinenTutkintoDoc(tutkinto, koulutus.getAmmatillinenPrerequisites()));
