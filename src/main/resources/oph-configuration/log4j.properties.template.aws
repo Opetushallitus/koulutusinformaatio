@@ -33,4 +33,4 @@ log4j.logger.fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester=DEBUG
 #OY-130 filter out cookie header warnings
 log4j.logger.org.apache.http.client.protocol.ResponseProcessCookies=ERROR
 
-fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental=DEBUG
+log4j.logger.fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental=DEBUG
