@@ -27,7 +27,12 @@ log4j.logger.org.apache.activemq.spring={{env_loglevel}}
 # cas session + singlelogout tracing
 log4j.logger.org.jasig.cas.client.session=INFO
 # Indexing
-log4j.logger.fi.vm.sade.koulutusinformaatio.service.impl=DEBUG
+
+log4j.logger.fi.vm.sade=ERROR
+log4j.logger.org.mongodb=ERROR
+
+
+log4j.logger.fi.vm.sade.koulutusinformaatio=DEBUG
 log4j.logger.fi.vm.sade.koulutusinformaatio.service.tester.HakukohdeTester=DEBUG
 
 #OY-130 filter out cookie header warnings
