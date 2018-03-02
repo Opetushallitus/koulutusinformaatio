@@ -73,7 +73,7 @@ public class SearchEngineFilter implements Filter {
             try {
                 uri = new URI(fragmentPath);
             } catch (URISyntaxException e) {
-                LOG.info("Malformed url, probably search link contained space.", e);
+                LOG.info("Malformed url, probably search link contained space. fragmentPath = " + fragmentPath, e);
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
