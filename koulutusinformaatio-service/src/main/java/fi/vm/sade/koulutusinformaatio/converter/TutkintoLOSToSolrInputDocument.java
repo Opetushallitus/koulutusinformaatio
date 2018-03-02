@@ -71,7 +71,10 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
 
             for(Map.Entry<String, Set<Code>> entry : koulutus.getAoToRequiredBaseEdCode().entrySet()) {
                 for(Code c : entry.getValue()) {
-                    LOG.info("{} base ed code: {}", koulutus.getId(),c.toString());
+                    String id = koulutus.getId();
+                    String val = c == null ? "" : c.toString();
+                    LOG.info("{} base ed code: {}", id, val);
+                    if(c == null) continue;
                     prerequisitesMap.put(c.getValue(), c);
                 }
             }
