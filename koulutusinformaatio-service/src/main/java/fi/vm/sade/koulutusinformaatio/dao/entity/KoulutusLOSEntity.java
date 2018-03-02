@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.*;
 
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -174,6 +175,17 @@ public class KoulutusLOSEntity {
     private String hakijalleNaytettavaTunniste;
     @Embedded
     private Map<String, List<String>> subjects;
+
+    @Embedded
+    private Map<String, Set<CodeEntity>> aoToRequiredBaseEdCode = new HashMap<>();
+
+    public void setAoToRequiredBaseEdCode(Map<String, Set<CodeEntity>> aoToRequiredBaseEdCode) {
+        this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
+    }
+
+    public Map<String, Set<CodeEntity>> getAoToRequiredBaseEdCode() {
+        return aoToRequiredBaseEdCode;
+    }
 
     public String getId() {
         return id;
