@@ -18,9 +18,13 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import java.util.*;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import com.google.common.collect.Lists;
@@ -40,6 +44,7 @@ import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
  */
 public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, List<SolrInputDocument>> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TutkintoLOSToSolrInputDocument.class);
 
     public List<SolrInputDocument> convert(TutkintoLOS tutkinto) {
         List<SolrInputDocument> docs = Lists.newArrayList();
@@ -52,6 +57,12 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
     private List<SolrInputDocument> createTutkintoDocsByPrerequisites(TutkintoLOS tutkinto) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         Map<String,Code> prerequisitesMap = new HashMap<String,Code>();
+
+        for (ApplicationOption applicationOption : tutkinto.getApplicationOptions()) {
+            List<String> requiredBaseEducations = applicationOption.getRequiredBaseEducations();
+            LOG.info("AO {} required based eds: {}", applicationOption.getId(), Joiner.on(",").join(requiredBaseEducations));
+        }
+
         for (KoulutusLOS koulutus : tutkinto.getChildEducations()) {
             for (Code prereq : koulutus.getPrerequisites()) {
                 String prereqStr = prereq.getValue();
@@ -60,6 +71,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
 
             for(Map.Entry<String, Set<Code>> entry : koulutus.getAoToRequiredBaseEdCode().entrySet()) {
                 for(Code c : entry.getValue()) {
+                    LOG.info("{} base ed code: {}", koulutus.getId(),c.toString());
                     prerequisitesMap.put(c.getValue(), c);
                 }
             }
