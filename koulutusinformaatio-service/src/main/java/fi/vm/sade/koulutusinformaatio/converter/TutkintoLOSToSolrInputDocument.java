@@ -68,17 +68,6 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 String prereqStr = prereq.getValue();
                 prerequisitesMap.put(prereqStr, prereq);
             }
-
-            for(Map.Entry<String, Set<Code>> entry : koulutus.getAoToRequiredBaseEdCode().entrySet()) {
-                for(Code c : entry.getValue()) {
-                    String id = koulutus.getId();
-                    String val = c == null ? "" : c.toString();
-                    LOG.info("{} base ed code: {}", id, val);
-                    if(c == null) continue;
-                    prerequisitesMap.put(c.getValue(), c);
-                }
-            }
-
             // make one, if the prequisite does not exist;
             if (koulutus.getToteutustyyppi() != null && koulutus.getToteutustyyppi().equals(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018)) {
                 docs.add(createAmmatillinenTutkintoDoc(tutkinto, koulutus.getAmmatillinenPrerequisites()));
@@ -300,6 +289,23 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 }
             }
         }
+
+        Map<String, Set<Code>> allRequired = new HashMap<>();
+        for (KoulutusLOS koulutusLOS : tutkinto.getChildEducations()) {
+            Map<String, Set<Code>> aoToRequiredBaseEdCode = koulutusLOS.getAoToRequiredBaseEdCode();
+            if(aoToRequiredBaseEdCode == null) continue;
+            for (Map.Entry<String, Set<Code>> entry : aoToRequiredBaseEdCode.entrySet()) {
+                Set<Code> codes = allRequired.get(entry.getKey());
+                if(codes == null) {
+                    codes = new HashSet<>();
+                }
+                codes.addAll(entry.getValue());
+                allRequired.put(entry.getKey(), codes);
+            }
+
+        }
+
+        doc.setField(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired);
 
         return doc;
     }

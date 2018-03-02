@@ -369,6 +369,8 @@ public final class SolrUtil {
         // Application system fields
         public static final String AS_TARGET_GROUP_CODE = "targetGroupCode_ffm";
         public static final String AS_IS_VARSINAINEN = "isVarsinainen";
+
+        public static final String AO_REQURIED_BASE_EDUCATIONS = "ao_required_base_educations";
     }
 
     public static class LocationFields {

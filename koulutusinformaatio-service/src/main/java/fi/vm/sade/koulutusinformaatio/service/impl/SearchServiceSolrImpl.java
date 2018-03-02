@@ -507,6 +507,15 @@ public class SearchServiceSolrImpl implements SearchService {
         if (doc.get(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY) != null){
             edDegree = getAdditionlaEducationType(doc, lang);
         }
+        Object o = doc.get(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS);
+        Map<String, Set<Code>> allRequired = new HashMap<>();
+        if(o != null) {
+            try {
+                allRequired = (Map<String, Set<Code>>) o;
+            } catch (Exception e) {
+                LOG.error("Failed to cast required base educations", e);
+            }
+        }
 
         LOG.debug("gathered info now creating search result: {}", id);
 
@@ -514,8 +523,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 id, name,
                 lopId, lopNames, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider);
-
+                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider, allRequired);
         LOG.debug("Created search result: {}", id);
 
         updateAsStatus(lo, doc);
