@@ -788,8 +788,10 @@ public class KoulutusLOSEntity {
     @PrePersist
     void prePersist(){
         Map<String, List<CodeEntity>> aoToRequiredBaseEdCode = this.getAoToRequiredBaseEdCode();
+        if(aoToRequiredBaseEdCode == null) return;
         Map<String, List<CodeEntity>> converted = new HashMap<>();
         for (Map.Entry<String, List<CodeEntity>> e : aoToRequiredBaseEdCode.entrySet()) {
+            if(e == null) continue;
             String newkey = e.getKey().replace('.', '_');
             converted.put(newkey, e.getValue());
         }
@@ -799,8 +801,10 @@ public class KoulutusLOSEntity {
     @PostLoad
     void postLoad(){
         Map<String, List<CodeEntity>> aoToRequiredBaseEdCode = this.getAoToRequiredBaseEdCode();
+        if(aoToRequiredBaseEdCode == null) return;
         Map<String, List<CodeEntity>> converted = new HashMap<>();
         for (Map.Entry<String, List<CodeEntity>> e : aoToRequiredBaseEdCode.entrySet()) {
+            if(e == null) continue;
             String newkey = e.getKey().replace('_', '.'); //opposite of pre-persist
             converted.put(newkey, e.getValue());
         }
