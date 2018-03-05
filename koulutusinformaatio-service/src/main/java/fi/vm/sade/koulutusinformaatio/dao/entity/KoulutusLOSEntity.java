@@ -2,10 +2,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.*;
 
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.annotations.*;
 
 import com.google.common.collect.Lists;
 
@@ -785,5 +782,28 @@ public class KoulutusLOSEntity {
 
     public void setAoToRequiredBaseEdCode(Map<String, List<CodeEntity>> aoToRequiredBaseEdCode) {
         this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
+    }
+
+
+    @PrePersist
+    void prePersist(){
+        Map<String, List<CodeEntity>> aoToRequiredBaseEdCode = this.getAoToRequiredBaseEdCode();
+        Map<String, List<CodeEntity>> converted = new HashMap<>();
+        for (Map.Entry<String, List<CodeEntity>> e : aoToRequiredBaseEdCode.entrySet()) {
+            String newkey = e.getKey().replace('.', '_');
+            converted.put(newkey, e.getValue());
+        }
+        this.aoToRequiredBaseEdCode = converted;
+    }
+
+    @PostLoad
+    void postLoad(){
+        Map<String, List<CodeEntity>> aoToRequiredBaseEdCode = this.getAoToRequiredBaseEdCode();
+        Map<String, List<CodeEntity>> converted = new HashMap<>();
+        for (Map.Entry<String, List<CodeEntity>> e : aoToRequiredBaseEdCode.entrySet()) {
+            String newkey = e.getKey().replace('_', '.'); //opposite of pre-persist
+            converted.put(newkey, e.getValue());
+        }
+        this.aoToRequiredBaseEdCode = converted;
     }
 }
