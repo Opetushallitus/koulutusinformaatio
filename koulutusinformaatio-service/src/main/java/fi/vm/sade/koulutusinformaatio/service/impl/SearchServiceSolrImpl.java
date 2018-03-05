@@ -511,7 +511,8 @@ public class SearchServiceSolrImpl implements SearchService {
         Map<String, Set<Code>> allRequired = new HashMap<>();
         if(o != null) {
             try {
-                allRequired = (Map<String, Set<Code>>) o;
+                allRequired = (HashMap<String, Set<Code>>) o;
+                LOG.info(allRequired.toString());
             } catch (Exception e) {
                 LOG.error("Failed to cast required base educations", e);
             }
@@ -523,7 +524,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 id, name,
                 lopId, lopNames, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider, allRequired);
+                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider);
+
         LOG.debug("Created search result: {}", id);
 
         updateAsStatus(lo, doc);

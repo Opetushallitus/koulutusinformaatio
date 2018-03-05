@@ -9,7 +9,9 @@
                 <div data-ng-repeat="applicationoption in applicationoptionRow" class="col-md-8">
         			<div class="margin-vertical-small"><strong>{{applicationoption.name}}</strong></div>
 					<div class="margin-vertical-small">
-						{{applicationoption.requiredBaseEducations}}
+                        <div data-ng-repeat="baseed in applicationoption.requiredBaseEducations">
+                            <div>{{baseed}}</div>
+                        </div>
 					</div>
         			<div data-ng-transclude></div>
                 </div>

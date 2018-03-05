@@ -16,7 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Learning opportunity result. Can be a specification (LOS) or an instance (LOI).
@@ -44,13 +46,12 @@ public class LOSearchResult {
     private String childName;
     private List<String> subjects;
     private String responsibleProvider;
-    private Map<String, Set<Code>> aoToRequiredBaseEducations = new HashMap<>();
 
     public LOSearchResult(String id, String name, List<String> lopIds, List<String> lopNames,
-                          String prerequisite, String prerequisiteCode, String parentId,
-                          String losId, String type, String credits, String educationType,
-                          String educationDegree, String educationDegreeCode, String homeplace, String childName, List<String> subjects,
-                          String responsibleProvider, Map<String, Set<Code>> aoToRequiredBaseEducations) {
+            String prerequisite, String prerequisiteCode, String parentId,
+            String losId, String type, String credits, String educationType,
+            String educationDegree, String educationDegreeCode, String homeplace, String childName, List<String> subjects,
+            String responsibleProvider) {
         this.id = id;
         this.name = name;
         this.lopIds = lopIds;
@@ -68,7 +69,6 @@ public class LOSearchResult {
         this.childName = childName;
         this.subjects = subjects;
         this.responsibleProvider = responsibleProvider;
-        this.aoToRequiredBaseEducations = aoToRequiredBaseEducations;
     }
 
     public LOSearchResult() {
@@ -220,13 +220,5 @@ public class LOSearchResult {
 
     public String getResponsibleProvider() {
         return responsibleProvider;
-    }
-
-    public void setAoToRequiredBaseEducations(Map<String, Set<Code>> aoToRequiredBaseEducations) {
-        this.aoToRequiredBaseEducations = aoToRequiredBaseEducations;
-    }
-
-    public Map<String, Set<Code>> getAoToRequiredBaseEducations() {
-        return aoToRequiredBaseEducations;
     }
 }
