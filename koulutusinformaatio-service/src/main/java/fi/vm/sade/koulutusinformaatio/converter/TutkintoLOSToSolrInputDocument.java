@@ -307,6 +307,10 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         if(LOG.isDebugEnabled()) {
             LOG.debug("{} set to {}", LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired.toString());
         }
+        allRequired = new HashMap<>();
+        Code code = new Code();
+        code.setUri("ofob bar uri");
+        allRequired.put("1.2.3.4.5.6.67.7.8testignore", Arrays.asList(code));
         doc.setField(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired);
 
         return doc;
