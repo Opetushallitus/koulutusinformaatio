@@ -304,7 +304,9 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             }
 
         }
-
+        if(LOG.isDebugEnabled()) {
+            LOG.debug("{} set to {}", LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired.toString());
+        }
         doc.setField(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired);
 
         return doc;

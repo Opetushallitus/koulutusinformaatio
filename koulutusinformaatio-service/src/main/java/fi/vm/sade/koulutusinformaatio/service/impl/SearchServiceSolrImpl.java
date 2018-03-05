@@ -517,6 +517,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 LOG.error("Failed to cast required base educations", e);
             }
         }
+        LOG.debug("{} entry set size {}", LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired.entrySet().size());
 
         LOG.debug("gathered info now creating search result: {}", id);
 

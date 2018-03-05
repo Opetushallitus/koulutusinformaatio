@@ -847,6 +847,7 @@ public class LOSObjectCreator extends ObjectCreator {
             }
             aoToCodes.put(applicationOption.getId(), thisAoCodes);
         }
+        LOG.debug("getRequiredBaseEdFromAO = {}", aoToCodes.toString());
         return aoToCodes;
     }
 
