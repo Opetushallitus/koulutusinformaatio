@@ -507,7 +507,7 @@ public class SearchServiceSolrImpl implements SearchService {
         if (doc.get(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY) != null){
             edDegree = getAdditionlaEducationType(doc, lang);
         }
-        Object o = doc.get(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS);
+        Object o = doc.getFieldValue(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS);
         Map<String, Set<Code>> allRequired = new HashMap<>();
         if(o != null) {
             try {

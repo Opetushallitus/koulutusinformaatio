@@ -221,4 +221,12 @@ public class LOSearchResult {
     public String getResponsibleProvider() {
         return responsibleProvider;
     }
+
+    public Map<String, Set<Code>> getAoToRequiredBaseEducations() {
+        return aoToRequiredBaseEducations;
+    }
+
+    public void setAoToRequiredBaseEducations(Map<String, Set<Code>> aoToRequiredBaseEducations) {
+        this.aoToRequiredBaseEducations = aoToRequiredBaseEducations;
+    }
 }
