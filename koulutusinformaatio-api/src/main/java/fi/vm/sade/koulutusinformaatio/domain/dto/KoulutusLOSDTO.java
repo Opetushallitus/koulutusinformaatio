@@ -97,7 +97,7 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
     private String charge;
     private ToteutustyyppiEnum toteutustyyppi;
     private String hakijalleNaytettavaTunniste;
-    private Map<String, Set<CodeDTO>> aoToRequiredBaseEdCode;
+    private Map<String, List<CodeDTO>> aoToRequiredBaseEdCode;
 
     // Status of the lo. For preview
     private String status;
@@ -647,11 +647,11 @@ public class KoulutusLOSDTO extends StandaloneLOSDTO implements Articled {
         this.hakijalleNaytettavaTunniste = hakijalleNaytettavaTunniste;
     }
 
-    public Map<String, Set<CodeDTO>> getAoToRequiredBaseEdCode() {
+    public Map<String, List<CodeDTO>> getAoToRequiredBaseEdCode() {
         return aoToRequiredBaseEdCode;
     }
 
-    public void setAoToRequiredBaseEdCode(Map<String, Set<CodeDTO>> aoToRequiredBaseEdCode) {
+    public void setAoToRequiredBaseEdCode(Map<String, List<CodeDTO>> aoToRequiredBaseEdCode) {
         this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
     }
 }

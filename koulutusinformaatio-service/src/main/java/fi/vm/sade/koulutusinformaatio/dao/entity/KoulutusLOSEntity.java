@@ -175,7 +175,7 @@ public class KoulutusLOSEntity {
     @Embedded
     private Map<String, List<String>> subjects;
     @Embedded
-    private Map<String, Set<CodeEntity>> aoToRequiredBaseEdCode;
+    private Map<String, List<CodeEntity>> aoToRequiredBaseEdCode;
 
     public String getId() {
         return id;
@@ -779,11 +779,11 @@ public class KoulutusLOSEntity {
         this.subjects = subjects;
     }
 
-    public Map<String, Set<CodeEntity>> getAoToRequiredBaseEdCode() {
+    public Map<String, List<CodeEntity>> getAoToRequiredBaseEdCode() {
         return aoToRequiredBaseEdCode;
     }
 
-    public void setAoToRequiredBaseEdCode(Map<String, Set<CodeEntity>> aoToRequiredBaseEdCode) {
+    public void setAoToRequiredBaseEdCode(Map<String, List<CodeEntity>> aoToRequiredBaseEdCode) {
         this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
     }
 }

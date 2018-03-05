@@ -290,14 +290,14 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
             }
         }
 
-        Map<String, Set<Code>> allRequired = new HashMap<>();
+        Map<String, List<Code>> allRequired = new HashMap<>();
         for (KoulutusLOS koulutusLOS : tutkinto.getChildEducations()) {
-            Map<String, Set<Code>> aoToRequiredBaseEdCode = koulutusLOS.getAoToRequiredBaseEdCode();
+            Map<String, List<Code>> aoToRequiredBaseEdCode = koulutusLOS.getAoToRequiredBaseEdCode();
             if(aoToRequiredBaseEdCode == null) continue;
-            for (Map.Entry<String, Set<Code>> entry : aoToRequiredBaseEdCode.entrySet()) {
-                Set<Code> codes = allRequired.get(entry.getKey());
+            for (Map.Entry<String, List<Code>> entry : aoToRequiredBaseEdCode.entrySet()) {
+                List<Code> codes = allRequired.get(entry.getKey());
                 if(codes == null) {
-                    codes = new HashSet<>();
+                    codes = new ArrayList<>();
                 }
                 codes.addAll(entry.getValue());
                 allRequired.put(entry.getKey(), codes);

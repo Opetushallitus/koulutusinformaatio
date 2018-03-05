@@ -44,13 +44,13 @@ public class LOSearchResult {
     private String childName;
     private List<String> subjects;
     private String responsibleProvider;
-    private Map<String, Set<Code>> aoToRequiredBaseEducations = new HashMap<>();
+    private Map<String, List<Code>> aoToRequiredBaseEducations = new HashMap<>();
 
     public LOSearchResult(String id, String name, List<String> lopIds, List<String> lopNames,
             String prerequisite, String prerequisiteCode, String parentId,
             String losId, String type, String credits, String educationType,
             String educationDegree, String educationDegreeCode, String homeplace, String childName, List<String> subjects,
-            String responsibleProvider, Map<String, Set<Code>> aoToRequiredBaseEducations) {
+            String responsibleProvider, Map<String, List<Code>> aoToRequiredBaseEducations) {
         this.id = id;
         this.name = name;
         this.lopIds = lopIds;
@@ -222,11 +222,11 @@ public class LOSearchResult {
         return responsibleProvider;
     }
 
-    public Map<String, Set<Code>> getAoToRequiredBaseEducations() {
+    public Map<String, List<Code>> getAoToRequiredBaseEducations() {
         return aoToRequiredBaseEducations;
     }
 
-    public void setAoToRequiredBaseEducations(Map<String, Set<Code>> aoToRequiredBaseEducations) {
+    public void setAoToRequiredBaseEducations(Map<String, List<Code>> aoToRequiredBaseEducations) {
         this.aoToRequiredBaseEducations = aoToRequiredBaseEducations;
     }
 }

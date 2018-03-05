@@ -62,9 +62,9 @@ public class KoulutusLOSDAOTest {
         KoulutusLOSEntity los = new KoulutusLOSEntity();
         los.setId(id);
 
-        Map<String, Set<CodeEntity>> stuff = new HashMap<>();
+        Map<String, List<CodeEntity>> stuff = new HashMap<>();
 
-        Set<CodeEntity> set = new HashSet<>();
+        List<CodeEntity> set = new ArrayList<>();
         CodeEntity codeEntity = new CodeEntity();
         codeEntity.setUri("foobar");
         set.add(codeEntity);

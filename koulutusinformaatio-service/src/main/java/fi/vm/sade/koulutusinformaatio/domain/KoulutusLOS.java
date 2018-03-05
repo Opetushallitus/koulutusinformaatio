@@ -54,7 +54,7 @@ public class KoulutusLOS extends LOS {
     private int startYear;
 
     private Set<String> ammatillinenPrerequisites = new HashSet<>();
-    private Map<String, Set<Code>> aoToRequiredBaseEdCode = new HashMap<>();
+    private Map<String, List<Code>> aoToRequiredBaseEdCode = new HashMap<>();
 
     // Status of the lo. For preview
     private String status;
@@ -695,11 +695,11 @@ public class KoulutusLOS extends LOS {
         this.ammatillinenPrerequisites = ammatillinenPrerequisites;
     }
 
-    public void setAoToRequiredBaseEdCode(Map<String, Set<Code>> aoToRequiredBaseEdCode) {
+    public void setAoToRequiredBaseEdCode(Map<String, List<Code>> aoToRequiredBaseEdCode) {
         this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
     }
 
-    public Map<String, Set<Code>> getAoToRequiredBaseEdCode() {
+    public Map<String, List<Code>> getAoToRequiredBaseEdCode() {
         return aoToRequiredBaseEdCode;
     }
 }

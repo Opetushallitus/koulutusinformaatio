@@ -804,7 +804,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private void addAmmatillinenPohjakoulutusvaatimusFields(KoulutusLOS los) throws KoodistoException {
         Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los);
-        Map<String, Set<Code>> requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
+        Map<String, List<Code>> requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
         los.setAmmatillinenPrerequisites(getAmmatillinenPrerequisites(uniqueRequiredBaseEducations));
         los.setAoToRequiredBaseEdCode(requiredBaseEdFromAO);
     }
@@ -812,7 +812,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(KoulutusLOS los) {
         Set<String> uniqueRequiredBaseEducations = new HashSet<>();
 
-        Map<String, Set<Code>> requiredBaseEdFromAO = new HashMap<>();
+        Map<String, List<Code>> requiredBaseEdFromAO = new HashMap<>();
         try {
             requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
         } catch (KoodistoException e) {
@@ -825,14 +825,13 @@ public class LOSObjectCreator extends ObjectCreator {
             return uniqueRequiredBaseEducations;
         }
         for (ApplicationOption ao : aos) {
-            Set<Code> codes = requiredBaseEdFromAO.get(ao.getId());
+            List<Code> codes = requiredBaseEdFromAO.get(ao.getId());
             if(codes != null) {
                 for (Code code : codes) {
                     if(code == null) continue;
                     uniqueRequiredBaseEducations.add(code.getUri());
                 }
             }
-
             if (!CollectionUtils.isEmpty(ao.getRequiredBaseEducations())) {
                 uniqueRequiredBaseEducations.addAll(ao.getRequiredBaseEducations());
             }
@@ -850,13 +849,13 @@ public class LOSObjectCreator extends ObjectCreator {
         return uriToCode;
     }
 
-    private Map<String, Set<Code>> getRequiredBaseEdFromAO(KoulutusLOS los) throws KoodistoException {
-        Map<String, Set<Code>> aoToCodes = new HashMap<>();
+    private Map<String, List<Code>> getRequiredBaseEdFromAO(KoulutusLOS los) throws KoodistoException {
+        Map<String, List<Code>> aoToCodes = new HashMap<>();
         Map<String, Code> hakukelpoisuusCodes = getHakukelpoisuusCodes();
         for (ApplicationOption applicationOption : los.getApplicationOptions()) {
-            Set<Code> thisAoCodes = aoToCodes.get(applicationOption.getId());
+            List<Code> thisAoCodes = aoToCodes.get(applicationOption.getId());
             if(thisAoCodes == null) {
-                thisAoCodes = new HashSet<>();
+                thisAoCodes = new ArrayList<>();
             }
             List<String> requiredBaseEducations = applicationOption.getRequiredBaseEducations();
             for (String requiredBaseEducation : requiredBaseEducations) {

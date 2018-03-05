@@ -186,15 +186,15 @@ public class KoulutusLOSToDTO {
         dto.setCharge(los.getHinta());
         dto.setHakijalleNaytettavaTunniste(los.getHakijalleNaytettavaTunniste());
 
-        Map<String, Set<Code>> aoToRequiredBaseEdCode = los.getAoToRequiredBaseEdCode();
+        Map<String, List<Code>> aoToRequiredBaseEdCode = los.getAoToRequiredBaseEdCode();
         if(aoToRequiredBaseEdCode != null) {
-            Map<String, Set<CodeDTO>> AO2CodeDTO = new HashMap<>();
-            for (Map.Entry<String, Set<Code>> stringSetEntry : aoToRequiredBaseEdCode.entrySet()) {
+            Map<String, List<CodeDTO>> AO2CodeDTO = new HashMap<>();
+            for (Map.Entry<String, List<Code>> stringSetEntry : aoToRequiredBaseEdCode.entrySet()) {
                 if(stringSetEntry == null || stringSetEntry.getValue() == null || stringSetEntry.getKey() == null)
                     continue;
 
-                Set<CodeDTO> newCodes = new HashSet<>();
-                Set<Code> codes = stringSetEntry.getValue();
+                List<CodeDTO> newCodes = new ArrayList<>();
+                List<Code> codes = stringSetEntry.getValue();
                 for (Code code : codes) {
                     if(code == null) continue;
                     CodeDTO convert = CodeToDTO.convert(code, lang);

@@ -508,10 +508,10 @@ public class SearchServiceSolrImpl implements SearchService {
             edDegree = getAdditionlaEducationType(doc, lang);
         }
         Object o = doc.getFieldValue(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS);
-        Map<String, Set<Code>> allRequired = new HashMap<>();
+        Map<String, List<Code>> allRequired = new HashMap<>();
         if(o != null) {
             try {
-                allRequired = (HashMap<String, Set<Code>>) o;
+                allRequired = (HashMap<String, List<Code>>) o;
                 LOG.info(allRequired.toString());
             } catch (Exception e) {
                 LOG.error("Failed to cast required base educations", e);
