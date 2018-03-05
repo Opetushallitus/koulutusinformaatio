@@ -799,26 +799,41 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setStructure(null); // Ammatillisilla perustutkinnoilla ei haluta näyttää opintojen rakennetta
         addAmmatillinenPohjakoulutusvaatimusFields(los);
 
-        Map<String, Set<Code>> requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
-        los.setAoToRequiredBaseEdCode(requiredBaseEdFromAO);
-
         return los;
     }
 
     private void addAmmatillinenPohjakoulutusvaatimusFields(KoulutusLOS los) throws KoodistoException {
-        Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los.getApplicationOptions());
+        Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los);
         los.setAmmatillinenPrerequisites(getAmmatillinenPrerequisites(uniqueRequiredBaseEducations));
     }
 
-    private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(Set<ApplicationOption> aos) {
+    private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(KoulutusLOS los) {
         Set<String> uniqueRequiredBaseEducations = new HashSet<>();
+
+        Map<String, Set<Code>> requiredBaseEdFromAO = new HashMap<>();
+        try {
+            requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
+        } catch (KoodistoException e) {
+            LOG.error("error getting based ed from AOs", e);
+        }
+
+
+        Set<ApplicationOption> aos = los.getApplicationOptions();
         if (CollectionUtils.isEmpty(aos)) {
             return uniqueRequiredBaseEducations;
         }
         for (ApplicationOption ao : aos) {
+            Set<Code> codes = requiredBaseEdFromAO.get(ao.getId());
+            if(codes != null) {
+                for (Code code : codes) {
+                    uniqueRequiredBaseEducations.add(code.getUri());
+                }
+            }
+
             if (!CollectionUtils.isEmpty(ao.getRequiredBaseEducations())) {
                 uniqueRequiredBaseEducations.addAll(ao.getRequiredBaseEducations());
             }
+
         }
         return uniqueRequiredBaseEducations;
     }
