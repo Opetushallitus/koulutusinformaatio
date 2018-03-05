@@ -525,7 +525,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 id, name,
                 lopId, lopNames, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider);
+                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider, allRequired);
 
         LOG.debug("Created search result: {}", id);
 

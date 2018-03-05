@@ -16,9 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Learning opportunity result. Can be a specification (LOS) or an instance (LOI).
@@ -46,12 +44,13 @@ public class LOSearchResult {
     private String childName;
     private List<String> subjects;
     private String responsibleProvider;
+    private Map<String, Set<Code>> aoToRequiredBaseEducations = new HashMap<>();
 
     public LOSearchResult(String id, String name, List<String> lopIds, List<String> lopNames,
             String prerequisite, String prerequisiteCode, String parentId,
             String losId, String type, String credits, String educationType,
             String educationDegree, String educationDegreeCode, String homeplace, String childName, List<String> subjects,
-            String responsibleProvider) {
+            String responsibleProvider, Map<String, Set<Code>> aoToRequiredBaseEducations) {
         this.id = id;
         this.name = name;
         this.lopIds = lopIds;
@@ -69,6 +68,7 @@ public class LOSearchResult {
         this.childName = childName;
         this.subjects = subjects;
         this.responsibleProvider = responsibleProvider;
+        this.aoToRequiredBaseEducations = aoToRequiredBaseEducations;
     }
 
     public LOSearchResult() {
