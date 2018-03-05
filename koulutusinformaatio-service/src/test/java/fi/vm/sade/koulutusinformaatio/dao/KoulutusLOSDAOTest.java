@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
+import java.util.*;
 
 import org.junit.After;
 import org.junit.Test;
@@ -61,6 +61,15 @@ public class KoulutusLOSDAOTest {
     private Key<KoulutusLOSEntity> saveTestKoulutus(String id, String providerOid, String educationCode, ToteutustyyppiEnum toteutustyyppi) {
         KoulutusLOSEntity los = new KoulutusLOSEntity();
         los.setId(id);
+
+        Map<String, Set<CodeEntity>> stuff = new HashMap<>();
+
+        Set<CodeEntity> set = new HashSet<>();
+        CodeEntity codeEntity = new CodeEntity();
+        codeEntity.setUri("foobar");
+        set.add(codeEntity);
+        stuff.put("aaaa", set);
+        los.setAoToRequiredBaseEdCode(stuff);
 
         LearningOpportunityProviderEntity provider = new LearningOpportunityProviderEntity();
         provider.setId(providerOid);

@@ -804,7 +804,9 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private void addAmmatillinenPohjakoulutusvaatimusFields(KoulutusLOS los) throws KoodistoException {
         Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los);
+        Map<String, Set<Code>> requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
         los.setAmmatillinenPrerequisites(getAmmatillinenPrerequisites(uniqueRequiredBaseEducations));
+        los.setAoToRequiredBaseEdCode(requiredBaseEdFromAO);
     }
 
     private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(KoulutusLOS los) {

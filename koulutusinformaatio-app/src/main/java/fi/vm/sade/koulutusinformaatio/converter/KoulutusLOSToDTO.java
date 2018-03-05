@@ -1,21 +1,13 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import com.google.common.collect.Sets;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
-import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.KoulutusLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 
 public class KoulutusLOSToDTO {
 
@@ -193,6 +185,27 @@ public class KoulutusLOSToDTO {
 
         dto.setCharge(los.getHinta());
         dto.setHakijalleNaytettavaTunniste(los.getHakijalleNaytettavaTunniste());
+
+        Map<String, Set<Code>> aoToRequiredBaseEdCode = los.getAoToRequiredBaseEdCode();
+        if(aoToRequiredBaseEdCode != null) {
+            Map<String, Set<CodeDTO>> AO2CodeDTO = new HashMap<>();
+            for (Map.Entry<String, Set<Code>> stringSetEntry : aoToRequiredBaseEdCode.entrySet()) {
+                if(stringSetEntry == null || stringSetEntry.getValue() == null || stringSetEntry.getKey() == null)
+                    continue;
+
+                Set<CodeDTO> newCodes = new HashSet<>();
+                Set<Code> codes = stringSetEntry.getValue();
+                for (Code code : codes) {
+                    if(code == null) continue;
+                    CodeDTO convert = CodeToDTO.convert(code, lang);
+                    newCodes.add(convert);
+                }
+                if(newCodes.size() > 0) {
+                    AO2CodeDTO.put(stringSetEntry.getKey(), newCodes);
+                }
+            }
+            dto.setAoToRequiredBaseEdCode(AO2CodeDTO);
+        }
 
         return dto;
     }

@@ -174,6 +174,8 @@ public class KoulutusLOSEntity {
     private String hakijalleNaytettavaTunniste;
     @Embedded
     private Map<String, List<String>> subjects;
+    @Embedded
+    private Map<String, Set<CodeEntity>> aoToRequiredBaseEdCode;
 
     public String getId() {
         return id;
@@ -775,5 +777,13 @@ public class KoulutusLOSEntity {
 
     public void setSubjects(Map<String, List<String>> subjects) {
         this.subjects = subjects;
+    }
+
+    public Map<String, Set<CodeEntity>> getAoToRequiredBaseEdCode() {
+        return aoToRequiredBaseEdCode;
+    }
+
+    public void setAoToRequiredBaseEdCode(Map<String, Set<CodeEntity>> aoToRequiredBaseEdCode) {
+        this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
     }
 }
