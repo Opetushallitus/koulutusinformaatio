@@ -826,6 +826,7 @@ public class LOSObjectCreator extends ObjectCreator {
             Set<Code> codes = requiredBaseEdFromAO.get(ao.getId());
             if(codes != null) {
                 for (Code code : codes) {
+                    if(code == null) continue;
                     uniqueRequiredBaseEducations.add(code.getUri());
                 }
             }
@@ -858,7 +859,9 @@ public class LOSObjectCreator extends ObjectCreator {
             List<String> requiredBaseEducations = applicationOption.getRequiredBaseEducations();
             for (String requiredBaseEducation : requiredBaseEducations) {
                 Code code = hakukelpoisuusCodes.get(requiredBaseEducation);
-                thisAoCodes.add(code);
+                if(code != null) {
+                    thisAoCodes.add(code);
+                }
             }
             aoToCodes.put(applicationOption.getId(), thisAoCodes);
         }
