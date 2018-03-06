@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -16,6 +18,8 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
  */
 @Entity("koulutusLOS")
 public class KoulutusLOSEntity {
+
+    private static final Logger LOG = LoggerFactory.getLogger(KoulutusLOSEntity.class);
 
     @Id
     private String id;
@@ -795,6 +799,7 @@ public class KoulutusLOSEntity {
             String newkey = e.getKey().replace('.', '_');
             converted.put(newkey, e.getValue());
         }
+        LOG.info("prePersists aoToRequiredBaseEdCode: {}", aoToRequiredBaseEdCode.toString());
         this.aoToRequiredBaseEdCode = converted;
     }
 
@@ -808,6 +813,7 @@ public class KoulutusLOSEntity {
             String newkey = e.getKey().replace('_', '.'); //opposite of pre-persist
             converted.put(newkey, e.getValue());
         }
+        LOG.info("postLoad aoToRequiredBaseEdCode: {}", aoToRequiredBaseEdCode.toString());
         this.aoToRequiredBaseEdCode = converted;
     }
 }

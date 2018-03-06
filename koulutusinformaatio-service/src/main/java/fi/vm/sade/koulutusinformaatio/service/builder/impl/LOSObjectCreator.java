@@ -798,44 +798,24 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.setStructure(null); // Ammatillisilla perustutkinnoilla ei haluta näyttää opintojen rakennetta
         addAmmatillinenPohjakoulutusvaatimusFields(los);
-
         return los;
     }
 
     private void addAmmatillinenPohjakoulutusvaatimusFields(KoulutusLOS los) throws KoodistoException {
-        Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los);
-        Map<String, List<Code>> requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
+        Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los.getApplicationOptions());
         los.setAmmatillinenPrerequisites(getAmmatillinenPrerequisites(uniqueRequiredBaseEducations));
-        los.setAoToRequiredBaseEdCode(requiredBaseEdFromAO);
+        los.setAoToRequiredBaseEdCode(getRequiredBaseEdFromAO(los));
     }
 
-    private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(KoulutusLOS los) {
+    private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(Set<ApplicationOption> aos) {
         Set<String> uniqueRequiredBaseEducations = new HashSet<>();
-
-        Map<String, List<Code>> requiredBaseEdFromAO = new HashMap<>();
-        try {
-            requiredBaseEdFromAO = getRequiredBaseEdFromAO(los);
-        } catch (KoodistoException e) {
-            LOG.error("error getting based ed from AOs", e);
-        }
-
-
-        Set<ApplicationOption> aos = los.getApplicationOptions();
         if (CollectionUtils.isEmpty(aos)) {
             return uniqueRequiredBaseEducations;
         }
         for (ApplicationOption ao : aos) {
-            List<Code> codes = requiredBaseEdFromAO.get(ao.getId());
-            if(codes != null) {
-                for (Code code : codes) {
-                    if(code == null) continue;
-                    uniqueRequiredBaseEducations.add(code.getUri());
-                }
-            }
             if (!CollectionUtils.isEmpty(ao.getRequiredBaseEducations())) {
                 uniqueRequiredBaseEducations.addAll(ao.getRequiredBaseEducations());
             }
-
         }
         return uniqueRequiredBaseEducations;
     }

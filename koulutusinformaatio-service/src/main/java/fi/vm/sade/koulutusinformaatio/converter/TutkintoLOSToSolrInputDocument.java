@@ -57,12 +57,6 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
     private List<SolrInputDocument> createTutkintoDocsByPrerequisites(TutkintoLOS tutkinto) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         Map<String,Code> prerequisitesMap = new HashMap<String,Code>();
-
-        for (ApplicationOption applicationOption : tutkinto.getApplicationOptions()) {
-            List<String> requiredBaseEducations = applicationOption.getRequiredBaseEducations();
-            LOG.info("AO {} required based eds: {}", applicationOption.getId(), Joiner.on(",").join(requiredBaseEducations));
-        }
-
         for (KoulutusLOS koulutus : tutkinto.getChildEducations()) {
             for (Code prereq : koulutus.getPrerequisites()) {
                 String prereqStr = prereq.getValue();
