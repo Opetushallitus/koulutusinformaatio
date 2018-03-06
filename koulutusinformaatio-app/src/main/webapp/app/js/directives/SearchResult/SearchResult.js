@@ -44,6 +44,20 @@ directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', 'Ut
 
             scope.lo.type = scope.lo.type.toLowerCase();
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
+            scope.lo.getBaseEducations = function() {
+                var baseEds = [];
+                if(!scope.lo.aoToRequiredBaseEducations) return baseEds;
+                var aos = scope.lo.aoToRequiredBaseEducations;
+                for (var ao in aos) {
+                    if (aos.hasOwnProperty(ao)) {
+                        if(aos[ao][0]) {
+                            var titleTranslation = aos[ao][0].shortTitle[scope.lang];
+                            baseEds.add(titleTranslation);
+                        }
+                    }
+                }
+                return baseEds.join(", ");
+            };
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
             if (prerequisite && scope.lo.type === LOTypes.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
