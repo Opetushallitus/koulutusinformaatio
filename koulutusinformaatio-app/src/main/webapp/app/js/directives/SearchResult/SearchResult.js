@@ -44,20 +44,21 @@ directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', 'Ut
 
             scope.lo.type = scope.lo.type.toLowerCase();
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
-            scope.lo.getBaseEducations = function() {
-                var baseEds = [];
-                if(!scope.lo.aoToRequiredBaseEducations) return baseEds;
-                var aos = scope.lo.aoToRequiredBaseEducations;
-                for (var ao in aos) {
-                    if (aos.hasOwnProperty(ao)) {
-                        if(aos[ao][0]) {
-                            var titleTranslation = aos[ao][0].shortTitle[scope.lang];
-                            baseEds.add(titleTranslation);
-                        }
+            scope.lo.baseEducationList = [];
+
+            var baseEds = [];
+            if(!scope.lo.aoToRequiredBaseEducations) return baseEds;
+            var aos = scope.lo.aoToRequiredBaseEducations;
+            for (var ao in aos) {
+                if (aos.hasOwnProperty(ao)) {
+                    if(aos[ao][0]) {
+                        var titleTranslation = aos[ao][0].shortTitle.translations[scope.lang];
+                        baseEds.push(titleTranslation);
                     }
                 }
-                return baseEds.join(", ");
-            };
+            }
+            scope.lo.baseEducationList = baseEds.join(", ");
+
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
             if (prerequisite && scope.lo.type === LOTypes.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
