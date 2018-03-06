@@ -57,7 +57,7 @@ directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', 'Ut
                     }
                 }
             }
-            scope.lo.baseEducationList = baseEds.join(", ");
+            scope.lo.baseEducationList = baseEds
 
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();

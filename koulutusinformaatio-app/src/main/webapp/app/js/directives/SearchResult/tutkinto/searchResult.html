@@ -9,9 +9,8 @@
                 <span class="italic" data-ng-if="lo.prerequisiteCode == 'ER'" data-ki-i18n="et4"></span>
                 <br />
             </div>
-            <div>
-                <span class="italic">foo</span>
-                <span class="italic">{{lo.baseEducationList}}</span>
+            <div ng-show="lo.baseEducationList">
+                <span class="italic">{{lo.baseEducationList.join(", ")}}</span>
                 <br />
             </div>
             <span data-ng-show="lo.prerequisite">
