@@ -4,7 +4,7 @@
             <h2 title="{{locales.openEducation}}">
                 <a href="{{lo.linkHref}}" aria-label="{{lo.name}}, {{lo.homeplace}}, {{lo.credits}}">{{lo.name}}, {{lo.credits}}</a>
             </h2>
-            <div data-ng-show="!lo.educationType && !lo.baseEducationList">
+            <div data-ng-show="!lo.educationType && !lo.baseEducationList.length">
                 <span class="italic" data-ng-if="lo.prerequisiteCode != 'ER'" data-ki-i18n="et3"></span>
                 <span class="italic" data-ng-if="lo.prerequisiteCode == 'ER'" data-ki-i18n="et4"></span>
                 <br />
