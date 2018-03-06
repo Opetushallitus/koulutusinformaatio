@@ -47,7 +47,7 @@ directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', 'Ut
             scope.lo.baseEducationList = [];
 
             var baseEds = [];
-            if(!scope.lo.aoToRequiredBaseEducations) return baseEds;
+
             var aos = scope.lo.aoToRequiredBaseEducations;
             for (var ao in aos) {
                 if (aos.hasOwnProperty(ao)) {
