@@ -201,9 +201,9 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         if (los != null) {
 
             updateProviderReferences(los);
-
+            LOG.debug("updateKoulutusLos los ao map = {}", los.getAoToRequiredBaseEdCode().toString());
             KoulutusLOSEntity plos = modelMapper.map(los, KoulutusLOSEntity.class);
-
+            LOG.debug("updateKoulutusLos after mapping los ao map = {}", plos.getAoToRequiredBaseEdCode().toString());
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
 

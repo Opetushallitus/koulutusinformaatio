@@ -799,7 +799,7 @@ public class KoulutusLOSEntity {
             String newkey = e.getKey().replace('.', '_');
             converted.put(newkey, e.getValue());
         }
-        LOG.info("prePersists aoToRequiredBaseEdCode: {}", aoToRequiredBaseEdCode.toString());
+        LOG.info("prePersists aoToRequiredBaseEdCode: {}", converted.toString());
         this.aoToRequiredBaseEdCode = converted;
     }
 
@@ -813,7 +813,7 @@ public class KoulutusLOSEntity {
             String newkey = e.getKey().replace('_', '.'); //opposite of pre-persist
             converted.put(newkey, e.getValue());
         }
-        LOG.info("postLoad aoToRequiredBaseEdCode: {}", aoToRequiredBaseEdCode.toString());
+        LOG.info("postLoad aoToRequiredBaseEdCode: {}", converted.toString());
         this.aoToRequiredBaseEdCode = converted;
     }
 }
