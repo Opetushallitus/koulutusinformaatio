@@ -21,6 +21,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
@@ -49,6 +51,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -507,17 +510,14 @@ public class SearchServiceSolrImpl implements SearchService {
         if (doc.get(LearningOpportunity.ADDITIONALEDUCATIONTYPE_DISPLAY) != null){
             edDegree = getAdditionlaEducationType(doc, lang);
         }
-        Object o = doc.getFieldValue(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS);
-        Map<String, List<Code>> allRequired = new HashMap<>();
-        if(o != null) {
-            try {
-                allRequired = (HashMap<String, List<Code>>) o;
-                LOG.info(allRequired.toString());
-            } catch (Exception e) {
-                LOG.error("Failed to cast required base educations", e);
-            }
-        }
-        LOG.debug("{} entry set size {}", LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired.entrySet().size());
+
+        Object o = doc.getFieldValue(LearningOpportunity.AO_REQUIRED_BASE_EDUCATIONS);
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, List<Code>>>() {}.getType();
+        Map<String, List<Code>> baseEds = gson.fromJson((String) o, type);
+
+        LOG.debug("{} entry set size {}", LearningOpportunity.AO_REQUIRED_BASE_EDUCATIONS, baseEds.entrySet().size());
+        LOG.debug("Map: {}", baseEds.toString());
 
         LOG.debug("gathered info now creating search result: {}", id);
 
@@ -525,7 +525,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 id, name,
                 lopId, lopNames, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider, allRequired);
+                credits, edType, edDegree, edDegreeCode, homeplace, childName, subjects, responsibleProvider, baseEds);
 
         LOG.debug("Created search result: {}", id);
 

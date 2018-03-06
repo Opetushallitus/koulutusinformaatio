@@ -20,8 +20,8 @@ import java.util.*;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -305,13 +305,14 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
 
         }
         if(LOG.isDebugEnabled()) {
-            LOG.debug("{} set to {}", LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired.toString());
+            LOG.debug("{} set to {}", LearningOpportunity.AO_REQUIRED_BASE_EDUCATIONS, allRequired.toString());
         }
         allRequired = new HashMap<>();
         Code code = new Code();
         code.setUri("ofob bar uri");
         allRequired.put("1.2.3.4.5.6.67.7.8testignore", Arrays.asList(code));
-        doc.setField(LearningOpportunity.AO_REQURIED_BASE_EDUCATIONS, allRequired);
+        Gson gson = new Gson();
+        doc.setField(LearningOpportunity.AO_REQUIRED_BASE_EDUCATIONS, gson.toJson(allRequired));
 
         return doc;
     }
