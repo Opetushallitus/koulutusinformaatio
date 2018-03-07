@@ -148,25 +148,23 @@ directive('extendedSearchresultData',
                     }
                     $scope.extendedLO = result;
 
-                    if(result.children) {
-                        result.children.forEach(function (child) {
-                            console.log("child id = " + child.id);
-                            for (var key in child.aoToRequiredBaseEdCode) {
-                                if (child.aoToRequiredBaseEdCode.hasOwnProperty(key)) {
-                                    console.log("AO id = " + key);
-                                    var list = $scope.AORequiredBaseEds[key];
-                                    if (!list) {
-                                        list = [];
-                                    }
-                                    var requirements = child.aoToRequiredBaseEdCode[key];
-                                    $scope.loChildRequiredBaseEds[child.id] = requirements;
-                                    list = requirements;
-                                    $scope.AORequiredBaseEds[key] = list;
-                                }
-                            }
-                        });
-                    }
 
+                    result.lo.children.forEach(function (child) {
+                        console.log("child id = " + child.id);
+                        for (var key in child.aoToRequiredBaseEdCode) {
+                            if (child.aoToRequiredBaseEdCode.hasOwnProperty(key)) {
+                                console.log("AO id = " + key);
+                                var list = $scope.AORequiredBaseEds[key];
+                                if (!list) {
+                                    list = [];
+                                }
+                                var requirements = child.aoToRequiredBaseEdCode[key];
+                                $scope.loChildRequiredBaseEds[child.id] = requirements;
+                                list = requirements;
+                                $scope.AORequiredBaseEds[key] = list;
+                            }
+                        }
+                    });
                     deferred.resolve(result);
                 }, function(error) {
                     deferred.reject(error);
