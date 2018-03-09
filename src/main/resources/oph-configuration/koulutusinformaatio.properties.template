@@ -66,6 +66,7 @@ koulutusinformaatio.sitemap.filename=sitemap-learningopportunity.xml
 koulutusinformaatio.sitemap.filepath=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/${koulutusinformaatio.sitemap.filename}
 koulutusinformaatio.textversion.script=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/script/m/main/src/python
 koulutusinformaatio.textversion.folder=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/m
+koulutusinformaatio.prerender.token={{koulutusinformaatio_prerender_token}}
 
 jpa.schemaUpdate=validate
 jpa.showSql=false
