@@ -63,7 +63,7 @@ public class SearchEngineFilter implements Filter {
             String requestInfo= "Remote: " + httpRequest.getRemoteAddr() +
                     ", User-Agent: " + httpRequest.getHeader("User-Agent") +
                     ", URI: " + httpRequest.getRequestURI();
-            LOG.error("Filteriin tuli kutsu, joka pitäisi olla hoidettu nginx configuraatiossa Request [{}]", requestInfo);
+            LOG.info("Filteriin tuli kutsu, joka pitäisi olla hoidettu nginx configuraatiossa. Request [{}]", requestInfo);
 
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
@@ -73,7 +73,9 @@ public class SearchEngineFilter implements Filter {
             try {
                 uri = new URI(fragmentPath);
             } catch (URISyntaxException e) {
-                throw new ServletException("Malformed url", e);
+                LOG.info("Malformed url, probably search link contained space. fragmentPath = " + fragmentPath, e);
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             String oid = uri.getPath().split("/")[2];
@@ -112,7 +114,7 @@ public class SearchEngineFilter implements Filter {
     }
 
     private List<NameValuePair> parseQueryParams(String query) {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
 
         if (query != null) {
             String[] queryParams = query.split("&");
