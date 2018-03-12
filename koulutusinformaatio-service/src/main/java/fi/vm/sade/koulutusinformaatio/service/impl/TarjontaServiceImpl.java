@@ -192,6 +192,11 @@ public class TarjontaServiceImpl implements TarjontaService {
             BufferedImage image = ImageIO.read(bis);
             bis.close();
 
+            if(null == image) {
+                LOG.warn("Got null buffered image when trying to resize picture for koulutus {}. Skipping...", koulutusOid);
+                return null;
+            }
+
             if(image.getWidth() < MAX_IMAGE_WIDTH)
                 return kuvaEncoded;
 
