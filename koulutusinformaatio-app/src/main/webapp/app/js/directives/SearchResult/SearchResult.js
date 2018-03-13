@@ -44,6 +44,21 @@ directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', 'Ut
 
             scope.lo.type = scope.lo.type.toLowerCase();
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
+            scope.lo.baseEducationList = [];
+
+            var baseEds = [];
+
+            var aos = scope.lo.aoToRequiredBaseEducations;
+            for (var ao in aos) {
+                if (aos.hasOwnProperty(ao)) {
+                    if(aos[ao][0]) {
+                        var titleTranslation = aos[ao][0].shortTitle.translations[scope.lang];
+                        baseEds.push(titleTranslation);
+                    }
+                }
+            }
+            scope.lo.baseEducationList = baseEds
+
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
             if (prerequisite && scope.lo.type === LOTypes.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
@@ -104,6 +119,8 @@ directive('extendedSearchresultData',
                 var deferred = $q.defer(),
                     LOService;
                 $scope.extendedLO = undefined;
+                $scope.loChildRequiredBaseEds = {};
+                $scope.AORequiredBaseEds = {};
 
                 if(iAttrs.extendedSearchresultData === LOTypes.TUTKINTO) {
                     LOService = ParentLOService;
@@ -131,6 +148,23 @@ directive('extendedSearchresultData',
                     }
                     $scope.extendedLO = result;
 
+
+                    result.lo.children.forEach(function (child) {
+                        console.log("child id = " + child.id);
+                        for (var key in child.aoToRequiredBaseEdCode) {
+                            if (child.aoToRequiredBaseEdCode.hasOwnProperty(key)) {
+                                console.log("AO id = " + key);
+                                var list = $scope.AORequiredBaseEds[key];
+                                if (!list) {
+                                    list = [];
+                                }
+                                var requirements = child.aoToRequiredBaseEdCode[key];
+                                $scope.loChildRequiredBaseEds[child.id] = requirements;
+                                list = requirements;
+                                $scope.AORequiredBaseEds[key] = list;
+                            }
+                        }
+                    });
                     deferred.resolve(result);
                 }, function(error) {
                     deferred.reject(error);

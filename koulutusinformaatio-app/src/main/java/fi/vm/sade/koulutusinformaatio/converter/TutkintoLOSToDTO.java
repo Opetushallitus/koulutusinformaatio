@@ -17,7 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -29,6 +31,7 @@ import fi.vm.sade.koulutusinformaatio.domain.KoulutusLOS;
 import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.TutkintoLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 
@@ -100,6 +103,9 @@ public final class TutkintoLOSToDTO {
                 }
 
                 ChildLOIRefDTO childDto = new ChildLOIRefDTO();
+
+                Map<String, List<CodeDTO>> codes = convertKoulutusLOSRequiredBaseEducations(child, lang);
+                childDto.setAoToRequiredBaseEdCode(codes);
                 childDto.setId(child.getId());
                 childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(child.getName(), lang));
                 childDto.setPrerequisite(CodeToDTO.convert(child.getKoulutusPrerequisite(), lang));
@@ -126,6 +132,19 @@ public final class TutkintoLOSToDTO {
             throw new KIConversionException("Tutkinnolla " + parent.getId() + " ei ole koulutuksia pohjakoulutuksella " + prerequisite);
 
         return parent;
+    }
+
+    private static Map<String,List<CodeDTO>> convertKoulutusLOSRequiredBaseEducations(KoulutusLOS child, String lang) {
+        Map<String, List<CodeDTO>> codes = new HashMap<>();
+        Map<String, List<Code>> aoToRequiredBaseEdCode = child.getAoToRequiredBaseEdCode();
+        if (aoToRequiredBaseEdCode == null) return codes;
+        for (Map.Entry<String, List<Code>> e : aoToRequiredBaseEdCode.entrySet()) {
+            List<Code> value = e.getValue();
+            if(value == null) continue;
+            List<CodeDTO> codeDTOS = CodeToDTO.convertAll(value, lang);
+            codes.put(e.getKey(), codeDTOS);
+        }
+        return codes;
     }
 
     public static KoulutusLOS getFirstLosWithMatchingPrerequisite(List<KoulutusLOS> loses, String prerequisite) {

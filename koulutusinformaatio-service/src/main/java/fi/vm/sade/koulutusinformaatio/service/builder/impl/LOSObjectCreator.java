@@ -42,8 +42,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Hannu Lyytikainen
@@ -806,6 +804,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private void addAmmatillinenPohjakoulutusvaatimusFields(KoulutusLOS los) throws KoodistoException {
         Set<String> uniqueRequiredBaseEducations = getUniqueRequiredBaseEduqationsForApplicationOptions(los.getApplicationOptions());
         los.setAmmatillinenPrerequisites(getAmmatillinenPrerequisites(uniqueRequiredBaseEducations));
+        los.setAoToRequiredBaseEdCode(getRequiredBaseEdFromAO(los));
     }
 
     private Set<String> getUniqueRequiredBaseEduqationsForApplicationOptions(Set<ApplicationOption> aos) {
@@ -819,6 +818,36 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
         return uniqueRequiredBaseEducations;
+    }
+
+    private Map<String, Code> getHakukelpoisuusCodes() throws KoodistoException {
+        List<Code> koodisto = koodistoService.searchByKoodisto(TarjontaConstants.HAKUKELPOISUUSVAATIMUS, 1);
+        Map<String, Code> uriToCode = new HashMap<>();
+        for (Code code : koodisto) {
+            uriToCode.put(code.getUri(), code);
+        }
+        return uriToCode;
+    }
+
+    private Map<String, List<Code>> getRequiredBaseEdFromAO(KoulutusLOS los) throws KoodistoException {
+        Map<String, List<Code>> aoToCodes = new HashMap<>();
+        Map<String, Code> hakukelpoisuusCodes = getHakukelpoisuusCodes();
+        for (ApplicationOption applicationOption : los.getApplicationOptions()) {
+            List<Code> thisAoCodes = aoToCodes.get(applicationOption.getId());
+            if(thisAoCodes == null) {
+                thisAoCodes = new ArrayList<>();
+            }
+            List<String> requiredBaseEducations = applicationOption.getRequiredBaseEducations();
+            for (String requiredBaseEducation : requiredBaseEducations) {
+                Code code = hakukelpoisuusCodes.get(requiredBaseEducation);
+                if(code != null) {
+                    thisAoCodes.add(code);
+                }
+            }
+            aoToCodes.put(applicationOption.getId(), thisAoCodes);
+        }
+        LOG.debug("getRequiredBaseEdFromAO = {}", aoToCodes.toString());
+        return aoToCodes;
     }
 
     private Set<String> getPohjakoulutusvaatimusToinenAsteUris() throws KoodistoException {

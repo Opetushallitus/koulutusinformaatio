@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -34,6 +35,7 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
     private List<String> qualifications;
     private CodeDTO prerequisite;
     private Boolean active;
+    private Map<String, List<CodeDTO>> aoToRequiredBaseEdCode;
 
     public String getId() {
         return id;
@@ -107,4 +109,11 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
         this.type = type;
     }
 
+    public Map<String, List<CodeDTO>> getAoToRequiredBaseEdCode() {
+        return aoToRequiredBaseEdCode;
+    }
+
+    public void setAoToRequiredBaseEdCode(Map<String, List<CodeDTO>> aoToRequiredBaseEdCode) {
+        this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
+    }
 }

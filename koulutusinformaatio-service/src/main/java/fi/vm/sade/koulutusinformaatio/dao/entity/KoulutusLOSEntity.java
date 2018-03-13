@@ -2,15 +2,14 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.*;
 
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.annotations.*;
 
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -19,6 +18,8 @@ import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
  */
 @Entity("koulutusLOS")
 public class KoulutusLOSEntity {
+
+    private static final Logger LOG = LoggerFactory.getLogger(KoulutusLOSEntity.class);
 
     @Id
     private String id;
@@ -174,6 +175,8 @@ public class KoulutusLOSEntity {
     private String hakijalleNaytettavaTunniste;
     @Embedded
     private Map<String, List<String>> subjects;
+    @Embedded
+    private Map<String, List<CodeEntity>> aoToRequiredBaseEdCode;
 
     public String getId() {
         return id;
@@ -775,5 +778,42 @@ public class KoulutusLOSEntity {
 
     public void setSubjects(Map<String, List<String>> subjects) {
         this.subjects = subjects;
+    }
+
+    public Map<String, List<CodeEntity>> getAoToRequiredBaseEdCode() {
+        return aoToRequiredBaseEdCode;
+    }
+
+    public void setAoToRequiredBaseEdCode(Map<String, List<CodeEntity>> aoToRequiredBaseEdCode) {
+        this.aoToRequiredBaseEdCode = aoToRequiredBaseEdCode;
+    }
+
+
+    @PrePersist
+    void prePersist(){
+        Map<String, List<CodeEntity>> aoToRequiredBaseEdCode = this.aoToRequiredBaseEdCode;
+        if(aoToRequiredBaseEdCode == null) return;
+        Map<String, List<CodeEntity>> converted = new HashMap<>();
+        for (Map.Entry<String, List<CodeEntity>> e : aoToRequiredBaseEdCode.entrySet()) {
+            if(e == null) continue;
+            String newkey = e.getKey().replace('.', '_');
+            converted.put(newkey, e.getValue());
+        }
+        LOG.info("prePersists aoToRequiredBaseEdCode: {}", converted.toString());
+        this.aoToRequiredBaseEdCode = converted;
+    }
+
+    @PostLoad
+    void postLoad(){
+        Map<String, List<CodeEntity>> aoToRequiredBaseEdCode = this.aoToRequiredBaseEdCode;
+        if(aoToRequiredBaseEdCode == null) return;
+        Map<String, List<CodeEntity>> converted = new HashMap<>();
+        for (Map.Entry<String, List<CodeEntity>> e : aoToRequiredBaseEdCode.entrySet()) {
+            if(e == null) continue;
+            String newkey = e.getKey().replace('_', '.'); //opposite of pre-persist
+            converted.put(newkey, e.getValue());
+        }
+        LOG.info("postLoad aoToRequiredBaseEdCode: {}", converted.toString());
+        this.aoToRequiredBaseEdCode = converted;
     }
 }

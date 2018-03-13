@@ -18,9 +18,13 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import java.util.*;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import com.google.common.collect.Lists;
@@ -40,6 +44,7 @@ import fi.vm.sade.koulutusinformaatio.domain.TutkintoLOS;
  */
 public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, List<SolrInputDocument>> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TutkintoLOSToSolrInputDocument.class);
 
     public List<SolrInputDocument> convert(TutkintoLOS tutkinto) {
         List<SolrInputDocument> docs = Lists.newArrayList();
@@ -278,6 +283,26 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 }
             }
         }
+
+        Map<String, List<Code>> allRequired = new HashMap<>();
+        for (KoulutusLOS koulutusLOS : tutkinto.getChildEducations()) {
+            Map<String, List<Code>> aoToRequiredBaseEdCode = koulutusLOS.getAoToRequiredBaseEdCode();
+            if(aoToRequiredBaseEdCode == null) continue;
+            for (Map.Entry<String, List<Code>> entry : aoToRequiredBaseEdCode.entrySet()) {
+                List<Code> codes = allRequired.get(entry.getKey());
+                if(codes == null) {
+                    codes = new ArrayList<>();
+                }
+                codes.addAll(entry.getValue());
+                allRequired.put(entry.getKey(), codes);
+            }
+
+        }
+        if(LOG.isDebugEnabled()) {
+            LOG.debug("{} set to {}", LearningOpportunity.AO_REQUIRED_BASE_EDUCATIONS, allRequired.toString());
+        }
+        Gson gson = new Gson();
+        doc.setField(LearningOpportunity.AO_REQUIRED_BASE_EDUCATIONS, gson.toJson(allRequired));
 
         return doc;
     }

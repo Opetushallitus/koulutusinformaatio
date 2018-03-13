@@ -1,7 +1,9 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityPictureService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, ChildLOService, LanguageService, VirkailijaLanguageService, _) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityPictureService,
+                   LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource,
+                   ChildLOService, LanguageService, VirkailijaLanguageService, _) {
     $scope.loType = $routeParams.loType;
 
     // redirect to koulutus

@@ -16,9 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -49,7 +48,7 @@ public class LearningOpportunitySearchResultDTO {
     private String childName;
     private List<String> subjects;
     private String responsibleProvider;
-
+    private Map<String, Set<CodeDTO>> aoToRequiredBaseEducations = new HashMap<>();
 
     public String getId() {
         return id;
@@ -201,5 +200,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setResponsibleProvider(String responsibleProvider) {
         this.responsibleProvider = responsibleProvider;
+    }
+
+    public Map<String, Set<CodeDTO>> getAoToRequiredBaseEducations() {
+        return aoToRequiredBaseEducations;
+    }
+
+    public void setAoToRequiredBaseEducations(Map<String, Set<CodeDTO>> aoToRequiredBaseEducations) {
+        this.aoToRequiredBaseEducations = aoToRequiredBaseEducations;
     }
 }
