@@ -182,7 +182,7 @@
     "ects-coordinator": "ECTS-koordinaattori",
     
         
-    "nayttotutkinto-infoteksti": "Tutkinnon suorittamisen aikataulu ja valmistavan koulutuksen tarve riippuvat hakijan aiemmasta osaamisesta. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta.",
+    "nayttotutkinto-infoteksti": "Tutkinnon suorittamisen aikataulu riipppu hakijan aiemmasta osaamisesta.",
     "nayttotutkinnon-kuvaus": "Tutkinnon kuvaus",
     "organizer": "Tutkinnon järjestäjä",
     "choosing-competence": "Osaamisalan valinta",
