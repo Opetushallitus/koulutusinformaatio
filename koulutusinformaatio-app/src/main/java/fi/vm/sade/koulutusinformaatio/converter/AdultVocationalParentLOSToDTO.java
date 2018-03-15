@@ -57,7 +57,11 @@ public final class AdultVocationalParentLOSToDTO {
         if (los.isOsaamisala()) {
             dto.setName(name);
         } else if (los.getDeterminer() != null) {
-            dto.setName(String.format("%s, %s, %s", ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang), ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationKind(), uiLang).toLowerCase(), los.getDeterminer()));
+            if (los.getEducationKind() != null) {
+                dto.setName(String.format("%s, %s, %s", ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang), ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationKind(), uiLang).toLowerCase(), los.getDeterminer()));
+            } else {
+                dto.setName(String.format("%s, %s", ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang), los.getDeterminer()));
+            }
         } else {
             dto.setName(name);
         }
