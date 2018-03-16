@@ -61,7 +61,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             String koulutuslaji = SolrUtil.resolveTranslationInTeachingLangUseFallback(teachingLanguages, los.getEducationKind().getTranslations());
             losName = String.format("%s, %s", losName, koulutuslaji.toLowerCase());
         }
-        losName = (los.getDeterminer() != null) && !los.isOsaamisala() ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
+        losName = (los.getDeterminer() != null && !los.getDeterminer().isEmpty() && !los.isOsaamisala()) ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
 
         doc.setField(LearningOpportunity.NAME, losName);
         doc.addField(LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
