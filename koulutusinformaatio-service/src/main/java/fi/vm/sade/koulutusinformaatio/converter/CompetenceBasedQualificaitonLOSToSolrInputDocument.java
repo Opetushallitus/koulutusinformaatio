@@ -68,12 +68,13 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         doc.addField(LearningOpportunity.NAME_FI_SORT, losName.toLowerCase().trim());
         doc.addField(LearningOpportunity.NAME_SV_SORT, losName.toLowerCase().trim());
         doc.addField(LearningOpportunity.NAME_EN_SORT, losName.toLowerCase().trim());
-        if (teachLang.equals("fi")) {
-            doc.addField(LearningOpportunity.NAME_FI, String.format("%s, %s", SolrUtil.resolveTextWithFallback("fi", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("fi", los.getEducationKind().getTranslations()).toLowerCase()));
-        } else if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.NAME_SV, String.format("%s, %s", SolrUtil.resolveTextWithFallback("sv", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("sv", los.getEducationKind().getTranslations())).toLowerCase());
-        } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.NAME_EN, String.format("%s, %s", SolrUtil.resolveTextWithFallback("en", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("en", los.getEducationKind().getTranslations()).toLowerCase()));
+        if (teachLang.equals("fi") || teachLang.equals("sv") || teachLang.equals("en")) {
+            String key = (teachLang.equals("sv")) ? LearningOpportunity.NAME_SV : ((teachLang.equals("en")) ? LearningOpportunity.NAME_EN : LearningOpportunity.NAME_FI);
+            String localizedName = SolrUtil.resolveTextWithFallback(teachLang, los.getName().getTranslations());
+            if (los.getEducationKind() != null) {
+                localizedName = String.format("%s, %s", localizedName, SolrUtil.resolveTextWithFallback(teachLang, los.getEducationKind().getTranslations()).toLowerCase());
+            }
+            doc.addField(key, localizedName);
         } else {
             doc.addField(LearningOpportunity.NAME_FI, losName);
         }
