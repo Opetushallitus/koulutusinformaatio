@@ -52,13 +52,17 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             doc.addField(LearningOpportunity.LOP_ID, provider.getId());
             
         }
-        
-        String teachLang = los.getChildren().get(0).getTeachingLanguages().isEmpty() ? "EXC" : los.getChildren().get(0).getTeachingLanguages().get(0).getValue().toLowerCase();
 
-        String losName = String.format("%s, %s", SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
-                los.getName().getTranslations()), SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
-                        los.getEducationKind().getTranslations()).toLowerCase());
+        List<Code> teachingLanguages = los.getChildren().get(0).getTeachingLanguages();
+        String teachLang = teachingLanguages.isEmpty() ? "EXC" : teachingLanguages.get(0).getValue().toLowerCase();
+
+        String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(teachingLanguages, los.getName().getTranslations());
+        if (los.getEducationKind() != null) {
+            String koulutuslaji = SolrUtil.resolveTranslationInTeachingLangUseFallback(teachingLanguages, los.getEducationKind().getTranslations());
+            losName = String.format("%s, %s", losName, koulutuslaji.toLowerCase());
+        }
         losName = (los.getDeterminer() != null) && !los.isOsaamisala() ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
+
         doc.setField(LearningOpportunity.NAME, losName);
         doc.addField(LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
         doc.addField(LearningOpportunity.NAME_FI_SORT, losName.toLowerCase().trim());
