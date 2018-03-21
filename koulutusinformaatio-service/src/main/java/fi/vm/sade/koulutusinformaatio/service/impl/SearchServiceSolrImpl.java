@@ -1419,6 +1419,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
                 Boolean isVarsinainenHaku = (Boolean) result.get(SolrUtil.LearningOpportunity.AS_IS_VARSINAINEN);
                 as.setVarsinainenHaku(isVarsinainenHaku != null ? isVarsinainenHaku.booleanValue() : true);
+                as.setAtaruFormKey((String) result.get(LearningOpportunity.AS_ATARU_FORM_KEY));
                 setApplicationDates(as, result);
 
                 results.add(as);
