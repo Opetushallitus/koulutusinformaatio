@@ -625,6 +625,7 @@ public class IndexerServiceImpl implements IndexerService {
 
         asDoc.addField(SolrUtil.LearningOpportunity.AS_TARGET_GROUP_CODE, as.getTargetGroupCode());
         asDoc.addField(SolrUtil.LearningOpportunity.AS_IS_VARSINAINEN, as.isVarsinainenHaku());
+        asDoc.addField(LearningOpportunity.AS_ATARU_FORM_KEY, as.getAtaruFormKey());
 
         int parentApplicationDateRangeIndex = 0;
 
