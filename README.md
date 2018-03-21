@@ -29,7 +29,11 @@ or run all tests once against PhantomJS (like CI):
 
 The easiest way to run the application is to point it to use external Solr and Mongo. However, if you want to run Solr locally, you need to do the following.
 
-#### Clone Module-install-parent
+
+#### Clone Module-install-parent 
+This guide is possibly outdated. New repo for solr is https://github.com/Opetushallitus/solr, but running solr locally
+might still be possible/required by doing the module-install-parent trick below. If you need to change the sold schema,
+the schema file that you must change is in the solr repository, not the schema.xml shown below.
 
     https://github.com/Opetushallitus/module-install-parent
 
@@ -76,4 +80,8 @@ To index only single learning opportunity / application option / application sys
 To index facet and provider information visit
 
     localhost:8080/admin/partial/general
+
+The Solr admin ui can be found at:
+    
+    http://localhost:{solr-port}/solr/#/
 

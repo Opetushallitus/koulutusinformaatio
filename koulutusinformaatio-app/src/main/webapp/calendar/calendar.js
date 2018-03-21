@@ -233,7 +233,7 @@ var ApplicationSystemCalendar = (function() {
         var action = item.ataruFormKey ?
             "/hakemus/haku/" +  encodeURIComponent(item.id) + "?lang=" + o.lang :
             "/haku-app/lomake/" + encodeURIComponent(item.id);
-        var form = $('<form action="' + action + encodeURIComponent(item.id) + '" target="hakulomake"></form>');
+        var form = $('<form action="' + action + '" target="hakulomake"></form>');
         form.append(button);
 
         return form;
