@@ -15,10 +15,10 @@
  */
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * 
@@ -31,6 +31,7 @@ public class CalendarApplicationSystemDTO {
     private String name;
     private boolean asOngoing;
     private boolean varsinainenHaku;
+    private String ataruFormKey;
     List<ApplicationPeriodDTO> applicationPeriods = new ArrayList<ApplicationPeriodDTO>();
     
     public String getId() {
@@ -65,6 +66,12 @@ public class CalendarApplicationSystemDTO {
     public void setVarsinainenHaku(boolean varsinainenHaku) {
         this.varsinainenHaku = varsinainenHaku;
     }
-    
-    
+
+    public String getAtaruFormKey() {
+        return ataruFormKey;
+    }
+
+    public void setAtaruFormKey(String ataruFormKey) {
+        this.ataruFormKey = ataruFormKey;
+    }
 }

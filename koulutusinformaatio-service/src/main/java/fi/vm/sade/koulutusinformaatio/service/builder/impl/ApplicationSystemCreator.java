@@ -16,30 +16,23 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystemParameters;
-import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ParameterService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -136,6 +129,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
         as.setName(getI18nText(haku.getNimi()));
         as.setShownInCalendar(shownInCalendar);
         as.setVarsinainenHaku(haku.getHakutyyppiUri().contains(VARSINAINEN_HAKU));
+        as.setAtaruFormKey(haku.getAtaruLomakeAvain());
 
         as.setTargetGroupCode(koodistoService.searchFirstCodeValue(haku.getKohdejoukkoUri()));
         if (haku.getHakuaikas() != null) {

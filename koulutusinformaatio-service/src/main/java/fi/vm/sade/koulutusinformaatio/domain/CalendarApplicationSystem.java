@@ -31,6 +31,7 @@ public class CalendarApplicationSystem {
     private String targetGroupCode;
     private boolean shownInCalendar;
     private boolean VarsinainenHaku;
+    private String ataruFormKey;
     
     public String getId() {
         return id;
@@ -70,4 +71,11 @@ public class CalendarApplicationSystem {
         VarsinainenHaku = varsinainenHaku;
     }
 
+    public String getAtaruFormKey() {
+        return ataruFormKey;
+    }
+
+    public void setAtaruFormKey(String ataruFormKey) {
+        this.ataruFormKey = ataruFormKey;
+    }
 }
