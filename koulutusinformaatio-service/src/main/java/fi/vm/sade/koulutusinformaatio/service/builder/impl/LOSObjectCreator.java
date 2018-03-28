@@ -432,7 +432,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (Code curQual : quals)
                 if (curQual != null)
                     qualifications.add(curQual.getName());
-        } else if (koulutus.getTutkintonimikes() != null && !koulutus.getTutkintonimikes().getUris().isEmpty()) {
+        } else if (koulutus.getTutkintonimikes() != null && koulutus.getTutkintonimikes().getUris() != null && !koulutus.getTutkintonimikes().getUris().isEmpty()) {
             qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimikes()));
         }
 
