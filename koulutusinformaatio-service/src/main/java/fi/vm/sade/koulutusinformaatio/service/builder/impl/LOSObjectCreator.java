@@ -432,8 +432,8 @@ public class LOSObjectCreator extends ObjectCreator {
             for (Code curQual : quals)
                 if (curQual != null)
                     qualifications.add(curQual.getName());
-        } else if (koulutus.getTutkintonimike() != null) {
-            qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike()));
+        } else if (koulutus.getTutkintonimikes() != null && !koulutus.getTutkintonimikes().getUris().isEmpty()) {
+            qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimikes()));
         }
 
         return Lists.newArrayList(qualifications);
@@ -1279,7 +1279,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());
 
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste()));
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike())); // muutos: oli koulutus.getKoulutusohjelma()
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimikes())); // muutos: oli koulutus.getKoulutusohjelma()
         // los.setDegreeTitles(getI18nTextMultiple(koulutus.getTutkintonimikes())); // ei löydy NayttotutkintoV1RDTO:lle
         los.setQualifications(getQualificationsForAikuAmm(koulutus));// Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike())));
 
