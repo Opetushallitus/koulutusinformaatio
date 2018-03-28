@@ -187,7 +187,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                 && !curChild.getShortTitle().getTranslations().isEmpty()) {
             String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
                     curChild.getTeachingLanguages(), curChild.getShortTitle().getTranslations());
-            childName = (determiner != null) ? String.format("%s, %s", childName, determiner) : childName;
+            childName = (determiner != null && !determiner.isEmpty()) ? String.format("%s, %s", childName, determiner) : childName;
             doc.setField(LearningOpportunity.CHILD_NAME, childName);
         }
         
