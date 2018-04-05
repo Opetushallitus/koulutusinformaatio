@@ -67,6 +67,7 @@ koulutusinformaatio.sitemap.filepath=/data00/oph/koulutusinformaatio/tomcat/weba
 koulutusinformaatio.textversion.script=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/script/m/main/src/python
 koulutusinformaatio.textversion.folder=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/m
 koulutusinformaatio.prerender.token={{koulutusinformaatio_prerender_token}}
+koulutusinformaatio.prerender.crawler-user-agents={{ koulutusinformaatio_prerender_crawler_user_agents | default("googlebot,yahoo,bingbot") }}
 
 jpa.schemaUpdate=validate
 jpa.showSql=false
