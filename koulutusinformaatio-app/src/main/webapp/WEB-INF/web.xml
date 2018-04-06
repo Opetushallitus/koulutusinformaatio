@@ -62,10 +62,6 @@
             <param-name>prerenderToken</param-name>
             <param-value>${koulutusinformaatio.prerender.token}</param-value>
         </init-param>
-        <init-param>
-            <param-name>crawlerUserAgents</param-name>
-            <param-value>${koulutusinformaatio.prerender.crawler-user-agents}</param-value>
-        </init-param>
     </filter>
 
     <filter>
