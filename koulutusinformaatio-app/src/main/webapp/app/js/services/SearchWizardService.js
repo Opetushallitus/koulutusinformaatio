@@ -160,6 +160,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.AMM_PT_AIKU) {
                     return [
+                        SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATILLINEN_KOULUTUS, opt, undefined, SearchWizardConstants.prerequisites.YO),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTITUTKINTO, opt, undefined),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.ERIKOISAMMATTITUTKINTO, opt, undefined),
                         SelectionBuilder.buildEducationTypeSelection(Config.educationTypes.AMMATTIKORKEAKOULUTUTKINTO, opt),

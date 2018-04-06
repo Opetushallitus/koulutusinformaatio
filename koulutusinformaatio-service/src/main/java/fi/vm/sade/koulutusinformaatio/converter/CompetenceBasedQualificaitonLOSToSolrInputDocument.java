@@ -52,24 +52,29 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             doc.addField(LearningOpportunity.LOP_ID, provider.getId());
             
         }
-        
-        String teachLang = los.getChildren().get(0).getTeachingLanguages().isEmpty() ? "EXC" : los.getChildren().get(0).getTeachingLanguages().get(0).getValue().toLowerCase();
 
-        String losName = String.format("%s, %s", SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
-                los.getName().getTranslations()), SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
-                        los.getEducationKind().getTranslations()).toLowerCase());
-        losName = (los.getDeterminer() != null) && !los.isOsaamisala() ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
+        List<Code> teachingLanguages = los.getChildren().get(0).getTeachingLanguages();
+        String teachLang = teachingLanguages.isEmpty() ? "EXC" : teachingLanguages.get(0).getValue().toLowerCase();
+
+        String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(teachingLanguages, los.getName().getTranslations());
+        if (los.getEducationKind() != null) {
+            String koulutuslaji = SolrUtil.resolveTranslationInTeachingLangUseFallback(teachingLanguages, los.getEducationKind().getTranslations());
+            losName = String.format("%s, %s", losName, koulutuslaji.toLowerCase());
+        }
+        losName = (los.getDeterminer() != null && !los.getDeterminer().isEmpty() && !los.isOsaamisala()) ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
+
         doc.setField(LearningOpportunity.NAME, losName);
         doc.addField(LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
         doc.addField(LearningOpportunity.NAME_FI_SORT, losName.toLowerCase().trim());
         doc.addField(LearningOpportunity.NAME_SV_SORT, losName.toLowerCase().trim());
         doc.addField(LearningOpportunity.NAME_EN_SORT, losName.toLowerCase().trim());
-        if (teachLang.equals("fi")) {
-            doc.addField(LearningOpportunity.NAME_FI, String.format("%s, %s", SolrUtil.resolveTextWithFallback("fi", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("fi", los.getEducationKind().getTranslations()).toLowerCase()));
-        } else if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.NAME_SV, String.format("%s, %s", SolrUtil.resolveTextWithFallback("sv", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("sv", los.getEducationKind().getTranslations())).toLowerCase());
-        } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.NAME_EN, String.format("%s, %s", SolrUtil.resolveTextWithFallback("en", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("en", los.getEducationKind().getTranslations()).toLowerCase()));
+        if (teachLang.equals("fi") || teachLang.equals("sv") || teachLang.equals("en")) {
+            String key = (teachLang.equals("sv")) ? LearningOpportunity.NAME_SV : ((teachLang.equals("en")) ? LearningOpportunity.NAME_EN : LearningOpportunity.NAME_FI);
+            String localizedName = SolrUtil.resolveTextWithFallback(teachLang, los.getName().getTranslations());
+            if (los.getEducationKind() != null) {
+                localizedName = String.format("%s, %s", localizedName, SolrUtil.resolveTextWithFallback(teachLang, los.getEducationKind().getTranslations()).toLowerCase());
+            }
+            doc.addField(key, localizedName);
         } else {
             doc.addField(LearningOpportunity.NAME_FI, losName);
         }
@@ -182,7 +187,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
                 && !curChild.getShortTitle().getTranslations().isEmpty()) {
             String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
                     curChild.getTeachingLanguages(), curChild.getShortTitle().getTranslations());
-            childName = (determiner != null) ? String.format("%s, %s", childName, determiner) : childName;
+            childName = (determiner != null && !determiner.isEmpty()) ? String.format("%s, %s", childName, determiner) : childName;
             doc.setField(LearningOpportunity.CHILD_NAME, childName);
         }
         

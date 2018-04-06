@@ -23,7 +23,7 @@
 						<li data-ng-hide="!lo.selectedChild.valmistavaKoulutus"><span
 							data-ki-i18n="degree-execution-starts" data-show-colon="true"></span> <strong><span data-ki-i18n="sopimuksen-mukaan"></span></strong>
 						</li>
-						<li><span data-ki-i18n="organizer" data-show-colon="true"></span>
+						<li data-ng-hide="!lo.selectedChild.degreeOrganizer || lo.selectedChild.startYear >= 2018"><span data-ki-i18n="organizer" data-show-colon="true"></span>
 							<strong>{{lo.selectedChild.degreeOrganizer}}</strong>
 						</li>
 						<li data-ng-show="lo.chargeable"><span
@@ -95,7 +95,7 @@
 						<li data-ng-hide="!lo.selectedChild.valmistavaKoulutus"><span
 							data-ki-i18n="degree-execution-starts" data-show-colon="true"></span> <strong><span data-ki-i18n="sopimuksen-mukaan"></span></strong>
 						</li>
-						<li><span data-ki-i18n="organizer" data-show-colon="true"></span>
+						<li data-ng-hide="!lo.selectedChild.degreeOrganizer || lo.selectedChild.startYear >= 2018"><span data-ki-i18n="organizer" data-show-colon="true"></span>
 							<strong>{{lo.selectedChild.degreeOrganizer}}</strong>
 						</li>
 						<li data-ng-show="lo.chargeable"><span
