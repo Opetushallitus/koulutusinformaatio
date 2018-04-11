@@ -77,3 +77,14 @@ To index facet and provider information visit
 
     localhost:8080/admin/partial/general
 
+### Prerender
+
+Documentation: https://prerender.io/documentation
+
+Installing and starting:
+
+    git clone https://github.com/prerender/prerender.git
+    cd prerender
+    npm install
+    node server.js
+
