@@ -58,6 +58,10 @@
     <filter>
         <filter-name>prerender</filter-name>
         <filter-class>com.github.greengerong.PreRenderSEOFilter</filter-class>
+        <init-param>
+            <param-name>prerenderToken</param-name>
+            <param-value>${prerenderToken}</param-value>
+        </init-param>
     </filter>
 
     <filter>
