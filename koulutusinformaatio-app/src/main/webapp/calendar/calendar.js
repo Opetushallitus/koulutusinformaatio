@@ -230,7 +230,10 @@ var ApplicationSystemCalendar = (function() {
         if (!item.asOngoing) {
             button.attr('disabled', 'disabled');
         }
-        var form = $('<form action="/haku-app/lomake/' + encodeURIComponent(item.id) + '" target="hakulomake"></form>');
+        var action = item.ataruFormKey ?
+            "/hakemus/haku/" +  encodeURIComponent(item.id) + "?lang=" + o.lang :
+            "/haku-app/lomake/" + encodeURIComponent(item.id);
+        var form = $('<form action="' + action + '" target="hakulomake"></form>');
         form.append(button);
 
         return form;

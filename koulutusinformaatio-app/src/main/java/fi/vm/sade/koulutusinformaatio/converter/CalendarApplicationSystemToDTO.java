@@ -16,13 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationPeriodDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CalendarApplicationSystemDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -32,11 +32,8 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.CalendarApplicationSystemDTO;
 public final class CalendarApplicationSystemToDTO {
     
     private CalendarApplicationSystemToDTO() {
-        
     }
-    
-    
-    
+
     private static CalendarApplicationSystemDTO convert(final CalendarApplicationSystem applicationSystem, final String lang) {
         if (applicationSystem != null) {
             
@@ -46,6 +43,7 @@ public final class CalendarApplicationSystemToDTO {
             calendarAS.setAsOngoing(ConverterUtil.isCalendarApplicationsystemOngoing(applicationSystem.getApplicationPeriods()));
             calendarAS.setVarsinainenHaku(applicationSystem.isVarsinainenHaku());
             calendarAS.setApplicationPeriods(convertApplicationPeriods(applicationSystem.getApplicationPeriods(), lang));
+            calendarAS.setAtaruFormKey(applicationSystem.getAtaruFormKey());
             return calendarAS;
         } else {
             return null;
@@ -66,11 +64,8 @@ public final class CalendarApplicationSystemToDTO {
                 
             }
         }
-        
         return dtos;
     }
-
-
 
     private static ApplicationPeriodDTO convertPeriod(
             ApplicationPeriod curPeriod, final String lang) {
@@ -101,8 +96,6 @@ public final class CalendarApplicationSystemToDTO {
                 }
             }
         }
-        
         return dtos;
     }
-
 }
