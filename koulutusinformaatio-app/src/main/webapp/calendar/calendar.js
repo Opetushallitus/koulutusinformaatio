@@ -226,17 +226,16 @@ var ApplicationSystemCalendar = (function() {
     },
 
     createApplicationFormButton = function(item) {
-        var button = $('<button type="submit" class="btn btn-default pull-right">' + ki.i18n.t('fill-in-form') + '</button>');
-        if (!item.asOngoing) {
-            button.attr('disabled', 'disabled');
-        }
         var action = item.ataruFormKey ?
             "/hakemus/haku/" +  encodeURIComponent(item.id) + "?lang=" + o.lang :
             "/haku-app/lomake/" + encodeURIComponent(item.id);
-        var form = $('<form action="' + action + '" target="hakulomake"></form>');
-        form.append(button);
+        var link = $('<a href="' + action + '" class="btn btn-default pull-right" target="_blank">' + ki.i18n.t('fill-in-form') + '</a>');
 
-        return form;
+        if (!item.asOngoing) {
+            link.attr('disabled', 'disabled');
+        }
+
+        return link;
     };
     
     return {
