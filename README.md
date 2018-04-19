@@ -37,7 +37,7 @@ the schema file that you must change is in the solr repository, not the schema.x
 
     https://github.com/Opetushallitus/module-install-parent
 
-####Intalling Voikko
+#### Intalling Voikko
 *If you don't want to install Voikko libraries for local development* you can go to 
 
     module-install-parent/config/common/solr/collections/oppija/learning_opportunity/conf/schema.xml
