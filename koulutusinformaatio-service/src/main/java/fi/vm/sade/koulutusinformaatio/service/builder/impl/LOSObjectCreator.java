@@ -1195,13 +1195,13 @@ public class LOSObjectCreator extends ObjectCreator {
 
         AdultVocationalLOS los = new AdultVocationalLOS();
 
-        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_ADULT_VOCATIONAL, true);
+        addKoulutusV1Fields(koulutus, los, checkStatus, TarjontaConstants.TYPE_KOULUTUS, true);
 
         //TODO: Poistetaan addKoulutusV1Fields metodin täyttämät kentät alta.
 
         los.setStatus(koulutus.getTila().toString());
 
-        los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);
+        los.setType(TarjontaConstants.TYPE_KOULUTUS);
         los.setKomoOid(koulutus.getKomoOid());
         los.setValmistavaKoulutus(koulutus.getValmistavaKoulutus() != null);
         if (koulutus.getToteutustyyppi().name().equals(ToteutustyyppiEnum.AMMATTITUTKINTO.name())) {
@@ -1378,7 +1378,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                 // ao.setParent(createParentLosRef(los));
-                ao.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);// TarjontaConstants.TYPE_ADULT_UPSEC);
+                ao.setType(TarjontaConstants.TYPE_KOULUTUS);
             }
         }
 
