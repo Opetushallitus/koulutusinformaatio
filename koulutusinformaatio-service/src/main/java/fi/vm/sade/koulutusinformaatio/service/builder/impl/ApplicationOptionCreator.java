@@ -214,8 +214,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     attach.setRecipient(mergeI18nTexts(getI18nText(liite.getLiitteenVastaanottaja(), liite.getKieliUri()), attach.getRecipient()));
                     attach.setEmailAddr(mergeI18nTexts(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()), attach.getEmailAddr()));
 
-                    Address a1 = attach.getAddress();
+                    Address a1 = attach.getAddress() != null ? attach.getAddress() : new Address();
                     Address a2 = educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri());
+
+                    LOG.info("Luodaan liitteen osoite --- A1: " + a1.toString() + ", A2: " + a2.toString());
 
                     Address addr = new Address();
                     addr.setPostalCode(mergeI18nTexts(a1.getPostalCode(), a2.getPostalCode()));

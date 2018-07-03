@@ -124,7 +124,7 @@ public class EducationObjectCreator extends ObjectCreator {
             }
             return attachmentDeliveryAddress;
         } else {
-            return null;
+            return new Address();
         }
     }
 
