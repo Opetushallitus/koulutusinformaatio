@@ -501,20 +501,28 @@ public class LOSObjectCreator extends ObjectCreator {
 
                 try {
                     ApplicationOption ao = applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuDTO);
+                    if(ao == null) {
+                        LOG.info("Saatiin null AO! HakukohdeOid: {}", hakuDTO.getOid());
+                    } else {
+                        LOG.info("Saatiin AO! ID: {}, nimi: {}", ao.getId(), ao.getName() );
+                    }
                     // If fetching for preview, the status of the application option is added
                     if (!checkStatus) {
                         ao.setStatus(hakukohdeDTO.getTila().name());
                         ao.getApplicationSystem().setStatus(hakuDTO.getTila());
+                        LOG.info("Lisätään ao {} onnistuneesti käsiteltyjen listalle", ao.getId());
                         aos.add(ao);
                     } else if (ao.showInOpintopolku()) {
                         aos.add(ao);
+                        LOG.info("Lisätään ao {} onnistuneesti käsiteltyjen listalle", ao.getId());
                         cachedApplicationOptionResults.put(ao.getId(), ao);
                     } else {
+                        LOG.warn("Lisätään aoId {} invalidOids-listalle!", aoId);
                         invalidOids.add(aoId);
                     }
 
                 } catch (Exception ex) {
-                    LOG.debug("Problem fetching ao: {}", ex.getMessage(), ex);
+                    LOG.info("Problem fetching ao: {}", ex.getMessage(), ex);
                     invalidOids.add(aoId);
                 }
             }
@@ -588,7 +596,7 @@ public class LOSObjectCreator extends ObjectCreator {
             } catch (TarjontaParseException | OrganisaatioException e) {
                 LOG.info("Failed to parse AdultVocationalLOS {} for komo {}: {}", curKomotoOid, parentKomoOid, e.getMessage());
             } catch (NoValidApplicationOptionsException e) {
-                LOG.debug("Failed to parse AdultVocationalLOS {} for komo {}: {}", curKomotoOid, parentKomoOid, e.getMessage());
+                LOG.info("Failed to parse AdultVocationalLOS {} for komo {}: {}", curKomotoOid, parentKomoOid, e.getMessage());
             }
         }
 
@@ -1596,7 +1604,7 @@ public class LOSObjectCreator extends ObjectCreator {
             LOG.warn("Failed to create korkeakouluopinto {}", dto.getOid(), e);
             return null;
         } catch (NoValidApplicationOptionsException e) {
-            LOG.debug("Korkeakouluopinto required application options and didn't have them {}, reason: {}", dto.getOid(), e.getMessage());
+            LOG.info("Korkeakouluopinto required application options and didn't have them {}, reason: {}", dto.getOid(), e.getMessage());
             return null;
         }
         return los;

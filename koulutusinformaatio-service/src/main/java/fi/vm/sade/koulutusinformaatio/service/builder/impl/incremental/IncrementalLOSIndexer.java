@@ -95,7 +95,7 @@ public class IncrementalLOSIndexer {
     //Indexes changed loi data
     public void indexLoiData(String komotoOid) throws KISolrException, ResourceNotFoundException, KoodistoException, NoValidApplicationOptionsException, TarjontaParseException, OrganisaatioException {
 
-        LOG.debug(String.format("Indexing loi: %s", komotoOid));
+        LOG.info(String.format("Indexing loi: %s", komotoOid));
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> dto = this.tarjontaRawService.searchEducation(komotoOid);
         if (dto == null ||
                 dto.getResult() == null ||

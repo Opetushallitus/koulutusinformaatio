@@ -74,10 +74,9 @@ public class IncrementalHigherEducationLOSIndexer {
 
     public void indexHigherEdKomo(String curKomoOid) throws KISolrException {
 
-        LOG.debug("Indexing higher ed komo: {}", curKomoOid);
+        LOG.info("Indexing higher ed komo: {}", curKomoOid);
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
-        //higherEdRes.getResult().getTulokset().
 
         if (higherEdRes != null 
                 && higherEdRes.getResult() != null 
@@ -93,7 +92,7 @@ public class IncrementalHigherEducationLOSIndexer {
                             continue;
                         }
                         
-                        LOG.debug("Now indexing higher education: {}", curKoul.getOid());
+                        LOG.info("Now indexing higher education: {}", curKoul.getOid());
 
                         HigherEducationLOS createdLos = null;
                         try {
@@ -106,7 +105,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         LOG.debug("Created los");
 
                         if (createdLos == null) {
-                            LOG.debug("Created los is to be removed");
+                            LOG.info("Created los is to be removed");
                             removeHigherEd(curKoul.getOid(), curKomoOid);
                             continue;
                         }
@@ -138,7 +137,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         List<HigherEducationLOS> orphanedChildren = getOrphanedChildren(createdLos);
 
                         for (HigherEducationLOS curOrphan : orphanedChildren) {
-                            LOG.debug("Saving orphan: {}", curOrphan.getId());
+                            LOG.info("Saving orphan: {}", curOrphan.getId());
                             this.indexToSolr(curOrphan);
                             this.dataUpdateService.updateHigherEdLos(curOrphan);
                         }
@@ -146,12 +145,12 @@ public class IncrementalHigherEducationLOSIndexer {
 
                         if (!parentEds.isEmpty()) {
                             for (HigherEducationLOS curParent : parentEds) {
-                                LOG.debug("Saving parent: {}", curParent.getId());
+                                LOG.info("Saving parent: {}", curParent.getId());
                                 this.indexToSolr(curParent);
                                 this.dataUpdateService.updateHigherEdLos(curParent);
                             }
                         } else {
-                            LOG.debug("Saving actual los: {}", createdLos.getId());
+                            LOG.info("Saving actual los: {}", createdLos.getId());
                             this.indexToSolr(createdLos);
                             this.dataUpdateService.updateHigherEdLos(createdLos);
                         }

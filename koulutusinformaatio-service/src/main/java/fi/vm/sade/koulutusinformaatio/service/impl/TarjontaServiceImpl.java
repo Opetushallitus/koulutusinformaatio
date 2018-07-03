@@ -354,9 +354,9 @@ public class TarjontaServiceImpl implements TarjontaService {
             ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException {
         ResultV1RDTO<KoulutusV1RDTO> koulutusRes = this.tarjontaRawService.getV1KoulutusLearningOpportunity(oid);
         KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
-        LOG.debug(" Koulutustila: {}", koulutusDTO.getTila().toString());
+        LOG.info(" Koulutustila: {}", koulutusDTO.getTila().toString());
         if (koulutusDTO == null || !koulutusDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-            LOG.debug("Returning null ");
+            LOG.info("Returning null ");
             return null;
         }
 
@@ -366,7 +366,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         los.setStatus(koulutusDTO.getTila().toString());
 
         if (los.getApplicationOptions() != null) {
-            LOG.debug("now creating higher edu los refs for los: {}", los.getId());
+            LOG.info("now creating higher edu los refs for los: {}", los.getId());
             for (ApplicationOption curAo : los.getApplicationOptions()) {
                 createEducationreReferencesForAo(curAo, true);
             }
