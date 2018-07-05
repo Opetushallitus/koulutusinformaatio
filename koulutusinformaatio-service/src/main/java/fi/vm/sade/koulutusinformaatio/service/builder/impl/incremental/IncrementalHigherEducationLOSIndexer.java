@@ -74,7 +74,7 @@ public class IncrementalHigherEducationLOSIndexer {
 
     public void indexHigherEdKomo(String curKomoOid) throws KISolrException {
 
-        LOG.info("Indexing higher ed komo: {}", curKomoOid);
+        LOG.debug("Indexing higher ed komo: {}", curKomoOid);
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
 
@@ -92,7 +92,7 @@ public class IncrementalHigherEducationLOSIndexer {
                             continue;
                         }
                         
-                        LOG.info("Now indexing higher education: {}", curKoul.getOid());
+                        LOG.debug("Now indexing higher education: {}", curKoul.getOid());
 
                         HigherEducationLOS createdLos = null;
                         try {
@@ -105,7 +105,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         LOG.debug("Created los");
 
                         if (createdLos == null) {
-                            LOG.info("Created los is to be removed");
+                            LOG.info("Created LOS as null. Removing higher education LOS with koulutusOid: {}, komoOid: {}", curKoul.getOid(), curKomoOid);
                             removeHigherEd(curKoul.getOid(), curKomoOid);
                             continue;
                         }
@@ -137,7 +137,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         List<HigherEducationLOS> orphanedChildren = getOrphanedChildren(createdLos);
 
                         for (HigherEducationLOS curOrphan : orphanedChildren) {
-                            LOG.info("Saving orphan: {}", curOrphan.getId());
+                            LOG.debug("Saving orphan: {}", curOrphan.getId());
                             this.indexToSolr(curOrphan);
                             this.dataUpdateService.updateHigherEdLos(curOrphan);
                         }
@@ -145,12 +145,12 @@ public class IncrementalHigherEducationLOSIndexer {
 
                         if (!parentEds.isEmpty()) {
                             for (HigherEducationLOS curParent : parentEds) {
-                                LOG.info("Saving parent: {}", curParent.getId());
+                                LOG.debug("Saving parent: {}", curParent.getId());
                                 this.indexToSolr(curParent);
                                 this.dataUpdateService.updateHigherEdLos(curParent);
                             }
                         } else {
-                            LOG.info("Saving actual los: {}", createdLos.getId());
+                            LOG.debug("Saving actual los: {}", createdLos.getId());
                             this.indexToSolr(createdLos);
                             this.dataUpdateService.updateHigherEdLos(createdLos);
                         }

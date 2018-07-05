@@ -93,7 +93,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
         try {
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohde.getHakukohteenNimiUri()));
         } catch (KoodistoException ex) {
-            LOG.info("HakukohdeNimiUri was not codeelement: " + ao.getId() + " name: " + hakukohde.getHakukohteenNimiUri());
+            LOG.error("Exception while setting hakukohdeIdentifier for aoId {}, {}: {}",
+                    ao.getId(), hakukohde.getHakukohteenNimiUri() ,ex.getMessage(), ex);
         }
         if (ao.getAoIdentifier() == null) {
             ao.setAoIdentifier(hakukohde.getHakukohteenNimiUri());
@@ -214,10 +215,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
                     attach.setRecipient(mergeI18nTexts(getI18nText(liite.getLiitteenVastaanottaja(), liite.getKieliUri()), attach.getRecipient()));
                     attach.setEmailAddr(mergeI18nTexts(getI18nText(liite.getSahkoinenToimitusOsoite(), liite.getKieliUri()), attach.getEmailAddr()));
 
-                    Address a1 = attach.getAddress() != null ? attach.getAddress() : new Address();
+                    Address a1 = attach.getAddress();
                     Address a2 = educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite(), liite.getKieliUri());
-
-                    LOG.info("Luodaan liitteen osoite --- A1: " + a1.toString() + ", A2: " + a2.toString());
 
                     Address addr = new Address();
                     addr.setPostalCode(mergeI18nTexts(a1.getPostalCode(), a2.getPostalCode()));
