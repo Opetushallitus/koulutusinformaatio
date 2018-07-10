@@ -77,7 +77,6 @@ public class IncrementalHigherEducationLOSIndexer {
         LOG.debug("Indexing higher ed komo: {}", curKomoOid);
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
-        //higherEdRes.getResult().getTulokset().
 
         if (higherEdRes != null 
                 && higherEdRes.getResult() != null 
@@ -106,7 +105,7 @@ public class IncrementalHigherEducationLOSIndexer {
                         LOG.debug("Created los");
 
                         if (createdLos == null) {
-                            LOG.debug("Created los is to be removed");
+                            LOG.info("Created LOS as null. Removing higher education LOS with koulutusOid: {}, komoOid: {}", curKoul.getOid(), curKomoOid);
                             removeHigherEd(curKoul.getOid(), curKomoOid);
                             continue;
                         }

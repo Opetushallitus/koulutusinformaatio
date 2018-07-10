@@ -93,7 +93,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
         try {
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohde.getHakukohteenNimiUri()));
         } catch (KoodistoException ex) {
-            LOG.debug("HakukohdeNimiUri was not codeelement: " + ao.getId() + " name: " + hakukohde.getHakukohteenNimiUri());
+            LOG.error("Exception while setting hakukohdeIdentifier for aoId {}, {}: {}",
+                    ao.getId(), hakukohde.getHakukohteenNimiUri() ,ex.getMessage(), ex);
         }
         if (ao.getAoIdentifier() == null) {
             ao.setAoIdentifier(hakukohde.getHakukohteenNimiUri());

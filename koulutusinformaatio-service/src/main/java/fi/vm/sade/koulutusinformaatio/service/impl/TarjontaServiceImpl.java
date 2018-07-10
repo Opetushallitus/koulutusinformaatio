@@ -356,7 +356,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         KoulutusKorkeakouluV1RDTO koulutusDTO = (KoulutusKorkeakouluV1RDTO) koulutusRes.getResult();
         LOG.debug(" Koulutustila: {}", koulutusDTO.getTila().toString());
         if (koulutusDTO == null || !koulutusDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
-            LOG.debug("Returning null ");
+            LOG.info("Returning null HigherEducationLOS");
             return null;
         }
 
