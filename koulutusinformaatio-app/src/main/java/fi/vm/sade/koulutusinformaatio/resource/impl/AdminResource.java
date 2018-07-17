@@ -217,7 +217,7 @@ public class AdminResource {
     @Path("/indexingstatuscheck")
     @Produces(MediaType.TEXT_PLAIN)
     public Response indexingStatusCheck() {
-        // Indeksoinnissa ei pitäisi kestää yli nejä tuntia kauemmin kuin edellisenä yönä
+        // Indeksoinnissa ei pitäisi kestää yli kaksi tuntia kauemmin kuin edellisenä yönä
         Date limit = DateUtils.addHours(new Date(), -24-2);
 
         DataStatus succStatus = learningOpportunityService.getLastSuccesfulDataStatus();
