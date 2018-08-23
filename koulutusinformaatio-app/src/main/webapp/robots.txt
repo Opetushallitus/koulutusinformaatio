@@ -1,6 +1,7 @@
 User-agent: *
 Sitemap: https://opintopolku.fi/sitemap.xml
 Disallow: /haku-app/
+Disallow: /hakemus/
 Disallow: /etusivu/
 Disallow: /m/
 Disallow: /calendar/
