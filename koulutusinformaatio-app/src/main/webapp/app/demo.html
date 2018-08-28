@@ -148,7 +148,7 @@
                 stylesheet: '/calendar/css/calendar.css',
                 underscore: '/calendar/lib/underscore-min.js'
             },
-            calendarResource: 'https://demo.opintopolku.fi/as/fetchForCalendar'
+            calendarResource: 'https://demo-opintopolku.fi/as/fetchForCalendar'
         });
     });
 }());
@@ -160,9 +160,9 @@
   })
 
   function isDemoEnv() {
-    return (window.location.href.indexOf("/demo.opintopolku.fi") > 0 ||
-        window.location.href.indexOf("/demo.studieinfo.fi") > 0 ||
-        window.location.href.indexOf("/demo.studyinfo.fi") > 0);
+    return (window.location.href.indexOf("/demo-opintopolku.fi") > 0 ||
+        window.location.href.indexOf("/demo-studieinfo.fi") > 0 ||
+        window.location.href.indexOf("/demo-studyinfo.fi") > 0);
   }
   $(".show-in-demo").toggle(isDemoEnv());
 </script>

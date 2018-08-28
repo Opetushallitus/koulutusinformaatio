@@ -257,9 +257,9 @@ OPH.Common = {
             case "testi.virkailija.opintopolku.fi":
                 piwikSiteId = 5;
                 break;
-            case "demo.opintopolku.fi":
-            case "demo.studieinfo.fi":
-            case "demo.studyinfo.fi":
+            case "demo-opintopolku.fi":
+            case "demo-studieinfo.fi":
+            case "demo-studyinfo.fi":
                 piwikSiteId = 15;
                 break;
             default:
