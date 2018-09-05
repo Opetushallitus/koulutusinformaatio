@@ -109,7 +109,11 @@ public final class ApplicationOptionToBasketItemDTO {
                 }
                 ApplicationSystem as = ao.getApplicationSystem();
 
-                aoDTO.setAtaruFormKey(as.getAtaruFormKey());
+
+                if(as.getAtaruFormKey() != null) {
+                    aoDTO.setAtaruFormKey(as.getAtaruFormKey());
+                    aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
+                }
 
                 // add to generic application system pool (erikseen haettavat hakukohteet)
                 if (as.getMaxApplications() <= 1 || isHakutapaJatkuva(as) || ao.isSpecificApplicationDates() || as.getApplicationFormLink() != null) {
