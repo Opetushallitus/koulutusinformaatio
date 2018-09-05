@@ -24,5 +24,6 @@ window.urls.addProperties({
   "koulutusinformaatio-app.lop": "/lop/$1",
   "koulutusinformaatio-app.lop.picture": "/lop/$1/picture",
   "koulutusinformaatio-app.basket.items": "/basket/items",
-  "ataru-app.hakemus": "/hakemus/hakukohde/$1"
+  "ataru-app.hakemus": "/hakemus/hakukohde/$1",
+  "ataru-app.haku": "/hakemus/haku/$1"
 })

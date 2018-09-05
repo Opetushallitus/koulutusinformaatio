@@ -18,7 +18,12 @@ directive('kiAppBasketApplicationsystemTable', function() {
         templateUrl: 'js/directives/AppBasket/appBasketApplicationsystemTable.html',
         controller: function($scope, ApplicationBasketService, TranslationService, Config) {
 
-            $scope.hakuAppUrl = function(id){return window.url("haku-app.lomake", id)};
+            $scope.hakuAppUrl = function(id){
+                return window.url("haku-app.lomake", id)
+            };
+            $scope.ataruHakuAppUrl = function(id) {
+                return window.url('ataru-app.haku', id);
+            };
             $scope.tooltips = {
                 externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form'),
                 removeApplicationOption: TranslationService.getTranslation('tooltip:application-basket-remove')
@@ -107,6 +112,16 @@ directive('kiAppBasketApplicationsystemTableInfo', function() {
                     removeApplicationSystem(as);
                 }
             };
+
+            $scope.isAtaruApplicationSystem = function(as) {
+                var ataruForm = false;
+                for (var i = 0, len = (as.applicationOptions || []).length; i < len; i++) {
+                    if(as.applicationOptions[i].ataruFormKey) {
+                        ataruForm = true;
+                    }
+                }
+                return ataruForm;
+            }
 
             $scope.isApplicationSystemDisabled = function(as) {
                 var isOverflowing = $scope.applicationBasketIsOverflowing(as);

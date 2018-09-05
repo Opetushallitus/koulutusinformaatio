@@ -112,6 +112,7 @@ public final class ApplicationOptionToBasketItemDTO {
 
                 if(as.getAtaruFormKey() != null) {
                     aoDTO.setAtaruFormKey(as.getAtaruFormKey());
+                    aoDTO.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
                     aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
                 }
 

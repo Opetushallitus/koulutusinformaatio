@@ -51,3 +51,16 @@
 
     <div class="pull-right" data-ki-app-basket-application-status data-ao="item"></div>
 </div>
+
+<div data-ng-if="!isErikseenHaettava(as)" class="disc basket-table-cell-block">
+    <!-- Lomake-editorin lomake -->
+    <a data-ng-if="item.ataruFormKey"
+       data-ng-href="{{ isApplicationOptionDisabled(as) ? ataruAppUrl(item.id) : '' }}"
+       data-ng-disabled="!isApplicationOptionDisabled(as)"
+       class="btn btn-default"
+       target="_blank"
+       data-ki-i18n="apply-button-label">
+    </a>
+
+    <div class="pull-right" data-ki-app-basket-application-status data-ao="item"></div>
+</div>
