@@ -49,6 +49,15 @@
                         data-ki-i18n="application-basket-fill-form">
                     </button>
 
+                    <a      data-ng-if="isAtaruApplicationSystem(as)"
+                            class="btn btn-primary pull-right margin-left-default"
+                            data-ng-disabled="isApplicationSystemDisabled(as)"
+                            type="button"
+                            target="_blank"
+                            href="{{ataruHakuAppUrl(as.applicationSystemId)}}"
+                            data-ki-i18n="application-basket-fill-form">
+                    </a>
+
                     <!-- linkki ulkoiseen hakulomakkeeseen -->
                     <div data-ng-include="'partials/lo/common/externalApplicationFormLink.html'"></div>
 
