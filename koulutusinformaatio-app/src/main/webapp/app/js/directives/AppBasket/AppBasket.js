@@ -21,8 +21,16 @@ directive('kiAppBasketApplicationsystemTable', function() {
             $scope.hakuAppUrl = function(id){
                 return window.url("haku-app.lomake", id)
             };
-            $scope.ataruHakuAppUrl = function(id) {
-                return window.url('ataru-app.haku', id);
+            $scope.ataruHakuAppUrl = function(as) {
+                var id = as.applicationSystemId
+                var hakukohteet = ""
+                for (var i = 0; i < as.applicationOptions.length; i++) {
+                    if(i !== 0) {
+                        hakukohteet = hakukohteet + ",";
+                    }
+                    hakukohteet = hakukohteet + as.applicationOptions[i].id;
+                }
+                return window.url('ataru-app.haku', id, hakukohteet);
             };
             $scope.tooltips = {
                 externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form'),
