@@ -319,6 +319,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         return parents;
     }
 
+    //Kiinnostava
     @Override
     public HigherEducationLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException, NoValidApplicationOptionsException, OrganisaatioException {
         if (this.providerService != null) {

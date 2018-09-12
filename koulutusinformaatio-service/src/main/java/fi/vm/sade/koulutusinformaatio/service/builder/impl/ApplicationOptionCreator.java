@@ -73,8 +73,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
     public ApplicationOption createV1EducationApplicationOption(KoulutusLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException, OrganisaatioException {
 
+        LOG.info("PREVIEW - createV1EAO");
         // Demoympäristössä halutaan näyttää vain ne hakukohteet, jotka kuuluvat hakuihin overriddenASOids listalla
         if (overriddenASOids != null && !overriddenASOids.isEmpty() && !overriddenASOids.contains(haku.getOid())) {
+            LOG.info("PREVIEW - Palautetaan null AO");
             return null;
         }
 
@@ -159,6 +161,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setRequiredBaseEducations(baseEducations);
 
         ApplicationSystem as = applicationSystemCreator.createApplicationSystemForAo(haku, hakukohde);
+        LOG.info("PREVIEW - Luotiin ApplicationSystem hakukohteelle " + hakukohde.getHakukohteenNimi() + ". as: " + as);
 
         HakuaikaV1RDTO aoHakuaika = null;
 

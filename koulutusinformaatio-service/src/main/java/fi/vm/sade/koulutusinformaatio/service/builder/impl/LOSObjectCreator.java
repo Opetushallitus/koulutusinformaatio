@@ -451,8 +451,12 @@ public class LOSObjectCreator extends ObjectCreator {
     private Map<String, HakuV1RDTO> cachedApplicationSystemResults = Maps.newHashMap();
     private Set<String> invalidOids = Sets.newHashSet();
 
+    //Kiinnostava
     private boolean fetchAndCreateHakukohdeData(KoulutusLOS los, boolean checkStatus) {
 
+        if(!checkStatus) {
+            LOG.info("PREVIEW - Haetaan ja luodaan hakukohdedata koulutusLOSille id:llä " + los.getId());
+        }
         ResultV1RDTO<HakutuloksetV1RDTO<HakukohdeHakutulosV1RDTO>> result = tarjontaRawService.findHakukohdesByEducationOid(los.getId(), checkStatus);
         if (result == null
                 || result.getResult() == null
@@ -506,11 +510,11 @@ public class LOSObjectCreator extends ObjectCreator {
                     if (!checkStatus) {
                         ao.setStatus(hakukohdeDTO.getTila().name());
                         ao.getApplicationSystem().setStatus(hakuDTO.getTila());
-                        LOG.debug("Lisätään hakukohde {} onnistuneesti käsiteltyjen listalle", ao.getId());
+                        LOG.info("PREVIEW - Lisätään hakukohde {} onnistuneesti käsiteltyjen listalle", ao.getId());
                         aos.add(ao);
                     } else if (ao.showInOpintopolku()) {
                         aos.add(ao);
-                        LOG.debug("Lisätään hakukohde {} onnistuneesti käsiteltyjen listalle", ao.getId());
+                        LOG.info("Lisätään hakukohde {} onnistuneesti käsiteltyjen listalle", ao.getId());
                         cachedApplicationOptionResults.put(ao.getId(), ao);
                     } else {
                         LOG.debug("Lisätään aoId {} invalidOids-listalle!", aoId);
@@ -522,6 +526,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 }
             }
         }
+        LOG.info("PREVIEW - Ollaan käsitelty kaikki hakukohteet. Valmiita yhteensä: " + aos.size());
 
         los.setApplicationOptions(aos);
 
