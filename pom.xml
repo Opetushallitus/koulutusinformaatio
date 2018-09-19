@@ -16,7 +16,6 @@
     </modules>
 
     <properties>
-        <project.svn.base>https://penaali.hard.ware.fi/svn/generic/${project.artifactId}</project.svn.base>
         <junit.version>4.11</junit.version>
         <spring.version>3.1.4.RELEASE</spring.version>
         <spring-security.version>3.1.4.RELEASE</spring-security.version>
