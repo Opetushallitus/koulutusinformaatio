@@ -448,7 +448,6 @@ public class ProviderServiceImplTest {
             "    \"extraRivi\" : null,\n" +
             "    \"maaUri\" : null\n" +
             "  },\n" +
-            "  \"faksinumero\" : \"019  656720\",\n" +
             "  \"kieletUris\" : [ \"kielivalikoima_fi\" ],\n" +
             "  \"kuvaus2\" : {\n" +
             "  }\n" +
