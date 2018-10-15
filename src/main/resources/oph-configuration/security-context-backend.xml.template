@@ -187,7 +187,6 @@
 
     <beans:bean id="casTicketValidator" class="org.jasig.cas.client.validation.Cas20ProxyTicketValidator">
         <beans:constructor-arg index="0" value="${web.url.cas}" /><!-- enable proxy authentication (in front proxy) -->
-        <beans:property name="proxyCallbackUrl" value="${cas_service}/j_spring_cas_security_proxyreceptor"/>
         <beans:property name="proxyGrantingTicketStorage" ref="pgtStorage"/>
         <beans:property name="acceptAnyProxy" value="true"/>
     </beans:bean>
