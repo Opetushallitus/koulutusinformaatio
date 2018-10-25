@@ -2,7 +2,7 @@ package fi.vm.sade.koulutusinformaatio.configuration;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fi.vm.sade.javautils.httpclient.ApacheOphHttpClient;
+import fi.vm.sade.javautils.httpclient.apache.ApacheOphHttpClient;
 import fi.vm.sade.javautils.httpclient.OphHttpClient;
 import fi.vm.sade.properties.OphProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class HttpClient {
 
     @Autowired
     public HttpClient(OphProperties urlConfiguration) {
-        client = ApacheOphHttpClient.createDefaultOphHttpClient("koulutusinformaatio.koulutusinformaatio-service.backend", urlConfiguration, 60000, 600);
+        client = ApacheOphHttpClient.createDefaultOphClient("koulutusinformaatio.koulutusinformaatio-service.backend", urlConfiguration, 60000, 600L);
     }
 
     public static ObjectMapper createJacksonMapper() {

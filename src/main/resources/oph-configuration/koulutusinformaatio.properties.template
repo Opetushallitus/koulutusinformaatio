@@ -13,6 +13,7 @@ env.loglevel={{env_loglevel}}
 host.cas={{host_cas}}
 host.haku={{host_haku}}
 host.ilb={{host_ilb}}
+host.alb={{host_alb}}
 host.ldap={{host_ldap}}
 host.virkailija={{host_virkailija}}
 host.oppija={{host_oppija}}
@@ -69,14 +70,6 @@ koulutusinformaatio.textversion.folder=/data00/oph/koulutusinformaatio/tomcat/we
 
 jpa.schemaUpdate=validate
 jpa.showSql=false
-ldap.cache.size=10000
-ldap.data.dir=${user.home}/data
-ldap.filter.people=uid\=%u
-ldap.index.cache.size=10000
-ldap.manager-dn=${ldap.manager.userdn}
-ldap.search.base.people=ou=People,dc=opintopolku,dc=fi
-ldap.url=ldap://${host.ldap}
-ldap.url.with.base=ldap\://${host.ldap}/dc\=opintopolku,dc\=fi
 log4j.properties.file=${user.home.conf}/log4j.properties
 mongo.db.name=koulutusinformaatio
 mongodb.url={{ mongodb_koulutusinformaatio_cluster | default("${mongodb.ki.uri}") }}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
