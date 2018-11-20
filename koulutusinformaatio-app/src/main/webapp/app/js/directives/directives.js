@@ -467,13 +467,15 @@ directive('kiApplicationStatusLabel', function() {
                     scope.active = "past";
                 }
             } else if (as) {
-                if (as.asOngoing) {
-                    // BUG-1892 : Loop & check if options can really be applied now.
-                    angular.forEach(as.applicationOptions, function(value) {
-                        if (value.canBeApplied) {
-                            scope.active = "present";
-                        }
-                    });
+                // BUG-1892 : Loop & check if options can really be applied now.
+                var isActive = false;
+                angular.forEach(as.applicationOptions, function(value) {
+                    if (value.canBeApplied) {
+                        isActive = true;
+                    }
+                });
+                if (as.asOngoing && isActive) {
+                    scope.active = "present";
                 } else if (as.nextApplicationPeriodStarts) {
                     scope.active = "future";
                     scope.timestamp = as.nextApplicationPeriodStarts;
