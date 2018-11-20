@@ -468,7 +468,12 @@ directive('kiApplicationStatusLabel', function() {
                 }
             } else if (as) {
                 if (as.asOngoing) {
-                    scope.active = "present";
+                    // BUG-1892 : Loop & check if options can really be applied now.
+                    angular.forEach(as.applicationOptions, function(value) {
+                        if (value.canBeApplied) {
+                            scope.active = "present";
+                        }
+                    });
                 } else if (as.nextApplicationPeriodStarts) {
                     scope.active = "future";
                     scope.timestamp = as.nextApplicationPeriodStarts;
