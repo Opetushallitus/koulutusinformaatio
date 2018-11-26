@@ -32,18 +32,6 @@ window.Config.app.koulutus = {
 window.Config.app.qa = {
 };
 
-/* Configurations for luokka environment */
-window.Config.app.luokka = {
-    introUrl : 'https://testi.opintopolku.fi/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext',
-    frontpageUrl : 'https://itest-oppija.oph.ware.fi/app/'
-};
-
-/* Configurations for development environment */
-// NOTE: currently Wordpress related data is fetched from QA environment
-window.Config.app.dev = {
-    introUrl : 'https://testi.opintopolku.fi/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext'
-};
-
 window.Config.educationTypes = {
     LUKIOKOULUTUS: 'et01.01',
     AIKUISLUKIO: 'et01.01.02',

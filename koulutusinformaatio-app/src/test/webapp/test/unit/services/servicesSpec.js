@@ -677,12 +677,6 @@ describe('HostResolver', function() {
             var result = service.mapHostToConf('localhost');
             expect(result).toEqual('dev');
         });
-
-        it('should return correct value for host "luokka"', function() {
-            var result = service.mapHostToConf('itest-opintopolku.fi');
-            expect(result).toEqual('luokka');
-        });
-
     });
 });
 
