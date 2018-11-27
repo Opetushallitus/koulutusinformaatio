@@ -43,6 +43,7 @@
         <oph.tarjonta.version>2017-40-SNAPSHOT</oph.tarjonta.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <versioneye-maven-plugin.version>3.11.4</versioneye-maven-plugin.version>
+        <cxf.version>3.2.7</cxf.version>
     </properties>
 
     <build>
@@ -175,6 +176,21 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-http</artifactId>
                 <version>8.2.0.v20160908</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-core</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
