@@ -171,6 +171,11 @@
                 <artifactId>cas-client-core</artifactId>
                 <version>3.5.1</version>
             </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-http</artifactId>
+                <version>8.2.0.v20160908</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
