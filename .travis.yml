@@ -37,11 +37,11 @@ script:
 - mv -v koulutusinformaatio-app/target/koulutusinformaatio-app.war $DOCKER_BUILD_DIR/artifact/ROOT.war
 - cp -vr src/main/resources/oph-configuration $DOCKER_BUILD_DIR/config/
 
-- export BASE_IMAGE="base-legacy:0.1"
+- export BASE_IMAGE="baseimage-war:master"
 - ./ci-tools/common/pull-image.sh
 - ./ci-tools/build/build-war.sh koulutusinformaatio
 
-- export BASE_IMAGE="base-legacy:0.1"
+- export BASE_IMAGE="baseimage-war:master"
 - ./ci-tools/common/pull-image.sh
 - ./ci-tools/build/build-war.sh koulutusinformaatio-indeksoija
 
