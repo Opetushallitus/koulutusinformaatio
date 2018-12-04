@@ -5,7 +5,6 @@ service('HostResolver', function() {
         demo: 'demo',
         koulutus: 'koulutus',
         qa: 'qa',
-        luokka: 'luokka',
         localhost: 'dev'
     };
 
@@ -14,7 +13,6 @@ service('HostResolver', function() {
             if (host) {
                 if (host.indexOf('koulutus') == 0) return hosts.koulutus;
                 else if (host.indexOf('testi') == 0) return hosts.qa;
-                else if (host.indexOf('itest-') == 0) return hosts.luokka;
                 else if (host.indexOf('localhost') == 0) return hosts.localhost;
                 else if (host.indexOf('demo.') == 0) return hosts.demo;
             }
