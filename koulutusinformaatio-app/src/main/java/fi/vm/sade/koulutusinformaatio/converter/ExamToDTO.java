@@ -58,7 +58,7 @@ public final class ExamToDTO {
 
     // Jos koe on vain suomeksi tai ruotsiksi, näytetään koe kummankin kielisessä kälissä.
     // Jos koe on englanniksi, sitä ei näytetä suomen- tai ruotsinkielilissä käleissä.
-    // Jos englanniksi ei löydy näytettäviä kokeita, näytetään suomenkieliset (BUG-1928)
+    // Jos englanniksi ei löydy näytettäviä kokeita, näytetään suomenkieliset (BUG-1928) tai jos niitäkään ei löydy, ruotsinkieliset (BUG-1933)
     public static List<ExamDTO> convertAll(final List<Exam> exams, final String lang) {
         if (CollectionUtils.isEmpty(exams)) {
             return null;
@@ -71,6 +71,9 @@ public final class ExamToDTO {
                 convertedExams = convertAllForLang(exams, "sv");
             } else if (CollectionUtils.isEmpty(convertedExams) && "en".equals(lang)) {
                 convertedExams = convertAllForLang(exams, "fi");
+                if (CollectionUtils.isEmpty(convertedExams)) {
+                    convertedExams = convertAllForLang(exams, "sv");
+                }
             }
 
             return convertedExams;
