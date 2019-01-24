@@ -56,15 +56,6 @@
     </filter>
 
     <filter>
-        <filter-name>prerender</filter-name>
-        <filter-class>com.github.greengerong.PreRenderSEOFilter</filter-class>
-        <init-param>
-            <param-name>prerenderToken</param-name>
-            <param-value>${prerenderToken}</param-value>
-        </init-param>
-    </filter>
-
-    <filter>
         <filter-name>jersey</filter-name>
         <filter-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</filter-class>
         <init-param>
@@ -87,10 +78,6 @@
 
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>prerender</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
