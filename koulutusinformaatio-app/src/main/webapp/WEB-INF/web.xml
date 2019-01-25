@@ -15,9 +15,9 @@
   ~ European Union Public Licence for more details.
   -->
 
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3.0.xsd">
 
 
     <display-name>Koulutusinformaatio</display-name>
@@ -40,6 +40,7 @@
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
     </filter>
 
     <filter>
@@ -58,6 +59,7 @@
     <filter>
         <filter-name>prerender</filter-name>
         <filter-class>fi.vm.sade.koulutusinformaatio.filter.OphPrerenderFilter</filter-class>
+        <async-supported>true</async-supported>
         <init-param>
             <param-name>prerenderToken</param-name>
             <param-value>${prerenderToken}</param-value>
@@ -88,6 +90,8 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
     </filter-mapping>
     <filter-mapping>
         <filter-name>prerender</filter-name>

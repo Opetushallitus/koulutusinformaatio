@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
@@ -19,23 +20,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class OphPrerenderFilter extends PreRenderSEOFilter {
     private static final Logger LOG = LoggerFactory.getLogger(OphPrerenderFilter.class);
 
     private OphPrerenderWrapper ophPrerenderWrapper;
-    private PrerenderSeoService ophPrerenderSeoService;
+    private OphPrerenderSeoService ophPrerenderSeoService;
+    private ExecutorService prerenderExecutorService;
 
     @Override
     public void init(FilterConfig filterConfig) {
         ophPrerenderWrapper = OphPrerenderWrapper.INSTANCE.get();
         LOG.info(String.format("enablePrerender = %s", ophPrerenderWrapper.enablePrerender));
         LOG.info(String.format("socketTimeoutMillis = %d", ophPrerenderWrapper.socketTimeoutMillis));
+        LOG.info(String.format("prerenderMaxThreads = %d", ophPrerenderWrapper.prerenderMaxThreads));
         if (ophPrerenderWrapper.enablePrerender) {
             Map<String, String> configAsMap = toMap(filterConfig);
             LOG.info(String.format("Initialising %s with config: %s", PrerenderSeoService.class.getSimpleName(), configAsMap));
-            this.ophPrerenderSeoService = new PrerenderSeoService(configAsMap);
+            this.prerenderExecutorService = Executors.newFixedThreadPool(ophPrerenderWrapper.prerenderMaxThreads, new CustomizableThreadFactory("ki-prerender-"));
+            this.ophPrerenderSeoService = new OphPrerenderSeoService(configAsMap, this.prerenderExecutorService);
         } else {
             LOG.warn(String.format("ophPrerenderWrapper.enablePrerender == %s , not initialising service.", ophPrerenderWrapper.enablePrerender));
         }
@@ -55,7 +61,7 @@ public class OphPrerenderFilter extends PreRenderSEOFilter {
 
     @Override
     protected void setPrerenderSeoService(PrerenderSeoService prerenderSeoService) {
-        this.ophPrerenderSeoService = prerenderSeoService;
+        throw new UnsupportedOperationException("This setter should not be called");
     }
 
     protected Map<String, String> toMap(FilterConfig filterConfig) {
@@ -73,12 +79,15 @@ public class OphPrerenderFilter extends PreRenderSEOFilter {
 
         private final boolean enablePrerender;
         private final int socketTimeoutMillis;
+        private final int prerenderMaxThreads;
 
         @Autowired
         public OphPrerenderWrapper(@Value("${koulutusinformaatio.prerender.enable}") boolean enablePrerender,
-                                   @Value("${koulutusinformaatio.prerender.socket.timeout.millis}") int socketTimeoutMillis) {
+                                   @Value("${koulutusinformaatio.prerender.socket.timeout.millis}") int socketTimeoutMillis,
+                                   @Value("${koulutusinformaatio.prerender.max.threads}") int prerenderMaxThreads) {
             this.enablePrerender = enablePrerender;
             this.socketTimeoutMillis = socketTimeoutMillis;
+            this.prerenderMaxThreads = prerenderMaxThreads;
             if (INSTANCE.getAndSet(this) != null) {
                 throw new IllegalStateException("Did not expect " + getClass().getSimpleName() + " to be initialised already! Looks like a bug.");
             }

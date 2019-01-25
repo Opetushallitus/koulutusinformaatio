@@ -20,7 +20,7 @@
         <spring.version>4.3.20.RELEASE</spring.version>
         <spring-security.version>4.2.9.RELEASE</spring-security.version>
         <jersey.version>1.19</jersey.version>
-        <servlet.version>2.5</servlet.version>
+        <servlet.version>3.1.0</servlet.version>
         <mongo-driver.version>3.4.1</mongo-driver.version>
         <slf4j.version>1.7.2</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
@@ -31,9 +31,9 @@
         <buildDate>${maven.build.timestamp}</buildDate>
         <solr.version>4.10.4</solr.version>
         <mockito.version>1.9.5</mockito.version>
-        <guava.version>14.0.1</guava.version>
+        <guava.version>20.0</guava.version>
         <apache-httpcomponents.version>4.2.3</apache-httpcomponents.version>
-        <wiremock.version>1.58</wiremock.version>
+        <wiremock.version>2.20.0</wiremock.version>
         <flapdoodle.version>2.0.0</flapdoodle.version>
         <jackson.version>1.9.12</jackson.version>
         <jackson2.version>2.9.7</jackson2.version>
@@ -107,6 +107,12 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
                 <version>${spring-security.version}</version>
@@ -173,11 +179,6 @@
                 <version>3.5.1</version>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-http</artifactId>
-                <version>8.2.0.v20160908</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-core</artifactId>
                 <version>${cxf.version}</version>
@@ -192,6 +193,49 @@
                 <artifactId>cxf-rt-transports-http</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-http</artifactId>
+                <version>9.2.24.v20180105</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-webapp</artifactId>
+                <version>9.2.24.v20180105</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-servlet</artifactId>
+                <version>9.2.24.v20180105</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-continuation</artifactId>
+                <version>9.2.24.v20180105</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-deploy</artifactId>
+                <version>9.2.24.v20180105</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-io</artifactId>
+                <version>9.2.24.v20180105</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-jmx</artifactId>
+                <version>9.2.24.v20180105</version>
+                <scope>test</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
