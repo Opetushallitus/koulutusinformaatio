@@ -11,4 +11,4 @@ Disallow: /app/?_escaped_fragment_=*/haku/
 Disallow: /app/?_escaped_fragment_=*/hakuwizard
 Disallow: /app/?_escaped_fragment_=*/selailu/aihe
 Disallow: /snapshot/*?_escaped_fragment_=*/haku/
-crawl-delay: 20
+crawl-delay: 30
