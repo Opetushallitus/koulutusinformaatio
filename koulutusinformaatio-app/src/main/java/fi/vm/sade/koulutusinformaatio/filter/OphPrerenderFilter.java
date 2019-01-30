@@ -58,6 +58,11 @@ public class OphPrerenderFilter extends PreRenderSEOFilter {
         this.ophPrerenderSeoService = prerenderSeoService;
     }
 
+    @Override
+    public void destroy() {
+        ophPrerenderSeoService.destroy();
+    }
+
     protected Map<String, String> toMap(FilterConfig filterConfig) {
         Map<String, String> config = Maps.newHashMap();
         for (String parameterName : PARAMETER_NAMES) {
