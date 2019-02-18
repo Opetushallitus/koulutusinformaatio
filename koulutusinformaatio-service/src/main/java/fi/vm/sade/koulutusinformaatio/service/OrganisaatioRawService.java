@@ -44,6 +44,14 @@ public interface OrganisaatioRawService {
      */
     OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType);
 
+    /**
+     * Fetches the organizations with the given oid from Organization service.
+     * @param oid The given oid
+     * @return The Organization with the given oid.
+     * @throws ResourceNotFoundException
+     */
+    OrganisaatioRDTO getOrganisaatioWithCache(String oid);
+
     OrganisaatioHakutulos findOrganisaatio(String oid);
 
 }
