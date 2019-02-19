@@ -90,6 +90,7 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setPaid(ao.isPaid());
                 aoDTO.setTunnistusKaytossa(ao.isTunnistusKaytossa());
                 aoDTO.setKysytaanHarkinnanvaraiset(ao.isKysytaanHarkinnanvaraiset());
+                aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
 
                 List<String> requiredBaseEducations = ao.getRequiredBaseEducations() == null ? Lists.<String>newArrayList() : ao.getRequiredBaseEducations();
                 aoDTO.setBaseEducationRequirement(Joiner.on(",").join(requiredBaseEducations));
@@ -109,18 +110,15 @@ public final class ApplicationOptionToBasketItemDTO {
                 }
                 ApplicationSystem as = ao.getApplicationSystem();
 
-
                 if(as.getAtaruFormKey() != null) {
                     aoDTO.setAtaruFormKey(as.getAtaruFormKey());
                     aoDTO.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
-                    aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
                 }
 
                 // add to generic application system pool (erikseen haettavat hakukohteet)
                 if (as.getMaxApplications() <= 1 || isHakutapaJatkuva(as) || ao.isSpecificApplicationDates() || as.getApplicationFormLink() != null) {
 
                     aoDTO.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
-                    aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
                     aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
 
                     // set hakutapa for application option

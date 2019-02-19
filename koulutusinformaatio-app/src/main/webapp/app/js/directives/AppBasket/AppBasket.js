@@ -197,7 +197,6 @@ directive('kiAppBasketApplicationStatus', function() {
         link: function(scope, element, attrs) {
             var as = scope.applicationSystem;
             var ao = scope.applicationOption;
-
             if (ao) {
                 if (ao.canBeApplied) {
                     scope.state = "present";
