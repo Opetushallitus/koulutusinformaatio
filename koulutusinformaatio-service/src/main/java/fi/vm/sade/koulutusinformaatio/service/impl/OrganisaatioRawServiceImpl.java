@@ -8,22 +8,19 @@ import fi.vm.sade.javautils.httpclient.OphHttpRequest;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
 import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
 import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sun.jersey.api.client.GenericType;
-
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
@@ -37,12 +34,15 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     private static final int MAX_RETRY_TIME = (int) TimeUnit.MINUTES.toMillis(10);
     private static final int MAX_RETRY_COUNT = MAX_RETRY_TIME / RETRY_DELAY_MS;
     private final Cache<String, OrganisaatioRDTO> orgCache;
+    private final Cache<String, OrganisaatioHakutulos> orgHakutulosCache;
 
     @Autowired
     public OrganisaatioRawServiceImpl(HttpClient httpClient, RollingAverageLogger rollingAverageLogger) {
         this.client = httpClient.getClient();
         this.rollingAverageLogger = rollingAverageLogger;
         this.orgCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES).build();
+        this.orgHakutulosCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES).build();
+
     }
 
     @Override
@@ -59,16 +59,19 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     @Override
     public OrganisaatioRDTO getOrganisaatioWithCache(String oid) {
         LOGGER.info("Getting organisaatio: " + oid);
+        AtomicReference<String> access = new AtomicReference<>("CACHE");
+        OrganisaatioRDTO result = null;
         try {
-            return orgCache.get(oid, () -> {
-                LOGGER.info("Organisaatio not found in cache, making actual REST call.");
+            result = orgCache.get(oid, () -> {
+                access.set("REST");
                 return parseJson(OrganisaatioRDTO.class, client.get("organisaatio-service.organisaatio", oid)
                         .param("includeImage", "true"));
             });
         } catch (Exception e) {
             LOGGER.error("Error getting organisaatio: " + e);
-            return null; //fixme, prolly not actually return null. Just a quick POC.
         }
+        LOGGER.info("Getting organisaatio: " + oid + ", got by: " + access.get());
+        return result;
     }
 
     private <R> R parseJson(final Class<R> clazz, OphHttpRequest request) {
@@ -85,16 +88,26 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     @Override
     public OrganisaatioHakutulos findOrganisaatio(String oid) {
         rollingAverageLogger.start("findOrganisaatio");
-        OrganisaatioHakutulos result = parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
-                .param("noCache", System.currentTimeMillis())
-                .param("aktiiviset", "true")
-                .param("lakkautetut", "false")
-                .param("suunnitellut", "false")
-                .param("oid", oid)
-                .param("searchstr", "")
-        );
+        AtomicReference<String> access = new AtomicReference<>("CACHE");
+        OrganisaatioHakutulos r = null;
+        try {
+             r = orgHakutulosCache.get(oid, () -> {
+                access.set("REST");
+                return parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
+                        .param("noCache", System.currentTimeMillis())
+                        .param("aktiiviset", "true")
+                        .param("lakkautetut", "false")
+                        .param("suunnitellut", "false")
+                        .param("oid", oid)
+                        .param("searchstr", "")
+                );
+            });
+        } catch (Exception e) {
+            LOGGER.error("Error finding Organisaatio: " + e);
+        }
+        LOGGER.info("findOrganisaatio: " + oid + ", got by: " + access.get());
         rollingAverageLogger.stop("findOrganisaatio");
-        return result;
+        return r;
     }
 
     @Override
