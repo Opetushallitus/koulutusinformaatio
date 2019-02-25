@@ -17,8 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Can be used to access organisaatio APIs. Returns raw organisaatio DTO objects as they are
@@ -33,7 +37,7 @@ public interface OrganisaatioRawService {
      * @return The Organization with the given oid.
      * @throws ResourceNotFoundException
      */
-    OrganisaatioRDTO getOrganisaatio(String oid);
+    OrganisaatioRDTO getOrganisaatio(String oid) throws OrganisaatioException;
     
     /**
      * Fetches organizations of given organisaatioType from organisaatio service.
@@ -44,14 +48,6 @@ public interface OrganisaatioRawService {
      */
     OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType);
 
-    /**
-     * Fetches the organizations with the given oid from Organization service.
-     * @param oid The given oid
-     * @return The Organization with the given oid.
-     * @throws ResourceNotFoundException
-     */
-    OrganisaatioRDTO getOrganisaatioWithCache(String oid);
-
-    OrganisaatioHakutulos findOrganisaatio(String oid);
+    OrganisaatioHakutulos findOrganisaatio(String oid) throws OrganisaatioException;
 
 }

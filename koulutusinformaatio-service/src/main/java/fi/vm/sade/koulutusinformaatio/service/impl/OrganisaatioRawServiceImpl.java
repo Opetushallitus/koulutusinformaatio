@@ -8,6 +8,8 @@ import fi.vm.sade.javautils.httpclient.OphHttpRequest;
 import fi.vm.sade.javautils.httpclient.OphHttpResponse;
 import fi.vm.sade.javautils.httpclient.OphHttpResponseHandler;
 import fi.vm.sade.koulutusinformaatio.configuration.HttpClient;
+import fi.vm.sade.koulutusinformaatio.domain.exception.OrganisaatioException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,8 @@ import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -46,32 +50,22 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     }
 
     @Override
-    public OrganisaatioRDTO getOrganisaatio(String oid) {
-        return getOrganisaatioWithCache(oid);
-        //fixme, either by removing altogether or choosing which callers should use this and which not.
-        /*
-        return parseJson(OrganisaatioRDTO.class, client.get("organisaatio-service.organisaatio", oid)
-                .param("includeImage", "true")
-        );
-        */
-    }
-
-    @Override
-    public OrganisaatioRDTO getOrganisaatioWithCache(String oid) {
-        LOGGER.info("Getting organisaatio: " + oid);
+    public OrganisaatioRDTO getOrganisaatio(String oid) throws OrganisaatioException {
         AtomicReference<String> access = new AtomicReference<>("CACHE");
-        OrganisaatioRDTO result = null;
+        OrganisaatioRDTO result;
         try {
-            result = orgCache.get(oid, () -> {
+                result = orgCache.get(oid, () -> {
                 access.set("REST");
                 return parseJson(OrganisaatioRDTO.class, client.get("organisaatio-service.organisaatio", oid)
                         .param("includeImage", "true"));
             });
-        } catch (Exception e) {
-            LOGGER.error("Error getting organisaatio: " + e);
+        } catch (ExecutionException e) {
+            LOGGER.error("Failure getting organisaatio: ", e);
+            throw new OrganisaatioException("Failed to get organisaatio with oid from organisaatiopalvelu " + oid);
         }
         LOGGER.info("Getting organisaatio: " + oid + ", got by: " + access.get());
         return result;
+
     }
 
     private <R> R parseJson(final Class<R> clazz, OphHttpRequest request) {
@@ -86,12 +80,12 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     }
 
     @Override
-    public OrganisaatioHakutulos findOrganisaatio(String oid) {
+    public OrganisaatioHakutulos findOrganisaatio(String oid) throws OrganisaatioException {
         rollingAverageLogger.start("findOrganisaatio");
         AtomicReference<String> access = new AtomicReference<>("CACHE");
-        OrganisaatioHakutulos r = null;
+        OrganisaatioHakutulos result;
         try {
-             r = orgHakutulosCache.get(oid, () -> {
+            result = orgHakutulosCache.get(oid, () -> {
                 access.set("REST");
                 return parseJson(OrganisaatioHakutulos.class, client.get("organisaatio-service.hae")
                         .param("noCache", System.currentTimeMillis())
@@ -102,12 +96,13 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
                         .param("searchstr", "")
                 );
             });
-        } catch (Exception e) {
-            LOGGER.error("Error finding Organisaatio: " + e);
+        } catch (ExecutionException e) {
+            LOGGER.error("Failure finding organisaatio: ", e);
+            throw new OrganisaatioException("Failed to find organisaatio with oid from organisaatiopalvelu" + oid);
         }
         LOGGER.info("findOrganisaatio: " + oid + ", got by: " + access.get());
         rollingAverageLogger.stop("findOrganisaatio");
-        return r;
+        return result;
     }
 
     @Override

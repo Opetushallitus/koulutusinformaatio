@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -188,7 +189,7 @@ public class EducationObjectCreator extends ObjectCreator {
         }
         List<OrganizationGroup> groups = new ArrayList<>(organisaatioRyhmaOids.length);
         for (String oid: organisaatioRyhmaOids) {
-            OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
+            OrganisaatioRDTO   organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
             boolean isGroup = false;
             for (String tyyppi : organisaatioRDTO.getTyypit()) {
                 if (OrganisaatioTyyppi.RYHMA.value().equals(tyyppi)) {

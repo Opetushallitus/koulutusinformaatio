@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import static fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants.*;
 
@@ -70,7 +71,6 @@ public class ProviderServiceImpl implements ProviderService {
                 LOG.debug("Returning provider from cache");
                 return cachedProvider;
             }
-
             OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
 
             Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
@@ -225,6 +225,7 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     public String getOppilaitosTyyppiByOID(String oid) throws OrganisaatioException {
+
         List<OrganisaatioPerustieto> organisaatiot = organisaatioRawService.findOrganisaatio(oid).getOrganisaatiot();
         if (CollectionUtils.isEmpty(organisaatiot))
             throw new OrganisaatioException("Organisaatiota " + oid + " ei löytynyt!");
