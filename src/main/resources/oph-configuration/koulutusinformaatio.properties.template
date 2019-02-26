@@ -65,6 +65,7 @@ koulutusinformaatio.textversion.script=/data00/oph/koulutusinformaatio/tomcat/we
 koulutusinformaatio.textversion.folder=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/m
 koulutusinformaatio.prerender.enable = {{ koulutusinformaatio_prerender_enable | default("true") }}
 koulutusinformaatio.prerender.socket.timeout.millis = {{ koulutusinformaatio_prerender_socket_timeout_millis | default("15000") }}
+koulutusinformaatio.organisaatioservice.cache.lifetime.minutes = {{ koulutusinformaatio_organisaatioservice_cache_lifetime_minutes | default("15") }}
 
 jpa.schemaUpdate=validate
 jpa.showSql=false

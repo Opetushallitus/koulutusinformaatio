@@ -14,6 +14,7 @@ import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
@@ -41,11 +42,12 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
     private final Cache<String, OrganisaatioHakutulos> orgHakutulosCache;
 
     @Autowired
-    public OrganisaatioRawServiceImpl(HttpClient httpClient, RollingAverageLogger rollingAverageLogger) {
+    public OrganisaatioRawServiceImpl(HttpClient httpClient, RollingAverageLogger rollingAverageLogger,
+                                      @Value("${koulutusinformaatio.organisaatioservice.cache.lifetime.minutes}") int cacheLifetimeMinutes) {
         this.client = httpClient.getClient();
         this.rollingAverageLogger = rollingAverageLogger;
-        this.orgCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES).build();
-        this.orgHakutulosCache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES).build();
+        this.orgCache = CacheBuilder.newBuilder().expireAfterWrite(cacheLifetimeMinutes, TimeUnit.MINUTES).build();
+        this.orgHakutulosCache = CacheBuilder.newBuilder().expireAfterWrite(cacheLifetimeMinutes, TimeUnit.MINUTES).build();
 
     }
 
