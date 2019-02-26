@@ -61,7 +61,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
             });
         } catch (ExecutionException e) {
             LOGGER.error("Failure getting organisaatio: ", e);
-            throw new OrganisaatioException("Failed to get organisaatio with oid from organisaatiopalvelu " + oid);
+            throw new OrganisaatioException("Failed to get organisaatio from organisaatiopalvelu with oid " + oid);
         }
         LOGGER.debug("Getting organisaatio: " + oid + ", got by: " + access.get());
         return result;
@@ -98,7 +98,7 @@ public class OrganisaatioRawServiceImpl implements OrganisaatioRawService {
             });
         } catch (ExecutionException e) {
             LOGGER.error("Failure finding organisaatio: ", e);
-            throw new OrganisaatioException("Failed to find organisaatio with oid from organisaatiopalvelu" + oid);
+            throw new OrganisaatioException("Failed to find organisaatio from organisaatiopalvelu with oid " + oid);
         }
         LOGGER.debug("findOrganisaatio: " + oid + ", got by: " + access.get());
         rollingAverageLogger.stop("findOrganisaatio");
