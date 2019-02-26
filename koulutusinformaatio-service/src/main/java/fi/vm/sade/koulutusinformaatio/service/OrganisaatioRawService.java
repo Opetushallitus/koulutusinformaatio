@@ -22,8 +22,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * Can be used to access organisaatio APIs. Returns raw organisaatio DTO objects as they are
  * returned from API.
