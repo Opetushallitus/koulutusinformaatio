@@ -189,7 +189,7 @@ public class EducationObjectCreator extends ObjectCreator {
         }
         List<OrganizationGroup> groups = new ArrayList<>(organisaatioRyhmaOids.length);
         for (String oid: organisaatioRyhmaOids) {
-            OrganisaatioRDTO   organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
+            OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
             boolean isGroup = false;
             for (String tyyppi : organisaatioRDTO.getTyypit()) {
                 if (OrganisaatioTyyppi.RYHMA.value().equals(tyyppi)) {
