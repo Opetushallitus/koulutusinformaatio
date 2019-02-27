@@ -113,7 +113,7 @@ public class ProviderServiceImplTest {
         when(conversionService.convert(argThat(new IsParentOrganisaatio()), eq(Provider.class))).thenReturn(parentProvider);
 
         OphProperties ophProperties = new UrlConfiguration().addDefault("host.virkailija", "localhost:" + PORT).addDefault("organisaatio-service.baseUrl", "http://localhost:" + PORT);
-        OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(new HttpClient(ophProperties), new RollingAverageLogger());
+        OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(new HttpClient(ophProperties), new RollingAverageLogger(), 15);
         service = new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
         
     }
