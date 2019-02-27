@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.koulutusinformaatio</groupId>
     <artifactId>koulutusinformaatio</artifactId>
-    <version>2017-41-SNAPSHOT</version>
+    <version>PP-340-NEXUS-TEST</version>
     <packaging>pom</packaging>
     <name>Koulutusinformaatio :: Parent</name>
 
