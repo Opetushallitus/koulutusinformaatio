@@ -19,7 +19,7 @@ var kiApp = angular.module('previewApp',
     ])
 
 .run(function($http, $cookies) {
-    $http.defaults.headers.common['clientSubSystemCode'] = "koulutusinformaatio.koulutusinformaatio-app.preview-frontend";
+    $http.defaults.headers.common['Caller-Id'] = "koulutusinformaatio.koulutusinformaatio-app.preview-frontend";
     if($cookies['CSRF']) {
         $http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
     }
