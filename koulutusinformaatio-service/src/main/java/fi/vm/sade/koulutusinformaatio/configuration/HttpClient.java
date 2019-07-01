@@ -15,7 +15,8 @@ public class HttpClient {
 
     @Autowired
     public HttpClient(OphProperties urlConfiguration) {
-        client = ApacheOphHttpClient.createDefaultOphClient("koulutusinformaatio.koulutusinformaatio-service.backend", urlConfiguration, 60000, 600L);
+        String callerId = "1.2.246.562.10.00000000001.koulutusinformaatio.koulutusinformaatio-service.backend";
+        client = ApacheOphHttpClient.createDefaultOphClient(callerId, urlConfiguration, 60000, 600L);
     }
 
     public static ObjectMapper createJacksonMapper() {
