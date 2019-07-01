@@ -21,7 +21,7 @@ var kiApp = angular.module('kiApp',
         'pascalprecht.translate'
     ])
 .run(function($http, $cookies) {
-    $http.defaults.headers.common['Caller-Id'] = "koulutusinformaatio.koulutusinformaatio-app.frontend";
+    $http.defaults.headers.common['Caller-Id'] = "1.2.246.562.10.00000000001.koulutusinformaatio.koulutusinformaatio-app.frontend";
     if($cookies['CSRF']) {
         $http.defaults.headers.common['CSRF'] = $cookies['CSRF'];
     }
