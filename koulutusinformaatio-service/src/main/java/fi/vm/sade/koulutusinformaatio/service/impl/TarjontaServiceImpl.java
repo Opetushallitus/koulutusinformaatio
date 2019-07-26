@@ -961,7 +961,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             addProcessedTutkinto(tutkinto);
             return losses;
         } catch (KoodistoException | TarjontaParseException | OrganisaatioException e) {
-            LOG.warn("Failed to create vocational education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            LOG.warn("Failed to create vocational education " + koulutusDTO.getOid(), e);
             addProcessedOid(koulutusDTO.getOid());
             return new ArrayList<>();
         } catch (NoValidApplicationOptionsException e) {
@@ -975,7 +975,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         try {
             return creator.createLukioLOS(koulutusDTO.getOid(), true);
         } catch (KoodistoException | TarjontaParseException | OrganisaatioException e) {
-            LOG.warn("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
+            LOG.warn("Failed to create lukio education " + koulutusDTO.getOid(), e);
             return null;
         } catch (NoValidApplicationOptionsException e) {
             LOG.debug("Failed to create lukio education " + koulutusDTO.getOid() + ": " + e.getMessage());
