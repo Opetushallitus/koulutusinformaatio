@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HttpClient {
-
+    public static final String CALLER_ID = "1.2.246.562.10.00000000001.koulutusinformaatio.koulutusinformaatio-service.backend";
     private OphHttpClient client;
 
     @Autowired
     public HttpClient(OphProperties urlConfiguration) {
-        String callerId = "1.2.246.562.10.00000000001.koulutusinformaatio.koulutusinformaatio-service.backend";
-        client = ApacheOphHttpClient.createDefaultOphClient(callerId, urlConfiguration, 60000, 600L);
+        client = ApacheOphHttpClient.createDefaultOphClient(CALLER_ID, urlConfiguration, 60000, 600L);
     }
 
     public static ObjectMapper createJacksonMapper() {
