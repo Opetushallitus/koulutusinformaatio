@@ -244,7 +244,7 @@
         <dependency>
             <groupId>fi.vm.sade.java-utils</groupId>
             <artifactId>httpclient</artifactId>
-            <version>${java-utils-http.version}</version>
+            <version>${java-utils-httpclient.version}</version>
         </dependency>
 
         <dependency>
