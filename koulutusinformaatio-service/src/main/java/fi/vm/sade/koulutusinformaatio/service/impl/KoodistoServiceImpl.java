@@ -290,7 +290,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             }
             return codes;
         } catch (Exception e) {
-            throw new KoodistoException("Koodin haku termillä epäonnistui termillä: " + criteria, e);
+            throw new KoodistoException("Koodin haku termillä epäonnistui termillä: " + criteria + " : " + searchCriteriaToString(criteria), e);
         }
     }
 

@@ -31,6 +31,6 @@ public class WebServices {
 
     @Bean(name="koodistoClient")
     public KoodistoClient getKoodistoClient(OphProperties urlConfiguration) {
-        return new CachingKoodistoClient(urlConfiguration.url("koodisto-service.base"));
+        return new CachingKoodistoClient(urlConfiguration.url("koodisto-service.base")).setCallerId(HttpClient.CALLER_ID);
     }
 }
