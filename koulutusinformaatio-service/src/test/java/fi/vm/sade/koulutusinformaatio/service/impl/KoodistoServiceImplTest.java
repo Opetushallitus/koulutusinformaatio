@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import fi.vm.sade.javautils.httpclient.OphHttpRequest;
 import fi.vm.sade.javautils.httpclient.OphRequestParameters;
@@ -204,7 +205,7 @@ public class KoodistoServiceImplTest {
     }
 
     @Test
-    public void test() throws KoodistoException {
+    public void listsAreCorrectlyEncoded() {
         KoodistoClient client = new CachingKoodistoClient("");
         CodeUriAndVersion codeUriAndVersion = new CodeUriAndVersion("koodi_uri", 1);
         SearchKoodisCriteriaType sc = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(codeUriAndVersion.getUri());
@@ -212,12 +213,21 @@ public class KoodistoServiceImplTest {
         OphRequestParameters.MultiValueMap<String, String> params = request.getRequestParameters().params;
         for (List<String> paramValues : params.values()) {
                 for (String paramValue : paramValues) {
-                    boolean bool = paramValue.contains("[") || paramValue.contains("]");
-                    assertFalse(bool);
+                    boolean containsBrackets = paramValue.contains("[") || paramValue.contains("]");
+                    assertFalse(containsBrackets);
                 }
         }
     }
 
-
+    @Test
+    public void nullAndEmptyParamsAreExcluded() {
+        KoodistoClient client = new CachingKoodistoClient("");
+        CodeUriAndVersion codeUriAndVersion = new CodeUriAndVersion("koodi_uri", 1);
+        SearchKoodisCriteriaType sc = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(codeUriAndVersion.getUri());
+        OphHttpRequest request = client.buildSearchKoodiRequest(sc);
+        Set<String> keys = request.getRequestParameters().params.keySet();
+        boolean containsKeysThatWereNotSpecified = keys.contains("validAt") || keys.contains("koodiTilas");
+        assertFalse(containsKeysThatWereNotSpecified);
+    }
 
 }
