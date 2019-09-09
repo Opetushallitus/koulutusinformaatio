@@ -20,6 +20,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -228,6 +229,16 @@ public class KoodistoServiceImplTest {
         Set<String> keys = request.getRequestParameters().params.keySet();
         boolean containsKeysThatWereNotSpecified = keys.contains("validAt") || keys.contains("koodiTilas");
         assertFalse(containsKeysThatWereNotSpecified);
+    }
+
+    @Test
+    public void versionParamIsIncluded() {
+        KoodistoClient client = new CachingKoodistoClient("");
+        SearchKoodisCriteriaType sc = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion("koodi_uri", 1);
+        OphHttpRequest request = client.buildSearchKoodiRequest(sc);
+        Set<String> keys = request.getRequestParameters().params.keySet();
+        boolean containsVersionParam = keys.contains("koodiVersio");
+        assertTrue(containsVersionParam);
     }
 
 }
