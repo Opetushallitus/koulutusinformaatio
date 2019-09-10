@@ -20,13 +20,21 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import fi.vm.sade.javautils.httpclient.OphHttpRequest;
+import fi.vm.sade.javautils.httpclient.OphRequestParameters;
+import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
+import fi.vm.sade.koulutusinformaatio.domain.CodeUriAndVersion;
 import fi.vm.sade.koulutusinformaatio.service.impl.metrics.RollingAverageLogger;
 import org.junit.Before;
 import org.junit.Test;
@@ -197,5 +205,40 @@ public class KoodistoServiceImplTest {
         assertEquals("kuvaus_sv", result.get(1).getDescription().getTranslations().get("sv"));
     }
 
+    @Test
+    public void listsAreCorrectlyEncoded() {
+        KoodistoClient client = new CachingKoodistoClient("");
+        CodeUriAndVersion codeUriAndVersion = new CodeUriAndVersion("koodi_uri", 1);
+        SearchKoodisCriteriaType sc = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(codeUriAndVersion.getUri());
+        OphHttpRequest request = client.buildSearchKoodiRequest(sc);
+        OphRequestParameters.MultiValueMap<String, String> params = request.getRequestParameters().params;
+        for (List<String> paramValues : params.values()) {
+                for (String paramValue : paramValues) {
+                    boolean containsBrackets = paramValue.contains("[") || paramValue.contains("]");
+                    assertFalse(containsBrackets);
+                }
+        }
+    }
+
+    @Test
+    public void nullAndEmptyParamsAreExcluded() {
+        KoodistoClient client = new CachingKoodistoClient("");
+        CodeUriAndVersion codeUriAndVersion = new CodeUriAndVersion("koodi_uri", 1);
+        SearchKoodisCriteriaType sc = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(codeUriAndVersion.getUri());
+        OphHttpRequest request = client.buildSearchKoodiRequest(sc);
+        Set<String> keys = request.getRequestParameters().params.keySet();
+        boolean containsKeysThatWereNotSpecified = keys.contains("validAt") || keys.contains("koodiTilas");
+        assertFalse(containsKeysThatWereNotSpecified);
+    }
+
+    @Test
+    public void versionParamIsIncluded() {
+        KoodistoClient client = new CachingKoodistoClient("");
+        SearchKoodisCriteriaType sc = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion("koodi_uri", 1);
+        OphHttpRequest request = client.buildSearchKoodiRequest(sc);
+        Set<String> keys = request.getRequestParameters().params.keySet();
+        boolean containsVersionParam = keys.contains("koodiVersio");
+        assertTrue(containsVersionParam);
+    }
 
 }
