@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
@@ -215,7 +216,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                         aoNameEn = String.format("%s %s", aoNameEn, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
                     }
                 }
-            } else {
+            } else if (null != prerequisite) {
                 for (Code prereq : koulutus.getPrerequisites()) {
                     if (prereq.getValue().equals(prerequisite.getValue())) {
                         applicationOptions.addAll(koulutus.getApplicationOptions());
@@ -263,6 +264,8 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
         String preValue = "";
         if(prerequisite != null){
             preValue = prerequisite.getValue();
+        } else if (!ammatillinenPrerequisites.isEmpty()) {
+            preValue = ammatillinenPrerequisites.stream().collect(Collectors.joining(", "));
         }
         indexFacetFields(tutkinto, doc, preValue, teachLang);
         if(prerequisite == null){
@@ -425,7 +428,7 @@ public class TutkintoLOSToSolrInputDocument implements Converter<TutkintoLOS, Li
                 }
             }
 
-            if (SolrConstants.PK.equalsIgnoreCase(prerequisite)
+            if (prerequisite.toLowerCase().contains(SolrConstants.PK)
                     && isKaksoistutkinto
                     && !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
                 doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);

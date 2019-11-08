@@ -176,6 +176,30 @@ public class TutkintoLOSToSolrInputDocumentTest {
     }
 
     @Test
+    public void testConvertKaksoistutkintoWithAmmattilinenPrerequisite() { // BUG-2083
+        ApplicationOption ao = los.getChildEducations().get(0).getApplicationOptions().iterator().next();
+        ao.setKaksoistutkinto(true);
+        Code prerequisite1 = new Code();
+        prerequisite1.setName(TestUtil.createI18nText("Ylioppilas fi", "Ylioppilas sv", "Ylioppilas en"));
+        prerequisite1.setValue("YO");
+        prerequisite1.setUri("YO_uri");
+        KoulutusLOS koulutus = new KoulutusLOS();
+        koulutus.setStartDate(new Date());
+        koulutus.setPrerequisites(Collections.singletonList(prerequisite1));
+        koulutus.setTeachingLanguages(Collections.singletonList(lang));
+        koulutus.setProfessionalTitles(Collections.singletonList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
+        koulutus.setContent(TestUtil.createI18nText("Content1 fi", "Content1 sv", "Content1 en"));
+        koulutus.setApplicationOptions(Sets.newHashSet(ao));
+        koulutus.setAmmatillinenPrerequisites(new HashSet<>(Arrays.asList("yo", "pk")));
+        koulutus.setToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_ALK_2018);
+        los.getChildEducations().add(koulutus);
+        List<SolrInputDocument> docs = converter.convert(los);
+        assertEquals(11, docs.size());
+        SolrInputDocument doc = docs.get(0);
+        assertTrue(doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString().contains(SolrUtil.SolrConstants.ED_TYPE_KAKSOIS));
+    }
+
+    @Test
     public void testMultiplePrerequisites() {
         KoulutusLOS koulutus = new KoulutusLOS();
         koulutus.setStartDate(new Date());
