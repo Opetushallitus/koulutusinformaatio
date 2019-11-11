@@ -412,11 +412,11 @@ directive('kiAsState', ['TranslationService', 'UtilityService', function(Transla
     return {
     	templateUrl: 'templates/asState.html',
     	controller: function($scope) {
-
     		if ($scope.lo.nextApplicationPeriodStarts && $scope.lo.nextApplicationPeriodStarts.length > 0) {
     			var parsedPeriods = [];
-    			for (var i = 0; i < $scope.lo.nextApplicationPeriodStarts.length; ++i) {
-    				var ts = new Date($scope.lo.nextApplicationPeriodStarts[i]);
+    			var periodsSorted = $scope.lo.nextApplicationPeriodStarts.sort(function(a, b) { return a - b });
+    			for (var i = 0; i < periodsSorted.length; ++i) {
+    				var ts = new Date(periodsSorted[i]);
     				var parsedPeriod = ts.getDate() +
             			'.' + (ts.getMonth() + 1) +
             			'.' + ts.getFullYear() +
