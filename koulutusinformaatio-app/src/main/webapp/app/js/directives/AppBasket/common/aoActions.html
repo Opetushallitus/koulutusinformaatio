@@ -42,7 +42,7 @@
 
     <!-- Lomake-editorin lomake -->
     <a data-ng-if="item.ataruFormKey"
-       data-ng-href="{{ isApplicationOptionDisabled(as) ? ataruAppUrl(item.id) : '' }}"
+       data-ng-href="{{ isApplicationOptionDisabled(as) ? ataruAppUrl(item.id) + '?lang=' + $root.lang : '' }}"
        data-ng-disabled="!isApplicationOptionDisabled(as)"
        class="btn btn-default"
        target="_blank"
@@ -55,7 +55,7 @@
 <div data-ng-if="!isErikseenHaettava(as)" class="disc basket-table-cell-block">
     <!-- Lomake-editorin lomake -->
     <a data-ng-if="item.ataruFormKey"
-       data-ng-href="{{ isApplicationOptionDisabled(as) ? ataruAppUrl(item.id) : '' }}"
+       data-ng-href="{{ isApplicationOptionDisabled(as) ? ataruAppUrl(item.id) + '?lang=' + $root.lang : '' }}"
        data-ng-disabled="!isApplicationOptionDisabled(as)"
        class="btn btn-default"
        target="_blank"
