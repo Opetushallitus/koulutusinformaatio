@@ -394,20 +394,14 @@ public class LOSObjectCreator extends ObjectCreator {
 
         Set<I18nText> qualifications = Sets.newHashSet();
 
-        KoodiV1RDTO kandKoul = koulutus.getKandidaatinKoulutuskoodi();
+        if(koulutus.getSisaltyvatKoulutuskoodit() != null && koulutus.getSisaltyvatKoulutuskoodit().getUris() != null) {
+            List<I18nText> sisaltyvatTutkintonimikkeet = new ArrayList<>();
 
-        List<Code> kandQuals = new ArrayList<>();
-
-        if (kandKoul != null
-                && kandKoul.getUri() != null
-                && kandKoul.getArvo() != null
-                && !kandKoul.getArvo().equals(TarjontaConstants.KANDI_TUNTEMATON)) {
-
-            kandQuals = this.koodistoService.searchSubCodes(kandKoul.getUri(), TarjontaConstants.TUTKINTONIMIKE_KK_KOODISTO_URI);
-        }
-
-        if (!kandQuals.isEmpty() && kandQuals.get(0).getName() != null) {
-            qualifications.add(kandQuals.get(0).getName());
+            for(String sisaltyvaKoulutuskoodiUri : koulutus.getSisaltyvatKoulutuskoodit().getUrisAsStringList(false)) {
+                List<Code> sisaltyvatTutkintonimikeKoodit = this.koodistoService.searchSubCodes(sisaltyvaKoulutuskoodiUri, TarjontaConstants.TUTKINTONIMIKE_KK_KOODISTO_URI);
+                sisaltyvatTutkintonimikkeet.addAll(sisaltyvatTutkintonimikeKoodit.stream().filter(t -> t.getName() != null).map(t -> t.getName()).collect(Collectors.toList()));
+            }
+            qualifications.addAll(sisaltyvatTutkintonimikkeet);
         }
 
         qualifications.addAll(getI18nTextMultiple(koulutus.getTutkintonimikes()));
