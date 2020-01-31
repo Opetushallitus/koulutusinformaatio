@@ -1,7 +1,6 @@
 <section id="main-info">
     <h4>{{provider.name}}</h4>
-    <div data-ng-show="lo.polytechnic">{{lo.educationDomain}}</div>
-    
+
     <div data-ng-repeat="parent in lo.parents">
     	<span>
     		<a data-ng-href="#!/korkeakoulu/{{parent.id}}">{{parent.name}}</a> 
