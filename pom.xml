@@ -36,7 +36,7 @@
         <wiremock.version>1.58</wiremock.version>
         <flapdoodle.version>2.0.0</flapdoodle.version>
         <jackson.version>1.9.12</jackson.version>
-        <jackson2.version>2.9.7</jackson2.version>
+        <jackson2.version>2.10.0</jackson2.version>
         <morphia.version>1.3.2</morphia.version>
         <oph.organisaatio.version>2018-6-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>2019-09-SNAPSHOT</oph.koodisto.version>
