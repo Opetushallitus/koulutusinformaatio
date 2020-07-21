@@ -309,7 +309,7 @@
                 </executions>
                 <configuration>
                     <nodeVersion>v6.9.1</nodeVersion>
-                    <npmVersion>3.10.6</npmVersion>
+                    <npmVersion>6.13.4</npmVersion>
                     <workingDirectory>.</workingDirectory>
                 </configuration>
             </plugin>
