@@ -293,7 +293,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>update</arguments>
+                            <arguments>install</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -308,8 +308,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <nodeVersion>v6.9.1</nodeVersion>
-                    <npmVersion>6.13.4</npmVersion>
+                    <nodeVersion>v10.21.0</nodeVersion>
+                    <npmVersion>6.14.4</npmVersion>
                     <workingDirectory>.</workingDirectory>
                 </configuration>
             </plugin>
