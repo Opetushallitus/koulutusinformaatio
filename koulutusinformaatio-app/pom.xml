@@ -308,8 +308,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <nodeVersion>v6.9.1</nodeVersion>
-                    <npmVersion>3.10.6</npmVersion>
+                    <nodeVersion>v13.10.10</nodeVersion>
+                    <npmVersion>6.17.1</npmVersion>
                     <workingDirectory>.</workingDirectory>
                 </configuration>
             </plugin>
