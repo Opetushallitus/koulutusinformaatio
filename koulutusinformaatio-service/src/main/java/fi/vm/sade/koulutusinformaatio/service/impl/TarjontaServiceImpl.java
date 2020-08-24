@@ -59,7 +59,7 @@ import java.util.*;
 public class TarjontaServiceImpl implements TarjontaService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
-    private static final int MAX_IMAGE_WIDTH = 800;
+    private static final int MAX_IMAGE_WIDTH = 1200;
 
     private KoodistoService koodistoService;
     private ProviderService providerService;
