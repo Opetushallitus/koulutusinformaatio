@@ -160,9 +160,12 @@
   })
 
   function isDemoEnv() {
+      return true;
+      /*
     return (window.location.href.indexOf("/demo-opintopolku.fi") > 0 ||
         window.location.href.indexOf("/demo-studieinfo.fi") > 0 ||
         window.location.href.indexOf("/demo-studyinfo.fi") > 0);
+       */
   }
   $(".show-in-demo").toggle(isDemoEnv());
 </script>
