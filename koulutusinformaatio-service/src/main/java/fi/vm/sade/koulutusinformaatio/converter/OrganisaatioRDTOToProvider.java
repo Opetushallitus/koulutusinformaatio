@@ -272,7 +272,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     }
 
     private boolean isAthleteEducation(final String toimipistekoodi, final String oppilaitoskoodi) {
-        LOG.info("isAthleteEducation, toimipistekoodi {}, oppilaitoskoodi {}", toimipistekoodi, oppilaitoskoodi);
         try {
         if (!Strings.isNullOrEmpty(toimipistekoodi) || !Strings.isNullOrEmpty(oppilaitoskoodi)) {
             List<Code> superCodesToimipiste = null;
@@ -285,11 +284,10 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             } catch (KoodistoException e) {
                 throw new KIConversionException("Conversion failed - " + e.getMessage());
             }
-            LOG.info("Koodis for toimipistees: {}, for oppilaitokses: {}", superCodesToimipiste.size(), superCodesOppilaitos.size());
             if (superCodesOppilaitos != null) {
                 for (Code code : superCodesOppilaitos) {
                     if (code.getValue() != null && code.getValue().equals(oppilaitoskoodi)) {
-                        LOG.info("isAthleteEducation changed result for ({}), ({})", toimipistekoodi, oppilaitoskoodi);
+                        LOG.info("isAthleteEducation true for oppilaitos {}", oppilaitoskoodi);
                         return true;
                     }
                 }
@@ -297,7 +295,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             if (superCodesToimipiste != null) {
                 for (Code code : superCodesToimipiste) {
                     if (code.getValue() != null && code.getValue().equals(toimipistekoodi)) {
-                        LOG.info("isAthleteEducation was always true result for ({}), ({})", toimipistekoodi, oppilaitoskoodi);
+                        LOG.info("isAthleteEducation true for toimipiste {}", toimipistekoodi);
                         return true;
                     }
                 }
