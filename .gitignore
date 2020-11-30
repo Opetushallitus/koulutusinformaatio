@@ -6,3 +6,4 @@ target/
 .settings/
 *.DS_Store
 koulutusinformaatio-app/src/test_out/
+koulutusinformaatio-app/package-lock.json
