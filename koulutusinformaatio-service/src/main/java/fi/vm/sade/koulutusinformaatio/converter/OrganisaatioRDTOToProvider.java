@@ -86,6 +86,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
 
     private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";
+    private static final String OPPILAITOSNUMERO_KOODISTO_URI = "oppilaitosnumero";
 
     private static final String ADDRESS_DATA_TYPE = "osoiteTyyppi";
     private static final String ADDRESS_DATA_TYPE_VISIT = "kaynti";
@@ -148,7 +149,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             LOG.debug("Got descriptions: {}", o.getOid());
             p.setSocial(getSocialLinks(o.getMetadata()));
             p.setPicture(getPicture(o));
-            p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
+            p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi(), o.getOppilaitosKoodi()));
             p.setPlaceOfBusinessCode(o.getToimipistekoodi());
             p.setHomePlace(koodistoService.searchFirstName(o.getKotipaikkaUri()));
             String districtUri = getDistrictUri(o.getKotipaikkaUri());
@@ -270,25 +271,38 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         }
     }
 
-    private boolean isAthleteEducation(final String placeOfBusinessCode) {
+    private boolean isAthleteEducation(final String toimipistekoodi, final String oppilaitoskoodi) {
         try {
-        if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {
-            List<Code> superCodes = null;
+        if (!Strings.isNullOrEmpty(toimipistekoodi) || !Strings.isNullOrEmpty(oppilaitoskoodi)) {
+            List<Code> superCodesToimipiste = null;
+            List<Code> superCodesOppilaitos = null;
             try {
-                superCodes = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
+                superCodesToimipiste = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
                         PLACE_OF_BUSINESS_KOODISTO_URI);
+                superCodesOppilaitos = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
+                        OPPILAITOSNUMERO_KOODISTO_URI);
             } catch (KoodistoException e) {
                 throw new KIConversionException("Conversion failed - " + e.getMessage());
             }
-            if (superCodes != null) {
-                for (Code code : superCodes) {
-                    if (placeOfBusinessCode.equals(code.getValue())) {
+            if (superCodesOppilaitos != null) {
+                for (Code code : superCodesOppilaitos) {
+                    if (code.getValue() != null && code.getValue().equals(oppilaitoskoodi)) {
+                        LOG.info("isAthleteEducation true for oppilaitos {}", oppilaitoskoodi);
+                        return true;
+                    }
+                }
+            }
+            if (superCodesToimipiste != null) {
+                for (Code code : superCodesToimipiste) {
+                    if (code.getValue() != null && code.getValue().equals(toimipistekoodi)) {
+                        LOG.info("isAthleteEducation true for toimipiste {}", toimipistekoodi);
                         return true;
                     }
                 }
             }
         }
         } catch (Exception ex) {
+            LOG.error("Error while deducing isAthleteEducation: ", ex);
             return false;
         }
         return false;
