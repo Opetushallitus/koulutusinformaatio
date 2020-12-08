@@ -227,8 +227,6 @@ var kiApp = angular.module('kiApp',
         default:
             matomoSiteUrl = "https://keha-matomo-sdg-qa-qa.azurewebsites.net/"; // Testi
     }
-    console.log("siteDomain: " + siteDomain);
-    console.log("matomoSiteUrl: " + matomoSiteUrl);
     var cookieconsentSettings = {
         // Urls where matomo files can be found on the (matomo) server.
         matomoSiteUrl: matomoSiteUrl,
