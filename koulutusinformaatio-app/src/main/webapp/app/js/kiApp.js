@@ -71,7 +71,6 @@ var kiApp = angular.module('kiApp',
     OPH.Common.initPiwik();
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
-    OPH.Common.initKehaPiwik();
 }])
 
 // routes provided by kiApp
@@ -216,7 +215,76 @@ var kiApp = angular.module('kiApp',
     recaptchaElem.async = true;
     document.getElementsByTagName("head")[0].appendChild(recaptchaElem);
 }])
-
+.run([function() {
+    var siteDomain = document.domain;
+    var matomoSiteUrl;
+    switch (siteDomain) {
+        case "opintopolku.fi":
+        case "studieinfo.fi":
+        case "studyinfo.fi":
+            matomoSiteUrl = "https://analytiikka.ahtp.fi/";
+            break;
+        default:
+            matomoSiteUrl = "https://keha-matomo-sdg-qa-qa.azurewebsites.net/"; // Testi
+    }
+    console.log("siteDomain: " + siteDomain);
+    console.log("matomoSiteUrl: " + matomoSiteUrl);
+    var cookieconsentSettings = {
+        // Urls where matomo files can be found on the (matomo) server.
+        matomoSiteUrl: matomoSiteUrl,
+        matomoSiteId: "8",
+        // Params that are included in the tracking requests. See https://developer.matomo.org/api-reference/tracking-api
+        includedParams: ["idsite", "rec", "action_name", "url", "_id", "rand", "apiv"],
+    };
+    var hasInit = false;
+    var initMatomoTracker = function () {
+        try {
+            if (hasInit) return;
+            hasInit = true;
+            var tracker;
+            if (typeof Matomo !== 'undefined') {
+                tracker = Matomo;
+            } else {
+                tracker = Piwik;
+            }
+            var url = cookieconsentSettings.matomoSiteUrl;
+            var fixedUrl = url.charAt(url.length - 1) === '/' ? url : url + '/';
+            matomoTracker = tracker.getTracker(fixedUrl + "matomo.php", cookieconsentSettings.matomoSiteId);
+            var customRequestProcess = function (request) {
+                try {
+                    var pairs = request.split("&");
+                    var requestParametersArray = [];
+                    for (var index = 0; index < pairs.length; ++index) {
+                        var pair = pairs[index].split("=");
+                        if (cookieconsentSettings.includedParams.indexOf(pair[0]) === -1) {
+                            continue;
+                        }
+                        requestParametersArray.push(pair[0] + "=" + pair[1]);
+                    }
+                    var osIndex = navigator.userAgent.indexOf(")");
+                    var ua =
+                        osIndex !== -1
+                            ? navigator.userAgent.substring(0, osIndex + 1)
+                            : "Mozilla/5.0";
+                    requestParametersArray.push("ua=" + ua);
+                    return requestParametersArray.join("&");
+                } catch (err) {
+                    return request;
+                }
+            };
+            matomoTracker.setCustomRequestProcessing(customRequestProcess);
+            matomoTracker.trackPageView();
+            matomoTracker.enableLinkTracking();
+        } catch (err) { }
+    };
+    if (typeof Matomo === 'undefined') {
+        window.matomoAsyncInit = initMatomoTracker;
+        window.piwikAsyncInit = initMatomoTracker;
+    }
+    else {
+        initMatomoTracker();
+    }
+}])
 // create config object
 .value('appConfig', window.Config.app)
 .factory('Config', function($location, appConfig, LanguageService, HostResolver) {
@@ -278,75 +346,5 @@ OPH.Common = {
             var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
             g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
         })();
-    },
-    initKehaPiwik: function() {
-        var siteDomain = document.domain;
-        var matomoSiteUrl;
-        switch (siteDomain) {
-            case "opintopolku.fi":
-            case "studieinfo.fi":
-            case "studyinfo.fi":
-                matomoSiteUrl = "https://analytiikka.ahtp.fi/";
-                break;
-            default:
-                matomoSiteUrl = "https://keha-matomo-sdg-qa-qa.azurewebsites.net/"; // Testi
-        }
-        console.log("siteDomain: " + siteDomain);
-        console.log("matomoSiteUrl: " + matomoSiteUrl);
-        var cookieconsentSettings = {
-            // Urls where matomo files can be found on the (matomo) server.
-            matomoSiteUrl: matomoSiteUrl,
-            matomoSiteId: "8",
-            // Params that are included in the tracking requests. See https://developer.matomo.org/api-reference/tracking-api
-            includedParams: ["idsite", "rec", "action_name", "url", "_id", "rand", "apiv"],
-        };
-        var hasInit = false;
-        var initMatomoTracker = function () {
-            try {
-                if (hasInit) return;
-                hasInit = true;
-                var tracker;
-                if (typeof Matomo !== 'undefined') {
-                    tracker = Matomo;
-                } else {
-                    tracker = Piwik;
-                }
-                var url = cookieconsentSettings.matomoSiteUrl;
-                var fixedUrl = url.charAt(url.length - 1) === '/' ? url : url + '/';
-                matomoTracker = tracker.getTracker(fixedUrl + "matomo.php", cookieconsentSettings.matomoSiteId);
-                var customRequestProcess = function (request) {
-                    try {
-                        var pairs = request.split("&");
-                        var requestParametersArray = [];
-                        for (var index = 0; index < pairs.length; ++index) {
-                            var pair = pairs[index].split("=");
-                            if (cookieconsentSettings.includedParams.indexOf(pair[0]) === -1) {
-                                continue;
-                            }
-                            requestParametersArray.push(pair[0] + "=" + pair[1]);
-                        }
-                        var osIndex = navigator.userAgent.indexOf(")");
-                        var ua =
-                            osIndex !== -1
-                                ? navigator.userAgent.substring(0, osIndex + 1)
-                                : "Mozilla/5.0";
-                        requestParametersArray.push("ua=" + ua);
-                        return requestParametersArray.join("&");
-                    } catch (err) {
-                        return request;
-                    }
-                };
-                matomoTracker.setCustomRequestProcessing(customRequestProcess);
-                matomoTracker.trackPageView();
-                matomoTracker.enableLinkTracking();
-            } catch (err) { }
-        };
-        if (typeof Matomo === 'undefined') {
-            window.matomoAsyncInit = initMatomoTracker;
-            window.piwikAsyncInit = initMatomoTracker;
-        }
-        else {
-            initMatomoTracker();
-        }
     }
 };
