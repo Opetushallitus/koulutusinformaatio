@@ -457,7 +457,7 @@ directive('kiApplicationStatusLabel', function() {
             var as = scope.applicationSystem;
             var ao = scope.applicationOption;
 
-            if (ao) {
+            if ((ao && as && as.hakutapa == '03') || (ao && !as)) {
                 if (ao.canBeApplied) {
                     scope.active = "present";
                 } else if (ao.nextApplicationPeriodStarts) {
@@ -466,7 +466,7 @@ directive('kiApplicationStatusLabel', function() {
                 } else {
                     scope.active = "past";
                 }
-            } else if (as) {
+            } else if (!ao && as) {
                 // BUG-1892 : Loop & check if options can really be applied now.
                 var isActive = false;
                 angular.forEach(as.applicationOptions, function(value) {
