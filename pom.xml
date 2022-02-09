@@ -90,6 +90,11 @@
             <id>oph-sade-artifactory-3rd-party</id>
             <url>https://artifactory.opintopolku.fi/artifactory/libs-3rd-party</url>
         </repository>
+        <repository>
+            <id>maven-restlet</id>
+            <name>Public online Restlet repository</name>
+            <url>https://maven.restlet.com</url>
+        </repository>
     </repositories>
 
     <distributionManagement>
