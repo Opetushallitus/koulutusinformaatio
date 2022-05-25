@@ -18,7 +18,7 @@
     <properties>
         <junit.version>4.12</junit.version>
         <spring.version>4.3.20.RELEASE</spring.version>
-        <spring-security.version>4.2.9.RELEASE</spring-security.version>
+        <spring-security.version>5.5.7</spring-security.version>
         <jersey.version>1.19</jersey.version>
         <servlet.version>2.5</servlet.version>
         <mongo-driver.version>3.4.1</mongo-driver.version>
