@@ -17,7 +17,7 @@
 
     <properties>
         <junit.version>4.12</junit.version>
-        <spring.version>4.3.20.RELEASE</spring.version>
+        <spring.version>5.2.22.RELEASE</spring.version>
         <spring-security.version>4.2.9.RELEASE</spring-security.version>
         <jersey.version>1.19</jersey.version>
         <servlet.version>2.5</servlet.version>
@@ -29,14 +29,14 @@
         <clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_koulutusinformaatio</clover.outputDirectory>
         <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
         <buildDate>${maven.build.timestamp}</buildDate>
-        <solr.version>4.10.4</solr.version>
+        <solr.version>8.10.1</solr.version>
         <mockito.version>1.9.5</mockito.version>
-        <guava.version>14.0.1</guava.version>
+        <guava.version>30.0-android</guava.version>
         <apache-httpcomponents.version>4.2.3</apache-httpcomponents.version>
         <wiremock.version>1.58</wiremock.version>
         <flapdoodle.version>2.0.0</flapdoodle.version>
         <jackson.version>1.9.12</jackson.version>
-        <jackson2.version>2.9.7</jackson2.version>
+        <jackson2.version>2.13.4</jackson2.version>
         <morphia.version>1.3.2</morphia.version>
         <oph.organisaatio.version>2018-6-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>2019-09-J8-SNAPSHOT</oph.koodisto.version>
