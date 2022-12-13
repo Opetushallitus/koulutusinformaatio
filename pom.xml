@@ -44,7 +44,7 @@
         <java-utils-httpclient.version>0.3.0-SNAPSHOT</java-utils-httpclient.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <versioneye-maven-plugin.version>3.11.4</versioneye-maven-plugin.version>
-        <cxf.version>3.2.7</cxf.version>
+        <cxf.version>3.4.10</cxf.version>
     </properties>
 
     <build>
